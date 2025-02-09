@@ -63,3 +63,59 @@ class Binary(models.Model):
     content_type = models.CharField(max_length=100)
     data = models.BinaryField()
     medicinal_product = models.ForeignKey(MedicinalProductDefinition, on_delete=models.CASCADE, related_name='binaries')
+
+class ResourceStudyReport(models.Model):
+    element_id = models.CharField(max_length=255)
+    effectiveness = models.DecimalField(max_digits=6, decimal_places=3)
+    effect_time = models.CharField(max_length=127)
+    reason = models.CharField(max_length=255, blank=True)
+    symptom_disease = models.CharField(max_length=255, blank=True)
+    field_of_study = models.DateField(blank=True, null=True)
+    description = models.CharField(max_length=255, blank=True)
+    authors = models.CharField(max_length=255, blank=True)
+    organization = models.CharField(max_length=255, blank=True)
+    CID = models.CharField(max_length=50, default="CID-NÃO-ESPECIFICADO", blank=True, null=True)
+    # Campo com lógica invertida
+    not_indicated = models.BooleanField(
+        default=False,  # Se False, é indicado para uso
+        verbose_name="Não Indicado para Uso"
+    )
+
+    def is_indicated(self):
+        """Retorna se o item é indicado para uso"""
+        return not self.not_indicated  # Se False, está indicado
+
+    def __str__(self):
+        return f"{self.element_id} - Indicado para Uso: {'Sim' if self.is_indicated() else 'Não'}"
+
+from django.db import models
+
+class AgeRangeChoices(models.TextChoices):
+    FAIXA_1 = "0-10", "0 a 10 anos"
+    FAIXA_2 = "11-20", "11 a 20 anos"
+    FAIXA_3 = "21-30", "21 a 30 anos"
+    FAIXA_4 = "31-60", "31 a 60 anos"
+    FAIXA_7 = "61-70", "61 a 70 anos"
+    FAIXA_8 = "71-80", "71 a 80 anos"
+    FAIXA_9 = "81+", "81 anos ou mais"
+
+    # Novos grupos adicionados
+    GRAVIDEZ = "gravidez", "Gravidez"
+    LACTANTE = "lactante", "Lactante"
+
+class StudyGroup(models.Model):
+    element_id = models.CharField(
+        max_length=20,
+        primary_key=True,
+        unique=True
+    )
+
+    study_group_idade = models.CharField(
+        max_length=20,  # Aumentei o tamanho para acomodar os novos valores
+        choices=AgeRangeChoices.choices,
+        default=AgeRangeChoices.FAIXA_1,
+        verbose_name="Faixa Etária"
+    )
+
+    def __str__(self):
+        return f"Grupo {self.element_id} - {self.study_group_idade}"

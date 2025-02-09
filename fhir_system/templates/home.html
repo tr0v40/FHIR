@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Página Inicial{% endblock %}
+
+{% block content %}
+<header class="masthead" style="background-image: url('{% static "img/bg-masthead.jpg" %}'); height: 100vh;">
+    <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
+        <div class="text-center">
+            <h1 class="text-white">Bem-vindo ao Meu Sistema</h1>
+            <p class="text-white-50">Sua solução para gestão simplificada.</p>
+            <a href="#" class="btn btn-primary btn-lg">Saiba Mais</a>
+        </div>
+    </div>
+</header>
+<section class="py-5">
+    <div class="container">
+        <h2>Sobre o Sistema</h2>
+        <p>Descrição do sistema aqui...</p>
+    </div>
+</section>
+{% endblock %}
