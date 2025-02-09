@@ -10,7 +10,8 @@ from .models import (
     RegulatedAuthorization,
     ClinicalUseDefinition,
     Composition,
-    Binary
+    Binary,
+    ResourceStudyReport
 )
 # Register your models here.
 
@@ -25,3 +26,4 @@ admin.site.register(RegulatedAuthorization)
 admin.site.register(ClinicalUseDefinition)
 admin.site.register(Composition)
 admin.site.register(Binary)
+admin.site.register(ResourceStudyReport)

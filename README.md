@@ -7,7 +7,7 @@ psql postgres
 
 CREATE DATABASE fhir_db;
 
-CREATE USER fhir_user WITH PASSWORD 'fhir_password';
+CREATE USER fhir_user_ WITH PASSWORD 'fhir_password';
 
 GRANT ALL PRIVILEGES ON DATABASE fhir_db TO fhir_user;
 ALTER DATABASE fhir_db OWNER TO fhir_user;
@@ -40,3 +40,5 @@ python manage.py migrate
 Executar server
 
 python manage.py runserver
+
+\q
