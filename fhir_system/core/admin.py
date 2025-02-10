@@ -11,6 +11,7 @@ from .models import (
     ClinicalUseDefinition,
     Composition,
     Binary,
+    StudyGroup,
     ResourceStudyReport
 )
 # Register your models here.
@@ -26,4 +27,5 @@ admin.site.register(RegulatedAuthorization)
 admin.site.register(ClinicalUseDefinition)
 admin.site.register(Composition)
 admin.site.register(Binary)
+admin.site.register(StudyGroup)
 admin.site.register(ResourceStudyReport)
