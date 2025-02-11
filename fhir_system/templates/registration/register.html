@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastro de Usuário{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column min-vh-100">
+    <div class="container mt-5 flex-grow-1">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-lg">
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+                                <label for="id_username" class="form-label">Nome de Usuário:</label>
+                                {{ form.username }}
+                                <small class="form-text text-muted">
+                                    Máx. 150 caracteres. Use letras, números e @/./+/-/_.
+                                </small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_email" class="form-label">E-mail:</label>
+                                {{ form.email }}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_password" class="form-label">Senha:</label>
+                                {{ form.password }}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_password_confirm" class="form-label">Confirme sua senha:</label>
+                                {{ form.password_confirm }}
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
+                        </form>
+
+                        <div class="text-center mt-3">
+                            <p>Já tem uma conta? <a href="{% url 'login' %}" class="text-primary">Faça login</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

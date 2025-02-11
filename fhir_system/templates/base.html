@@ -53,6 +53,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'login' %}">Login</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">Cadastre-se</a> <!-- Novo Link de Cadastro -->
+                        </li>
                     {% endif %}
                 </ul>
             </div>
@@ -64,10 +67,37 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
-    <footer class="text-center py-4 bg-dark text-white">
-        <p>&copy; 2025 Meu Sistema. Todos os direitos reservados.</p>
-    </footer>
+<!-- Footer -->
+<footer class="footer-container">
+    <div class="footer-content">
+        <!-- Logo e Slogan -->
+        <div class="footer-left">
+            <img src="{% static 'img/logo.png' %}" alt="Telix Logo" class="footer-logo">
+            
+        </div>
+
+        <!-- Informações da Empresa -->
+        <div class="footer-info">
+            <p>Linca Telecomunicações Ltda - CNPJ: 03.376.788-0001/23</p>
+            <p>Rua Marechal Deodoro, 1606, Centro - Foz do Iguaçu/PR</p>
+        </div>
+
+        <!-- Redes Sociais -->
+        <div class="footer-social">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+
+        <!-- Botões e Links -->
+        <div class="footer-links">
+            <button class="footer-btn">Baixar App</button>
+            <a href="#" class="footer-link"><i class="fas fa-comments"></i> Blog</a>
+            <a href="#" class="footer-link">Tratamentos</a>
+            <a href="#" class="footer-link">Quem Somos</a>
+        </div>
+    </div>
+</footer>
 
     <!-- JavaScript Bootstrap -->
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
