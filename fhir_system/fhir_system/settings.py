@@ -7,8 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Configurações Básicas do Django
 SECRET_KEY = 'chave-secreta'  # Troque por uma chave segura
 DEBUG = True
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
-
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "cadastros.telix.inf.br"]
 # Configuração do Banco de Dados (PostgreSQL)
 DATABASES = {
     'default': {
@@ -45,6 +44,9 @@ INSTALLED_APPS = [
     'core',  # Adicione seu app aqui
     'django.contrib.sites',  # Caso esteja usando o framework de sites
 ]
+
+SITE_ID = 1
+
 
 # Middlewares
 MIDDLEWARE = [
