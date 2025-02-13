@@ -1,0 +1,17 @@
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=ucasochaoreira
+Group=www-data
+WorkingDirectory=/home/ucasochaoreira/fhir_project/fhir_system
+ExecStart=/home/ucasochaoreira/fhir_project/fhir_system/venv/bin/gunicorn \
+          --access-logfile - \
+          --workers 3 \
+          --bind unix:/run/gunicorn.sock \
+          fhir_system.wsgi:application
+
+[Install]
+WantedBy=multi-user.target

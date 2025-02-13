@@ -18,3 +18,10 @@ class UserRegisterForm(forms.ModelForm):
             self.add_error('password_confirm', "As senhas não coincidem")
 
         return cleaned_data
+
+
+from django import forms
+
+class TratamentoSearchForm(forms.Form):
+    nome = forms.CharField(label='Nome', max_length=100, required=False)
+    categoria = forms.CharField(label='Categoria', max_length=100, required=False)

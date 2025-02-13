@@ -116,3 +116,42 @@ class StudyGroup(models.Model):
 
     def _str_(self):
         return f"Grupo {self.element_id} - {self.study_group_idade}"
+    
+# models.py
+from django.db import models
+
+class Tratamento(models.Model):
+    nome = models.CharField(max_length=200)
+    descricao = models.TextField()
+    categoria = models.CharField(max_length=100)
+    evidencia_clinica = models.TextField()
+    principio_ativo = models.CharField(max_length=200)  # Adicionando o princípio ativo
+    fabricante = models.CharField(max_length=200)  # Adicionando o nome do fabricante
+    avaliacao = models.DecimalField(max_digits=3, decimal_places=2)  # Avaliação de 0 a 5 estrelas, com duas casas decimais
+    eficacia_min = models.DecimalField(max_digits=5, decimal_places=2)  # Eficácia mínima (ex: 67%)
+    eficacia_max = models.DecimalField(max_digits=5, decimal_places=2)  # Eficácia máxima (ex: 77%)
+    prazo_efeito_min = models.CharField(max_length=50)  # Prazo mínimo para o efeito (ex: "30min")
+    prazo_efeito_max = models.CharField(max_length=50)  # Prazo máximo para o efeito (ex: "2h")
+
+    def __str__(self):
+        return self.nome
+
+# models.py
+from django.db import models
+
+
+    
+
+class Tratamentos(models.Model):
+    nome = models.CharField(max_length=200)
+    descricao = models.TextField()
+    categoria = models.CharField(max_length=100)
+    evidencia_clinica = models.TextField()
+    principio_ativo = models.CharField(max_length=200)
+    fabricante = models.CharField(max_length=200)
+    avaliacao = models.DecimalField(max_digits=3, decimal_places=2)
+    eficacia_min = models.DecimalField(max_digits=5, decimal_places=2)
+    eficacia_max = models.DecimalField(max_digits=5, decimal_places=2)
+    prazo_efeito_min = models.CharField(max_length=50)
+    prazo_efeito_max = models.CharField(max_length=50)
+    imagem = models.ImageField(upload_to='tratamentos/', null=True, blank=True)  # Novo campo para imagem
