@@ -11323,5 +11323,453 @@ main {
 }
 
 
+/* ========== FOOTER CORRIGIDO ========== */
 
+/* Faz o footer ficar sempre no final da tela */
+html, body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
+/* Faz o conteúdo crescer e empurrar o footer para baixo */
+main {
+  flex-grow: 1;
+}
+
+/* Estilização do Footer */
+.footer-container {
+  width: 100%;
+  background: #0c0c0c; /* ✅ Fundo preto */
+  padding: 40px 5%;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 3px solid #111;
+}
+
+/* Layout do conteúdo */
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* Logo */
+.footer-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.footer-logo {
+  max-width: 180px;
+  margin-bottom: 5px;
+}
+
+/* Slogan */
+.footer-slogan {
+  font-size: 14px;
+  color: #ccc;
+}
+
+/* Redes Sociais */
+.footer-social {
+  display: flex;
+  gap: 15px;
+}
+
+.footer-social a {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 12px;
+  border-radius: 50%;
+  font-size: 18px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45px;
+  height: 45px;
+  transition: 0.3s;
+}
+
+.footer-social a:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Informações */
+.footer-info {
+  font-size: 14px;
+  text-align: center;
+  flex: 1;
+}
+
+/* Links e Botões */
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.footer-btn {
+  background: #333;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 6px;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.footer-btn:hover {
+  background: #555;
+}
+
+.footer-link {
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.footer-link:hover {
+  color: #ccc;
+}
+
+/* static/css/styles.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+}
+
+header {
+  background-color: #0073e6;
+  padding: 15px;
+  color: white;
+}
+
+header nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+header nav ul li {
+  display: inline;
+  margin-right: 15px;
+}
+
+header nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+h1 {
+  font-size: 24px;
+  color: #333;
+}
+
+.tratamento-detalhe {
+  padding: 20px;
+  background-color: white;
+  margin: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.evidencia-clinica {
+  margin-top: 20px;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+/* Estilos gerais */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+}
+
+.sidebar {
+  width: 250px;
+  padding: 20px;
+  background-color: #fff;
+  border-right: 1px solid #ddd;
+}
+
+.main-content {
+  padding: 20px;
+  flex-grow: 1;
+}
+
+.tratamentos-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.tratamento-card {
+  background-color: #fff;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.tratamento-card h3 {
+  font-size: 18px;
+  color: #333;
+}
+
+.tratamento-card p {
+  color: #666;
+}
+
+.tratamento-card a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+.tratamento-card a:hover {
+  text-decoration: underline;
+}
+
+/* styles.css */
+.tratamentos-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.tratamentos-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.tratamento-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+}
+
+.tratamento-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.tratamento-card h2 {
+  font-size: 24px;
+  margin: 10px 0;
+}
+
+.tratamento-card p {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.rating span {
+  font-size: 18px;
+}
+
+.eficacia progress {
+  width: 100%;
+  height: 15px;
+}
+
+#search-treatment {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+/* Reset and basic styling */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* Main container */
+.tratamentos-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header section */
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 32px;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.search-bar {
+  padding: 10px;
+  font-size: 16px;
+  width: 80%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+/* Tratamentos list */
+.tratamentos-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.tratamento-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.tratamento-card:hover {
+  transform: scale(1.05);
+}
+
+.tratamento-header {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background-color: #f1f1f1;
+}
+
+.tratamento-image {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.tratamento-info {
+  margin-left: 20px;
+}
+
+.tratamento-info h2 {
+  font-size: 22px;
+  color: #333;
+}
+
+.tratamento-info .tratamento-category {
+  font-size: 14px;
+  color: #777;
+}
+
+.rating {
+  margin-top: 10px;
+}
+
+.rating span {
+  font-size: 16px;
+  color: #f39c12;
+}
+
+.tratamento-body {
+  padding: 20px;
+}
+
+.tratamento-description {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.eficacia {
+  margin-bottom: 15px;
+}
+
+.eficacia-progress {
+  background-color: #e1e1e1;
+  border-radius: 5px;
+  height: 8px;
+}
+
+.eficacia-bar {
+  background-color: #007bff;
+  height: 100%;
+  border-radius: 5px;
+}
+
+.prazo {
+  font-size: 14px;
+  color: #666;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  padding: 20px 30px;
+  text-align: center;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px; /* Defina uma altura fixa */
+}
+
+.footer-left img {
+  max-height: 50px; /* Limita a altura do logo */
+  width: auto;
+}
+
+.footer-info {
+  text-align: left;
+  flex-grow: 1;
+  margin-left: 40px;
+  font-size: 14px; /* Ajuste o tamanho da fonte */
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.footer-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 14px;
+}

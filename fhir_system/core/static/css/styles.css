@@ -11441,3 +11441,366 @@ main {
 .footer-link:hover {
   color: #ccc;
 }
+
+/* static/css/styles.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+}
+
+header {
+  background-color: #0073e6;
+  padding: 15px;
+  color: white;
+}
+
+header nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+header nav ul li {
+  display: inline;
+  margin-right: 15px;
+}
+
+header nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+h1 {
+  font-size: 24px;
+  color: #333;
+}
+
+.tratamento-detalhe {
+  padding: 20px;
+  background-color: white;
+  margin: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.evidencia-clinica {
+  margin-top: 20px;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+/* Estilos gerais */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+}
+
+.sidebar {
+  width: 250px;
+  padding: 20px;
+  background-color: #fff;
+  border-right: 1px solid #ddd;
+}
+
+.main-content {
+  padding: 20px;
+  flex-grow: 1;
+}
+
+.tratamentos-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.tratamento-card {
+  background-color: #fff;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.tratamento-card h3 {
+  font-size: 18px;
+  color: #333;
+}
+
+.tratamento-card p {
+  color: #666;
+}
+
+.tratamento-card a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+.tratamento-card a:hover {
+  text-decoration: underline;
+}
+
+/* Reset and basic styling */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* Main container */
+.tratamentos-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header section */
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 32px;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.search-bar {
+  padding: 10px;
+  font-size: 16px;
+  width: 80%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+/* Tratamentos list */
+.tratamentos-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.tratamento-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.tratamento-card:hover {
+  transform: scale(1.05);
+}
+
+.tratamento-header {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background-color: #f1f1f1;
+}
+
+.tratamento-image {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.tratamento-info {
+  margin-left: 20px;
+}
+
+.tratamento-info h2 {
+  font-size: 22px;
+  color: #333;
+}
+
+.tratamento-info .tratamento-category {
+  font-size: 14px;
+  color: #777;
+}
+
+.rating {
+  margin-top: 10px;
+}
+
+.rating span {
+  font-size: 16px;
+  color: #f39c12;
+}
+
+.tratamento-body {
+  padding: 20px;
+}
+
+.tratamento-description {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.eficacia {
+  margin-bottom: 15px;
+}
+
+.eficacia-progress {
+  background-color: #e1e1e1;
+  border-radius: 5px;
+  height: 8px;
+}
+
+.eficacia-bar {
+  background-color: #007bff;
+  height: 100%;
+  border-radius: 5px;
+}
+
+.prazo {
+  font-size: 14px;
+  color: #666;
+}
+/* Reset and basic styling */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* Main container */
+.tratamentos-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header section */
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 32px;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.search-bar {
+  padding: 10px;
+  font-size: 16px;
+  width: 80%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+/* Tratamentos list */
+.tratamentos-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.tratamento-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.tratamento-card:hover {
+  transform: scale(1.05);
+}
+
+.tratamento-header {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background-color: #f1f1f1;
+}
+
+.tratamento-image {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.tratamento-info {
+  margin-left: 20px;
+}
+
+.tratamento-info h2 {
+  font-size: 22px;
+  color: #333;
+}
+
+.tratamento-info .tratamento-category {
+  font-size: 14px;
+  color: #777;
+}
+
+.rating {
+  margin-top: 10px;
+}
+
+.rating span {
+  font-size: 16px;
+  color: #f39c12;
+}
+
+.tratamento-body {
+  padding: 20px;
+}
+
+.tratamento-description {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.eficacia {
+  margin-bottom: 15px;
+}
+
+.eficacia-progress {
+  background-color: #e1e1e1;
+  border-radius: 5px;
+  height: 8px;
+}
+
+.eficacia-bar {
+  background-color: #007bff;
+  height: 100%;
+  border-radius: 5px;
+}
+
+.prazo {
+  font-size: 14px;
+  color: #666;
+}
