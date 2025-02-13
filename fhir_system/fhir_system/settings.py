@@ -5,9 +5,9 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Configurações Básicas do Django
-SECRET_KEY = 'chave-secreta'  # Troque por uma chave segura
-DEBUG = True
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "chave-secreta")  # Usa 'chave-secreta' se não houver .env
+DEBUG = os.getenv("DEBUG", "True") == "True"
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "cadastros.telix.inf.br"]
 
 # Configuração do Banco de Dados (PostgreSQL)
 DATABASES = {
