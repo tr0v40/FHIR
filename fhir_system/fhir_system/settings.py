@@ -5,9 +5,16 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Configurações Básicas do Django
+<<<<<<< HEAD
 SECRET_KEY = 'chave-secreta'  # Troque por uma chave segura
 DEBUG = True
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "cadastros.telix.inf.br"]
+=======
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "chave-secreta")  # Usa 'chave-secreta' se não houver .env
+DEBUG = os.getenv("DEBUG", "True") == "True"
+ALLOWED_HOSTS = ["127.0.0.1", "189.126.32.64", "cadastros.telix.inf.br"]
+
+>>>>>>> d5509467623b2a9818f9ae9a7be368743350c9b9
 # Configuração do Banco de Dados (PostgreSQL)
 DATABASES = {
     'default': {
@@ -41,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+<<<<<<< HEAD
     'jazzmin',  # Caso esteja usando o Jazzmin, ele deve vir aqui também
     'core',  # Seu app, se necessário
 ]
@@ -49,6 +57,13 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 
+=======
+    'jazzmin',
+    'core',  # Adicione seu app aqui
+    'django.contrib.sites',  # Caso esteja usando o framework de sites
+]
+
+>>>>>>> d5509467623b2a9818f9ae9a7be368743350c9b9
 # Middlewares
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

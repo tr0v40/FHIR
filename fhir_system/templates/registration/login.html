@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -106,3 +107,197 @@
     </div>
 </body>
 </html>
+=======
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<style>
+    /* Reset geral */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    /* Garante que o HTML e Body ocupem toda a altura */
+    html, body {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: white; /* ✅ Fundo branco total */
+    }
+
+    /* HEADER (NAVBAR) - Ocupa toda a largura e corrige a logo */
+    .navbar-container {
+        width: 100%;
+        background: white;
+        padding: 15px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .navbar-container .logo {
+        height: 50px;
+    }
+
+    /* Links da navbar */
+    .navbar-container nav {
+        display: flex;
+        gap: 15px;
+    }
+
+    .navbar-container nav a {
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .navbar-container nav a:hover {
+        color: #007bff;
+    }
+
+    /* Mantém o conteúdo centralizado corretamente */
+    .main-content {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    /* Estilização do formulário de login */
+    .login-container {
+        background: white;
+        border-radius: 18px;
+        box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.15); /* ✅ Sombra mais suave */
+        padding: 50px; /* ✅ Maior espaçamento interno */
+        width: 100%;
+        max-width: 500px; /* ✅ Formulário maior */
+        text-align: center;
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    /* Animação Suave de Entrada */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Título do Formulário */
+    .login-container h3 {
+        font-size: 28px; /* ✅ Título ajustado */
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 25px;
+    }
+
+    /* Estilização dos Inputs */
+    .form-group {
+        text-align: left;
+        margin-bottom: 22px;
+    }
+
+    .form-label {
+        font-weight: bold;
+        font-size: 18px;
+        color: #555;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    .form-control {
+        width: 100%;
+        border-radius: 12px; /* ✅ Inputs arredondados */
+        border: 1px solid #ccc;
+        padding: 16px;
+        font-size: 18px;
+        transition: 0.3s;
+        background: white;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.3);
+        outline: none;
+    }
+
+    /* Botão de Login */
+    .btn-login {
+        background: linear-gradient(to right, #007bff, #0056b3); /* ✅ Gradiente azul */
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        padding: 16px;
+        border-radius: 12px;
+        width: 100%;
+        border: none;
+        transition: 0.3s;
+        cursor: pointer;
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-login:hover {
+        background: linear-gradient(to right, #0056b3, #003d80);
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Link de Cadastro */
+    .register-link {
+        margin-top: 18px;
+        font-size: 17px;
+    }
+
+    .register-link a {
+        font-weight: bold;
+        color: #007bff;
+        transition: 0.3s;
+        text-decoration: none;
+    }
+
+    .register-link a:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+</style>
+
+<!-- Formulário de Login Centralizado -->
+<div class="main-content">
+    <div class="login-container">
+        <h3>Login</h3>
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_username" class="form-label">Usuário</label>
+                {{ form.username }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_password" class="form-label">Senha</label>
+                {{ form.password }}
+            </div>
+
+            <button type="submit" class="btn-login">Entrar</button>
+        </form>
+
+        <div class="register-link">
+            <p>Ainda não tem uma conta? <a href="{% url 'register' %}" class="text-primary">Cadastre-se</a></p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+>>>>>>> d5509467623b2a9818f9ae9a7be368743350c9b9
