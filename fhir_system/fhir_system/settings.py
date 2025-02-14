@@ -41,9 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',  # Adicione seu app aqui
-    'django.contrib.sites',  # Caso esteja usando o framework de sites
+    'jazzmin',  # Caso esteja usando o Jazzmin, ele deve vir aqui também
+    'core',  # Seu app, se necessário
 ]
+
 
 SITE_ID = 1
 
