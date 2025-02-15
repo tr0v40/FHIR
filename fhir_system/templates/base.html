@@ -4,11 +4,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Meu Sistema{% endblock %}</title> <!-- Bloco único para o título -->
-
-    <!-- Bootstrap -->
+    <title>{% block title %}Meu Sistema{% endblock %}</title>
     <link href="{% static 'css/styles.css' %}" rel="stylesheet">
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <style>
+        /* Ajuste geral */
+        html, body {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-wrapper {
+            flex: 1;
+        }
+
+        /* FOOTER */
+        .footer {
+    background-color: #002b58;
+    border-top: none !important;
+    color: #f1f1f1;
+    padding: 30px 0;
+    width: 100%;
+    margin-top: auto;
+    position: absolute; /* Mantém fixo na parte inferior */
+    left: 0;
+    bottom: 0;
+        }
+
+        .footer-container {
+            border: none !important;
+            box-shadow: none !important;
+            background-color: transparent;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        .footer-left img {
+            max-height: 50px;
+            margin-bottom: 10px;
+        }
+
+        .footer-text {
+            font-size: 14px;
+            color: #f1f1f1;
+            margin: 3px 0;
+        }
+
+        /* LINKS */
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .footer-link {
+            color: #333;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+
+        /* BOTÃO */
+        .footer-btn {
+            background-color: #007bff; /* Azul */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .footer-btn:hover {
+            background-color: #0056b3; /* Azul escuro */
+            transform: scale(1.05);
+        }
+
+        /* Ícones sociais */
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ddd; /* Cinza claro */
+            color: #333;
+            font-size: 18px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .social-btn:hover {
+            background-color: #007bff;
+            color: white;
+            transform: scale(1.1);
+        }
+    </style>
 
     {% block extra_css %}{% endblock %}
 </head>
@@ -17,60 +129,78 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">Meu Sistema</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <a class="navbar-brand" href="/">
+                <img src="{% static 'img/logo2.png' %}" alt="Logo" height="50">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Sobre</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contato</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Sobre</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contato</a></li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link">{{ user.username }}</a></li>
                         <li class="nav-item">
-                            <a class="nav-link">{{ user.username }}</a>
-                        </li>
-                        <li class="nav-item">
-                            <!-- Formulário para logout -->
-                            <form id="logout-form" method="post" action="{% url 'logout' %}">
+                            <form method="post" action="{% url 'logout' %}" class="d-inline">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-link nav-link" style="display: inline; padding: 0; border: none; background: none; cursor: pointer;">
-                                    Logout
-                                </button>
+                                <button type="submit" class="btn btn-sm btn-primary">Logout</button>
                             </form>
                         </li>
                     {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">Login</a>
-                        </li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Cadastre-se</a></li>
                     {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="container my-4">
+    <!-- Conteúdo da Página -->
+    <div class="content-wrapper">
         {% block content %}{% endblock %}
-    </main>
+    </div>
 
-    <!-- Footer -->
-    <footer class="text-center py-4 bg-dark text-white">
-        <p>&copy; 2025 Meu Sistema. Todos os direitos reservados.</p>
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+
+            <!-- Lado Esquerdo: Logo e informações da empresa -->
+            <div class="footer-left">
+                <img src="{% static 'img/logo_telix_branco.png' %}" alt="Telix Logo" class="footer-logo">
+                <p class="footer-text">Linca Telecomunicações Ltda</p>
+                <p class="footer-text">CNPJ: 03.376.788-0001/23</p>
+                <p class="footer-text">Rua Marechal Deodoro, 1606, Centro - Foz do Iguaçu/PR</p>
+            </div>
+
+            <!-- Centro: Links rápidos -->
+            <div class="footer-links">
+                <a href="#" class="footer-link">Blog</a>
+                <a href="#" class="footer-link">Tratamentos</a>
+                <a href="#" class="footer-link">Quem Somos</a>
+            </div>
+
+            <!-- Direita: Redes Sociais e botão de download -->
+            <div class="footer-center">
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/telix.inf.br/" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/people/Telix-contexto-na-sa%C3%BAde/100089318347896/" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.linkedin.com/company/telix-canais-de-not%C3%ADcias" target="_blank" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <button class="footer-btn">
+                    <i class="fas fa-download"></i> Baixar App
+                </button>
+            </div>
+
+        </div>
     </footer>
 
     <!-- JavaScript Bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 
-    <!-- Bloco para adicionar scripts adicionais em outras páginas -->
-    {% block extra_js %}{% endblock %}
 </body>
 </html>

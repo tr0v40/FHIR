@@ -88,22 +88,20 @@ class ResourceStudyReport(models.Model):
     def __str__(self):
         return f"{self.element_id} - Indicado para Uso: {'Sim' if self.is_indicated() else 'Não'}"
 
-from django.db import models
 
-class AgeRangeChoices(models.TextChoices):
-    FAIXA_1 = "0-10", "0 a 10 anos"
-    FAIXA_2 = "11-20", "11 a 20 anos"
-    FAIXA_3 = "21-30", "21 a 30 anos"
-    FAIXA_4 = "31-60", "31 a 60 anos"
-    FAIXA_7 = "61-70", "61 a 70 anos"
-    FAIXA_8 = "71-80", "71 a 80 anos"
-    FAIXA_9 = "81+", "81 anos ou mais"
-
-    # Novos grupos adicionados
-    GRAVIDEZ = "gravidez", "Gravidez"
-    LACTANTE = "lactante", "Lactante"
 
 class StudyGroup(models.Model):
+    FAIXA_IDADE = (
+    ("0-10", "0 a 10 anos"),
+    ("11-20", "11 a 20 anos"),
+    ("21-30", "21 a 30 anos"),
+    ("31-60", "31 a 60 anos"),
+    ("61-70", "61 a 70 anos"),
+    ("71-80", "71 a 80 anos"),
+    ("81+", "81 anos ou mais"),
+    ("gravidez", "Gravidez"),
+    ("lactante", "Lactante"),
+    )
     element_id = models.CharField(
         max_length=20,
         primary_key=True,
@@ -111,11 +109,31 @@ class StudyGroup(models.Model):
     )
 
     study_group_idade = models.CharField(
-        max_length=20,  # Aumentei o tamanho para acomodar os novos valores
-        choices=AgeRangeChoices.choices,
-        default=AgeRangeChoices.FAIXA_1,
+        max_length=20, 
+        choices=FAIXA_IDADE,
         verbose_name="Faixa Etária"
     )
 
-    def __str__(self):
+    def _str_(self):
         return f"Grupo {self.element_id} - {self.study_group_idade}"
+    
+
+# models.py
+from django.db import models
+
+
+    
+
+class Tratamentos(models.Model):
+    nome = models.CharField(max_length=200)
+    descricao = models.TextField()
+    categoria = models.CharField(max_length=100)
+    evidencia_clinica = models.TextField()
+    principio_ativo = models.CharField(max_length=200)
+    fabricante = models.CharField(max_length=200)
+    avaliacao = models.DecimalField(max_digits=3, decimal_places=2)
+    eficacia_min = models.DecimalField(max_digits=5, decimal_places=2)
+    eficacia_max = models.DecimalField(max_digits=5, decimal_places=2)
+    prazo_efeito_min = models.CharField(max_length=50)
+    prazo_efeito_max = models.CharField(max_length=50)
+    imagem = models.ImageField(upload_to='tratamentos/', null=True, blank=True)  # Novo campo para imagem
