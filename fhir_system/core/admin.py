@@ -13,7 +13,6 @@ from .models import (
     Binary,
     StudyGroup,
     ResourceStudyReport,
-    Tratamento,
     Tratamentos
 )
 # Register your models here.
@@ -31,5 +30,4 @@ admin.site.register(Composition)
 admin.site.register(Binary)
 admin.site.register(StudyGroup)
 admin.site.register(ResourceStudyReport)
-admin.site.register(Tratamento)
 admin.site.register(Tratamentos)

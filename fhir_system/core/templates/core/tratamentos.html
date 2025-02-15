@@ -236,7 +236,8 @@ header {
 
 /* FOOTER */
 .footer {
-    background-color: #222;
+    background-color: #002b58;
+    border-top: none !important;
     color: #f1f1f1;
     padding: 30px 0;
     width: 100%;
@@ -273,7 +274,7 @@ html, body {
 
 .footer-text {
     font-size: 14px;
-    color: #ccc;
+    color: #f1f1f1;
     margin: 3px 0;
 }
 
@@ -305,7 +306,7 @@ html, body {
     font-size: 16px;
     font-weight: bold;
     display: flex;
-    align-items: center;
+    align-items: left;
     gap: 8px; /* Espaço entre o ícone e o texto */
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
@@ -427,7 +428,7 @@ html, body {
   <div class="container footer-container">
       <!-- Logo e Informações -->
       <div class="footer-left">
-          <img src="{% static 'img/logo.png' %}" alt="Telix Logo" class="footer-logo">
+          <img src="{% static 'img/logo_telix_branco.png' %}" alt="Telix Logo" class="footer-logo">
           <p class="footer-text">Linca Telecomunicações Ltda</p>
           <p class="footer-text">CNPJ: 03.376.788-0001/23</p>
           <p class="footer-text">Rua Marechal Deodoro, 1606, Centro - Foz do Iguaçu/PR</p>

@@ -1,51 +1,141 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Cadastro de Usuário{% endblock %}
 
 {% block content %}
-<div class="d-flex flex-column min-vh-100">
-    <div class="container mt-5 flex-grow-1">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card shadow-lg">
-                    <div class="card-body">
-                        <form method="post">
-                            {% csrf_token %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    
+    <style>
+        /* Removendo restrições do body */
+        body {
+            background-color: #f4f6f9;
+            font-family: Arial, sans-serif;
+        }
 
-                            <div class="mb-3">
-                                <label for="id_username" class="form-label">Nome de Usuário:</label>
-                                {{ form.username }}
-                                <small class="form-text text-muted">
-                                    Máx. 150 caracteres. Use letras, números e @/./+/-/_.
-                                </small>
-                            </div>
+        /* Ajuste do espaço superior e inferior */
+        .content-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;  /* Garante que o formulário não fique colado no footer */
+            margin-bottom: 120px; /* Maior afastamento do footer */
+        }
 
-                            <div class="mb-3">
-                                <label for="id_email" class="form-label">E-mail:</label>
-                                {{ form.email }}
-                            </div>
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 450px; /* Aumentando a largura do formulário */
+        }
 
-                            <div class="mb-3">
-                                <label for="id_password" class="form-label">Senha:</label>
-                                {{ form.password }}
-                            </div>
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 24px;
+        }
 
-                            <div class="mb-3">
-                                <label for="id_password_confirm" class="form-label">Confirme sua senha:</label>
-                                {{ form.password_confirm }}
-                            </div>
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
 
-                            <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
-                        </form>
+        .input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
 
-                        <div class="text-center mt-3">
-                            <p>Já tem uma conta? <a href="{% url 'login' %}" class="text-primary">Faça login</a></p>
-                        </div>
-                    </div>
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: #0056b3;
+            box-shadow: 0 0 5px rgba(0, 86, 179, 0.5);
+        }
+
+        .btn {
+            width: 100%;
+            background: linear-gradient(to right, #007bff, #0056b3);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: linear-gradient(to right, #0056b3, #007bff);
+        }
+
+        .register-link {
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        .register-link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="content-wrapper">
+        <div class="card">
+            <h2>Cadastro</h2>
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="input-group">
+                    <label for="id_username">Nome de Usuário:</label>
+                    {{ form.username }}
                 </div>
+
+                <div class="input-group">
+                    <label for="id_email">E-mail:</label>
+                    {{ form.email }}
+                </div>
+
+                <div class="input-group">
+                    <label for="id_password">Senha:</label>
+                    {{ form.password }}
+                </div>
+
+                <div class="input-group">
+                    <label for="id_password_confirm">Confirme sua senha:</label>
+                    {{ form.password_confirm }}
+                </div>
+
+                <button type="submit" class="btn">Cadastrar</button>
+            </form>
+
+            <div class="register-link">
+                <p>Já tem uma conta? <a href="{% url 'login' %}">Faça login</a></p>
             </div>
         </div>
     </div>
-</div>
 
+</body>
+</html>
 {% endblock %}

@@ -1,228 +1,65 @@
-<<<<<<< HEAD
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f1f1f1;
-        }
-
-        .login-container {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 350px;
-        }
-
-        h2 {
-            margin-bottom: 1rem;
-            color: #333;
-            font-size: 1.5rem;
-        }
-
-        .input-group {
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 1rem;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        .input-group input:focus {
-            border-color: #1e90ff;
-            box-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
-        }
-
-        .btn {
-            width: 100%;
-            background-color: #1e90ff;
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn:hover {
-            background-color: #4682b4;
-        }
-
-        .register-link {
-            margin-top: 1rem;
-            font-size: 0.9rem;
-        }
-
-        .register-link a {
-            color: #1e90ff;
-            text-decoration: none;
-        }
-
-        .register-link a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <div class="login-container">
-        <h2>Login</h2>
-
-        <!-- Formulário de login -->
-        <div class="input-group">
-            <input type="text" placeholder="Usuário" required>
-        </div>
-        <div class="input-group">
-            <input type="password" placeholder="Senha" required>
-        </div>
-        
-        <!-- Botão de login -->
-        <button class="btn">Entrar</button>
-        
-        <!-- Link para cadastro -->
-        <p class="register-link">Ainda não tem uma conta? <a href="#">Cadastre-se</a></p>
-    </div>
-</body>
-</html>
-=======
 {% extends "base.html" %}
+
 {% load static %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
 <style>
-    /* Reset geral */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
     /* Garante que o HTML e Body ocupem toda a altura */
     html, body {
-        height: 100vh;
+        height: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        background: white; /* ✅ Fundo branco total */
+        background-color: #f8f9fa; /* Fundo cinza claro, igual ao tratamentos */
     }
 
-    /* HEADER (NAVBAR) - Ocupa toda a largura e corrige a logo */
-    .navbar-container {
-        width: 100%;
-        background: white;
-        padding: 15px;
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    /* Define um container para a página inteira */
+    .page-container {
+        flex-grow: 1;  /* Faz com que o conteúdo cresça e empurre o footer para baixo */
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .navbar-container .logo {
-        height: 50px;
-    }
-
-    /* Links da navbar */
-    .navbar-container nav {
-        display: flex;
-        gap: 15px;
-    }
-
-    .navbar-container nav a {
-        text-decoration: none;
-        color: #333;
-        font-weight: bold;
-        transition: 0.3s;
-    }
-
-    .navbar-container nav a:hover {
-        color: #007bff;
-    }
-
-    /* Mantém o conteúdo centralizado corretamente */
-    .main-content {
-        flex-grow: 1;
-        display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 20px;
     }
 
     /* Estilização do formulário de login */
     .login-container {
         background: white;
-        border-radius: 18px;
-        box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.15); /* ✅ Sombra mais suave */
-        padding: 50px; /* ✅ Maior espaçamento interno */
+        border-radius: 16px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15); /* Sombra suave */
+        padding: 50px;
         width: 100%;
-        max-width: 500px; /* ✅ Formulário maior */
+        max-width: 500px;
         text-align: center;
-        animation: fadeIn 0.5s ease-in-out;
+        margin-bottom: 40px; /* Para evitar sobreposição com o footer */
     }
 
-    /* Animação Suave de Entrada */
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* Título do Formulário */
     .login-container h3 {
-        font-size: 28px; /* ✅ Título ajustado */
+        font-size: 26px;
         font-weight: bold;
         color: #333;
         margin-bottom: 25px;
     }
 
-    /* Estilização dos Inputs */
     .form-group {
         text-align: left;
-        margin-bottom: 22px;
+        margin-bottom: 20px;
     }
 
     .form-label {
         font-weight: bold;
         font-size: 18px;
         color: #555;
+        margin-bottom: 5px;
         display: block;
-        margin-bottom: 6px;
     }
 
     .form-control {
         width: 100%;
-        border-radius: 12px; /* ✅ Inputs arredondados */
+        border-radius: 12px;
         border: 1px solid #ccc;
-        padding: 16px;
+        padding: 14px;
         font-size: 18px;
         transition: 0.3s;
         background: white;
@@ -230,51 +67,158 @@
 
     .form-control:focus {
         border-color: #007bff;
-        box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.3);
+        box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.3);
         outline: none;
     }
 
-    /* Botão de Login */
     .btn-login {
-        background: linear-gradient(to right, #007bff, #0056b3); /* ✅ Gradiente azul */
+        background: linear-gradient(to right, #007bff, #0056b3);
         color: white;
         font-size: 20px;
         font-weight: bold;
-        padding: 16px;
+        padding: 14px;
         border-radius: 12px;
         width: 100%;
         border: none;
         transition: 0.3s;
         cursor: pointer;
-        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
     }
 
     .btn-login:hover {
         background: linear-gradient(to right, #0056b3, #003d80);
         box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+        transform: scale(1.02);
     }
 
-    /* Link de Cadastro */
-    .register-link {
-        margin-top: 18px;
-        font-size: 17px;
-    }
 
     .register-link a {
         font-weight: bold;
         color: #007bff;
-        transition: 0.3s;
         text-decoration: none;
     }
 
     .register-link a:hover {
-        color: #0056b3;
         text-decoration: underline;
     }
+
+/* FOOTER */
+.footer {
+    background-color: #002b58;
+    border-top: none !important;
+    color: #f1f1f1;
+    padding: 30px 0;
+    width: 100%;
+    margin-top: auto;
+    position: absolute; /* Mantém fixo na parte inferior */
+    left: 0;
+    bottom: 0;
+}
+
+/* Garante que o conteúdo da página ocupe toda a tela e empurre o footer para baixo */
+html, body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+}
+
+.footer-container {
+    border: none !important;
+    box-shadow: none !important;
+    background-color: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+}
+.footer-left img {
+    max-height: 50px;
+    margin-bottom: 10px;
+}
+
+.footer-text {
+    font-size: 14px;
+    color: #f1f1f1;
+    margin: 3px 0;
+}
+
+/* LINKS */
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.footer-link {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.footer-link:hover {
+    text-decoration: underline;
+}
+
+
+/* BOTÃO */
+.footer-btn {
+    background-color: #007bff; /* Azul principal */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: left;
+    gap: 8px; /* Espaço entre o ícone e o texto */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.footer-btn i {
+    font-size: 18px; /* Tamanho do ícone ajustado */
+}
+
+.footer-btn:hover {
+    background-color: #0056b3; /* Azul mais escuro ao passar o mouse */
+    transform: scale(1.05); /* Pequeno efeito de zoom */
+}
+
+.footer-social {
+    display: flex;
+    gap: 15px;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #666; /* Cor de fundo cinza */
+    color: white;
+    font-size: 18px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.social-btn:hover {
+    background-color: #007bff; /* Azul ao passar o mouse */
+    transform: scale(1.1);
+}
+
 </style>
 
-<!-- Formulário de Login Centralizado -->
-<div class="main-content">
+<!-- Container da Página -->
+<div class="page-container">
     <div class="login-container">
         <h3>Login</h3>
         <form method="post">
@@ -299,5 +243,38 @@
     </div>
 </div>
 
+<!-- FOOTER -->
+
+<footer class="footer">
+    <div class="container footer-container">
+        <!-- Logo e Informações -->
+        <div class="footer-left">
+            <img src="{% static 'img/logo_telix_branco.png' %}" alt="Telix Logo" class="footer-logo">
+            <p class="footer-text">Linca Telecomunicações Ltda</p>
+            <p class="footer-text">CNPJ: 03.376.788-0001/23</p>
+            <p class="footer-text">Rua Marechal Deodoro, 1606, Centro - Foz do Iguaçu/PR</p>
+        </div>
+  
+        <!-- Links de navegação -->
+        <div class="footer-links">
+            <a href="#" class="footer-link">Blog</a>
+            <a href="#" class="footer-link">Tratamentos</a>
+            <a href="#" class="footer-link">Quem Somos</a>
+        </div>
+        <!-- Redes Sociais -->
+        <div class="footer-social">
+            <a href="https://www.instagram.com/telix.inf.br/" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.facebook.com/people/Telix-contexto-na-sa%C3%BAde/100089318347896/" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.linkedin.com/company/telix-canais-de-not%C3%ADcias" target="_blank" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+  
+        <!-- Botão de download -->
+        <button class="footer-btn">
+          <i class="fas fa-download"></i> Baixar App
+      </button>
+      
+        </div>
+    </div>
+  </footer>
+  
 {% endblock %}
->>>>>>> d5509467623b2a9818f9ae9a7be368743350c9b9

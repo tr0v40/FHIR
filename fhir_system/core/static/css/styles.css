@@ -11804,3 +11804,157 @@ header h1 {
   font-size: 14px;
   color: #666;
 }
+/* Estilo geral do footer */
+.footer {
+  background-color: #222; /* Cor de fundo escura */
+  color: white; /* Texto branco */
+  padding: 20px 50px; /* Espaçamento interno */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Container principal do rodapé */
+.footer-container {
+  display: flex;
+  justify-content: space-between; /* Divide os elementos igualmente */
+  align-items: center;
+  width: 100%;
+  max-width: 1200px; /* Mantém um tamanho padrão */
+}
+
+/* Lado esquerdo do footer */
+.footer-left {
+  text-align: left; /* Mantém o texto alinhado à esquerda */
+}
+
+/* Lado direito do footer */
+.footer-right {
+  text-align: right; /* Mantém os itens alinhados à direita */
+}
+
+/* Links do rodapé */
+.footer-links {
+  margin-bottom: 10px;
+}
+
+.footer-links a {
+  color: white; /* Cor do texto */
+  text-decoration: none; /* Remove sublinhado */
+  margin: 0 10px;
+}
+
+.footer-links a:hover {
+  text-decoration: underline; /* Adiciona sublinhado ao passar o mouse */
+}
+
+/* Ícones das redes sociais */
+.footer-social {
+  display: flex;
+  gap: 10px;
+}
+
+.social-btn {
+  color: white;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+/* Botão de download */
+.footer-btn {
+  background: #007bff; /* Cor azul do botão */
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.footer-btn:hover {
+  background: #0056b3; /* Cor mais escura ao passar o mouse */
+}
+
+
+/* Estilização do Footer */
+.footer {
+  background-color: #222; /* Fundo escuro */
+  color: white; /* Texto branco */
+  padding: 20px 50px; /* Espaçamento interno */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Container do footer para organização dos elementos */
+.footer-container {
+  display: flex;
+  justify-content: space-between; /* Divide os três blocos */
+  align-items: center;
+  width: 100%;
+  max-width: 1200px; /* Mantém um tamanho adequado */
+}
+
+/* Lado Esquerdo: Logo + Informações */
+.footer-left {
+  text-align: left;
+  flex: 1; /* Ocupa espaço na esquerda */
+}
+
+.footer-logo {
+  width: 120px; /* Tamanho da logo */
+}
+
+/* Centro: Redes Sociais + Botão de Download */
+.footer-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row; /* Mantém os itens lado a lado */
+  gap: 15px; /* Espaço entre ícones e botão */
+}
+
+/* Ícones das redes sociais */
+.footer-social {
+  display: flex;
+  gap: 10px;
+}
+
+.social-btn {
+  color: white;
+  font-size: 20px;
+  text-decoration: none;
+}
+
+/* Botão de download */
+.footer-btn {
+  background: #007bff; /* Cor azul do botão */
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.footer-btn:hover {
+  background: #0056b3;
+}
+
+/* Lado Direito: Links um abaixo do outro */
+.footer-right {
+  display: flex;
+  flex-direction: column; /* Mantém os links um abaixo do outro */
+  text-align: right;
+  flex: 1; /* Ocupa espaço na direita */
+}
+
+.footer-link {
+  color: white;
+  text-decoration: none;
+  margin-bottom: 5px; /* Espaçamento entre os links */
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}
