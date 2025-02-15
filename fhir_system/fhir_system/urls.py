@@ -9,12 +9,5 @@ urlpatterns = [
     path('', home, name='home'),  # Página inicial (home)
     path('core/', include('core.urls')),  # Inclui as rotas do app core
     path('accounts/', include('django.contrib.auth.urls')),  # URLs padrão de login/logout
-]
-
-# Serve os arquivos estáticos durante o desenvolvimento
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
-# Serve os arquivos de mídia durante o desenvolvimento
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    
+]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

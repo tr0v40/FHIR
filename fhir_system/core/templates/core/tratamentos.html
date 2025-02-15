@@ -2,6 +2,8 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tratamentos para Enxaqueca</title>
@@ -68,9 +70,6 @@ header {
     pointer-events: none;  /* Evita que o ícone seja clicável */
 }
 
-/* CARDS DE TRATAMENTOS */
-/* CONTAINER DO CARD */
-/* CONTAINER PRINCIPAL */
 /* CONTAINER PRINCIPAL EXPANDIDO */
 .tratamento-card {
     background: #fff;
@@ -145,8 +144,6 @@ header {
 
 /* BARRA DE EFICÁCIA MAIOR */
 .eficacia-container {
-    text-align: center;
-    min-width: 280px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -211,51 +208,71 @@ header {
 /* RESPONSIVIDADE */
 @media (max-width: 1024px) {
     .tratamento-card {
-        flex-direction: column;
-        align-items: flex-start;
-        text-align: left;
-        min-height: auto;
-    }
-
-    .tratamento-content {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 30px;
-    }
-
-    .tratamento-card img {
-        max-width: 180px;
-    }
-
-    .eficacia-container {
-        width: 100%;
-    }
+    width: 100%; /* Garante que todos ocupem a mesma largura */
+    max-width: 900px; /* Define um tamanho máximo */
+    min-height: 300px; /* Define uma altura mínima para evitar variações */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 auto 20px auto;
 }
 
+.tratamento-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
-/* FOOTER */
-.footer {
-    background-color: #002b58;
-    border-top: none !important;
-    color: #f1f1f1;
-    padding: 30px 0;
+.tratamento-info {
+    flex: 1;
+    padding: 15px;
+}
+
+.tratamento-img {
+    width: 150px;  /* Tamanho fixo da imagem */
+    height: 200px;
+    object-fit: contain; /* Evita distorções */
+    margin-right: 20px;
+}
+
+.tratamento-descricao {
+    text-align: justify;
+    max-width: 600px;
+}
+
+/* Garantir alinhamento vertical */
+.tratamento-content {
+    display: flex;
+    justify-content: space-between;
     width: 100%;
-    margin-top: auto;
-    position: absolute; /* Mantém fixo na parte inferior */
-    left: 0;
-    bottom: 0;
 }
-
+}
 /* Garante que o conteúdo da página ocupe toda a tela e empurre o footer para baixo */
 html, body {
     height: 100%;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
 }
 
 .container {
     flex: 1;
+}
+
+
+/* FOOTER */
+.footer {
+    background-color: #002b58;
+    color: white;
+    padding: 30px 0;
+    width: 100%;
+    text-align: center;
 }
 
 .footer-container {
@@ -343,33 +360,67 @@ html, body {
     background-color: #007bff; /* Azul ao passar o mouse */
     transform: scale(1.1);
 }
+/* Espaçamento entre os botões */
+.nav-buttons {
+    display: flex;
+    gap: 15px; /* Aumenta a distância entre os botões */
+}
+
+/* Ajusta o tamanho dos botões */
+.btn-login, .btn-signup {
+    padding: 8px 18px;
+    font-size: 14px;
+    border-radius: 6px;
+}
+
+/* Login com borda azul */
+.btn-login {
+    border: 2px solid #007bff;
+    color: #007bff;
+    background: white;
+    transition: 0.3s ease-in-out;
+}
+
+.btn-login:hover {
+    background: #007bff;
+    color: white;
+}
+
+/* Cadastro com fundo azul */
+.btn-signup {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+.btn-signup:hover {
+    background-color: #0056b3;
+}
 
     </style>
 </head>
 <body>
 
-    <!-- HEADER -->
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand" href="/">
-                <img src="{% static 'img/logo.png' %}" alt="Telix Logo">
-            </a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/core/">Tratamentos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/sobre">Sobre</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/contato">Contato</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+<!-- HEADER -->
 
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <!-- Logo no canto esquerdo -->
+            <a class="navbar-brand" href="/">
+                <img src="{% static 'img/logo.png' %}" alt="Telix Logo" class="logo">
+            </a>
+
+
+
+            <!-- Botões Login / Cadastro no canto direito -->
+            <div class="nav-buttons d-flex">
+                <a href="/login" class="btn btn-outline-primary btn-login">Login</a>
+                <a href="/cadastro" class="btn btn-primary btn-signup">Cadastre-se</a>
+            </div>
+        </div>
+    </nav>
+</header>
     <!-- CONTEÚDO PRINCIPAL -->
     <div class="container mt-5">
         <h1 class="text-center mb-4">Tratamentos</h1>
@@ -403,7 +454,22 @@ html, body {
             <a href="#" class="tratamento-tipo">Tratamento Alopático</a>
             <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo }}</p>
             <p><strong>Fabricante:</strong> {{ tratamento.fabricante }}</p>
-            <p><strong>Avaliação:</strong> ⭐⭐⭐⭐⭐</p>
+            <p><strong>Nota:</strong> {{ tratamento.avaliacao|floatformat:1 }}</p> <!-- Exibe a nota numérica -->
+            
+                <p><strong>Avaliação:</strong>
+                    {% with total_stars=5 %}
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= tratamento.avaliacao %}
+                                <i class="fas fa-star" style="color: #FFD700;"></i> <!-- Estrela cheia -->
+                            {% elif forloop.counter|add:"-0.5" <= tratamento.avaliacao %}
+                                <i class="fas fa-star-half-alt" style="color: #FFD700;"></i> <!-- Meia estrela -->
+                            {% else %}
+                                <i class="far fa-star" style="color: #FFD700;"></i> <!-- Estrela vazia -->
+                            {% endif %}
+                        {% endfor %}
+                    {% endwith %}
+                </p>
+                
             <p>{{ tratamento.descricao }}</p>
         </div>
     </div>
@@ -425,7 +491,7 @@ html, body {
 <!-- FOOTER -->
 
 <footer class="footer">
-  <div class="container footer-container">
+  <div class="footer-container">
       <!-- Logo e Informações -->
       <div class="footer-left">
           <img src="{% static 'img/logo_telix_branco.png' %}" alt="Telix Logo" class="footer-logo">

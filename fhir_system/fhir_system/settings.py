@@ -33,8 +33,8 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR / 'staticfiles'  # Para o comando `collectstatic`
 
 # Arquivos de Mídia (para uploads de arquivos, como imagens)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'  # Diretório onde os arquivos de mídia serão armazenados
+MEDIA_URL = '/media/'  
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Instalar apps
 INSTALLED_APPS = [
