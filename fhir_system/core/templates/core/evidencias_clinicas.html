@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Título -->
+    <h2 class="text-primary text-center">{{ tratamento.nome }} - Evidências Clínicas</h2>
+    <hr>
+
+    <!-- Detalhes do Tratamento -->
+    <div class="row">
+        <div class="col-md-4 text-center">
+            {% if tratamento.imagem %}
+                <img src="{{ tratamento.imagem.url }}" class="img-fluid rounded" alt="{{ tratamento.nome }}">
+            {% else %}
+                <img src="/static/images/placeholder.png" class="img-fluid rounded" alt="Sem imagem disponível">
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <p><strong>Princípio Ativo:</strong> {{ tratamento.principio_ativo }}</p>
+            <p><strong>Fabricante:</strong> {{ tratamento.fabricante }}</p>
+            <p><strong>Grau de Evidência:</strong> {{ tratamento.grau_evidencia }}</p>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Seção de Evidências Clínicas -->
+    <div class="mt-4">
+        <h4 class="text-success">Estudos e Evidências Científicas</h4>
+
+        {% for evidencia in evidencias %}
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{ evidencia.titulo }}</h5>
+                <p class="card-text"><strong>Autores:</strong> {{ evidencia.autores }}</p>
+                <p class="card-text"><strong>Publicado em:</strong> {{ evidencia.data_publicacao }}</p>
+                <p class="card-text">{{ evidencia.descricao }}</p>
+
+                {% if evidencia.link_estudo %}
+                <p><a href="{{ evidencia.link_estudo }}" target="_blank" class="btn btn-primary">Acessar Estudo</a></p>
+                {% endif %}
+
+                {% if evidencia.pdf_estudo %}
+                <p><a href="{{ evidencia.pdf_estudo.url }}" target="_blank" class="btn btn-secondary">Baixar PDF</a></p>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-muted">Nenhuma evidência clínica encontrada para este tratamento.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

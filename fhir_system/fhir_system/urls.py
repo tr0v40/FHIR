@@ -11,3 +11,5 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),  # URLs padrão de login/logout
     
 ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+

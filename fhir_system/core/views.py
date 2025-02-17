@@ -1,10 +1,9 @@
-# fhir_system/core/views.py
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.contrib.auth.models import Group
-from .forms import UserRegisterForm
-
+from .forms import UserRegisterForm, TratamentoSearchForm
+from .models import DetalhesTratamentoResumo  # Modelo atualizado
+from .models import Tratamentos
 
 
 # Página inicial
@@ -31,13 +30,12 @@ def register(request):
     
     return render(request, 'registration/register.html', {'form': form})
 
-from django.shortcuts import render
-from .models import Tratamentos
-from .forms import TratamentoSearchForm
-
+# Página de listagem de tratamentos
 def tratamentos(request):
     nome = request.GET.get('nome', '')
     categoria = request.GET.get('categoria', '')
+
+    # Buscar na tabela correta
     tratamentos_list = Tratamentos.objects.all()
 
     if nome:
@@ -48,11 +46,43 @@ def tratamentos(request):
 
     return render(request, 'core/tratamentos.html', {
         'tratamentos': tratamentos_list,
-        'form': TratamentoSearchForm(request.GET),  # Se você estiver usando um form separado
     })
 
 
-# View para detalhes de um tratamento específico
-def tratamento_detalhe(request, id):
-    tratamento = get_object_or_404(Tratamento, id=id)  # Pega o tratamento pelo ID ou retorna 404
-    return render(request, 'core/tratamento_detalhe.html', {'tratamento': tratamento})
+from django.shortcuts import render, get_object_or_404
+from .models import DetalhesTratamentoResumo
+
+def detalhes_tratamentos(request, tratamento_id):
+    tratamento = get_object_or_404(DetalhesTratamentoResumo, id=tratamento_id)
+    return render(request, 'core/detalhes_tratamentos.html', {'tratamento': tratamento})
+
+
+from django.shortcuts import render, get_object_or_404
+from .models import DetalhesTratamentoResumo, EvidenciasClinicas
+
+def evidencias_clinicas(request, tratamento_id):
+    """Exibe a página de evidências clínicas de um tratamento específico"""
+
+    # Buscando o tratamento pelo ID
+    tratamento = get_object_or_404(DetalhesTratamentoResumo, id=tratamento_id)
+
+    # Buscando as evidências associadas a esse tratamento
+    evidencias = EvidenciasClinicas.objects.filter(tratamento=tratamento)
+
+    return render(request, "core/evidencias_clinicas.html", {
+        "tratamento": tratamento,
+        "evidencias": evidencias,
+    })
+
+from django.shortcuts import render
+from django.urls import get_resolver
+
+def listar_urls(request):
+    """ Lista todas as URLs registradas no Django e exibe em uma página HTML """
+    resolver = get_resolver()
+    urls = []
+
+    for pattern in resolver.url_patterns:
+        urls.append(str(pattern.pattern))  # Obtém os padrões de URL
+
+    return render(request, "core/listar_urls.html", {"urls": urls})

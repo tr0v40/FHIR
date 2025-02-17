@@ -119,6 +119,118 @@ class Tratamentos(models.Model):
     prazo_efeito_max = models.CharField(max_length=50)
     imagem = models.ImageField(upload_to="medicamentos/", blank=True, null=True)
 
+    class Meta:
+        verbose_name = "Tratamento Resumo"
+        verbose_name_plural = "Tratamentos - Resumo"
 
     def __str__(self):
         return self.nome
+
+
+
+class DetalhesTratamentoResumo(models.Model):
+
+    GRUPO_CHOICES = (
+        ("criancas", "Crianças menores de 12 anos"),
+        ("adolescentes", "Adolescentes 12 a 17 anos"),
+        ("idosos", "Idosos +65 anos"),
+        ("adultos", "Adultos"),
+        ("lactantes", "Lactantes"),
+        ("gravidez", "Gravidez"),
+    )
+    nome = models.CharField(max_length=100)
+    fabricante = models.CharField(max_length=200)
+    principio_ativo = models.CharField(max_length=200)
+    descricao = models.TextField()
+    eficacia_min = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    eficacia_max = models.DecimalField(max_digits=5, decimal_places=2, default=100.00)
+    grau_evidencia = models.CharField(max_length=100, blank=True, null=True)
+    funciona_para_todos = models.CharField(max_length=100, blank=True, null=True)
+    adesao = models.CharField(max_length=200)
+    quando_tomar = models.TextField()
+    imagem = models.ImageField(upload_to="tratamentos/", blank=True, null=True)
+
+       # **Novos campos de imagem para contraindicações**
+    imagem_hipersensibilidade = models.ImageField(upload_to="contraindicacoes/", blank=True, null=True)
+    imagem_insuficiencia_renal = models.ImageField(upload_to="contraindicacoes/", blank=True, null=True)
+    imagem_insuficiencia_hepatica = models.ImageField(upload_to="contraindicacoes/", blank=True, null=True)
+    imagem_hipertensao = models.ImageField(upload_to="contraindicacoes/", blank=True, null=True)
+
+    # **Novos campos**
+    prazo_efeito_min = models.CharField(max_length=50, blank=True, null=True)
+    prazo_efeito_max = models.CharField(max_length=50, blank=True, null=True)
+    realizar_tratamento_quando = models.TextField(blank=True, null=True)  # "Somente em crises" ou outros
+    custo_medicamento = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)  # Ex: 25.20
+    links_externos = models.TextField(blank=True, null=True)  # Para URLs úteis
+    alertas = models.TextField(blank=True, null=True)  # Exemplo: "Em caso de superdose, monitorar 24h"
+
+    # **Grupo indicado**
+    indicado_criancas = models.CharField(max_length=100, choices=[('SIM', 'Sim'), ('NÃO', 'Não')], default='NÃO')
+    motivo_criancas = models.TextField(blank=True, null=True)
+
+    indicado_adolescentes = models.CharField(max_length=100, choices=[('SIM', 'Sim'), ('NÃO', 'Não')], default='NÃO')
+    motivo_adolescentes = models.TextField(blank=True, null=True)
+
+    indicado_idosos = models.CharField(max_length=100, choices=[('SIM', 'Sim'), ('NÃO', 'Não')], default='NÃO')
+    motivo_idosos = models.TextField(blank=True, null=True)
+
+    indicado_adultos = models.CharField(max_length=100, choices=[('SIM', 'Sim'), ('NÃO', 'Não')], default='SIM')
+    motivo_adultos = models.TextField(blank=True, null=True)
+
+    # **Gravidez e lactação**
+    uso_lactantes = models.CharField(max_length=100, choices=[('A', 'A'), ('B', 'B'), ('C', 'C')], default='C')
+    motivo_lactantes = models.TextField(blank=True, null=True)
+
+    uso_gravidez = models.CharField(max_length=100, choices=[('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'), ('X', 'X')], default='D')
+    motivo_gravidez = models.TextField(blank=True, null=True)
+
+    # **Contraindicações**
+    contraindicado_hipersensibilidade = models.TextField()
+    motivo_hipersensibilidade = models.TextField(blank=True, null=True)
+
+    contraindicado_insuficiencia_renal = models.TextField()
+    motivo_insuficiencia_renal = models.TextField(blank=True, null=True)
+
+    contraindicado_insuficiencia_hepatica = models.TextField()
+    motivo_insuficiencia_hepatica = models.TextField(blank=True, null=True)
+
+    contraindicado_hipertensao = models.TextField()
+    motivo_hipertensao = models.TextField(blank=True, null=True)
+
+    # **Reações adversas**
+    reacoes_adversas = models.TextField(blank=True, null=True)  # Exemplo: "Parestesia"
+    opiniao_medica = models.TextField(blank=True, null=True)  # Exemplo: "Dormência intensa em membros"
+    imagem_reacao = models.ImageField(upload_to="reacoes_adversas/", blank=True, null=True)  # Upload de imagem da reação adversa
+
+        # Novo campo simples de Grupo
+    grupo = models.CharField(max_length=20, choices=GRUPO_CHOICES, default="adultos")
+
+    class Meta:
+        verbose_name = "Detalhes Tratamentos - Resumo"
+        verbose_name_plural = "Detalhes Tratamentos - Resumo"
+
+    def __str__(self):
+        return self.nome
+    
+
+class EvidenciasClinicas(models.Model):
+    tratamento = models.ForeignKey("DetalhesTratamentoResumo", on_delete=models.CASCADE, related_name="evidencias")
+    titulo = models.CharField(max_length=255)
+    descricao = models.TextField()
+    grau_evidencia = models.CharField(max_length=100)
+    estudo_publicado = models.CharField(max_length=255, blank=True, null=True)  # Nome do estudo
+    link_estudo = models.URLField(blank=True, null=True)  # Link para o estudo
+    data_publicacao = models.DateField(blank=True, null=True)
+    autores = models.CharField(max_length=255, blank=True, null=True)
+    imagem_estudo = models.ImageField(upload_to="evidencias/", blank=True, null=True)
+
+    # **Novos campos**
+    pdf_estudo = models.FileField(upload_to="pdf_estudos/", blank=True, null=True)  # Upload do PDF
+    link_pdf_estudo = models.URLField(blank=True, null=True)  # Link direto para o PDF
+
+    class Meta:
+        verbose_name = "Evidência Clínica"
+        verbose_name_plural = "Evidências Clínicas"
+
+    def __str__(self):
+        return f"{self.titulo} - {self.tratamento.nome}"

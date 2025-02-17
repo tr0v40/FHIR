@@ -11958,3 +11958,32 @@ header h1 {
 .footer-link:hover {
   text-decoration: underline;
 }
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.card-title {
+  font-weight: bold;
+  color: #007bff;
+}
+
+.card-text {
+  font-size: 16px;
+  color: #333;
+}
+
+.btn-primary {
+  background-color: #0056b3;
+  border: none;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border: none;
+}
+
+.container {
+  max-width: 900px;
+}

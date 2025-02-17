@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Imagem do tratamento -->
+        <div class="col-md-4 text-center">
+            {% if tratamento.imagem %}
+                <img src="{{ tratamento.imagem.url }}" class="img-fluid rounded" alt="{{ tratamento.nome }}">
+            {% else %}
+                <img src="/static/images/placeholder.png" class="img-fluid rounded" alt="Sem imagem disponível">
+            {% endif %}
+        </div>
+        
+        <!-- Informações do tratamento -->
+        <div class="col-md-8">
+            <h2 class="text-primary">{{ tratamento.nome }}</h2>
+            <p><strong>Fabricante:</strong> {{ tratamento.fabricante }}</p>
+            <p><strong>Princípio Ativo:</strong> {{ tratamento.principio_ativo }}</p>
+            <p class="text-muted">{{ tratamento.descricao }}</p>
+            <hr>
+            
+            <h5><strong>Grau de Evidência Clínica:</strong> {{ tratamento.grau_evidencia }}</h5>
+            <p><strong>Eficácia:</strong> {{ tratamento.eficacia_min }}% a {{ tratamento.eficacia_max }}%</p>
+            <p><strong>Funciona para todos?</strong> {{ tratamento.funciona_para_todos }}</p>
+            
+            <h5><strong>Quando tomar?</strong></h5>
+            <p>{{ tratamento.quando_tomar }}</p>
+            <p><strong>Prazo para efeito:</strong> {{ tratamento.prazo_efeito_min }} - {{ tratamento.prazo_efeito_max }}</p>
+            
+            <h5><strong>Custo do medicamento:</strong> R$ {{ tratamento.custo_medicamento }}</h5>
+            
+            <h5><strong>Alertas:</strong></h5>
+            <p>{{ tratamento.alertas }}</p>
+        </div>
+    </div>
+    <hr>
+    
+    <!-- Grupos Indicados -->
+    <div class="mt-4">
+        <h4 class="text-success">Indicação por Grupo</h4>
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>Grupo</th>
+                    <th>Indicação</th>
+                    <th>Motivo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Crianças menores de 12 anos</td>
+                    <td>{{ tratamento.indicado_criancas }}</td>
+                    <td>{{ tratamento.motivo_criancas }}</td>
+                </tr>
+                <tr>
+                    <td>Adolescentes (12 a 17 anos)</td>
+                    <td>{{ tratamento.indicado_adolescentes }}</td>
+                    <td>{{ tratamento.motivo_adolescentes }}</td>
+                </tr>
+                <tr>
+                    <td>Idosos (+65 anos)</td>
+                    <td>{{ tratamento.indicado_idosos }}</td>
+                    <td>{{ tratamento.motivo_idosos }}</td>
+                </tr>
+                <tr>
+                    <td>Adultos</td>
+                    <td>{{ tratamento.indicado_adultos }}</td>
+                    <td>{{ tratamento.motivo_adultos }}</td>
+                </tr>
+                <tr>
+                    <td>Lactantes</td>
+                    <td>{{ tratamento.uso_lactantes }}</td>
+                    <td>{{ tratamento.motivo_lactantes }}</td>
+                </tr>
+                <tr>
+                    <td>Gravidez</td>
+                    <td>{{ tratamento.uso_gravidez }}</td>
+                    <td>{{ tratamento.motivo_gravidez }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    
+    <!-- Contraindicações -->
+    <div class="mt-4">
+        <h4 class="text-danger">Contraindicações</h4>
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>Condição</th>
+                    <th>Descrição</th>
+                    <th>Imagem</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Hipersensibilidade</td>
+                    <td>{{ tratamento.motivo_hipersensibilidade }}</td>
+                    <td>{% if tratamento.imagem_hipersensibilidade %}<img src="{{ tratamento.imagem_hipersensibilidade.url }}" class="img-fluid" style="max-width:100px;">{% else %}-{% endif %}</td>
+                </tr>
+                <tr>
+                    <td>Insuficiência Renal</td>
+                    <td>{{ tratamento.motivo_insuficiencia_renal }}</td>
+                    <td>{% if tratamento.imagem_insuficiencia_renal %}<img src="{{ tratamento.imagem_insuficiencia_renal.url }}" class="img-fluid" style="max-width:100px;">{% else %}-{% endif %}</td>
+                </tr>
+                <tr>
+                    <td>Insuficiência Hepática</td>
+                    <td>{{ tratamento.motivo_insuficiencia_hepatica }}</td>
+                    <td>{% if tratamento.imagem_insuficiencia_hepatica %}<img src="{{ tratamento.imagem_insuficiencia_hepatica.url }}" class="img-fluid" style="max-width:100px;">{% else %}-{% endif %}</td>
+                </tr>
+                <tr>
+                    <td>Hipertensão</td>
+                    <td>{{ tratamento.motivo_hipertensao }}</td>
+                    <td>{% if tratamento.imagem_hipertensao %}<img src="{{ tratamento.imagem_hipertensao.url }}" class="img-fluid" style="max-width:100px;">{% else %}-{% endif %}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    
+    <!-- Reações Adversas -->
+    <div class="mt-4">
+        <h4 class="text-warning">Reações Adversas</h4>
+        <p>{{ tratamento.reacoes_adversas }}</p>
+        <p><strong>Opinião Médica:</strong> {{ tratamento.opiniao_medica }}</p>
+        {% if tratamento.imagem_reacao %}
+            <img src="{{ tratamento.imagem_reacao.url }}" class="img-fluid rounded" style="max-width:200px;">
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
