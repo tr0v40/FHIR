@@ -923,14 +923,14 @@
        <div class="col-md-3">
         <div class="card">
             {% if tratamento.imagem_insuficiencia_renal %}
-            <p>{{tratamento.imagem_insuficiencia_renal}}</p>
+            
                
             <img src="{{ tratamento.imagem_insuficiencia_renal.url }}" alt="{{ contra.descricao }}" class="card-img-top img-fluid" style="max-height: 180px; object-fit: cover;">
             {% else %}
                 <img src="{% static 'img/default-medicamento.png' %}" alt="Imagem não disponível" class="card-img-top img-fluid">
             {% endif %}
             <div class="card-body">
-                <h5 class="card-title">insuficiencia Renal</h5>
+                <h5 class="card-title">Insuficiencia Renal</h5>
                 <p class="text-center">Excreção renal comprometida pode aumentar níveis do fármaco.</p>
             </div>
         </div>
