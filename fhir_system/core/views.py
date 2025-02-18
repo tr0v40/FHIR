@@ -77,8 +77,7 @@ def evidencias_clinicas(request, tratamento_id):
         "evidencias": evidencias,
     })
 
-from django.shortcuts import render
-from django.urls import get_resolver
+
 
 def listar_urls(request):
     """ Lista todas as URLs registradas no Django e exibe em uma página HTML """

@@ -803,7 +803,7 @@
                     <p><strong>Princípio ativo:</strong> <span class="highlight">{{ tratamento.principio_ativo }}</span></p>
                     <p>{{ tratamento.descricao }}</p>
                 </div>
-        
+
                 <!-- Imagem do Medicamento -->
                 {% if tratamento.imagem %}
                 <img src="{{ tratamento.imagem.url }}" alt="{{ tratamento.nome }}" style="max-width: 250px; border-radius: 10px;">
@@ -819,7 +819,11 @@
         
         <!-- Seção de Grau de Evidência Clínica -->
         <div class="efficacy-section">
-            <p class="efficacy-subtitle">Grau de evidência clínica <i class="fas fa-info-circle"></i></p>
+                   <!-- Ícone que direciona para a página de evidências clínicas -->
+<a href="/evidencias-clinicas/{{ tratamento.id }}/" class="btn btn-link p-0" title="Ver evidências clínicas">
+    <i class="fas fa-info-circle text-primary fs-4"></i>
+</a>
+
             <h2 class="efficacy-title">Eficácia em crises de enxaqueca</h2>
 
             <div class="efficacy-bar-container">
@@ -901,22 +905,63 @@
 <div class="contraindications-section">
     <h2 class="contraindications-title">Contraindicado para</h2>
     <div class="row">
-        {% for contra in contraindicacoes %}
-        <div class="col-md-3">
-            <div class="card">
-                {% if contra.imagem %}
-                    <img src="{{ contra.imagem.url }}" alt="{{ contra.descricao }}" class="card-img-top img-fluid" style="max-height: 180px; object-fit: cover;">
-                {% else %}
-                    <img src="{% static 'img/default-medicamento.png' %}" alt="Imagem não disponível" class="card-img-top img-fluid">
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title">{{ contra.descricao }}</h5>
-                </div>
+       <div class="col-md-3">
+           <div class="card">
+    
+               {% if tratamento.imagem_hipersensibilidade %}
+                  
+               <img src="{{ tratamento.imagem_hipersensibilidade.url }}" alt="{{ contra.descricao }}" class="card-img-top img-fluid" style="max-height: 180px; object-fit: cover;">
+               {% else %}
+                   <img src="{% static 'img/default-medicamento.png' %}" alt="Imagem não disponível" class="card-img-top img-fluid">
+               {% endif %}
+               <div class="card-body">
+                   <h5 class="card-title">{{ contra.descricao }}</h5>
+               </div>
+           </div>
+       </div>
+       <div class="col-md-3">
+        <div class="card">
+
+            {% if tratamento.imagem_insuficiencia_renal %}
+               
+            <img src="{{ tratamento.imagem_insuficiencia_renal.url }}" alt="{{ contra.descricao }}" class="card-img-top img-fluid" style="max-height: 180px; object-fit: cover;">
+            {% else %}
+                <img src="{% static 'img/default-medicamento.png' %}" alt="Imagem não disponível" class="card-img-top img-fluid">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ contra.descricao }}</h5>
             </div>
         </div>
-        {% empty %}
-        <p class="text-center">Nenhuma contraindicação encontrada.</p>
-        {% endfor %}
+    </div><div class="col-md-3">
+        <div class="card">
+
+            {% if tratamento.imagem_insuficiencia_hepatica %}
+               
+            <img src="{{ tratamento.imagem_insuficiencia_hepatica.url }}" alt="{{ contra.descricao }}" class="card-img-top img-fluid" style="max-height: 180px; object-fit: cover;">
+            {% else %}
+                <img src="{% static 'img/default-medicamento.png' %}" alt="Imagem não disponível" class="card-img-top img-fluid">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ contra.descricao }}</h5>
+            </div>
+        </div>
+    </div><div class="col-md-3">
+        <div class="card">
+
+            {% if tratamento.imagem_hipertensao %}
+               
+            <img src="{{ tratamento.imagem_hipertensao.url }}" alt="{{ contra.descricao }}" class="card-img-top img-fluid" style="max-height: 180px; object-fit: cover;">
+            {% else %}
+                <img src="{% static 'img/default-medicamento.png' %}" alt="Imagem não disponível" class="card-img-top img-fluid">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ contra.descricao }}</h5>
+            </div>
+        </div>
+    </div>
+       <p class="text-center">Nenhuma contraindicação encontrada.</p>
+
+        
     </div>
 </div>
 
