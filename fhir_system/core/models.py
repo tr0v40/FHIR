@@ -223,10 +223,14 @@ class EvidenciasClinicas(models.Model):
     data_publicacao = models.DateField(blank=True, null=True)
     autores = models.CharField(max_length=255, blank=True, null=True)
     imagem_estudo = models.ImageField(upload_to="evidencias/", blank=True, null=True)
+    eficacia_min = models.DecimalField(max_digits=5, decimal_places=2)
+    eficacia_max = models.DecimalField(max_digits=5, decimal_places=2)
 
     # **Novos campos**
     pdf_estudo = models.FileField(upload_to="pdf_estudos/", blank=True, null=True)  # Upload do PDF
     link_pdf_estudo = models.URLField(blank=True, null=True)  # Link direto para o PDF
+
+    referencia_bibliografica = models.TextField(blank=True, null=True)
 
     class Meta:
         verbose_name = "Evidência Clínica"

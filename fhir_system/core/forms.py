@@ -25,3 +25,12 @@ from django import forms
 class TratamentoSearchForm(forms.Form):
     nome = forms.CharField(label='Nome', max_length=100, required=False)
     categoria = forms.CharField(label='Categoria', max_length=100, required=False)
+
+
+from django import forms
+from .models import EvidenciasClinicas
+
+class EvidenciasClinicasForm(forms.ModelForm):
+    class Meta:
+        model = EvidenciasClinicas
+        fields = '__all__'  # Garante que o novo campo seja incluído no formulário

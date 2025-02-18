@@ -119,20 +119,20 @@ from django.utils.html import format_html
 from .models import EvidenciasClinicas
 
 class EvidenciasClinicasAdmin(admin.ModelAdmin):
-    list_display = ("titulo", "tratamento", "grau_evidencia", "data_publicacao", "visualizar_pdf")
-    search_fields = ("titulo", "tratamento__nome")
+    list_display = ("titulo", "tratamento", "grau_evidencia", "data_publicacao", "referencia_bibliografica", "eficacia_min", "eficacia_max", "visualizar_pdf")
+    search_fields = ("titulo", "tratamento__nome","referencia_bibliografica")
     list_filter = ("grau_evidencia", "data_publicacao")
     readonly_fields = ("imagem_preview", "visualizar_pdf")
 
     fieldsets = (
         ("Informações da Evidência", {
-            "fields": ("tratamento", "titulo", "descricao", "grau_evidencia")
+            "fields": ("tratamento", "titulo", "descricao", "grau_evidencia","eficacia_min", "eficacia_max")
         }),
         ("Detalhes do Estudo", {
             "fields": ("estudo_publicado", "autores", "link_estudo", "data_publicacao")
         }),
         ("Referências e Documentos", {
-            "fields": ("pdf_estudo", "link_pdf_estudo", "visualizar_pdf")
+            "fields": ("referencia_bibliografica","pdf_estudo", "link_pdf_estudo", "visualizar_pdf")
         }),
         ("Imagem", {
             "fields": ("imagem_estudo", "imagem_preview")
