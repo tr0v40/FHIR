@@ -3,89 +3,81 @@
 
 {% block content %}
 <style>
-    .container {
-        max-width: 90%;
-        margin: auto;
-        text-align: center;
-    }
-    .titulo {
-        font-size: 26px;
-        font-weight: bold;
-        margin-bottom: 20px;
-    }
-    .info-tratamento {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 40px;
-        margin-bottom: 30px;
-    }
-    .info-tratamento img {
-        max-width: 160px;
-        border-radius: 10px;
-    }
-    .info-text {
-        font-size: 18px;
-        text-align: left;
-    }
-    .info-text p {
-        margin: 8px 0;
-    }
-    .badge-info {
-        background-color: #17a2b8;
-        color: white;
-        padding: 6px 12px;
-        border-radius: 5px;
-        font-size: 16px;
-    }
-    .table-container {
-        width: 100%;
-        overflow-x: auto;
-    }
-    .table {
-        width: 100%;
-        text-align: center;
-        border-collapse: collapse;
-    }
-    .table thead {
-        background-color: #343a40;
-        color: white;
-    }
-    .table th, .table td {
-        padding: 15px;
-        border: 1px solid #ddd;
-        font-size: 16px;
-    }
-    .table td {
-        background-color: #f9f9f9;
-    }
-    .eficacia-badge {
-        background-color: #28a745;
-        color: white;
-        padding: 6px 12px;
-        border-radius: 5px;
-        font-weight: bold;
-    }
-    .btn-sm {
-        padding: 10px 14px;
-        font-size: 16px;
-    }
-    .referencia {
-        font-size: 14px;
-        text-align: left;
-        padding: 10px;
-    }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            margin-top: 40px;
+            max-width: 95%;
+        }
+
+        .titulo {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+        }
+
+        .table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .btn-estudo {
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .btn-estudo:hover {
+            background-color: #003c80;
+        }
+
+        .btn-pdf {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .btn-pdf:hover {
+            background-color: #545b62;
+        }
+    </style>
 </style>
 
-<div class="container mt-4">
-    <h2 class="titulo">
-        {{ tratamento.nome }} - Evidências Clínicas
-    </h2>
+
 
     <!-- Informações do Tratamento -->
-    <div class="info-tratamento">
-        <img src="{{ tratamento.imagem.url }}" alt="{{ tratamento.nome }}">
-        <div class="info-text">
+<div class="container mt-4 d-flex flex-column align-items-center text-center">
+    <div class="container mt-4 d-flex flex-column align-items-center text-center min-vh-100">
+        <div class="info-tratamento">
+            <img src="{{ tratamento.imagem.url }}" class="img-fluid rounded shadow mb-3" style="max-width: 200px; height: auto;" alt="{{ tratamento.nome }}">
+            <div class="info-text">
+            <h2 class="text-info fw-bold">{{ tratamento.nome }}</h2>
             <p><strong>Princípio Ativo:</strong> {{ tratamento.principio_ativo }}</p>
             <p><strong>Fabricante:</strong> {{ tratamento.fabricante }}</p>
             <p><strong>Grau de Evidência:</strong> <span class="badge-info">{{ tratamento.grau_evidencia }}</span></p>
@@ -93,49 +85,60 @@
     </div>
 
     <!-- Seção de Evidências Científicas -->
-    <h4 class="text-success text-center mt-4">📖 Estudos e Evidências Científicas</h4>
+    <h4 class="text-info text-center mt-4">📖 Estudos e Evidências Científicas</h4>
 
     {% if evidencias %}
-    <div class="table-container">
-        <table class="table">
-            <thead>
+    <div class="table-responsive w-100 mt-3 d-flex justify-content-center shadow-lg p-3 bg-white rounded">
+        <table class="table table-striped table-hover align-middle text-center table-bordered rounded">
+            <thead class="table-primary text-white">
                 <tr>
-                    <th style="width: 10%;">Eficácia</th>
-                    <th style="width: 12%;">Estudo</th>
-                    <th style="width: 10%;">Data</th>
-                    <th style="width: 30%;">Descrição</th>
-                    
-                    <th style="width: 20%;">Descrição da Referência</th>
-                    <th style="width: 18%;">Referência</th>
+                    <th>Eficácia</th>
+                    <th>Princípio Ativo</th>
+                    <th>Fabricante</th>
+                    <th>Data do Estudo</th>
+                    <th>Descrição</th>
+                    <th>Referências</th>
+
                 </tr>
             </thead>
             <tbody>
                 {% for evidencia in evidencias %}
                 <tr>
                     <td>
-                        <span class="eficacia-badge">{{ evidencia.eficacia_min }}% - {{ evidencia.eficacia_max }}%</span>
+                        <span class="eficacia-badge fw-bold">{{ evidencia.eficacia_min }}% - {{ evidencia.eficacia_max }}%</span>
                     </td>
                     <td>
                         {% if evidencia.estudo_randomizado %}
-                            <span class="badge badge-danger">🔴 Randomizado</span><br>
+                            <span class="badge bg-danger">🔴 Randomizado</span>
                         {% endif %}
                         {% if evidencia.duplo_cego %}
-                            <span class="badge badge-primary">🔵 Duplo-cego</span><br>
+                            <span class="badge bg-primary">🔵 Duplo-cego</span>
                         {% endif %}
                         {% if evidencia.placebo_controlado %}
-                            <span class="badge badge-info">🟡 Placebo-controlado</span>
+                            <span class="badge bg-info">🟡 Placebo-controlado</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if evidencia.estudo_randomizado %}
+                            <p class="text-info fw-bold">✔ Estudo randomizado</p>
+                        {% endif %}
+                        {% if evidencia.duplo_cego %}
+                            <p class="text-info fw-bold">✔ Duplo-cego</p>
+                        {% endif %}
+                        {% if evidencia.placebo_controlado %}
+                            <p class="text-info fw-bold">✔ Placebo-controlado</p>
                         {% endif %}
                     </td>
                     <td>{{ evidencia.data_publicacao|date:"m/Y" }}</td>
                     <td>{{ evidencia.descricao }}</td>
                     <td>
                         {% if evidencia.link_estudo %}
-                            <a href="{{ evidencia.link_estudo }}" target="_blank" class="btn btn-primary btn-sm">Acessar Estudo</a>
+                            <a href="{{ evidencia.link_estudo }}" target="_blank" class="btn btn-sm btn-primary">🔗 Acessar Estudo</a>
                         {% endif %}
                         {% if evidencia.pdf_estudo %}
-                            <a href="{{ evidencia.pdf_estudo.url }}" target="_blank" class="btn btn-secondary btn-sm">Baixar PDF</a>
+                            <a href="{{ evidencia.pdf_estudo.url }}" target="_blank" class="btn btn-sm btn-secondary">📄 Baixar PDF</a>
                         {% endif %}
-                        <p class="referencia">{{ evidencia.referencia }}</p>
+                        <p class="text-muted mt-2">{{ evidencia.referencia_bibliografica|default:"Sem referência disponível" }}</p>
                     </td>
                 </tr>
                 {% endfor %}
@@ -145,5 +148,6 @@
     {% else %}
         <p class="text-muted text-center">🔍 Nenhuma evidência clínica encontrada para este tratamento.</p>
     {% endif %}
+    
 </div>
 {% endblock %}

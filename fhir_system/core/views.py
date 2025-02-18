@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group
 from .forms import UserRegisterForm, TratamentoSearchForm
 from .models import DetalhesTratamentoResumo  # Modelo atualizado
 from .models import Tratamentos
-
+from .models import DetalhesTratamentoResumo, EvidenciasClinicas
 
 # Página inicial
 def home(request):
@@ -32,30 +32,29 @@ def register(request):
 
 # Página de listagem de tratamentos
 
+from django.shortcuts import render
+from .models import Tratamentos  # Verifique se este é o nome correto
+
 def tratamentos(request):
     """Exibe a lista de tratamentos e suas contraindicações"""
 
     nome = request.GET.get('nome', '')
     categoria = request.GET.get('categoria', '')
 
-    tratamentos_list = DetalhesTratamentoResumo.objects.all()
+    # Trocamos DetalhesTratamentoResumo para Tratamentos
+    tratamentos_list = Tratamentos.objects.all()
 
     if nome:
         tratamentos_list = tratamentos_list.filter(nome__icontains=nome)
 
     if categoria:
-        tratamentos_list = tratamentos_list.filter(grupo__icontains=categoria)
+        tratamentos_list = tratamentos_list.filter(categoria__icontains=categoria)
 
     return render(request, 'core/tratamentos.html', {
         'tratamentos': tratamentos_list,
     })
 
 
-
-
-
-
-from django.shortcuts import render, get_object_or_404
 from .models import DetalhesTratamentoResumo
 
 def detalhes_tratamentos(request, tratamento_id):
@@ -63,8 +62,6 @@ def detalhes_tratamentos(request, tratamento_id):
     return render(request, 'core/detalhes_tratamentos.html', {'tratamento': tratamento})
 
 
-from django.shortcuts import render, get_object_or_404
-from .models import DetalhesTratamentoResumo, EvidenciasClinicas
 
 def evidencias_clinicas(request, tratamento_id):
     """Exibe a página de evidências clínicas de um tratamento específico"""

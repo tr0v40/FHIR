@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from .models import EvidenciasClinicas
 
 class UserRegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -20,15 +21,10 @@ class UserRegisterForm(forms.ModelForm):
         return cleaned_data
 
 
-from django import forms
-
 class TratamentoSearchForm(forms.Form):
     nome = forms.CharField(label='Nome', max_length=100, required=False)
     categoria = forms.CharField(label='Categoria', max_length=100, required=False)
 
-
-from django import forms
-from .models import EvidenciasClinicas
 
 class EvidenciasClinicasForm(forms.ModelForm):
     class Meta:
