@@ -10,6 +10,5 @@ urlpatterns = [
     path('core/', include('core.urls')),  # Inclui as rotas do app core
     path('accounts/', include('django.contrib.auth.urls')),  # URLs padrão de login/logout
     
-]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

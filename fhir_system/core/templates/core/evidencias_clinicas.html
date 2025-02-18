@@ -2,53 +2,204 @@
 {% load static %}
 
 {% block content %}
-<div class="container mt-4">
-    <!-- Título -->
-    <h2 class="text-primary text-center">{{ tratamento.nome }} - Evidências Clínicas</h2>
-    <hr>
+<style>
+    .container {
+        max-width: 90%;
+        margin: auto;
+    }
 
-    <!-- Detalhes do Tratamento -->
-    <div class="row">
-        <div class="col-md-4 text-center">
-            {% if tratamento.imagem %}
-                <img src="{{ tratamento.imagem.url }}" class="img-fluid rounded" alt="{{ tratamento.nome }}">
-            {% else %}
-                <img src="/static/images/placeholder.png" class="img-fluid rounded" alt="Sem imagem disponível">
-            {% endif %}
-        </div>
-        <div class="col-md-8">
-            <p><strong>Princípio Ativo:</strong> {{ tratamento.principio_ativo }}</p>
-            <p><strong>Fabricante:</strong> {{ tratamento.fabricante }}</p>
-            <p><strong>Grau de Evidência:</strong> {{ tratamento.grau_evidencia }}</p>
+    /* Centralizar título */
+    .titulo-tratamento {
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 30px;
+    }
+
+    .titulo-tratamento img {
+        max-width: 60px;
+        margin-right: 10px;
+    }
+    /* Ajustando a largura das colunas */
+    .table th:nth-child(1) { width: 10%; }  /* Eficácia */
+    .table th:nth-child(2) { width: 18%; }  /* Estudo */
+    .table th:nth-child(3) { width: 10%; }  /* Data */
+    .table th:nth-child(4) { width: 40%; }  /* Descrição */
+    .table th:nth-child(5) { width: 22%; }  /* Referência */
+
+
+    /* Centralizando conteúdo principal */
+    .conteudo-centralizado {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    /* Ajustando o bloco do tratamento */
+    .tratamento-container {
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+        width: 80%;
+        margin: auto;
+        margin-bottom: 50px;
+    }
+
+    .tratamento-imagem {
+        max-width: 250px;
+        border-radius: 10px;
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .tratamento-texto {
+        font-size: 18px;
+        text-align: left;
+    }
+
+    /* Ajustes da tabela na parte inferior */
+    .tabela-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-top: 50px;
+    }
+
+    .table-responsive {
+        width: 85%;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+    }
+
+    .table th, .table td {
+        padding: 18px;
+        text-align: center;
+        border: 1px solid #ddd;
+        font-size: 18px;
+    }
+
+    .thead-dark {
+        background-color: #343a40;
+        color: white;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 8px 14px;
+        font-size: 16px;
+        border-radius: 6px;
+    }
+
+    .badge-danger { background-color: #dc3545; color: white; }
+    .badge-primary { background-color: #007bff; color: white; }
+    .badge-info { background-color: #17a2b8; color: white; }
+    .badge-success { background-color: #28a745; color: white; }
+
+    .btn {
+        font-size: 16px;
+        padding: 10px;
+        width: 100%;
+    }
+
+</style>
+
+<div class="container mt-5">
+    <!-- Nome do Medicamento Centralizado -->
+    <div class="titulo-tratamento">
+        
+        <h2>{{ tratamento.nome }} - Evidências Clínicas</h2>
+    </div>
+
+    <!-- Informações do Tratamento -->
+    <div class="tratamento-container">
+        <img src="{{ tratamento.imagem.url }}" class="tratamento-imagem" alt="{{ tratamento.nome }}">
+        <div class="tratamento-texto">
+            <p><strong>🧪 Princípio Ativo:</strong> {{ tratamento.principio_ativo }}</p>
+            <p><strong>🏭 Fabricante:</strong> {{ tratamento.fabricante }}</p>
+            <p><strong>🔬 Grau de Evidência:</strong> <span class="badge badge-info">{{ tratamento.grau_evidencia }}</span></p>
         </div>
     </div>
 
     <hr>
 
-    <!-- Seção de Evidências Clínicas -->
-    <div class="mt-4">
-        <h4 class="text-success">Estudos e Evidências Científicas</h4>
+    <!-- Seção de Evidências Científicas na parte inferior -->
+    <div class="tabela-container">
+        <div class="table-responsive">
+            <h4 class="text-success text-center my-4">📖 Estudos e Evidências Científicas</h4>
 
-        {% for evidencia in evidencias %}
-        <div class="card mb-3 shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title">{{ evidencia.titulo }}</h5>
-                <p class="card-text"><strong>Autores:</strong> {{ evidencia.autores }}</p>
-                <p class="card-text"><strong>Publicado em:</strong> {{ evidencia.data_publicacao }}</p>
-                <p class="card-text">{{ evidencia.descricao }}</p>
+            {% if evidencias %}
+            <table class="table table-hover table-bordered text-center">
+                <thead class="thead-dark">
+                    <tr>
+                        <th style="width: 15%;">Eficácia</th>
+                        <th style="width: 20%;">Estudo</th>
+                        <th style="width: 15%;">Data</th>
+                        <th style="width: 30%;">Descrição</th>
+                        <th style="width: 20%;">Referência</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for evidencia in evidencias %}
+                    <tr>
+                        <!-- Coluna Eficácia -->
+                        <td>
+                            <span class="badge badge-success">
+                                {{ evidencia.eficacia_min }}% - {{ evidencia.eficacia_max }}%
+                            </span>
+                        </td>
 
-                {% if evidencia.link_estudo %}
-                <p><a href="{{ evidencia.link_estudo }}" target="_blank" class="btn btn-primary">Acessar Estudo</a></p>
-                {% endif %}
+                        <!-- Coluna Tipo de Estudo -->
+                        <td>
+                            {% if evidencia.estudo_randomizado %}
+                                <span class="badge badge-danger d-block my-1">🔴 Randomizado</span>
+                            {% endif %}
+                            {% if evidencia.duplo_cego %}
+                                <span class="badge badge-primary d-block my-1">🔵 Duplo-cego</span>
+                            {% endif %}
+                            {% if evidencia.placebo_controlado %}
+                                <span class="badge badge-info d-block my-1">🟡 Placebo-controlado</span>
+                            {% endif %}
+                        </td>
 
-                {% if evidencia.pdf_estudo %}
-                <p><a href="{{ evidencia.pdf_estudo.url }}" target="_blank" class="btn btn-secondary">Baixar PDF</a></p>
-                {% endif %}
-            </div>
+                        <!-- Coluna Data -->
+                        <td>{{ evidencia.data_publicacao|date:"m/Y" }}</td>
+
+                        <!-- Coluna Descrição -->
+                        <td class="text-left">
+                            {{ evidencia.descricao }}
+                        </td>
+
+                        <!-- Coluna Referência -->
+                        <td>
+                            {% if evidencia.link_estudo %}
+                                <a href="{{ evidencia.link_estudo }}" target="_blank" class="btn btn-primary btn-sm d-block my-1">
+                                    📖 Acessar Estudo
+                                </a>
+                            {% endif %}
+                            {% if evidencia.pdf_estudo %}
+                                <a href="{{ evidencia.pdf_estudo.url }}" target="_blank" class="btn btn-secondary btn-sm d-block my-1">
+                                    📄 Baixar PDF
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+                <p class="text-muted text-center">🔍 Nenhuma evidência clínica encontrada para este tratamento.</p>
+            {% endif %}
         </div>
-        {% empty %}
-        <p class="text-muted">Nenhuma evidência clínica encontrada para este tratamento.</p>
-        {% endfor %}
     </div>
 </div>
 {% endblock %}

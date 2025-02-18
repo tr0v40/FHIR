@@ -266,100 +266,138 @@ html, body {
 }
 
 
-/* FOOTER */
-.footer {
-    background-color: #002b58;
-    color: white;
-    padding: 30px 0;
-    width: 100%;
-    text-align: center;
-}
+                /* FOOTER */
+                .footer {
+            background-color: #002b58;
+            color: white;
+            padding: 30px 0;
+            width: 100%;
+            text-align: center;
+            margin-top: auto; 
+        }
 
-.footer-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    max-width: 1200px;
-    margin: auto;
-    padding: 0 20px;
-}
-.footer-left img {
-    max-height: 50px;
-    margin-bottom: 10px;
-}
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+        .footer-left img {
+            max-height: 50px;
+            margin-bottom: 10px;
+        }
 
-.footer-text {
-    font-size: 14px;
-    color: #f1f1f1;
-    margin: 3px 0;
-}
+        .footer-text {
+            font-size: 14px;
+            color: #f1f1f1;
+            margin: 3px 0;
+        }
 
-/* LINKS */
-.footer-links {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-.footer-link {
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-}
+        /* LINKS */
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .footer-link {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
 
-.footer-link:hover {
-    text-decoration: underline;
-}
+        .footer-link:hover {
+            text-decoration: underline;
+        }
 
 
-/* BOTÃO */
-.footer-btn {
-    background-color: #007bff; /* Azul principal */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    display: flex;
-    align-items: left;
-    gap: 8px; /* Espaço entre o ícone e o texto */
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
+        /* BOTÃO */
+        .footer-btn {
+            background-color: #007bff; /* Azul principal */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: left;
+            gap: 8px; /* Espaço entre o ícone e o texto */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
 
-.footer-btn i {
-    font-size: 18px; /* Tamanho do ícone ajustado */
-}
+        .footer-btn i {
+            font-size: 18px; /* Tamanho do ícone ajustado */
+        }
 
-.footer-btn:hover {
-    background-color: #0056b3; /* Azul mais escuro ao passar o mouse */
-    transform: scale(1.05); /* Pequeno efeito de zoom */
-}
+        .footer-btn:hover {
+            background-color: #0056b3; /* Azul mais escuro ao passar o mouse */
+            transform: scale(1.05); /* Pequeno efeito de zoom */
+        }
 
-.footer-social {
-    display: flex;
-    gap: 15px;
-}
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
 
-.social-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #666; /* Cor de fundo cinza */
-    color: white;
-    font-size: 18px;
-    text-decoration: none;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #666; /* Cor de fundo cinza */
+            color: white;
+            font-size: 18px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
 
-.social-btn:hover {
-    background-color: #007bff; /* Azul ao passar o mouse */
-    transform: scale(1.1);
-}
+        .social-btn:hover {
+            background-color: #007bff; /* Azul ao passar o mouse */
+            transform: scale(1.1);
+        }
+        /* Espaçamento entre os botões */
+        .nav-buttons {
+            display: flex;
+            gap: 15px; /* Aumenta a distância entre os botões */
+        }
+
+        /* Ajusta o tamanho dos botões */
+        .btn-login, .btn-signup {
+            padding: 8px 18px;
+            font-size: 14px;
+            border-radius: 6px;
+        }
+
+        /* Login com borda azul */
+        .btn-login {
+            border: 2px solid #007bff;
+            color: #007bff;
+            background: white;
+            transition: 0.3s ease-in-out;
+        }
+
+        .btn-login:hover {
+            background: #007bff;
+            color: white;
+        }
+
+        /* Cadastro com fundo azul */
+        .btn-signup {
+            background-color: #007bff;
+            color: white;
+            border: none;
+        }
+
+        .btn-signup:hover {
+            background-color: #0056b3;
+        }
+
 /* Espaçamento entre os botões */
 .nav-buttons {
     display: flex;
@@ -396,6 +434,13 @@ html, body {
 .btn-signup:hover {
     background-color: #0056b3;
 }
+.content {
+            flex: 1;
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px; /* Garante que o conteúdo empurre o footer para baixo */
+        }
+
 
     </style>
 </head>
@@ -489,38 +534,38 @@ html, body {
 
 
 <!-- FOOTER -->
+<!-- FOOTER -->
 
 <footer class="footer">
-  <div class="footer-container">
-      <!-- Logo e Informações -->
-      <div class="footer-left">
-          <img src="{% static 'img/logo_telix_branco.png' %}" alt="Telix Logo" class="footer-logo">
-          <p class="footer-text">Linca Telecomunicações Ltda</p>
-          <p class="footer-text">CNPJ: 03.376.788-0001/23</p>
-          <p class="footer-text">Rua Marechal Deodoro, 1606, Centro - Foz do Iguaçu/PR</p>
-      </div>
-
-      <!-- Links de navegação -->
-      <div class="footer-links">
-          <a href="#" class="footer-link">Blog</a>
-          <a href="#" class="footer-link">Tratamentos</a>
-          <a href="#" class="footer-link">Quem Somos</a>
-      </div>
-      <!-- Redes Sociais -->
-      <div class="footer-social">
-          <a href="https://www.instagram.com/telix.inf.br/" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
-          <a href="https://www.facebook.com/people/Telix-contexto-na-sa%C3%BAde/100089318347896/" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://www.linkedin.com/company/telix-canais-de-not%C3%ADcias" target="_blank" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
-      </div>
-
-      <!-- Botão de download -->
-      <button class="footer-btn">
-        <i class="fas fa-download"></i> Baixar App
-    </button>
-    
-      </div>
-  </div>
-</footer>
+    <div class="footer-container">
+        <!-- Logo e Informações -->
+        <div class="footer-left">
+            <img src="{% static 'img/logo_telix_branco.png' %}" alt="Telix Logo" class="footer-logo">
+            <p class="footer-text">Linca Telecomunicações Ltda</p>
+            <p class="footer-text">CNPJ: 03.376.788-0001/23</p>
+            <p class="footer-text">Rua Marechal Deodoro, 1606, Centro - Foz do Iguaçu/PR</p>
+        </div>
+  
+        <!-- Links de navegação -->
+        <div class="footer-links">
+            <a href="#" class="footer-link">Blog</a>
+            <a href="#" class="footer-link">Tratamentos</a>
+            <a href="#" class="footer-link">Quem Somos</a>
+        </div>
+        <!-- Redes Sociais -->
+        <div class="footer-social">
+            <a href="https://www.instagram.com/telix.inf.br/" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.facebook.com/people/Telix-contexto-na-sa%C3%BAde/100089318347896/" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.linkedin.com/company/telix-canais-de-not%C3%ADcias" target="_blank" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+  
+        <!-- Botão de download -->
+        <button class="footer-btn">
+          <i class="fas fa-download"></i> Baixar App
+      </button>
+      
+        </div>
+    </div>
 
 
     <!-- JavaScript Bootstrap -->

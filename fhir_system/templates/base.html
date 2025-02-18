@@ -7,46 +7,45 @@
     <title>{% block title %}Meu Sistema{% endblock %}</title>
     <link href="{% static 'css/styles.css' %}" rel="stylesheet">
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <!-- Adiciona os ícones FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-
     <style>
-        /* Ajuste geral */
+        /* Garante que a página ocupe 100% da tela */
         html, body {
             height: 100%;
+            margin: 0;
+            padding: 0;
             display: flex;
             flex-direction: column;
         }
 
+        /* Ajusta o conteúdo principal para empurrar o footer para baixo */
         .content-wrapper {
             flex: 1;
         }
 
         /* FOOTER */
         .footer {
-    background-color: #002b58;
-    border-top: none !important;
-    color: #f1f1f1;
-    padding: 30px 0;
-    width: 100%;
-    margin-top: auto;
-    position: absolute; /* Mantém fixo na parte inferior */
-    left: 0;
-    bottom: 0;
+            background-color: #002b58;
+            color: #f1f1f1;
+            padding: 30px 0;
+            width: 100%;
+            margin-top: auto; /* Empurra o footer para o final da página */
+            position: relative;
+            bottom: 0;
+            left: 0;
         }
 
         .footer-container {
-            border: none !important;
-            box-shadow: none !important;
-            background-color: transparent;
-            display: flex;
+            background: #002b58;
+            display: flex;  
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             max-width: 1200px;
             margin: auto;
             padding: 0 20px;
+            border: none;
         }
 
         .footer-left img {
@@ -68,7 +67,7 @@
         }
 
         .footer-link {
-            color: #333;
+            color: white;
             text-decoration: none;
             font-size: 16px;
         }
@@ -79,7 +78,7 @@
 
         /* BOTÃO */
         .footer-btn {
-            background-color: #007bff; /* Azul */
+            background-color: #007bff;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -94,7 +93,7 @@
         }
 
         .footer-btn:hover {
-            background-color: #0056b3; /* Azul escuro */
+            background-color: #0056b3;
             transform: scale(1.05);
         }
 
@@ -111,7 +110,7 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background-color: #ddd; /* Cinza claro */
+            background-color: #ddd;
             color: #333;
             font-size: 18px;
             text-decoration: none;
@@ -170,7 +169,6 @@
     <!-- FOOTER -->
     <footer class="footer">
         <div class="footer-container">
-
             <!-- Lado Esquerdo: Logo e informações da empresa -->
             <div class="footer-left">
                 <img src="{% static 'img/logo_telix_branco.png' %}" alt="Telix Logo" class="footer-logo">
@@ -197,7 +195,6 @@
                     <i class="fas fa-download"></i> Baixar App
                 </button>
             </div>
-
         </div>
     </footer>
 

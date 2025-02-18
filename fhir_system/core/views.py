@@ -31,22 +31,28 @@ def register(request):
     return render(request, 'registration/register.html', {'form': form})
 
 # Página de listagem de tratamentos
+
 def tratamentos(request):
+    """Exibe a lista de tratamentos e suas contraindicações"""
+
     nome = request.GET.get('nome', '')
     categoria = request.GET.get('categoria', '')
 
-    # Buscar na tabela correta
-    tratamentos_list = Tratamentos.objects.all()
+    tratamentos_list = DetalhesTratamentoResumo.objects.all()
 
     if nome:
         tratamentos_list = tratamentos_list.filter(nome__icontains=nome)
 
     if categoria:
-        tratamentos_list = tratamentos_list.filter(categoria__icontains=categoria)
+        tratamentos_list = tratamentos_list.filter(grupo__icontains=categoria)
 
     return render(request, 'core/tratamentos.html', {
         'tratamentos': tratamentos_list,
     })
+
+
+
+
 
 
 from django.shortcuts import render, get_object_or_404

@@ -11987,3 +11987,149 @@ header h1 {
 .container {
   max-width: 900px;
 }
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.table th, .table td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.thead-dark {
+  background-color: #343a40;
+  color: white;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+.badge-danger { background-color: #dc3545; color: white; }
+.badge-primary { background-color: #007bff; color: white; }
+.badge-info { background-color: #17a2b8; color: white; }
+.badge-success { background-color: #28a745; color: white; }
+
+.btn-sm {
+  font-size: 12px;
+  padding: 5px 10px;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.table th, .table td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+  word-wrap: break-word;
+}
+
+.thead-dark {
+  background-color: #343a40;
+  color: white;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+.badge-danger { background-color: #dc3545; color: white; }
+.badge-primary { background-color: #007bff; color: white; }
+.badge-info { background-color: #17a2b8; color: white; }
+.badge-success { background-color: #28a745; color: white; }
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.table th, .table td {
+  padding: 15px;
+  text-align: center;
+  border: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+.thead-dark {
+  background-color: #343a40;
+  color: white;
+}
+
+.badge {
+  display: inline-block;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+.badge-danger { background-color: #dc3545; color: white; }
+.badge-primary { background-color: #007bff; color: white; }
+.badge-info { background-color: #17a2b8; color: white; }
+.badge-success { background-color: #28a745; color: white; }
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.btn {
+  width: 100%;
+  font-size: 14px;
+  padding: 8px;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.table th, .table td {
+  padding: 15px;
+  text-align: center;
+  border: 1px solid #ddd;
+  vertical-align: middle;
+  font-size: 15px;
+}
+
+.thead-dark {
+  background-color: #343a40;
+  color: white;
+}
+
+.badge {
+  display: inline-block;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+.badge-danger { background-color: #dc3545; color: white; }
+.badge-primary { background-color: #007bff; color: white; }
+.badge-info { background-color: #17a2b8; color: white; }
+.badge-success { background-color: #28a745; color: white; }
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.btn {
+  width: 100%;
+  font-size: 14px;
+  padding: 8px;
+}
