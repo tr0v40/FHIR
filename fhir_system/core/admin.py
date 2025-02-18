@@ -18,7 +18,7 @@ from .models import (
     DetalhesTratamentoResumo
 )
 
-# ✅ Registrar modelos que não precisam de customização
+# Registrar modelos que não precisam de customização
 admin.site.register([
     Organization,
     SubstanceDefinition,
@@ -36,7 +36,7 @@ admin.site.register([
 ])
 
 
-### 📌 CUSTOMIZAÇÃO DO ADMIN PARA `Tratamentos`
+### CUSTOMIZAÇÃO DO ADMIN PARA `Tratamentos`
 class TratamentosAdmin(admin.ModelAdmin):
     list_display = ("nome", "principio_ativo", "fabricante", "imagem_preview")  
     search_fields = ("nome", "principio_ativo", "fabricante")  

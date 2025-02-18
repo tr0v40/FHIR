@@ -8,7 +8,7 @@ from django.contrib.auth.views import LoginView
 
 
 urlpatterns = [
-    path('', LoginView.as_view(), name='login'),
+    path('', LoginView.as_view(), name='home'),
     path('admin/', admin.site.urls),  # Rota para o painel de administração
     # path('', home, name='home'),  # Página inicial (home)
     # path('core/', include('core.urls')),  # Inclui as rotas do app core
