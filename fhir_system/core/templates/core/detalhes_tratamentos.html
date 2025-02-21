@@ -702,38 +702,83 @@
                     align-items: center;
                 }
             }
-            .reacoes-adversas-section {
-                margin-top: 40px;
-            }
+.reacoes-adversas-section {
+    margin-top: 20px;
+    text-align: center;
+}
 
-            .reacoes-title {
-                font-size: 22px;
-                font-weight: bold;
-                color: #333;
-                text-align: center;
-            }
+.reacoes-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: red;
+    margin-bottom: 20px;
+}
 
-            .card {
-                border-radius: 10px;
-                overflow: hidden;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                transition: transform 0.3s ease;
-                margin-bottom: 20px;
-            }
+/* Container das imagens */
+.reacoes-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
 
-            .card:hover {
-                transform: scale(1.05);
-            }
+/* Cartões de reações adversas */
+.reacao-card {
+    width: 250px;  /* Define um tamanho fixo */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    background-color: white;
+    text-align: center;
+}
 
-            .card-body {
-                padding: 15px;
-                text-align: center;
-            }
+/* Efeito de escala ao passar o mouse */
+.reacao-card:hover {
+    transform: scale(1.05);
+}
 
-            .img-fluid {
-                border-top-left-radius: 10px;
-                border-top-right-radius: 10px;
-            }
+/* Imagens das reações */
+.reacao-card img {
+    width: 100%;
+    height: 180px; /* Altura uniforme para todas as imagens */
+    object-fit: cover; /* Garante que a imagem preencha sem distorcer */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+/* Nome da reação adversa */
+.reacao-nome {
+    font-size: 16px;
+    font-weight: bold;
+    color: #007bff;
+    margin: 8px 0;
+}
+
+/* Texto dentro dos cards */
+.reacao-text {
+    padding: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .reacoes-container {
+        gap: 10px;
+    }
+
+    .reacao-card {
+        width: 45%;
+    }
+}
+
+@media (max-width: 480px) {
+    .reacao-card {
+        width: 100%;
+    }
+}
+
 
 
 
@@ -767,17 +812,16 @@
         <div class="row">
             <!-- Campo de pesquisa pelo nome -->
             <div class="col-md-4">
-                <input type="text" class="form-control" name="nome" placeholder="Nome do tratamento"
-                       value="{{ nome }}">
+                <input type="text" class="form-control" name="nome" placeholder="Nome do tratamento" value="{{ request.GET.nome }}">
             </div>
             
             <!-- Filtro por categoria -->
             <div class="col-md-4">
                 <select class="form-control" name="categoria">
                     <option value="">Todas as categorias</option>
-                    <option value="Comprimidos" {% if categoria == "Comprimidos" %}selected{% endif %}>Comprimidos</option>
-                    <option value="Injetáveis" {% if categoria == "Injetáveis" %}selected{% endif %}>Injetáveis</option>
-                    <option value="Gotas" {% if categoria == "Gotas" %}selected{% endif %}>Gotas</option>
+                    <option value="Comprimidos" {% if request.GET.categoria == "Comprimidos" %}selected{% endif %}>Comprimidos</option>
+                    <option value="Injetáveis" {% if request.GET.categoria == "Injetáveis" %}selected{% endif %}>Injetáveis</option>
+                    <option value="Gotas" {% if request.GET.categoria == "Gotas" %}selected{% endif %}>Gotas</option>
                 </select>
             </div>
 
@@ -786,8 +830,36 @@
                 <button type="submit" class="btn btn-primary w-100">Buscar</button>
             </div>
         </div>
+
+        <!-- Lista de medicamentos como checkboxes -->
+        <div class="mt-3">
+            <strong>Filtrar por Medicamento:</strong>
+            {% if medicamentos %}
+                <div class="d-flex flex-wrap">
+                    {% for medicamento in medicamentos %}
+                        <div class="form-check me-3">
+                            <input 
+                                class="form-check-input" 
+                                type="checkbox" 
+                                name="medicamento" 
+                                value="{{ medicamento.id }}" 
+                                id="med_{{ medicamento.id }}"
+                                {% if medicamento.id|stringformat:"s" in request.GET.medicamento %}checked{% endif %}
+                            >
+                            <label class="form-check-label" for="med_{{ medicamento.id }}">
+                                {{ medicamento.nome }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-muted">Nenhum medicamento disponível.</p>
+            {% endif %}
+        </div>
     </form>
 </div>
+
+
 
 
          <!-- EXIBIÇÃO DA IMAGEM DO TRATAMENTO -->
@@ -902,68 +974,36 @@
     </div>
 
 <!-- Seção de Contraindicações -->
-<div class="contraindications-section">
-    <h2 class="contraindications-title">Contraindicado para</h2>
+<div class="contraindications-section container mt-5">
+    <h2 class="text-danger fw-bold text-center">⚠️ Contraindicado para</h2>
     <div class="row">
-       <div class="col-md-3">
-           <div class="card">
-    
-               {% if tratamento.imagem_hipersensibilidade %}
-                  
-               <img src="{{ tratamento.imagem_hipersensibilidade.url }}" alt="{{ contra.descricao }}" class="card-img-top img-fluid" style="max-height: 180px; object-fit: cover;">
-               {% else %}
-                   <img src="{% static 'img/default-medicamento.png' %}" alt="Imagem não disponível" class="card-img-top img-fluid">
-               {% endif %}
-               <div class="card-body">
-                <h5 class="card-title">Hipersensibilidade</h5>
-                <p class="text-center">Excreção renal comprometida pode aumentar níveis do fármaco.</p>
-               </div>
-           </div>
-       </div>
-       <div class="col-md-3">
-        <div class="card">
-            {% if tratamento.imagem_insuficiencia_renal %}
-            
-               
-            <img src="{{ tratamento.imagem_insuficiencia_renal.url }}" alt="{{ contra.descricao }}" class="card-img-top img-fluid" style="max-height: 180px; object-fit: cover;">
-            {% else %}
-                <img src="{% static 'img/default-medicamento.png' %}" alt="Imagem não disponível" class="card-img-top img-fluid">
-            {% endif %}
-            <div class="card-body">
-                <h5 class="card-title">Insuficiencia Renal</h5>
-                <p class="text-center">Excreção renal comprometida pode aumentar níveis do fármaco.</p>
+        {% for contraindicacao in tratamento.contraindicacoes.all %}
+            <div class="col-md-4 col-sm-6 mb-4"> 
+                <div class="card h-100 shadow-sm">
+                    {% if contraindicacao.imagem %}
+                        <img 
+                            src="{{ contraindicacao.imagem.url }}" 
+                            alt="{{ contraindicacao.descricao }}" 
+                            class="card-img-top img-fluid" 
+                            style="max-height: 180px; object-fit: cover;"
+                        >
+                    {% else %}
+                        <img src="{% static 'img/default-medicamento.png' %}" alt="Imagem não disponível" class="card-img-top img-fluid">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title text-center">{{ contraindicacao.nome }}</h5>
+                        <p class="text-center">{{ contraindicacao.descricao }}</p>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div><div class="col-md-3">
-        <div class="card">
-            
-            {% if tratamento.imagem_insuficiencia_hepatica %}
-               
-            <img src="{{ tratamento.imagem_insuficiencia_hepatica.url }}" alt="{{ contra.descricao }}" class="card-img-top img-fluid" style="max-height: 180px; object-fit: cover;">
-            {% else %}
-                <img src="{% static 'img/default-medicamento.png' %}" alt="Imagem não disponível" class="card-img-top img-fluid">
+            {% if forloop.counter|divisibleby:3 %}
+                </div><div class="row">
             {% endif %}
-            <div class="card-body">
-                <h5 class="card-title">insuficiencia hepatica</h5>
-                <p class="text-center">Metabolismo reduzido pode levar a níveis aumentados do fármaco.</p>
-            </div>
-        </div>
-    </div><div class="col-md-3">
-        <div class="card">
-
-            {% if tratamento.imagem_hipertensao %}
-               
-            <img src="{{ tratamento.imagem_hipertensao.url }}" alt="{{ contra.descricao }}" class="card-img-top img-fluid" style="max-height: 180px; object-fit: cover;">
-            {% else %}
-                <img src="{% static 'img/default-medicamento.png' %}" alt="Imagem não disponível" class="card-img-top img-fluid">
-            {% endif %}
-            <div class="card-body">
-                <h5 class="card-title">Hipertensão</h5>
-                <p class="text-center">Pode aumentar a pressão arterial em pacientes hipertensos..</p>
-                
-            </div>
-        </div>
+            {% empty %}
+            <p class="text-center">Nenhuma reação adversa encontrada.</p>
+        {% endfor %}
     </div>
+</div>
      
 
         
@@ -1009,30 +1049,32 @@
 </div>
 
 <!-- Seção de Reações Adversas -->
-<div class="reacoes-adversas-section">
-    <h2 class="reacoes-title">⚠️ <span style="color:red;">Reações Adversas</span></h2>
+<div class="reacoes-adversas-section container mt-5">
+    <h2 class="text-danger fw-bold text-center">⚠️ Reações Adversas</span></h2>
 
-    <div class="row">
-        {% for reacao in reacoes_adversas %}
-        <div class="col-md-4">
-            <div class="card">
-                {% if reacao.imagem %}
-                    <img src="{{ reacao.imagem.url }}" alt="{{ reacao.descricao }}" class="img-fluid">
-                {% else %}
-                    <img src="{% static 'img/default-reacao.png' %}" alt="Imagem não disponível" class="img-fluid">
-                {% endif %}
-                <div class="card-body">
-                    <p><strong>{{ reacao.descricao }}</strong></p>
-                    <p class="text-muted">{{ reacao.categoria }}</p>
+    <div class="row row-cols-2 row-cols-md-4 g-3 justify-content-center" >
+        {% for reacao in tratamento.reacoes_adversas.all %}
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    {% if reacao.imagem %}
+                        <img src="{{ reacao.imagem.url }}" alt="{{ reacao.descricao }}" class="card-img-top img-fluid">
+                    {% else %}
+                        <img src="{% static 'img/default-reacao.png' %}" alt="Imagem não disponível" class="card-img-top img-fluid">
+                    {% endif %}
+                    <div class="card-body text-center">
+                        <h6 class="fw-bold text-primary">{{ reacao.nome }}</h6>
+                        <p class="text-muted small">{{ reacao.descricao }}</p>
+                    </div>
                 </div>
             </div>
-        </div>
+            {% if forloop.counter|divisibleby:3 %}
+                </div><div class="row">
+            {% endif %}
         {% empty %}
-        <p>Nenhuma reação adversa encontrada.</p>
+            <p class="text-center">Nenhuma reação adversa encontrada.</p>
         {% endfor %}
     </div>
 </div>
-
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 

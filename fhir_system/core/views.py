@@ -33,26 +33,38 @@ def register(request):
 # Página de listagem de tratamentos
 
 from django.shortcuts import render
-from .models import Tratamentos  # Verifique se este é o nome correto
+from .models import Tratamentos  # Certifique-se de que este é o nome correto do modelo
 
 def tratamentos(request):
-    """Exibe a lista de tratamentos e suas contraindicações"""
+    """Exibe a lista de tratamentos e disponibiliza o filtro"""
 
     nome = request.GET.get('nome', '')
     categoria = request.GET.get('categoria', '')
+    medicamento_selecionado = request.GET.getlist('medicamento')
 
-    # Trocamos DetalhesTratamentoResumo para Tratamentos
+    # Obtenha todos os tratamentos
     tratamentos_list = Tratamentos.objects.all()
 
+    # Filtrar por nome do medicamento
     if nome:
         tratamentos_list = tratamentos_list.filter(nome__icontains=nome)
 
+    # Filtrar por categoria
     if categoria:
         tratamentos_list = tratamentos_list.filter(categoria__icontains=categoria)
 
+    # Filtrar por medicamentos selecionados no checkbox
+    if medicamento_selecionado:
+        tratamentos_list = tratamentos_list.filter(id__in=medicamento_selecionado)
+
+    # Pegar a lista de medicamentos disponíveis para o filtro
+    todos_medicamentos = Tratamentos.objects.values('id', 'nome')
+
     return render(request, 'core/tratamentos.html', {
         'tratamentos': tratamentos_list,
+        'medicamentos': todos_medicamentos,  # Envia a lista de medicamentos para o template
     })
+
 
 
 from .models import DetalhesTratamentoResumo
@@ -88,3 +100,4 @@ def listar_urls(request):
         urls.append(str(pattern.pattern))  # Obtém os padrões de URL
 
     return render(request, "core/listar_urls.html", {"urls": urls})
+

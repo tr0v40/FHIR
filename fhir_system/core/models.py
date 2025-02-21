@@ -128,8 +128,31 @@ class Tratamentos(models.Model):
 
 
 
+class Contraindicacao(models.Model):
+    nome = models.CharField(max_length=200)
+    descricao = models.TextField()
+    imagem = models.ImageField(upload_to="contraindicacoes/", blank=True, null=True)
+ 
+    class Meta:
+        verbose_name = "Contraindicação"
+        verbose_name_plural = "Contraindicações"
+ 
+    def __str__(self):
+        return self.nome
+ 
+class ReacaoAdversa(models.Model):
+    nome = models.CharField(max_length=200)
+    descricao = models.TextField()
+    imagem = models.ImageField(upload_to="reacoes_adversas/", blank=True, null=True)
+ 
+    class Meta:
+        verbose_name = "Reação Adversa"
+        verbose_name_plural = "Reações Adversas"
+ 
+    def __str__(self):
+        return self.nome
+ 
 class DetalhesTratamentoResumo(models.Model):
-
     GRUPO_CHOICES = (
         ("criancas", "Crianças menores de 12 anos"),
         ("adolescentes", "Adolescentes 12 a 17 anos"),
@@ -138,6 +161,7 @@ class DetalhesTratamentoResumo(models.Model):
         ("lactantes", "Lactantes"),
         ("gravidez", "Gravidez"),
     )
+ 
     nome = models.CharField(max_length=100)
     fabricante = models.CharField(max_length=200)
     principio_ativo = models.CharField(max_length=200)
@@ -149,69 +173,30 @@ class DetalhesTratamentoResumo(models.Model):
     adesao = models.CharField(max_length=200)
     quando_tomar = models.TextField()
     imagem = models.ImageField(upload_to="tratamentos/", blank=True, null=True)
-
-       # **Novos campos de imagem para contraindicações**
-    imagem_hipersensibilidade = models.ImageField(upload_to="contraindicacoes/", blank=True, null=True)
-    imagem_insuficiencia_renal = models.ImageField(upload_to="contraindicacoes/", blank=True, null=True)
-    imagem_insuficiencia_hepatica = models.ImageField(upload_to="contraindicacoes/", blank=True, null=True)
-    imagem_hipertensao = models.ImageField(upload_to="contraindicacoes/", blank=True, null=True)
-
-    # **Novos campos**
     prazo_efeito_min = models.CharField(max_length=50, blank=True, null=True)
     prazo_efeito_max = models.CharField(max_length=50, blank=True, null=True)
-    realizar_tratamento_quando = models.TextField(blank=True, null=True)  # "Somente em crises" ou outros
-    custo_medicamento = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)  # Ex: 25.20
-    links_externos = models.TextField(blank=True, null=True)  # Para URLs úteis
-    alertas = models.TextField(blank=True, null=True)  # Exemplo: "Em caso de superdose, monitorar 24h"
-
-    # **Grupo indicado**
+    realizar_tratamento_quando = models.TextField(blank=True, null=True)
+    custo_medicamento = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    links_externos = models.TextField(blank=True, null=True)
+    alertas = models.TextField(blank=True, null=True)
+    grupo = models.CharField(max_length=20, choices=GRUPO_CHOICES, default="adultos")
+    # Indicações
     indicado_criancas = models.CharField(max_length=100, choices=[('SIM', 'Sim'), ('NÃO', 'Não')], default='NÃO')
     motivo_criancas = models.TextField(blank=True, null=True)
-
     indicado_adolescentes = models.CharField(max_length=100, choices=[('SIM', 'Sim'), ('NÃO', 'Não')], default='NÃO')
     motivo_adolescentes = models.TextField(blank=True, null=True)
-
     indicado_idosos = models.CharField(max_length=100, choices=[('SIM', 'Sim'), ('NÃO', 'Não')], default='NÃO')
     motivo_idosos = models.TextField(blank=True, null=True)
-
     indicado_adultos = models.CharField(max_length=100, choices=[('SIM', 'Sim'), ('NÃO', 'Não')], default='SIM')
     motivo_adultos = models.TextField(blank=True, null=True)
-
-    # **Gravidez e lactação**
+    # Gravidez e lactação
     uso_lactantes = models.CharField(max_length=100, choices=[('A', 'A'), ('B', 'B'), ('C', 'C')], default='C')
     motivo_lactantes = models.TextField(blank=True, null=True)
-
     uso_gravidez = models.CharField(max_length=100, choices=[('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'), ('X', 'X')], default='D')
     motivo_gravidez = models.TextField(blank=True, null=True)
-
-    # **Contraindicações**
-    contraindicado_hipersensibilidade = models.TextField()
-    motivo_hipersensibilidade = models.TextField(blank=True, null=True)
-
-    contraindicado_insuficiencia_renal = models.TextField()
-    motivo_insuficiencia_renal = models.TextField(blank=True, null=True)
-
-    contraindicado_insuficiencia_hepatica = models.TextField()
-    motivo_insuficiencia_hepatica = models.TextField(blank=True, null=True)
-
-    contraindicado_hipertensao = models.TextField()
-    motivo_hipertensao = models.TextField(blank=True, null=True)
-
-    # **Reações adversas**
-    reacoes_adversas = models.TextField(blank=True, null=True)  # Exemplo: "Parestesia"
-    opiniao_medica = models.TextField(blank=True, null=True)  # Exemplo: "Dormência intensa em membros"
-    imagem_reacao = models.ImageField(upload_to="reacoes_adversas/", blank=True, null=True)  # Upload de imagem da reação adversa
-
-        # Novo campo simples de Grupo
-    grupo = models.CharField(max_length=20, choices=GRUPO_CHOICES, default="adultos")
-
-    class Meta:
-        verbose_name = "Detalhes Tratamentos - Resumo"
-        verbose_name_plural = "Detalhes Tratamentos - Resumo"
-
-    def __str__(self):
-        return self.nome
-    
+    contraindicacoes = models.ManyToManyField(Contraindicacao, blank=True) 
+    reacoes_adversas = models.ManyToManyField(ReacaoAdversa, blank=True)
+  
 
 class EvidenciasClinicas(models.Model):
     tratamento = models.ForeignKey("DetalhesTratamentoResumo", on_delete=models.CASCADE, related_name="evidencias")

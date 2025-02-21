@@ -16,256 +16,256 @@
 
     <style>
 /* CONFIGURAÇÃO GERAL */
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    background-color: #f8f9fa;
-    font-family: Arial, sans-serif;
-    overflow-x: hidden;
-}
-
-.content {
-            flex: 1;
-            max-width: 1200px;
-            margin: auto;
-            padding: 20px; /* Garante que o conteúdo empurre o footer para baixo */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
         }
 
-.container {
-    flex: 1;
-    margin-bottom: 0;
-    padding-bottom: 250px;
-}
+        .content {
+                    flex: 1;
+                    max-width: 1200px;
+                    margin: auto;
+                    padding: 20px; /* Garante que o conteúdo empurre o footer para baixo */
+                }
 
-/* HEADER */
-header {
-    background-color: #ffffff;
-    padding: 15px 20px;
-    border-bottom: 1px solid #ddd;
-}
+        .container {
+            flex: 1;
+            margin-bottom: 0;
+            padding-bottom: 250px;
+        }
 
-.navbar-brand img {
-    height: 50px;
-    width: auto;
-}
+        /* HEADER */
+        header {
+            background-color: #ffffff;
+            padding: 15px 20px;
+            border-bottom: 1px solid #ddd;
+        }
 
-/* FORMULÁRIO DE PESQUISA */
-.search-bar {
-    width: 100%;
-    max-width: 700px;
-    margin: 0 auto 50px;
-    position: relative;
-}
+        .navbar-brand img {
+            height: 50px;
+            width: auto;
+        }
 
-.search-bar input {
-    width: 100%;
-    padding: 12px 50px 12px 45px; /* Ajustando espaço para o ícone */
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    font-size: 18px;
-}
+        /* FORMULÁRIO DE PESQUISA */
+        .search-bar {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto 50px;
+            position: relative;
+        }
 
-/* Ícone da lupa */
-.search-bar i {
-    position: absolute;
-    top: 50%;
-    left: 15px;
-    transform: translateY(-50%);
-    color: #888;  /* Cor do ícone */
-    font-size: 20px;
-    pointer-events: none;  /* Evita que o ícone seja clicável */
-}
+        .search-bar input {
+            width: 100%;
+            padding: 12px 50px 12px 45px; /* Ajustando espaço para o ícone */
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 18px;
+        }
 
-/* CONTAINER PRINCIPAL EXPANDIDO */
-.tratamento-card {
-    background: #fff;
-    border-radius: 15px;
-    padding: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    max-width: 95%; /* Ajustado para ficar maior na largura */
-    margin: 40px auto;
-    width: 100%;
-    min-height: 300px; /* Ajustado para um tamanho mais confortável */
-    transition: all 0.3s ease-in-out;
-}
+        /* Ícone da lupa */
+        .search-bar i {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #888;  /* Cor do ícone */
+            font-size: 20px;
+            pointer-events: none;  /* Evita que o ícone seja clicável */
+        }
 
-/* LAYOUT DO CONTEÚDO AJUSTADO */
-.tratamento-content {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    gap: 60px; /* Mais espaçamento entre a imagem e texto */
-    width: 100%;
-}
+        /* CONTAINER PRINCIPAL EXPANDIDO */
+        .tratamento-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-width: 95%; /* Ajustado para ficar maior na largura */
+            margin: 40px auto;
+            width: 100%;
+            min-height: 300px; /* Ajustado para um tamanho mais confortável */
+            transition: all 0.3s ease-in-out;
+        }
 
-/* IMAGEM DO TRATAMENTO */
-.tratamento-card img {
-    max-width: 220px; /* Ajustado para manter proporção */
-    height: auto;
-    border-radius: 10px;
-    transition: transform 0.3s ease-in-out;
-}
+        /* LAYOUT DO CONTEÚDO AJUSTADO */
+        .tratamento-content {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            gap: 60px; /* Mais espaçamento entre a imagem e texto */
+            width: 100%;
+        }
 
-/* EFEITO HOVER NA IMAGEM */
-.tratamento-card img:hover {
-    transform: scale(1.05);
-}
+        /* IMAGEM DO TRATAMENTO */
+        .tratamento-card img {
+            max-width: 220px; /* Ajustado para manter proporção */
+            height: auto;
+            border-radius: 10px;
+            transition: transform 0.3s ease-in-out;
+        }
 
-/* INFORMAÇÕES DO TRATAMENTO */
-.tratamento-info {
-    flex: 1;
-    max-width: 700px; /* Ajustado para expandir a largura do texto */
-}
+        /* EFEITO HOVER NA IMAGEM */
+        .tratamento-card img:hover {
+            transform: scale(1.05);
+        }
 
-.tratamento-info p {
-    margin: 5px 0;
-    font-size: 18px; /* Fonte levemente maior para melhor leitura */
-    line-height: 1.5;
-}
+        /* INFORMAÇÕES DO TRATAMENTO */
+        .tratamento-info {
+            flex: 1;
+            max-width: 700px; /* Ajustado para expandir a largura do texto */
+        }
 
-/* TITULO DO TRATAMENTO */
-.tratamento-nome {
-    font-size: 28px; /* Maior para dar mais destaque */
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 8px;
-}
+        .tratamento-info p {
+            margin: 5px 0;
+            font-size: 18px; /* Fonte levemente maior para melhor leitura */
+            line-height: 1.5;
+        }
 
-/* LINK DO TIPO DE TRATAMENTO */
-.tratamento-tipo {
-    font-size: 14px;
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
-    margin-bottom: 15px;
-    display: inline-block;
-}
+        /* TITULO DO TRATAMENTO */
+        .tratamento-nome {
+            font-size: 28px; /* Maior para dar mais destaque */
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
 
-.tratamento-tipo:hover {
-    text-decoration: underline;
-}
+        /* LINK DO TIPO DE TRATAMENTO */
+        .tratamento-tipo {
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
 
-/* BARRA DE EFICÁCIA MAIOR */
-.eficacia-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
+        .tratamento-tipo:hover {
+            text-decoration: underline;
+        }
 
-/* BARRA DE EFICÁCIA  */
-.eficacia-bar {
-    background: linear-gradient(90deg, #4CAF50, #FFEB3B, #F44336);
-    border-radius: 5px;
-    height: 14px;
-    width: 250px; /* Aumentado para destacar melhor */
-    position: relative;
-    margin: 10px auto;
-}
+        /* BARRA DE EFICÁCIA MAIOR */
+        .eficacia-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
 
-/* MARCADOR DA EFICÁCIA */
-.eficacia-marker {
-    position: absolute;
-    width: 10px;
-    height: 20px;
-    background-color: #fff;
-    border: 2px solid #333;
-    border-radius: 4px;
-    top: -3px;
-    right: 30px;
-}
+        /* BARRA DE EFICÁCIA  */
+        .eficacia-bar {
+            background: linear-gradient(90deg, #4CAF50, #FFEB3B, #F44336);
+            border-radius: 5px;
+            height: 14px;
+            width: 250px; /* Aumentado para destacar melhor */
+            position: relative;
+            margin: 10px auto;
+        }
 
-/* NÚMERO DA EFICÁCIA */
-.eficacia-range {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-}
+        /* MARCADOR DA EFICÁCIA */
+        .eficacia-marker {
+            position: absolute;
+            width: 10px;
+            height: 20px;
+            background-color: #fff;
+            border: 2px solid #333;
+            border-radius: 4px;
+            top: -3px;
+            right: 30px;
+        }
 
-/* BOTÃO DE PRAZO DE EFEITO */
-.prazo-btn {
-    background: linear-gradient(90deg, #007bff, #0056b3);
-    color: white;
-    border: none;
-    padding: 14px 22px;
-    text-decoration: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
+        /* NÚMERO DA EFICÁCIA */
+        .eficacia-range {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
 
-.prazo-btn i {
-    font-size: 18px;
-}
+        /* BOTÃO DE PRAZO DE EFEITO */
+        .prazo-btn {
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 14px 22px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
 
-.prazo-btn:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-}
+        .prazo-btn i {
+            font-size: 18px;
+        }
 
-/* RESPONSIVIDADE */
-@media (max-width: 1024px) {
-    .tratamento-card {
-    width: 100%; /* Garante que todos ocupem a mesma largura */
-    max-width: 900px; /* Define um tamanho máximo */
-    min-height: 300px; /* Define uma altura mínima para evitar variações */
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 0 auto 20px auto;
-}
+        .prazo-btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
 
-.tratamento-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
+        /* RESPONSIVIDADE */
+        @media (max-width: 1024px) {
+            .tratamento-card {
+            width: 100%; /* Garante que todos ocupem a mesma largura */
+            max-width: 900px; /* Define um tamanho máximo */
+            min-height: 300px; /* Define uma altura mínima para evitar variações */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 0 auto 20px auto;
+        }
 
-.tratamento-info {
-    flex: 1;
-    padding: 15px;
-}
+        .tratamento-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
 
-.tratamento-img {
-    width: 150px;  /* Tamanho fixo da imagem */
-    height: 200px;
-    object-fit: contain; /* Evita distorções */
-    margin-right: 20px;
-}
+        .tratamento-info {
+            flex: 1;
+            padding: 15px;
+        }
 
-.tratamento-descricao {
-    text-align: justify;
-    max-width: 600px;
-}
+        .tratamento-img {
+            width: 150px;  /* Tamanho fixo da imagem */
+            height: 200px;
+            object-fit: contain; /* Evita distorções */
+            margin-right: 20px;
+        }
 
-/* Garantir alinhamento vertical */
-.tratamento-content {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-}
+        .tratamento-descricao {
+            text-align: justify;
+            max-width: 600px;
+        }
+
+        /* Garantir alinhamento vertical */
+        .tratamento-content {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        }
 
 
-.container {
-    flex: 1;
-}
+        .container {
+            flex: 1;
+        }
 
 
                 /* FOOTER */
@@ -288,13 +288,13 @@ header {
 
         .footer-container {
             display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    width: 100%;
-    max-width: 1200px;
-    margin: auto;
-    padding: 0 20px;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
         }
         .footer-left img {
             max-height: 50px;
@@ -409,48 +409,48 @@ header {
             background-color: #0056b3;
         }
 
-/* Espaçamento entre os botões */
-.nav-buttons {
-    display: flex;
-    gap: 15px; /* Aumenta a distância entre os botões */
-}
-
-/* Ajusta o tamanho dos botões */
-.btn-login, .btn-signup {
-    padding: 8px 18px;
-    font-size: 14px;
-    border-radius: 6px;
-}
-
-/* Login com borda azul */
-.btn-login {
-    border: 2px solid #007bff;
-    color: #007bff;
-    background: white;
-    transition: 0.3s ease-in-out;
-}
-
-.btn-login:hover {
-    background: #007bff;
-    color: white;
-}
-
-/* Cadastro com fundo azul */
-.btn-signup {
-    background-color: #007bff;
-    color: white;
-    border: none;
-}
-
-.btn-signup:hover {
-    background-color: #0056b3;
-}
-.content {
-            flex: 1;
-            max-width: 1200px;
-            margin: auto;
-            padding: 20px; /* Garante que o conteúdo empurre o footer para baixo */
+        /* Espaçamento entre os botões */
+        .nav-buttons {
+            display: flex;
+            gap: 15px; /* Aumenta a distância entre os botões */
         }
+
+        /* Ajusta o tamanho dos botões */
+        .btn-login, .btn-signup {
+            padding: 8px 18px;
+            font-size: 14px;
+            border-radius: 6px;
+        }
+
+        /* Login com borda azul */
+        .btn-login {
+            border: 2px solid #007bff;
+            color: #007bff;
+            background: white;
+            transition: 0.3s ease-in-out;
+        }
+
+        .btn-login:hover {
+            background: #007bff;
+            color: white;
+        }
+
+        /* Cadastro com fundo azul */
+        .btn-signup {
+            background-color: #007bff;
+            color: white;
+            border: none;
+        }
+
+        .btn-signup:hover {
+            background-color: #0056b3;
+        }
+        .content {
+                    flex: 1;
+                    max-width: 1200px;
+                    margin: auto;
+                    padding: 20px; /* Garante que o conteúdo empurre o footer para baixo */
+                }
 
 
     </style>
@@ -472,7 +472,7 @@ header {
             <!-- Botões Login / Cadastro no canto direito -->
             <div class="nav-buttons d-flex">
                 <a href="{% url 'home' %}" class="btn btn-outline-primary btn-login">Login</a>
-                <a href="{url 'register'%}" class="btn btn-primary btn-signup">Cadastre-se</a>
+                <a href="{% url 'register'%}" class="btn btn-primary btn-signup">Cadastre-se</a>
             </div>
         </div>
     </nav>
@@ -504,9 +504,12 @@ header {
             <img src="{% static 'default-image.jpg' %}" alt="Imagem não disponível">
         {% endif %}
         
+
         <!-- INFORMAÇÕES DO TRATAMENTO -->
         <div class="tratamento-info">
-            <h3 class="tratamento-nome">{{ tratamento.nome }}</h3>
+            <a href="{% url 'detalhes_tratamentos' tratamento.id %}" class="text-primary fw-bold fs-3 text-decoration-none">
+                {{ tratamento.nome }}
+            </a>
             <a href="#" class="tratamento-tipo">Tratamento Alopático</a>
             <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo }}</p>
             <p><strong>Fabricante:</strong> {{ tratamento.fabricante }}</p>
