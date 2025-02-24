@@ -219,64 +219,54 @@ class DetalhesTratamentoResumo(models.Model):
         ("gravidez", "Gravidez"),
     )
 
-    nome = models.CharField(max_length=100)
-    fabricante = models.CharField(max_length=200)
-    principio_ativo = models.CharField(max_length=200)
+    nome = models.CharField(max_length=200)
     descricao = models.TextField()
-    eficacia_min = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
-    eficacia_max = models.DecimalField(max_digits=5, decimal_places=2, default=100.00)
-    grau_evidencia = models.CharField(max_length=100, blank=True, null=True)
-    funciona_para_todos = models.CharField(max_length=100, blank=True, null=True)
-    adesao = models.CharField(max_length=200)
-    quando_tomar = models.TextField()
-    imagem = models.ImageField(upload_to="tratamentos/", blank=True, null=True)
+    categoria = models.CharField(max_length=100, blank=True, null=True)
+    evidencia_clinica = models.TextField(blank=True, null=True)
+    principio_ativo = models.CharField(max_length=200)
+    fabricante = models.CharField(max_length=200)
+    avaliacao = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
+    eficacia_min = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    eficacia_max = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     prazo_efeito_min = models.CharField(max_length=50, blank=True, null=True)
     prazo_efeito_max = models.CharField(max_length=50, blank=True, null=True)
+    imagem = models.ImageField(upload_to="tratamentos/", blank=True, null=True)
+    grau_evidencia = models.CharField(max_length=100, blank=True, null=True)
+    funciona_para_todos = models.CharField(max_length=100, blank=True, null=True)
+    adesao = models.CharField(max_length=200, blank=True, null=True)
+    quando_tomar = models.TextField()
     realizar_tratamento_quando = models.TextField(blank=True, null=True)
-    custo_medicamento = models.DecimalField(
-        max_digits=7, decimal_places=2, blank=True, null=True
-    )
+    custo_medicamento = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
     links_externos = models.TextField(blank=True, null=True)
     alertas = models.TextField(blank=True, null=True)
     grupo = models.CharField(max_length=20, choices=GRUPO_CHOICES, default="adultos")
-
-    indicado_criancas = models.CharField(
-        max_length=100, choices=[("SIM", "Sim"), ("NÃO", "Não")], default="NÃO"
-    )
+    indicado_criancas = models.CharField(max_length=100, choices=[('SIM', 'Sim'), ('NÃO', 'Não')], default='NÃO')
     motivo_criancas = models.TextField(blank=True, null=True)
-    indicado_adolescentes = models.CharField(
-        max_length=100, choices=[("SIM", "Sim"), ("NÃO", "Não")], default="NÃO"
-    )
+    indicado_adolescentes = models.CharField(max_length=100, choices=[('SIM', 'Sim'), ('NÃO', 'Não')], default='NÃO')
     motivo_adolescentes = models.TextField(blank=True, null=True)
-    indicado_idosos = models.CharField(
-        max_length=100, choices=[("SIM", "Sim"), ("NÃO", "Não")], default="NÃO"
-    )
+    indicado_idosos = models.CharField(max_length=100, choices=[('SIM', 'Sim'), ('NÃO', 'Não')], default='NÃO')
     motivo_idosos = models.TextField(blank=True, null=True)
-    indicado_adultos = models.CharField(
-        max_length=100, choices=[("SIM", "Sim"), ("NÃO", "Não")], default="SIM"
-    )
+    indicado_adultos = models.CharField(max_length=100, choices=[('SIM', 'Sim'), ('NÃO', 'Não')], default='SIM')
     motivo_adultos = models.TextField(blank=True, null=True)
-
-    uso_lactantes = models.CharField(
-        max_length=100, choices=[("A", "A"), ("B", "B"), ("C", "C")], default="C"
-    )
+    indicado_lactantes = models.CharField(max_length=100, choices=[('A', 'A'), ('B', 'B'), ('C', 'C')], default='C')
     motivo_lactantes = models.TextField(blank=True, null=True)
-    uso_gravidez = models.CharField(
-        max_length=100,
-        choices=[("A", "A"), ("B", "B"), ("C", "C"), ("D", "D"), ("X", "X")],
-        default="D",
-    )
+    indicado_gravidez= models.CharField(max_length=100, choices=[('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'), ('X', 'X')], default='D')
     motivo_gravidez = models.TextField(blank=True, null=True)
     contraindicacoes = models.ManyToManyField(Contraindicacao, blank=True)
     reacoes_adversas = models.ManyToManyField(ReacaoAdversa, blank=True)
 
+    class Meta:
+        verbose_name = "Detalhes Tratamentos - Resumo"
+        verbose_name_plural = "Detalhes Tratamentos - Resumo"
+
+    def __str__(self):
+        return self.nome
 
 class EvidenciasClinicas(models.Model):
-    tratamento = models.ForeignKey(
-        "DetalhesTratamentoResumo", on_delete=models.CASCADE, related_name="evidencias"
-    )
+    tratamento = models.ForeignKey("DetalhesTratamentoResumo", on_delete=models.CASCADE, related_name="evidencias")
     titulo = models.CharField(max_length=255)
     descricao = models.TextField()
+    condicao_saude = models.CharField(max_length=255, blank=True, null=True)
     grau_evidencia = models.CharField(max_length=100)
     estudo_publicado = models.CharField(max_length=255, blank=True, null=True)
     link_estudo = models.URLField(blank=True, null=True)

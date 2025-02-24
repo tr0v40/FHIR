@@ -4,56 +4,56 @@ from .models import (
     DetalhesTratamentoResumo,
     Contraindicacao,
     ReacaoAdversa,
-    Organization,
-    SubstanceDefinition,
-    Ingredient,
-    ManufacturedItemDefinition,
-    PackagedProductDefinition,
-    AdministrableProductDefinition,
-    MedicinalProductDefinition,
-    RegulatedAuthorization,
-    ClinicalUseDefinition,
-    Composition,
-    Binary,
-    StudyGroup,
-    ResourceStudyReport,
-    Tratamentos,
+    # Organization,
+    # SubstanceDefinition,
+    # Ingredient,
+    # ManufacturedItemDefinition,
+    # PackagedProductDefinition,
+    # AdministrableProductDefinition,
+    # MedicinalProductDefinition,
+    # RegulatedAuthorization,
+    # ClinicalUseDefinition,
+    # Composition,
+    # Binary,
+    # StudyGroup,
+    # ResourceStudyReport,
+    # Tratamentos,
     EvidenciasClinicas,
 )
 
 admin.site.register(
     [
-        Organization,
-        SubstanceDefinition,
-        Ingredient,
-        ManufacturedItemDefinition,
-        PackagedProductDefinition,
-        AdministrableProductDefinition,
-        MedicinalProductDefinition,
-        RegulatedAuthorization,
-        ClinicalUseDefinition,
-        Composition,
-        Binary,
-        StudyGroup,
-        ResourceStudyReport,
+        # Organization,
+        # SubstanceDefinition,
+        # Ingredient,
+        # ManufacturedItemDefinition,
+        # PackagedProductDefinition,
+        # AdministrableProductDefinition,
+        # MedicinalProductDefinition,
+        # RegulatedAuthorization,
+        # ClinicalUseDefinition,
+        # Composition,
+        # Binary,
+        # StudyGroup,
+        # ResourceStudyReport,
     ]
 )
 
 
-class TratamentosAdmin(admin.ModelAdmin):
-    list_display = ("nome", "principio_ativo", "fabricante", "imagem_preview")
-    search_fields = ("nome", "principio_ativo", "fabricante")
-    list_filter = ("fabricante",)
-    readonly_fields = ("imagem_preview",)
+# class TratamentosAdmin(admin.ModelAdmin):
+#     list_display = ("nome", "principio_ativo", "fabricante", "imagem_preview")
+#     search_fields = ("nome", "principio_ativo", "fabricante")
+#     list_filter = ("fabricante",)
+#     readonly_fields = ("imagem_preview",)
 
-    def imagem_preview(self, obj):
-        if obj.imagem:
-            return format_html(
-                f'<img src="{obj.imagem.url}" width="100px" height="100px" style="border-radius:10px;">'
-            )
-        return "Sem imagem"
+#     def imagem_preview(self, obj):
+#         if obj.imagem:
+#             return format_html(
+#                 f'<img src="{obj.imagem.url}" width="100px" height="100px" style="border-radius:10px;">'
+#             )
+#         return "Sem imagem"
 
-    imagem_preview.short_description = "Pré-visualização"
+#     imagem_preview.short_description = "Pré-visualização"
 
 
 class DetalhesTratamentoAdmin(admin.ModelAdmin):
@@ -87,6 +87,7 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
                     "descricao",
                     "imagem",
                     "grupo",
+                    "avaliacao",
                 )
             },
         ),
@@ -127,20 +128,14 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
                     "motivo_idosos",
                     "indicado_adultos",
                     "motivo_adultos",
-                )
-            },
-        ),
-        (
-            "Gravidez e Lactação",
-            {
-                "fields": (
-                    "uso_lactantes",
+                    "indicado_lactantes",
                     "motivo_lactantes",
-                    "uso_gravidez",
-                    "motivo_gravidez",
+                    "indicado_gravidez",
+                    "motivo_gravidez"
                 )
             },
         ),
+
         ("Contraindicações", {"fields": ("contraindicacoes",)}),
         ("Reações Adversas", {"fields": ("reacoes_adversas",)}),
     )
@@ -150,6 +145,7 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
     list_display = (
         "titulo",
         "tratamento",
+        "condicao_saude",
         "grau_evidencia",
         "data_publicacao",
         "referencia_bibliografica",
@@ -169,6 +165,7 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
                     "tratamento",
                     "titulo",
                     "descricao",
+                    "condicao_saude",
                     "grau_evidencia",
                     "eficacia_min",
                     "eficacia_max",
@@ -224,7 +221,7 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
 
 
 admin.site.register(EvidenciasClinicas, EvidenciasClinicasAdmin)
-admin.site.register(Tratamentos, TratamentosAdmin)
+# admin.site.register(Tratamentos, TratamentosAdmin)
 admin.site.register(DetalhesTratamentoResumo, DetalhesTratamentoAdmin)
 admin.site.register(Contraindicacao)
 admin.site.register(ReacaoAdversa)

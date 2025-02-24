@@ -496,6 +496,7 @@
 <!-- EXIBIÇÃO DOS TRATAMENTOS -->
 {% for tratamento in tratamentos %}
 <div class="tratamento-card">
+    <a href="{% url 'detalhes_tratamentos' tratamento.id %}" class="text-decoration-none">
     <div class="tratamento-content">
         <!-- IMAGEM -->
         {% if tratamento.imagem %}

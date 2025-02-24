@@ -274,8 +274,8 @@
         }
 
         .table {
-            width: 90%;
-            max-width: 800px;
+            width: 95%; /* 🔹 Aumentando a largura sem ocupar tudo */
+            max-width: 1300px; /* 🔹 Antes era 800px, agora aumentamos um pouco */
             border-collapse: collapse;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
@@ -779,7 +779,173 @@
     }
 }
 
+/* 🔹 Estilização do formulário de filtros */
+.search-bar {
+    background: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
+/* 🔹 Labels */
+.form-label {
+    font-weight: bold;
+    color: #333;
+}
+
+/* 🔹 Inputs e Select */
+.form-control {
+    border-radius: 5px;
+    padding: 8px;
+}
+
+/* 🔹 Botões */
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+
+
+.lactantes-indicacao,
+.gravidez-indicacao {
+    display: inline-block;
+    padding: 5px 10px;
+    font-weight: bold;
+    border-radius: 5px;
+    color: white;
+}
+
+.lactantes-indicacao.a, .gravidez-indicacao.a { background-color: #28a745; } /* Verde */
+.lactantes-indicacao.b, .gravidez-indicacao.b { background-color: #007bff; } /* Azul */
+.lactantes-indicacao.c, .gravidez-indicacao.c { background-color: #ffc107; } /* Amarelo */
+.lactantes-indicacao.d, .gravidez-indicacao.d { background-color: #fd7e14; } /* Laranja */
+.lactantes-indicacao.x, .gravidez-indicacao.x { background-color: #dc3545; } /* Vermelho */
+
+<!-- 🔹 Estilização da Barra de Filtros -->
+<style>
+    .search-bar {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        max-width: 250px;
+    }
+
+    .filter-group label {
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .filter-group select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        background: white;
+        cursor: pointer;
+    }
+
+    .filter-group select:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+
+    .filter-group select option {
+        padding: 5px;
+    }
+
+    .filter-button {
+        height: 42px;
+        width: 150px;
+        font-size: 16px;
+        font-weight: 600;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .filter-button:hover {
+        background: #0056b3;
+    }
+
+/* 🔹 Ajuste da largura e alinhamento dos filtros */
+.search-bar {
+    background: #f8f9fa;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.search-bar .row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Espaço entre os filtros */
+}
+
+/* 🔹 Define um tamanho adequado para os selects */
+.search-bar select {
+    width: 100%;
+    height: 40px;
+    font-size: 14px;
+}
+
+/* 🔹 Ajuste do botão de busca */
+.btn-primary {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    padding: 10px 15px;
+    white-space: nowrap;
+}
+
+/* 🔹 Responsividade: Ajusta para telas menores */
+@media (max-width: 768px) {
+    .search-bar .row {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
+}
 
 
     </style>
@@ -806,18 +972,16 @@
 </header>
 
 
+
 <!-- FORMULÁRIO DE FILTRO -->
 <div class="search-bar mt-4">
     <form method="GET" action="{% url 'tratamentos' %}">
-        <div class="row">
-            <!-- Campo de pesquisa pelo nome -->
-            <div class="col-md-4">
-                <input type="text" class="form-control" name="nome" placeholder="Nome do tratamento" value="{{ request.GET.nome }}">
-            </div>
-            
-            <!-- Filtro por categoria -->
-            <div class="col-md-4">
-                <select class="form-control" name="categoria">
+        <div class="row align-items-center justify-content-center">
+
+            <!-- Filtro por Categoria -->
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <label for="categoria" class="form-label">Categoria:</label>
+                <select class="form-select" name="categoria" id="categoria">
                     <option value="">Todas as categorias</option>
                     <option value="Comprimidos" {% if request.GET.categoria == "Comprimidos" %}selected{% endif %}>Comprimidos</option>
                     <option value="Injetáveis" {% if request.GET.categoria == "Injetáveis" %}selected{% endif %}>Injetáveis</option>
@@ -825,39 +989,45 @@
                 </select>
             </div>
 
-            <!-- Botão de pesquisa -->
-            <div class="col-md-4">
-                <button type="submit" class="btn btn-primary w-100">Buscar</button>
-            </div>
-        </div>
-
-        <!-- Lista de medicamentos como checkboxes -->
-        <div class="mt-3">
-            <strong>Filtrar por Medicamento:</strong>
-            {% if medicamentos %}
-                <div class="d-flex flex-wrap">
-                    {% for medicamento in medicamentos %}
-                        <div class="form-check me-3">
-                            <input 
-                                class="form-check-input" 
-                                type="checkbox" 
-                                name="medicamento" 
-                                value="{{ medicamento.id }}" 
-                                id="med_{{ medicamento.id }}"
-                                {% if medicamento.id|stringformat:"s" in request.GET.medicamento %}checked{% endif %}
-                            >
-                            <label class="form-check-label" for="med_{{ medicamento.id }}">
-                                {{ medicamento.nome }}
-                            </label>
-                        </div>
+            <!-- Filtro por Condição de Saúde -->
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <label for="condicao_saude" class="form-label">Condição de Saúde:</label>
+                <select class="form-select" name="condicao_saude" id="condicao_saude">
+                    <option value="">Todas</option>
+                    {% for condicao in condicoes_saude %}
+                        <option value="{{ condicao.nome }}" {% if request.GET.condicao_saude == condicao.nome %}selected{% endif %}>
+                            {{ condicao.nome }}
+                        </option>
                     {% endfor %}
-                </div>
-            {% else %}
-                <p class="text-muted">Nenhum medicamento disponível.</p>
-            {% endif %}
+                </select>
+            </div>
+
+            <!-- Filtro por Medicamento -->
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <label for="medicamento" class="form-label">Medicamento:</label>
+                <select class="form-select" name="medicamento" id="medicamento">
+                    <option value="">Todos os Medicamentos</option>
+                    {% for medicamento in medicamentos %}
+                        <option value="{{ medicamento.id }}" {% if medicamento.id|stringformat:"s" == request.GET.medicamento %}selected{% endif %}>
+                            {{ medicamento.nome }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Botão de busca -->
+            <div class="col-lg-2 col-md-4 col-sm-6 d-grid">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Buscar
+                </button>
+            </div>
+
         </div>
     </form>
 </div>
+
+
+
 
 
 
@@ -889,33 +1059,48 @@
         </body>
         </html>
         
-        <!-- Seção de Grau de Evidência Clínica -->
-        <div class="efficacy-section">
-                   <!-- Ícone que direciona para a página de evidências clínicas -->
-<a href="/evidencias-clinicas/{{ tratamento.id }}/" class="btn btn-link p-0" title="Ver evidências clínicas">
-    <i class="fas fa-info-circle text-primary fs-4"></i>
-</a>
+      
+<!-- Seção de Grau de Evidência Clínica -->
+<div class="efficacy-section">
+    <!-- Ícone que direciona para a página de evidências clínicas -->
+    <a href="/evidencias-clinicas/{{ tratamento.id }}/" class="btn btn-link p-0" title="Ver evidências clínicas">
+        <i class="fas fa-info-circle text-primary fs-4"></i>
+    </a>
 
-            <h2 class="efficacy-title">Eficácia em crises de enxaqueca</h2>
+    <h2 class="efficacy-title">Eficácia em crises de enxaqueca</h2>
 
-            <div class="efficacy-bar-container">
-                <div class="efficacy-bar">
-                    <div class="efficacy-filled" style="width: {{ tratamento.eficacia_max }}%;"></div>
-                    <div class="efficacy-marker" style="left: calc({{ tratamento.eficacia_max }}% - 14px);"></div>
-                </div>
+    <div class="efficacy-bar-container">
+        <div class="efficacy-bar">
+            <div class="efficacy-filled" 
+                style="width: {% if eficacia_max is not None %}{{ eficacia_max }}{% else %}0{% endif %}%;">
             </div>
-
-            <p class="efficacy-range">
-                <span class="low-efficacy">{{ tratamento.eficacia_min }}</span>
-                <span class="efficacy-separator">a</span> 
-                <span class="high-efficacy">{{ tratamento.eficacia_max }}%</span>
-            </p>
-
-            <p class="efficacy-info">
-                O remédio funciona para todo mundo? 
-                <strong>Não, apenas para <span class="highlight">{{ tratamento.eficacia_min }}~{{ tratamento.eficacia_max }}% das pessoas.</span></strong>
-            </p>
+            <div class="efficacy-marker" 
+                style="left: calc({% if eficacia_max is not None %}{{ eficacia_max }}{% else %}0{% endif %}% - 14px);">
+            </div>
         </div>
+    </div>
+
+    <p class="efficacy-range">
+        <span class="low-efficacy">
+            {% if eficacia_min is not None %}{{ eficacia_min }}{% else %}0.00{% endif %}
+        </span>
+        <span class="efficacy-separator">a</span> 
+        <span class="high-efficacy">
+            {% if eficacia_max is not None %}{{ eficacia_max }}{% else %}0.00{% endif %}%
+        </span>
+    </p>
+
+    <p class="efficacy-info">
+        O remédio funciona para todo mundo? 
+        <strong>
+            Não, apenas para <span class="highlight">
+                {% if eficacia_min is not None %}{{ eficacia_min }}{% else %}0.00{% endif %} ~ 
+                {% if eficacia_max is not None %}{{ eficacia_max }}{% else %}0.00{% endif %}%
+            </span>.
+        </strong>
+    </p>
+</div>
+
 
         <!-- Seção de Adesão -->
         <div class="adhesion-section">
@@ -937,41 +1122,64 @@
 
 
 
-        <!-- Tabela de Indicações -->
-        <div class="table-container">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Grupo</th>
-                        <th>Indicado para</th>
-                        <th>Motivo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Crianças menores de 12 anos</td>
-                        <td><span class="no">NÃO</span></td>
-                        <td>Não há dados sobre o uso em crianças</td>
-                    </tr>
-                    <tr>
-                        <td>Adolescentes 12 a 17 anos</td>
-                        <td><span class="no">NÃO</span></td>
-                        <td>Eficácia não demonstrada</td>
-                    </tr>
-                    <tr>
-                        <td>Idosos +65 anos</td>
-                        <td><span class="no">NÃO</span></td>
-                        <td>A segurança e eficácia não foram avaliadas</td>
-                    </tr>
-                    <tr>
-                        <td>Adultos</td>
-                        <td><span class="yes">SIM</span></td>
-                        <td>Indicação e dosagem orientadas por um profissional de saúde</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+<!-- Tabela de Indicações -->
+
+<div class="table-container">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Grupo</th>
+                <th>Indicado para</th>
+                <th>Motivo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Crianças menores de 12 anos</td>
+                <td><span class="{% if tratamento.indicado_criancas == 'SIM' %}yes{% else %}no{% endif %}">
+                    {{ tratamento.indicado_criancas }}</span></td>
+                <td>{{ tratamento.motivo_criancas|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td>Adolescentes 12 a 17 anos</td>
+                <td><span class="{% if tratamento.indicado_adolescentes == 'SIM' %}yes{% else %}no{% endif %}">
+                    {{ tratamento.indicado_adolescentes }}</span></td>
+                <td>{{ tratamento.motivo_adolescentes|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td>Idosos +65 anos</td>
+                <td><span class="{% if tratamento.indicado_idosos == 'SIM' %}yes{% else %}no{% endif %}">
+                    {{ tratamento.indicado_idosos }}</span></td>
+                <td>{{ tratamento.motivo_idosos|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td>Adultos</td>
+                <td><span class="{% if tratamento.indicado_adultos == 'SIM' %}yes{% else %}no{% endif %}">
+                    {{ tratamento.indicado_adultos }}</span></td>
+                <td>{{ tratamento.motivo_adultos|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td>Lactantes</td>
+                <td>
+                    <span class="lactantes-indicacao {{ tratamento.indicado_lactantes|lower }}">
+                        {{ tratamento.indicado_lactantes}}
+                    </span>
+                </td>
+                <td>{{ tratamento.motivo_lactantes|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td>Gravidez</td>
+                <td>
+                    <span class="gravidez-indicacao {{ tratamento.indicado_gravidez|lower }}">
+                        {{ tratamento.indicado_gravidez }}
+                    </span>
+                </td>
+                <td>{{ tratamento.motivo_gravidez|default:"-" }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
 
 <!-- Seção de Contraindicações -->
 <div class="contraindications-section container mt-5">
