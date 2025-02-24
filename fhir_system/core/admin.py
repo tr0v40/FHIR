@@ -4,106 +4,115 @@ from .models import (
     DetalhesTratamentoResumo, 
     Contraindicacao, 
     ReacaoAdversa,
-    Organization,
-    SubstanceDefinition,
-    Ingredient,
-    ManufacturedItemDefinition,
-    PackagedProductDefinition,
-    AdministrableProductDefinition,
-    MedicinalProductDefinition,
-    RegulatedAuthorization,
-    ClinicalUseDefinition,
-    Composition,
-    Binary,
-    StudyGroup,
-    ResourceStudyReport,
-    Tratamentos,
+    # Organization,
+    # SubstanceDefinition,
+    # Ingredient,
+    # ManufacturedItemDefinition,
+    # PackagedProductDefinition,
+    # AdministrableProductDefinition,
+    # MedicinalProductDefinition,
+    # RegulatedAuthorization,
+    # ClinicalUseDefinition,
+    # Composition,
+    # Binary,
+    # StudyGroup,
+    # ResourceStudyReport,
+    # Tratamentos,
     EvidenciasClinicas
 )
 
 admin.site.register([
-    Organization,
-    SubstanceDefinition,
-    Ingredient,
-    ManufacturedItemDefinition,
-    PackagedProductDefinition,
-    AdministrableProductDefinition,
-    MedicinalProductDefinition,
-    RegulatedAuthorization,
-    ClinicalUseDefinition,
-    Composition,
-    Binary,
-    StudyGroup,
-    ResourceStudyReport,
+    # Organization,
+    # SubstanceDefinition,
+    # Ingredient,
+    # ManufacturedItemDefinition,
+    # PackagedProductDefinition,
+    # AdministrableProductDefinition,
+    # MedicinalProductDefinition,
+    # RegulatedAuthorization,
+    # ClinicalUseDefinition,
+    # Composition,
+    # Binary,
+    # StudyGroup,
+    # ResourceStudyReport,
 ])
 
-class TratamentosAdmin(admin.ModelAdmin):
-    list_display = ("nome", "principio_ativo", "fabricante", "imagem_preview")  
-    search_fields = ("nome", "principio_ativo", "fabricante")  
-    list_filter = ("fabricante",)  
-    readonly_fields = ("imagem_preview",)
+# class TratamentosAdmin(admin.ModelAdmin):
+#     list_display = ("nome", "principio_ativo", "fabricante", "imagem_preview")  
+#     search_fields = ("nome", "principio_ativo", "fabricante")  
+#     list_filter = ("fabricante",)  
+#     readonly_fields = ("imagem_preview",)
 
-    def imagem_preview(self, obj):
-        if obj.imagem:
-            return format_html(f'<img src="{obj.imagem.url}" width="100px" height="100px" style="border-radius:10px;">')
-        return "Sem imagem"
+#     def imagem_preview(self, obj):
+#         if obj.imagem:
+#             return format_html(f'<img src="{obj.imagem.url}" width="100px" height="100px" style="border-radius:10px;">')
+#         return "Sem imagem"
 
-    imagem_preview.short_description = "Pré-visualização"
+#     imagem_preview.short_description = "Pré-visualização"
 
-admin.site.register(Tratamentos, TratamentosAdmin)
+# admin.site.register(Tratamentos, TratamentosAdmin)
+
+from django.contrib import admin
+from django.contrib.admin.sites import AlreadyRegistered
+from .models import DetalhesTratamentoResumo
+
+
+
 
 class DetalhesTratamentoAdmin(admin.ModelAdmin):
-    list_display = ("nome", "fabricante", "principio_ativo", "grupo", "eficacia_min", "eficacia_max", "custo_medicamento")
-    filter_horizontal = ("contraindicacoes", "reacoes_adversas")
-    search_fields = ("nome", "fabricante", "principio_ativo", "grupo")
-    list_filter = ("fabricante", "grupo", "eficacia_min", "eficacia_max", "custo_medicamento")
+        list_display = ("nome", "fabricante", "principio_ativo", "avaliacao")
+        search_fields = ("nome", "fabricante", "principio_ativo")
+        list_filter = ("fabricante", "grupo", "avaliacao")
 
-
-    fieldsets = (
-        ("Informações Gerais", {
-            "fields": ("nome", "fabricante", "principio_ativo", "descricao", "imagem", "grupo")
-        }),
-        ("Eficácia e Evidência", {
-            "fields": ("eficacia_min", "eficacia_max", "grau_evidencia", "funciona_para_todos")
-        }),
-        ("Adesão ao Tratamento", {
-            "fields": ("adesao", "quando_tomar", "prazo_efeito_min", "prazo_efeito_max", "realizar_tratamento_quando", "custo_medicamento")
-        }),
-        ("Links e Alertas", {
-            "fields": ("links_externos", "alertas")
-        }),
-        ("Indicação por Grupo", {
-            "fields": ("indicado_criancas", "motivo_criancas",
-                       "indicado_adolescentes", "motivo_adolescentes",
-                       "indicado_idosos", "motivo_idosos",
-                       "indicado_adultos", "motivo_adultos")
-        }),
-        ("Gravidez e Lactação", {
-            "fields": ("uso_lactantes", "motivo_lactantes",
-                       "uso_gravidez", "motivo_gravidez")
-        }),
-        ("Contraindicações", {
-            "fields": ("contraindicacoes",)
-        }),
-        ("Reações Adversas", {
-            "fields": ("reacoes_adversas",)
-        }),
-    )
-
+        fieldsets = (
+            ("Informações Gerais", {
+                "fields": ("nome", "fabricante", "principio_ativo", "descricao", "imagem", "grupo", "avaliacao")  
+            }),
+            ("Eficácia e Evidência", {
+                "fields": ("eficacia_min", "eficacia_max", "grau_evidencia", "funciona_para_todos")
+            }),
+            ("Adesão ao Tratamento", {
+                "fields": ("adesao", "quando_tomar", "prazo_efeito_min", "prazo_efeito_max", "realizar_tratamento_quando", "custo_medicamento")
+            }),
+            ("Links e Alertas", {
+                "fields": ("links_externos", "alertas")
+            }),
+            ("Indicações", {
+                "fields": ("indicado_criancas", "motivo_criancas",
+                           "indicado_adolescentes", "motivo_adolescentes",
+                           "indicado_idosos", "motivo_idosos",
+                           "indicado_adultos", "motivo_adultos")
+            }),
+            ("Gravidez e Lactação", {
+                "fields": ("uso_lactantes", "motivo_lactantes",
+                           "uso_gravidez", "motivo_gravidez")
+            }),
+            ("Contraindicações", {
+                "fields": ("contraindicacoes",)
+            }),
+            ("Reações Adversas", {
+                "fields": ("reacoes_adversas",)
+            }),
+        )
 
 admin.site.register(DetalhesTratamentoResumo, DetalhesTratamentoAdmin)
+
 admin.site.register(Contraindicacao)
 admin.site.register(ReacaoAdversa)
 
+from django.contrib import admin
+from .models import EvidenciasClinicas
+
+
 class EvidenciasClinicasAdmin(admin.ModelAdmin):
-    list_display = ("titulo", "tratamento", "grau_evidencia", "data_publicacao", "referencia_bibliografica", "eficacia_min", "eficacia_max", "visualizar_pdf")
+    list_display = ("titulo", "tratamento", "condicao_saude", "grau_evidencia", "data_publicacao", "referencia_bibliografica", "eficacia_min", "eficacia_max", "visualizar_pdf")
     search_fields = ("titulo", "tratamento__nome", "referencia_bibliografica")
     list_filter = ("grau_evidencia", "data_publicacao")
     readonly_fields = ("imagem_preview", "visualizar_pdf")
 
     fieldsets = (
         ("Informações da Evidência", {
-            "fields": ("tratamento", "titulo", "descricao", "grau_evidencia", "eficacia_min", "eficacia_max")
+            "fields": ("tratamento", "titulo", "descricao", "condicao_saude", "grau_evidencia", "eficacia_min", "eficacia_max")
         }),
         ("Detalhes do Estudo", {
             "fields": ("estudo_publicado", "autores", "link_estudo", "data_publicacao")
