@@ -889,33 +889,48 @@
         </body>
         </html>
         
-        <!-- Seção de Grau de Evidência Clínica -->
-        <div class="efficacy-section">
-                   <!-- Ícone que direciona para a página de evidências clínicas -->
-<a href="/evidencias-clinicas/{{ tratamento.id }}/" class="btn btn-link p-0" title="Ver evidências clínicas">
-    <i class="fas fa-info-circle text-primary fs-4"></i>
-</a>
+      
+<!-- Seção de Grau de Evidência Clínica -->
+<div class="efficacy-section">
+    <!-- Ícone que direciona para a página de evidências clínicas -->
+    <a href="/evidencias-clinicas/{{ tratamento.id }}/" class="btn btn-link p-0" title="Ver evidências clínicas">
+        <i class="fas fa-info-circle text-primary fs-4"></i>
+    </a>
 
-            <h2 class="efficacy-title">Eficácia em crises de enxaqueca</h2>
+    <h2 class="efficacy-title">Eficácia em crises de enxaqueca</h2>
 
-            <div class="efficacy-bar-container">
-                <div class="efficacy-bar">
-                    <div class="efficacy-filled" style="width: {{ tratamento.eficacia_max }}%;"></div>
-                    <div class="efficacy-marker" style="left: calc({{ tratamento.eficacia_max }}% - 14px);"></div>
-                </div>
+    <div class="efficacy-bar-container">
+        <div class="efficacy-bar">
+            <div class="efficacy-filled" 
+                style="width: {% if eficacia_max is not None %}{{ eficacia_max }}{% else %}0{% endif %}%;">
             </div>
-
-            <p class="efficacy-range">
-                <span class="low-efficacy">{{ tratamento.eficacia_min }}</span>
-                <span class="efficacy-separator">a</span> 
-                <span class="high-efficacy">{{ tratamento.eficacia_max }}%</span>
-            </p>
-
-            <p class="efficacy-info">
-                O remédio funciona para todo mundo? 
-                <strong>Não, apenas para <span class="highlight">{{ tratamento.eficacia_min }}~{{ tratamento.eficacia_max }}% das pessoas.</span></strong>
-            </p>
+            <div class="efficacy-marker" 
+                style="left: calc({% if eficacia_max is not None %}{{ eficacia_max }}{% else %}0{% endif %}% - 14px);">
+            </div>
         </div>
+    </div>
+
+    <p class="efficacy-range">
+        <span class="low-efficacy">
+            {% if eficacia_min is not None %}{{ eficacia_min }}{% else %}0.00{% endif %}
+        </span>
+        <span class="efficacy-separator">a</span> 
+        <span class="high-efficacy">
+            {% if eficacia_max is not None %}{{ eficacia_max }}{% else %}0.00{% endif %}%
+        </span>
+    </p>
+
+    <p class="efficacy-info">
+        O remédio funciona para todo mundo? 
+        <strong>
+            Não, apenas para <span class="highlight">
+                {% if eficacia_min is not None %}{{ eficacia_min }}{% else %}0.00{% endif %} ~ 
+                {% if eficacia_max is not None %}{{ eficacia_max }}{% else %}0.00{% endif %}%
+            </span>.
+        </strong>
+    </p>
+</div>
+
 
         <!-- Seção de Adesão -->
         <div class="adhesion-section">
