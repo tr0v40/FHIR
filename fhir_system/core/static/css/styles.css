@@ -12265,3 +12265,127 @@ header {
     transform: scale(1.1);
 }
 
+/* Reset de margens e bordas */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Configuração geral */
+html, body {
+  height: 100%;
+  background-color: #f8f9fa;
+  font-family: Arial, sans-serif;
+}
+
+/* Estrutura geral do layout */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Layout principal */
+.content-area {
+  display: flex;
+  align-items: flex-start; /* Alinha a parte superior dos elementos */
+  gap: 20px;
+}
+
+/* Sidebar de filtros */
+.left-sidebar {
+  width: 280px;
+  position: sticky;
+  top: 20px; /* Mantém os filtros fixos ao rolar */
+  height: fit-content;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Seção de filtros */
+.filters, .classifications {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+/* Botão de filtragem */
+.filters button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.filters button:hover {
+  background-color: #0056b3;
+}
+
+/* Área da listagem de tratamentos */
+.treatment-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column; /* Faz com que os cartões fiquem um abaixo do outro */
+  gap: 15px;
+  align-items: center; /* Centraliza os cards */
+}
+
+/* Cartão de tratamento */
+.tratamento-card {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  max-width: 700px; /* Define largura máxima dos cards */
+}
+
+/* Imagem no card */
+.tratamento-card img {
+  width: 90px;
+  height: auto;
+  border-radius: 5px;
+}
+
+/* Informações do tratamento */
+.tratamento-info {
+  flex: 1;
+  text-align: left;
+}
+
+/* Título do tratamento */
+.tratamento-info h3 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+/* Ajuste responsivo */
+@media (max-width: 1024px) {
+  .content-area {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .left-sidebar {
+      width: 100%;
+      position: relative;
+  }
+
+  .treatment-list {
+      width: 100%;
+  }
+}

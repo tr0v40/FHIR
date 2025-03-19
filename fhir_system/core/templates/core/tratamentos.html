@@ -2,12 +2,10 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tratamentos para Enxaqueca</title>
-    
+
     <!-- Estilos Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
     
@@ -16,122 +14,153 @@
 
     <style>
 /* CONFIGURAÇÃO GERAL */
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+/* CONTEÚDO PRINCIPAL */
+.content-area {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 50px;
+    padding: 250px;
+}
+
+/* SIDEBAR - FILTROS */
+.left-sidebar {
+    width: 300px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 10px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Container dos filtros */
+.filters {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 10px rgba(0,0,0,0.08);
+}
+
+/* ESTILO DO FORMULÁRIO DE FILTROS */
+/* Labels dos filtros */
+.filters label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+    margin-top: 10px;
+}
+.filters h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #0056b3;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.filters select, .filters button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background: #f9f9f9;
+    font-size: 14px;
+}
+
+.filters select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #fdfdfd;
+    font-size: 14px;
+    transition: border 0.2s ease-in-out;
+}
+
+.filters select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0,123,255,0.4);
+    outline: none;
+}
+
+/* BOTÃO FILTRAR */
+.filters button {
+    background: linear-gradient(90deg, #007bff, #0056b3);
+    color: white;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+}
+
+.filters button:hover {
+    background: linear-gradient(90deg, #0056b3, #004494);
+    transform: scale(1.05);
+}
+
+/* LISTA DE TRATAMENTOS */
+.treatment-list {
             display: flex;
             flex-direction: column;
-            background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
-            overflow-x: hidden;
-        }
-
-        .content {
-                    flex: 1;
-                    max-width: 1200px;
-                    margin: auto;
-                    padding: 20px; /* Garante que o conteúdo empurre o footer para baixo */
-                }
-
-        .container {
+            gap: 20px;
             flex: 1;
-            margin-bottom: 0;
-            padding-bottom: 250px;
-        }
+}
 
-        /* HEADER */
-        header {
-            background-color: #ffffff;
-            padding: 15px 20px;
-            border-bottom: 1px solid #ddd;
-        }
+/* CARTÃO DO TRATAMENTO */
+.tratamento-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1400px; /* cartão mais largo */
+    min-height: 400px;
+    padding: 30px 40px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    background-color: white;
+    gap: 10px;
+    transition: transform 0.3s ease;
+}
 
-        .navbar-brand img {
-            height: 50px;
-            width: auto;
-        }
+.tratamento-card:hover {
+    transform: scale(1.02);
+} 
+/* CONTEÚDO DO TRATAMENTO */
+.tratamento-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+   }
 
-        /* FORMULÁRIO DE PESQUISA */
-        .search-bar {
-            width: 100%;
-            max-width: 700px;
-            margin: 0 auto 50px;
-            position: relative;
-        }
+/* IMAGEM DO TRATAMENTO */
+.tratamento-card img {
+    width: 220px;
+    height: auto;
+    border-radius: 5px;
+}
 
-        .search-bar input {
-            width: 100%;
-            padding: 12px 50px 12px 45px; /* Ajustando espaço para o ícone */
-            border-radius: 10px;
-            border: 1px solid #ccc;
-            font-size: 18px;
-        }
-
-        /* Ícone da lupa */
-        .search-bar i {
-            position: absolute;
-            top: 50%;
-            left: 15px;
-            transform: translateY(-50%);
-            color: #888;  /* Cor do ícone */
-            font-size: 20px;
-            pointer-events: none;  /* Evita que o ícone seja clicável */
-        }
-
-        /* CONTAINER PRINCIPAL EXPANDIDO */
-        .tratamento-card {
-            background: #fff;
-            border-radius: 15px;
-            padding: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            max-width: 95%; /* Ajustado para ficar maior na largura */
-            margin: 40px auto;
-            width: 100%;
-            min-height: 300px; /* Ajustado para um tamanho mais confortável */
-            transition: all 0.3s ease-in-out;
-        }
-
-        /* LAYOUT DO CONTEÚDO AJUSTADO */
-        .tratamento-content {
-            display: flex;
-            align-items: center;
-            flex: 1;
-            gap: 60px; /* Mais espaçamento entre a imagem e texto */
-            width: 100%;
-        }
-
-        /* IMAGEM DO TRATAMENTO */
-        .tratamento-card img {
-            max-width: 220px; /* Ajustado para manter proporção */
-            height: auto;
-            border-radius: 10px;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        /* EFEITO HOVER NA IMAGEM */
-        .tratamento-card img:hover {
-            transform: scale(1.05);
-        }
-
-        /* INFORMAÇÕES DO TRATAMENTO */
-        .tratamento-info {
-            flex: 1;
-            max-width: 700px; /* Ajustado para expandir a largura do texto */
-        }
-
-        .tratamento-info p {
-            margin: 5px 0;
-            font-size: 18px; /* Fonte levemente maior para melhor leitura */
-            line-height: 1.5;
-        }
+/* TITULO DO TRATAMENTO */
+.tratamento-info h3 {
+    font-size: 25px;
+    font-weight: bold;
+    color: #007bff;
+    flex-grow: 1;
+}
 
         /* TITULO DO TRATAMENTO */
         .tratamento-nome {
-            font-size: 28px; /* Maior para dar mais destaque */
+            font-size: 35px; /* Maior para dar mais destaque */
             font-weight: bold;
             color: #333;
             margin-bottom: 8px;
@@ -154,19 +183,19 @@
         /* BARRA DE EFICÁCIA MAIOR */
         .eficacia-container {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 250px;
+    flex-shrink: 0;
         }
 
         /* BARRA DE EFICÁCIA  */
         .eficacia-bar {
-            background: linear-gradient(90deg, #4CAF50, #FFEB3B, #F44336);
-            border-radius: 5px;
-            height: 14px;
-            width: 250px; /* Aumentado para destacar melhor */
-            position: relative;
-            margin: 10px auto;
+            width: 100%;
+    height: 14px;
+    background: linear-gradient(90deg, #4CAF50, #FFEB3B, #F44336);
+    border-radius: 8px;
+    margin-bottom: 5px;
         }
 
         /* MARCADOR DA EFICÁCIA */
@@ -183,10 +212,9 @@
 
         /* NÚMERO DA EFICÁCIA */
         .eficacia-range {
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-        }
+    font-weight: bold;
+    margin-bottom: 10px;
+}
 
         /* BOTÃO DE PRAZO DE EFEITO */
         .prazo-btn {
@@ -249,10 +277,25 @@
             margin-right: 20px;
         }
 
+        
         .tratamento-descricao {
             text-align: justify;
             max-width: 600px;
         }
+
+        .footer {
+            background-color: #002b58; /* azul mais escuro usado nas outras telas */
+            color: white;
+            padding: 30px 0;
+            width: 100%;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
 
         /* Garantir alinhamento vertical */
         .tratamento-content {
@@ -260,197 +303,16 @@
             justify-content: space-between;
             width: 100%;
         }
-        }
+        #contraindicacoes {
+    width: 100%;
+    height: 150px;
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+}
 
-
-        .container {
-            flex: 1;
-        }
-
-
-                /* FOOTER */
-        .footer {
-            background-color: #002b58;
-            color: white;
-            padding: 30px 0;
-            width: 120%;
-            text-align: center;
-            margin-top: auto; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            overflow: hidden; 
-
-        }
-
-        .footer-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            width: 100%;
-            max-width: 1200px;
-            margin: auto;
-            padding: 0 20px;
-        }
-        .footer-left img {
-            max-height: 50px;
-            margin-bottom: 10px;
-        }
-
-        .footer-text {
-            font-size: 14px;
-            color: #f1f1f1;
-            margin: 3px 0;
-        }
-
-        /* LINKS */
-        .footer-links {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .footer-link {
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-        }
-
-        .footer-link:hover {
-            text-decoration: underline;
-        }
-
-
-        /* BOTÃO */
-        .footer-btn {
-            background-color: #007bff; /* Azul principal */
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 8px; /* Espaço entre o ícone e o texto */
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
-        .footer-btn i {
-            font-size: 18px; /* Tamanho do ícone ajustado */
-        }
-
-        .footer-btn:hover {
-            background-color: #0056b3; /* Azul mais escuro ao passar o mouse */
-            transform: scale(1.05); /* Pequeno efeito de zoom */
-        }
-
-        .footer-social {
-            display: flex;
-            gap: 15px;
-        }
-
-        .social-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #666; /* Cor de fundo cinza */
-            color: white;
-            font-size: 18px;
-            text-decoration: none;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
-        .social-btn:hover {
-            background-color: #007bff; /* Azul ao passar o mouse */
-            transform: scale(1.1);
-        }
-        /* Espaçamento entre os botões */
-        .nav-buttons {
-            display: flex;
-            gap: 15px; /* Aumenta a distância entre os botões */
-        }
-
-        /* Ajusta o tamanho dos botões */
-        .btn-login, .btn-signup {
-            padding: 8px 18px;
-            font-size: 14px;
-            border-radius: 6px;
-        }
-
-        /* Login com borda azul */
-        .btn-login {
-            border: 2px solid #007bff;
-            color: #007bff;
-            background: white;
-            transition: 0.3s ease-in-out;
-        }
-
-        .btn-login:hover {
-            background: #007bff;
-            color: white;
-        }
-
-        /* Cadastro com fundo azul */
-        .btn-signup {
-            background-color: #007bff;
-            color: white;
-            border: none;
-        }
-
-        .btn-signup:hover {
-            background-color: #0056b3;
-        }
-
-        /* Espaçamento entre os botões */
-        .nav-buttons {
-            display: flex;
-            gap: 15px; /* Aumenta a distância entre os botões */
-        }
-
-        /* Ajusta o tamanho dos botões */
-        .btn-login, .btn-signup {
-            padding: 8px 18px;
-            font-size: 14px;
-            border-radius: 6px;
-        }
-
-        /* Login com borda azul */
-        .btn-login {
-            border: 2px solid #007bff;
-            color: #007bff;
-            background: white;
-            transition: 0.3s ease-in-out;
-        }
-
-        .btn-login:hover {
-            background: #007bff;
-            color: white;
-        }
-
-        /* Cadastro com fundo azul */
-        .btn-signup {
-            background-color: #007bff;
-            color: white;
-            border: none;
-        }
-
-        .btn-signup:hover {
-            background-color: #0056b3;
-        }
-        .content {
-                    flex: 1;
-                    max-width: 1200px;
-                    margin: auto;
-                    padding: 20px; /* Garante que o conteúdo empurre o footer para baixo */
-                }
+    
+    }
 
 
     </style>
@@ -458,134 +320,274 @@
 <body>
 
 <!-- HEADER -->
-
 <header>
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
         <div class="container-fluid">
-            <!-- Logo no canto esquerdo -->
             <a class="navbar-brand" href="/">
-                <img src="{% static 'img/logo.png' %}" alt="Telix Logo" class="logo">
+                <img src="{% static 'img/logo.png' %}" alt="Telix Logo" style="height: 70px;">
             </a>
 
-
-
-            <!-- Botões Login / Cadastro no canto direito -->
-            <div class="nav-buttons d-flex">
+            <div class="nav-buttons d-flex gap-2">
                 <a href="{% url 'home' %}" class="btn btn-outline-primary btn-login">Login</a>
-                <a href="{% url 'register'%}" class="btn btn-primary btn-signup">Cadastre-se</a>
+                <a href="{% url 'register' %}" class="btn btn-primary btn-signup">Cadastre-se</a>
             </div>
         </div>
     </nav>
 </header>
-    <!-- CONTEÚDO PRINCIPAL -->
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Tratamentos</h1>
 
-<!-- FORMULÁRIO DE PESQUISA -->
-<div class="search-bar">
-  <form method="GET" action="{% url 'tratamentos' %}">
-      <div class="input-group">
-          <span class="input-group-text">
-              <i class="fas fa-search"></i>  <!-- Ícone dentro do input -->
-          </span>
-          <input type="text" class="form-control" name="search" placeholder="Pesquise um tratamento">
-      </div>
-  </form>
+<!-- CONTEÚDO PRINCIPAL -->
+<div class="container mt-5">
+    <h1 class="text-center mb-4 text-primary">Tratamentos</h1>
 </div>
 
-<!-- EXIBIÇÃO DOS TRATAMENTOS -->
-{% for tratamento in tratamentos %}
-<div class="tratamento-card">
-    <a href="{% url 'detalhes_tratamentos' tratamento.id %}" class="text-decoration-none">
-    <div class="tratamento-content">
-        <!-- IMAGEM -->
-        {% if tratamento.imagem %}
-            <img src="{{ tratamento.imagem.url }}" alt="{{ tratamento.nome }}">
-        {% else %}
-            <img src="{% static 'default-image.jpg' %}" alt="Imagem não disponível">
-        {% endif %}
-        
+<div class="content-area">
+    <!-- Sidebar com filtros -->
+    <div class="left-sidebar">
+        <form method="GET" action="{% url 'tratamentos' %}">
+            <div class="filters">
+                <h3>Filtros e Classificações:</h3>
 
-        <!-- INFORMAÇÕES DO TRATAMENTO -->
-        <div class="tratamento-info">
-            <a href="{% url 'detalhes_tratamentos' tratamento.id %}" class="text-primary fw-bold fs-3 text-decoration-none">
-                {{ tratamento.nome }}
-            </a>
-            <a href="#" class="tratamento-tipo">Tratamento Alopático</a>
-            <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo }}</p>
-            <p><strong>Fabricante:</strong> {{ tratamento.fabricante }}</p>
-            <p><strong>Nota:</strong> {{ tratamento.avaliacao|floatformat:1 }}</p> <!-- Exibe a nota numérica -->
-            
-                <p><strong>Avaliação:</strong>
-                    {% with total_stars=5 %}
-                        {% for i in "12345" %}
-                            {% if forloop.counter <= tratamento.avaliacao %}
-                                <i class="fas fa-star" style="color: #FFD700;"></i> <!-- Estrela cheia -->
-                            {% elif forloop.counter|add:"-0.5" <= tratamento.avaliacao %}
-                                <i class="fas fa-star-half-alt" style="color: #FFD700;"></i> <!-- Meia estrela -->
-                            {% else %}
-                                <i class="far fa-star" style="color: #FFD700;"></i> <!-- Estrela vazia -->
-                            {% endif %}
-                        {% endfor %}
-                    {% endwith %}
-                </p>
+                <h4 class="mt-3">Filtrar:</h4>
+                <label for="publico">Indicado para:</label>
+                <select name="publico" id="publico">
+                    <option value="todos" {% if request.GET.publico == "todos" %}selected{% endif %}>Todos</option>
+                    <option value="adultos" {% if request.GET.publico == "adultos" %}selected{% endif %}>Adultos</option>
+                    <option value="crianças" {% if request.GET.publico == "crianças" %}selected{% endif %}>Crianças</option>
+                    <option value="gestantes" {% if request.GET.publico == "gestantes" %}selected{% endif %}>Gestantes</option>
+                </select>
+                <!-- Campo de Contraindicações -->
+                <label for="contraindicacoes">Contraindicações:</label>
+                <select name="contraindicacoes" id="contraindicacoes">
+                    {% for item in contraindications %}
+                        <option value="{{ item.id }}" {% if item.id in request.GET.contraindicacoes %}selected{% endif %}>
+                            {{ item.nome }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <h4 class="mt-3">Classificar:</h4>
+
+
+                <!-- Classificar por Eficácia -->
+                <div>
+                    <label for="eficacia">Eficácia</label>
+                    <div>
+                        <input type="radio" id="eficacia_maior" name="eficacia" value="maior-menor" onclick="updateClassifications()">
+                        <label for="eficacia_maior" id="label-eficacia-maior">Maior para menor</label><br>
+
+                        <input type="radio" id="eficacia_menor" name="eficacia" value="menor-maior" onclick="updateClassifications()">
+                        <label for="eficacia_menor" id="label-eficacia-menor">Menor para maior</label>
+                    </div>
+                </div>
+                                
                 
-            <p>{{ tratamento.descricao }}</p>
-        </div>
+                <!-- Classificar por Risco -->
+                <div class="mt-2">
+                    <label for="risco">Risco de Efeito Colateral</label>
+                    <div>
+                        <input type="radio" id="risco_maior" name="risco" value="maior-menor" onclick="updateClassifications()">
+                        <label for="risco_maior" id="label-risco-maior">Maior ao menor</label><br>
+
+                        <input type="radio" id="risco_menor" name="risco" value="menor-maior" onclick="updateClassifications()">
+                        <label for="risco_menor" id="label-risco-menor">Menor ao maior</label>
+                    </div>
+                </div>
+                
+                <!-- Classificar por Prazo -->
+                <div class="mt-2">
+                    <label for="prazo">Prazo para efeito</label>
+                    <div>
+                        <input type="radio" id="prazo_maior" name="prazo" value="maior-menor" onclick="updateClassifications()">
+                        <label for="prazo_maior" id="label-prazo-maior">Maior ao menor</label><br>
+                
+                        <input type="radio" id="prazo_menor" name="prazo" value="menor-maior" onclick="updateClassifications()">
+                        <label for="prazo_menor" id="label-prazo-menor">Menor ao maior</label>
+                    </div>
+                </div>
+                
+                <!-- Classificar por Adesão -->
+        
+                <div class="mt-2">
+                    <label for="adesao">Adesão</label>
+                    <div>
+                        <input type="radio" id="adesao_maior" name="adesao" value="maior-menor" onclick="updateClassifications()">
+                        <label for="adesao_maior" id="label-adesao-maior">Maior ao menor</label><br>
+
+                        <input type="radio" id="adesao_menor" name="adesao" value="menor-maior" onclick="updateClassifications()">
+                        <label for="adesao_menor" id="label-adesao-menor">Menor ao maior</label>
+                    </div>
+                </div>
+                
+                <!-- Classificar por Confiabilidade da Pesquisa -->
+                
+                <div class="mt-2">
+                    <label for="confiabilidade_pesquisa">Confiabilidade da Pesquisa</label>
+                    <div>
+                        <input type="radio" id="confiabilidade_maior" name="confiabilidade_pesquisa" value="maior-menor" onclick="updateClassifications()">
+                        <label for="confiabilidade_maior" id="label-confiabilidade-maior">Maior ao menor</label><br>
+
+                        <input type="radio" id="confiabilidade_menor" name="confiabilidade_pesquisa" value="menor-maior" onclick="updateClassifications()">
+                        <label for="confiabilidade_menor" id="label-confiabilidade-menor">Menor ao maior</label>
+                    </div>
+                </div>
+                
+                <!-- Classificar por Data -->
+                <div class="mt-2">
+                    <label for="data_pesquisa">Data da pesquisa</label>
+                    <div>
+                        <input type="radio" id="data_mais_recente" name="data_pesquisa" value="mais-recentes" onclick="updateClassifications()">
+                        <label for="data_mais_recente" id="label-data-mais-recente">Mais recentes</label><br>
+                
+                        <input type="radio" id="data_mais_antiga" name="data_pesquisa" value="mais-antigas" onclick="updateClassifications()">
+                        <label for="data_mais_antiga" id="label-data-mais-antiga">Mais antigas</label>
+                    </div>
+                </div>
+                
+
+
+                <!-- Classificar por Preço do Tratamento -->
+                <div class="mt-2">
+                    <label for="preco_tratamento">Preço do tratamento</label>
+                    <div>
+                        <input type="radio" id="preco_trat_maior" name="preco_tratamento" value="maior-menor" onclick="updateClassifications()">
+                        <label for="preco_trat_maior" id="label-preco-trat-maior">Maior para menor</label><br>
+                
+                        <input type="radio" id="preco_trat_menor" name="preco_tratamento" value="menor-maior" onclick="updateClassifications()">
+                        <label for="preco_trat_menor" id="label-preco-trat-menor">Menor para maior</label>
+                    </div>
+                </div>
+
+                <!-- Classificar por Preço do Medicamento -->
+                <div class="mt-2">
+                    <label for="preco_remedio">Preço do medicamento</label>
+                    <div>
+                        <input type="radio" id="preco_rem_maior" name="preco_remedio" value="maior-menor" onclick="updateClassifications()">
+                        <label for="preco_rem_maior" id="label-preco-rem-maior">Maior para menor</label><br>
+                
+                        <input type="radio" id="preco_rem_menor" name="preco_remedio" value="menor-maior" onclick="updateClassifications()">
+                        <label for="preco_rem_menor" id="label-preco-rem-menor">Menor para maior</label>
+                    </div>
+                </div>
+
+                <button type="submit">Classificar</button>
+
+            </div>
+        </form>
     </div>
 
-    <!-- SEÇÃO DE EFICÁCIA -->
-    <div class="eficacia-container">
-        <p><strong>Eficácia</strong></p>
-        <div class="eficacia-bar"></div>
-        <p class="eficacia-range">{{ tratamento.eficacia_min }} a {{ tratamento.eficacia_max }}%</p>
-        <p><strong>Prazo para efeito</strong></p>
-        <button class="prazo-btn">
-            <i class="fas fa-clock"></i> {{ tratamento.prazo_efeito_min }} a {{ tratamento.prazo_efeito_max }}
-        </button>
+    <!-- LISTA DE TRATAMENTOS -->
+    <div class="treatment-list">
+        {% for tratamento in tratamentos %}
+        <div class="tratamento-card">
+            <div class="tratamento-content">
+                {% if tratamento.imagem %}
+                    <img src="{{ tratamento.imagem.url }}" alt="{{ tratamento.nome }}">
+                {% else %}
+                    <img src="{% static 'default-image.jpg' %}" alt="Imagem não disponível">
+                {% endif %}
+
+                <div class="tratamento-info">
+                    <h3>
+                        <a href="{% url 'detalhes_tratamentos' tratamento.id %}" class="text-decoration-none">
+                            {{ tratamento.nome }}
+                        </a>
+                    </h3>
+                    <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo }}</p>
+                    <p><strong>Fabricante:</strong> {{ tratamento.fabricante }}</p>
+                    <p><strong>Nota:</strong> {{ tratamento.avaliacao|floatformat:1 }}</p>
+                    <p><strong>Avaliação:</strong>
+                        {% with total_stars=5 %}
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= tratamento.avaliacao %}
+                                    <i class="fas fa-star" style="color: #FFD700;"></i> <!-- Estrela cheia -->
+                                {% elif forloop.counter|add:"-0.5" <= tratamento.avaliacao %}
+                                    <i class="fas fa-star-half-alt" style="color: #FFD700;"></i> <!-- Meia estrela -->
+                                {% else %}
+                                    <i class="far fa-star" style="color: #FFD700;"></i> <!-- Estrela vazia -->
+                                    {% endif %}
+                                    {% endfor %}
+                                {% endwith %}
+                            </p>
+                    <p>{{ tratamento.descricao }}</p>
+                </div>
+
+                <!-- SEÇÃO DE EFICÁCIA DENTRO DO CARD -->
+            <div class="eficacia-container">
+                <p><strong>Eficácia</strong></p>
+                <div class="eficacia-bar"></div>
+                <p class="eficacia-range">{{ tratamento.eficacia_minima }} a {{ tratamento.eficacia_maxima }}%</p>
+
+                <p><strong>Prazo para efeito</strong></p>
+                <button class="prazo-btn">
+                    <i class="fas fa-clock"></i> {{ tratamento.prazo_efeito_min }} min a {{ tratamento.prazo_efeito_max }} min
+                </button>
+                
+                
+            </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
-{% endfor %}
+
+<!-- JavaScript Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// Função para atualizar as seleções e os títulos dinamicamente
+
+function updateClassifications(classificacao) {
+    const titulo = document.getElementById('tituloClassificacao');
+    const btn = document.getElementById('classificacaoBtn');
+    const minText = document.getElementById('valorMin');
+    const maxText = document.getElementById('valorMax');
+
+    let tituloClassificacao = '';
+    let minValor = '';
+    let maxValor = '';
+
+    // Lógica para atualizar o título e os valores dependendo da seleção
+    if (classificacao === "eficacia") {
+        tituloClassificacao = "Eficácia";  // Título
+        minValor = "52%";
+        maxValor = "60%";
+    } else if (classificacao === "prazo") {
+        tituloClassificacao = "Prazo para efeito";  // Título
+        minValor = "60 min";
+        maxValor = "120 min";
+    } else if (classificacao === "adesao") {
+        tituloClassificacao = "Adesão";  // Título
+        minValor = "75%";
+        maxValor = "75%";  // Ajuste conforme necessário
+    } else if (classificacao === "confiabilidade") {
+        tituloClassificacao = "Confiabilidade da Pesquisa";  // Título
+        minValor = "4 estrelas";
+        maxValor = "4 estrelas";  // Ajuste conforme necessário
+    } else if (classificacao === "preco_tratamento") {
+        tituloClassificacao = "Preço do Tratamento";  // Título
+        minValor = "R$100";
+        maxValor = "R$300";
+    } else if (classificacao === "preco_remedio") {
+        tituloClassificacao = "Preço do Medicamento";  // Título
+        minValor = "R$50";
+        maxValor = "R$150";
+    }
+
+    // Atualizando o título e os valores no botão
+    titulo.textContent = tituloClassificacao;  // Atualiza o título
+    minText.textContent = minValor;  // Atualiza o valor mínimo
+    maxText.textContent = maxValor;  // Atualiza o valor máximo
+    btn.textContent = `${minValor} a ${maxValor}`;  // Atualiza o texto do botão
+}
+
+// Função chamada ao clicar no botão "Classificar"
+function classificar() {
+    alert("Classificação aplicada!");
+}
 
 
+</script>
 
-<!-- FOOTER -->
-
-<footer class="footer">
-    <div class="footer-container">
-        <!-- Logo e Informações -->
-        <div class="footer-left">
-            <img src="{% static 'img/logo_telix_branco.png' %}" alt="Telix Logo" class="footer-logo">
-            <p class="footer-text">Linca Telecomunicações Ltda</p>
-            <p class="footer-text">CNPJ: 03.376.788-0001/23</p>
-            <p class="footer-text">Rua Marechal Deodoro, 1606, Centro - Foz do Iguaçu/PR</p>
-        </div>
-  
-        <!-- Links de navegação -->
-        <div class="footer-links">
-            <a href="#" class="footer-link">Blog</a>
-            <a href="#" class="footer-link">Tratamentos</a>
-            <a href="#" class="footer-link">Quem Somos</a>
-        </div>
-        <!-- Redes Sociais -->
-        <div class="footer-social">
-            <a href="https://www.instagram.com/telix.inf.br/" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.facebook.com/people/Telix-contexto-na-sa%C3%BAde/100089318347896/" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://www.linkedin.com/company/telix-canais-de-not%C3%ADcias" target="_blank" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
-        </div>
-  
-        <!-- Botão de download -->
-        <button class="footer-btn">
-          <i class="fas fa-download"></i> Baixar App
-      </button>
-      
-        </div>
-    </div>
-
-
-    <!-- JavaScript Bootstrap -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 
 </body>
 </html>

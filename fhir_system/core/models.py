@@ -199,6 +199,7 @@ class Contraindicacao(models.Model):
 class ReacaoAdversa(models.Model):
     nome = models.CharField(max_length=200)
     descricao = models.TextField()
+    risco_reacao = models.FloatField(default=0.0, help_text="Risco percentual de efeito colateral (0 a 100%)")
     imagem = models.ImageField(upload_to="reacoes_adversas/", blank=True, null=True)
 
     class Meta:
@@ -228,10 +229,10 @@ class DetalhesTratamentoResumo(models.Model):
     avaliacao = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     eficacia_min = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     eficacia_max = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    prazo_efeito_min = models.CharField(max_length=50, blank=True, null=True)
-    prazo_efeito_max = models.CharField(max_length=50, blank=True, null=True)
+    prazo_efeito_min = models.IntegerField()  # Para armazenar o tempo em minutos
+    prazo_efeito_max = models.IntegerField()  
     imagem = models.ImageField(upload_to="tratamentos/", blank=True, null=True)
-    grau_evidencia = models.CharField(max_length=100, blank=True, null=True)
+    confiabilidade_pesquisa = models.CharField(max_length=100, blank=True, null=True)
     funciona_para_todos = models.CharField(max_length=100, blank=True, null=True)
     adesao = models.CharField(max_length=200, blank=True, null=True)
     quando_tomar = models.TextField()
@@ -254,6 +255,7 @@ class DetalhesTratamentoResumo(models.Model):
     motivo_gravidez = models.TextField(blank=True, null=True)
     contraindicacoes = models.ManyToManyField(Contraindicacao, blank=True)
     reacoes_adversas = models.ManyToManyField(ReacaoAdversa, blank=True)
+    risco = models.FloatField(default=0.0, help_text="Risco percentual de efeito colateral (0 a 100%)")
 
     class Meta:
         verbose_name = "Detalhes Tratamentos - Resumo"
@@ -278,6 +280,9 @@ class EvidenciasClinicas(models.Model):
     pdf_estudo = models.FileField(upload_to="pdf_estudos/", blank=True, null=True)
     link_pdf_estudo = models.URLField(blank=True, null=True)
     referencia_bibliografica = models.TextField(blank=True, null=True)
+
+    # Novo campo para reações adversas
+    risco_reacao = models.CharField(max_length=100, blank=True, null=True)  # ex: "1% a 10% COMUM"
 
     class Meta:
         verbose_name = "Evidência Clínica"

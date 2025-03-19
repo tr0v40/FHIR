@@ -101,8 +101,7 @@
             <thead class="bg-light text-dark border-bottom">
                 <tr>
                     <th class="text-uppercase fw-bold py-3 border">Eficácia</th>
-                   
-                    <th class="text-uppercase fw-bold py-3 border">Fabricante</th>
+                    <th class="text-uppercase fw-bold py-3 border">Grau de Evidência</th>
                     <th class="text-uppercase fw-bold py-3 border">Data</th>
                     <th class="text-uppercase fw-bold py-3 border">Estudo</th>
                     <th class="text-uppercase fw-bold py-3 border">Descrição/Referências</th>
@@ -123,39 +122,32 @@
                             <p class="text-info fw-bold">✔ Placebo-controlado</p>
                         {% endif %}
                     </td>
-             
+    
+                    <!-- Grau de Evidência vindo da tabela EvidenciasClinicas -->
                     <td class="py-3 px-4 border">
-                        {% if evidencia.estudo_randomizado %}
-                            <p class="text-info fw-bold">✔ Estudo randomizado</p>
-                        {% endif %}
-                        {% if evidencia.duplo_cego %}
-                            <p class="text-info fw-bold">✔ Duplo-cego</p>
-                        {% endif %}
-                        {% if evidencia.placebo_controlado %}
-                            <p class="text-info fw-bold">✔ Placebo-controlado</p>
+                        {% if evidencia.grau_evidencia %}
+                            {{ evidencia.grau_evidencia }}
+                        {% else %}
+                            <span class="text-muted">Não informado</span>
                         {% endif %}
                     </td>
+    
                     <td class="py-3 px-4 border">{{ evidencia.data_publicacao|date:"m/Y" }}</td>
                     <td class="py-3 px-4 border">{{ evidencia.descricao }}</td>
                     <td class="py-3 px-4 border">
-                        {% if evidencia.link_estudo %}
-                            <a href="{{ evidencia.link_estudo }}" target="_blank" class="btn btn-sm btn-primary">🔗 Acessar Estudo</a>
-                        {% endif %}
-                        {% if evidencia.pdf_estudo %}
-                            <a href="{{ evidencia.pdf_estudo.url }}" target="_blank" class="btn btn-sm btn-secondary">📄 Baixar PDF</a>
-                        {% endif %}
-                        <p class="text-muted mt-2">{{ evidencia.referencia_bibliografica|default:"Sem referência disponível" }}</p>
+                        <a href="{{ evidencia.link_estudo }}" class="btn btn-primary">
+                            <i class="fas fa-link"></i> Acessar Estudo
+                        </a>
+                        <br>
+                        {{ evidencia.referencia_bibliografica }}
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-    {% else %}
-        <p class="text-muted text-center">🔍 Nenhuma evidência clínica encontrada para este tratamento.</p>
     {% endif %}
     
-</div>
 
 <!-- Script para filtrar os estudos e medicamentos -->
 <script>

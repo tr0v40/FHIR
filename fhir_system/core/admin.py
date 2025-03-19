@@ -54,6 +54,26 @@ admin.site.register(
 #         return "Sem imagem"
 
 #     imagem_preview.short_description = "Pré-visualização"
+from django import forms
+from .models import DetalhesTratamentoResumo
+
+class DetalhesTratamentoResumoForm(forms.ModelForm):
+    class Meta:
+        model = DetalhesTratamentoResumo
+        fields = ['nome', 'prazo_efeito_min', 'prazo_efeito_max']  # Incluir os campos de prazo
+
+    def clean_prazo_efeito_min(self):
+        prazo_min = self.cleaned_data['prazo_efeito_min']
+        # Conversão de valor se necessário
+        if 'h' in prazo_min:
+            return int(prazo_min.replace('h', '').strip()) * 60  # Converte horas para minutos
+        return int(prazo_min)
+
+    def clean_prazo_efeito_max(self):
+        prazo_max = self.cleaned_data['prazo_efeito_max']
+        if 'h' in prazo_max:
+            return int(prazo_max.replace('h', '').strip()) * 60  # Converte horas para minutos
+        return int(prazo_max)
 
 
 class DetalhesTratamentoAdmin(admin.ModelAdmin):
@@ -65,6 +85,7 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
         "eficacia_min",
         "eficacia_max",
         "custo_medicamento",
+        
     )
     filter_horizontal = ("contraindicacoes", "reacoes_adversas")
     search_fields = ("nome", "fabricante", "principio_ativo", "grupo")
@@ -88,6 +109,7 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
                     "imagem",
                     "grupo",
                     "avaliacao",
+                    
                 )
             },
         ),
@@ -95,9 +117,8 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
             "Eficácia e Evidência",
             {
                 "fields": (
-                    "eficacia_min",
-                    "eficacia_max",
-                    "grau_evidencia",
+
+                    "confiabilidade_pesquisa",
                     "funciona_para_todos",
                 )
             },
@@ -112,7 +133,8 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
                     "prazo_efeito_max",
                     "realizar_tratamento_quando",
                     "custo_medicamento",
-                )
+                ),
+                "description": "Preencha os campos de prazo (min) e (max) com valores em minutos."
             },
         ),
         ("Links e Alertas", {"fields": ("links_externos", "alertas")}),
@@ -169,6 +191,7 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
                     "grau_evidencia",
                     "eficacia_min",
                     "eficacia_max",
+                    
                 )
             },
         ),
