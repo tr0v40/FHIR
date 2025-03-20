@@ -331,6 +331,8 @@ header {
             padding: 2em; /* Um valor relativo baseado no tamanho da fonte */
             display: flex;
             flex-wrap: wrap;
+            position: relative;
+            z-index: 10; /* Ajuste o valor conforme necessário */
         }
 
 
@@ -347,8 +349,15 @@ header {
     font-size: 16px;
     border-radius: 5px;
 }
+/* Ajuste no espaço acima dos cards */
+.container {
+    margin-top: -10px; /* Diminua o valor para reduzir o espaço */
+}
 
-    
+/* Ajuste no espaço acima do título "Tratamentos" */
+h1 {
+    margin-bottom: 10px; /* Diminua o valor para reduzir o espaço abaixo do título */
+}
     }
 
 
@@ -368,7 +377,8 @@ header {
                 <a href="{% url 'home' %}" class="btn btn-outline-primary btn-login">Login</a>
                 <a href="{% url 'register' %}" class="btn btn-primary btn-signup">Cadastre-se</a>
             </div>
-        </div>
+ 
+ 
     </nav>
 </header>
 
@@ -376,6 +386,13 @@ header {
 <div class="container mt-5">
     <h1 class="text-center mb-4 text-primary">Tratamentos</h1>
 </div>
+
+<h1 style="font-size: 3rem; color: #1a73e8; font-weight: bold; text-align: center; letter-spacing: 2px;margin-bottom: -10px;">
+    Tratamentos
+</h1>
+
+
+
 
 <div class="content-area">
     <!-- Sidebar com filtros -->
