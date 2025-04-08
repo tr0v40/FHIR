@@ -140,11 +140,13 @@ header {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     background-color: white;
     gap: 10px;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s, box-shadow 0.2s ease;
 }
 
 .tratamento-card:hover {
     transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
 } 
 /* CONTEÚDO DO TRATAMENTO */
 .tratamento-content {
@@ -558,12 +560,9 @@ header {
                         <img src="{% static 'default-image.jpg' %}" alt="Imagem não disponível">
                     {% endif %}
 
-                <div class="tratamento-info">
-                    <h3>
-                        <a href="{% url 'detalhes_tratamentos' tratamento.id %}" class="text-decoration-none">
-                            {{ tratamento.nome }}
-                        </a>
-                    </h3>
+                    <div class="tratamento-info">
+                        <h3>{{ tratamento.nome }}</h3>
+                   
                     <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo }}</p>
                     <p><strong>Fabricante:</strong> {{ tratamento.fabricante }}</p>
                     <p><strong>Nota:</strong> {{ tratamento.avaliacao|floatformat:1 }}</p>
