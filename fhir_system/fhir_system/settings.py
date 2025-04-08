@@ -28,9 +28,8 @@ DATABASES = {
 
 # Arquivos Estáticos
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [
-    BASE_DIR / "static",  # Diretório de arquivos estáticos adicionais
-]
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
 STATIC_ROOT = BASE_DIR / "staticfiles"  # Para o comando `collectstatic`
 
 # Arquivos de Mídia (para uploads de arquivos, como imagens)

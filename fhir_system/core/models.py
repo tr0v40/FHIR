@@ -197,10 +197,11 @@ class Contraindicacao(models.Model):
 
 
 class ReacaoAdversa(models.Model):
-    nome = models.CharField(max_length=200)
+    nome = models.CharField(max_length=100)
     descricao = models.TextField()
-    risco_reacao = models.FloatField(default=0.0, help_text="Risco percentual de efeito colateral (0 a 100%)")
-    imagem = models.ImageField(upload_to="reacoes_adversas/", blank=True, null=True)
+    reacao_min = models.DecimalField("Reação Mínima (%)", max_digits=5, decimal_places=2, default=0.0, help_text="Valor mínimo de risco percentual de efeito colateral (0 a 100%)")
+    reacao_max = models.DecimalField("Reação Máxima (%)", max_digits=5, decimal_places=2, default=0.0, help_text="Valor mánimo de risco percentual de efeito colateral (0 a 100%)")
+    imagem = models.ImageField(upload_to='reacoes_adversas/', blank=True, null=True)
 
     class Meta:
         verbose_name = "Reação Adversa"

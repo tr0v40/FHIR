@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Meu Sistema{% endblock %}</title>
+    <title>{% block title %}Telix - Sistema de Saúde{% endblock %}</title>
     <link href="{% static 'css/styles.css' %}" rel="stylesheet">
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -42,7 +42,7 @@
         .footer-container {
             background: #002b58;
             display: flex;  
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             text-align: center;
@@ -52,6 +52,7 @@
             border: none;
         }
 
+        /* Links e textos do footer */
         .footer-left img {
             max-height: 50px;
             margin-bottom: 10px;
@@ -175,7 +176,9 @@
         <div class="footer-container">
             <!-- Lado Esquerdo: Logo e informações da empresa -->
             <div class="footer-left">
-                <img src="{% static 'img/logo_telix_branco.png' %}" alt="Telix Logo" class="footer-logo">
+                <a class="navbar-brand" href="https://www.telix.inf.br/">
+                    <img src="{% static 'img/logo.png' %}" alt="Telix Logo" style="height: 70px;">
+                </a>
                 <p class="footer-text">Linca Telecomunicações Ltda</p>
                 <p class="footer-text">CNPJ: 03.376.788-0001/23</p>
                 <p class="footer-text">Rua Marechal Deodoro, 1606, Centro - Foz do Iguaçu/PR</p>
@@ -183,11 +186,10 @@
 
             <!-- Centro: Links rápidos -->
             <div class="footer-links">
-
-                <a href="#" class="footer-link">Blog</a>
-                <a href="#" class="footer-link">Tratamentos</a>
-                <a href="#" class="footer-link">Quem Somos</a>
-            </div>
+                <a href="https://www.telix.inf.br/blog" class="footer-link">Blog</a>
+                <a href="https://www.telix.inf.br/tratamentos" class="footer-link">Tratamentos</a>
+                <a href="https://www.telix.inf.br/quem-somos" class="footer-link">Quem Somos</a>
+            </div>  
 
             <!-- Direita: Redes Sociais e botão de download -->
             <div class="footer-center">
