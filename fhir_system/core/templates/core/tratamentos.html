@@ -14,13 +14,13 @@
 
     <style>
 /* CONFIGURAÇÃO GERAL */
-/* CONFIGURAÇÃO GERAL */
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
     background-color: #f8f9fa;
     font-family: Arial, sans-serif;
+    gap: 20px;
     overflow-x: hidden;
 }
 
@@ -31,6 +31,7 @@ html, body {
     align-items: flex-start;
     gap: 30px;
     padding: 20px;
+    overflow: hidden; /* Impede a rolagem horizontal */
 }
 
 /* SIDEBAR - FILTROS E CLASSIFICAÇÕES */
@@ -43,7 +44,7 @@ html, body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     width: 300px;
-    height: calc(100vh - 40px); /* Faz com que a sidebar ocupe toda a altura da tela */
+    height: calc(100vh - 40px); /* Ajusta a altura da sidebar */
     overflow-y: auto; /* Permite rolar se o conteúdo for maior que a tela */
 }
 
@@ -51,13 +52,14 @@ html, body {
 .classificar-container {
     max-height: 400px; /* Ajuste a altura conforme necessário */
     overflow-y: auto; /* Permite rolar se o conteúdo exceder */
+    margin-bottom: 20px; /* Adiciona espaço abaixo da área de classificação */
 }
 
 /* CONTEÚDO DOS PRODUTOS - ROLAGEM */
 .treatment-list {
     flex: 1;  /* Faz com que o conteúdo ocupe o restante do espaço */
     overflow-y: auto; /* Permite rolar os tratamentos, sem impactar os filtros */
-   
+    padding-left: 20px;
 }
 
 /* Filtros e Botão Classificar */
@@ -93,7 +95,7 @@ html, body {
 /* Labels dos filtros */
 .filters label {
     font-size: 14px;
-    font-weight: 600;
+    font-weight: normal;
     color: #555;
     margin-top: 10px;
 }
@@ -104,6 +106,11 @@ html, body {
     margin-bottom: 20px;
     text-align: center;
 }
+
+.filters h4 {
+    color: #007bff; /* Azul */
+}
+
 .filters select, .filters button {
     width: 100%;
     padding: 10px;
@@ -147,10 +154,10 @@ html, body {
 
 /* LISTA DE TRATAMENTOS */
 .treatment-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
 }
 
 /* CARTÃO DO TRATAMENTO */
@@ -180,7 +187,7 @@ html, body {
     display: flex;
     align-items: center;
     gap: 20px;
-   }
+}
 
 /* IMAGEM DO TRATAMENTO */
 .tratamento-card img {
@@ -197,214 +204,151 @@ html, body {
     flex-grow: 1;
 }
 
-        /* TITULO DO TRATAMENTO */
-        .tratamento-nome {
-            font-size: 35px; /* Maior para dar mais destaque */
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        /* LINK DO TIPO DE TRATAMENTO */
-        .tratamento-tipo {
-            font-size: 14px;
-            color: #007bff;
-            text-decoration: none;
-            font-weight: bold;
-            margin-bottom: 15px;
-            display: inline-block;
-        }
-
-        .tratamento-tipo:hover {
-            text-decoration: underline;
-        }
-
-        /* BARRA DE EFICÁCIA MAIOR */
-        .eficacia-container {
-            display: flex;
+/* BARRA DE EFICÁCIA MAIOR */
+.eficacia-container {
+    display: flex;
     flex-direction: column;
     align-items: center;
     width: 250px;
     flex-shrink: 0;
-        }
+}
 
-        /* BARRA DE EFICÁCIA  */
-       
-        .eficacia-bar-container {
-            width: 100%;
-            background-color: #e0e0e0; /* Cor de fundo da barra (cinza claro) */
-            height: 14px;
-            border-radius: 8px;
-            position: relative;
-            margin-bottom: 5px;
-        }
+/* BARRA DE EFICÁCIA  */
+.eficacia-bar-container {
+    width: 100%;
+    background-color: #e0e0e0; /* Cor de fundo da barra (cinza claro) */
+    height: 14px;
+    border-radius: 8px;
+    position: relative;
+    margin-bottom: 5px;
+}
 
-        .efficacy-filled {
-            height: 100%;
-            border-radius: 8px;
-            background-color: #007bff; /* Cor azul para a parte preenchida */
-        }
+.efficacy-filled {
+    height: 100%;
+    border-radius: 8px;
+    background-color: #007bff; /* Cor azul para a parte preenchida */
+}
 
-        .efficacy-marker {
-            width: 14px;
-            height: 14px;
-            background-color: #007bff; /* Cor azul para o marcador */
-            position: absolute;
-            top: 0;
-            left: calc(100% - 7px); /* O marcador fica no final da barra */
-            transform: translateX(-50%);
-            border-radius: 50%;
-        }
+.efficacy-marker {
+    width: 14px;
+    height: 14px;
+    background-color: #007bff; /* Cor azul para o marcador */
+    position: absolute;
+    top: 0;
+    left: calc(100% - 7px); /* O marcador fica no final da barra */
+    transform: translateX(-50%);
+    border-radius: 50%;
+}
 
+/* BOTÃO DE PRAZO DE EFEITO */
+.prazo-btn {
+    background: linear-gradient(90deg, #007bff, #0056b3);
+    color: white;
+    border: none;
+    padding: 14px 22px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
 
-        /* BOTÃO DE PRAZO DE EFEITO */
-        .prazo-btn {
-            background: linear-gradient(90deg, #007bff, #0056b3);
-            color: white;
-            border: none;
-            padding: 14px 22px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
+.prazo-btn i {
+    font-size: 18px;
+}
 
-        .prazo-btn i {
-            font-size: 18px;
-        }
+.prazo-btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
 
-        .prazo-btn:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-        }
-
-        /* RESPONSIVIDADE */
-        @media (max-width: 768px) {
-            .tratamento-card {
-            width: 100%; /* Garante que todos ocupem a mesma largura */
-            max-width: 900px; /* Define um tamanho máximo */
-            min-height: 300px; /* Define uma altura mínima para evitar variações */
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin: 0 auto 20px auto;
-        }
-        /* Para telas pequenas, ajusta os estilos */
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .titulo {
-                font-size: 14px;
-            }
-        }
-        /* Para telas ainda menores (exemplo de celular) */
-        @media (max-width: 480px) {
-            .container {
-                padding: 10px;
-            }
-
-            .titulo {
-                font-size: 12px;
-            }
-        }
-
-        .tratamento-container {
-            display: flex;
+/* RESPONSIVIDADE */
+@media (max-width: 768px) {
+    .tratamento-card {
+        width: 100%; /* Garante que todos ocupem a mesma largura */
+        max-width: 900px; /* Define um tamanho máximo */
+        min-height: 300px; /* Define uma altura mínima para evitar variações */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 0 auto 20px auto;
+    }
+    /* Para telas pequenas, ajusta os estilos */
+    @media (max-width: 768px) {
+        .container {
             flex-direction: column;
             align-items: center;
-            justify-content: center;
         }
 
-        .tratamento-info {
-            flex: 1;
-            padding: 15px;
+        .titulo {
+            font-size: 14px;
         }
-
-        .tratamento-img {
-            width: 150px;  /* Tamanho fixo da imagem */
-            height: 200px;
-            object-fit: contain; /* Evita distorções */
-            margin-right: 20px;
-        }
-
-        
-        .tratamento-descricao {
-            text-align: justify;
-            max-width: 600px;
-        }
-
-        .footer {
-            background-color: #002b58; /* azul mais escuro usado nas outras telas */
-            color: white;
-            padding: 30px 0;
-            width: 100%;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .container {
-            width: 100%; /* 100% da largura da tela */
-            padding: 2em; /* Um valor relativo baseado no tamanho da fonte */
-            display: flex;
-            flex-wrap: wrap;
-            position: relative;
-            z-index: 10; /* Ajuste o valor conforme necessário */
-        }
-
-
-        /* Garantir alinhamento vertical */
-        .tratamento-content {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-        }
-        #contraindicacoes {
-            width: 100%;
-            height: 150px;
-            padding: 5px;
-            font-size: 16px;
-            border-radius: 5px;
-}
-        /* Ajuste no espaço acima dos cards */
-        .container {
-            margin-top: -10px; /* Diminua o valor para reduzir o espaço */
-        }
-
-        /* Ajuste no espaço acima do título "Tratamentos" */
-        h1 {
-            margin-bottom: 10px; /* Diminua o valor para reduzir o espaço abaixo do título */
-        }
-
-        .left-sidebar {
-            position: sticky;
-            top: 20px;
-            height: fit-content;
-}
-
-        .filters {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);
-        }
-
-
-
     }
+    /* Para telas ainda menores (exemplo de celular) */
+    @media (max-width: 480px) {
+        .container {
+            padding: 10px;
+        }
+
+        .titulo {
+            font-size: 12px;
+        }
+    }
+
+    .tratamento-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .tratamento-info {
+        flex: 1;
+        padding: 15px;
+    }
+
+    .tratamento-img {
+        width: 150px;  /* Tamanho fixo da imagem */
+        height: 200px;
+        object-fit: contain; /* Evita distorções */
+        margin-right: 20px;
+    }
+
+    .tratamento-descricao {
+        text-align: justify;
+        max-width: 600px;
+    }
+
+    .footer {
+        background-color: #002b58; /* azul mais escuro usado nas outras telas */
+        color: white;
+        padding: 30px 0;
+        width: 100%;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+    }
+    .container {
+        width: 100%; /* 100% da largura da tela */
+        padding: 2em; /* Um valor relativo baseado no tamanho da fonte */
+        display: flex;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 10; /* Ajuste o valor conforme necessário */
+    }
+}
+
 
 
     </style>
@@ -439,13 +383,13 @@ html, body {
     <div class="left-sidebar" style="position: sticky; top: 20px; z-index: 100;">
         <form method="GET" action="{% url 'tratamentos' %}">
             <div class="filters bg-white p-3 rounded shadow-sm">
-                <h3>Filtros e Classificações:</h3>
+              
 
 
 
                 <!-- Filtros -->
                 <div id="filter-section">
-                    <h4 class="mt-3">Filtrar:</h4>
+                    <h4 class="mt-3">Filtros:</h4>
                     <label for="publico">Indicado para:</label>
                     <select name="publico" id="publico">
                         <option value="todos" {% if request.GET.publico == "todos" %}selected{% endif %}>Todos</option>
@@ -471,7 +415,7 @@ html, body {
 
                 <!-- Classificar por Eficácia -->
                 <div class="classificar-container">
-                    <h4 class="mt-3">Classificar:</h4>
+                    <h4 class="mt-3">Classificações:</h4>
                     <label for="eficacia">Eficácia</label>
                     <div>
                         <input type="radio" id="eficacia_maior" name="eficacia" value="maior-menor" onclick="updateClassifications()">
