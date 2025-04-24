@@ -6,7 +6,9 @@ from .forms import UserRegisterForm
 from .models import DetalhesTratamentoResumo, EvidenciasClinicas, Contraindicacao
 from django.shortcuts import render
 from django.db.models import Min, Max, OuterRef, Subquery
-from django.db.models import Min, Max
+from django.shortcuts import render, get_object_or_404
+from .models import DetalhesTratamentoResumo, Contraindicacao, EvidenciasClinicas
+
 
 
 def home(request):
@@ -35,9 +37,10 @@ def register(request):
 
 
 
+
 def tratamentos(request):
-    # import pdb; pdb.set_trace()
-    publico = request.GET.get('publico','').strip().lower()
+    # Obtendo os filtros da URL
+    publico = request.GET.get('publico', '').strip().lower()
     nome = request.GET.get('nome', '').strip()
     categoria = request.GET.get('categoria', '').strip()
     eficacia = request.GET.get('eficacia', '')
@@ -47,17 +50,20 @@ def tratamentos(request):
     confiabilidade_pesquisa = request.GET.get('confiabilidade_pesquisa', '')
     data_pesquisa = request.GET.get('data_pesquisa', '')
     preco_tratamento = request.GET.get('preco_tratamento', '')
-    preco_remedio = request.GET.get('preco_remedio', '')  # campo removido, mas mantido no request
+    preco_remedio = request.GET.get('preco_remedio', '')
     ordenacao = request.GET.get('ordenacao', '')
     tratamentos_list = DetalhesTratamentoResumo.objects.all()
     contraindications = Contraindicacao.objects.all()
- 
+
+    # Filtro de nome
     if nome:
         tratamentos_list = tratamentos_list.filter(nome__icontains=nome)
- 
+
+    # Filtro de categoria
     if categoria:
         tratamentos_list = tratamentos_list.filter(categoria__icontains=categoria)
- 
+
+    # Filtro de "Indicado para"
     if publico == "criancas":
         tratamentos_list = tratamentos_list.filter(grupo="criancas", indicado_criancas__in=["SIM", "Sim"])
     elif publico == "adolescentes":
@@ -70,58 +76,49 @@ def tratamentos(request):
         tratamentos_list = tratamentos_list.filter(grupo="lactantes").exclude(indicado_lactantes="C")
     elif publico == "gravidez":
         tratamentos_list = tratamentos_list.filter(grupo="gravidez").exclude(indicado_gravidez__in=["D", "X"])
- 
-    # Anotações
 
+    # Filtro de "Contraindicações"
+    contraindica = request.GET.get('contraindicacoes', 'nenhuma')
+    if contraindica != 'nenhuma':
+        tratamentos_list = tratamentos_list.exclude(contraindicacoes=contraindica)  # Excluindo contraindicações selecionadas
+
+    # Anotações e cálculos agregados
     tratamentos_list = tratamentos_list.annotate(
         ultima_pesquisa=Max('evidencias__data_publicacao'),
         eficacia_minima=Min('evidencias__eficacia_min'),
         eficacia_maxima=Max('evidencias__eficacia_max'),
     )
- 
-    # Ordenação dinâmica
 
+    # Ordenação dinâmica (se houver)
     sort_criteria = []
     if eficacia:
         sort_criteria.append('-eficacia_minima' if eficacia == 'maior-menor' else 'eficacia_minima')
- 
     if risco:
         sort_criteria.append('-risco' if risco == 'maior-menor' else 'risco')
- 
     if adesao:
         sort_criteria.append('-adesao' if adesao == 'maior-menor' else 'adesao')
- 
     if confiabilidade_pesquisa:
-        sort_criteria.append(
-            '-confiabilidade_pesquisa' if confiabilidade_pesquisa == 'maior-menor' else 'confiabilidade_pesquisa'
-        )
- 
+        sort_criteria.append('-confiabilidade_pesquisa' if confiabilidade_pesquisa == 'maior-menor' else 'confiabilidade_pesquisa')
     if preco_tratamento:
         sort_criteria.append('-custo_medicamento' if preco_tratamento == 'maior-menor' else 'custo_medicamento')
- 
     if prazo == 'maior-menor':
         sort_criteria.append('-prazo_efeito_min')
-
     elif prazo == 'menor-maior':
         sort_criteria.append('prazo_efeito_min')
- 
-    # Ordenação final (criteriosa e composta)
 
+    # Ordenação final (criteriosa e composta)
     if sort_criteria:
         tratamentos_list = tratamentos_list.order_by(*sort_criteria)
- 
-    # Ordenação principal (sobrescreve qualquer anterior)
 
+    # Ordenação principal
     if ordenacao:
         if ordenacao == 'avaliacao':
             tratamentos_list = tratamentos_list.order_by('-avaliacao')
-
         elif ordenacao == 'eficacia':
             tratamentos_list = tratamentos_list.order_by('-eficacia_minima')
-
         elif ordenacao == 'preco':
             tratamentos_list = tratamentos_list.order_by('custo_medicamento')
- 
+
     context = {
         'tratamentos': tratamentos_list,
         'contraindications': contraindications,
@@ -136,7 +133,7 @@ def tratamentos(request):
         'preco_tratamento': preco_tratamento,
         'ordenacao': ordenacao,
     }
- 
+
     return render(request, 'core/tratamentos.html', context)
 
  

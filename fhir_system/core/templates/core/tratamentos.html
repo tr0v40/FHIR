@@ -14,6 +14,7 @@
 
     <style>
 /* CONFIGURAÇÃO GERAL */
+/* CONFIGURAÇÃO GERAL */
 html, body {
     height: 100%;
     margin: 0;
@@ -23,35 +24,61 @@ html, body {
     overflow-x: hidden;
 }
 
-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000; /* Isso coloca o header acima de outros elementos */
-    background-color: white; /* Pode ser ajustado conforme a cor do seu header */
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Opção para dar um sombreado ao header */
-}
-
-/* CONTEÚDO PRINCIPAL */
+/* CONTÊINER PRINCIPAL */
 .content-area {
-    display: flex;
+    display: flex;  /* Usando Flexbox para criar duas áreas */
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 50px;
-    padding: 200px;
+    gap: 30px;
+    padding: 20px;
 }
 
-/* SIDEBAR - FILTROS */
+/* SIDEBAR - FILTROS E CLASSIFICAÇÕES */
 .left-sidebar {
-    width: 300px;
-    flex-shrink: 0;
     position: sticky;
-    top: 10px;
+    top: 20px;
     background: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 300px;
+    height: calc(100vh - 40px); /* Faz com que a sidebar ocupe toda a altura da tela */
+    overflow-y: auto; /* Permite rolar se o conteúdo for maior que a tela */
+}
+
+/* Ajuste para a parte de classificação com rolagem interna */
+.classificar-container {
+    max-height: 400px; /* Ajuste a altura conforme necessário */
+    overflow-y: auto; /* Permite rolar se o conteúdo exceder */
+}
+
+/* CONTEÚDO DOS PRODUTOS - ROLAGEM */
+.treatment-list {
+    flex: 1;  /* Faz com que o conteúdo ocupe o restante do espaço */
+    overflow-y: auto; /* Permite rolar os tratamentos, sem impactar os filtros */
+   
+}
+
+/* Filtros e Botão Classificar */
+.filters, .classificar-container {
+    margin-bottom: 20px;
+}
+
+/* Layout Responsivo para dispositivos móveis */
+@media (max-width: 768px) {
+    .content-area {
+        flex-direction: column;  /* Em dispositivos menores, exibe o conteúdo verticalmente */
+        gap: 15px;
+    }
+    .left-sidebar {
+        width: 100%;  /* Barra lateral ocupa a tela inteira */
+        height: auto;
+        position: relative; /* Evita que a sidebar fique fixa em dispositivos móveis */
+    }
+    .treatment-list {
+        width: 100%; /* O conteúdo ocupa toda a largura */
+    }
 }
 
 /* Container dos filtros */
@@ -414,34 +441,37 @@ header {
             <div class="filters bg-white p-3 rounded shadow-sm">
                 <h3>Filtros e Classificações:</h3>
 
-                <h4 class="mt-3">Filtrar:</h4>
-                <label for="publico">Indicado para:</label>
-                <select name="publico" id="publico">
-                    <option value="todos" {% if request.GET.publico == "todos" %}selected{% endif %}>Todos</option>
-                    <option value="adultos" {% if request.GET.publico == "adultos" %}selected{% endif %}>Adultos</option>
-                    <option value="criancas" {% if request.GET.publico == "criancas" %}selected{% endif %}>Crianças</option>
-                    <option value="gestantes" {% if request.GET.publico == "gestantes" %}selected{% endif %}>Gestantes</option>
-                </select>
-                <!-- Campo de Contraindicações -->
-
-                <label for="contraindicacoes">Contraindicações:</label>
-                <select name="contraindicacoes" id="contraindicacoes">
-                    <!-- Opção para medicamentos sem contraindicação -->
-                    <option value="nenhuma" {% if request.GET.contraindicacoes == 'nenhuma' %}selected{% endif %}>Nenhuma</option>
-                    
-                    {% for item in contraindications %}
-                        <option value="{{ item.id }}" {% if item.id|stringformat:"s" == request.GET.contraindicacoes %}selected{% endif %}>
-                            {{ item.nome }}
-                        </option>
-                    {% endfor %}
-                </select>
 
 
-                <h4 class="mt-3">Classificar:</h4>
+                <!-- Filtros -->
+                <div id="filter-section">
+                    <h4 class="mt-3">Filtrar:</h4>
+                    <label for="publico">Indicado para:</label>
+                    <select name="publico" id="publico">
+                        <option value="todos" {% if request.GET.publico == "todos" %}selected{% endif %}>Todos</option>
+                        <option value="adultos" {% if request.GET.publico == "adultos" %}selected{% endif %}>Adultos</option>
+                        <option value="criancas" {% if request.GET.publico == "criancas" %}selected{% endif %}>Crianças</option>
+                        <option value="gestantes" {% if request.GET.publico == "gestantes" %}selected{% endif %}>Gestantes</option>
+                    </select>
 
+                    <!-- Campo de Contraindicações -->
+                    <label for="contraindicacoes">Contraindicações:</label>
+                    <select name="contraindicacoes" id="contraindicacoes">
+                        <option value="nenhuma" {% if request.GET.contraindicacoes == 'nenhuma' %}selected{% endif %}>Nenhuma</option>
+                        {% for item in contraindications %}
+                            <option value="{{ item.id }}" {% if item.id|stringformat:"s" == request.GET.contraindicacoes %}selected{% endif %}>
+                                {{ item.nome }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <!-- Botão para submeter o filtro -->
+                    <button type="submit" class="btn btn-primary mt-3">Aplicar Filtro</button>
+                </div>
 
                 <!-- Classificar por Eficácia -->
-                <div class="filtro-sidebar">
+                <div class="classificar-container">
+                    <h4 class="mt-3">Classificar:</h4>
                     <label for="eficacia">Eficácia</label>
                     <div>
                         <input type="radio" id="eficacia_maior" name="eficacia" value="maior-menor" onclick="updateClassifications()">
