@@ -46,8 +46,6 @@ def tratamentos(request):
     eficacia = request.GET.get('eficacia', '')
     risco = request.GET.get('risco', '')
     prazo = request.GET.get('prazo', '')
-    adesao = request.GET.get('adesao', '')
-    confiabilidade_pesquisa = request.GET.get('confiabilidade_pesquisa', '')
     data_pesquisa = request.GET.get('data_pesquisa', '')
     preco_tratamento = request.GET.get('preco_tratamento', '')
     preco_remedio = request.GET.get('preco_remedio', '')
@@ -95,10 +93,8 @@ def tratamentos(request):
         sort_criteria.append('-eficacia_minima' if eficacia == 'maior-menor' else 'eficacia_minima')
     if risco:
         sort_criteria.append('-risco' if risco == 'maior-menor' else 'risco')
-    if adesao:
-        sort_criteria.append('-adesao' if adesao == 'maior-menor' else 'adesao')
-    if confiabilidade_pesquisa:
-        sort_criteria.append('-confiabilidade_pesquisa' if confiabilidade_pesquisa == 'maior-menor' else 'confiabilidade_pesquisa')
+
+
     if preco_tratamento:
         sort_criteria.append('-custo_medicamento' if preco_tratamento == 'maior-menor' else 'custo_medicamento')
     if prazo == 'maior-menor':
@@ -127,8 +123,6 @@ def tratamentos(request):
         'eficacia': eficacia,
         'risco': risco,
         'prazo': prazo,
-        'adesao': adesao,
-        'confiabilidade_pesquisa': confiabilidade_pesquisa, 
         'data_pesquisa': data_pesquisa,
         'preco_tratamento': preco_tratamento,
         'ordenacao': ordenacao,
@@ -159,34 +153,39 @@ def convert_time_to_minutes(time_str):
 
 
 
+# views.py
 
-
-
-
-
-
-
-
+from django.shortcuts import render, get_object_or_404
+from .models import DetalhesTratamentoResumo, EvidenciasClinicas
+from django.db.models import Min, Max
 
 def detalhes_tratamentos(request, tratamento_id):
+    # Buscar o tratamento pelo ID
     tratamento = get_object_or_404(DetalhesTratamentoResumo, id=tratamento_id)
+    
+    # Buscar as evidências associadas ao tratamento
     evidencias = EvidenciasClinicas.objects.filter(tratamento=tratamento)
 
+    # Agregar a eficácia mínima e máxima das evidências
     eficacia_agregada = evidencias.aggregate(
         eficacia_min=Min('eficacia_min'),
         eficacia_max=Max('eficacia_max')
     )
 
+    # Obter os valores de eficácia mínima e máxima
     eficacia_min = eficacia_agregada.get('eficacia_min')
     eficacia_max = eficacia_agregada.get('eficacia_max')
 
+    # Retornar a resposta renderizada com o contexto
     return render(request, 'core/detalhes_tratamentos.html', {
         'tratamento': tratamento,
         'avaliacao': tratamento.avaliacao,
         'eficacia_min': eficacia_min,
         'eficacia_max': eficacia_max,
         'risco': tratamento.risco,
+        'tipo_tratamento': tratamento.tipo_tratamento,  # Incluindo o tipo de tratamento no contexto
     })
+
 
 
 class DetalhesTratamentoAdmin(admin.ModelAdmin):
@@ -202,7 +201,7 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
             "fields": ( "grau_evidencia", "funciona_para_todos")
         }),
         ("Adesão ao Tratamento", {
-            "fields": ("adesao", "quando_tomar", "prazo_efeito_min", "prazo_efeito_max", "realizar_tratamento_quando", "custo_medicamento")
+            "fields": ("quando_usar", "prazo_efeito_min", "prazo_efeito_max", "tipo_tratamento", "custo_medicamento")
         }),
         ("Links e Alertas", {
             "fields": ("links_externos", "alertas")

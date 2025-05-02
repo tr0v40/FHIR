@@ -464,18 +464,6 @@ html, body {
                     </div>
                 </div>
                 
-                <!-- Classificar por Confiabilidade da Pesquisa -->
-                
-                <div class="mt-2">
-                    <label for="confiabilidade_pesquisa">Confiabilidade da Pesquisa</label>
-                    <div>
-                        <input type="radio" id="confiabilidade_maior" name="confiabilidade_pesquisa" value="maior-menor" onclick="updateClassifications()">
-                        <label for="confiabilidade_maior" id="label-confiabilidade-maior">Maior ao menor</label><br>
-
-                        <input type="radio" id="confiabilidade_menor" name="confiabilidade_pesquisa" value="menor-maior" onclick="updateClassifications()">
-                        <label for="confiabilidade_menor" id="label-confiabilidade-menor">Menor ao maior</label>
-                    </div>
-                </div>
                 
                 <!-- Classificar por Data -->
                 <div class="mt-2">
@@ -539,20 +527,6 @@ html, body {
                    
                     <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo }}</p>
                     <p><strong>Fabricante:</strong> {{ tratamento.fabricante }}</p>
-                    <p><strong>Nota:</strong> {{ tratamento.avaliacao|floatformat:1 }}</p>
-                    <p><strong>Avaliação:</strong>
-                        {% with total_stars=5 %}
-                            {% for i in "12345" %}
-                                {% if forloop.counter <= tratamento.avaliacao %}
-                                    <i class="fas fa-star" style="color: #FFD700;"></i> <!-- Estrela cheia -->
-                                {% elif forloop.counter|add:"-0.5" <= tratamento.avaliacao %}
-                                    <i class="fas fa-star-half-alt" style="color: #FFD700;"></i> <!-- Meia estrela -->
-                                {% else %}
-                                    <i class="far fa-star" style="color: #FFD700;"></i> <!-- Estrela vazia -->
-                                    {% endif %}
-                                    {% endfor %}
-                                {% endwith %}
-                            </p>
                     <p>{{ tratamento.descricao }}</p>
                 </div>
 

@@ -33,3 +33,5 @@ class EvidenciasClinicasForm(forms.ModelForm):
     class Meta:
         model = EvidenciasClinicas
         fields = "__all__"
+
+

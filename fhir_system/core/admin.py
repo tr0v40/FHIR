@@ -106,32 +106,21 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
                     "fabricante",
                     "principio_ativo",
                     "descricao",
-                    "imagem",
-                    "grupo",
-                    "avaliacao",
+                    "imagem"
                     
                 )
             },
         ),
-        (
-            "Eficácia e Evidência",
-            {
-                "fields": (
 
-                    "confiabilidade_pesquisa",
-                    "funciona_para_todos",
-                )
-            },
-        ),
         (
             "Adesão ao Tratamento",
             {
                 "fields": (
-                    "adesao",
-                    "quando_tomar",
+                    
+                    "quando_usar",
                     "prazo_efeito_min",
                     "prazo_efeito_max",
-                    "realizar_tratamento_quando",
+                    "tipo_tratamento",
                     "custo_medicamento",
                 ),
                 "description": "Preencha os campos de prazo (min) e (max) com valores em minutos."
@@ -168,15 +157,16 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
         "titulo",
         "tratamento",
         "condicao_saude",
-        "grau_evidencia",
+        "rigor_da_pesquisa",
         "data_publicacao",
         "referencia_bibliografica",
         "eficacia_min",
         "eficacia_max",
+        "numero_participantes",
         "visualizar_pdf",
     )
     search_fields = ("titulo", "tratamento__nome", "referencia_bibliografica")
-    list_filter = ("grau_evidencia", "data_publicacao")
+    list_filter = ("rigor_da_pesquisa", "data_publicacao")
     readonly_fields = ("imagem_preview", "visualizar_pdf")
 
     fieldsets = (
@@ -188,9 +178,10 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
                     "titulo",
                     "descricao",
                     "condicao_saude",
-                    "grau_evidencia",
+                    "rigor_da_pesquisa",
                     "eficacia_min",
                     "eficacia_max",
+                    "numero_participantes",
                     
                 )
             },
@@ -199,7 +190,7 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
             "Detalhes do Estudo",
             {
                 "fields": (
-                    "estudo_publicado",
+                    
                     "autores",
                     "link_estudo",
                     "data_publicacao",

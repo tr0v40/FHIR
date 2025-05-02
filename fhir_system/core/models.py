@@ -233,11 +233,20 @@ class DetalhesTratamentoResumo(models.Model):
     prazo_efeito_min = models.IntegerField()  # Para armazenar o tempo em minutos
     prazo_efeito_max = models.IntegerField()  
     imagem = models.ImageField(upload_to="tratamentos/", blank=True, null=True)
-    confiabilidade_pesquisa = models.CharField(max_length=100, blank=True, null=True)
-    funciona_para_todos = models.CharField(max_length=100, blank=True, null=True)
-    adesao = models.CharField(max_length=200, blank=True, null=True)
-    quando_tomar = models.TextField()
-    realizar_tratamento_quando = models.TextField(blank=True, null=True)
+
+    quando_usar = models.TextField()    
+    tipos_tratamentos = [
+        ('comprimidos', 'Comprimidos'),
+        ('gotas', 'Gotas'),
+        ('agulhas', 'Agulhas'),
+        ('injetavel', 'Injeção')
+    ]
+    
+    tipo_tratamento = models.CharField(
+        max_length=20,
+        choices=tipos_tratamentos,
+        default='comprimidos',  # Pode ajustar o valor padrão
+    )
     custo_medicamento = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
     links_externos = models.TextField(blank=True, null=True)
     alertas = models.TextField(blank=True, null=True)
@@ -269,9 +278,9 @@ class EvidenciasClinicas(models.Model):
     tratamento = models.ForeignKey("DetalhesTratamentoResumo", on_delete=models.CASCADE, related_name="evidencias")
     titulo = models.CharField(max_length=255)
     descricao = models.TextField()
+    numero_participantes = models.IntegerField() 
     condicao_saude = models.CharField(max_length=255, blank=True, null=True)
-    grau_evidencia = models.CharField(max_length=100)
-    estudo_publicado = models.CharField(max_length=255, blank=True, null=True)
+    rigor_da_pesquisa = models.CharField(max_length=100)
     link_estudo = models.URLField(blank=True, null=True)
     data_publicacao = models.DateField(blank=True, null=True)
     autores = models.CharField(max_length=255, blank=True, null=True)
