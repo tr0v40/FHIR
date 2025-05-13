@@ -223,16 +223,25 @@ class DetalhesTratamentoResumo(models.Model):
 
     nome = models.CharField(max_length=200)
     descricao = models.TextField()
+    comentario = models.TextField(blank=True, null=True)
     categoria = models.CharField(max_length=100, blank=True, null=True)
     evidencia_clinica = models.TextField(blank=True, null=True)
     principio_ativo = models.CharField(max_length=200)
     fabricante = models.CharField(max_length=200)
-    avaliacao = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
+    comentario = models.TextField(null=True, blank=True)
+    avaliacao = models.IntegerField(null=True, blank=True)  
     eficacia_min = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     eficacia_max = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     prazo_efeito_min = models.IntegerField()  # Para armazenar o tempo em minutos
-    prazo_efeito_max = models.IntegerField()  
+    prazo_efeito_max = models.IntegerField()
+    interacao_medicamentosa = models.URLField(blank=True, null=True)
+    genericos_similares = models.URLField(blank=True, null=True)
+    prescricao_eletronica = models.URLField(blank=True, null=True)
+    opiniao_especialista = models.URLField(blank=True, null=True)
+    links_profissionais = models.URLField(blank=True, null=True)
+    alerta = models.TextField(blank=True, null=True) 
     imagem = models.ImageField(upload_to="tratamentos/", blank=True, null=True)
+    imagem_detalhes = models.ImageField(upload_to="tratamentos/detalhes/", blank=True, null=True)
 
     quando_usar = models.TextField()    
     tipos_tratamentos = [
@@ -300,3 +309,19 @@ class EvidenciasClinicas(models.Model):
 
     def __str__(self):
         return f"{self.titulo} - {self.tratamento.nome}"
+
+
+class Tratamento(models.Model):
+    nome = models.CharField(max_length=255)
+    descricao = models.TextField()
+    # outros campos do tratamento
+
+class Avaliacao(models.Model):
+    tratamento = models.ForeignKey(Tratamento, on_delete=models.CASCADE, related_name='avaliacoes')
+    comentario = models.TextField()
+    estrelas = models.PositiveIntegerField(choices=[(1, '1 estrela'), (2, '2 estrelas'), (3, '3 estrelas'), 
+                                                    (4, '4 estrelas'), (5, '5 estrelas')])
+    data = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Avaliação para {self.tratamento.nome} - {self.estrelas} estrelas"

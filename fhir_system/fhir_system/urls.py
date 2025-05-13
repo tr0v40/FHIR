@@ -12,6 +12,8 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
     path("register/", views.register, name="register"),
+    path('salvar-avaliacao/<int:tratamento_id>/', views.salvar_avaliacao, name='salvar_avaliacao'),
+   
     path("tratamentos/", views.tratamentos, name="tratamentos"),
     path(
         "tratamento/<int:tratamento_id>/",

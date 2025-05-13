@@ -106,7 +106,10 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
                     "fabricante",
                     "principio_ativo",
                     "descricao",
-                    "imagem"
+                    "imagem",
+                    "imagem_detalhes",
+                    
+
                     
                 )
             },
@@ -126,7 +129,7 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
                 "description": "Preencha os campos de prazo (min) e (max) com valores em minutos."
             },
         ),
-        ("Links e Alertas", {"fields": ("links_externos", "alertas")}),
+        ("Links e Alertas", {"fields": ("interacao_medicamentosa", "genericos_similares", "prescricao_eletronica", "opiniao_especialista", "links_profissionais", "alertas")}),
         (
             "Indicação por Grupo",
             {

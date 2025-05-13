@@ -278,97 +278,141 @@
         .medication-header img {
             max-width: 250px;
         }
-        /* 🔹 Estilo para a tabela */
-        .table-container {
-            margin-top: 30px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
+/* 🔹 Estilo para a tabela */
+.table-container {
+    margin-top: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
 
-        .table {
-            width: 95%; /* 🔹 Aumentando a largura sem ocupar tudo */
-            max-width: 1300px; /* 🔹 Antes era 800px, agora aumentamos um pouco */
-            border-collapse: collapse;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-        }
+.table {
+    width: 95%; /* 🔹 Aumentando a largura sem ocupar tudo */
+    max-width: 1300px; /* 🔹 Aumentamos um pouco o tamanho */
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
 
-        /* 🔹 Estilização do cabeçalho da tabela */
-        .table th {
-            background: linear-gradient(90deg, #007bff, #0056b3);
-            color: white;
-            text-align: center;
-            padding: 12px;
-            font-size: 16px;
-        }
+/* 🔹 Estilização do cabeçalho da tabela */
+.table th {
+    background: linear-gradient(90deg, #ffffff, #ffffff); /* Azul */
+    color: rgb(12, 1, 1);
+    text-align: center;
+    padding: 12px;
+    font-size: 16px;
+    text-transform: uppercase; /* Transformando o texto em caixa alta */
+    font-weight: bold; /* Deixando o texto em negrito */
+    border-bottom: 6px solid #f1f1f1; /* Borda abaixo do cabeçalho */
+    border: 6px solid #f1f1f1
+}
+/* 🔹 Estilização das células da tabela */
+.table td {
+    text-align: center;
+    padding: 12px;
+    font-size: 15px;
+    border: 6px solid #f1f1f1
+}
 
-        /* 🔹 Estilização das células da tabela */
-        .table td {
-            text-align: center;
-            padding: 12px;
-            font-size: 15px;
-            border-bottom: 1px solid #ddd;
-        }
+/* 🔹 Linhas alternadas com cor mais clara */
+.table tbody tr:nth-child(even) {
+    background-color: 6px solid #f1f1f1;;
+}
 
-        /* 🔹 Linhas alternadas com cor mais clara */
-        .table tbody tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
+/* 🔹 Efeito hover nas linhas da tabela */
+.table tbody tr:hover {
+    background-color:  6px solid #f1f1f1;;
+    transition: background-color 0.3s ease;
+}
 
-        /* 🔹 Efeito hover nas linhas da tabela */
-        .table tbody tr:hover {
-            background-color: #e9f2ff;
-            transition: background-color 0.3s ease;
-        }
+/* 🔹 Cores específicas para os valores SIM / NÃO */
+.no {
+    background-color: #dc3545; /* Vermelho */
+    color: white;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    display: inline-block;
+    min-width: 50px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+}
 
-        /* 🔹 Botões de "SIM" e "NÃO" estilizados */
-        .no {
-            background-color: #dc3545;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-weight: bold;
-            display: inline-block;
-            min-width: 50px;
-            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
-        }
+.yes {
+    background-color: #007bff; /* Azul */
+    color: white;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    display: inline-block;
+    min-width: 50px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+}
 
-        .yes {
-            background-color: #007bff;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-weight: bold;
-            display: inline-block;
-            min-width: 50px;
-            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
-        }
+/* Para Lactantes e Gravidez */
+.lactantes-indicacao {
+    background-color: #ffcc00; /* Amarelo */
+    color: black;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+}
 
-        /* 🔹 Responsividade */
-        @media (max-width: 768px) {
-            .table {
-                width: 100%;
-            }
+.gravidez-indicacao {
+    background-color: #ffcc00; /* Amarelo */
+    color: black;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+}
 
-            .table th, .table td {
-                font-size: 14px;
-                padding: 10px;
-            }
+/* 🔹 Responsividade */
+@media (max-width: 768px) {
+    .table {
+        width: 100%;
+    }
 
-            .no, .yes {
-                padding: 6px 10px;
-                font-size: 14px;
-            }
-        }
+    .table th, .table td {
+        font-size: 14px;
+        padding: 10px;
+    }
 
-        .yes {
-            background-color: #007bff;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
+    .no, .yes {
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+}
+/* Cores específicas */
+.lactantes-indicacao {
+    background-color: #ffcc00;
+    color: black;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+}
+
+.gravidez-indicacao {
+    background-color: #ffcc00;
+    color: black;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 5px;
+}
+
+.yes {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+}
+
+.no {
+    background-color: #dc3545;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+}
+
         .efficacy-section {
             text-align: center;
             margin-top: 40px;
@@ -601,16 +645,6 @@
             }
 
 
-            /* 🔹 Adiciona um divisor sutil entre as seções */
-            .efficacy-section::after,
-            .adhesion-section::after {
-                content: "";
-                display: block;
-                width: 60%;
-                height: 1px;
-                background: #ddd; /* Cor suave para o divisor */
-                margin: 50px auto;
-            }
 
             /* 🔹 Adiciona borda superior na tabela para melhor separação */
             .table-container {
@@ -959,6 +993,48 @@
         width: 100%;
     }
 
+    /* Forçar a remoção de bordas para todas as imagens */
+img {
+    border: none !important;
+    margin: 0 !important;
+    display: block !important;
+    border-radius: 0 !important;
+}
+
+/* Remover borda e sombra do contêiner */
+.col-md-5, .shadow-sm {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+}
+
+/* Estilo para o título */
+.contra-indicado-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    font-weight: bold;  /* Deixa o texto em negrito */
+    color: black; /* Deixa o texto em preto */
+}
+
+.contraindicado-title {
+    display: flex;
+    justify-content: space-between;  /* Coloca o título à esquerda e o ícone à direita */
+    align-items: center;  /* Alinha verticalmente o ícone com o texto */
+}
+
+.contraindicado-icon {
+    width: 30px; /* Ajuste o tamanho do ícone conforme necessário */
+    height: auto;
+    margin-left: auto; /* Move o ícone para a extrema direita */
+}
+
     
 }
 
@@ -996,22 +1072,58 @@
 
 
         <div class="container">
-            <div class="tratamento-container">
+            <div class="tratamento-container"style="margin-bottom: 150px;">
                 <!-- Informações do Medicamento -->
                 <div class="tratamento-info">
-                    <h2>Tratamento com: {{ tipo_tratamento }}</h2>
-                    <h3><strong>{{ tratamento.nome }}</strong></h3>
-                    <p><strong>Fabricante:</strong> <span class="highlight">{{ tratamento.fabricante }}</span></p>
-                    <p><strong>Princípio ativo:</strong> <span class="highlight">{{ tratamento.principio_ativo }}</span></p>
+                    <h2 style="color: #0094FF;">Tratamento com: {{ tipo_tratamento }}</h2>
+                    <h3 style="font-family: Arial, sans-serif; font-weight: bold; font-size: 32px; line-height: 1.2; color: #000;">
+                        <strong>{{ tratamento.nome }}<sup style="font-size: 0.6em;">®</sup></strong>
+                    </h3>
+                    <p>
+                        <strong style="font-weight: normal; color: #000;">Fabricante:</strong> 
+                        <span style="color: #B0B0B0;">{{ tratamento.fabricante }}</span>
+                    </p>
+                    <p>
+                        <strong style="color: #B0B0B0;">Princípio ativo:</strong>
+                        <span style="font-weight: bold; color: #000;">{{ tratamento.principio_ativo }}</span>
+                    </p>
+                    
                     <p>{{ tratamento.descricao }}</p>
                 </div>
 
-                <!-- Imagem do Medicamento -->
-                {% if tratamento.imagem %}
-                <img src="{{ tratamento.imagem.url }}" alt="{{ tratamento.nome }}" style="max-width: 250px; border-radius: 10px;">
-            {% else %}
-                <img src="{% static 'img/default-medicamento.png' %}" alt="Imagem não disponível" style="max-width: 250px; border-radius: 10px;">
+                {% if tratamento.imagem_detalhes %}
+                <div class="col-md-5 p-3 shadow-sm rounded bg-white ms-md-3 mt-4 mt-md-0">
+                    <h4 class="text-primary fw-bold d-flex align-items-center">
+                        🖼️ <span class="ms-2">Imagem de Detalhes</span>
+                    </h4>
+                    <img src="{{ tratamento.imagem_detalhes.url }}" alt="Imagem de Detalhes do Tratamento" class="img-fluid zoom-img" style="width: 100%; height: 200px; object-fit: cover; object-position: top; border: none !important; margin: 0 !important; border-radius: 0 !important;">
+                </div>
             {% endif %}
+            
+            
+            <style>
+                .zoom-img {
+                    transition: transform 0.3s ease-in-out;
+                }
+            
+                /* Aplicando zoom mais forte na parte superior */
+                .zoom-img {
+                    transform: scale(1.4); /* Aumenta a imagem em 40% */
+                    object-position: top; /* Foca na parte superior da imagem */
+                }
+            
+                .zoom-img:hover {
+                    transform: scale(1.5); /* Aumenta mais no hover, se desejado */
+                }
+            </style>
+            
+            
+            
+            
+            
+            
+            
+            
         </div>
         
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -1019,79 +1131,112 @@
         </body>
         </html>
         
-
-<!-- Seção de Grau de Evidência Clínica -->
-<div class="efficacy-section">
-    <!-- Ícone que direciona para a página de evidências clínicas -->
-    <a href="/evidencias-clinicas/{{ tratamento.id }}/" class="btn btn-link p-0" title="Ver evidências clínicas">
-        <i class="fas fa-info-circle text-primary fs-4"></i>
-    </a>
-
-    <h2 class="efficacy-title">Eficácia em crises de enxaqueca</h2>
-
-<div class="efficacy-bar-container">
-    <div class="efficacy-bar">
-        <div class="efficacy-filled" 
-            style="width: {% if eficacia_max is not None %}{{ eficacia_max }}{% else %}0{% endif %}%;">
+        <div class="prerequisite-section" style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+            <i class="fas fa-clock" style="font-size: 30px; color: #0094FF; margin-right: 10px;"></i>
+            <span style="font-size: 18px; color: #808080; text-align: center;">
+                Prazo para efeito: 
+                <strong>
+                    {{ prazo_efeito }} <!-- Exibe diretamente a variável formatada -->
+                </strong>
+            </span>
         </div>
-        <div class="efficacy-marker" 
-            style="left: calc({% if eficacia_max is not None %}{{ eficacia_max }}{% else %}0{% endif %}% - 14px);">
+        
+        
+        
+        
+        
+        
+            
+
+        <div class="efficacy-section" style="margin-bottom: 150px;">
+            <!-- Título da seção de eficácia -->
+            <h2 class="efficacy-title" style="font-family: Arial, sans-serif; font-weight: normal; font-size: 34px; color: #000; font-weight: bold; text-align: center;">
+                Eficácia 
+            </h2>
+        
+            <!-- Barra de eficácia -->
+            <div class="efficacy-bar-container" style="width: 40%; height: 70px; background-color: #e0f0ff; position: relative; margin: 0 auto; border-radius: 5px; display: flex; justify-content: center; align-items: center; border: 1px solid #dcdcdc;">
+                <!-- Barra de fundo com as cores invertidas -->
+                <div class="efficacy-background" style="height: 100%; 
+                    background-image: linear-gradient(to right, #0094FF , #0094FF calc({% if eficacia_max is not None and eficacia_max != 0 %}{{ eficacia_max }}{% else %}0{% endif %}%), transparent calc({% if eficacia_max is not None and eficacia_max != 0 %}{{ eficacia_max }}{% else %}0{% endif %}%)); 
+                    width: 100%; opacity: 0;">
+                </div>
+        
+                <!-- Barra de preenchimento -->
+                <div class="efficacy-bar" style="height: 100%; background-color: #0094FF; border-radius: 5px; width: {% if eficacia_max is not None and eficacia_max != 0 %}{{ eficacia_max }}{% else %}0{% endif %}%;"></div>
+        
+                <!-- Marcador (Triângulo) -->
+                <div class="efficacy-marker" style="position: absolute; left: calc({% if eficacia_max is not None and eficacia_max != 0 %}{{ eficacia_max }}{% else %}0{% endif %}% - 10px); top: -8px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 15px solid #0094FF;"></div>
+            </div>
+        
+            <!-- Intervalo de eficácia -->
+            <p class="efficacy-range" style="font-size: 20px; color: #B0B0B0; text-align: center;">
+                <span class="low-efficacy" style="font-size: 40px; color: #B0B0B0;">
+                    {% if eficacia_min is not None %}{{ eficacia_min }}{% else %}0.00{% endif %}
+                </span>
+                <span class="efficacy-separator" style="font-size: 30px; color: #B0B0B0; position: relative; top: 6px;">a</span> 
+                <span class="high-efficacy" style="font-size: 40px; color: #000;">
+                    {% if eficacia_max is not None and eficacia_max != 0 %}{{ eficacia_max }}{% else %}0.00{% endif %}%
+                </span>
+            </p>
+        
+            <!-- Descrição adicional sobre a eficácia -->
+            <p class="efficacy-info" style="font-size: 14px; color: #B0B0B0; text-align: center;">
+                O remédio funciona para todo mundo? 
+                <strong style="color: #0094FF; font-weight: bold;">
+                    Não, apenas para 
+                    <span class="highlight" style="color: #0094FF; font-weight: bold;">
+                        {% if eficacia_min is not None %}{{ eficacia_min }}{% else %}0.00{% endif %} ~ 
+                        {% if eficacia_max is not None and eficacia_max != 0 %}{{ eficacia_max }}{% else %}0.00{% endif %}%
+                    </span>.
+                </strong>
+            </p>
+        </div>
+        
+        
+<!-- Botão para ver as pesquisas, com o tamanho ajustado -->
+<div style="display: flex; justify-content: center; margin-top: 5px;">
+    <a href="{% url 'evidencias_clinicas' tratamento.id %}" 
+       style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 20px; font-size: 16px; color: #0094FF; border: 2px solid #0094FF; border-radius: 5px; text-decoration: none; width: auto;">
+        Veja as pesquisas
+        <img src="{% static 'img/seta.png' %}" alt="Seta" style="margin-left: 10px; width: 15px; height: 15px; vertical-align: middle;">
+    </a>
+</div>
+
+
+
+
+<!-- Seção de Adesão -->
+<div class="adhesion-section">
+    <h2 class="adhesion-question" style="text-align: center; font-size: 24px; color: #0094FF; margin-bottom: 2px;">Quando usar?</h2>
+    
+    <div class="adhesion-content" style="display: flex; justify-content: center; align-items: center; margin-top: 5px;">
+        <div class="adhesion-text" style="text-align: center; margin-right: 20px; font-size: 16px; color: #4a4a4a;">
+            <p class="adhesion-description">
+                É recomendado tomar {{ tratamento.nome }} assim que sentir os primeiros sinais de enxaqueca.
+            </p>
+        </div>
+        <div class="adhesion-icon">
+            <img src="{% static 'img/relogio.png' %}" alt="Relógio Adesão" style="width: 300px; height: 280px;">
         </div>
     </div>
 </div>
 
 
-    <p class="efficacy-range">
-        <span class="low-efficacy">
-            {% if eficacia_min is not None %}{{ eficacia_min }}{% else %}0.00{% endif %}
-        </span>
-        <span class="efficacy-separator">a</span> 
-        <span class="high-efficacy">
-            {% if eficacia_max is not None %}{{ eficacia_max }}{% else %}0.00{% endif %}%
-        </span>
-    </p>
 
-    <p class="efficacy-info">
-        O remédio funciona para todo mundo? 
-        <strong>
-            Não, apenas para <span class="highlight">
-                {% if eficacia_min is not None %}{{ eficacia_min }}{% else %}0.00{% endif %} ~ 
-                {% if eficacia_max is not None %}{{ eficacia_max }}{% else %}0.00{% endif %}%
-            </span>.
-        </strong>
-    </p>
-</div>
-
-
-        <!-- Seção de Adesão -->
-        <div class="adhesion-section">
-            <p class="adhesion-title">Adesão</p>
-            <h2 class="adhesion-question">Quando tomar o {{ tratamento.nome }}?</h2>
-            
-            <div class="adhesion-content">
-                <div class="adhesion-text">
-                    <p class="adhesion-subtitle">Ao iniciar crise</p>
-                    <p class="adhesion-description">
-                        É recomendado tomar {{ tratamento.nome }} assim que sentir os primeiros sinais de enxaqueca.
-                    </p>
-                </div>
-                <div class="adhesion-icon">
-                    <img src="{% static 'img/relogio-adesao.png' %}" alt="Relógio Adesão">
-                </div>
-            </div>
-        </div>
 
 
 
 <!-- Tabela de Indicações -->
 
+<!-- Tabela de Indicações -->
 <div class="table-container">
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Grupo</th>
-                <th>Indicado para</th>
-                <th>Motivo</th>
+                <th>GRUPO</th>
+                <th>INDICADO PARA</th>
+                <th>MOTIVO</th>
             </tr>
         </thead>
         <tbody>
@@ -1142,9 +1287,16 @@
 </div>
 
 
-<!-- Seção de Contraindicações -->
+
 <div class="contraindications-section container mt-5">
-    <h2 class="text-danger fw-bold text-center">⚠️ Contraindicado para</h2>
+    <h2 class="contraindicado-title" style="display: flex; justify-content: space-between; align-items: center;">
+        <span>Contraindicado para</span>
+        <img src="{% static 'img/icone.png' %}" alt="Ícone Contraindicado" style="width: 80px; height: auto;">
+    </h2>
+</div>
+
+
+
     <div class="row">
         {% for contraindicacao in tratamento.contraindicacoes.all %}
             <div class="col-md-4 col-sm-6 mb-4"> 
@@ -1175,24 +1327,21 @@
 </div>
      
 
-        
-    </div>
-</div>
+
+
+
 
 
 <!-- Seção de Detalhes e Links -->
 <div class="container mt-5">
     <div class="row justify-content-center align-items-start">
-        <!-- Coluna Detalhes -->
+        <!-- Sessão Detalhes -->
         <div class="col-md-5 p-3 shadow-sm rounded bg-white">
             <h4 class="text-primary fw-bold d-flex align-items-center">
                 🔍 <span class="ms-2">Detalhes</span>
             </h4>
             <ul class="list-unstyled">
-                <li class="mb-2">🕒 <strong class="text-primary">Prazo para efeito:</strong> {{ tratamento.prazo_efeito_min }} - {{ tratamento.prazo_efeito_max }} horas</li>
-                <li class="mb-2">📉 <strong class="text-primary">Tratamento:</strong> {{ tratamento.realizar_tratamento_quando }}</li>
-                <li class="mb-2">💊 <strong class="text-primary">Protocolo:</strong> {{ tratamento.protocolo_dosagem }}</li>
-                <li class="mb-2">📈 <strong class="text-primary">Adesão:</strong> {{ tratamento.adesao }}</li>
+
                 <li class="mb-2">💲 <strong class="text-primary">Custo do medicamento:</strong> 
                     <a href="{{ tratamento.link_preco }}" target="_blank" class="text-success fw-bold">À partir de R${{ tratamento.custo_medicamento }}</a>
                 </li>
@@ -1202,24 +1351,36 @@
             </ul>
         </div>
 
-        <!-- Coluna Links -->
-        <div class="col-md-5 p-3 shadow-sm rounded bg-white ms-md-3 mt-4 mt-md-0">
-            <h4 class="text-primary fw-bold d-flex align-items-center">
-                🔗 <span class="ms-2">Links</span>
-            </h4>
-            <ul class="list-unstyled">
-                <li class="mb-2">🩺 <a href="#" class="text-decoration-none text-primary fw-bold">Opinião de especialista</a></li>
-                <li class="mb-2">💊 <a href="#" class="text-decoration-none text-primary fw-bold">Interações medicamentosas</a></li>
-                <li class="mb-2">📋 <a href="#" class="text-decoration-none text-primary fw-bold">Genéricos e similares</a></li>
-                <li class="mb-2">📜 <a href="#" class="text-decoration-none text-primary fw-bold">Prescrição eletrônica</a></li>
-            </ul>
-        </div>
-    </div>
+<!-- Sessão Links -->
+<div class="col-md-5 p-3 shadow-sm rounded bg-white ms-md-3 mt-4 mt-md-0">
+    <h4 class="text-primary fw-bold d-flex align-items-center">
+        🔗 <span class="ms-2">Links</span>
+    </h4>
+    <ul class="list-unstyled">
+        {% if tratamento.opiniao_especialista %}
+            <li class="mb-2">🩺 <a href="{{ tratamento.opiniao_especialista }}" target="_blank" class="text-decoration-none text-primary fw-bold">Opinião de especialista</a></li>
+        {% endif %}
+        
+        {% if tratamento.interacao_medicamentosa %}
+            <li class="mb-2">💊 <a href="{{ tratamento.interacao_medicamentosa }}" target="_blank" class="text-decoration-none text-primary fw-bold">Interações medicamentosas</a></li>
+        {% endif %}
+        
+        {% if tratamento.genericos_similares %}
+            <li class="mb-2">📋 <a href="{{ tratamento.genericos_similares }}" target="_blank" class="text-decoration-none text-primary fw-bold">Genéricos e similares</a></li>
+        {% endif %}
+        
+        {% if tratamento.prescricao_eletronica %}
+            <li class="mb-2">📜 <a href="{{ tratamento.prescricao_eletronica }}" target="_blank" class="text-decoration-none text-primary fw-bold">Prescrição eletrônica</a></li>
+        {% endif %}
+    </ul>
 </div>
 
-<!-- Seção de Reações Adversas -->
-<div class="reacoes-adversas-section container mt-5">
-    <h2 class="text-danger fw-bold text-center">⚠️ Reações Adversas</h2>
+<div class="contraindications-section container mt-5">
+    <h2 class="contra-indicado-title">
+        Reações Adversas
+        
+    </h2>
+</div>
 
     <div class="row row-cols-2 row-cols-md-4 g-3 justify-content-center">
         {% for reacao in tratamento.reacoes_adversas.all %}
@@ -1258,6 +1419,109 @@
 </div>
 
 
+<!-- Botão para ver as pesquisas, com o tamanho ajustado -->
+<div style="display: flex; justify-content: center; margin-top: 20px;">
+    <a href="{{ tratamento.links_profissionais }}" 
+       style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 20px; font-size: 16px; color: #0094FF; border: 2px solid #0094FF; border-radius: 5px; text-decoration: none; width: auto;">
+       Profissionais que indicam esse tratamento
+        <img src="{% static 'img/seta.png' %}" alt="Seta" style="margin-left: 10px; width: 15px; height: 15px; vertical-align: middle;">
+    </a>
+</div>
+
+
+
+
+
+<div style="margin-top: 30px;"></div> <!-- Distância adicionada -->
+
+<!-- Formulário de Avaliação -->
+<form method="POST" action="{% url 'salvar_avaliacao' tratamento.id %}">
+    {% csrf_token %}
+    
+    <h3>Você já utilizou este medicamento?</h3>
+
+    <!-- Comentário -->
+    <div>
+        <textarea name="comentario" placeholder="Deixe sua mensagem" rows="4" style="width: 100%; padding: 10px; font-size: 14px;"></textarea>
+    </div>
+
+    <!-- Estrelas para avaliação -->
+    <div>
+        <label for="stars" style="font-size: 16px;">Classifique este medicamento:</label>
+        <div class="stars">
+            <!-- Cada estrela representa uma avaliação de 1 a 5 -->
+            <input type="radio" id="star5" name="rating" value="5">
+            <label for="star5">☆</label>
+            
+            <input type="radio" id="star4" name="rating" value="4">
+            <label for="star4">☆</label>
+            
+            <input type="radio" id="star3" name="rating" value="3">
+            <label for="star3">☆</label>
+            
+            <input type="radio" id="star2" name="rating" value="2">
+            <label for="star2">☆</label>
+            
+            <input type="radio" id="star1" name="rating" value="1">
+            <label for="star1">☆</label>
+        </div>
+    </div>
+
+    <!-- Enviar botão -->
+    <div>
+        <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; font-size: 16px;">
+            Enviar Avaliação
+        </button>
+    </div>
+</form>
+
+
+
+<!-- Estilo básico para as estrelas -->
+<style>
+    .stars input[type="radio"] {
+        display: none;
+    }
+    .stars label {
+        font-size: 30px;
+        color: #ccc;
+        cursor: pointer;
+    }
+    .stars input[type="radio"]:checked ~ label {
+        color: #ffcc00;
+    }
+    .stars input[type="radio"]:hover ~ label {
+        color: #ff9900;
+    }
+</style>
+
+<!-- Exibindo o comentário e a avaliação do tratamento -->
+
+
+<div style="margin-top: 50px;"></div> 
+<div>
+    <h3>Comentário do Tratamento:</h3>
+    {% if comentario %}
+        <p>{{ comentario }}</p>
+    {% else %}
+        <p>Não há comentário para este tratamento.</p>
+    {% endif %}
+
+    <h3>Avaliação:</h3>
+    <div class="stars">
+        <!-- Exibindo as estrelas preenchidas -->
+        {% for i in estrelas_preenchidas %}
+            <span style="color: #ffcc00;">&#9733;</span>  <!-- Estrela preenchida -->
+        {% endfor %}
+        
+        <!-- Exibindo as estrelas vazias -->
+        {% for i in estrelas_vazias %}
+            <span style="color: #ccc;">&#9733;</span>  <!-- Estrela vazia -->
+        {% endfor %}
+    </div>
+</div>
+
+
 
 
 
@@ -1265,8 +1529,8 @@
 
 </body>
 
-<!-- FOOTER -->
 
+<!-- FOOTER -->
 <!-- FOOTER -->
 
 <footer class="footer mt-5 pt-4 border-top">
@@ -1297,7 +1561,7 @@
         
         <!-- Explorar -->
         <div class="col-12 col-md-4 mb-4">
-          <h6>Explorar</h6>
+            <strong>Explorar</strong>
           <ul class="list-unstyled">
             <li><a href="https://www.telix.inf.br/pacientes" target="_blank">Pacientes</a></li>
             <li><a href="https://www.telix.inf.br/profissionaisdesaude" target="_blank">Profissionais de Saúde</a></li>
@@ -1309,7 +1573,7 @@
   
         <!-- Tratamentos -->
         <div class="col-12 col-md-4 mb-4">
-          <h6>Tratamentos</h6>
+            <strong>Tratamentos</strong>
           <ul class="list-unstyled">
             <li><a href="http://cadastros.telix.inf.br/tratamentos/" target="_blank">Tratamentos</a></li>
             <li><a href="https://www.telix.inf.br/in%C3%ADcio" target="_blank">Opinião de Especialistas</a></li>
@@ -1322,7 +1586,7 @@
   
         <!-- Contato -->
         <div class="col-12 col-md-4 mb-4">
-          <h6>Fale com a gente!</h6>
+            <strong>Fale com a gente!</strong>
           <p><a href="#">Entrevistas e contato.</a><br>(45) 99904-0371</p>
           <p><a href="#">Dúvidas, sugestões e contato.</a><br>contato@telix.inf.br</p>
         </div>
@@ -1334,6 +1598,7 @@
       <small class="text-muted">© 2024 Telix. Todos os direitos reservados.</small>
     </div>
   </footer>
+  
   
   
 

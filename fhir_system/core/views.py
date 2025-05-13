@@ -130,25 +130,8 @@ def tratamentos(request):
 
     return render(request, 'core/tratamentos.html', context)
 
- 
 
 
-
-def convert_time_to_minutes(time_str):
-    """Converte o valor do prazo de 'X a Y' de horas para minutos."""
-    if 'h' in time_str:
-        # Remover o "h" e "a" e dividir os valores
-        time_range = time_str.replace('h', '').replace('a', '').split()
-        # Converter de horas para minutos
-        if len(time_range) == 2:
-            return int(time_range[0]) * 60, int(time_range[1]) * 60  # Converte para minutos
-        else:
-            return int(time_range[0]) * 60, int(time_range[0]) * 60  # Caso tenha apenas um valor em horas
-    elif 'min' in time_str:
-        # Caso o tempo seja em minutos
-        time_range = time_str.replace('min', '').replace('a', '').split()
-        return int(time_range[0]), int(time_range[1])  # Já está em minutos
-    return 0, 0  # Se não for reconhecido, retorna 0
 
 
 
@@ -176,35 +159,62 @@ def detalhes_tratamentos(request, tratamento_id):
     eficacia_min = eficacia_agregada.get('eficacia_min')
     eficacia_max = eficacia_agregada.get('eficacia_max')
 
+    # Calcular e formatar o prazo de efeito
+    if tratamento.prazo_efeito_min and tratamento.prazo_efeito_max:
+        if tratamento.prazo_efeito_max < 60:
+            prazo_efeito = f"{tratamento.prazo_efeito_min} min a {tratamento.prazo_efeito_max} min"
+        elif tratamento.prazo_efeito_min >= 60 and tratamento.prazo_efeito_max < 1440:
+            prazo_efeito = f"{tratamento.prazo_efeito_min // 60} h a {tratamento.prazo_efeito_max // 60} h"
+        elif tratamento.prazo_efeito_min >= 1440:
+            prazo_efeito = f"{tratamento.prazo_efeito_min // 1440} dia a {tratamento.prazo_efeito_max // 1440} dias"
+    else:
+        prazo_efeito = "Não disponível"
+
+
+
+    # Garantir que a avaliação seja um número inteiro
+    avaliacao = int(tratamento.avaliacao) if tratamento.avaliacao else 0
+
+    # Criar uma lista de estrelas com base na avaliação
+    estrelas_preenchidas = [1 for i in range(avaliacao)]  # Lista de estrelas preenchidas
+    estrelas_vazias = [1 for i in range(5 - avaliacao)]  # Lista de estrelas vazias
+
     # Retornar a resposta renderizada com o contexto
     return render(request, 'core/detalhes_tratamentos.html', {
         'tratamento': tratamento,
-        'avaliacao': tratamento.avaliacao,
+        'avaliacao': avaliacao,
+        'comentario': tratamento.comentario,  # Supondo que o comentário esteja no modelo
         'eficacia_min': eficacia_min,
         'eficacia_max': eficacia_max,
         'risco': tratamento.risco,
-        'tipo_tratamento': tratamento.tipo_tratamento,  # Incluindo o tipo de tratamento no contexto
+        'tipo_tratamento': tratamento.tipo_tratamento,
+        'prazo_efeito': prazo_efeito,  # Adicionando a variável formatada ao contexto
+        'estrelas_preenchidas': estrelas_preenchidas,
+        'estrelas_vazias': estrelas_vazias, # Passando a lista de estrelas para o template
     })
 
 
 
+
+from django.utils.html import format_html
+
 class DetalhesTratamentoAdmin(admin.ModelAdmin):
-    list_display = ("nome", "fabricante", "principio_ativo", "avaliacao")  # Exibe a avaliação na lista
+    list_display = ("nome", "fabricante", "principio_ativo", "avaliacao", "prazo_efeito_formatado")  # Adicionei 'prazo_efeito_formatado' à lista
     search_fields = ("nome", "fabricante", "principio_ativo")
     list_filter = ("fabricante", "grupo", "avaliacao")
 
     fieldsets = (
         ("Informações Gerais", {
-            "fields": ("nome", "fabricante", "principio_ativo", "descricao", "imagem", "grupo", "avaliacao")  # Avaliação foi movida para cá
+            "fields": ("nome", "fabricante", "principio_ativo", "descricao", "imagem", "imagem_detalhes", "grupo", "avaliacao")
         }),
         ("Evidência", {
-            "fields": ( "grau_evidencia", "funciona_para_todos")
+            "fields": ("grau_evidencia", "funciona_para_todos")
         }),
         ("Adesão ao Tratamento", {
             "fields": ("quando_usar", "prazo_efeito_min", "prazo_efeito_max", "tipo_tratamento", "custo_medicamento")
         }),
         ("Links e Alertas", {
-            "fields": ("links_externos", "alertas")
+            "fields": ("interacao_medicamentosa", "genericos_similares", "prescricao_eletronica", "opiniao_especialista", "links_profissionais","links_externos", "alertas")
         }),
         ("Indicações", {
             "fields": ("indicado_criancas", "motivo_criancas",
@@ -214,7 +224,6 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
                        "indicado_lactantes", "motivo_lactantes",
                        "indicado_gravidez", "motivo_gravidez")
         }),
-
         ("Contraindicações", {
             "fields": ("contraindicacoes",)
         }),
@@ -222,6 +231,10 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
             "fields": ("reacoes_adversas",)
         }),
     )
+
+
+
+
 
 def evidencias_clinicas(request, tratamento_id):
     """Exibe a página de evidências clínicas de um tratamento específico"""
@@ -249,3 +262,25 @@ def listar_urls(request):
 
     return render(request, "core/listar_urls.html", {"urls": urls})
 
+# views.py
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import DetalhesTratamentoResumo
+
+def salvar_avaliacao(request, tratamento_id):
+    # Buscar o tratamento pelo ID
+    tratamento = get_object_or_404(DetalhesTratamentoResumo, id=tratamento_id)
+    
+    if request.method == 'POST':
+        comentario = request.POST.get('comentario', '')
+        avaliacao = request.POST.get('rating', '')
+        
+        # Salvar o comentário e a avaliação diretamente na tabela de DetalhesTratamentoResumo
+        tratamento.comentario = comentario
+        tratamento.avaliacao = avaliacao
+        tratamento.save()
+
+        # Redirecionar para a página de detalhes do tratamento após salvar
+        return redirect('detalhes_tratamentos', tratamento_id=tratamento.id)
+
+    # Caso o método não seja POST, renderizar a página de detalhes com as avaliações
+    return render(request, 'core/detalhes_tratamentos.html', {'tratamento': tratamento})
