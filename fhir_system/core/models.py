@@ -202,6 +202,18 @@ class ReacaoAdversa(models.Model):
     reacao_min = models.DecimalField("Reação Mínima (%)", max_digits=5, decimal_places=2, default=0.0, help_text="Valor mínimo de risco percentual de efeito colateral (0 a 100%)")
     reacao_max = models.DecimalField("Reação Máxima (%)", max_digits=5, decimal_places=2, default=0.0, help_text="Valor mánimo de risco percentual de efeito colateral (0 a 100%)")
     imagem = models.ImageField(upload_to='reacoes_adversas/', blank=True, null=True)
+    GRAU_COMUNALIDADE_CHOICES = [
+        ('COMUM', 'COMUM'),
+        ('INCOMUM', 'INCOMUM'),
+        ('RARA', 'RARA'),
+        ('MUITO_RARA', 'MUITO RARA'),
+    ]
+    grau_comunalidade = models.CharField(
+        max_length=20,
+        choices=GRAU_COMUNALIDADE_CHOICES,
+        default='COMUM',
+        verbose_name="Grau de Comunalidade"
+    )
 
     class Meta:
         verbose_name = "Reação Adversa"
@@ -210,6 +222,17 @@ class ReacaoAdversa(models.Model):
     def __str__(self):
         return self.nome
 
+class TipoTratamento(models.Model):
+    nome = models.CharField(max_length=200)
+
+
+    class Meta:
+        verbose_name = "Tipo de Tratamento"
+        verbose_name_plural = "Tipos de Tratamento"
+
+    def __str__(self):
+        return self.nome
+    
 
 class DetalhesTratamentoResumo(models.Model):
     GRUPO_CHOICES = (
@@ -233,7 +256,44 @@ class DetalhesTratamentoResumo(models.Model):
     eficacia_min = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     eficacia_max = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     prazo_efeito_min = models.IntegerField()  # Para armazenar o tempo em minutos
-    prazo_efeito_max = models.IntegerField()
+    prazo_efeito_max = models.IntegerField()    
+    UNIDADES = [
+        ('minuto', 'Minuto'),
+        ('hora', 'Hora'),
+        ('dia', 'Dia'),
+        ('sessao', 'Sessão'),
+        ('segundo', 'Segundo'),
+    ]
+    prazo_efeito_unidade = models.CharField(max_length=10, choices=UNIDADES, default='minuto')
+
+    # Método auxiliar para pluralizar unidade
+    def pluralizar_unidade(self, valor):
+        excecoes = {
+            'sessao': 'sessões',
+        }
+        unidade = self.prazo_efeito_unidade
+        if valor == 1:
+            # singular
+            return unidade
+        # plural com exceções
+        return excecoes.get(unidade, unidade + 's')
+
+    # Método para formatar prazo mínimo
+    @property
+    def prazo_efeito_min_formatado(self):
+        return f"{self.prazo_efeito_min} {self.pluralizar_unidade(self.prazo_efeito_min)}"
+
+    # Método para formatar prazo máximo
+    @property
+    def prazo_efeito_max_formatado(self):
+        return f"{self.prazo_efeito_max} {self.pluralizar_unidade(self.prazo_efeito_max)}"
+
+    # Opcional: método para exibir a faixa completa
+    @property
+    def prazo_efeito_faixa_formatada(self):
+        return f"{self.prazo_efeito_min_formatado} a {self.prazo_efeito_max_formatado}"
+
+    
     interacao_medicamentosa = models.URLField(blank=True, null=True)
     genericos_similares = models.URLField(blank=True, null=True)
     prescricao_eletronica = models.URLField(blank=True, null=True)
@@ -244,18 +304,8 @@ class DetalhesTratamentoResumo(models.Model):
     imagem_detalhes = models.ImageField(upload_to="tratamentos/detalhes/", blank=True, null=True)
 
     quando_usar = models.TextField()    
-    tipos_tratamentos = [
-        ('comprimidos', 'Comprimidos'),
-        ('gotas', 'Gotas'),
-        ('agulhas', 'Agulhas'),
-        ('injetavel', 'Injeção')
-    ]
-    
-    tipo_tratamento = models.CharField(
-        max_length=20,
-        choices=tipos_tratamentos,
-        default='comprimidos',  # Pode ajustar o valor padrão
-    )
+    tipo_tratamento = models.ManyToManyField(TipoTratamento, blank=True)
+
     custo_medicamento = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
     links_externos = models.TextField(blank=True, null=True)
     alertas = models.TextField(blank=True, null=True)
@@ -289,7 +339,7 @@ class EvidenciasClinicas(models.Model):
     descricao = models.TextField()
     numero_participantes = models.IntegerField() 
     condicao_saude = models.CharField(max_length=255, blank=True, null=True)
-    rigor_da_pesquisa = models.CharField(max_length=100)
+    rigor_da_pesquisa = models.IntegerField(default=0)
     link_estudo = models.URLField(blank=True, null=True)
     data_publicacao = models.DateField(blank=True, null=True)
     autores = models.CharField(max_length=255, blank=True, null=True)

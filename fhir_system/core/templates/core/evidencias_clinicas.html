@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: #ffffff;
             font-family: Arial, sans-serif;
         }
         .container {
@@ -74,7 +74,8 @@
 
 <!-- HEADER -->
 <header>
-  <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom position-relative">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white position-relative">
+
     <div class="container-fluid d-flex justify-content-between align-items-center">
       <a class="navbar-brand" href="https://www.telix.inf.br/">
         <img src="{% static 'img/logo.png' %}" alt="Telix Logo" style="height: 70px;">
@@ -83,84 +84,175 @@
   </nav>
 </header>
 
-<div class="container mt-4 d-flex flex-column align-items-center text-center">
-  <div class="container mt-4 d-flex flex-column align-items-center text-center min-vh-100">
-    <div class="info-tratamento">
-      <img src="{{ tratamento.imagem.url }}" class="img-fluid rounded shadow mb-3" style="max-width: 200px; height: auto;" alt="{{ tratamento.nome }}">
-      <div class="info-text">
-        <h2 class="text-info fw-bold">{{ tratamento.nome }}</h2>
-        <p><strong>Princípio Ativo:</strong> {{ tratamento.principio_ativo }}</p>
-        <p><strong>Fabricante:</strong> {{ tratamento.fabricante }}</p>
-        <p><strong>Grau de Evidência:</strong> <span class="badge-info">{{ tratamento.grau_evidencia }}</span></p>
-      </div>
-    </div>
-
-    <div class="mt-4 w-75">
-      <form class="d-flex">
-        <input type="text" id="searchInput" class="form-control me-2" placeholder="🔍 Pesquisar estudos e medicamentos..." onkeyup="filterTable()">
-      </form>
-    </div>
-
-    <h4 class="text-info text-center mt-4">📖 Estudos e Evidências Científicas</h4>
-
-    {% if evidencias %}
-    <div class="table-responsive w-100 mt-3 d-flex justify-content-center shadow-lg p-3 bg-white rounded border">
-      <table class="table table-bordered text-center align-middle bg-white" id="evidenciasTable">
-        <thead class="bg-light text-dark border-bottom">
-          <tr>
-            <th class="text-uppercase fw-bold py-3 border">Eficácia</th>
-            <th class="text-uppercase fw-bold py-3 border">Grau de Evidência</th>
-            <th class="text-uppercase fw-bold py-3 border">Data</th>
-            <th class="text-uppercase fw-bold py-3 border">Estudo</th>
-            <th class="text-uppercase fw-bold py-3 border">Descrição/Referências</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for evidencia in evidencias %}
-          <tr>
-            <td class="py-3 px-4 border">
-              <span class="eficacia-badge fw-bold">{{ evidencia.eficacia_min }}% - {{ evidencia.eficacia_max }}%</span>
-              {% if evidencia.estudo_randomizado %}<p class="text-info fw-bold">✔ Estudo randomizado</p>{% endif %}
-              {% if evidencia.duplo_cego %}<p class="text-info fw-bold">✔ Duplo-cego</p>{% endif %}
-              {% if evidencia.placebo_controlado %}<p class="text-info fw-bold">✔ Placebo-controlado</p>{% endif %}
-            </td>
-            <td class="py-3 px-4 border">{% if evidencia.grau_evidencia %}{{ evidencia.grau_evidencia }}{% else %}<span class="text-muted">Não informado</span>{% endif %}</td>
-            <td class="py-3 px-4 border">{{ evidencia.data_publicacao|date:"m/Y" }}</td>
-            <td class="py-3 px-4 border">{{ evidencia.descricao }}</td>
-            <td class="py-3 px-4 border">
-              <a href="{{ evidencia.link_estudo }}" class="btn btn-primary"><i class="fas fa-link"></i> Acessar Estudo</a><br>
-              {{ evidencia.referencia_bibliografica }}
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-    {% endif %}
-  </div>
-</div>
-
-<script>
-function filterTable() {
-  var input = document.getElementById("searchInput");
-  var filter = input.value.toUpperCase();
-  var table = document.getElementById("evidenciasTable");
-  var tr = table.getElementsByTagName("tr");
-  for (let i = 1; i < tr.length; i++) {
-    tr[i].style.display = "none";
-    let td = tr[i].getElementsByTagName("td");
-    for (let j = 0; j < td.length; j++) {
-      if (td[j]) {
-        let txtValue = td[j].textContent || td[j].innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-          tr[i].style.display = "";
-          break;
-        }
-      }
-    }
+<style>
+  .back-link {
+    color: #007bff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: color 0.3s ease;
   }
-}
-</script>
+  .back-link svg {
+    width: 40px;
+    height: 28px;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transform-origin: center;
+    transition: transform 0.3s ease;
+  }
+  .back-link:hover {
+    color: #004a99;
+  }
+  .back-link:hover svg {
+    transform: translateX(-8px);
+  }
+  h1.titulo-tratamento {
+    font-weight: 700;
+    font-size: 28px;
+    color: #111;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 40px;
+  }
+</style>
+
+<h1 class="titulo-tratamento">
+  <a href="{{ url_retorno }}" class="back-link" aria-label="Voltar">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" >
+      <path d="M15 18l-6-6 6-6" />
+    </svg>
+  </a>
+  <span>
+    Pesquisas sobre eficácia do tratamento: 
+    <a href="#" style="color:#007bff; text-decoration:none;">
+      {{ tratamento.nome }}
+    </a>
+  </span>
+</h1>
+
+<p style="color: #999999; font-weight: 600; font-size: 30px; margin-top: 10px; text-align: center;">
+  para: 
+  {% if tratamento.evidencias.all %}
+    {{ tratamento.evidencias.all.0.condicao_saude|default:"condição não informada" }}
+  {% else %}
+    condição não informada
+  {% endif %}
+</p>
+
+
+
+
+{% if evidencias %}
+  <div class="evidencias-container" style="max-width: 1100px; background: white; box-shadow: 0 0 25px rgb(0 0 0 / 0.2); border-radius: 10px; padding: 40px 36px; font-family: Arial, sans-serif; color: #222; margin: 30px auto; font-size: 1.1rem;">
+    {% for evidencia in evidencias %}
+    <div class="evidencia-item" style="display: flex; gap: 30px; padding-bottom: 40px; margin-bottom: 40px; align-items: flex-start; border-bottom: 5px solid #eeeeee;">
+
+        
+        <!-- Imagem do estudo -->
+        {% if evidencia.imagem_estudo %}
+          <div class="imagem-estudo" style="flex: 0 0 160px; height: 140px; display: flex; align-items: center; justify-content: center;">
+  <div class="imagem-estudo" style="flex: 0 0 160px; height: 140px; display: flex; align-items: center; justify-content: center; padding: 0; margin: 0;">
+    <img src="{{ evidencia.imagem_estudo.url }}" alt="Imagem do estudo" style="max-width: 100%; max-height: 140px; border-radius: 6px; object-fit: contain; display: block;">
+  </div>
+          </div>
+        {% endif %}
+        
+        <!-- Conteúdo -->
+        <div class="conteudo" style="flex: 1;">
+          <p style="font-weight: 700; font-size: 1.1rem; margin: 0 0 8px;">
+
+            EFICÁCIA 
+            <span style="color: #bbb;">{{ evidencia.eficacia_min }}</span> 
+            <span style="color: #bbb;">a</span> 
+            <span>{{ evidencia.eficacia_max }}%</span>
+          </p>
+          
+          <p style="margin: 0 0 14px; font-size: 1rem;">
+            Rigor da pesquisa
+            <span style="display: inline-flex; gap: 6px; margin-left: 8px; vertical-align: middle;">
+              {% with rigor_value=evidencia.rigor_da_pesquisa %}
+                {% for i in "1234567" %}
+                  {% if i|add:"0" <= rigor_value %}
+                    <span style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      width: 24px;
+                      height: 24px;
+                      font-size: 0.85rem;
+                      font-weight: 600;
+                      border-radius: 4px;
+                      border: 1px solid #007bff;
+                      color: white;
+                      background-color: #007bff;
+                      ">
+                      {{ i }}
+                    </span>
+                  {% else %}
+                    <span style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      width: 24px;
+                      height: 24px;
+                      font-size: 0.85rem;
+                      font-weight: 600;
+                      border-radius: 4px;
+                      border: 1px solid #007bff;
+                      color: #007bff;
+                      background-color: transparent;
+                      ">
+                      {{ i }}
+                    </span>
+                  {% endif %}
+                {% endfor %}
+              {% endwith %}
+            </span>
+          </p>
+          
+          
+          
+          
+          <p style="margin: 0 0 14px; font-size: 1rem;">
+            quantidade de participantes: <strong>{{ evidencia.numero_participantes }}</strong>
+          </p>
+          
+          <p style="margin: 0 0 20px; font-weight: 600; font-size: 1.1rem;">DATA <span style="font-weight: 400;">{{ evidencia.data_publicacao|date:"m/Y" }}</span></p>
+          
+          <p style="font-style: italic; font-size: 1rem; margin: 0 0 18px;">
+            {{ evidencia.autores }}
+          </p>
+                  {% if evidencia.referencia_bibliografica %}
+          <p style="font-size: 0.95rem; margin: 0 0 18px; color: #555;">
+            {{ evidencia.referencia_bibliografica }}
+          </p>
+        {% endif %}
+          
+          <p style="font-size: 1.1rem; margin: 0 0 14px;">
+            {{ evidencia.titulo_estudo }}
+          </p>
+          
+          <a href="{{ evidencia.link_estudo }}" target="_blank" style="font-size: 1rem; color: #007bff; text-decoration: underline; display: inline-block; margin-bottom: 12px;">
+            {{ evidencia.link_estudo }}
+          </a>
+          <div style="flex: 1; min-width: 0; font-size: 1rem; line-height: 1.4; color: #222;">
+            {{ evidencia.descricao }}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+
+
+
 
 <!-- FOOTER -->
 <footer class="footer mt-5 pt-4 border-top" style="background-color: #ffffff; color: #333;">

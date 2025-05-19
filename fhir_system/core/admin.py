@@ -19,11 +19,12 @@ from .models import (
     # ResourceStudyReport,
     # Tratamentos,
     EvidenciasClinicas,
+    TipoTratamento,
 )
 
 admin.site.register(
     [
-        # Organization,
+        TipoTratamento
         # SubstanceDefinition,
         # Ingredient,
         # ManufacturedItemDefinition,
@@ -87,7 +88,7 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
         "custo_medicamento",
         
     )
-    filter_horizontal = ("contraindicacoes", "reacoes_adversas")
+    filter_horizontal = ("contraindicacoes", "reacoes_adversas","tipo_tratamento")
     search_fields = ("nome", "fabricante", "principio_ativo", "grupo")
     list_filter = (
         "fabricante",
@@ -123,6 +124,7 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
                     "quando_usar",
                     "prazo_efeito_min",
                     "prazo_efeito_max",
+                    'prazo_efeito_unidade',
                     "tipo_tratamento",
                     "custo_medicamento",
                 ),

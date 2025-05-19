@@ -284,3 +284,29 @@ def salvar_avaliacao(request, tratamento_id):
 
     # Caso o método não seja POST, renderizar a página de detalhes com as avaliações
     return render(request, 'core/detalhes_tratamentos.html', {'tratamento': tratamento})
+
+
+def tratamento_detail(request, pk):
+    tratamento = get_object_or_404(Tratamento, pk=pk)
+    url_retorno = request.META.get('HTTP_REFERER', '/tratamentos/')  # pega URL anterior ou fallback
+    context = {
+        'tratamento': tratamento,
+        'url_retorno': url_retorno,
+    }
+    return render(request, 'core/detalhes_tratamentos.html',  {'tratamento': tratamento})
+
+def sua_view(request):
+    # seu código
+    contexto = {
+        "evidencias": evidencias,
+        'rigor_range': range(1,8),
+    }
+    return render(request, 'evidencias_clinicas.html', contexto)
+
+
+# No seu model, método para pluralizar só a unidade:
+def unidade_formatada(self, valor):
+    exceptions = {'sessao': 'sessões'}
+    if valor == 1:
+        return self.prazo_efeito_unidade
+    return exceptions.get(self.prazo_efeito_unidade, self.prazo_efeito_unidade + 's')

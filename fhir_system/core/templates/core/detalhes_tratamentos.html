@@ -284,6 +284,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    border-top: none !important;
 }
 
 .table {
@@ -1035,6 +1036,13 @@ img {
     margin-left: auto; /* Move o ícone para a extrema direita */
 }
 
+.background-image: linear-gradient(
+  to right,
+  #0094FF 0%,
+  #0094FF {{ eficacia_max }}%,
+  transparent {{ eficacia_max }}%
+);
+
     
 }
 
@@ -1075,7 +1083,15 @@ img {
             <div class="tratamento-container"style="margin-bottom: 150px;">
                 <!-- Informações do Medicamento -->
                 <div class="tratamento-info">
-                    <h2 style="color: #0094FF;">Tratamento com: {{ tipo_tratamento }}</h2>
+                    <h2 style="color: #0094FF;">
+                        Tratamento com:
+                        {% for tipo in tratamento.tipo_tratamento.all %}
+                            {{ tipo.nome }}{% if not forloop.last %}, {% endif %}
+                        {% empty %}
+                            Nenhum tipo selecionado
+                        {% endfor %}
+                    </h2>
+                    
                     <h3 style="font-family: Arial, sans-serif; font-weight: bold; font-size: 32px; line-height: 1.2; color: #000;">
                         <strong>{{ tratamento.nome }}<sup style="font-size: 0.6em;">®</sup></strong>
                     </h3>
@@ -1092,29 +1108,21 @@ img {
                 </div>
 
                 {% if tratamento.imagem_detalhes %}
-                <div class="col-md-5 p-3 shadow-sm rounded bg-white ms-md-3 mt-4 mt-md-0">
+                <div class="col-md-5 ms-md-3 mt-4 mt-md-0 p-0">
                     <h4 class="text-primary fw-bold d-flex align-items-center">
-                        🖼️ <span class="ms-2">Imagem de Detalhes</span>
+                      
                     </h4>
-                    <img src="{{ tratamento.imagem_detalhes.url }}" alt="Imagem de Detalhes do Tratamento" class="img-fluid zoom-img" style="width: 100%; height: 200px; object-fit: cover; object-position: top; border: none !important; margin: 0 !important; border-radius: 0 !important;">
+                    <img src="{{ tratamento.imagem_detalhes.url }}" alt="Imagem de Detalhes do Tratamento" class="img-fluid" style="width: 600px; height: 180px; object-fit: cover; object-position: top; border: none; margin: 0; border-radius: 0;">
                 </div>
             {% endif %}
             
             
             <style>
-                .zoom-img {
-                    transition: transform 0.3s ease-in-out;
-                }
-            
-                /* Aplicando zoom mais forte na parte superior */
-                .zoom-img {
-                    transform: scale(1.4); /* Aumenta a imagem em 40% */
-                    object-position: top; /* Foca na parte superior da imagem */
-                }
-            
-                .zoom-img:hover {
-                    transform: scale(1.5); /* Aumenta mais no hover, se desejado */
-                }
+        /* Remova a classe de zoom ou qualquer transformação */
+        .zoom-img {
+            transition: none !important;
+            transform: none !important;
+    }
             </style>
             
             
@@ -1148,37 +1156,48 @@ img {
         
             
 
-        <div class="efficacy-section" style="margin-bottom: 150px;">
-            <!-- Título da seção de eficácia -->
-            <h2 class="efficacy-title" style="font-family: Arial, sans-serif; font-weight: normal; font-size: 34px; color: #000; font-weight: bold; text-align: center;">
-                Eficácia 
-            </h2>
+<div class="efficacy-section" style="margin-bottom: 10px;">
+    <!-- Título da seção de eficácia -->
+    <h2 class="efficacy-title" style="font-family: Arial, sans-serif; font-weight: bold; font-size: 34px; color: #000; text-align: center;">
+        Eficácia 
+    </h2>
+
+    <!-- Barra de eficácia -->
+    <div class="efficacy-bar-container" style="width: 40%; height: 70px; background-color: #e0f0ff; position: relative; margin: 0 auto; border-radius: 5px; display: flex; justify-content: center; align-items: center; border: 1px solid #dcdcdc;">
         
-            <!-- Barra de eficácia -->
-            <div class="efficacy-bar-container" style="width: 40%; height: 70px; background-color: #e0f0ff; position: relative; margin: 0 auto; border-radius: 5px; display: flex; justify-content: center; align-items: center; border: 1px solid #dcdcdc;">
-                <!-- Barra de fundo com as cores invertidas -->
-                <div class="efficacy-background" style="height: 100%; 
-                    background-image: linear-gradient(to right, #0094FF , #0094FF calc({% if eficacia_max is not None and eficacia_max != 0 %}{{ eficacia_max }}{% else %}0{% endif %}%), transparent calc({% if eficacia_max is not None and eficacia_max != 0 %}{{ eficacia_max }}{% else %}0{% endif %}%)); 
-                    width: 100%; opacity: 0;">
-                </div>
+        <!-- Barra de fundo com as cores invertidas -->
+        {% with eficacia=eficacia_max|default:0 %}
+        <div class="efficacy-background" style="
+            height: 100%;
+            background-image: linear-gradient(
+                to right,
+                #0094FF 0%,
+                #0094FF {{ eficacia }}%,
+                transparent {{ eficacia }}%
+            );
+            width: 100%;
+            opacity: 0;">
+        </div>
+        {% endwith %}
         
-                <!-- Barra de preenchimento -->
-                <div class="efficacy-bar" style="height: 100%; background-color: #0094FF; border-radius: 5px; width: {% if eficacia_max is not None and eficacia_max != 0 %}{{ eficacia_max }}{% else %}0{% endif %}%;"></div>
-        
-                <!-- Marcador (Triângulo) -->
-                <div class="efficacy-marker" style="position: absolute; left: calc({% if eficacia_max is not None and eficacia_max != 0 %}{{ eficacia_max }}{% else %}0{% endif %}% - 10px); top: -8px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 15px solid #0094FF;"></div>
-            </div>
-        
-            <!-- Intervalo de eficácia -->
-            <p class="efficacy-range" style="font-size: 20px; color: #B0B0B0; text-align: center;">
-                <span class="low-efficacy" style="font-size: 40px; color: #B0B0B0;">
-                    {% if eficacia_min is not None %}{{ eficacia_min }}{% else %}0.00{% endif %}
-                </span>
-                <span class="efficacy-separator" style="font-size: 30px; color: #B0B0B0; position: relative; top: 6px;">a</span> 
-                <span class="high-efficacy" style="font-size: 40px; color: #000;">
-                    {% if eficacia_max is not None and eficacia_max != 0 %}{{ eficacia_max }}{% else %}0.00{% endif %}%
-                </span>
-            </p>
+    
+
+        <!-- Barra de preenchimento -->
+        <div class="efficacy-bar" style="height: 100%; background-color: #0094FF; border-radius: 5px; width: {% if eficacia_max is not None and eficacia_max != 0 %}{{ eficacia_max }}{% else %}0{% endif %}%;"></div>
+    </div>
+
+    <!-- Intervalo de eficácia -->
+    <p class="efficacy-range" style="font-size: 20px; color: #B0B0B0; text-align: center;">
+        <span class="low-efficacy" style="font-size: 40px; color: #B0B0B0;">
+            {% if eficacia_min is not None %}{{ eficacia_min }}{% else %}0.00{% endif %}
+        </span>
+        <span class="efficacy-separator" style="font-size: 30px; color: #B0B0B0; position: relative; top: 6px;">a</span> 
+        <span class="high-efficacy" style="font-size: 40px; color: #000;">
+            {% if eficacia_max is not None and eficacia_max != 0 %}{{ eficacia_max }}{% else %}0.00{% endif %}%
+        </span>
+    </p>
+</div>
+
         
             <!-- Descrição adicional sobre a eficácia -->
             <p class="efficacy-info" style="font-size: 14px; color: #B0B0B0; text-align: center;">
@@ -1207,20 +1226,25 @@ img {
 
 
 <!-- Seção de Adesão -->
-<div class="adhesion-section">
-    <h2 class="adhesion-question" style="text-align: center; font-size: 24px; color: #0094FF; margin-bottom: 2px;">Quando usar?</h2>
-    
-    <div class="adhesion-content" style="display: flex; justify-content: center; align-items: center; margin-top: 5px;">
-        <div class="adhesion-text" style="text-align: center; margin-right: 20px; font-size: 16px; color: #4a4a4a;">
-            <p class="adhesion-description">
-                É recomendado tomar {{ tratamento.nome }} assim que sentir os primeiros sinais de enxaqueca.
-            </p>
-        </div>
-        <div class="adhesion-icon">
-            <img src="{% static 'img/relogio.png' %}" alt="Relógio Adesão" style="width: 300px; height: 280px;">
-        </div>
+<div class="adhesion-section mt-5">
+    <!-- Texto alinhado à esquerda -->
+    <div class="d-flex justify-content-center align-items-center flex-wrap">
+      <div style="max-width: 400px; text-align: center; padding-right: 20px;margin-top: 10px;">
+        <h2 style="color: #0094FF; font-size: 20px; margin-bottom: 2px; font-weight: 600;">
+          Quando usar?
+        </h2>
+        <p style="margin: 0; font-size: 16px; color: #000;">
+          {{ tratamento.quando_usar }}
+        </p>
+      </div>
+  
+      <!-- Ícone à direita -->
+      <div>
+        <img src="{% static 'img/relogio.png' %}" alt="Relógio Adesão" style="width: 270px; height: auto;">
+      </div>
     </div>
-</div>
+  </div>
+  
 
 
 
@@ -1290,90 +1314,124 @@ img {
 
 <div class="contraindications-section container mt-5">
     <h2 class="contraindicado-title" style="display: flex; justify-content: space-between; align-items: center;">
-        <span>Contraindicado para</span>
+        <span style=" font-size: 30px;">Contraindicado para</span>
         <img src="{% static 'img/icone.png' %}" alt="Ícone Contraindicado" style="width: 80px; height: auto;">
     </h2>
 </div>
 
 
 
-    <div class="row">
-        {% for contraindicacao in tratamento.contraindicacoes.all %}
-            <div class="col-md-4 col-sm-6 mb-4"> 
-                <div class="card h-100 shadow-sm">
-                    {% if contraindicacao.imagem %}
-                        <img 
-                            src="{{ contraindicacao.imagem.url }}" 
-                            alt="{{ contraindicacao.descricao }}" 
-                            class="card-img-top img-fluid" 
-                            style="max-height: 180px; object-fit: cover;"
-                        >
-                    {% else %}
-                        <img src="{% static 'img/default-medicamento.png' %}" alt="Imagem não disponível" class="card-img-top img-fluid">
-                    {% endif %}
-                    <div class="card-body">
-                        <h5 class="card-title text-center">{{ contraindicacao.nome }}</h5>
-                        <p class="text-center">{{ contraindicacao.descricao }}</p>
-                    </div>
-                </div>
-            </div>
-            {% if forloop.counter|divisibleby:3 %}
-                </div><div class="row">
-            {% endif %}
-            {% empty %}
-            <p class="text-center">Nenhuma reação adversa encontrada.</p>
-        {% endfor %}
-    </div>
-</div>
-     
-
-
-
-
-
-
-<!-- Seção de Detalhes e Links -->
+  
 <div class="container mt-5">
-    <div class="row justify-content-center align-items-start">
-        <!-- Sessão Detalhes -->
-        <div class="col-md-5 p-3 shadow-sm rounded bg-white">
-            <h4 class="text-primary fw-bold d-flex align-items-center">
-                🔍 <span class="ms-2">Detalhes</span>
-            </h4>
-            <ul class="list-unstyled">
 
-                <li class="mb-2">💲 <strong class="text-primary">Custo do medicamento:</strong> 
-                    <a href="{{ tratamento.link_preco }}" target="_blank" class="text-success fw-bold">À partir de R${{ tratamento.custo_medicamento }}</a>
-                </li>
-                {% if tratamento.alertas %}
-                    <li class="mt-3 p-2 bg-light rounded">⚠️ <strong class="text-danger">Alerta:</strong> {{ tratamento.alertas }}</li>
-                {% endif %}
-            </ul>
+    <div class="row justify-content-center">
+      {% for contraindicacao in tratamento.contraindicacoes.all %}
+        <div class="col-12 col-sm-6 col-md-4 mb-4 d-flex">
+          <div class="card shadow-sm w-100 h-100 d-flex flex-column">
+            {% if contraindicacao.imagem %}
+              <img 
+                src="{{ contraindicacao.imagem.url }}" 
+                alt="{{ contraindicacao.descricao }}" 
+                class="card-img-top" 
+                style="height: 180px; object-fit: cover;"
+              >
+            {% else %}
+              <img 
+                src="{% static 'img/default-medicamento.png' %}" 
+                alt="Imagem não disponível" 
+                class="card-img-top" 
+                style="height: 180px; object-fit: cover;"
+              >
+            {% endif %}
+            <div class="card-body d-flex flex-column justify-content-between text-start">
+                <h6 class="card-title fw-bold" style="font-size: 1.1rem;">{{ contraindicacao.nome }}</h6>
+                <p class="mb-0" style="color: #B0B0B0;">{{ contraindicacao.descricao }}</p>
+              </div>
+              
+              
+          </div>
         </div>
+      {% empty %}
+        <p class="text-center">Nenhuma contraindicação encontrada.</p>
+      {% endfor %}
+    </div>
+  </div>
+  
+<!-- Seção de Detalhes e Links -->
+<div class="container mt-4">
+    <div class="d-flex flex-wrap justify-content-center gap-5">
+  
+      <!-- Sessão Detalhes -->
+      <div class="col-md-5 pe-md-4">
+        <h5 class="fw-bold mb-3" style="color: #000;">Detalhes</h5>
+        <ul class="list-unstyled mb-0">
+          <!-- Custo do Medicamento -->
+          <li class="d-flex align-items-start mb-3">
+            <img src="{% static 'img/cifrao.png' %}" alt="Ícone de custo" style="width: 26px; height: 30px; align-self: start; margin-top: 2px;" class="me-2">
+            <div>
+              <span style="color: #999;">Custo do medicamento</span>
+              <a href="{{ tratamento.link_preco }}" target="_blank" class="text-dark fw-bold ms-1">
+                À partir de R${{ tratamento.custo_medicamento }}
+              </a>
+            </div>
+          </li>
+  
+          <!-- Alerta -->
+          {% if tratamento.alertas %}
+          <li class="d-flex align-items-start">
+            <img src="{% static 'img/alerta.png' %}" alt="Ícone de alerta" style="width: 26px; height: 26px; align-self: start; margin-top: 2px;" class="me-2">
+            <div>
+              <span style="color: #999;">Alerta:</span>
+              <span class="text-dark ms-1">{{ tratamento.alertas }}</span>
+            </div>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+  
+      <!-- Sessão Links -->
+      <div class="col-md-5 ps-md-4">
+        <h5 class="fw-bold mb-3 text-dark">Links</h5>
+        <ul class="list-unstyled mb-0">
+          {% if tratamento.opiniao_especialista %}
+          <li class="fw-bold text-dark mb-2">
+            <a href="{{ tratamento.opiniao_especialista }}" target="_blank" class="text-decoration-none text-dark">
+              Opinião de especialista
+            </a>
+          </li>
+          {% endif %}
+  
+          {% if tratamento.interacao_medicamentosa %}
+          <li class="text-secondary fw-semibold mb-1">
+            <a href="{{ tratamento.interacao_medicamentosa }}" target="_blank" class="text-decoration-none text-secondary fw-semibold">
+              Interações medicamentosas
+            </a>
+          </li>
+          {% endif %}
+  
+          {% if tratamento.genericos_similares %}
+          <li class="text-secondary fw-semibold mb-1">
+            <a href="{{ tratamento.genericos_similares }}" target="_blank" class="text-decoration-none text-secondary fw-semibold">
+              Genéricos e similares
+            </a>
+          </li>
+          {% endif %}
+  
+          {% if tratamento.prescricao_eletronica %}
+          <li class="text-secondary fw-semibold">
+            <a href="{{ tratamento.prescricao_eletronica }}" target="_blank" class="text-decoration-none text-secondary fw-semibold">
+              Prescrição eletrônica
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+  
+    </div>
+  </div>
+  
+  
 
-<!-- Sessão Links -->
-<div class="col-md-5 p-3 shadow-sm rounded bg-white ms-md-3 mt-4 mt-md-0">
-    <h4 class="text-primary fw-bold d-flex align-items-center">
-        🔗 <span class="ms-2">Links</span>
-    </h4>
-    <ul class="list-unstyled">
-        {% if tratamento.opiniao_especialista %}
-            <li class="mb-2">🩺 <a href="{{ tratamento.opiniao_especialista }}" target="_blank" class="text-decoration-none text-primary fw-bold">Opinião de especialista</a></li>
-        {% endif %}
-        
-        {% if tratamento.interacao_medicamentosa %}
-            <li class="mb-2">💊 <a href="{{ tratamento.interacao_medicamentosa }}" target="_blank" class="text-decoration-none text-primary fw-bold">Interações medicamentosas</a></li>
-        {% endif %}
-        
-        {% if tratamento.genericos_similares %}
-            <li class="mb-2">📋 <a href="{{ tratamento.genericos_similares }}" target="_blank" class="text-decoration-none text-primary fw-bold">Genéricos e similares</a></li>
-        {% endif %}
-        
-        {% if tratamento.prescricao_eletronica %}
-            <li class="mb-2">📜 <a href="{{ tratamento.prescricao_eletronica }}" target="_blank" class="text-decoration-none text-primary fw-bold">Prescrição eletrônica</a></li>
-        {% endif %}
-    </ul>
-</div>
 
 <div class="contraindications-section container mt-5">
     <h2 class="contra-indicado-title">
@@ -1382,41 +1440,53 @@ img {
     </h2>
 </div>
 
-    <div class="row row-cols-2 row-cols-md-4 g-3 justify-content-center">
-        {% for reacao in tratamento.reacoes_adversas.all %}
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    {% if reacao.imagem %}
-                        <img src="{{ reacao.imagem.url }}" alt="{{ reacao.descricao }}" class="card-img-top img-fluid">
-                    {% else %}
-                        <img src="{% static 'img/default-reacao.png' %}" alt="Imagem não disponível" class="card-img-top img-fluid">
-                    {% endif %}
-                    <div class="card-body text-center">
-                        <p class="text-primary" style="opacity: 0.8;">
-                            <strong>Risco:</strong>
-                            {% if reacao.reacao_min and reacao.reacao_max %}
-                                {% if reacao.reacao_min|floatformat:1 == reacao.reacao_min %}
-                                    {{ reacao.reacao_min|floatformat:0 }}% a {{ reacao.reacao_max|floatformat:0 }}%
-                                {% else %}
-                                    {{ reacao.reacao_min|floatformat:1 }}% a {{ reacao.reacao_max|floatformat:1 }}%
-                                {% endif %}
-                            {% else %}
-                                Não informado
-                            {% endif %}
-                        </p>
-                        <h6 class="fw-bold text-primary">{{ reacao.nome }}</h6>
-                        <p class="text-muted small">{{ reacao.descricao }}</p>
-                    </div>
-                </div>
-            </div>
-            {% if forloop.counter|divisibleby:3 %}
-                </div><div class="row">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+      {% for reacao in tratamento.reacoes_adversas.all %}
+        <div class="col-12 col-sm-6 col-md-4 mb-4 d-flex">
+          <div class="card shadow-sm w-100 h-100 d-flex flex-column">
+            {% if reacao.imagem %}
+              <img 
+                src="{{ reacao.imagem.url }}" 
+                alt="{{ reacao.nome }}" 
+                class="card-img-top" 
+                style="height: 180px; object-fit: cover;"
+              >
+            {% else %}
+              <img 
+                src="{% static 'img/default-reacao.png' %}" 
+                alt="Imagem não disponível" 
+                class="card-img-top" 
+                style="height: 180px; object-fit: cover;"
+              >
             {% endif %}
-        {% empty %}
-            <p class="text-center">Nenhuma reação adversa encontrada.</p>
-        {% endfor %}
+  
+            <div class="card-body d-flex flex-column justify-content-between text-start">
+              <p class="text-muted fw-semibold mb-1" style="font-size: 0.9rem;">
+                {% if reacao.reacao_min and reacao.reacao_max %}
+                  {{ reacao.reacao_min|floatformat:1 }}% a {{ reacao.reacao_max|floatformat:1 }}
+                {% else %}
+                  < 0,01%
+                {% endif %}
+                {% if reacao.grau_comunalidade %}
+                  <span class="text-primary text-uppercase ms-1 fw-semibold">
+                    {{ reacao.get_grau_comunalidade_display }}
+                  </span>
+                {% endif %}
+              </p>
+  
+              <h6 class="card-title fw-bold" style="font-size: 1.1rem; color: #000;">{{ reacao.nome }}</h6>
+              <p class="mb-0" style="color: #B0B0B0;">{{ reacao.descricao }}</p>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <p class="text-center">Nenhuma reação adversa encontrada.</p>
+      {% endfor %}
     </div>
-</div>
+  </div>
+  
+  
 
 
 <!-- Botão para ver as pesquisas, com o tamanho ajustado -->
@@ -1432,94 +1502,92 @@ img {
 
 
 
-<div style="margin-top: 30px;"></div> <!-- Distância adicionada -->
+<div style="max-width: 800px; margin: 50px auto 0 auto; text-align: center; padding: 0 15px; box-sizing: border-box;">
 
-<!-- Formulário de Avaliação -->
-<form method="POST" action="{% url 'salvar_avaliacao' tratamento.id %}">
-    {% csrf_token %}
-    
-    <h3>Você já utilizou este medicamento?</h3>
-
-    <!-- Comentário -->
-    <div>
-        <textarea name="comentario" placeholder="Deixe sua mensagem" rows="4" style="width: 100%; padding: 10px; font-size: 14px;"></textarea>
-    </div>
-
-    <!-- Estrelas para avaliação -->
-    <div>
-        <label for="stars" style="font-size: 16px;">Classifique este medicamento:</label>
-        <div class="stars">
-            <!-- Cada estrela representa uma avaliação de 1 a 5 -->
-            <input type="radio" id="star5" name="rating" value="5">
-            <label for="star5">☆</label>
+    <!-- Formulário de Avaliação -->
+    <form method="POST" action="{% url 'salvar_avaliacao' tratamento.id %}">
+        {% csrf_token %}
+        
+        <h3>Você já utilizou este medicamento?</h3>
+  
+        <!-- Comentário -->
+        <div>
+            <textarea name="comentario" placeholder="Deixe sua mensagem" rows="4" style="width: 1000px; max-width: 800px; padding: 10px; font-size: 14px; box-sizing: border-box;"></textarea>
+        </div>
+  
+        <!-- Estrelas para avaliação -->
+        <div style="margin: 15px 0;">
+            <label for="stars" style="font-size: 16px; display: block; margin-bottom: 5px;">Classifique este medicamento:</label>
+            <div class="stars" style="display: inline-block;">
+                <!-- Cada estrela representa uma avaliação de 1 a 5 -->
+                <input type="radio" id="star5" name="rating" value="5">
+                <label for="star5">☆</label>
+                
+                <input type="radio" id="star4" name="rating" value="4">
+                <label for="star4">☆</label>
+                
+                <input type="radio" id="star3" name="rating" value="3">
+                <label for="star3">☆</label>
+                
+                <input type="radio" id="star2" name="rating" value="2">
+                <label for="star2">☆</label>
+                
+                <input type="radio" id="star1" name="rating" value="1">
+                <label for="star1">☆</label>
+            </div>
+        </div>
+  
+        <!-- Enviar botão -->
+        <div>
+            <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">
+                Enviar Avaliação
+            </button>
+        </div>
+    </form>
+  
+    <!-- Estilo básico para as estrelas -->
+    <style>
+        .stars input[type="radio"] {
+            display: none;
+        }
+        .stars label {
+            font-size: 30px;
+            color: #ccc;
+            cursor: pointer;
+        }
+        .stars input[type="radio"]:checked ~ label {
+            color: #ffcc00;
+        }
+        .stars input[type="radio"]:hover ~ label {
+            color: #ff9900;
+        }
+    </style>
+  
+    <!-- Exibindo o comentário e a avaliação do tratamento -->
+    <div style="margin-top: 50px; text-align: center;">
+        <h3>Comentário do Tratamento:</h3>
+        {% if comentario %}
+            <p>{{ comentario }}</p>
+        {% else %}
+            <p>Não há comentário para este tratamento.</p>
+        {% endif %}
+  
+        <h3>Avaliação:</h3>
+        <div class="stars" style="display: inline-block;">
+            <!-- Exibindo as estrelas preenchidas -->
+            {% for i in estrelas_preenchidas %}
+                <span style="color: #ffcc00;">&#9733;</span>  <!-- Estrela preenchida -->
+            {% endfor %}
             
-            <input type="radio" id="star4" name="rating" value="4">
-            <label for="star4">☆</label>
-            
-            <input type="radio" id="star3" name="rating" value="3">
-            <label for="star3">☆</label>
-            
-            <input type="radio" id="star2" name="rating" value="2">
-            <label for="star2">☆</label>
-            
-            <input type="radio" id="star1" name="rating" value="1">
-            <label for="star1">☆</label>
+            <!-- Exibindo as estrelas vazias -->
+            {% for i in estrelas_vazias %}
+                <span style="color: #ccc;">&#9733;</span>  <!-- Estrela vazia -->
+            {% endfor %}
         </div>
     </div>
-
-    <!-- Enviar botão -->
-    <div>
-        <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; font-size: 16px;">
-            Enviar Avaliação
-        </button>
-    </div>
-</form>
-
-
-
-<!-- Estilo básico para as estrelas -->
-<style>
-    .stars input[type="radio"] {
-        display: none;
-    }
-    .stars label {
-        font-size: 30px;
-        color: #ccc;
-        cursor: pointer;
-    }
-    .stars input[type="radio"]:checked ~ label {
-        color: #ffcc00;
-    }
-    .stars input[type="radio"]:hover ~ label {
-        color: #ff9900;
-    }
-</style>
-
-<!-- Exibindo o comentário e a avaliação do tratamento -->
-
-
-<div style="margin-top: 50px;"></div> 
-<div>
-    <h3>Comentário do Tratamento:</h3>
-    {% if comentario %}
-        <p>{{ comentario }}</p>
-    {% else %}
-        <p>Não há comentário para este tratamento.</p>
-    {% endif %}
-
-    <h3>Avaliação:</h3>
-    <div class="stars">
-        <!-- Exibindo as estrelas preenchidas -->
-        {% for i in estrelas_preenchidas %}
-            <span style="color: #ffcc00;">&#9733;</span>  <!-- Estrela preenchida -->
-        {% endfor %}
-        
-        <!-- Exibindo as estrelas vazias -->
-        {% for i in estrelas_vazias %}
-            <span style="color: #ccc;">&#9733;</span>  <!-- Estrela vazia -->
-        {% endfor %}
-    </div>
-</div>
+  
+  </div>
+  
 
 
 
