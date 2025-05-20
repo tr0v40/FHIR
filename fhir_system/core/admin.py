@@ -128,7 +128,7 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
                     "tipo_tratamento",
                     "custo_medicamento",
                 ),
-                "description": "Preencha os campos de prazo (min) e (max) com valores em minutos."
+               
             },
         ),
         ("Links e Alertas", {"fields": ("interacao_medicamentosa", "genericos_similares", "prescricao_eletronica", "opiniao_especialista", "links_profissionais", "alertas")}),
