@@ -145,7 +145,7 @@ from django.db.models import Min, Max
 def detalhes_tratamentos(request, tratamento_id):
     # Buscar o tratamento pelo ID
     tratamento = get_object_or_404(DetalhesTratamentoResumo, id=tratamento_id)
-    
+
     # Buscar as evidências associadas ao tratamento
     evidencias = EvidenciasClinicas.objects.filter(tratamento=tratamento)
 
@@ -154,23 +154,24 @@ def detalhes_tratamentos(request, tratamento_id):
         eficacia_min=Min('eficacia_min'),
         eficacia_max=Max('eficacia_max')
     )
-
-    # Obter os valores de eficácia mínima e máxima
     eficacia_min = eficacia_agregada.get('eficacia_min')
     eficacia_max = eficacia_agregada.get('eficacia_max')
 
-    # Calcular e formatar o prazo de efeito
-    if tratamento.prazo_efeito_min and tratamento.prazo_efeito_max:
-        if tratamento.prazo_efeito_max < 60:
-            prazo_efeito = f"{tratamento.prazo_efeito_min} min a {tratamento.prazo_efeito_max} min"
-        elif tratamento.prazo_efeito_min >= 60 and tratamento.prazo_efeito_max < 1440:
-            prazo_efeito = f"{tratamento.prazo_efeito_min // 60} h a {tratamento.prazo_efeito_max // 60} h"
-        elif tratamento.prazo_efeito_min >= 1440:
-            prazo_efeito = f"{tratamento.prazo_efeito_min // 1440} dia a {tratamento.prazo_efeito_max // 1440} dias"
+    # Inicializa prazo_efeito para evitar UnboundLocalError
+    prazo_efeito = "Não disponível"
+
+    # Use método do model se existir (exemplo: prazo_efeito_faixa_formatada)
+    if hasattr(tratamento, "prazo_efeito_faixa_formatada"):
+        prazo_efeito = tratamento.prazo_efeito_faixa_formatada
     else:
-        prazo_efeito = "Não disponível"
-
-
+        # Se não existir, use sua lógica condicional antiga
+        if tratamento.prazo_efeito_min and tratamento.prazo_efeito_max:
+            if tratamento.prazo_efeito_max < 60:
+                prazo_efeito = f"{tratamento.prazo_efeito_min} min a {tratamento.prazo_efeito_max} min"
+            elif tratamento.prazo_efeito_min >= 60 and tratamento.prazo_efeito_max < 1440:
+                prazo_efeito = f"{tratamento.prazo_efeito_min // 60} h a {tratamento.prazo_efeito_max // 60} h"
+            elif tratamento.prazo_efeito_min >= 1440:
+                prazo_efeito = f"{tratamento.prazo_efeito_min // 1440} dia a {tratamento.prazo_efeito_max // 1440} dias"
 
     # Garantir que a avaliação seja um número inteiro
     avaliacao = int(tratamento.avaliacao) if tratamento.avaliacao else 0
