@@ -1161,42 +1161,51 @@ img {
     <h2 class="efficacy-title" style="font-family: Arial, sans-serif; font-weight: bold; font-size: 34px; color: #000; text-align: center;">
         Eficácia 
     </h2>
+    <div class="efficacy-bar-container" style="
+    width: 40%; 
+    height: 70px; 
+    background-color: #e0f0ff; 
+    position: relative; 
+    margin: 0 auto; 
+    border-radius: 5px; 
+    overflow: hidden;
+">
 
-    <!-- Barra de eficácia -->
-    <div class="efficacy-bar-container" style="width: 40%; height: 70px; background-color: #e0f0ff; position: relative; margin: 0 auto; border-radius: 5px; display: flex; justify-content: center; align-items: center; border: 1px solid #dcdcdc;">
-        
-        <!-- Barra de fundo com as cores invertidas -->
-        {% with eficacia=eficacia_max|default:0 %}
-        <div class="efficacy-background" style="
-            height: 100%;
-            background-image: linear-gradient(
-                to right,
-                #0094FF 0%,
-                #0094FF {{ eficacia }}%,
-                transparent {{ eficacia }}%
-            );
-            width: 100%;
-            opacity: 0;">
-        </div>
-        {% endwith %}
-        
+    {% with eficacia=eficacia_max|default:0 %}
+    <div class="efficacy-background" style="
+        height: 100%;
+        width: 100%;
+        background-image: linear-gradient(
+            to right,
+            #0094FF 0%,
+            #0094FF {{ eficacia }}%,
+            rgba(0, 148, 255, 0.3) {{ eficacia }}%,
+            rgba(0, 148, 255, 0.3) 100%
+        );
+        border-radius: 5px;
+    "></div>
+    {% endwith %}
+
+</div>
+
     
-
-        <!-- Barra de preenchimento -->
-        <div class="efficacy-bar" style="height: 100%; background-color: #0094FF; border-radius: 5px; width: {% if eficacia_max is not None and eficacia_max != 0 %}{{ eficacia_max }}{% else %}0{% endif %}%;"></div>
-    </div>
-
     <!-- Intervalo de eficácia -->
-    <p class="efficacy-range" style="font-size: 20px; color: #B0B0B0; text-align: center;">
+    <p class="efficacy-range" style="
+        font-size: 20px; 
+        color: #B0B0B0; 
+        text-align: center; 
+        margin-top: 10px;
+    ">
         <span class="low-efficacy" style="font-size: 40px; color: #B0B0B0;">
             {% if eficacia_min is not None %}{{ eficacia_min }}{% else %}0.00{% endif %}
         </span>
-        <span class="efficacy-separator" style="font-size: 30px; color: #B0B0B0; position: relative; top: 6px;">a</span> 
+        <span class="efficacy-separator" style="font-size: 30px; color: #B0B0B0; position: relative; top: 6px;"> a </span> 
         <span class="high-efficacy" style="font-size: 40px; color: #000;">
             {% if eficacia_max is not None and eficacia_max != 0 %}{{ eficacia_max }}{% else %}0.00{% endif %}%
         </span>
     </p>
-</div>
+    
+
 
         
             <!-- Descrição adicional sobre a eficácia -->
@@ -1369,9 +1378,9 @@ img {
           <li class="d-flex align-items-start mb-3">
             <img src="{% static 'img/cifrao.png' %}" alt="Ícone de custo" style="width: 26px; height: 30px; align-self: start; margin-top: 2px;" class="me-2">
             <div>
-              <span style="color: #999;">Custo do medicamento</span>
-              <a href="{{ tratamento.link_preco }}" target="_blank" class="text-dark fw-bold ms-1">
-                À partir de R${{ tratamento.custo_medicamento }}
+              <span style="color: #999;">Custo do medicamento: </span>
+              <a  target="_blank" class="text-dark fw-bold ms-1">
+                a partir de R${{ tratamento.custo_medicamento }}
               </a>
             </div>
           </li>

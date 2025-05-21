@@ -286,15 +286,38 @@ def salvar_avaliacao(request, tratamento_id):
     # Caso o método não seja POST, renderizar a página de detalhes com as avaliações
     return render(request, 'core/detalhes_tratamentos.html', {'tratamento': tratamento})
 
-
 def tratamento_detail(request, pk):
     tratamento = get_object_or_404(Tratamento, pk=pk)
-    url_retorno = request.META.get('HTTP_REFERER', '/tratamentos/')  # pega URL anterior ou fallback
+    # URL fixa para voltar para a página principal de tratamentos (ou outra que quiser)
+    url_retorno = '/tratamentos/'  
     context = {
         'tratamento': tratamento,
         'url_retorno': url_retorno,
     }
-    return render(request, 'core/detalhes_tratamentos.html',  {'tratamento': tratamento})
+    return render(request, 'core/detalhes_tratamentos.html', context)
+
+
+
+def evidencias_clinicas_detail(request, pk):
+    evidencia = get_object_or_404(EvidenciasClinicas, pk=pk)
+    tratamento_pk = getattr(evidencia.tratamento, 'pk', None)
+
+    if tratamento_pk:
+        url_retorno = f'/tratamento/{tratamento_pk}/'
+    else:
+        url_retorno = '/tratamentos/'
+
+    context = {
+        'evidencia': evidencia,
+        'url_retorno': url_retorno,
+    }
+    return render(request, 'core/evidencias_clinicas.html', context)
+
+
+
+
+
+
 
 def sua_view(request):
     # seu código
