@@ -1451,13 +1451,13 @@ img {
 
 <div class="container mt-5">
     <div class="row justify-content-center">
-      {% for reacao in tratamento.reacoes_adversas.all %}
+      {% for detalhe in tratamento.reacoes_adversas_detalhes.all %}
         <div class="col-12 col-sm-6 col-md-4 mb-4 d-flex">
           <div class="card shadow-sm w-100 h-100 d-flex flex-column">
-            {% if reacao.imagem %}
+            {% if detalhe.reacao_adversa.imagem %}
               <img 
-                src="{{ reacao.imagem.url }}" 
-                alt="{{ reacao.nome }}" 
+                src="{{ detalhe.reacao_adversa.imagem.url }}" 
+                alt="{{ detalhe.reacao_adversa.nome }}" 
                 class="card-img-top" 
                 style="height: 180px; object-fit: cover;"
               >
@@ -1472,20 +1472,20 @@ img {
   
             <div class="card-body d-flex flex-column justify-content-between text-start">
               <p class="text-muted fw-semibold mb-1" style="font-size: 0.9rem;">
-                {% if reacao.reacao_min and reacao.reacao_max %}
-                  {{ reacao.reacao_min|floatformat:1 }}% a {{ reacao.reacao_max|floatformat:1 }}
+                {% if detalhe.reacao_min and detalhe.reacao_max %}
+                  {{ detalhe.reacao_min|floatformat:1 }}% a {{ detalhe.reacao_max|floatformat:1 }}%
                 {% else %}
                   < 0,01%
                 {% endif %}
-                {% if reacao.grau_comunalidade %}
+                {% if detalhe.grau_comunalidade %}
                   <span class="text-primary text-uppercase ms-1 fw-semibold">
-                    {{ reacao.get_grau_comunalidade_display }}
+                    {{ detalhe.get_grau_comunalidade_display }}
                   </span>
                 {% endif %}
               </p>
   
-              <h6 class="card-title fw-bold" style="font-size: 1.1rem; color: #000;">{{ reacao.nome }}</h6>
-              <p class="mb-0" style="color: #B0B0B0;">{{ reacao.descricao }}</p>
+              <h6 class="card-title fw-bold" style="font-size: 1.1rem; color: #000;">{{ detalhe.reacao_adversa.nome }}</h6>
+              <p class="mb-0" style="color: #B0B0B0;">{{ detalhe.reacao_adversa.descricao }}</p>
             </div>
           </div>
         </div>
@@ -1494,7 +1494,7 @@ img {
       {% endfor %}
     </div>
   </div>
-  
+
   
 
 

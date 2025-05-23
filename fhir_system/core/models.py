@@ -199,21 +199,9 @@ class Contraindicacao(models.Model):
 class ReacaoAdversa(models.Model):
     nome = models.CharField(max_length=100)
     descricao = models.TextField()
-    reacao_min = models.DecimalField("Reação Mínima (%)", max_digits=5, decimal_places=2, default=0.0, help_text="Valor mínimo de risco percentual de efeito colateral (0 a 100%)")
-    reacao_max = models.DecimalField("Reação Máxima (%)", max_digits=5, decimal_places=2, default=0.0, help_text="Valor mánimo de risco percentual de efeito colateral (0 a 100%)")
+
     imagem = models.ImageField(upload_to='reacoes_adversas/', blank=True, null=True)
-    GRAU_COMUNALIDADE_CHOICES = [
-        ('COMUM', 'COMUM'),
-        ('INCOMUM', 'INCOMUM'),
-        ('RARA', 'RARA'),
-        ('MUITO_RARA', 'MUITO RARA'),
-    ]
-    grau_comunalidade = models.CharField(
-        max_length=20,
-        choices=GRAU_COMUNALIDADE_CHOICES,
-        default='COMUM',
-        verbose_name="Grau de Comunalidade"
-    )
+
 
     class Meta:
         verbose_name = "Reação Adversa"
@@ -221,6 +209,35 @@ class ReacaoAdversa(models.Model):
 
     def __str__(self):
         return self.nome
+    
+
+class DetalhesTratamentoReacaoAdversa(models.Model):
+    tratamento = models.ForeignKey(
+        'DetalhesTratamentoResumo',
+        on_delete=models.CASCADE,
+        related_name='reacoes_adversas_detalhes'
+    )
+    reacao_adversa = models.ForeignKey(ReacaoAdversa, on_delete=models.CASCADE)
+    grau_comunalidade = models.CharField(
+        max_length=20,
+        choices=[
+            ('COMUM', 'COMUM'),
+            ('INCOMUM', 'INCOMUM'),
+            ('RARA', 'RARA'),
+            ('MUITO_RARA', 'MUITO RARA'),
+        ],
+        default='COMUM'
+    )
+    reacao_min = models.DecimalField("Reação Mínima (%)", max_digits=5, decimal_places=2, default=0.0)
+    reacao_max = models.DecimalField("Reação Máxima (%)", max_digits=5, decimal_places=2, default=0.0)
+
+    class Meta:
+        verbose_name = "Detalhe Reação Adversa"
+        verbose_name_plural = "Detalhes Reações Adversas"
+
+    def __str__(self):
+        return f"{self.tratamento.nome} - {self.reacao_adversa.nome}"
+
 
 class TipoTratamento(models.Model):
     nome = models.CharField(max_length=200)
@@ -232,9 +249,38 @@ class TipoTratamento(models.Model):
 
     def __str__(self):
         return self.nome
-    
+
+
+class DetalhesTratamentoReacaoAdversaTeste(models.Model):
+    tratamento = models.ForeignKey(
+        'DetalhesTratamentoResumo',
+        on_delete=models.CASCADE,
+        related_name='reacoes_adversas_teste_detalhes'
+    )
+    reacao_adversa = models.ForeignKey(ReacaoAdversa, on_delete=models.CASCADE)
+    grau_comunalidade = models.CharField(
+        max_length=20,
+        choices=[
+            ('COMUM', 'COMUM'),
+            ('INCOMUM', 'INCOMUM'),
+            ('RARA', 'RARA'),
+            ('MUITO_RARA', 'MUITO RARA'),
+        ],
+        default='COMUM'
+    )
+    reacao_min = models.DecimalField("Reação Mínima (%)", max_digits=5, decimal_places=2, default=0.0)
+    reacao_max = models.DecimalField("Reação Máxima (%)", max_digits=5, decimal_places=2, default=0.0)
+
+    def __str__(self):
+        return f"{self.tratamento.nome} - {self.reacao_adversa.nome}"
 
 class DetalhesTratamentoResumo(models.Model):
+
+    reacoes_adversas_teste = models.ManyToManyField(
+        ReacaoAdversa,
+        through='DetalhesTratamentoReacaoAdversaTeste',
+        related_name='tratamentos_com_reacao_teste'
+    )
     GRUPO_CHOICES = (
         ("criancas", "Crianças menores de 12 anos"),
         ("adolescentes", "Adolescentes 12 a 17 anos"),
@@ -256,7 +302,13 @@ class DetalhesTratamentoResumo(models.Model):
     eficacia_min = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     eficacia_max = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     prazo_efeito_min = models.IntegerField()  # Para armazenar o tempo em minutos
-    prazo_efeito_max = models.IntegerField()    
+    prazo_efeito_max = models.IntegerField()
+    reacoes_adversas = models.ManyToManyField(
+        ReacaoAdversa,
+        through='DetalhesTratamentoReacaoAdversa',  # modelo intermediário
+        related_name='tratamentos_com_reacao'
+    )
+    
     UNIDADES = [
         ('minuto', 'Minuto'),
         ('hora', 'Hora'),

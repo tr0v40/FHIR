@@ -1,83 +1,53 @@
 from django.contrib import admin
+from django import forms
 from django.utils.html import format_html
 from .models import (
     DetalhesTratamentoResumo,
     Contraindicacao,
     ReacaoAdversa,
-    # Organization,
-    # SubstanceDefinition,
-    # Ingredient,
-    # ManufacturedItemDefinition,
-    # PackagedProductDefinition,
-    # AdministrableProductDefinition,
-    # MedicinalProductDefinition,
-    # RegulatedAuthorization,
-    # ClinicalUseDefinition,
-    # Composition,
-    # Binary,
-    # StudyGroup,
-    # ResourceStudyReport,
-    # Tratamentos,
+    DetalhesTratamentoReacaoAdversa,
+    DetalhesTratamentoReacaoAdversaTeste,
     EvidenciasClinicas,
     TipoTratamento,
 )
 
-admin.site.register(
-    [
-        TipoTratamento
-        # SubstanceDefinition,
-        # Ingredient,
-        # ManufacturedItemDefinition,
-        # PackagedProductDefinition,
-        # AdministrableProductDefinition,
-        # MedicinalProductDefinition,
-        # RegulatedAuthorization,
-        # ClinicalUseDefinition,
-        # Composition,
-        # Binary,
-        # StudyGroup,
-        # ResourceStudyReport,
-    ]
-)
+admin.site.register([TipoTratamento])
 
+class DetalhesTratamentoReacaoAdversaInline(admin.TabularInline):
+    model = DetalhesTratamentoReacaoAdversa
+    extra = 1
+    autocomplete_fields = ['reacao_adversa']
+    fields = ('reacao_adversa', 'grau_comunalidade', 'reacao_min', 'reacao_max')
 
-# class TratamentosAdmin(admin.ModelAdmin):
-#     list_display = ("nome", "principio_ativo", "fabricante", "imagem_preview")
-#     search_fields = ("nome", "principio_ativo", "fabricante")
-#     list_filter = ("fabricante",)
-#     readonly_fields = ("imagem_preview",)
-
-#     def imagem_preview(self, obj):
-#         if obj.imagem:
-#             return format_html(
-#                 f'<img src="{obj.imagem.url}" width="100px" height="100px" style="border-radius:10px;">'
-#             )
-#         return "Sem imagem"
-
-#     imagem_preview.short_description = "Pré-visualização"
-from django import forms
-from .models import DetalhesTratamentoResumo
+class DetalhesTratamentoReacaoAdversaTesteInline(admin.TabularInline):
+    model = DetalhesTratamentoReacaoAdversaTeste
+    extra = 1
+    autocomplete_fields = ['reacao_adversa']
+    fields = ('reacao_adversa', 'grau_comunalidade', 'reacao_min', 'reacao_max')
 
 class DetalhesTratamentoResumoForm(forms.ModelForm):
     class Meta:
         model = DetalhesTratamentoResumo
-        fields = ['nome', 'prazo_efeito_min', 'prazo_efeito_max']  # Incluir os campos de prazo
+        fields = ['nome', 'prazo_efeito_min', 'prazo_efeito_max']
 
     def clean_prazo_efeito_min(self):
         prazo_min = self.cleaned_data['prazo_efeito_min']
-        # Conversão de valor se necessário
         if 'h' in prazo_min:
-            return int(prazo_min.replace('h', '').strip()) * 60  # Converte horas para minutos
+            return int(prazo_min.replace('h', '').strip()) * 60
         return int(prazo_min)
 
     def clean_prazo_efeito_max(self):
         prazo_max = self.cleaned_data['prazo_efeito_max']
         if 'h' in prazo_max:
-            return int(prazo_max.replace('h', '').strip()) * 60  # Converte horas para minutos
+            return int(prazo_max.replace('h', '').strip()) * 60
         return int(prazo_max)
 
-
+@admin.register(DetalhesTratamentoResumo)
 class DetalhesTratamentoAdmin(admin.ModelAdmin):
+    inlines = [
+        
+        DetalhesTratamentoReacaoAdversaInline,
+    ]
     list_display = (
         "nome",
         "fabricante",
@@ -86,9 +56,8 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
         "eficacia_min",
         "eficacia_max",
         "custo_medicamento",
-        
     )
-    filter_horizontal = ("contraindicacoes", "reacoes_adversas","tipo_tratamento")
+    filter_horizontal = ("contraindicacoes", "reacoes_adversas", "tipo_tratamento")  # removi 'reacoes_adversas_teste'
     search_fields = ("nome", "fabricante", "principio_ativo", "grupo")
     list_filter = (
         "fabricante",
@@ -97,7 +66,6 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
         "eficacia_max",
         "custo_medicamento",
     )
-
     fieldsets = (
         (
             "Informações Gerais",
@@ -109,29 +77,35 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
                     "descricao",
                     "imagem",
                     "imagem_detalhes",
-                    
-
-                    
                 )
             },
         ),
-
         (
             "Adesão ao Tratamento",
             {
                 "fields": (
-                    
                     "quando_usar",
                     "prazo_efeito_min",
                     "prazo_efeito_max",
-                    'prazo_efeito_unidade',
+                    "prazo_efeito_unidade",
                     "tipo_tratamento",
                     "custo_medicamento",
-                ),
-                
+                )
             },
         ),
-        ("Links e Alertas", {"fields": ("interacao_medicamentosa", "genericos_similares", "prescricao_eletronica", "opiniao_especialista", "links_profissionais", "alertas")}),
+        (
+            "Links e Alertas",
+            {
+                "fields": (
+                    "interacao_medicamentosa",
+                    "genericos_similares",
+                    "prescricao_eletronica",
+                    "opiniao_especialista",
+                    "links_profissionais",
+                    "alertas",
+                )
+            },
+        ),
         (
             "Indicação por Grupo",
             {
@@ -147,16 +121,21 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
                     "indicado_lactantes",
                     "motivo_lactantes",
                     "indicado_gravidez",
-                    "motivo_gravidez"
+                    "motivo_gravidez",
                 )
             },
         ),
-
         ("Contraindicações", {"fields": ("contraindicacoes",)}),
-        ("Reações Adversas", {"fields": ("reacoes_adversas",)}),
+       
+       
     )
 
+@admin.register(ReacaoAdversa)
+class ReacaoAdversaAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'descricao')
+    search_fields = ('nome',)
 
+@admin.register(EvidenciasClinicas)
 class EvidenciasClinicasAdmin(admin.ModelAdmin):
     list_display = (
         "titulo",
@@ -187,7 +166,6 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
                     "eficacia_min",
                     "eficacia_max",
                     "numero_participantes",
-                    
                 )
             },
         ),
@@ -195,7 +173,6 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
             "Detalhes do Estudo",
             {
                 "fields": (
-                    
                     "autores",
                     "link_estudo",
                     "data_publicacao",
@@ -239,8 +216,4 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
     imagem_preview.short_description = "Pré-visualização"
 
 
-admin.site.register(EvidenciasClinicas, EvidenciasClinicasAdmin)
-# admin.site.register(Tratamentos, TratamentosAdmin)
-admin.site.register(DetalhesTratamentoResumo, DetalhesTratamentoAdmin)
 admin.site.register(Contraindicacao)
-admin.site.register(ReacaoAdversa)

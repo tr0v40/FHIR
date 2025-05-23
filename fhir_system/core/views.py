@@ -144,7 +144,12 @@ from django.db.models import Min, Max
 
 def detalhes_tratamentos(request, tratamento_id):
     # Buscar o tratamento pelo ID
-    tratamento = get_object_or_404(DetalhesTratamentoResumo, id=tratamento_id)
+    tratamento = get_object_or_404(
+        DetalhesTratamentoResumo.objects.prefetch_related(
+            'reacoes_adversas_detalhes',  # relação intermediária
+            'reacoes_adversas_detalhes__reacao_adversa'  # para carregar a reação em cada detalhe
+        ), id=tratamento_id
+    )
 
     # Buscar as evidências associadas ao tratamento
     evidencias = EvidenciasClinicas.objects.filter(tratamento=tratamento)
@@ -192,6 +197,7 @@ def detalhes_tratamentos(request, tratamento_id):
         'prazo_efeito': prazo_efeito,  # Adicionando a variável formatada ao contexto
         'estrelas_preenchidas': estrelas_preenchidas,
         'estrelas_vazias': estrelas_vazias, # Passando a lista de estrelas para o template
+        'detalhes_reacoes_adversas': tratamento.reacoes_adversas_detalhes.all(),
     })
 
 
