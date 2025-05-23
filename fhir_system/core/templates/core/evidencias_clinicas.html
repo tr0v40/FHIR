@@ -164,16 +164,20 @@
         align-items: center;  /* centraliza verticalmente */
         justify-content: center;
       ">
-        <img src="{{ evidencia.imagem_estudo.url }}" alt="Imagem do estudo" style="
-  max-width: 100%;
-  max-height: 100%;
-  height: auto;
-  margin: auto 0;
-  border-radius: 6px;
-  object-fit: contain;
-  display: block;
-        ">
-      </div>
+      {% if evidencia.imagem_estudo %}
+      <img src="{{ evidencia.imagem_estudo.url }}" alt="Imagem do estudo" style="
+        max-width: 100%;
+        max-height: 100%;
+        height: auto;
+        margin: auto 0;
+        border-radius: 6px;
+        object-fit: contain;
+        display: block;
+      ">
+    {% else %}
+      <p>Imagem não disponível</p>
+    {% endif %}
+    </div>
       
         
         <!-- Conteúdo -->
