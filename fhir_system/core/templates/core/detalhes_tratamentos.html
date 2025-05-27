@@ -1084,7 +1084,7 @@ img {
                 <!-- Informações do Medicamento -->
                 <div class="tratamento-info">
                     <h2 style="color: #0094FF;">
-                        Tratamento com:
+                        
                         {% for tipo in tratamento.tipo_tratamento.all %}
                             {{ tipo.nome }}{% if not forloop.last %}, {% endif %}
                         {% empty %}
