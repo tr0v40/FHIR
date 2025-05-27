@@ -1473,7 +1473,7 @@ img {
             <div class="card-body d-flex flex-column justify-content-between text-start">
               <p class="text-muted fw-semibold mb-1" style="font-size: 0.9rem;">
                 {% if detalhe.reacao_min and detalhe.reacao_max %}
-                  {{ detalhe.reacao_min|floatformat:1 }}% a {{ detalhe.reacao_max|floatformat:1 }}%
+                  {{ detalhe.reacao_min|floatformat:2 }}% a {{ detalhe.reacao_max|floatformat:2 }}%
                 {% else %}
                   < 0,01%
                 {% endif %}
@@ -1607,7 +1607,7 @@ img {
 </body>
 
 
-<!-- FOOTER -->
+
 <!-- FOOTER -->
 
 <footer class="footer mt-5 pt-4 border-top">
