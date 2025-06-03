@@ -68,6 +68,43 @@
         .footer a:hover {
             text-decoration: underline;
         }
+
+        @media (max-width: 768px) {
+  .evidencias-container {
+    max-width: 100% !important;
+    padding: 20px 16px !important;
+  }
+
+  .evidencia-item {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .evidencia-item .conteudo > div:last-child {
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    padding: 0 !important;
+    margin-top: 10px;
+  }
+
+  p[style*="font-size: 30px"] {
+    font-size: 18px !important;
+    margin-top: 5px !important;
+  }
+
+  .imagem-estudo {
+    flex: 0 0 auto !important;
+    width: 100%;
+    height: auto;
+  }
+
+  .imagem-estudo img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
     </style>
 </head>
 <body>

@@ -243,6 +243,8 @@ html, body {
 /* BOTÃO DE PRAZO DE EFEITO */
 .prazo-btn {
     background: linear-gradient(90deg, #007bff, #0056b3);
+    width: 260px;
+    height: 60px; 
     color: white;
     border: none;
     padding: 14px 22px;
@@ -347,6 +349,32 @@ html, body {
         position: relative;
         z-index: 10; /* Ajuste o valor conforme necessário */
     }
+    .accordion-button:focus {
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.accordion-item {
+  border: none;
+  background-color: transparent;
+}
+
+.accordion-button {
+  background: linear-gradient(to right, #007bff, #0062cc);
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  border: none;
+  box-shadow: none;
+}
+
+.accordion-button:not(.collapsed) {
+  background: linear-gradient(to right, #007bff, #0062cc);
+  color: white;
+  box-shadow: none;
+}
+
+
 }
 
 
@@ -366,7 +394,7 @@ html, body {
             </a>
 
             <!-- Título centralizado -->
-            <h1 class="titulo-header m-0 text-primary">Tratamentos</h1>
+            <h1 class="titulo-header m-0 text-primary">Tratamentos para enxaqueca e dor de cabeça crônica</h1>
 
             <!-- Botões de login/cadastro -->
             <div class="nav-buttons d-flex gap-2">
@@ -392,30 +420,59 @@ html, body {
                     <h4 class="mt-3">Filtros:</h4>
                     <label for="publico">Indicado para:</label>
                     <select name="publico" id="publico">
-                        <option value="todos" {% if request.GET.publico == "todos" %}selected{% endif %}>Todos</option>
-                        <option value="adultos" {% if request.GET.publico == "adultos" %}selected{% endif %}>Adultos</option>
                         <option value="criancas" {% if request.GET.publico == "criancas" %}selected{% endif %}>Crianças</option>
+                        <option value="adolescentes" {% if request.GET.publico == "adolescentes" %}selected{% endif %}>Adolescentes</option>
+                        <option value="adultos" {% if request.GET.publico == "adultos" %}selected{% endif %}>Adultos</option>
+                        <option value="idosos" {% if request.GET.publico == "idosos" %}selected{% endif %}>Idosos</option>
                         <option value="gestantes" {% if request.GET.publico == "gestantes" %}selected{% endif %}>Gestantes</option>
+                        <option value="lactantes" {% if request.GET.publico == "lactantes" %}selected{% endif %}>Lactantes</option>
+                        <option value="todos" {% if request.GET.publico == "todos" %}selected{% endif %}>Todos</option>
+                        
+                        
                     </select>
-
-                    <!-- Campo de Contraindicações -->
-                    <label for="contraindicacoes">Contraindicações:</label>
-                    <select name="contraindicacoes" id="contraindicacoes">
-                        <option value="nenhuma" {% if request.GET.contraindicacoes == 'nenhuma' %}selected{% endif %}>Nenhuma</option>
-                        {% for item in contraindications %}
-                            <option value="{{ item.id }}" {% if item.id|stringformat:"s" == request.GET.contraindicacoes %}selected{% endif %}>
+                    
+                <!-- Filtro de Contraindicações -->
+                <div class="accordion" id="accordionContra"style="margin-top: 20px;">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingContra">
+                        <button class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapseContra"
+                        aria-expanded="false"
+                        aria-controls="collapseContra"
+                        style="background: linear-gradient(to right, #007bff, #0062cc); color: white; font-weight: bold; border: none; border-radius: 6px;">
+                  Contraindicações
+                </button>
+                      <div id="collapseContra" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                          {% for item in contraindications %}
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" name="contraindicacoes" value="{{ item.id }}"
+                                     id="contra_{{ item.id }}"
+                                     {% if item.id|stringformat:"s" in contraindicacoes_selecionadas %}checked{% endif %}>
+                              <label class="form-check-label" for="contra_{{ item.id }}">
                                 {{ item.nome }}
-                            </option>
-                        {% endfor %}
-                    </select>
+                              </label>
+                            </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                
+
+                    
+                    
 
                     <!-- Botão para submeter o filtro -->
-                    <button type="submit" class="btn btn-primary mt-3">Aplicar Filtro</button>
+                    <button type="submit" class="btn btn-primary mt-3" style="margin-top: 30px;">Aplicar Filtro</button>
                 </div>
 
                 <!-- Classificar por Eficácia -->
                 <div class="classificar-container">
-                    <h4 class="mt-3">Classificações:</h4>
+                    <h4 class="mt-3">Ordenar por:</h4>
                     <label for="eficacia">Eficácia</label>
                     <div>
                         <input type="radio" id="eficacia_maior" name="eficacia" value="maior-menor" onclick="updateClassifications()">
@@ -450,38 +507,16 @@ html, body {
                         <label for="prazo_menor" id="label-prazo-menor">Menor ao maior</label>
                     </div>
                 </div>
-                
-                <!-- Classificar por Adesão -->
-        
-                <div class="mt-2">
-                    <label for="adesao">Adesão</label>
-                    <div>
-                        <input type="radio" id="adesao_maior" name="adesao" value="maior-menor" onclick="updateClassifications()">
-                        <label for="adesao_maior" id="label-adesao-maior">Maior ao menor</label><br>
 
-                        <input type="radio" id="adesao_menor" name="adesao" value="menor-maior" onclick="updateClassifications()">
-                        <label for="adesao_menor" id="label-adesao-menor">Menor ao maior</label>
-                    </div>
-                </div>
                 
                 
-                <!-- Classificar por Data -->
-                <div class="mt-2">
-                    <label for="data_pesquisa">Data da pesquisa</label>
-                    <div>
-                        <input type="radio" id="data_mais_recente" name="data_pesquisa" value="mais-recentes" onclick="updateClassifications()">
-                        <label for="data_mais_recente" id="label-data-mais-recente">Mais recentes</label><br>
-                
-                        <input type="radio" id="data_mais_antiga" name="data_pesquisa" value="mais-antigas" onclick="updateClassifications()">
-                        <label for="data_mais_antiga" id="label-data-mais-antiga">Mais antigas</label>
-                    </div>
-                </div>
+
                 
 
 
                 <!-- Classificar por Preço do Tratamento -->
                 <div class="mt-2">
-                    <label for="preco_tratamento">Preço do tratamento</label>
+                    <label for="preco_tratamento">Preço </label>
                     <div>
                         <input type="radio" id="preco_trat_maior" name="preco_tratamento" value="maior-menor" onclick="updateClassifications()">
                         <label for="preco_trat_maior" id="label-preco-trat-maior">Maior para menor</label><br>
@@ -491,17 +526,7 @@ html, body {
                     </div>
                 </div>
 
-                <!-- Classificar por Preço do Medicamento -->
-                <div class="mt-2">
-                    <label for="preco_remedio">Preço do medicamento</label>
-                    <div>
-                        <input type="radio" id="preco_rem_maior" name="preco_remedio" value="maior-menor" onclick="updateClassifications()">
-                        <label for="preco_rem_maior" id="label-preco-rem-maior">Maior para menor</label><br>
-                
-                        <input type="radio" id="preco_rem_menor" name="preco_remedio" value="menor-maior" onclick="updateClassifications()">
-                        <label for="preco_rem_menor" id="label-preco-rem-menor">Menor para maior</label>
-                    </div>
-                </div>
+
 
                 <button type="submit">Classificar</button>
 
@@ -540,11 +565,26 @@ html, body {
                     </div>
                     <p class="eficacia-range">{{ tratamento.eficacia_minima }} a {{ tratamento.eficacia_maxima }}%</p>
 
-                    <p><strong>Prazo para efeito</strong></p>
-                    <button class="prazo-btn">
-                        <i class="fas fa-clock"></i> {{ tratamento.prazo_efeito_min_formatado}}  a {{ tratamento.prazo_efeito_max_formatado }} 
+                <!-- Valores reais escondidos para JS ler -->
+                <p class="eficacia-range" id="faixa-eficacia-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.eficacia_minima }} a {{ tratamento.eficacia_maxima }}%
+                </p>
 
-                    </button>
+                <p class="risco-range" id="faixa-risco-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.reacao_min }}% a {{ tratamento.reacao_max }}%
+                  </p>
+
+                <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
+                    R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
+                  </p>
+
+                <!-- Campo visível que será dinâmico -->
+                <p><strong id="titulo-prazo-{{ tratamento.id }}">Prazo para efeito</strong></p>
+                <button class="prazo-btn" id="btn-prazo-{{ tratamento.id }}">
+                   
+                    <span id="faixa-prazo-{{ tratamento.id }}">{{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}</span>
+                </button>
+                    
                 
                 
             </div>
@@ -631,58 +671,146 @@ html, body {
 <script>
 // Função para atualizar as seleções e os títulos dinamicamente
 
-function updateClassifications(classificacao) {
-    const titulo = document.getElementById('tituloClassificacao');
-    const btn = document.getElementById('classificacaoBtn');
-    const minText = document.getElementById('valorMin');
-    const maxText = document.getElementById('valorMax');
+function atualizarCamposPorTipo(tipo) {
+  document.querySelectorAll(`[id^="titulo-prazo-"]`).forEach(elemTitulo => {
+    const idTratamento = elemTitulo.id.split('-').pop();
 
-    let tituloClassificacao = '';
-    let minValor = '';
-    let maxValor = '';
+    if (tipo === 'prazo') {
+      elemTitulo.innerText = 'Prazo para efeito';
+      // Valor já está no DOM, mantemos o original
+    } else if (tipo === 'eficacia') {
+      elemTitulo.innerText = 'Eficácia';
+      const faixaElem = document.getElementById('faixa-eficacia-' + idTratamento);
+      const faixaPrazo = document.getElementById('faixa-prazo-' + idTratamento);
+      if (faixaElem && faixaPrazo) {
+        faixaPrazo.innerText = faixaElem.innerText;
+      }
+    } else if (tipo === 'risco') {
+  elemTitulo.innerText = 'Risco de Efeito Colateral';
+  const faixaElem = document.getElementById('faixa-risco-' + idTratamento);
+  const faixaPrazo = document.getElementById('faixa-prazo-' + idTratamento);
+  if (faixaElem && faixaPrazo) {
+    faixaPrazo.innerText = faixaElem.innerText;  // usa valores reais
+  }
 
-    // Lógica para atualizar o título e os valores dependendo da seleção
-    if (classificacao === "eficacia") {
-        tituloClassificacao = "Eficácia";  // Título
-        minValor = "52%";
-        maxValor = "60%";
-    } else if (classificacao === "prazo") {
-        tituloClassificacao = "Prazo para efeito";  // Título
-        minValor = "60 min";
-        maxValor = "120 min";
-    } else if (classificacao === "adesao") {
-        tituloClassificacao = "Adesão";  // Título
-        minValor = "75%";
-        maxValor = "75%";  // Ajuste conforme necessário
-    } else if (classificacao === "confiabilidade") {
-        tituloClassificacao = "Confiabilidade da Pesquisa";  // Título
-        minValor = "4 estrelas";
-        maxValor = "4 estrelas";  // Ajuste conforme necessário
-    } else if (classificacao === "preco_tratamento") {
-        tituloClassificacao = "Preço do Tratamento";  // Título
-        minValor = "R$100";
-        maxValor = "R$300";
-    } else if (classificacao === "preco_remedio") {
-        tituloClassificacao = "Preço do Medicamento";  // Título
-        minValor = "R$50";
-        maxValor = "R$150";
+
+    } else if (tipo === 'preco_tratamento') {
+      elemTitulo.innerText = 'Preço do Tratamento';
+      const faixaElem = document.getElementById('faixa-preco-' + idTratamento);
+      const faixaPrazo = document.getElementById('faixa-prazo-' + idTratamento);
+      if (faixaElem && faixaPrazo) {
+        faixaPrazo.innerText = faixaElem.innerText;
+      }
     }
-
-    // Atualizando o título e os valores no botão
-    titulo.textContent = tituloClassificacao;  // Atualiza o título
-    minText.textContent = minValor;  // Atualiza o valor mínimo
-    maxText.textContent = maxValor;  // Atualiza o valor máximo
-    btn.textContent = `${minValor} a ${maxValor}`;  // Atualiza o texto do botão
+  });
 }
 
-// Função chamada ao clicar no botão "Classificar"
-function classificar() {
-    alert("Classificação aplicada!");
+function detectarOrdenacaoEAtualizar() {
+  if(document.querySelector('input[name="prazo"]:checked')) {
+    atualizarCamposPorTipo('prazo');
+  } else if(document.querySelector('input[name="eficacia"]:checked')) {
+    atualizarCamposPorTipo('eficacia');
+  } else if(document.querySelector('input[name="risco"]:checked')) {
+    atualizarCamposPorTipo('risco');
+  } else if(document.querySelector('input[name="preco_tratamento"]:checked')) {
+    atualizarCamposPorTipo('preco_tratamento');
+  }
 }
+
+document.querySelectorAll('input[type=radio]').forEach(radio => {
+  radio.addEventListener('change', detectarOrdenacaoEAtualizar);
+});
+
+window.onload = detectarOrdenacaoEAtualizar;
 
 
 </script>
 
+<script>
+    // Dados simulados para cada tipo de ordenação (exemplo)
+    const dadosOrdenacao = {
+      prazo: {
+        titulo: 'Prazo para efeito',
+        faixa: '15 horas a 24 horas'
+      },
+      eficacia: {
+        titulo: 'Eficácia',
+        faixa: '70% a 90%'
+      },
+      risco: {
+        titulo: 'Risco de Efeito Colateral',
+        faixa: '2% a 15%'
+      },
+      preco_tratamento: {
+        titulo: 'Preço do Tratamento',
+        faixa: 'R$ 35,00 a R$ 90,00'
+      }
+    };
+    
+    // Atualiza todos os campos "prazo" na página
+    function atualizarCamposPorTipo(tipo) {
+  // Para cada tratamento, atualiza o campo correspondente
+  document.querySelectorAll(`[id^="titulo-prazo-"]`).forEach(elemTitulo => {
+    const idTratamento = elemTitulo.id.split('-').pop();
+
+    if (tipo === 'prazo') {
+      elemTitulo.innerText = 'Prazo para efeito';
+      const faixaElem = document.getElementById('faixa-prazo-' + idTratamento);
+      if (faixaElem) {
+        // Já está com valor real no DOM, mantemos ou atualizamos se necessário
+        // Opcional: pode formatar aqui, se quiser
+      }
+    } else if (tipo === 'eficacia') {
+      elemTitulo.innerText = 'Eficácia';
+      const faixaElem = document.getElementById('faixa-eficacia-' + idTratamento);
+      const prazoSpan = document.getElementById('faixa-prazo-' + idTratamento);
+      if (faixaElem && prazoSpan) {
+        // Trocar conteúdo do prazo pelo da eficácia
+        prazoSpan.innerText = faixaElem.innerText;
+      }
+    } else if (tipo === 'risco') {
+      elemTitulo.innerText = 'Risco de Efeito Colateral';
+      const faixaElem = document.getElementById('faixa-risco-' + idTratamento);
+      const prazoSpan = document.getElementById('faixa-prazo-' + idTratamento);
+      if (faixaElem && prazoSpan) {
+        prazoSpan.innerText = faixaElem.innerText;
+      }
+    } else if (tipo === 'preco_tratamento') {
+      elemTitulo.innerText = 'Preço do Tratamento';
+      const faixaElem = document.getElementById('faixa-preco-' + idTratamento);
+      const prazoSpan = document.getElementById('faixa-prazo-' + idTratamento);
+      if (faixaElem && prazoSpan) {
+        prazoSpan.innerText = faixaElem.innerText;
+      }
+    }
+  });
+}
+
+// Detecta seleção e atualiza
+function detectarOrdenacaoEAtualizar() {
+  if(document.querySelector('input[name="prazo"]:checked')) {
+    atualizarCamposPorTipo('prazo');
+  } else if(document.querySelector('input[name="eficacia"]:checked')) {
+    atualizarCamposPorTipo('eficacia');
+  } else if(document.querySelector('input[name="risco"]:checked')) {
+    atualizarCamposPorTipo('risco');
+  } else if(document.querySelector('input[name="preco_tratamento"]:checked')) {
+    atualizarCamposPorTipo('preco_tratamento');
+  }
+}
+
+// Vincular eventos
+document.querySelectorAll('input[type=radio]').forEach(radio => {
+  radio.addEventListener('change', detectarOrdenacaoEAtualizar);
+});
+
+// Inicializar ao carregar
+window.onload = detectarOrdenacaoEAtualizar;
+
+    </script>
+    
+  </body>
+  
 
 </body>
 </html>

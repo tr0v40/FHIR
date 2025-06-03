@@ -48,7 +48,6 @@ def tratamentos(request):
     prazo = request.GET.get('prazo', '')
     data_pesquisa = request.GET.get('data_pesquisa', '')
     preco_tratamento = request.GET.get('preco_tratamento', '')
-    preco_remedio = request.GET.get('preco_remedio', '')
     ordenacao = request.GET.get('ordenacao', '')
     tratamentos_list = DetalhesTratamentoResumo.objects.all()
     contraindications = Contraindicacao.objects.all()
@@ -75,10 +74,13 @@ def tratamentos(request):
     elif publico == "gravidez":
         tratamentos_list = tratamentos_list.filter(grupo="gravidez").exclude(indicado_gravidez__in=["D", "X"])
 
-    # Filtro de "Contraindicações"
-    contraindica = request.GET.get('contraindicacoes', 'nenhuma')
-    if contraindica != 'nenhuma':
-        tratamentos_list = tratamentos_list.exclude(contraindicacoes=contraindica)  # Excluindo contraindicações selecionadas
+    contraindica_ids = request.GET.getlist('contraindicacoes') or []
+    contraindica_ids = [cid for cid in contraindica_ids if cid != 'nenhuma']
+
+    if contraindica_ids:
+        tratamentos_list = tratamentos_list.exclude(contraindicacoes__in=contraindica_ids)
+
+
 
     # Anotações e cálculos agregados
     tratamentos_list = tratamentos_list.annotate(
@@ -118,6 +120,7 @@ def tratamentos(request):
     context = {
         'tratamentos': tratamentos_list,
         'contraindications': contraindications,
+        'grupos_indicados': DetalhesTratamentoResumo.GRUPO_CHOICES,
         'nome': nome,
         'categoria': categoria,
         'eficacia': eficacia,
@@ -126,6 +129,9 @@ def tratamentos(request):
         'data_pesquisa': data_pesquisa,
         'preco_tratamento': preco_tratamento,
         'ordenacao': ordenacao,
+        'contraindications': contraindications,
+        'contraindicacoes_selecionadas': contraindica_ids,
+
     }
 
     return render(request, 'core/tratamentos.html', context)
