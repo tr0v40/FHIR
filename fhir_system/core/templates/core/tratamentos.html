@@ -432,34 +432,37 @@ html, body {
                     </select>
                     
                 <!-- Filtro de Contraindicações -->
-                <div class="accordion" id="accordionContra"style="margin-top: 20px;">
+           
+                <div class="accordion" id="accordionContra" style="margin-top: 20px;">
                     <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingContra">
+                    <h2 class="accordion-header" id="headingContra">
                         <button class="accordion-button collapsed"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapseContra"
-                        aria-expanded="false"
-                        aria-controls="collapseContra"
-                        style="background: linear-gradient(to right, #007bff, #0062cc); color: white; font-weight: bold; border: none; border-radius: 6px;">
-                  Contraindicações
-                </button>
-                      <div id="collapseContra" class="accordion-collapse collapse">
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseContra"
+                                aria-expanded="false"
+                                aria-controls="collapseContra"
+                                style="background: linear-gradient(to right, #007bff, #0062cc); color: white; font-weight: bold; border: none; border-radius: 6px;">
+                        Contraindicações
+                        </button>
+                    </h2>
+                    <div id="collapseContra" class="accordion-collapse collapse">
                         <div class="accordion-body">
-                          {% for item in contraindications %}
+                        {% for item in contraindications|dictsort:"nome" %}
                             <div class="form-check">
-                              <input class="form-check-input" type="checkbox" name="contraindicacoes" value="{{ item.id }}"
-                                     id="contra_{{ item.id }}"
-                                     {% if item.id|stringformat:"s" in contraindicacoes_selecionadas %}checked{% endif %}>
-                              <label class="form-check-label" for="contra_{{ item.id }}">
+                            <input class="form-check-input" type="checkbox" name="contraindicacoes" value="{{ item.id }}"
+                                    id="contra_{{ item.id }}"
+                                    {% if item.id|stringformat:"s" in contraindicacoes_selecionadas %}checked{% endif %}>
+                            <label class="form-check-label" for="contra_{{ item.id }}">
                                 {{ item.nome }}
-                              </label>
+                            </label>
                             </div>
-                          {% endfor %}
+                        {% endfor %}
                         </div>
-                      </div>
                     </div>
-                  </div>
+                    </div>
+                </div>
+  
                   
                 
 
@@ -528,7 +531,7 @@ html, body {
 
 
 
-                <button type="submit">Classificar</button>
+                <button type="submit">Ordenar</button>
 
             </div>
         </form>
