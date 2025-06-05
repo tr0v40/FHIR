@@ -40,7 +40,7 @@ def register(request):
 
 def tratamentos(request):
     # Obtendo os filtros da URL
-    publico = request.GET.get('publico', '').strip().lower()
+    publico = request.GET.get('publico', 'todos').strip().lower()
     nome = request.GET.get('nome', '').strip()
     categoria = request.GET.get('categoria', '').strip()
     eficacia = request.GET.get('eficacia', '')
@@ -63,19 +63,20 @@ def tratamentos(request):
 
     # Filtro de "Indicado para"
     if publico == "criancas":
-        tratamentos_list = tratamentos_list.filter(grupo="criancas", indicado_criancas__iexact="Sim")
+        tratamentos_list = tratamentos_list.filter(indicado_criancas__iexact="SIM")
     elif publico == "adolescentes":
-        tratamentos_list = tratamentos_list.filter(grupo="adolescentes", indicado_adolescentes__iexact="Sim")
+        tratamentos_list = tratamentos_list.filter(indicado_adolescentes__iexact="SIM")
     elif publico == "idosos":
-        tratamentos_list = tratamentos_list.filter(grupo="idosos", indicado_idosos__iexact="Sim")  # Verifique se este campo contém "SIM" ou "True"
+        tratamentos_list = tratamentos_list.filter(indicado_idosos__iexact="SIM")
     elif publico == "adultos":
-        tratamentos_list = tratamentos_list.filter(grupo="adultos", indicado_adultos__iexact="Sim")
+        tratamentos_list = tratamentos_list.filter(indicado_adultos__iexact="SIM")
     elif publico == "lactantes":
-        tratamentos_list = tratamentos_list.filter(grupo="lactantes").exclude(indicado_lactantes="C")
+        tratamentos_list = tratamentos_list.exclude(indicado_lactantes="C")
     elif publico == "gravidez":
-        tratamentos_list = tratamentos_list.filter(grupo="gravidez").exclude(indicado_gravidez__in=["D", "X"])
-    elif publico == "todos" or publico == "":
-        tratamentos_list = tratamentos_list  # Nenhum filtro específico aplicado
+        tratamentos_list = tratamentos_list.exclude(indicado_gravidez__in=["D", "X"])
+    elif publico == "todos":
+        pass  # Sem filtro
+
 
     # Filtro de Contraindicações
     contraindica_ids = request.GET.getlist('contraindicacoes') or []
