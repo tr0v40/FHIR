@@ -253,10 +253,11 @@ html, body {
     font-size: 16px;
     font-weight: bold;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: center; /* Alinhamento vertical */
+    justify-content: center; /* Alinhamento horizontal */
     gap: 8px;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center; /* Centraliza o texto */
 }
 
 .prazo-btn i {
@@ -573,9 +574,9 @@ html, body {
                     {{ tratamento.eficacia_minima }} a {{ tratamento.eficacia_maxima }}%
                 </p>
 
-                <p class="risco-range" id="faixa-risco-{{ tratamento.id }}" style="display:none;">
-                    {{ tratamento.reacao_min }}% a {{ tratamento.reacao_max }}%
-                  </p>
+                <p class="risco-range" id="faixa-risco-{{ tratamento.id }}"style="display:none;">
+                    Risco máximo: {{ tratamento.reacao_maxima }}%
+                </p>
 
                 <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
                     R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
@@ -703,6 +704,11 @@ function atualizarCamposPorTipo(tipo) {
       const faixaPrazo = document.getElementById('faixa-prazo-' + idTratamento);
       if (faixaElem && faixaPrazo) {
         faixaPrazo.innerText = faixaElem.innerText;
+        const btnPrazo = document.getElementById('btn-prazo-' + idTratamento);
+        if (btnPrazo) {
+            btnPrazo.style.display = 'flex';  // Garantir que o display seja flex
+            btnPrazo.style.justifyContent = 'center';  // Forçar o alinhamento centralizado
+            btnPrazo.style.alignItems = 'center';  // Garantir que o conteúdo seja centralizado verticalmente
       }
     }
   });

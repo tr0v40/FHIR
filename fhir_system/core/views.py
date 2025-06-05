@@ -49,6 +49,7 @@ def tratamentos(request):
     data_pesquisa = request.GET.get('data_pesquisa', '')
     preco_tratamento = request.GET.get('preco_tratamento', '')
     ordenacao = request.GET.get('ordenacao', '')
+    
     tratamentos_list = DetalhesTratamentoResumo.objects.all()
     contraindications = Contraindicacao.objects.all()
 
@@ -62,31 +63,33 @@ def tratamentos(request):
 
     # Filtro de "Indicado para"
     if publico == "criancas":
-        tratamentos_list = tratamentos_list.filter(grupo="criancas", indicado_criancas__in=["SIM", "Sim"])
+        tratamentos_list = tratamentos_list.filter(grupo="criancas", indicado_criancas__iexact="Sim")
     elif publico == "adolescentes":
-        tratamentos_list = tratamentos_list.filter(grupo="adolescentes", indicado_adolescentes__in=["SIM", "Sim"])
+        tratamentos_list = tratamentos_list.filter(grupo="adolescentes", indicado_adolescentes__iexact="Sim")
     elif publico == "idosos":
-        tratamentos_list = tratamentos_list.filter(grupo="idosos", indicado_idosos__in=["SIM", "Sim"])
+        tratamentos_list = tratamentos_list.filter(grupo="idosos", indicado_idosos__iexact="Sim")  # Verifique se este campo contém "SIM" ou "True"
     elif publico == "adultos":
-        tratamentos_list = tratamentos_list.filter(grupo="adultos", indicado_adultos__in=["SIM", "Sim"])
+        tratamentos_list = tratamentos_list.filter(grupo="adultos", indicado_adultos__iexact="Sim")
     elif publico == "lactantes":
         tratamentos_list = tratamentos_list.filter(grupo="lactantes").exclude(indicado_lactantes="C")
     elif publico == "gravidez":
         tratamentos_list = tratamentos_list.filter(grupo="gravidez").exclude(indicado_gravidez__in=["D", "X"])
+    elif publico == "todos" or publico == "":
+        tratamentos_list = tratamentos_list  # Nenhum filtro específico aplicado
 
+    # Filtro de Contraindicações
     contraindica_ids = request.GET.getlist('contraindicacoes') or []
     contraindica_ids = [cid for cid in contraindica_ids if cid != 'nenhuma']
-
+    
     if contraindica_ids:
         tratamentos_list = tratamentos_list.exclude(contraindicacoes__in=contraindica_ids)
-
-
 
     # Anotações e cálculos agregados
     tratamentos_list = tratamentos_list.annotate(
         ultima_pesquisa=Max('evidencias__data_publicacao'),
         eficacia_minima=Min('evidencias__eficacia_min'),
         eficacia_maxima=Max('evidencias__eficacia_max'),
+        reacao_maxima=Max('reacoes_adversas_detalhes__reacao_max') 
     )
 
     # Ordenação dinâmica (se houver)
@@ -94,9 +97,7 @@ def tratamentos(request):
     if eficacia:
         sort_criteria.append('-eficacia_minima' if eficacia == 'maior-menor' else 'eficacia_minima')
     if risco:
-        sort_criteria.append('-risco' if risco == 'maior-menor' else 'risco')
-
-
+        sort_criteria.append('-reacao_maxima' if risco == 'maior-menor' else 'reacao_maxima')  # Ordenando pelo risco máximo
     if preco_tratamento:
         sort_criteria.append('-custo_medicamento' if preco_tratamento == 'maior-menor' else 'custo_medicamento')
     if prazo == 'maior-menor':
@@ -129,9 +130,7 @@ def tratamentos(request):
         'data_pesquisa': data_pesquisa,
         'preco_tratamento': preco_tratamento,
         'ordenacao': ordenacao,
-        'contraindications': contraindications,
         'contraindicacoes_selecionadas': contraindica_ids,
-
     }
 
     return render(request, 'core/tratamentos.html', context)
