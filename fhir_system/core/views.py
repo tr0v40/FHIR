@@ -5,7 +5,8 @@ from django.contrib.auth.models import Group
 from .forms import UserRegisterForm
 from .models import DetalhesTratamentoResumo, EvidenciasClinicas, Contraindicacao
 from django.shortcuts import render
-from django.db.models import Min, Max, OuterRef, Subquery
+from django.db.models import Min, Max
+from django.db.models import F, FloatField, ExpressionWrapper, Case, When
 from django.shortcuts import render, get_object_or_404
 from .models import DetalhesTratamentoResumo, Contraindicacao, EvidenciasClinicas
 
@@ -86,12 +87,32 @@ def tratamentos(request):
         tratamentos_list = tratamentos_list.exclude(contraindicacoes__in=contraindica_ids)
 
     # Anotações e cálculos agregados
+    # Multiplicador para transformar a unidade em minutos
+    multiplicadores = Case(
+        When(prazo_efeito_unidade='segundo', then=1/60),
+        When(prazo_efeito_unidade='minuto', then=1),
+        When(prazo_efeito_unidade='hora', then=60),
+        When(prazo_efeito_unidade='dia', then=1440),
+        When(prazo_efeito_unidade='sessao', then=10080),
+        default=1,
+        output_field=FloatField()
+    )
+
+    # Expressão para calcular a média do intervalo de tempo em minutos
+    prazo_medio_minutos = ExpressionWrapper(
+        ((F('prazo_efeito_min') + F('prazo_efeito_max')) / 2) * multiplicadores,
+        output_field=FloatField()
+    )
+
+    # Annotate com a média e outros dados
     tratamentos_list = tratamentos_list.annotate(
         ultima_pesquisa=Max('evidencias__data_publicacao'),
         eficacia_minima=Min('evidencias__eficacia_min'),
         eficacia_maxima=Max('evidencias__eficacia_max'),
-        reacao_maxima=Max('reacoes_adversas_detalhes__reacao_max') 
+        reacao_maxima=Max('reacoes_adversas_detalhes__reacao_max'),
+        prazo_medio_minutos=prazo_medio_minutos
     )
+
 
     # Ordenação dinâmica (se houver)
     sort_criteria = []
@@ -102,9 +123,10 @@ def tratamentos(request):
     if preco_tratamento:
         sort_criteria.append('-custo_medicamento' if preco_tratamento == 'maior-menor' else 'custo_medicamento')
     if prazo == 'maior-menor':
-        sort_criteria.append('-prazo_efeito_min')
+        sort_criteria.append('-prazo_medio_minutos')
     elif prazo == 'menor-maior':
-        sort_criteria.append('prazo_efeito_min')
+        sort_criteria.append('prazo_medio_minutos')
+ 
 
     # Ordenação final (criteriosa e composta)
     if sort_criteria:
