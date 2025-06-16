@@ -78,13 +78,12 @@ def tratamentos(request):
     elif publico == "todos":
         pass  # Sem filtro
 
-
     # Filtro de Contraindicações
-    contraindica_ids = request.GET.getlist('contraindicacoes') or []
-    contraindica_ids = [cid for cid in contraindica_ids if cid != 'nenhuma']
+    contraindica_ids = request.GET.getlist('contraindicacoes')  # Obtém as contraindicações selecionadas
+    contraindica_ids = [cid for cid in contraindica_ids if cid and cid != 'nenhuma']  # Remove o valor vazio e "nenhuma"
     
     if contraindica_ids:
-        tratamentos_list = tratamentos_list.exclude(contraindicacoes__in=contraindica_ids)
+        tratamentos_list = tratamentos_list.exclude(contraindicacoes__id__in=contraindica_ids)
 
     # Anotações e cálculos agregados
     # Multiplicador para transformar a unidade em minutos
@@ -106,27 +105,31 @@ def tratamentos(request):
 
     # Annotate com a média e outros dados
     tratamentos_list = tratamentos_list.annotate(
+        max_participantes=Max('evidencias__numero_participantes'),
         ultima_pesquisa=Max('evidencias__data_publicacao'),
         eficacia_minima=Min('evidencias__eficacia_min'),
         eficacia_maxima=Max('evidencias__eficacia_max'),
         reacao_maxima=Max('reacoes_adversas_detalhes__reacao_max'),
         prazo_medio_minutos=prazo_medio_minutos
+        
     )
-
 
     # Ordenação dinâmica (se houver)
     sort_criteria = []
     if eficacia:
         sort_criteria.append('-eficacia_minima' if eficacia == 'maior-menor' else 'eficacia_minima')
     if risco:
-        sort_criteria.append('-reacao_maxima' if risco == 'maior-menor' else 'reacao_maxima')  # Ordenando pelo risco máximo
+        sort_criteria.append('-reacao_maxima' if risco == 'maior-menor' else 'reacao_maxima')
     if preco_tratamento:
         sort_criteria.append('-custo_medicamento' if preco_tratamento == 'maior-menor' else 'custo_medicamento')
     if prazo == 'maior-menor':
         sort_criteria.append('-prazo_medio_minutos')
     elif prazo == 'menor-maior':
         sort_criteria.append('prazo_medio_minutos')
- 
+    if data_pesquisa == 'maior-menor':
+        sort_criteria.append('-ultima_pesquisa')
+    elif data_pesquisa == 'menor-maior':
+        sort_criteria.append('ultima_pesquisa')
 
     # Ordenação final (criteriosa e composta)
     if sort_criteria:
@@ -142,21 +145,26 @@ def tratamentos(request):
             tratamentos_list = tratamentos_list.order_by('custo_medicamento')
 
     context = {
-        'tratamentos': tratamentos_list,
-        'contraindications': contraindications,
-        'grupos_indicados': DetalhesTratamentoResumo.GRUPO_CHOICES,
-        'nome': nome,
-        'categoria': categoria,
-        'eficacia': eficacia,
-        'risco': risco,
-        'prazo': prazo,
-        'data_pesquisa': data_pesquisa,
-        'preco_tratamento': preco_tratamento,
-        'ordenacao': ordenacao,
-        'contraindicacoes_selecionadas': contraindica_ids,
+
+    'tratamentos': tratamentos_list,
+    'contraindications': contraindications,
+    'grupos_indicados': DetalhesTratamentoResumo.GRUPO_CHOICES,
+    'nome': nome,
+    'categoria': categoria,
+    'eficacia': eficacia,
+    'risco': risco,
+    'prazo': prazo,
+    'data_pesquisa': data_pesquisa,
+    'preco_tratamento': preco_tratamento,
+    'ordenacao': ordenacao,
+    'contraindicacoes_selecionadas': contraindica_ids,
+
+
     }
 
     return render(request, 'core/tratamentos.html', context)
+
+
 
 
 
@@ -368,3 +376,7 @@ def unidade_formatada(self, valor):
     if valor == 1:
         return self.prazo_efeito_unidade
     return exceptions.get(self.prazo_efeito_unidade, self.prazo_efeito_unidade + 's')
+
+
+
+

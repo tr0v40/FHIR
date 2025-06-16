@@ -16,9 +16,9 @@
 /* CONFIGURAÇÃO GERAL */
 html, body {
     height: 100%;
-    margin: 0;
+    margin: 0px;
     padding: 0;
-    background-color: #f8f9fa;
+    background-color: #fefefe;
     font-family: Arial, sans-serif;
     gap: 20px;
     overflow-x: hidden;
@@ -30,22 +30,74 @@ html, body {
     justify-content: flex-start;
     align-items: flex-start;
     gap: 30px;
-    padding: 20px;
+    padding: 10px;
     overflow: hidden; /* Impede a rolagem horizontal */
 }
 
 /* SIDEBAR - FILTROS E CLASSIFICAÇÕES */
 .left-sidebar {
     position: sticky;
-    top: 20px;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    top: 900px;
+    margin-left: 200px;
+    border: 3px solid #eeeeee;
+
     z-index: 1000;
     width: 300px;
-    height: calc(100vh - 40px); /* Ajusta a altura da sidebar */
-    overflow-y: auto; /* Permite rolar se o conteúdo for maior que a tela */
+    height: 1180px;
+     /* Ajusta a altura da sidebar */
+    /* Permite rolar se o conteúdo for maior que a tela */
+}
+
+/* Título centralizado abaixo do header */
+.titulo-container {
+    margin-top: 50px;  /* Espaçamento superior para separar o título do header */
+    text-align: left;
+    
+    align-items: center;
+    color: #000000;
+    margin-left: 300px;
+    justify-content: space-between;
+}
+
+        /* Estilo do card preto */
+.card-preto {
+    background-color: #000000;
+    color: white;
+    align-content: right;
+    padding: 5px 10px;
+    font-size: 15px;
+    border-radius: 5px;
+    margin-left: auto;
+    margin-left: 1100px;
+    max-width: 300px;
+    word-wrap: break-word;
+    margin-top: 100px; 
+        }
+
+
+/* Subtítulo com fonte menor */
+.subtitulo {
+    font-size: 18px;  /* Tamanho menor que o título */
+    color: #000000;  /* Cor mais suave */
+    font-weight: bold;
+    margin-top: 10px;  /* Espaçamento entre o título e o subtítulo */
+    
+}
+
+
+/* Estilo do checkbox personalizado */
+.checkbox-container input[type="checkbox"] {
+    width: 100px; /* Ajuste o valor conforme necessário */
+    height: 20px; /* Ajuste o valor conforme necessário */
+    margin-left: 250px;
+    
+}
+
+
+#ordenacao-texto {
+    font-size: 14px;
+    color: #000000;
+    margin-left: 5px;
 }
 
 /* Ajuste para a parte de classificação com rolagem interna */
@@ -85,17 +137,22 @@ html, body {
 
 /* Container dos filtros */
 .filters {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 6px 10px rgba(0,0,0,0.08);
-}
+    
+    
+    border: none; /* borda cinza clara */
+    border-radius: 1px; /* cantos levemente arredondados */
+    padding: 16px; /* espaçamento interno */
+    margin-bottom: 50px; /* espaço externo inferior */
+    box-shadow: none !important; /* remove qualquer sombra */
+        }
+
 
 /* ESTILO DO FORMULÁRIO DE FILTROS */
 /* Labels dos filtros */
 .filters label {
     font-size: 14px;
     font-weight: normal;
+    
     color: #555;
     margin-top: 10px;
 }
@@ -111,46 +168,202 @@ html, body {
     color: #007bff; /* Azul */
 }
 
-.filters select, .filters button {
+.filters select {
     width: 100%;
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
-    background: #f9f9f9;
+
     font-size: 14px;
 }
 
-.filters select {
-    padding: 8px 12px;
-    border-radius: 8px;
+
+.filters button {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
     border: 1px solid #ccc;
-    background-color: #fdfdfd;
+
     font-size: 14px;
-    transition: border 0.2s ease-in-out;
+}
+/* Remover a borda externa do container de Contraindicações */
+/* Estilo para o select de Contraindicações */
+.filters select {
+    border: 2px solid #e4e4e4;  /* Remove a borda externa do select */
+    background-color: #f9f9f9; /* Cor de fundo clara */
+    padding: 8px 10px;  /* Padding confortável */
+    font-size: 13px;  /* Tamanho da fonte */
+    border-radius: 4px;  /* Bordas arredondadas */
+    width: 100%;  /* Ocupa toda a largura disponível */
+    box-sizing: border-box; /* Garante que o padding não ultrapasse a largura */
 }
 
-.filters select:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0,123,255,0.4);
-    outline: none;
+/* Estilo para a lista de contra-indicações */
+.form-check {
+    margin-bottom: 10px;  /* Espaçamento entre as opções */
+    font-size: 13px;  /* Tamanho da fonte */
 }
+
+/* Estilo do botão "Aplicar Filtro" */
+.filters button {
+    background-color: #afaeae;  /* Fundo cinza claro */
+    color: #007bff; /* Texto azul */
+    border-top: 1px solid #ccc;
+    font-weight: normal;  /* Peso de fonte normal */
+    justify-content: center;
+    border: 1px solid #ccc;  /* Borda cinza clara */
+    border-radius: 4px;  /* Cantos arredondados */
+    gap: 50px;
+    padding: 8px 16px;  /* Padding confortável */
+    width: 100%;  /* Largura 100% */
+    font-size: 14px;  /* Tamanho da fonte */
+    text-align: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Estilo para os botões de filtro (Exibir) */
+.filter-buttons {
+    border: 2px solid #e4e4e4;
+    display: flex;
+    gap: 15px;  /* Espaço entre os botões */
+    flex-wrap: wrap;
+    margin-bottom: 20px;  /* Espaçamento entre os botões e o conteúdo */
+    padding: 0;  /* Remove qualquer padding extra */
+    border: none;  /* Remove a borda do contêiner */
+    box-shadow: none;  /* Remove qualquer sombra */
+    justify-content: center;  /* Alinha os botões no início */
+}
+
+.filter-btn {
+    background-color: #f9f9f9;  /* Cor de fundo clara */
+    color: #007bff;  /* Texto azul */
+    border: none;  /* Remove qualquer borda extra */
+    border-radius: 6px;  /* Bordas arredondadas */
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    text-align: center;
+    width: 230px;  /* Largura fixa para manter os botões organizados */
+}
+
+.filter-btn input {
+    margin-right: 8px;  /* Espaço entre o checkbox e o texto */
+    width: 18px;
+    height: 18px;
+}
+
+.filter-btn:hover {
+    background-color: #e0e0e0;
+}
+
+
+.filter-btn input:checked {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Estilo para a lista de contra-indicações */
+.form-check {
+    margin-bottom: 10px;  /* Espaçamento entre as opções */
+    font-size: 13px;  /* Tamanho da fonte */
+}
+
+/* Efeito de hover no botão */
+.filters button:hover {
+    background-color: #e0e0e0;  /* Cor de fundo mais escura */
+    border-color: #007bff;  /* Borda azul */
+}
+
+
+/* Remover a borda de foco (quando o select estiver em foco) */
+.filters select:focus {
+    outline: none;  /* Remove a borda de foco */
+    background-color: #ffffff;  /* Fundo branco ao focar */
+}
+
+/* Estilo para o título "Exibir" */
+.filters h6 {
+    font-weight: bold;  /* Título em negrito */
+    color: #000000;  /* Cor preta */
+    margin-bottom: 20px; /* Espaçamento abaixo do título */
+    text-align: left;  /* Alinhar à esquerda */
+    margin-left: 170px;
+    font-size: 20px;
+}
+
 
 /* BOTÃO FILTRAR */
+
 .filters button {
-    background: linear-gradient(90deg, #007bff, #0056b3);
-    color: white;
-    border: none;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 15px;
-    transition: all 0.3s ease;
+    border: 2px solid #e4e4e4;
+    background-color: #f0f0f0;  /* Fundo cinza claro */
+    color: #060606; /* Texto azul */
+    margin-top: 1px;
+    font-weight: normal;  /* Peso de fonte normal */
+    padding: 8px 16px;  /* Padding confortável */
+
+    max-width: 100%; /* cartão mais largo */
+    min-height: 15px;
+    font-size: 12px;  /* Tamanho da fonte */
+    text-align: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    margin-top: 25px;
 }
 
 .filters button:hover {
     background: linear-gradient(90deg, #0056b3, #004494);
     transform: scale(1.05);
 }
+
+/* Estilo para o container de contraindicações */
+.accordion-item {
+    border: none; /* Remove a borda do accordion */
+    margin-top: 20px; /* Espaçamento entre o filtro de contraindicações e os filtros anteriores */
+}
+
+/* Estilo do botão do accordion */
+.accordion-button {
+    background-color: #ffffff; /* Fundo branco */
+    color: #007bff; /* Cor do texto */
+    font-weight: normal; /* Peso da fonte normal */
+    border: 1px solid #ccc; /* Borda cinza clara, pode ser ajustado conforme o visual desejado */
+    border-radius: 6px;
+    padding: 10px; /* Padding para espaçamento */
+    font-size: 14px; /* Ajuste do tamanho da fonte */
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #f1f1f1; /* Fundo leve para quando expandido */
+    color: #0056b3;
+    border-color: #007bff;
+}
+
+.accordion-button:focus {
+    box-shadow: none !important; /* Remove o foco do botão */
+}
+
+/* Estilo do conteúdo do accordion */
+.accordion-body {
+    background-color: #ffffff; /* Fundo branco */
+    border-top: 1px solid #ccc; /* Linha acima do conteúdo */
+    padding: 10px 20px; /* Padding para o conteúdo */
+}
+
+/* Estilo dos checkboxes */
+.form-check-input {
+    width: 16px; /* Tamanho do checkbox */
+    height: 16px;
+    margin-top: 2px; /* Ajuste de alinhamento vertical */
+}
+
+.form-check-label {
+    font-size: 14px; /* Ajuste do tamanho da fonte */
+    color: #333; /* Cor do texto */
+}
+
+
+
 
 /* LISTA DE TRATAMENTOS */
 .treatment-list {
@@ -166,7 +379,7 @@ html, body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: 1800px; /* cartão mais largo */
+    max-width: 1200px; /* cartão mais largo */
     min-height: 400px;
     padding: 30px 40px;
     margin: 20px auto;
@@ -267,6 +480,25 @@ html, body {
 .prazo-btn:hover {
     background-color: #0056b3;
     transform: scale(1.05);
+}
+
+/* Estilo para as opções de ordenação (radio buttons) */
+.ordenacao-options {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;  /* Alinha as opções na vertical */
+    gap: 10px;  /* Espaçamento entre as opções */
+}
+
+.ordenacao-options label {
+    font-size: 14px;
+    color: #01060c;
+    display: inline-flex;
+    align-items: center;
+}
+
+.ordenacao-options input[type="radio"] {
+    margin-right: 8px;  /* Espaço entre o radio button e o texto */
 }
 
 /* RESPONSIVIDADE */
@@ -394,8 +626,8 @@ html, body {
                 <img src="{% static 'img/logo.png' %}" alt="Telix Logo" style="height: 70px;">
             </a>
 
-            <!-- Título centralizado -->
-            <h1 class="titulo-header m-0 text-primary">Tratamentos para enxaqueca e dor de cabeça crônica</h1>
+
+
 
             <!-- Botões de login/cadastro -->
             <div class="nav-buttons d-flex gap-2">
@@ -404,6 +636,60 @@ html, body {
         </div>
     </nav>
 </header>
+
+            <!-- Título e card preto -->
+            <div class="titulo-container">
+                <div class="card-preto">
+                    <p>Não se automedique. 
+                        Consulte um profissional de saúde.</p>
+                </div>
+                <div>
+                    <h1 class="titulo-header">Enxaqueca e dor de cabeça crônica</h1>
+                    <p class="subtitulo">Tratamentos ordenados por:</p>
+                </div>
+            </div>
+            <!-- Checkbox para mostrar a ordenação -->
+            <div class="checkbox-container mt-3">
+                <input type="checkbox" id="ordenacao-checkbox" disabled>
+                <label for="ordenacao-checkbox" id="ordenacao-texto">Ordenação não selecionada</label>
+            </div>
+        </div>
+
+
+<!-- Filtro de Exibir -->
+<div class="filters" style="text-align: left; margin: 20px 0;margin-left: 50px; padding: 20px; border: none;">
+    <h6><strong>Exibir</strong></h6>
+    <!-- Botões de exibição (radio buttons) -->
+    <div class="filter-buttons">
+
+        <label class="filter-btn">
+            <input type="radio" name="exibir" value="prazo" onclick="mudarExibicao('prazo')">
+            Prazo para Efeito
+        </label>
+        <label class="filter-btn">
+            <input type="radio" name="exibir" value="risco" onclick="mudarExibicao('risco')">
+            Risco de Reação Adversa
+        </label>
+        <label class="filter-btn">
+            <input type="radio" name="exibir" value="preco" onclick="mudarExibicao('preco')">
+            Preço
+        </label>
+        <label class="filter-btn">
+            <input type="radio" name="exibir" value="rigor" onclick="mudarExibicao('rigor')">
+            Rigor da Pesquisa
+        </label>
+        <label class="filter-btn">
+            <input type="radio" name="exibir" value="data" onclick="mudarExibicao('data')">
+            Data da Pesquisa
+        </label>
+        <label class="filter-btn">
+            <input type="radio" name="exibir" value="participantes" onclick="mudarExibicao('participantes')">
+            Número de participantes
+        </label>
+    </div>
+</div>
+
+
 
 
 
@@ -418,8 +704,8 @@ html, body {
 
                 <!-- Filtros -->
                 <div id="filter-section">
-                    <h4 class="mt-3">Filtros:</h4>
-                    <label for="publico">Indicado para:</label>
+                    <h5><strong>Filtros</strong> <img src="{% static 'img/filtros.png' %}"  style="height: 24px; margin-left: 15x;"></h5>
+                    <p>Selecione seu perfil para que apareçam na lista apenas os tratamentos indicados para você</p>
                     <select name="publico" id="publico">
                         <option value="criancas" {% if request.GET.publico == "criancas" %}selected{% endif %}>Crianças</option>
                         <option value="adolescentes" {% if request.GET.publico == "adolescentes" %}selected{% endif %}>Adolescentes</option>
@@ -431,112 +717,133 @@ html, body {
                         
                         
                     </select>
+
+                                        <!-- Botão para submeter o filtro -->
+                        <button type="submit" class="btn btn-primary mt-3" style="margin-top: 30px;">Aplicar Filtro</button>
+                         </div>
+                    
                     
                 <!-- Filtro de Contraindicações -->
-           
-                <div class="accordion" id="accordionContra" style="margin-top: 20px;">
-                    <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingContra">
-                        <button class="accordion-button collapsed"
-                                type="button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#collapseContra"
-                                aria-expanded="false"
-                                aria-controls="collapseContra"
-                                style="background: linear-gradient(to right, #007bff, #0062cc); color: white; font-weight: bold; border: none; border-radius: 6px;">
-                        Contraindicações
+                <div class="filters" style="position: sticky; margin-top: 30px; z-index: 100;">
+                    <h5><strong>Contraindicações</strong><img src="{% static 'img/icone.png' %}"  style="height: 24px; margin-left: 15x;"></h5>
+
+                    <p>Esse filtro vai excluir da lista os tratamentos com contraindicações às condições de saúde que você selecionar.</p>
+
+                    <!-- Dropdown de Contraindicações -->
+                    <div class="dropdown">
+                        <!-- Botão para expandir/mostrar as opções -->
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownContra" data-bs-toggle="collapse" data-bs-target="#contraindicationsOptions" aria-expanded="false" aria-controls="contraindicationsOptions">
+                            Selecione as contraindicações
                         </button>
-                    </h2>
-                    <div id="collapseContra" class="accordion-collapse collapse">
-                        <div class="accordion-body">
-                        {% for item in contraindications|dictsort:"nome" %}
+
+                        <!-- Opções de checkboxes escondidas que serão abertas ao clicar -->
+                        <div id="contraindicationsOptions" class="collapse">
                             <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="contraindicacoes" value="{{ item.id }}"
-                                    id="contra_{{ item.id }}"
-                                    {% if item.id|stringformat:"s" in contraindicacoes_selecionadas %}checked{% endif %}>
-                            <label class="form-check-label" for="contra_{{ item.id }}">
-                                {{ item.nome }}
-                            </label>
+                                <input class="form-check-input" type="checkbox" name="contraindicacoes" value="nenhuma" id="contra_nenhuma" {% if not contraindicacoes_selecionadas %}checked{% endif %}>
+                                <label class="form-check-label" for="contra_nenhuma">
+                                    Nenhuma
+                                </label>
                             </div>
-                        {% endfor %}
+                            {% for item in contraindications|dictsort:"nome" %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="contraindicacoes" value="{{ item.id }}" id="contra_{{ item.id }}" {% if item.id|stringformat:"s" in contraindicacoes_selecionadas %}checked{% endif %}>
+                                    <label class="form-check-label" for="contra_{{ item.id }}">
+                                        {{ item.nome }}
+                                    </label>
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
-                    </div>
-                </div>
-  
-                  
-                
-
-                    
-                    
 
                     <!-- Botão para submeter o filtro -->
-                    <button type="submit" class="btn btn-primary mt-3" style="margin-top: 30px;">Aplicar Filtro</button>
+                    <button type="submit" class="btn btn-primary mt-3">Aplicar Filtro</button>
                 </div>
 
-                <!-- Classificar por Eficácia -->
-                <div class="classificar-container">
-                    <h4 class="mt-3">Ordenar por:</h4>
-                    <label for="eficacia">Eficácia</label>
-                    <div>
-                        <input type="radio" id="eficacia_maior" name="eficacia" value="maior-menor" onclick="updateClassifications()">
-                        <label for="eficacia_maior" id="label-eficacia-maior">Maior para menor</label><br>
+                    
+<!-- Filtro de Ordenação -->
+<div class=">Ordenar por característica<">
+    <h5><strong>Ordenar por característica</strong></h5>
+   
+    
+    <!-- Dropdown para ordenação -->
+    <select id="ordenacao_select" name="ordenacao" class="form-select" onchange="mudarExibicao(this.value)">
 
-                        <input type="radio" id="eficacia_menor" name="eficacia" value="menor-maior" onclick="updateClassifications()">
-                        <label for="eficacia_menor" id="label-eficacia-menor">Menor para maior</label>
-                    </div>
-                </div>
-                                
-                
-                <!-- Classificar por Risco -->
-                <div class="mt-2">
-                    <label for="risco">Risco de Efeito Colateral</label>
-                    <div>
-                        <input type="radio" id="risco_maior" name="risco" value="maior-menor" onclick="updateClassifications()">
-                        <label for="risco_maior" id="label-risco-maior">Maior ao menor</label><br>
+        <option value="eficacia" selected>Eficácia</option>
+        <option value="risco">Risco de Efeito Colateral</option>
+        <option value="prazo">Prazo para Efeito</option>
+        <option value="preco">Preço</option>
+    </select>
 
-                        <input type="radio" id="risco_menor" name="risco" value="menor-maior" onclick="updateClassifications()">
-                        <label for="risco_menor" id="label-risco-menor">Menor ao maior</label>
-                    </div>
-                </div>
-                
-                <!-- Classificar por Prazo -->
-                <div class="mt-2">
-                    <label for="prazo">Prazo para efeito</label>
-                    <div>
-                        <input type="radio" id="prazo_maior" name="prazo" value="maior-menor" onclick="updateClassifications()">
-                        <label for="prazo_maior" id="label-prazo-maior">Maior ao menor</label><br>
-                
-                        <input type="radio" id="prazo_menor" name="prazo" value="menor-maior" onclick="updateClassifications()">
-                        <label for="prazo_menor" id="label-prazo-menor">Menor ao maior</label>
-                    </div>
-                </div>
-
-                
-                
-
-                
-
-
-                <!-- Classificar por Preço do Tratamento -->
-                <div class="mt-2">
-                    <label for="preco_tratamento">Preço </label>
-                    <div>
-                        <input type="radio" id="preco_trat_maior" name="preco_tratamento" value="maior-menor" onclick="updateClassifications()">
-                        <label for="preco_trat_maior" id="label-preco-trat-maior">Maior para menor</label><br>
-                
-                        <input type="radio" id="preco_trat_menor" name="preco_tratamento" value="menor-maior" onclick="updateClassifications()">
-                        <label for="preco_trat_menor" id="label-preco-trat-menor">Menor para maior</label>
-                    </div>
-                </div>
-
-
-
-                <button type="submit">Ordenar</button>
-
-            </div>
-        </form>
+    <!-- Opções de ordenação -->
+    <div class="ordenacao-options">
+        <label>
+            <input type="radio" name="ordenacao_opcao" value="maior-menor" checked> Maior para menor
+        </label>
+        <label>
+            <input type="radio" name="ordenacao_opcao" value="menor-maior"> Menor para maior
+        </label>
     </div>
+
+    <!-- Botão para aplicar o filtro -->
+    <button type="submit" class="btn btn-primary mt-3">Aplicar </button>
+</div>
+
+<!-- Filtro de Ordenação por Dado de Pesquisa -->
+<div class="ordenacao">
+    <h5><strong>Ordenar por dado de pesquisa</strong></h5>
+    <p>Leva em conta a pesquisa mais completa encontrada sobre cada tratamento</p>
+    
+    <!-- Dropdown para selecionar a característica -->
+    <select id="ordenacao_select" name="ordenacao" class="form-select" onchange="mudarExibicao(this.value)">
+        <option value="participantes" selected>Número de participantes</option>
+        <option value="rigor">Rigor da pesquisa</option>
+        <option value="data">Data da pesquisa</option>
+    </select>
+
+    <!-- Opções de ordenação (radio buttons) -->
+    <div class="ordenacao-options">
+        <label>
+            <input type="radio" name="ordenacao_opcao" value="maior-menor" checked> Maior para menor
+        </label>
+        <label>
+            <input type="radio" name="ordenacao_opcao" value="menor-maior"> Menor para maior
+        </label>
+    </div>
+
+    <!-- Botão para aplicar o filtro -->
+    <button type="submit" class="btn btn-primary mt-3">Aplicar </button>
+</div>
+
+                
+                
+
+<!-- INÍCIO do bloco removido -->
+<!--
+<div class="mt-2">
+    <label for="preco_tratamento">Preço </label>
+    <div>
+        <input type="radio" id="preco_trat_maior" name="preco_tratamento" value="maior-menor" onclick="updateClassifications()">
+        <label for="preco_trat_maior" id="label-preco-trat-maior">Maior para menor</label><br>
+
+        <input type="radio" id="preco_trat_menor" name="preco_tratamento" value="menor-maior" onclick="updateClassifications()">
+        <label for="preco_trat_menor" id="label-preco-trat-menor">Menor para maior</label>
+    </div>
+</div>
+
+<button type="submit">Ordenar</button>
+-->
+<!-- FIM do bloco removido -->
+
+<!-- INSIRA isso no lugar, para manter estrutura -->
+<div class="text-end mt-3">
+    <!-- Se quiser remover completamente o botão, tire esta linha -->
+   
+</div>
+
+<!-- Atenção: mantenha o fechamento do form e div abaixo -->
+</div> <!-- fecha .filters -->
+</form>
+</div> <!-- fecha .left-sidebar -->
 
     <!-- LISTA DE TRATAMENTOS -->
      
@@ -556,6 +863,12 @@ html, body {
                    
                     <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo }}</p>
                     <p><strong>Fabricante:</strong> {{ tratamento.fabricante }}</p>
+                    <a href="{% url 'evidencias_clinicas' tratamento.id %}" class="btn mt-2"
+                    style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase;">
+                   ver pesquisas
+                 </a>
+                 
+                      
                     <p>{{ tratamento.descricao }}</p>
                 </div>
 
@@ -568,26 +881,54 @@ html, body {
                             style="left: calc({% if tratamento.eficacia_maxima is not None %}{{ tratamento.eficacia_maxima }}{% else %}0{% endif %}% - 7px);"></div>
                     </div>
                     <p class="eficacia-range">{{ tratamento.eficacia_minima }} a {{ tratamento.eficacia_maxima }}%</p>
+                    <p class="eficacia-range" id="faixa-eficacia-{{ tratamento.id }}" style="display:none;">
+                        {{ tratamento.eficacia_minima }} a {{ tratamento.eficacia_maxima }}%
+                    </p>
+                    <!-- Título dinâmico -->
+                    <p><strong id="titulo-prazo-{{ tratamento.id }}">Prazo para efeito</strong></p>
 
-                <!-- Valores reais escondidos para JS ler -->
-                <p class="eficacia-range" id="faixa-eficacia-{{ tratamento.id }}" style="display:none;">
-                    {{ tratamento.eficacia_minima }} a {{ tratamento.eficacia_maxima }}%
-                </p>
+                    <!-- Botão que exibe o valor com span dinâmico -->
 
-                <p class="risco-range" id="faixa-risco-{{ tratamento.id }}"style="display:none;">
-                    Risco máximo: {{ tratamento.reacao_maxima }}%
-                </p>
+                    <button class="prazo-btn" id="btn-prazo-{{ tratamento.id }}">
+                        <span id="valor-prazo-{{ tratamento.id }}">
+                          {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+                        </span>
+                      </button>
 
-                <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
-                    R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
-                  </p>
+                      <!-- Botão "ver detalhes" logo abaixo -->
+                    <a href="{% url 'detalhes_tratamentos' tratamento.id %}" class="btn mt-2"
+                    style="background-color: #f1f1f1; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 8px 16px; display: inline-flex; align-items: center; gap: 5px;">
+                    ver detalhes <span style="font-weight: bold;">&#8250;</span>
+                    </a>
 
-                <!-- Campo visível que será dinâmico -->
-                <p><strong id="titulo-prazo-{{ tratamento.id }}">Prazo para efeito</strong></p>
-                <button class="prazo-btn" id="btn-prazo-{{ tratamento.id }}">
-                   
-                    <span id="faixa-prazo-{{ tratamento.id }}">{{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}</span>
-                </button>
+                    <span id="faixa-risco-{{ tratamento.id }}" style="display:none;">
+                        Risco máximo: {{ tratamento.reacao_maxima }}%
+                    </span>
+                    
+                    <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
+                        {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+                    </span>
+                    
+                    <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
+                        R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
+                    </p>
+                    
+                    <p id="faixa-rigor-{{ tratamento.id }}" style="display:none;">
+                        {{ tratamento.evidencias.first.rigor_da_pesquisa|default:"-" }}
+                    </p>
+                    
+                    <p id="faixa-data-{{ tratamento.id }}" style="display:none;">
+                        {{ tratamento.ultima_pesquisa|date:"m/Y"|default:"-" }}
+                    </p>
+                    
+                    <span id="faixa-participantes-{{ tratamento.id }}" style="display:none;">
+                        {{ tratamento.max_participantes|default:"-" }} participantes
+                    </span>
+                    
+                      
+                      
+
+
                     
                 
                 
@@ -672,154 +1013,159 @@ html, body {
 <!-- JavaScript Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
-// Função para atualizar as seleções e os títulos dinamicamente
 
-function atualizarCamposPorTipo(tipo) {
-  document.querySelectorAll(`[id^="titulo-prazo-"]`).forEach(elemTitulo => {
-    const idTratamento = elemTitulo.id.split('-').pop();
-
-    if (tipo === 'prazo') {
-      elemTitulo.innerText = 'Prazo para efeito';
-      // Valor já está no DOM, mantemos o original
-    } else if (tipo === 'eficacia') {
-      elemTitulo.innerText = 'Eficácia';
-      const faixaElem = document.getElementById('faixa-eficacia-' + idTratamento);
-      const faixaPrazo = document.getElementById('faixa-prazo-' + idTratamento);
-      if (faixaElem && faixaPrazo) {
-        faixaPrazo.innerText = faixaElem.innerText;
-      }
-    } else if (tipo === 'risco') {
-  elemTitulo.innerText = 'Risco de Efeito Colateral';
-  const faixaElem = document.getElementById('faixa-risco-' + idTratamento);
-  const faixaPrazo = document.getElementById('faixa-prazo-' + idTratamento);
-  if (faixaElem && faixaPrazo) {
-    faixaPrazo.innerText = faixaElem.innerText;  // usa valores reais
-  }
-
-
-    } else if (tipo === 'preco_tratamento') {
-      elemTitulo.innerText = 'Preço do Tratamento';
-      const faixaElem = document.getElementById('faixa-preco-' + idTratamento);
-      const faixaPrazo = document.getElementById('faixa-prazo-' + idTratamento);
-      if (faixaElem && faixaPrazo) {
-        faixaPrazo.innerText = faixaElem.innerText;
-        const btnPrazo = document.getElementById('btn-prazo-' + idTratamento);
-        if (btnPrazo) {
-            btnPrazo.style.display = 'flex';  // Garantir que o display seja flex
-            btnPrazo.style.justifyContent = 'center';  // Forçar o alinhamento centralizado
-            btnPrazo.style.alignItems = 'center';  // Garantir que o conteúdo seja centralizado verticalmente
-      }
-    }
-  });
-}
-
-function detectarOrdenacaoEAtualizar() {
-  if(document.querySelector('input[name="prazo"]:checked')) {
-    atualizarCamposPorTipo('prazo');
-  } else if(document.querySelector('input[name="eficacia"]:checked')) {
-    atualizarCamposPorTipo('eficacia');
-  } else if(document.querySelector('input[name="risco"]:checked')) {
-    atualizarCamposPorTipo('risco');
-  } else if(document.querySelector('input[name="preco_tratamento"]:checked')) {
-    atualizarCamposPorTipo('preco_tratamento');
-  }
-}
-
-document.querySelectorAll('input[type=radio]').forEach(radio => {
-  radio.addEventListener('change', detectarOrdenacaoEAtualizar);
-});
-
-window.onload = detectarOrdenacaoEAtualizar;
-
-
-</script>
-
-<script>
-    // Dados simulados para cada tipo de ordenação (exemplo)
-    const dadosOrdenacao = {
-      prazo: {
-        titulo: 'Prazo para efeito',
-        faixa: '15 horas a 24 horas'
-      },
-      eficacia: {
-        titulo: 'Eficácia',
-        faixa: '70% a 90%'
-      },
-      risco: {
-        titulo: 'Risco de Efeito Colateral',
-        faixa: '2% a 15%'
-      },
-      preco_tratamento: {
-        titulo: 'Preço do Tratamento',
-        faixa: 'R$ 35,00 a R$ 90,00'
-      }
-    };
     
-    // Atualiza todos os campos "prazo" na página
-    function atualizarCamposPorTipo(tipo) {
-  // Para cada tratamento, atualiza o campo correspondente
-  document.querySelectorAll(`[id^="titulo-prazo-"]`).forEach(elemTitulo => {
-    const idTratamento = elemTitulo.id.split('-').pop();
 
-    if (tipo === 'prazo') {
-      elemTitulo.innerText = 'Prazo para efeito';
-      const faixaElem = document.getElementById('faixa-prazo-' + idTratamento);
-      if (faixaElem) {
-        // Já está com valor real no DOM, mantemos ou atualizamos se necessário
-        // Opcional: pode formatar aqui, se quiser
-      }
-    } else if (tipo === 'eficacia') {
-      elemTitulo.innerText = 'Eficácia';
-      const faixaElem = document.getElementById('faixa-eficacia-' + idTratamento);
-      const prazoSpan = document.getElementById('faixa-prazo-' + idTratamento);
-      if (faixaElem && prazoSpan) {
-        // Trocar conteúdo do prazo pelo da eficácia
-        prazoSpan.innerText = faixaElem.innerText;
-      }
-    } else if (tipo === 'risco') {
-      elemTitulo.innerText = 'Risco de Efeito Colateral';
-      const faixaElem = document.getElementById('faixa-risco-' + idTratamento);
-      const prazoSpan = document.getElementById('faixa-prazo-' + idTratamento);
-      if (faixaElem && prazoSpan) {
-        prazoSpan.innerText = faixaElem.innerText;
-      }
-    } else if (tipo === 'preco_tratamento') {
-      elemTitulo.innerText = 'Preço do Tratamento';
-      const faixaElem = document.getElementById('faixa-preco-' + idTratamento);
-      const prazoSpan = document.getElementById('faixa-prazo-' + idTratamento);
-      if (faixaElem && prazoSpan) {
-        prazoSpan.innerText = faixaElem.innerText;
-      }
-    }
-  });
-}
+    <!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Tela de Teste - Filtros Dinâmicos</title>
+    <style>
+        /* Estilo básico */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
 
-// Detecta seleção e atualiza
-function detectarOrdenacaoEAtualizar() {
-  if(document.querySelector('input[name="prazo"]:checked')) {
-    atualizarCamposPorTipo('prazo');
-  } else if(document.querySelector('input[name="eficacia"]:checked')) {
-    atualizarCamposPorTipo('eficacia');
-  } else if(document.querySelector('input[name="risco"]:checked')) {
-    atualizarCamposPorTipo('risco');
-  } else if(document.querySelector('input[name="preco_tratamento"]:checked')) {
-    atualizarCamposPorTipo('preco_tratamento');
-  }
-}
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
 
-// Vincular eventos
-document.querySelectorAll('input[type=radio]').forEach(radio => {
-  radio.addEventListener('change', detectarOrdenacaoEAtualizar);
-});
+        .filter-btn {
+            padding: 10px 15px;
+            border: 1px solid 
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            color: #007bff;
+        }
 
-// Inicializar ao carregar
-window.onload = detectarOrdenacaoEAtualizar;
+        .filter-btn input {
+            margin-right: 6px;
+        }
 
-    </script>
-    
-  </body>
+        .card {
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .card strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .prazo-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Exemplo de cartão com dados dinâmicos do Django -->
+
+
+<!-- Dentro do loop de tratamentos -->
+
+  <!-- JavaScript corrigido -->
+  <script>
+  function mudarExibicao(tipo) {
+    if (tipo === 'prazo_medio_minutos') tipo = 'prazo';
   
+    let titulo = '';
+    let classe = '';
+  
+    switch (tipo) {
+      case 'prazo':
+        titulo = 'Prazo para efeito';
+        classe = 'faixa-prazo';
+        break;
+      case 'eficacia':
+        titulo = 'Eficácia';
+        classe = 'faixa-eficacia';
+        break;
+      case 'risco':
+        titulo = 'Risco de Efeito Colateral';
+        classe = 'faixa-risco';
+        break;
+      case 'preco':
+        titulo = 'Preço do Tratamento';
+        classe = 'faixa-preco';
+        break;
+      case 'rigor':
+        titulo = 'Rigor da Pesquisa';
+        classe = 'faixa-rigor';
+        break;
+      case 'data':
+        titulo = 'Data da Pesquisa';
+        classe = 'faixa-data';
+        break;
+      case 'participantes':
+        titulo = 'Número de participantes';
+        classe = 'faixa-participantes';
+        break;
+    }
+  
+    document.querySelectorAll('[id^="titulo-prazo-"]').forEach(el => {
+      el.innerText = titulo;
+    });
+  
+    document.querySelectorAll('[id^="valor-prazo-"]').forEach(el => {
+      const id = el.id.split('-').pop();
+      const fonte = document.getElementById(`${classe}-${id}`);
+      if (fonte) {
+        el.innerHTML = fonte.innerHTML.trim();
+      }
+    });
+  }
+  
+  if (document.querySelectorAll('input[name="exibir"]').length > 0) {
+    document.querySelectorAll('input[name="exibir"]').forEach(el => {
+      el.addEventListener('change', () => mudarExibicao(el.value));
+    });
+   window.addEventListener('DOMContentLoaded', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const criterio = urlParams.get('ordenacao') || 'prazo';
+  mudarExibicao(criterio);
+});
+  }
+// NOVO SCRIPT: aplicar ordenação automaticamente ao selecionar
+const ordenacaoSelect = document.getElementById('ordenacao_select');
+const radios = document.querySelectorAll('input[name="ordenacao_opcao"]');
+
+function aplicarOrdenacao() {
+  const criterio = ordenacaoSelect.value;
+  const direcao = document.querySelector('input[name="ordenacao_opcao"]:checked').value;
+
+  const params = new URLSearchParams(window.location.search);
+
+  // Apagar ordenações antigas
+  params.delete('eficacia');
+  params.delete('risco');
+  params.delete('prazo');
+  params.delete('preco');
+
+  params.set('ordenacao', criterio);
+  params.set(criterio, direcao);
+
+  window.location.search = params.toString();
+}
+
+if (ordenacaoSelect && radios.length > 0) {
+  ordenacaoSelect.addEventListener('change', aplicarOrdenacao);
+  radios.forEach(r => r.addEventListener('change', aplicarOrdenacao));
+}
+  </script>
 
 </body>
 </html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Tela de Teste - Filtros Dinâmicos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .filter-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .filter-btn {
+      padding: 10px 15px;
+      border: 1px solid #007bff;
+      border-radius: 5px;
+      background-color: #f0f0f0;
+      cursor: pointer;
+      color: #007bff;
+    }
+
+    .filter-btn input {
+      margin-right: 6px;
+    }
+
+    .card {
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .prazo-btn {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Filtro de Exibição</h2>
+  <div class="filter-buttons">
+    <label class="filter-btn">
+      <input type="radio" name="exibir" value="prazo" checked onclick="mudarExibicao('prazo')">Prazo
+    </label>
+    <label class="filter-btn">
+      <input type="radio" name="exibir" value="eficacia" onclick="mudarExibicao('eficacia')">Eficácia
+    </label>
+    <label class="filter-btn">
+      <input type="radio" name="exibir" value="risco" onclick="mudarExibicao('risco')">Risco
+    </label>
+    <label class="filter-btn">
+      <input type="radio" name="exibir" value="preco" onclick="mudarExibicao('preco')">Preço
+    </label>
+  </div>
+
+  <!-- Exemplo de cartão com dados dinâmicos do Django -->
+  <div class="card">
+    <strong id="titulo-prazo-1">Eficácia</strong>
+    <button class="prazo-btn">
+      <span id="faixa-prazo-1">{{ eficacia_minima }} a {{ eficacia_maxima }}</span>
+    </button>
+
+    <!-- Dados escondidos para JS -->
+    <p id="faixa-eficacia-1" style="display:none;">{{ eficacia_minima }} a {{ eficacia_maxima }}</p>
+    <p id="faixa-risco-1" style="display:none;">{{ risco }}</p>
+    <p id="faixa-preco-1" style="display:none;">{{ preco_tratamento }}</p>
+  </div>
+
+  <div class="card">
+    <strong id="titulo-prazo-2">Eficácia</strong>
+    <button class="prazo-btn">
+      <span id="faixa-prazo-2">{{ eficacia_minima }} a {{ eficacia_maxima }}</span>
+    </button>
+
+    <!-- Dados escondidos para JS -->
+    <p id="faixa-eficacia-2" style="display:none;">{{ eficacia_minima }} a {{ eficacia_maxima }}</p>
+    <p id="faixa-risco-2" style="display:none;">{{ risco }}</p>
+    <p id="faixa-preco-2" style="display:none;">{{ preco_tratamento }}</p>
+  </div>
+
+  <script>
+    function mudarExibicao(tipo) {
+      let titulo = '';
+      let classe = '';
+
+      switch (tipo) {
+        case 'prazo':
+          titulo = 'Prazo para efeito';
+          classe = 'faixa-prazo';
+          break;
+        case 'eficacia':
+          titulo = 'Eficácia';
+          classe = 'faixa-eficacia';
+          break;
+        case 'risco':
+          titulo = 'Risco de Efeito Colateral';
+          classe = 'faixa-risco';
+          break;
+        case 'preco':
+          titulo = 'Preço do Tratamento';
+          classe = 'faixa-preco';
+          break;
+      }
+
+      document.querySelectorAll('[id^="titulo-prazo-"]').forEach(el => {
+        el.innerText = titulo;
+      });
+
+      document.querySelectorAll('[id^="faixa-prazo-"]').forEach(el => {
+        const id = el.id.split('-').pop();
+        const novoValor = document.getElementById(`${classe}-${id}`);
+        if (novoValor) el.innerText = novoValor.innerText;
+      });
+    }
+
+    // Inicializar com "prazo"
+    window.onload = () => mudarExibicao('prazo');
+  </script>
+
+</body>
+</html>

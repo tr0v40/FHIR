@@ -262,6 +262,7 @@ class DetalhesTratamentoReacaoAdversaTeste(models.Model):
         max_length=20,
         choices=[
             ('COMUM', 'COMUM'),
+            ('MUITO_COMUM', 'MUITO COMUM'),
             ('INCOMUM', 'INCOMUM'),
             ('RARA', 'RARA'),
             ('MUITO_RARA', 'MUITO RARA'),
