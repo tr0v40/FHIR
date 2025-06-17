@@ -58,21 +58,30 @@ html, body {
     margin-left: 300px;
     justify-content: space-between;
 }
-
-        /* Estilo do card preto */
+/* Estilo do card preto */
+/* Alinhar o título à esquerda e o card preto à direita */
+/* Estilo do card preto */
 .card-preto {
     background-color: #000000;
     color: white;
-    align-content: right;
-    padding: 5px 10px;
+    padding: 10px 15px;
     font-size: 15px;
     border-radius: 5px;
-    margin-left: auto;
-    margin-left: 1100px;
     max-width: 300px;
     word-wrap: break-word;
-    margin-top: 100px; 
-        }
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: 0;
+    align-self: flex-start;
+}
+
+/* Alinhamento do título e card preto */
+.titulo-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 50px 200px 0 200px;
+}
 
 
 /* Subtítulo com fonte menor */
@@ -636,18 +645,16 @@ html, body {
         </div>
     </nav>
 </header>
+<div class="titulo-container">
+    <div>
+        <h1 class="titulo-header">Enxaqueca e dor de cabeça crônica</h1>
+        <p class="subtitulo">Tratamentos ordenados por:</p>
+    </div>
+    <div class="card-preto">
+        <p>Não se automedique.<br>Consulte um profissional de saúde.</p>
+    </div>
+</div>
 
-            <!-- Título e card preto -->
-            <div class="titulo-container">
-                <div class="card-preto">
-                    <p>Não se automedique. 
-                        Consulte um profissional de saúde.</p>
-                </div>
-                <div>
-                    <h1 class="titulo-header">Enxaqueca e dor de cabeça crônica</h1>
-                    <p class="subtitulo">Tratamentos ordenados por:</p>
-                </div>
-            </div>
             <!-- Checkbox para mostrar a ordenação -->
             <div class="checkbox-container mt-3">
                 <input type="checkbox" id="ordenacao-checkbox" disabled>
