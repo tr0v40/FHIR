@@ -13,17 +13,33 @@ from .models import (
 
 admin.site.register([TipoTratamento])
 
+
+from django import forms
+from .models import DetalhesTratamentoReacaoAdversaTeste
+
+class DetalhesTratamentoReacaoAdversaTesteForm(forms.ModelForm):
+    class Meta:
+        model = DetalhesTratamentoReacaoAdversaTeste
+        fields = '__all__'
+
+    grau_comunalidade = forms.ChoiceField(
+        choices=DetalhesTratamentoReacaoAdversaTeste._meta.get_field('grau_comunalidade').choices
+    )
+
 class DetalhesTratamentoReacaoAdversaInline(admin.TabularInline):
     model = DetalhesTratamentoReacaoAdversa
+    form = DetalhesTratamentoReacaoAdversaTesteForm
     extra = 1
     autocomplete_fields = ['reacao_adversa']
     fields = ('reacao_adversa', 'grau_comunalidade', 'reacao_min', 'reacao_max')
 
 class DetalhesTratamentoReacaoAdversaTesteInline(admin.TabularInline):
     model = DetalhesTratamentoReacaoAdversaTeste
+    form = DetalhesTratamentoReacaoAdversaTesteForm
     extra = 1
     autocomplete_fields = ['reacao_adversa']
     fields = ('reacao_adversa', 'grau_comunalidade', 'reacao_min', 'reacao_max')
+
 
 class DetalhesTratamentoResumoForm(forms.ModelForm):
     class Meta:
@@ -47,6 +63,7 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
     inlines = [
         
         DetalhesTratamentoReacaoAdversaInline,
+        
     ]
     list_display = (
         "nome",

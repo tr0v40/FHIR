@@ -114,35 +114,56 @@ def tratamentos(request):
         
     )
 
-    # Ordenação dinâmica (se houver)
+# Ordenação dinâmica (se houver)
     sort_criteria = []
+
     if eficacia:
         sort_criteria.append('-eficacia_minima' if eficacia == 'maior-menor' else 'eficacia_minima')
+
     if risco:
         sort_criteria.append('-reacao_maxima' if risco == 'maior-menor' else 'reacao_maxima')
+
     if preco_tratamento:
         sort_criteria.append('-custo_medicamento' if preco_tratamento == 'maior-menor' else 'custo_medicamento')
+
     if prazo == 'maior-menor':
         sort_criteria.append('-prazo_medio_minutos')
     elif prazo == 'menor-maior':
         sort_criteria.append('prazo_medio_minutos')
+
     if data_pesquisa == 'maior-menor':
         sort_criteria.append('-ultima_pesquisa')
     elif data_pesquisa == 'menor-maior':
         sort_criteria.append('ultima_pesquisa')
 
-    # Ordenação final (criteriosa e composta)
+    # Aplicar ordenação se houver critérios
     if sort_criteria:
         tratamentos_list = tratamentos_list.order_by(*sort_criteria)
 
-    # Ordenação principal
-    if ordenacao:
+    # Se não houver filtros específicos, aplicar ordenação principal com base na URL
+    elif ordenacao:
         if ordenacao == 'avaliacao':
             tratamentos_list = tratamentos_list.order_by('-avaliacao')
         elif ordenacao == 'eficacia':
             tratamentos_list = tratamentos_list.order_by('-eficacia_minima')
         elif ordenacao == 'preco':
             tratamentos_list = tratamentos_list.order_by('custo_medicamento')
+        elif ordenacao == 'risco':
+            tratamentos_list = tratamentos_list.order_by('-reacao_maxima')
+        elif ordenacao == 'prazo':
+            tratamentos_list = tratamentos_list.order_by('prazo_medio_minutos')
+        elif ordenacao == 'data':
+            tratamentos_list = tratamentos_list.order_by('-ultima_pesquisa')
+        elif ordenacao == 'participantes':
+            tratamentos_list = tratamentos_list.order_by('-max_participantes')
+        elif ordenacao == 'rigor':
+            tratamentos_list = tratamentos_list.order_by('-evidencias__rigor_da_pesquisa')
+
+    # Ordenação padrão se nada foi passado
+    else:
+        tratamentos_list = tratamentos_list.order_by('-eficacia_minima')
+
+
 
     context = {
 
@@ -379,4 +400,37 @@ def unidade_formatada(self, valor):
 
 
 
+from django.db.models import Max, Min, FloatField, F, ExpressionWrapper, Case, When
+from django.db.models.functions import Coalesce
+from django.db.models import Value
 
+
+def tratamentos_ordenados(request):
+    multiplicadores = Case(
+        When(prazo_efeito_unidade='segundo', then=1/60),
+        When(prazo_efeito_unidade='minuto', then=1),
+        When(prazo_efeito_unidade='hora', then=60),
+        When(prazo_efeito_unidade='dia', then=1440),
+        When(prazo_efeito_unidade='sessao', then=10080),
+        default=1,
+        output_field=FloatField()
+    )
+
+    prazo_medio_minutos = ExpressionWrapper(
+        ((F('prazo_efeito_min') + F('prazo_efeito_max')) / 2) * multiplicadores,
+        output_field=FloatField()
+    )
+
+    tratamentos_list = DetalhesTratamentoResumo.objects.annotate(
+        max_participantes=Max('evidencias__numero_participantes'),
+        ultima_pesquisa=Max('evidencias__data_publicacao'),
+        eficacia_minima=Min('evidencias__eficacia_min'),
+        eficacia_maxima=Max('evidencias__eficacia_max'),  # ✅ só anota uma vez
+        reacao_maxima=Max('reacoes_adversas_detalhes__reacao_max'),
+        prazo_medio_minutos=prazo_medio_minutos,
+        eficacia_maxima_ordenada=Coalesce(F('eficacia_maxima'), Value(-1)) 
+    ).order_by('-eficacia_maxima_ordenada')
+
+    return render(request, 'core/tratamentos_ordenados.html', {
+        'tratamentos': tratamentos_list
+    })

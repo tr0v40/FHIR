@@ -266,6 +266,8 @@ class DetalhesTratamentoReacaoAdversaTeste(models.Model):
             ('INCOMUM', 'INCOMUM'),
             ('RARA', 'RARA'),
             ('MUITO_RARA', 'MUITO RARA'),
+            ('NENHUMA', 'NENHUMA'),
+
         ],
         default='COMUM'
     )

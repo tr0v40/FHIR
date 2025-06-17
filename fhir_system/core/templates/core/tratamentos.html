@@ -43,7 +43,7 @@ html, body {
 
     z-index: 1000;
     width: 300px;
-    height: 1180px;
+    height: 1300px;
      /* Ajusta a altura da sidebar */
     /* Permite rolar se o conteúdo for maior que a tela */
 }
@@ -86,28 +86,79 @@ html, body {
 
 /* Subtítulo com fonte menor */
 .subtitulo {
-    font-size: 18px;  /* Tamanho menor que o título */
+    font-size: 15px;  /* Tamanho menor que o título */
     color: #000000;  /* Cor mais suave */
     font-weight: bold;
-    margin-top: 10px;  /* Espaçamento entre o título e o subtítulo */
+    margin-top: 1px;  /* Espaçamento entre o título e o subtítulo */
     
 }
 
 
-/* Estilo do checkbox personalizado */
+.ordenacao-bloco {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* espaço entre o texto e o checkbox */
+  margin-top: 8px;
+ 
+}
+
+.titulo-ordenacao {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* Checkbox e label próximos */
+.checkbox-container {
+margin-top: -5px; /* Ajuste conforme necessário */
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .checkbox-container input[type="checkbox"] {
-    width: 100px; /* Ajuste o valor conforme necessário */
-    height: 20px; /* Ajuste o valor conforme necessário */
-    margin-left: 250px;
-    
+  width: 16px;
+  height: 16px;
+  margin: 0;
 }
-
 
 #ordenacao-texto {
-    font-size: 14px;
-    color: #000000;
-    margin-left: 5px;
+  font-size: 14px;
+  color: #000;
+  margin: 0;
 }
+/* Oculta o checkbox nativo */
+.checkbox-container input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  margin-right: 8px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Caixa azul */
+.checkbox-container input[type="checkbox"]:checked {
+  background-color: #0094FF;
+  border-color: #0094FF;
+}
+
+/* Check centralizado */
+.checkbox-container input[type="checkbox"]:checked::after {
+  content: '✔';
+  color: white;
+  font-size: 14px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+};
+
+
 
 /* Ajuste para a parte de classificação com rolagem interna */
 .classificar-container {
@@ -422,7 +473,7 @@ html, body {
 .tratamento-info h3 {
     font-size: 25px;
     font-weight: bold;
-    color: #007bff;
+    color: #050606;
     flex-grow: 1;
 }
 
@@ -431,8 +482,10 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 250px;
-    flex-shrink: 0;
+    width: 260px;          /* 🔹 largura fixa */
+    min-width: 240px;  
+    align-items: flex-start; /* ✅ alinha à esquerda */
+    text-align: left;        /* ✅ texto à esquerda */
 }
 
 /* BARRA DE EFICÁCIA  */
@@ -448,13 +501,13 @@ html, body {
 .efficacy-filled {
     height: 100%;
     border-radius: 8px;
-    background-color: #007bff; /* Cor azul para a parte preenchida */
+    background-color: #0094FF;; /* Cor azul para a parte preenchida */
 }
 
 .efficacy-marker {
     width: 14px;
     height: 14px;
-    background-color: #007bff; /* Cor azul para o marcador */
+    background-color: #0094FF;/* Cor azul para o marcador */
     position: absolute;
     top: 0;
     left: calc(100% - 7px); /* O marcador fica no final da barra */
@@ -627,7 +680,8 @@ html, body {
 
 <!-- HEADER -->
 <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom position-relative">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white position-relative">
+
         <div class="container-fluid d-flex justify-content-between align-items-center">
 
             <!-- Logo -->
@@ -647,7 +701,13 @@ html, body {
 </header>
 <div class="titulo-container">
     <div>
-        <h1 class="titulo-header">Enxaqueca e dor de cabeça crônica</h1>
+        <span style="font-size:32px; font-weight: 700; font-family: 'Inter', sans-serif;" class="wixui-rich-text__text">
+            Enxaqueca e dor de cabeça crônica
+          </span>
+          
+      
+          
+
         <p class="subtitulo">Tratamentos ordenados por:</p>
     </div>
     <div class="card-preto">
@@ -656,9 +716,9 @@ html, body {
 </div>
 
             <!-- Checkbox para mostrar a ordenação -->
-            <div class="checkbox-container mt-3">
-                <input type="checkbox" id="ordenacao-checkbox" disabled>
-                <label for="ordenacao-checkbox" id="ordenacao-texto">Ordenação não selecionada</label>
+            <div class="checkbox-container mt-3"style="margin-left: 200px;margin-top: -30px;"> 
+                <input type="checkbox" id="ordenacao-checkbox"  checked>
+                <label for="ordenacao-checkbox" id="ordenacao-texto">Ordem decrescente de eficácia máxima</label>
             </div>
         </div>
 
@@ -714,13 +774,14 @@ html, body {
                     <h5><strong>Filtros</strong> <img src="{% static 'img/filtros.png' %}"  style="height: 24px; margin-left: 15x;"></h5>
                     <p>Selecione seu perfil para que apareçam na lista apenas os tratamentos indicados para você</p>
                     <select name="publico" id="publico">
+                        <option value="todos" {% if request.GET.publico == "todos" %}selected{% endif %}>Todos</option>
                         <option value="criancas" {% if request.GET.publico == "criancas" %}selected{% endif %}>Crianças</option>
                         <option value="adolescentes" {% if request.GET.publico == "adolescentes" %}selected{% endif %}>Adolescentes</option>
                         <option value="adultos" {% if request.GET.publico == "adultos" %}selected{% endif %}>Adultos</option>
                         <option value="idosos" {% if request.GET.publico == "idosos" %}selected{% endif %}>Idosos</option>
                         <option value="gestantes" {% if request.GET.publico == "gestantes" %}selected{% endif %}>Gestantes</option>
                         <option value="lactantes" {% if request.GET.publico == "lactantes" %}selected{% endif %}>Lactantes</option>
-                        <option value="todos" {% if request.GET.publico == "todos" %}selected{% endif %}>Todos</option>
+                        
                         
                         
                     </select>
@@ -768,60 +829,78 @@ html, body {
 
                     
 <!-- Filtro de Ordenação -->
-<div class=">Ordenar por característica<">
-    <h5><strong>Ordenar por característica</strong></h5>
-   
-    
-    <!-- Dropdown para ordenação -->
-    <select id="ordenacao_select" name="ordenacao" class="form-select" onchange="mudarExibicao(this.value)">
-
-        <option value="eficacia" selected>Eficácia</option>
-        <option value="risco">Risco de Efeito Colateral</option>
-        <option value="prazo">Prazo para Efeito</option>
-        <option value="preco">Preço</option>
-    </select>
-
-    <!-- Opções de ordenação -->
-    <div class="ordenacao-options">
+<form method="GET" action="{% url 'tratamentos' %}">
+    <div class="ordenacao" style="margin-top: 30px;">
+      <h5><strong>Ordenar por característica</strong></h5>
+  
+      <!-- Select com onchange para atualizar visual apenas -->
+      <select id="ordenacao_select" name="ordenacao" class="form-select" onchange="mudarExibicao(this.value)">
+        <option value="" {% if not request.GET.ordenacao %}selected{% endif %}>Nenhuma</option>
+        <option value="eficacia" {% if request.GET.ordenacao == 'eficacia' %}selected{% endif %}>Eficácia</option>
+        <option value="risco" {% if request.GET.ordenacao == 'risco' %}selected{% endif %}>Risco de Reação Adversa</option>
+        <option value="prazo" {% if request.GET.ordenacao == 'prazo' %}selected{% endif %}>Prazo para Efeito</option>
+        <option value="preco" {% if request.GET.ordenacao == 'preco' %}selected{% endif %}>Preço</option>
+      </select>
+      
+  
+      <div class="ordenacao-options mt-2" style="display: flex; flex-direction: column; gap: 5px;">
         <label>
-            <input type="radio" name="ordenacao_opcao" value="maior-menor" checked> Maior para menor
+          <input type="radio" name="ordenacao_opcao" value="maior-menor"
+            {% if request.GET.eficacia == 'maior-menor' or request.GET.risco == 'maior-menor' or request.GET.prazo == 'maior-menor' or request.GET.preco == 'maior-menor' %}checked{% endif %}>
+          Maior para menor
         </label>
         <label>
-            <input type="radio" name="ordenacao_opcao" value="menor-maior"> Menor para maior
+          <input type="radio" name="ordenacao_opcao" value="menor-maior"
+            {% if request.GET.eficacia == 'menor-maior' or request.GET.risco == 'menor-maior' or request.GET.prazo == 'menor-maior' or request.GET.preco == 'menor-maior' %}checked{% endif %}>
+          Menor para maior
         </label>
+      </div>
+      
+  
+      <button type="submit" class="btn btn-primary mt-3">Aplicar</button>
     </div>
+</form>
 
-    <!-- Botão para aplicar o filtro -->
-    <button type="submit" class="btn btn-primary mt-3">Aplicar </button>
-</div>
-
-<!-- Filtro de Ordenação por Dado de Pesquisa -->
-<div class="ordenacao">
-    <h5><strong>Ordenar por dado de pesquisa</strong></h5>
-    <p>Leva em conta a pesquisa mais completa encontrada sobre cada tratamento</p>
-    
-    <!-- Dropdown para selecionar a característica -->
-    <select id="ordenacao_select" name="ordenacao" class="form-select" onchange="mudarExibicao(this.value)">
-        <option value="participantes" selected>Número de participantes</option>
-        <option value="rigor">Rigor da pesquisa</option>
-        <option value="data">Data da pesquisa</option>
-    </select>
-
-    <!-- Opções de ordenação (radio buttons) -->
-    <div class="ordenacao-options">
+<form method="GET" action="{% url 'tratamentos' %}">
+    <div class="ordenacao" style="margin-top: 30px;">
+      <h5><strong>Ordenar por dado de pesquisa</strong></h5>
+      <p>Leva em conta a pesquisa mais completa encontrada sobre cada tratamento</p>
+      
+      <!-- Select com onchange apenas para atualizar a exibição -->
+      <select id="ordenacao_pesquisa_select" name="ordenacao" class="form-select" onchange="mudarExibicao(this.value)">
+        <option value="" {% if not request.GET.ordenacao %}selected{% endif %}>Nenhuma</option>
+        <option value="participantes" {% if request.GET.ordenacao == 'participantes' %}selected{% endif %}>Número de participantes</option>
+        <option value="rigor" {% if request.GET.ordenacao == 'rigor' %}selected{% endif %}>Rigor da pesquisa</option>
+        <option value="data" {% if request.GET.ordenacao == 'data' %}selected{% endif %}>Data da pesquisa</option>
+      </select>
+  
+      <div class="ordenacao-options mt-2">
         <label>
-            <input type="radio" name="ordenacao_opcao" value="maior-menor" checked> Maior para menor
+          <input type="radio" name="ordenacao_opcao" value="maior-menor"
+            {% if request.GET.participantes == 'maior-menor' or request.GET.rigor == 'maior-menor' or request.GET.data == 'maior-menor' %}checked{% endif %}>
+          Maior para menor
         </label>
         <label>
-            <input type="radio" name="ordenacao_opcao" value="menor-maior"> Menor para maior
+          <input type="radio" name="ordenacao_opcao" value="menor-maior"
+            {% if request.GET.participantes == 'menor-maior' or request.GET.rigor == 'menor-maior' or request.GET.data == 'menor-maior' %}checked{% endif %}>
+          Menor para maior
         </label>
+      </div>
+  
+      <button type="submit" class="btn btn-primary mt-3">Aplicar</button>
     </div>
+  </form>
+  
 
-    <!-- Botão para aplicar o filtro -->
-    <button type="submit" class="btn btn-primary mt-3">Aplicar </button>
-</div>
-
-                
+<!-- Fim da sidebar -->
+<div style="margin-top: 40px;">
+    <a href="{% url 'tratamentos' %}?ordenacao=eficacia&eficacia=menor-maior" 
+       class="btn btn-secondary w-100">
+      Limpar filtros
+    </a>
+  </div>
+  
+  
                 
 
 <!-- INÍCIO do bloco removido -->
@@ -867,51 +946,73 @@ html, body {
 
                     <div class="tratamento-info">
                         <h3>{{ tratamento.nome }}</h3>
+                        
+                            <h3 style="color: #0094FF;font-size: 12px;">
+                                
+                                {% for tipo in tratamento.tipo_tratamento.all %}
+                                    {{ tipo.nome }}{% if not forloop.last %}, {% endif %}
+                                {% empty %}
+                                    Nenhum tipo selecionado
+                                {% endfor %}
+                            </h3>
                    
                     <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo }}</p>
                     <p><strong>Fabricante:</strong> {{ tratamento.fabricante }}</p>
-                    <a href="{% url 'evidencias_clinicas' tratamento.id %}" class="btn mt-2"
-                    style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase;">
-                   ver pesquisas
+                    <a href="{% url 'evidencias_clinicas' tratamento.id %}"
+                    class="btn"
+                    style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
+                    ver pesquisas
                  </a>
-                 
-                      
                     <p>{{ tratamento.descricao }}</p>
                 </div>
 
                 <div class="eficacia-container">
-                    <p><strong>Eficácia</strong></p>
+                    
+                    <p style="font-size: 25px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif;">
+                        Eficácia
+                      </p>
+                      
                     <div class="eficacia-bar-container">
                         <div class="efficacy-filled" 
                             style="width: {% if tratamento.eficacia_maxima is not None %}{{ tratamento.eficacia_maxima }}{% else %}0{% endif %}%;"></div>
                         <div class="efficacy-marker" 
                             style="left: calc({% if tratamento.eficacia_maxima is not None %}{{ tratamento.eficacia_maxima }}{% else %}0{% endif %}% - 7px);"></div>
                     </div>
-                    <p class="eficacia-range">{{ tratamento.eficacia_minima }} a {{ tratamento.eficacia_maxima }}%</p>
-                    <p class="eficacia-range" id="faixa-eficacia-{{ tratamento.id }}" style="display:none;">
-                        {{ tratamento.eficacia_minima }} a {{ tratamento.eficacia_maxima }}%
-                    </p>
+                    <p class="eficacia-range" style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 25px; text-align: left;">
+                        <span style="color: #888; font-weight: 500;">{{ tratamento.eficacia_minima|floatformat:2 }} a</span>
+                        <span style="color: black; font-weight: bold;"> {{ tratamento.eficacia_maxima|floatformat:0 }}%</span>
+                      </p>
                     <!-- Título dinâmico -->
-                    <p><strong id="titulo-prazo-{{ tratamento.id }}">Prazo para efeito</strong></p>
+                    <p id="titulo-prazo-{{ tratamento.id }}"
+                    style="margin: 0; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 15px; color: #000;">
+                    Prazo para efeito
+                    </p>
 
-                    <!-- Botão que exibe o valor com span dinâmico -->
+                    <!-- Valor com ícone -->
+                    <p id="valor-prazo-{{ tratamento.id }}"
+                    style="margin: 4px 0 0 0; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: bold; color: #000;">
+                    
+                    {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+                    </p>
 
-                    <button class="prazo-btn" id="btn-prazo-{{ tratamento.id }}">
-                        <span id="valor-prazo-{{ tratamento.id }}">
-                          {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
-                        </span>
-                      </button>
 
                       <!-- Botão "ver detalhes" logo abaixo -->
                     <a href="{% url 'detalhes_tratamentos' tratamento.id %}" class="btn mt-2"
-                    style="background-color: #f1f1f1; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 8px 16px; display: inline-flex; align-items: center; gap: 5px;">
+                    style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500;
+          font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center;
+          gap: 5px; margin-left: auto;">
+
                     ver detalhes <span style="font-weight: bold;">&#8250;</span>
                     </a>
 
                     <span id="faixa-risco-{{ tratamento.id }}" style="display:none;">
                         Risco máximo: {{ tratamento.reacao_maxima }}%
                     </span>
-                    
+
+                    <span id="faixa-eficacia-{{ tratamento.id }}" style="display:none;">
+                        {{ tratamento.eficacia_minima|floatformat:2 }} a {{ tratamento.eficacia_maxima|floatformat:0 }}%
+                      </span>
+                      
                     <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
                         {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
                     </span>
@@ -1086,92 +1187,66 @@ html, body {
 
   <!-- JavaScript corrigido -->
   <script>
-  function mudarExibicao(tipo) {
-    if (tipo === 'prazo_medio_minutos') tipo = 'prazo';
-  
-    let titulo = '';
-    let classe = '';
-  
-    switch (tipo) {
-      case 'prazo':
-        titulo = 'Prazo para efeito';
-        classe = 'faixa-prazo';
+    function mudarExibicao(tipo) {
+      if (!tipo) return;
+    
+      let titulo = '';
+      let classe = '';
+    
+      switch (tipo) {
+        case 'eficacia':
+          titulo = 'Eficácia';
+          classe = 'faixa-eficacia';
+          break;
+        case 'risco':
+          titulo = 'Risco de Reação Adversa';
+          classe = 'faixa-risco';
+          break;
+        case 'prazo':
+          titulo = 'Prazo para efeito';
+          classe = 'faixa-prazo';
+          break;
+          
+        case 'preco':
+          titulo = 'Preço do Tratamento';
+          classe = 'faixa-preco';
+          break;
+          case 'participantes':
+          titulo = 'Número de participantes';
+          classe = 'faixa-participantes';
+         break;
+        case 'rigor':
+          titulo = 'Rigor da Pesquisa';
+          classe = 'faixa-rigor';
         break;
-      case 'eficacia':
-        titulo = 'Eficácia';
-        classe = 'faixa-eficacia';
+        case 'data':
+          titulo = 'Data da Pesquisa';
+          classe = 'faixa-data';
         break;
-      case 'risco':
-        titulo = 'Risco de Efeito Colateral';
-        classe = 'faixa-risco';
-        break;
-      case 'preco':
-        titulo = 'Preço do Tratamento';
-        classe = 'faixa-preco';
-        break;
-      case 'rigor':
-        titulo = 'Rigor da Pesquisa';
-        classe = 'faixa-rigor';
-        break;
-      case 'data':
-        titulo = 'Data da Pesquisa';
-        classe = 'faixa-data';
-        break;
-      case 'participantes':
-        titulo = 'Número de participantes';
-        classe = 'faixa-participantes';
-        break;
-    }
-  
-    document.querySelectorAll('[id^="titulo-prazo-"]').forEach(el => {
+      }
+    
+      document.querySelectorAll('[id^="titulo-prazo-"]').forEach(el => {
       el.innerText = titulo;
     });
-  
+
     document.querySelectorAll('[id^="valor-prazo-"]').forEach(el => {
       const id = el.id.split('-').pop();
       const fonte = document.getElementById(`${classe}-${id}`);
-      if (fonte) {
-        el.innerHTML = fonte.innerHTML.trim();
-      }
+      el.innerHTML = fonte ? fonte.innerHTML.trim() : '-';
     });
   }
-  
-  if (document.querySelectorAll('input[name="exibir"]').length > 0) {
-    document.querySelectorAll('input[name="exibir"]').forEach(el => {
-      el.addEventListener('change', () => mudarExibicao(el.value));
-    });
-   window.addEventListener('DOMContentLoaded', () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const criterio = urlParams.get('ordenacao') || 'prazo';
-  mudarExibicao(criterio);
-});
-  }
-// NOVO SCRIPT: aplicar ordenação automaticamente ao selecionar
-const ordenacaoSelect = document.getElementById('ordenacao_select');
-const radios = document.querySelectorAll('input[name="ordenacao_opcao"]');
 
-function aplicarOrdenacao() {
-  const criterio = ordenacaoSelect.value;
-  const direcao = document.querySelector('input[name="ordenacao_opcao"]:checked').value;
+  // ✅ Executa ao carregar a página com base na URL
+  window.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const criterio = urlParams.get('ordenacao');
+    if (criterio) {
+      mudarExibicao(criterio);
+    }
+  });
+    </script>
+    
 
-  const params = new URLSearchParams(window.location.search);
-
-  // Apagar ordenações antigas
-  params.delete('eficacia');
-  params.delete('risco');
-  params.delete('prazo');
-  params.delete('preco');
-
-  params.set('ordenacao', criterio);
-  params.set(criterio, direcao);
-
-  window.location.search = params.toString();
-}
-
-if (ordenacaoSelect && radios.length > 0) {
-  ordenacaoSelect.addEventListener('change', aplicarOrdenacao);
-  radios.forEach(r => r.addEventListener('change', aplicarOrdenacao));
-}
   </script>
 
 </body>
