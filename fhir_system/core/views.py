@@ -36,33 +36,25 @@ def register(request):
 
 
 
-
-
-
 def tratamentos(request):
-    # Obtendo os filtros da URL
+    # Coleta dos parâmetros da URL
+    ordenacao = request.GET.get('ordenacao', '').strip()
+    ordenacao_opcao = request.GET.get('ordenacao_opcao', '').strip()
     publico = request.GET.get('publico', 'todos').strip().lower()
     nome = request.GET.get('nome', '').strip()
     categoria = request.GET.get('categoria', '').strip()
-    eficacia = request.GET.get('eficacia', '')
-    risco = request.GET.get('risco', '')
-    prazo = request.GET.get('prazo', '')
-    data_pesquisa = request.GET.get('data_pesquisa', '')
-    preco_tratamento = request.GET.get('preco_tratamento', '')
-    ordenacao = request.GET.get('ordenacao', '')
-    
+    contraindica_ids = request.GET.getlist('contraindicacoes')
+
     tratamentos_list = DetalhesTratamentoResumo.objects.all()
     contraindications = Contraindicacao.objects.all()
 
-    # Filtro de nome
+    # Filtros
     if nome:
         tratamentos_list = tratamentos_list.filter(nome__icontains=nome)
 
-    # Filtro de categoria
     if categoria:
         tratamentos_list = tratamentos_list.filter(categoria__icontains=categoria)
 
-    # Filtro de "Indicado para"
     if publico == "criancas":
         tratamentos_list = tratamentos_list.filter(indicado_criancas__iexact="SIM")
     elif publico == "adolescentes":
@@ -75,20 +67,14 @@ def tratamentos(request):
         tratamentos_list = tratamentos_list.exclude(indicado_lactantes="C")
     elif publico == "gravidez":
         tratamentos_list = tratamentos_list.exclude(indicado_gravidez__in=["D", "X"])
-    elif publico == "todos":
-        pass  # Sem filtro
 
-    # Filtro de Contraindicações
-    contraindica_ids = request.GET.getlist('contraindicacoes')  # Obtém as contraindicações selecionadas
-    contraindica_ids = [cid for cid in contraindica_ids if cid and cid != 'nenhuma']  # Remove o valor vazio e "nenhuma"
-    
+    contraindica_ids = [cid for cid in contraindica_ids if cid and cid != 'nenhuma']
     if contraindica_ids:
-        tratamentos_list = tratamentos_list.exclude(contraindicacoes__id__in=contraindica_ids)
+        tratamentos_list = tratamentos_list.exclude(contraindicacoes__id__in=contraindicados)
 
-    # Anotações e cálculos agregados
-    # Multiplicador para transformar a unidade em minutos
+    # Cálculo do prazo médio
     multiplicadores = Case(
-        When(prazo_efeito_unidade='segundo', then=1/60),
+        When(prazo_efeito_unidade='segundo', then=1 / 60),
         When(prazo_efeito_unidade='minuto', then=1),
         When(prazo_efeito_unidade='hora', then=60),
         When(prazo_efeito_unidade='dia', then=1440),
@@ -97,90 +83,56 @@ def tratamentos(request):
         output_field=FloatField()
     )
 
-    # Expressão para calcular a média do intervalo de tempo em minutos
     prazo_medio_minutos = ExpressionWrapper(
         ((F('prazo_efeito_min') + F('prazo_efeito_max')) / 2) * multiplicadores,
         output_field=FloatField()
     )
 
-    # Annotate com a média e outros dados
+    # Annotate final
     tratamentos_list = tratamentos_list.annotate(
+        eficacia_min_calc=Min('evidencias__eficacia_min'),
+        eficacia_max_calc=Max('evidencias__eficacia_max'),
+        eficacia_media=ExpressionWrapper(
+            (F('eficacia_min_calc') + F('eficacia_max_calc')) / 2.0,
+            output_field=FloatField()
+        ),
         max_participantes=Max('evidencias__numero_participantes'),
         ultima_pesquisa=Max('evidencias__data_publicacao'),
-        eficacia_minima=Min('evidencias__eficacia_min'),
-        eficacia_maxima=Max('evidencias__eficacia_max'),
         reacao_maxima=Max('reacoes_adversas_detalhes__reacao_max'),
         prazo_medio_minutos=prazo_medio_minutos
-        
     )
 
-# Ordenação dinâmica (se houver)
-    sort_criteria = []
+    # Mapeamento de campos para ordenação
+    ordenacao_map = {
+        'eficacia': 'eficacia_media',
+        'risco': 'reacao_maxima',
+        'prazo': 'prazo_medio_minutos',
+        'preco': 'custo_medicamento',
+        'data': 'ultima_pesquisa',
+        'participantes': 'max_participantes',
+        'rigor': 'evidencias__rigor_da_pesquisa',
+        'avaliacao': 'avaliacao'
+    }
 
-    if eficacia:
-        sort_criteria.append('-eficacia_minima' if eficacia == 'maior-menor' else 'eficacia_minima')
-
-    if risco:
-        sort_criteria.append('-reacao_maxima' if risco == 'maior-menor' else 'reacao_maxima')
-
-    if preco_tratamento:
-        sort_criteria.append('-custo_medicamento' if preco_tratamento == 'maior-menor' else 'custo_medicamento')
-
-    if prazo == 'maior-menor':
-        sort_criteria.append('-prazo_medio_minutos')
-    elif prazo == 'menor-maior':
-        sort_criteria.append('prazo_medio_minutos')
-
-    if data_pesquisa == 'maior-menor':
-        sort_criteria.append('-ultima_pesquisa')
-    elif data_pesquisa == 'menor-maior':
-        sort_criteria.append('ultima_pesquisa')
-
-    # Aplicar ordenação se houver critérios
-    if sort_criteria:
-        tratamentos_list = tratamentos_list.order_by(*sort_criteria)
-
-    # Se não houver filtros específicos, aplicar ordenação principal com base na URL
-    elif ordenacao:
-        if ordenacao == 'avaliacao':
-            tratamentos_list = tratamentos_list.order_by('-avaliacao')
-        elif ordenacao == 'eficacia':
-            tratamentos_list = tratamentos_list.order_by('-eficacia_minima')
-        elif ordenacao == 'preco':
-            tratamentos_list = tratamentos_list.order_by('custo_medicamento')
-        elif ordenacao == 'risco':
-            tratamentos_list = tratamentos_list.order_by('-reacao_maxima')
-        elif ordenacao == 'prazo':
-            tratamentos_list = tratamentos_list.order_by('prazo_medio_minutos')
-        elif ordenacao == 'data':
-            tratamentos_list = tratamentos_list.order_by('-ultima_pesquisa')
-        elif ordenacao == 'participantes':
-            tratamentos_list = tratamentos_list.order_by('-max_participantes')
-        elif ordenacao == 'rigor':
-            tratamentos_list = tratamentos_list.order_by('-evidencias__rigor_da_pesquisa')
-
-    # Ordenação padrão se nada foi passado
+    campo = ordenacao_map.get(ordenacao)
+    if campo:
+        if ordenacao_opcao == 'menor-maior':
+            tratamentos_list = tratamentos_list.order_by(campo)
+        else:
+            tratamentos_list = tratamentos_list.order_by(f'-{campo}')
     else:
-        tratamentos_list = tratamentos_list.order_by('-eficacia_minima')
-
-
+        tratamentos_list = tratamentos_list.order_by('-eficacia_media')  # fallback padrão
 
     context = {
-
-    'tratamentos': tratamentos_list,
-    'contraindications': contraindications,
-    'grupos_indicados': DetalhesTratamentoResumo.GRUPO_CHOICES,
-    'nome': nome,
-    'categoria': categoria,
-    'eficacia': eficacia,
-    'risco': risco,
-    'prazo': prazo,
-    'data_pesquisa': data_pesquisa,
-    'preco_tratamento': preco_tratamento,
-    'ordenacao': ordenacao,
-    'contraindicacoes_selecionadas': contraindica_ids,
-
-
+        'tratamentos': tratamentos_list,
+        'contraindications': contraindications,
+        'grupos_indicados': DetalhesTratamentoResumo.GRUPO_CHOICES,
+        'nome': nome,
+        'categoria': categoria,
+        'ordenacao': ordenacao,
+        'ordenacao_opcao': ordenacao_opcao,
+        'publico': publico,
+        'contraindicacoes_selecionadas': contraindica_ids,
     }
 
     return render(request, 'core/tratamentos.html', context)
@@ -400,37 +352,4 @@ def unidade_formatada(self, valor):
 
 
 
-from django.db.models import Max, Min, FloatField, F, ExpressionWrapper, Case, When
-from django.db.models.functions import Coalesce
-from django.db.models import Value
 
-
-def tratamentos_ordenados(request):
-    multiplicadores = Case(
-        When(prazo_efeito_unidade='segundo', then=1/60),
-        When(prazo_efeito_unidade='minuto', then=1),
-        When(prazo_efeito_unidade='hora', then=60),
-        When(prazo_efeito_unidade='dia', then=1440),
-        When(prazo_efeito_unidade='sessao', then=10080),
-        default=1,
-        output_field=FloatField()
-    )
-
-    prazo_medio_minutos = ExpressionWrapper(
-        ((F('prazo_efeito_min') + F('prazo_efeito_max')) / 2) * multiplicadores,
-        output_field=FloatField()
-    )
-
-    tratamentos_list = DetalhesTratamentoResumo.objects.annotate(
-        max_participantes=Max('evidencias__numero_participantes'),
-        ultima_pesquisa=Max('evidencias__data_publicacao'),
-        eficacia_minima=Min('evidencias__eficacia_min'),
-        eficacia_maxima=Max('evidencias__eficacia_max'),  # ✅ só anota uma vez
-        reacao_maxima=Max('reacoes_adversas_detalhes__reacao_max'),
-        prazo_medio_minutos=prazo_medio_minutos,
-        eficacia_maxima_ordenada=Coalesce(F('eficacia_maxima'), Value(-1)) 
-    ).order_by('-eficacia_maxima_ordenada')
-
-    return render(request, 'core/tratamentos_ordenados.html', {
-        'tratamentos': tratamentos_list
-    })

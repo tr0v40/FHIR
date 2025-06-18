@@ -972,15 +972,17 @@ margin-top: -5px; /* Ajuste conforme necessário */
                         Eficácia
                       </p>
                       
-                    <div class="eficacia-bar-container">
+                      <div class="eficacia-bar-container">
                         <div class="efficacy-filled" 
-                            style="width: {% if tratamento.eficacia_maxima is not None %}{{ tratamento.eficacia_maxima }}{% else %}0{% endif %}%;"></div>
+                             style="width: {% if tratamento.eficacia_max_calc is not None %}{{ tratamento.eficacia_max_calc|floatformat:0 }}{% else %}0{% endif %}%;"></div>
+                      
                         <div class="efficacy-marker" 
-                            style="left: calc({% if tratamento.eficacia_maxima is not None %}{{ tratamento.eficacia_maxima }}{% else %}0{% endif %}% - 7px);"></div>
-                    </div>
+                             style="left: calc({% if tratamento.eficacia_max_calc is not None %}{{ tratamento.eficacia_max_calc|floatformat:0 }}{% else %}0{% endif %}% - 7px);"></div>
+                      </div>
+
                     <p class="eficacia-range" style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 25px; text-align: left;">
-                        <span style="color: #888; font-weight: 500;">{{ tratamento.eficacia_minima|floatformat:2 }} a</span>
-                        <span style="color: black; font-weight: bold;"> {{ tratamento.eficacia_maxima|floatformat:0 }}%</span>
+                        <span style="color: #888; font-weight: 500;">{{ tratamento.eficacia_min_calc|floatformat:2 }} a</span>
+                        <span style="color: black; font-weight: bold;"> {{ tratamento.eficacia_max_calc|floatformat:2 }}%</span>
                       </p>
                     <!-- Título dinâmico -->
                     <p id="titulo-prazo-{{ tratamento.id }}"
@@ -1010,7 +1012,7 @@ margin-top: -5px; /* Ajuste conforme necessário */
                     </span>
 
                     <span id="faixa-eficacia-{{ tratamento.id }}" style="display:none;">
-                        {{ tratamento.eficacia_minima|floatformat:2 }} a {{ tratamento.eficacia_maxima|floatformat:0 }}%
+                        {{ tratamento.eficacia_min_calc|floatformat:2 }} a {{ tratamento.eficacia_max_calc|floatformat:2 }}%
                       </span>
                       
                     <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
@@ -1187,63 +1189,43 @@ margin-top: -5px; /* Ajuste conforme necessário */
 
   <!-- JavaScript corrigido -->
   <script>
-    function mudarExibicao(tipo) {
-      if (!tipo) return;
-    
-      let titulo = '';
-      let classe = '';
-    
-      switch (tipo) {
-        case 'eficacia':
-          titulo = 'Eficácia';
-          classe = 'faixa-eficacia';
-          break;
-        case 'risco':
-          titulo = 'Risco de Reação Adversa';
-          classe = 'faixa-risco';
-          break;
-        case 'prazo':
-          titulo = 'Prazo para efeito';
-          classe = 'faixa-prazo';
-          break;
-          
-        case 'preco':
-          titulo = 'Preço do Tratamento';
-          classe = 'faixa-preco';
-          break;
-          case 'participantes':
-          titulo = 'Número de participantes';
-          classe = 'faixa-participantes';
-         break;
-        case 'rigor':
-          titulo = 'Rigor da Pesquisa';
-          classe = 'faixa-rigor';
-        break;
-        case 'data':
-          titulo = 'Data da Pesquisa';
-          classe = 'faixa-data';
-        break;
-      }
-    
-      document.querySelectorAll('[id^="titulo-prazo-"]').forEach(el => {
-      el.innerText = titulo;
-    });
+function mudarExibicao(tipo) {
+  if (!tipo) return;
 
-    document.querySelectorAll('[id^="valor-prazo-"]').forEach(el => {
-      const id = el.id.split('-').pop();
-      const fonte = document.getElementById(`${classe}-${id}`);
-      el.innerHTML = fonte ? fonte.innerHTML.trim() : '-';
-    });
-  }
+  const titulos = {
+    eficacia: 'Eficácia',
+    risco: 'Risco de Reação Adversa',
+    prazo: 'Prazo para efeito',
+    preco: 'Preço do Tratamento',
+    participantes: 'Número de participantes',
+    rigor: 'Rigor da Pesquisa',
+    data: 'Data da Pesquisa'
+  };
 
-  // ✅ Executa ao carregar a página com base na URL
-  window.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const criterio = urlParams.get('ordenacao');
-    if (criterio) {
-      mudarExibicao(criterio);
-    }
+  const classe = 'faixa-' + tipo;
+
+  // Atualiza título dinâmico
+  document.querySelectorAll('[id^="titulo-prazo-"]').forEach(el => {
+    el.innerText = titulos[tipo] || '';
   });
+
+  // Atualiza valor dinâmico
+  document.querySelectorAll('[id^="valor-prazo-"]').forEach(el => {
+    const id = el.id.split('-').pop();
+    const fonte = document.getElementById(`${classe}-${id}`);
+    el.innerHTML = fonte ? fonte.innerHTML.trim() : '-';
+  });
+}
+
+
+window.addEventListener('DOMContentLoaded', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const criterio = urlParams.get('ordenacao');
+  if (criterio) {
+    mudarExibicao(criterio);
+  }
+});
+
     </script>
     
 
