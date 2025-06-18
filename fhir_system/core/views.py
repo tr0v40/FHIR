@@ -70,7 +70,8 @@ def tratamentos(request):
 
     contraindica_ids = [cid for cid in contraindica_ids if cid and cid != 'nenhuma']
     if contraindica_ids:
-        tratamentos_list = tratamentos_list.exclude(contraindicacoes__id__in=contraindicados)
+        tratamentos_list = tratamentos_list.exclude(contraindicacoes__id__in=contraindica_ids)
+
 
     # Cálculo do prazo médio
     multiplicadores = Case(
@@ -92,25 +93,22 @@ def tratamentos(request):
     tratamentos_list = tratamentos_list.annotate(
         eficacia_min_calc=Min('evidencias__eficacia_min'),
         eficacia_max_calc=Max('evidencias__eficacia_max'),
-        eficacia_media=ExpressionWrapper(
-            (F('eficacia_min_calc') + F('eficacia_max_calc')) / 2.0,
-            output_field=FloatField()
-        ),
         max_participantes=Max('evidencias__numero_participantes'),
         ultima_pesquisa=Max('evidencias__data_publicacao'),
         reacao_maxima=Max('reacoes_adversas_detalhes__reacao_max'),
-        prazo_medio_minutos=prazo_medio_minutos
+        prazo_medio_minutos=prazo_medio_minutos,
+        rigor_maximo=Max('evidencias__rigor_da_pesquisa'),
     )
 
     # Mapeamento de campos para ordenação
     ordenacao_map = {
-        'eficacia': 'eficacia_media',
+        'eficacia': 'eficacia_max_calc',
         'risco': 'reacao_maxima',
         'prazo': 'prazo_medio_minutos',
         'preco': 'custo_medicamento',
         'data': 'ultima_pesquisa',
         'participantes': 'max_participantes',
-        'rigor': 'evidencias__rigor_da_pesquisa',
+        'rigor': 'rigor_maximo',
         'avaliacao': 'avaliacao'
     }
 
@@ -121,7 +119,7 @@ def tratamentos(request):
         else:
             tratamentos_list = tratamentos_list.order_by(f'-{campo}')
     else:
-        tratamentos_list = tratamentos_list.order_by('-eficacia_media')  # fallback padrão
+        tratamentos_list = tratamentos_list.order_by('-eficacia_max_calc')  # fallback padrão
 
     context = {
         'tratamentos': tratamentos_list,
