@@ -320,6 +320,7 @@ class DetalhesTratamentoResumo(models.Model):
         ('dia', 'Dia'),
         ('sessao', 'Sessão'),
         ('segundo', 'Segundo'),
+        ('semana', 'Semanas'),
     ]
     prazo_efeito_unidade = models.CharField(max_length=10, choices=UNIDADES, default='minuto')
 

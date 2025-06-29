@@ -20,7 +20,7 @@ html, body {
     padding: 0;
     background-color: #fefefe;
     font-family: Arial, sans-serif;
-    gap: 20px;
+
     overflow-x: hidden;
 }
 
@@ -32,47 +32,65 @@ html, body {
     gap: 30px;
     padding: 10px;
     overflow: hidden; /* Impede a rolagem horizontal */
+    
 }
 
 /* SIDEBAR - FILTROS E CLASSIFICAÇÕES */
 .left-sidebar {
     position: sticky;
     top: 900px;
-    margin-left: 200px;
+    margin-left: -10px;
     border: 3px solid #eeeeee;
 
     z-index: 1000;
     width: 300px;
-    height: 1300px;
-     /* Ajusta a altura da sidebar */
-    /* Permite rolar se o conteúdo for maior que a tela */
+    height: 1330px;
+     
 }
 
-/* Título centralizado abaixo do header */
-.titulo-container {
-    margin-top: 50px;  /* Espaçamento superior para separar o título do header */
-    text-align: left;
-    
-    align-items: center;
-    color: #000000;
-    margin-left: 300px;
-    justify-content: space-between;
+.topo-container h1 {
+    margin-top: 40px;
+
+
 }
+
+
+.topo-container {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.logo-telix {
+    height: 50px;
+    display: block;
+    margin-bottom: 40px; /* aumenta o espaçamento para o título */
+}
+
+
+
+
+.titulo-exibir {
+    text-align: left;
+    font-size: 24px;
+    font-weight: bold;
+    padding-left: 20px;   /* mesmo padding dos cards e filtros */
+    margin: 40px 0 15px;
+}
+
+
+
 /* Estilo do card preto */
-/* Alinhar o título à esquerda e o card preto à direita */
-/* Estilo do card preto */
-.card-preto {
-    background-color: #000000;
+.card-aviso {
+    background-color: #000;
     color: white;
-    padding: 10px 15px;
-    font-size: 15px;
-    border-radius: 5px;
-    max-width: 300px;
-    word-wrap: break-word;
-    margin-top: 10px;
+    padding: 16px 24px;
+    border-radius: 6px;
+    font-size: 14px;
+    max-width: 280px;
+    text-align: center;
+    line-height: 1.4;
     margin-left: auto;
-    margin-right: 0;
-    align-self: flex-start;
+    margin-top: -100px;
 }
 
 /* Alinhamento do título e card preto */
@@ -80,7 +98,8 @@ html, body {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin: 50px 200px 0 200px;
+    margin: 20px 0;
+    padding: 0 10px;
 }
 
 
@@ -102,10 +121,7 @@ html, body {
  
 }
 
-.titulo-ordenacao {
-  font-weight: bold;
-  font-size: 14px;
-}
+
 
 /* Checkbox e label próximos */
 .checkbox-container {
@@ -167,12 +183,6 @@ margin-top: -5px; /* Ajuste conforme necessário */
     margin-bottom: 20px; /* Adiciona espaço abaixo da área de classificação */
 }
 
-/* CONTEÚDO DOS PRODUTOS - ROLAGEM */
-.treatment-list {
-    flex: 1;  /* Faz com que o conteúdo ocupe o restante do espaço */
-    overflow-y: auto; /* Permite rolar os tratamentos, sem impactar os filtros */
-    padding-left: 20px;
-}
 
 /* Filtros e Botão Classificar */
 .filters, .classificar-container {
@@ -199,15 +209,21 @@ margin-top: -5px; /* Ajuste conforme necessário */
 .filters {
     
     
-    border: none; /* borda cinza clara */
-    border-radius: 1px; /* cantos levemente arredondados */
-    padding: 16px; /* espaçamento interno */
-    margin-bottom: 50px; /* espaço externo inferior */
-    box-shadow: none !important; /* remove qualquer sombra */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Alinha os itens no centro */
+    justify-content: center; /* Garante que o conteúdo está centralizado */
+    padding: 20px;
+    margin-bottom: -45px;
+    box-shadow: none !important;
+    border: none;
+    border-radius: 1px;
+    width: 100%; /* Ajuste a largura para a largura total disponível */
+   
         }
 
 
-/* ESTILO DO FORMULÁRIO DE FILTROS */
+
 /* Labels dos filtros */
 .filters label {
     font-size: 14px;
@@ -224,15 +240,12 @@ margin-top: -5px; /* Ajuste conforme necessário */
     text-align: center;
 }
 
-.filters h4 {
-    color: #007bff; /* Azul */
-}
+
+
 
 .filters select {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    width: 90%; /* Ajusta a largura do select */
+    max-width: 350px; /* Limita a largura máxima */
 
     font-size: 14px;
 }
@@ -246,7 +259,7 @@ margin-top: -5px; /* Ajuste conforme necessário */
 
     font-size: 14px;
 }
-/* Remover a borda externa do container de Contraindicações */
+
 /* Estilo para o select de Contraindicações */
 .filters select {
     border: 2px solid #e4e4e4;  /* Remove a borda externa do select */
@@ -281,34 +294,24 @@ margin-top: -5px; /* Ajuste conforme necessário */
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Estilo para os botões de filtro (Exibir) */
-.filter-buttons {
-    border: 2px solid #e4e4e4;
-    display: flex;
-    gap: 15px;  /* Espaço entre os botões */
-    flex-wrap: wrap;
-    margin-bottom: 20px;  /* Espaçamento entre os botões e o conteúdo */
-    padding: 0;  /* Remove qualquer padding extra */
-    border: none;  /* Remove a borda do contêiner */
-    box-shadow: none;  /* Remove qualquer sombra */
-    justify-content: center;  /* Alinha os botões no início */
-}
+
+
 
 .filter-btn {
     background-color: #f9f9f9;  /* Cor de fundo clara */
     color: #007bff;  /* Texto azul */
     border: none;  /* Remove qualquer borda extra */
     border-radius: 6px;  /* Bordas arredondadas */
-    padding: 12px 20px;
+    padding: 12px 29px;
     cursor: pointer;
     font-size: 5px;
     transition: background-color 0.3s, color 0.3s;
     text-align: center;
-    width: 230px;  /* Largura fixa para manter os botões organizados */
+    width: 235px;  /* Largura fixa para manter os botões organizados */
 }
 
 .filter-btn input {
-    margin-right: 8px;  /* Espaço entre o checkbox e o texto */
+    margin-right: 6px;  /* Espaço entre o checkbox e o texto */
     width: 18px;
     height: 18px;
 }
@@ -323,10 +326,30 @@ margin-top: -5px; /* Ajuste conforme necessário */
     color: white;
 }
 
-/* Estilo para a lista de contra-indicações */
-.form-check {
-    margin-bottom: 10px;  /* Espaçamento entre as opções */
-    font-size: 13px;  /* Tamanho da fonte */
+.filters .form-check {
+    text-align: left;
+    margin-top: 10; /* Garante que as labels dos checkboxes ficam alinhadas à esquerda */
+    margin-bottom: 5px; /* Diminui o espaçamento entre as opções */
+    padding: 0; /* Remove qualquer padding adicional */
+}
+
+.filters .form-check input {
+    margin-top: 10; /* Remove qualquer margem superior extra */
+    padding: 0; /* Remove o padding */
+}
+
+.filters .form-check label {
+    margin-top: 0; /* Remove margem superior extra nas labels */
+}
+
+.filters .dropdown-toggle {
+    width: 100%; /* Ajusta a largura do botão para ocupar 100% do espaço disponível */
+    padding: 10px 35px; /* Ajuste do padding para garantir uma boa aparência */
+    font-size: 12px; /* Tamanho da fonte */
+    border-radius: 4px; /* Bordas arredondadas */
+    border: 1px solid #ccc; /* Cor da borda */
+    background-color: #f8f9fa; /* Cor de fundo */
+    text-align: left; /* Alinha o texto à esquerda */
 }
 
 /* Efeito de hover no botão */
@@ -346,9 +369,8 @@ margin-top: -5px; /* Ajuste conforme necessário */
 .filters h6 {
     font-weight: bold;  /* Título em negrito */
     color: #000000;  /* Cor preta */
-    margin-bottom: 20px; /* Espaçamento abaixo do título */
-    text-align: left;  /* Alinhar à esquerda */
-    margin-left: 170px;
+    margin-bottom: 0px; /* Espaçamento abaixo do título */
+    text-align: left;
     font-size: 20px;
 }
 
@@ -376,39 +398,6 @@ margin-top: -5px; /* Ajuste conforme necessário */
     transform: scale(1.05);
 }
 
-/* Estilo para o container de contraindicações */
-.accordion-item {
-    border: none; /* Remove a borda do accordion */
-    margin-top: 20px; /* Espaçamento entre o filtro de contraindicações e os filtros anteriores */
-}
-
-/* Estilo do botão do accordion */
-.accordion-button {
-    background-color: #ffffff; /* Fundo branco */
-    color: #007bff; /* Cor do texto */
-    font-weight: normal; /* Peso da fonte normal */
-    border: 1px solid #ccc; /* Borda cinza clara, pode ser ajustado conforme o visual desejado */
-    border-radius: 6px;
-    padding: 10px; /* Padding para espaçamento */
-    font-size: 14px; /* Ajuste do tamanho da fonte */
-}
-
-.accordion-button:not(.collapsed) {
-    background-color: #f1f1f1; /* Fundo leve para quando expandido */
-    color: #0056b3;
-    border-color: #007bff;
-}
-
-.accordion-button:focus {
-    box-shadow: none !important; /* Remove o foco do botão */
-}
-
-/* Estilo do conteúdo do accordion */
-.accordion-body {
-    background-color: #ffffff; /* Fundo branco */
-    border-top: 1px solid #ccc; /* Linha acima do conteúdo */
-    padding: 10px 20px; /* Padding para o conteúdo */
-}
 
 /* Estilo dos checkboxes */
 .form-check-input {
@@ -429,24 +418,25 @@ margin-top: -5px; /* Ajuste conforme necessário */
 .treatment-list {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 2px;
     flex: 1;
 }
 
 /* CARTÃO DO TRATAMENTO */
 .tratamento-card {
     display: flex;
-    justify-content: space-between;
+    
     align-items: center;
+    margin: 5px auto;
     width: 100%;
     max-width: 1200px; /* cartão mais largo */
-    min-height: 400px;
-    padding: 30px 40px;
+    min-height: 220px;
+    padding: 15px 30px;
     margin: 20px auto;
-    border-radius: 10px;
+    border-radius: 00px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    background-color: white;
-    gap: 10px;
+ 
+    gap: 5px;
     transition: transform 0.3s, box-shadow 0.2s ease;
 }
 
@@ -462,11 +452,17 @@ margin-top: -5px; /* Ajuste conforme necessário */
     gap: 20px;
 }
 
-/* IMAGEM DO TRATAMENTO */
+.tratamento-card .tratamento-content {
+    display: flex;
+    align-items: flex-start; /* Alinha o conteúdo ao topo */
+    gap: 20px; /* Espaço entre a imagem e o texto */
+}
+
 .tratamento-card img {
-    width: 128px;
-    height: auto;
-    border-radius: 5px;
+    width: 120px;  /* Ajuste o tamanho da imagem conforme necessário */
+    height: 120px; /* Ajuste a altura da imagem conforme necessário */
+    border-radius: 50%;  /* Torna a imagem redonda */
+    object-fit: cover;  /* Garante que a imagem se ajuste sem distorção */
 }
 
 /* TITULO DO TRATAMENTO */
@@ -513,35 +509,6 @@ margin-top: -5px; /* Ajuste conforme necessário */
     left: calc(100% - 7px); /* O marcador fica no final da barra */
     transform: translateX(-50%);
     border-radius: 50%;
-}
-
-/* BOTÃO DE PRAZO DE EFEITO */
-.prazo-btn {
-    background: linear-gradient(90deg, #007bff, #0056b3);
-    width: 260px;
-    height: 60px; 
-    color: white;
-    border: none;
-    padding: 14px 22px;
-    text-decoration: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    display: flex;
-    align-items: center; /* Alinhamento vertical */
-    justify-content: center; /* Alinhamento horizontal */
-    gap: 8px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    text-align: center; /* Centraliza o texto */
-}
-
-.prazo-btn i {
-    font-size: 18px;
-}
-
-.prazo-btn:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
 }
 
 /* Estilo para as opções de ordenação (radio buttons) */
@@ -649,25 +616,11 @@ margin-top: -5px; /* Ajuste conforme necessário */
     outline: none !important;
 }
 
-.accordion-item {
-  border: none;
-  background-color: transparent;
+
+.box-avaliacao {
+    display: none !important;
 }
 
-.accordion-button {
-  background: linear-gradient(to right, #007bff, #0062cc);
-  color: white;
-  font-weight: bold;
-  border-radius: 6px;
-  border: none;
-  box-shadow: none;
-}
-
-.accordion-button:not(.collapsed) {
-  background: linear-gradient(to right, #007bff, #0062cc);
-  color: white;
-  box-shadow: none;
-}
 
 
 }
@@ -678,55 +631,36 @@ margin-top: -5px; /* Ajuste conforme necessário */
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white position-relative">
-
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-
-            <!-- Logo -->
-            <a class="navbar-brand" href="https://www.telix.inf.br/">
-                <img src="{% static 'img/logo.png' %}" alt="Telix Logo" style="height: 70px;">
-            </a>
-
-
-
-
-            <!-- Botões de login/cadastro -->
-            <div class="nav-buttons d-flex gap-2">
-             
-            </div>
-        </div>
-    </nav>
-</header>
-<div class="titulo-container">
-    <div>
-        <span style="font-size:32px; font-weight: 700; font-family: 'Inter', sans-serif;" class="wixui-rich-text__text">
-            Enxaqueca e dor de cabeça crônica
-          </span>
-          
+    <div class="topo-container">
+        <img src="{% static 'img/logo.png' %}" alt="Telix Logo" style="height: 70px;">
+      <h1>Enxaqueca e dor de cabeça crônica</h1>
       
-          
-
-        <p class="subtitulo">Tratamentos ordenados por:</p>
-    </div>
-    <div class="card-preto">
-        <p>Não se automedique.<br>Consulte um profissional de saúde.</p>
-    </div>
-</div>
+        <p style="font-weight: bold;">Tratamentos ordenados por:</p>
+      
+        <div class="checkbox-container mt-3"style="margin-top: -30px;"> 
+            <input type="checkbox" id="ordenacao-checkbox"  checked>
+            <label for="ordenacao-checkbox" id="ordenacao-texto">Ordem decrescente de eficácia máxima</label>
+      </div>
+      <div class="card-aviso">
+        <p><strong>Não se automedique.</strong><br>Consulte um profissional de saúde.</p>
+      </div>
+      
 
             <!-- Checkbox para mostrar a ordenação -->
             <div class="checkbox-container mt-3"style="margin-left: 200px;margin-top: -30px;"> 
-                <input type="checkbox" id="ordenacao-checkbox"  checked>
-                <label for="ordenacao-checkbox" id="ordenacao-texto">Ordem decrescente de eficácia máxima</label>
-            </div>
+         
         </div>
+        <p style="font-weight: bold;margin-top: 100px;font-size: 18px;">Exibir:</p>
+        
 
 
 <!-- Filtro de Exibir -->
-<div class="filters" style="text-align: left; margin: 20px 0;margin-left: 50px; padding: 20px; border: none;">
-    <h6><strong>Exibir</strong></h6>
+<div class="filters"style="margin-top:-40px; ">
+
+
+
     <!-- Botões de exibição (radio buttons) -->
+    
     <div class="filter-buttons">
 
         <label class="filter-btn">
@@ -830,7 +764,7 @@ margin-top: -5px; /* Ajuste conforme necessário */
                     
 <!-- Filtro de Ordenação -->
 <form method="GET" action="{% url 'tratamentos' %}">
-    <div class="ordenacao" style="margin-top: 30px;">
+    <div class="ordenacao" style="margin-top: 50px;">
       <h5><strong>Ordenar por característica</strong></h5>
   
       <!-- Select com onchange para atualizar visual apenas -->
@@ -974,15 +908,15 @@ margin-top: -5px; /* Ajuste conforme necessário */
                       
                       <div class="eficacia-bar-container">
                         <div class="efficacy-filled" 
-                             style="width: {% if tratamento.eficacia_max_calc is not None %}{{ tratamento.eficacia_max_calc|floatformat:0 }}{% else %}0{% endif %}%;"></div>
+                             style="width: {% if tratamento.eficacia_max_calc is not None %}{{ tratamento.eficacia_max_calc|floatformat:0  }}{% else %}0{% endif %}%;"></div>
                       
                         <div class="efficacy-marker" 
-                             style="left: calc({% if tratamento.eficacia_max_calc is not None %}{{ tratamento.eficacia_max_calc|floatformat:0 }}{% else %}0{% endif %}% - 7px);"></div>
+                             style="left: calc({% if tratamento.eficacia_max_calc is not None %}{{ tratamento.eficacia_max_calc|floatformat:0  }}{% else %}0{% endif %}% - 7px);"></div>
                       </div>
 
                     <p class="eficacia-range" style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 25px; text-align: left;">
                         <span style="color: #888; font-weight: 500;">{{ tratamento.eficacia_min_calc|floatformat:2 }} a</span>
-                        <span style="color: black; font-weight: bold;"> {{ tratamento.eficacia_max_calc|floatformat:2 }}%</span>
+                        <span style="color: black; font-weight: bold;"> {{ tratamento.eficacia_max_calc|floatformat:2  }}%</span>
                       </p>
                     <!-- Título dinâmico -->
                     <p id="titulo-prazo-{{ tratamento.id }}"
@@ -1008,11 +942,11 @@ margin-top: -5px; /* Ajuste conforme necessário */
                     </a>
 
                     <span id="faixa-risco-{{ tratamento.id }}" style="display:none;">
-                        Risco máximo: {{ tratamento.reacao_maxima }}%
+                        {{ tratamento.reacao_maxima }}%
                     </span>
 
                     <span id="faixa-eficacia-{{ tratamento.id }}" style="display:none;">
-                        {{ tratamento.eficacia_min_calc|floatformat:2 }} a {{ tratamento.eficacia_max_calc|floatformat:2 }}%
+                        {{ tratamento.eficacia_min_calc|floatformat:2   }} a {{ tratamento.eficacia_max_calc|floatformat:2  }}%
                       </span>
                       
                     <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
@@ -1023,9 +957,44 @@ margin-top: -5px; /* Ajuste conforme necessário */
                         R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
                     </p>
                     
-                    <p id="faixa-rigor-{{ tratamento.id }}" style="display:none;">
-                        {{ tratamento.evidencias.first.rigor_da_pesquisa|default:"-" }}
+                    <p id="faixa-rigor-{{ tratamento.id }}" style="display: none;">
+                        {% for i in "1234567" %}
+                            {% if i|add:"0" <= tratamento.rigor_maximo %}
+                                <span style="
+                                    display: inline-flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    width: 24px;
+                                    height: 24px;
+                                    font-size: 0.85rem;
+                                    font-weight: 600;
+                                    border-radius: 4px;
+                                    border: 1px solid #007bff;
+                                    color: white;
+                                    background-color: #007bff; /* Preenchido com a cor azul */
+                                ">
+                                    {{ i }}
+                                </span>
+                            {% else %}
+                                <span style="
+                                    display: inline-flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    width: 24px;
+                                    height: 24px;
+                                    font-size: 0.85rem;
+                                    font-weight: 600;
+                                    border-radius: 4px;
+                                    border: 1px solid #007bff;
+                                    color: #007bff; /* Cor do número não preenchido */
+                                    background-color: transparent;
+                                ">
+                                    {{ i }}
+                                </span>
+                            {% endif %}
+                        {% endfor %}
                     </p>
+                    
                     
                     <p id="faixa-data-{{ tratamento.id }}" style="display:none;">
                         {{ tratamento.ultima_pesquisa|date:"m/Y"|default:"-" }}
@@ -1036,11 +1005,7 @@ margin-top: -5px; /* Ajuste conforme necessário */
                     </span>
                     
                       
-                      
-
-
                     
-                
                 
             </div>
             </div>
@@ -1146,7 +1111,7 @@ margin-top: -5px; /* Ajuste conforme necessário */
 
         .filter-btn {
             padding: 10px 15px;
-            border: 1px solid 
+            border: 1px solid;
             border-radius: 5px;
             background-color: #f0f0f0;
             cursor: pointer;
@@ -1189,6 +1154,10 @@ margin-top: -5px; /* Ajuste conforme necessário */
 
   <!-- JavaScript corrigido -->
   <script>
+
+
+
+
 function mudarExibicao(tipo) {
   if (!tipo) return;
 
@@ -1218,18 +1187,70 @@ function mudarExibicao(tipo) {
 }
 
 
+
+
 window.addEventListener('DOMContentLoaded', () => {
   const urlParams = new URLSearchParams(window.location.search);
   const criterio = urlParams.get('ordenacao');
   if (criterio) {
     mudarExibicao(criterio);
   }
+
+
+
+
 });
 
     </script>
-    
 
+<script>
+function substituirPontosPorVirgulas() {
+    const elementos = document.querySelectorAll(
+  '.eficacia-range, .preco-range, .eficacia-bar-container, .prazo-btn, .preco-tratamento, .faixa-risco'
+);
+
+
+  elementos.forEach((el) => {
+    if (el.innerHTML) {
+      el.innerHTML = el.innerHTML.replace(/\d+\.\d+/g, (match) => {
+        const num = parseFloat(match);
+        return Number.isInteger(num) ? num.toString() : match.replace('.', ',');
+      });
+    }
+  });
+
+  const eficaciaBars = document.querySelectorAll('.efficacy-filled');
+  eficaciaBars.forEach((bar) => {
+    let percentage = bar.style.width;
+    if (percentage.includes('.')) {
+      const num = parseFloat(percentage);
+      bar.style.width = Number.isInteger(num)
+        ? `${num}%`
+        : `${percentage.replace('.', ',')}`;
+    }
+  });
+}
+
+  
+    window.addEventListener('DOMContentLoaded', () => {
+      substituirPontosPorVirgulas();
+  
+      // Use o ID correto da div onde os cards aparecem
+      const targetNode = document.getElementById('cards-container');
+  
+      if (targetNode) {
+        const observer = new MutationObserver(() => {
+          substituirPontosPorVirgulas();
+        });
+  
+        observer.observe(targetNode, {
+          childList: true,
+          subtree: true,
+        });
+      }
+    });
   </script>
+  
 
 </body>
 </html>

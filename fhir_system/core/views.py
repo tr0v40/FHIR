@@ -80,6 +80,7 @@ def tratamentos(request):
         When(prazo_efeito_unidade='hora', then=60),
         When(prazo_efeito_unidade='dia', then=1440),
         When(prazo_efeito_unidade='sessao', then=10080),
+        When(prazo_efeito_unidade='semana', then=10080),
         default=1,
         output_field=FloatField()
     )
@@ -134,7 +135,6 @@ def tratamentos(request):
     }
 
     return render(request, 'core/tratamentos.html', context)
-
 
 
 
