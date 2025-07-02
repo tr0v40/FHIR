@@ -1,4 +1,6 @@
 {% load static %}
+
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -632,10 +634,19 @@ margin-top: -5px; /* Ajuste conforme necessário */
 <body>
 
     <div class="topo-container">
-        <img src="{% static 'img/logo.png' %}" alt="Telix Logo" style="height: 70px;">
+        <a href="https://www.telix.inf.br/">
+            <img src="{% static 'img/logo.png' %}" alt="Telix Logo" style="height: 70px;">
+        </a>
+        
       <h1>Enxaqueca e dor de cabeça crônica</h1>
       
-        <p style="font-weight: bold;">Tratamentos ordenados por:</p>
+      <span style="color: #010009; font-weight: 600; font-family: 'Inter', sans-serif;">Tratamentos ordenados por:</span>
+
+
+
+
+
+
       
         <div class="checkbox-container mt-3"style="margin-top: -30px;"> 
             <input type="checkbox" id="ordenacao-checkbox"  checked>
@@ -941,12 +952,13 @@ margin-top: -5px; /* Ajuste conforme necessário */
                     ver detalhes <span style="font-weight: bold;">&#8250;</span>
                     </a>
 
-                    <span id="faixa-risco-{{ tratamento.id }}" style="display:none;">
-                        {{ tratamento.reacao_maxima }}%
+                    <span id="faixa-risco-{{ tratamento.id }}"  class="replace-dot" style="display:none;">
+                        {{ tratamento.reacao_maxima}}%
+
                     </span>
 
-                    <span id="faixa-eficacia-{{ tratamento.id }}" style="display:none;">
-                        {{ tratamento.eficacia_min_calc|floatformat:2   }} a {{ tratamento.eficacia_max_calc|floatformat:2  }}%
+                    <span id="faixa-eficacia-{{ tratamento.id }}" class="replace-dot" style="display:none;">
+                        {{ tratamento.eficacia_min_calc|floatformat:2}}% a {{ tratamento.eficacia_max_calc|floatformat:2 }}%
                       </span>
                       
                     <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
@@ -1202,55 +1214,78 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
     </script>
-
 <script>
 function substituirPontosPorVirgulas() {
     const elementos = document.querySelectorAll(
-  '.eficacia-range, .preco-range, .eficacia-bar-container, .prazo-btn, .preco-tratamento, .faixa-risco'
-);
+        '.eficacia-range, .preco-range, .eficacia-bar-container, .prazo-btn, .preco-tratamento, .faixa-risco, .faixa-participantes'
+    );
 
+    elementos.forEach((el) => {
+        if (el.innerHTML) {
+            // Substitui os pontos por vírgulas nos números decimais
+            el.innerHTML = el.innerHTML.replace(/\d+\.\d+/g, (match) => {
+                const num = parseFloat(match);
+                return Number.isInteger(num) ? num.toString() : match.replace('.', ',');
+            });
+        }
 
-  elementos.forEach((el) => {
-    if (el.innerHTML) {
-      el.innerHTML = el.innerHTML.replace(/\d+\.\d+/g, (match) => {
-        const num = parseFloat(match);
-        return Number.isInteger(num) ? num.toString() : match.replace('.', ',');
-      });
-    }
-  });
+        // Formatar o número de participantes com separador de milhar
+        if (el.classList.contains('faixa-participantes')) {
+            const num = el.innerHTML.trim().split(' ')[0];  // Obtém o número antes do texto "participantes"
+            const formattedNumber = Number(num).toLocaleString('pt-BR');  // Formata o número
+            el.innerHTML = formattedNumber + ' participantes';  // Atualiza o conteúdo com o número formatado
+        }
+    });
 
-  const eficaciaBars = document.querySelectorAll('.efficacy-filled');
-  eficaciaBars.forEach((bar) => {
-    let percentage = bar.style.width;
-    if (percentage.includes('.')) {
-      const num = parseFloat(percentage);
-      bar.style.width = Number.isInteger(num)
-        ? `${num}%`
-        : `${percentage.replace('.', ',')}`;
-    }
-  });
+    // Atualiza a largura das barras de eficácia
+    const eficaciaBars = document.querySelectorAll('.efficacy-filled');
+    eficaciaBars.forEach((bar) => {
+        let percentage = bar.style.width;
+        if (percentage.includes('.')) {
+            const num = parseFloat(percentage);
+            bar.style.width = Number.isInteger(num)
+                ? `${num}%`
+                : `${percentage.replace('.', ',')}`;
+        }
+    });
 }
 
-  
-    window.addEventListener('DOMContentLoaded', () => {
-      substituirPontosPorVirgulas();
-  
-      // Use o ID correto da div onde os cards aparecem
-      const targetNode = document.getElementById('cards-container');
-  
-      if (targetNode) {
+window.addEventListener('DOMContentLoaded', () => {
+    substituirPontosPorVirgulas();
+
+    // Observar alterações no conteúdo dos cards
+    const targetNode = document.getElementById('cards-container');
+
+    if (targetNode) {
         const observer = new MutationObserver(() => {
-          substituirPontosPorVirgulas();
+            substituirPontosPorVirgulas();
         });
-  
+
         observer.observe(targetNode, {
-          childList: true,
-          subtree: true,
+            childList: true,
+            subtree: true,
         });
-      }
+    }
+});
+
+    </script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        // Seleciona todos os elementos que possuem a classe 'replace-dot'
+        const elements = document.querySelectorAll('.replace-dot');
+        
+        // Para cada elemento, substitui o ponto por vírgula
+        elements.forEach(el => {
+            const value = el.innerHTML;
+            // Substitui ponto por vírgula e exibe no elemento
+            if (value.includes('.')) {
+                el.innerHTML = value.replace('.', ',');
+            }
+        });
     });
-  </script>
-  
+</script>
+
 
 </body>
 </html>

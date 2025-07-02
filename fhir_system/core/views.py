@@ -9,6 +9,7 @@ from django.db.models import Min, Max
 from django.db.models import F, FloatField, ExpressionWrapper, Case, When
 from django.shortcuts import render, get_object_or_404
 from .models import DetalhesTratamentoResumo, Contraindicacao, EvidenciasClinicas
+from django.utils.functional import lazy
 
 
 
@@ -122,6 +123,15 @@ def tratamentos(request):
     else:
         tratamentos_list = tratamentos_list.order_by('-eficacia_max_calc')  # fallback padrão
 
+    for tratamento in tratamentos_list:
+        tratamento.eficacia_min_calc = formatar_numeros(tratamento.eficacia_min_calc)
+        tratamento.eficacia_max_calc = formatar_numeros(tratamento.eficacia_max_calc)
+        tratamento.max_participantes = formatar_numeros(tratamento.max_participantes)
+        tratamento.prazo_medio_minutos = formatar_numeros(tratamento.prazo_medio_minutos)
+        tratamento.reacao_maxima = formatar_numeros(tratamento.reacao_maxima)
+        tratamento.rigor_maximo = formatar_numeros(tratamento.rigor_maximo)    
+
+
     context = {
         'tratamentos': tratamentos_list,
         'contraindications': contraindications,
@@ -138,6 +148,36 @@ def tratamentos(request):
 
 
 
+
+def formatar_numeros(n):
+    """
+    Função que formata números para o padrão brasileiro:
+    - Substitui o ponto por vírgula
+    - Formata com separador de milhar
+    """
+    if n is None:
+        return "-"
+    
+    try:
+        # Se for uma porcentagem
+        if isinstance(n, str) and n.endswith('%'):
+            num_str = n[:-1]  # Remove o símbolo de porcentagem
+            num = float(num_str)  # Converte para float
+            # Formata o número e adiciona o símbolo de porcentagem
+            return f"{num:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".") + '%'
+
+        # Verifica se o número é float ou decimal
+        if isinstance(n, float):
+            return f"{n:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+        
+        # Verifica se é um número inteiro
+        elif isinstance(n, int):
+            return f"{n:,}".replace(",", ".")
+        
+    except Exception as e:
+        return str(n)  # Caso ocorra algum erro, retorna o valor como string (caso não seja um número)
+
+    return str(n)
 
 
 
@@ -347,6 +387,17 @@ def unidade_formatada(self, valor):
     if valor == 1:
         return self.prazo_efeito_unidade
     return exceptions.get(self.prazo_efeito_unidade, self.prazo_efeito_unidade + 's')
+
+# No views.py (exemplo)
+from django.shortcuts import render
+
+def tratamento_view(request):
+    participantes = 1500  # Exemplo de número de participantes
+    # Formatar o número com separador de milhar
+    participantes_formatado = "{:,}".format(participantes).replace(",", ".")
+    
+    return render(request, 'tratamentos.html', {'participantes': participantes_formatado})
+
 
 
 
