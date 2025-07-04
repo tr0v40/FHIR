@@ -969,7 +969,7 @@ margin-top: -5px; /* Ajuste conforme necessário */
                         R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
                     </p>
                     
-                    <p id="faixa-rigor-{{ tratamento.id }}" style="display: none;">
+                    <span id="faixa-rigor-{{ tratamento.id }}" style="display: none;">
                         {% for i in "1234567" %}
                             {% if i|add:"0" <= tratamento.rigor_maximo %}
                                 <span style="
@@ -1005,7 +1005,7 @@ margin-top: -5px; /* Ajuste conforme necessário */
                                 </span>
                             {% endif %}
                         {% endfor %}
-                    </p>
+                    </span>
                     
                     
                     <p id="faixa-data-{{ tratamento.id }}" style="display:none;">
@@ -1194,7 +1194,8 @@ function mudarExibicao(tipo) {
   document.querySelectorAll('[id^="valor-prazo-"]').forEach(el => {
     const id = el.id.split('-').pop();
     const fonte = document.getElementById(`${classe}-${id}`);
-    el.innerHTML = fonte ? fonte.innerHTML.trim() : '-';
+    el.innerHTML = fonte ? fonte.innerHTML : '-';
+
   });
 }
 

@@ -129,7 +129,7 @@ def tratamentos(request):
         tratamento.max_participantes = formatar_numeros(tratamento.max_participantes)
         tratamento.prazo_medio_minutos = formatar_numeros(tratamento.prazo_medio_minutos)
         tratamento.reacao_maxima = formatar_numeros(tratamento.reacao_maxima)
-        tratamento.rigor_maximo = formatar_numeros(tratamento.rigor_maximo)    
+          
 
 
     context = {
