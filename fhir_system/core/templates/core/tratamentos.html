@@ -8,6 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tratamentos para Enxaqueca</title>
 
+    <!-- Código de rastreio do GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BS67486CWG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BS67486CWG');  // Seu ID de medição GA4
+    </script>
+
     <!-- Estilos Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
     
@@ -194,17 +203,67 @@ margin-top: -5px; /* Ajuste conforme necessário */
 /* Layout Responsivo para dispositivos móveis */
 @media (max-width: 768px) {
     .content-area {
+        display: flex;
         flex-direction: column;  /* Em dispositivos menores, exibe o conteúdo verticalmente */
-        gap: 15px;
     }
+
+    
+    /* Esconder o checkbox e o título "Exibir" no mobile */
+    .checkbox-container, 
+    .checkbox-container + p {
+        display: none !important;
+    }
+
+    /* Deixe os tratamentos aparecerem primeiro */
+    .treatment-list {
+        order: 1;  /* Os tratamentos ficam primeiro */
+        margin-top: 100px; 
+        justify-content: center;  /* Centraliza horizontalmente */
+        align-items: center;  /* Alinha verticalmente */
+        text-align: center; 
+    }
+
+    /* Agora os filtros vão aparecer abaixo dos tratamentos */
+    .filters {
+        order: 2; /* Os filtros ficam depois da lista de tratamentos */
+        margin-top: 20px;  /* Ajuste o valor conforme necessário para espaçamento */
+    }
+    
+
     .left-sidebar {
+        order: 3; /* Os filtros ficam depois da lista de tratamentos */
+        margin-top: 20px;  /* Ajuste o valor conforme necessário para espaçamento */
         width: 100%;  /* Barra lateral ocupa a tela inteira */
         height: auto;
-        position: relative; /* Evita que a sidebar fique fixa em dispositivos móveis */
+        position: sticky; /* Evita que a sidebar fique fixa em dispositivos móveis */
+        height: 1230px;
     }
-    .treatment-list {
-        width: 100%; /* O conteúdo ocupa toda a largura */
+    .tratamento-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Centraliza horizontalmente */
+        justify-content: center; /* Alinha verticalmente */
+        text-align: center; /* Centraliza o texto se houver */
     }
+
+    .tratamento-content img {
+        display: block;
+        max-width: 10%; /* Limita a imagem a largura máxima do container */
+        margin: 0 auto 10px auto; /* Centraliza horizontalmente e adiciona um espaço inferior */
+        height: auto; /* Garante que a altura seja proporcional */
+    }
+    
+    
+   /* O conteúdo ocupa toda a largura */
+    }
+
+
+
+
+/* Centralizar as imagens */
+.tratamento-card img {
+    display: block;
+    margin: 0 auto; /* Isso vai centralizar as imagens horizontalmente */
 }
 
 /* Container dos filtros */
@@ -456,13 +515,14 @@ margin-top: -5px; /* Ajuste conforme necessário */
 
 .tratamento-card .tratamento-content {
     display: flex;
-    align-items: flex-start; /* Alinha o conteúdo ao topo */
+    align-items: center; /* Alinha o conteúdo ao topo */
     gap: 20px; /* Espaço entre a imagem e o texto */
 }
 
 .tratamento-card img {
     width: 120px;  /* Ajuste o tamanho da imagem conforme necessário */
     height: 120px; /* Ajuste a altura da imagem conforme necessário */
+    margin: 0 auto 10px auto; /* Centraliza horizontalmente */
     border-radius: 50%;  /* Torna a imagem redonda */
     object-fit: cover;  /* Garante que a imagem se ajuste sem distorção */
 }
@@ -532,21 +592,130 @@ margin-top: -5px; /* Ajuste conforme necessário */
     margin-right: 8px;  /* Espaço entre o radio button e o texto */
 }
 
+/* Card preto no topo - visível só no desktop */
+/* Card preto no topo - visível só no desktop */
+.card-aviso {
+    display: block;
+}
+
+/* Esconde o card no topo no mobile */
+@media (max-width: 768px) {
+    .card-aviso {
+        display: none;
+    }
+}
+
+/* Mostra o card no final da página no mobile */
+.card-aviso-mobile {
+    display: none;
+    background-color: #000;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 6px;
+    font-size: 14px;
+    max-width: 280px;
+    text-align: center;
+    line-height: 1.4;
+    margin: 30px auto;
+}
+
+@media (max-width: 768px) {
+    .card-aviso-mobile {
+        display: block;
+    }
+}
 /* RESPONSIVIDADE */
 @media (max-width: 768px) {
-    .tratamento-card {
-        width: 100%; /* Garante que todos ocupem a mesma largura */
-        max-width: 900px; /* Define um tamanho máximo */
-        min-height: 300px; /* Define uma altura mínima para evitar variações */
+
+    .tratamento-content {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background-color: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin: 0 auto 20px auto;
+        flex-direction: column;
+        align-items: center; /* Centraliza horizontalmente */
+        justify-content: center; /* Alinha verticalmente */
+        text-align: center; /* Centraliza o texto se houver */
     }
+    .tratamento-card img {
+      
+        
+        max-width: 100%; /* Limita a imagem a largura máxima do container */
+     
+        height: right; /* Garante que a altura seja proporcional */
+        margin-left: 500px;
+    }
+    .tratamento-content img {
+        margin-bottom: 10px; /* espaço entre a imagem e o título */
+    }
+
+
+    .tratamento-info {
+        align-items: center;
+        text-align: center;
+    }
+
+    .tratamento-info h3,
+    .tratamento-info p,
+    .tratamento-info a {
+        text-align: center;
+    }
+
+    .eficacia-container {
+        align-items: center;
+        text-align: center;
+    }
+
+    .eficacia-container {
+        width: 100%;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .eficacia-bar-container {
+        margin: 0 auto 5px auto; /* Centraliza a barra */
+    }
+
+    .eficacia-range {
+        text-align: center;
+    }
+
+    .eficacia-container p {
+        text-align: center;
+    }
+    
+    .filters > .filter-buttons {
+        display: none; /* Esconde apenas a parte "Exibir" */
+    }
+    .filters > .filter-buttons,
+    .filters h6 {
+        display: none; /* Esconde o filtro "Exibir" e o título "Exibir" */
+    }
+    .filters {
+        margin-top: 30px; /* Ajuste o valor conforme necessário */
+        padding-top: 20px;
+        display: block;
+    }
+
+    /* Opcional: Ajuste o layout da lista de tratamentos */
+    .treatment-list {
+        margin-bottom: 20px; /* Adiciona um pequeno espaço abaixo da lista de tratamentos */
+    }
+    .content-area {
+        flex-direction: column;  /* Exibe o conteúdo verticalmente (tratamentos e filtros) */
+    }
+    
+    /* Mover os filtros para baixo da lista de tratamentos */
+    .filters {
+        order: 2;  /* Coloca os filtros após a lista de tratamentos */
+        margin-top: 20px; /* Ajuste a margem superior conforme necessário */
+        padding-top: 20px;
+    }
+
+    /* Lista de tratamentos deve ocupar a parte superior na versão mobile */
+    .treatment-list {
+        order: 1;  /* Coloca a lista de tratamentos primeiro */
+        margin-bottom: 20px;  /* Pequeno espaço abaixo dos tratamentos */
+    }
+}
     /* Para telas pequenas, ajusta os estilos */
     @media (max-width: 768px) {
         .container {
@@ -566,6 +735,26 @@ margin-top: -5px; /* Ajuste conforme necessário */
 
         .titulo {
             font-size: 12px;
+        }
+    }
+
+        /* Responsividade para dispositivos móveis */
+        @media (max-width: 768px) {
+        .content-area {
+            flex-direction: column;  /* Exibe o conteúdo verticalmente (tratamentos e filtros) */
+        }
+
+        /* Mover os filtros para baixo da lista de tratamentos */
+        .filters {
+            order: 2;  /* Coloca os filtros após a lista de tratamentos */
+            margin-top: 20px; /* Ajuste a margem superior conforme necessário */
+            padding-top: 20px;
+        }
+
+        /* Lista de tratamentos deve ocupar a parte superior na versão mobile */
+        .treatment-list {
+            order: 1;  /* Coloca a lista de tratamentos primeiro */
+            margin-bottom: 20px;  /* Pequeno espaço abaixo dos tratamentos */
         }
     }
 
@@ -593,18 +782,7 @@ margin-top: -5px; /* Ajuste conforme necessário */
         max-width: 600px;
     }
 
-    .footer {
-        background-color: #002b58; /* azul mais escuro usado nas outras telas */
-        color: white;
-        padding: 30px 0;
-        width: 100%;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        overflow: hidden;
-    }
+
     .container {
         width: 100%; /* 100% da largura da tela */
         padding: 2em; /* Um valor relativo baseado no tamanho da fonte */
@@ -623,10 +801,102 @@ margin-top: -5px; /* Ajuste conforme necessário */
     display: none !important;
 }
 
-
-
+.card-aviso-mobile {
+    background-color: #000;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 6px;
+    font-size: 14px;
+    max-width: 280px;
+    text-align: center;
+    line-height: 1.4;
+    margin: 30px auto;
 }
 
+/* Estilo para os links no footer */
+.footer a {
+    color: #6c757d;  /* Cor cinza */
+    text-decoration: none;  /* Remove o sublinhado */
+}
+
+.footer a:hover {
+    color: #007bff;  /* Cor ao passar o mouse, pode ser ajustada */
+    text-decoration: underline;  /* Sublinha ao passar o mouse */
+}
+
+/* Alinha o conteúdo do footer na versão mobile */
+@media (max-width: 768px) {
+    .footer .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .footer-social a {
+        font-size: 1.2rem;  /* Tamanho maior dos ícones para facilitar clique */
+    }
+
+    .footer .row {
+        text-align: center;
+        justify-content: center;
+    }
+    .footer-social {
+        display: block;  /* Faz com que os ícones se alinhem verticalmente */
+        text-align: left;  /* Alinha os ícones à esquerda */
+    }
+
+    .social-btn {
+        display: inline-block;  /* Faz com que os ícones fiquem lado a lado */
+        margin-right: 10px;  /* Adiciona um pequeno espaço entre os ícones */
+    }
+    /* Estilo para os parágrafos de contato */
+.footer p {
+    color: #6c757d;  /* Cor cinza */
+    margin-bottom: 5px;  /* Diminui o espaço entre os parágrafos */
+}
+
+/* Se quiser aumentar a proximidade entre os dois parágrafos */
+.footer p + p {
+    margin-top: 0;  /* Remove o espaço acima do segundo parágrafo */
+}
+}
+/* Estilo para os parágrafos de contato */
+.footer p {
+    color: #6c757d;  /* Cor cinza */
+    margin-bottom: 5px;  /* Diminui o espaço entre os parágrafos */
+}
+
+/* Se quiser aumentar a proximidade entre os dois parágrafos */
+.footer p + p {
+    margin-top: 0;  /* Remove o espaço acima do segundo parágrafo */
+}
+.footer-bottom {
+    width: 100%;  /* Faz com que ocupe toda a largura da tela */
+    text-align: center;  /* Centraliza o texto */
+    padding: 10px 0;  /* Adiciona um pequeno padding para que o texto não fique colado nas bordas */
+    background-color: #f5f5f5;  /* Mantém a cor de fundo */
+}
+.footer-social {
+        display: block;  /* Faz com que os ícones se alinhem verticalmente */
+        text-align: left;  /* Alinha os ícones à esquerda */
+    }
+
+    .social-btn {
+        display: inline-block;  /* Faz com que os ícones fiquem lado a lado */
+        margin-right: 10px;  /* Adiciona um pequeno espaço entre os ícones */
+    }
+
+    .tratamento-card img {
+        display: block;
+        margin: 0 auto 10px auto; /* Centraliza a imagem e dá um espaço abaixo */
+        width: 120px;  /* Ajuste o tamanho da imagem conforme necessário */
+        height: 120px; /* Ajuste a altura da imagem conforme necessário */
+        border-radius: 50%;  /* Torna a imagem redonda */
+        object-fit: cover;  /* Garante que a imagem cubra a área sem distorção */
+    }
+    .footer p {
+    color: #6c757d;  /* Cor cinza */
+    margin-bottom: 5px;  /* Diminui o espaço entre os parágrafos */
+}
 
 
     </style>
@@ -878,6 +1148,7 @@ margin-top: -5px; /* Ajuste conforme necessário */
 
     <!-- LISTA DE TRATAMENTOS -->
      
+    
     <div class="treatment-list">
         {% for tratamento in tratamentos %}
         <a href="{% url 'detalhes_tratamentos' tratamento.id %}" class="text-decoration-none text-dark">
@@ -903,7 +1174,7 @@ margin-top: -5px; /* Ajuste conforme necessário */
                    
                     <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo }}</p>
                     <p><strong>Fabricante:</strong> {{ tratamento.fabricante }}</p>
-                    <a href="{% url 'evidencias_clinicas' tratamento.id %}"
+                    <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}"
                     class="btn"
                     style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
                     ver pesquisas
@@ -944,7 +1215,7 @@ margin-top: -5px; /* Ajuste conforme necessário */
 
 
                       <!-- Botão "ver detalhes" logo abaixo -->
-                    <a href="{% url 'detalhes_tratamentos' tratamento.id %}" class="btn mt-2"
+                    <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}" class="btn mt-2"
                     style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500;
           font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center;
           gap: 5px; margin-left: auto;">
@@ -1042,15 +1313,9 @@ margin-top: -5px; /* Ajuste conforme necessário */
           <a href="#" class="social-btn mx-2"><i class="fab fa-youtube fa-lg"></i></a>
         </div>
   
-        <!-- Botões -->
-        <div>
-          <a href="https://www.telix.inf.br/blog" class="btn btn-outline-primary mx-1" target="_blank">Blog</a>
-          <a href="https://www.telix.inf.br/quem-somos" class="btn btn-outline-primary mx-1" target="_blank">Quem Somos</a>
-        </div>
-      </div>
+
   
-      <!-- Info empresa -->
-      <p class="text-muted small">Linca Telecomunicações Ltda - CNPJ: 03.376.788-0001/23</p>
+    
   
       <!-- Área de links com centralização -->
       <div class="row justify-content-center text-start mt-4" style="max-width: 960px; margin: 0 auto;">
@@ -1073,26 +1338,24 @@ margin-top: -5px; /* Ajuste conforme necessário */
           <ul class="list-unstyled">
             <li><a href="http://cadastros.telix.inf.br/tratamentos/" target="_blank">Tratamentos</a></li>
             <li><a href="https://www.telix.inf.br/in%C3%ADcio" target="_blank">Opinião de Especialistas</a></li>
-            <li><a href="https://www.telix.inf.br/interacaomedicamentosa" target="_blank">Interação Medicamentosa</a></li>
-            <li><a href="https://www.telix.inf.br/genericosesimilares" target="_blank">Genéricos e Similares</a></li>
-            <li><a href="https://www.telix.inf.br/prescricaoeletronica" target="_blank">Prescrição Eletrônica</a></li>
-            <li><a href="https://www.telix.inf.br/neurologistasclinicosgerais" target="_blank">Profissionais Indicados</a></li>
+     
           </ul>
         </div>
   
         <!-- Contato -->
         <div class="col-12 col-md-4 mb-4">
             <strong>Fale com a gente!</strong>
-          <p><a href="#">Entrevistas e contato.</a><br>(45) 99904-0371</p>
-          <p><a href="#">Dúvidas, sugestões e contato.</a><br>contato@telix.inf.br</p>
+          <p>(45) 99904-0371</p>
+          <p>contato@telix.inf.br</p>
         </div>
+
+          <!-- Info empresa -->
+      <p class="col-12 col-md-4 mb-4">Linca Telecomunicações Ltda - CNPJ: 03.376.788-0001/23</p>
+
       </div>
     </div>
   
-    <!-- Parte inferior com cor de fundo diferente -->
-    <div class="footer-bottom text-center py-3 mt-4" style="background-color: #f5f5f5; border-top: 1px solid #e0e0e0;">
-      <small class="text-muted">© 2024 Telix. Todos os direitos reservados.</small>
-    </div>
+
   </footer>
   
   

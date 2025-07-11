@@ -7,6 +7,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes do Tratamento</title>
+    <!-- Código de rastreio do GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BS67486CWG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BS67486CWG');  // Seu ID de medição GA4
+    </script>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -110,8 +119,12 @@
             background-color: #ffffff;
             font-size: 0.9rem; }
 
+            .footer p {
+            color: #bbbdbf;  /* Cor cinza */
+            margin-bottom: 5px;  /* Diminui o espaço entre os parágrafos */}
+
             .footer a {
-            color: #007bff;
+            color: #babcbe;
             text-decoration: none;
             }
             .footer h6 {
@@ -1042,8 +1055,84 @@ img {
   #0094FF {{ eficacia_max }}%,
   transparent {{ eficacia_max }}%
 );
+.btn-voltar-img .icone-voltar {
+    width: 35px;
+    height: 35px;
+    margin-right: 5px;
+    vertical-align: middle;
+    margin-top: -4px;  /* Ajuste fino para subir */
+}
+    /* Estilo para os links no footer */
+.footer a {
+    color: #6c757d;  /* Cor cinza */
+    text-decoration: none;  /* Remove o sublinhado */
+}
 
-    
+.footer a:hover {
+    color: #007bff;  /* Cor ao passar o mouse, pode ser ajustada */
+    text-decoration: underline;  /* Sublinha ao passar o mouse */
+}
+
+/* Alinha o conteúdo do footer na versão mobile */
+@media (max-width: 768px) {
+    .footer .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .footer-social a {
+        font-size: 1.2rem;  /* Tamanho maior dos ícones para facilitar clique */
+    }
+
+    .footer .row {
+        text-align: center;
+        justify-content: center;
+    }
+    .footer-social {
+        display: block;  /* Faz com que os ícones se alinhem verticalmente */
+        text-align: left;  /* Alinha os ícones à esquerda */
+    }
+
+    .social-btn {
+        display: inline-block;  /* Faz com que os ícones fiquem lado a lado */
+        margin-right: 10px;  /* Adiciona um pequeno espaço entre os ícones */
+    }
+    /* Estilo para os parágrafos de contato */
+.footer p {
+    color: #6c757d;  /* Cor cinza */
+    margin-bottom: 5px;  /* Diminui o espaço entre os parágrafos */
+}
+
+/* Se quiser aumentar a proximidade entre os dois parágrafos */
+.footer p + p {
+    margin-top: 0;  /* Remove o espaço acima do segundo parágrafo */
+}
+}
+/* Estilo para os parágrafos de contato */
+.footer p {
+    color: #6c757d;  /* Cor cinza */
+    margin-bottom: 5px;  /* Diminui o espaço entre os parágrafos */
+}
+
+/* Se quiser aumentar a proximidade entre os dois parágrafos */
+.footer p + p {
+    margin-top: 0;  /* Remove o espaço acima do segundo parágrafo */
+}
+.footer-bottom {
+    width: 100%;  /* Faz com que ocupe toda a largura da tela */
+    text-align: center;  /* Centraliza o texto */
+    padding: 10px 0;  /* Adiciona um pequeno padding para que o texto não fique colado nas bordas */
+    background-color: #f5f5f5;  /* Mantém a cor de fundo */
+}
+.footer-social {
+        display: block;  /* Faz com que os ícones se alinhem verticalmente */
+        text-align: left;  /* Alinha os ícones à esquerda */
+    }
+
+    .social-btn {
+        display: inline-block;  /* Faz com que os ícones fiquem lado a lado */
+        margin-right: 10px;  /* Adiciona um pequeno espaço entre os ícones */
+    }
 }
 
 
@@ -1070,30 +1159,33 @@ img {
 
 
 
-
-
-
-
-
-
-         <!-- EXIBIÇÃO DA IMAGEM DO TRATAMENTO -->
-
-
         <div class="container">
             <div class="tratamento-container"style="margin-bottom: 150px;">
+
                 <!-- Informações do Medicamento -->
                 <div class="tratamento-info">
-                    <h2 style="color: #0094FF;">
-                        
-                        {% for tipo in tratamento.tipo_tratamento.all %}
-                            {{ tipo.nome }}{% if not forloop.last %}, {% endif %}
-                        {% empty %}
-                            Nenhum tipo selecionado
-                        {% endfor %}
-                    </h2>
+
+
+
+                    <h2 style="color: #0094FF; display: flex; align-items: center; gap:8px;">
+
+                        <!-- Botão Voltar -->
+                        <a href="{% url 'tratamentos' %}" class="btn-voltar-img">
+                            <img src="{% static 'img/seta-voltar.png' %}" alt="Voltar" class="icone-voltar" style="width: 40px; height:40px;">
+                        </a>
                     
+                        <!-- Texto do tipo de tratamento -->
+                        <span>
+                            {% for tipo in tratamento.tipo_tratamento.all %}
+                                {{ tipo.nome }}{% if not forloop.last %}, {% endif %}
+                            {% empty %}
+                                Nenhum tipo selecionado
+                            {% endfor %}
+                        </span>
+                    
+                    </h2>
                     <h3 style="font-family: Arial, sans-serif; font-weight: bold; font-size: 32px; line-height: 1.2; color: #000;">
-                        <strong>{{ tratamento.nome }}<sup style="font-size: 0.6em;">®</sup></strong>
+                        <strong>{{ tratamento.nome }}<sup style="font-size: 0.6em;"></sup></strong>
                     </h3>
                     <p>
                         <strong style="font-weight: normal; color: #000;">Fabricante:</strong> 
@@ -1224,7 +1316,7 @@ img {
         
 <!-- Botão para ver as pesquisas, com o tamanho ajustado -->
 <div style="display: flex; justify-content: center; margin-top: 5px;">
-    <a href="{% url 'evidencias_clinicas' tratamento.id %}" 
+    <a href="% url 'evidencias_clinicas' slug=tratamento.slug %" 
        style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 20px; font-size: 16px; color: #0094FF; border: 2px solid #0094FF; border-radius: 5px; text-decoration: none; width: auto;">
         Veja as pesquisas
         <img src="{% static 'img/seta.png' %}" alt="Seta" style="margin-left: 10px; width: 15px; height: 15px; vertical-align: middle;">
@@ -1598,7 +1690,12 @@ img {
   </div>
   
 
-
+<!-- Botão de voltar abaixo dos comentários -->
+<div class="voltar-container" style="margin-top: 20px; display: flex; justify-content: center;">
+    <a href="{% url 'tratamentos' %}" class="btn-voltar">
+        <img src="{% static 'img/voltar.png' %}" style="height: 60px;">
+    </a>
+</div>
 
 
 
@@ -1606,6 +1703,9 @@ img {
 
 </body>
 
+
+
+<!-- FOOTER -->
 
 
 <!-- FOOTER -->
@@ -1623,15 +1723,9 @@ img {
           <a href="#" class="social-btn mx-2"><i class="fab fa-youtube fa-lg"></i></a>
         </div>
   
-        <!-- Botões -->
-        <div>
-          <a href="https://www.telix.inf.br/blog" class="btn btn-outline-primary mx-1" target="_blank">Blog</a>
-          <a href="https://www.telix.inf.br/quem-somos" class="btn btn-outline-primary mx-1" target="_blank">Quem Somos</a>
-        </div>
-      </div>
+
   
-      <!-- Info empresa -->
-      <p class="text-muted small">Linca Telecomunicações Ltda - CNPJ: 03.376.788-0001/23</p>
+    
   
       <!-- Área de links com centralização -->
       <div class="row justify-content-center text-start mt-4" style="max-width: 960px; margin: 0 auto;">
@@ -1654,26 +1748,24 @@ img {
           <ul class="list-unstyled">
             <li><a href="http://cadastros.telix.inf.br/tratamentos/" target="_blank">Tratamentos</a></li>
             <li><a href="https://www.telix.inf.br/in%C3%ADcio" target="_blank">Opinião de Especialistas</a></li>
-            <li><a href="https://www.telix.inf.br/interacaomedicamentosa" target="_blank">Interação Medicamentosa</a></li>
-            <li><a href="https://www.telix.inf.br/genericosesimilares" target="_blank">Genéricos e Similares</a></li>
-            <li><a href="https://www.telix.inf.br/prescricaoeletronica" target="_blank">Prescrição Eletrônica</a></li>
-            <li><a href="https://www.telix.inf.br/neurologistasclinicosgerais" target="_blank">Profissionais Indicados</a></li>
+     
           </ul>
         </div>
   
         <!-- Contato -->
         <div class="col-12 col-md-4 mb-4">
             <strong>Fale com a gente!</strong>
-          <p><a href="#">Entrevistas e contato.</a><br>(45) 99904-0371</p>
-          <p><a href="#">Dúvidas, sugestões e contato.</a><br>contato@telix.inf.br</p>
+          <p>(45) 99904-0371</p>
+          <p>contato@telix.inf.br</p>
         </div>
+
+          <!-- Info empresa -->
+      <p class="col-12 col-md-4 mb-4">Linca Telecomunicações Ltda - CNPJ: 03.376.788-0001/23</p>
+
       </div>
     </div>
   
-    <!-- Parte inferior com cor de fundo diferente -->
-    <div class="footer-bottom text-center py-3 mt-4" style="background-color: #f5f5f5; border-top: 1px solid #e0e0e0;">
-      <small class="text-muted">© 2024 Telix. Todos os direitos reservados.</small>
-    </div>
+
   </footer>
   
   

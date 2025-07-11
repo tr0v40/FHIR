@@ -16,12 +16,12 @@ urlpatterns = [
    
     path("tratamentos/", views.tratamentos, name="tratamentos"),
     path(
-        "tratamento/<int:tratamento_id>/",
+        "tratamento/<slug:slug>/",
         views.detalhes_tratamentos,
         name="detalhes_tratamentos",
     ),
     path(
-        "evidencias-clinicas/<int:tratamento_id>/",
+        "pesquisas-e-artigos-sobre-tratamentos/<slug:slug>/",
         views.evidencias_clinicas,
         name="evidencias_clinicas",
     ),

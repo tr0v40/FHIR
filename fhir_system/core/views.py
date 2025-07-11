@@ -189,13 +189,13 @@ from django.shortcuts import render, get_object_or_404
 from .models import DetalhesTratamentoResumo, EvidenciasClinicas
 from django.db.models import Min, Max
 
-def detalhes_tratamentos(request, tratamento_id):
+def detalhes_tratamentos(request, slug):
     # Buscar o tratamento pelo ID
     tratamento = get_object_or_404(
         DetalhesTratamentoResumo.objects.prefetch_related(
             'reacoes_adversas_detalhes',  # relação intermediária
             'reacoes_adversas_detalhes__reacao_adversa'  # para carregar a reação em cada detalhe
-        ), id=tratamento_id
+        ), slug=slug
     )
 
     # Buscar as evidências associadas ao tratamento
@@ -290,11 +290,11 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
 
 
 
-def evidencias_clinicas(request, tratamento_id):
+def evidencias_clinicas(request, slug):
     """Exibe a página de evidências clínicas de um tratamento específico"""
 
-    # Buscando o tratamento pelo ID
-    tratamento = get_object_or_404(DetalhesTratamentoResumo, id=tratamento_id)
+    # Buscando o tratamento pelo slug
+    tratamento = get_object_or_404(DetalhesTratamentoResumo, slug=slug)
 
     # Buscando as evidências associadas a esse tratamento
     evidencias = EvidenciasClinicas.objects.filter(tratamento=tratamento)
@@ -322,7 +322,7 @@ from .models import DetalhesTratamentoResumo
 
 def salvar_avaliacao(request, tratamento_id):
     # Buscar o tratamento pelo ID
-    tratamento = get_object_or_404(DetalhesTratamentoResumo, id=tratamento_id)
+    tratamento = get_object_or_404(DetalhesTratamentoResumo, slug=tratamento.slug)
     
     if request.method == 'POST':
         comentario = request.POST.get('comentario', '')

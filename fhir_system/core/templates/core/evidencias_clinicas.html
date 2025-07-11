@@ -6,6 +6,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estudos e Evidências</title>
+    <!-- Código de rastreio do GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BS67486CWG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BS67486CWG');  // Seu ID de medição GA4
+    </script>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -175,7 +184,7 @@
 </style>
 
 <h1 class="titulo-tratamento">
-  <a href="{{ url_retorno }}" class="back-link" aria-label="Voltar">
+  <a href="{% url 'tratamentos' %}" class="back-link" aria-label="Voltar">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" >
       <path d="M15 18l-6-6 6-6" />
     </svg>
@@ -332,7 +341,12 @@
 {% endif %}
 
 
-
+<!-- Botão de voltar abaixo dos comentários -->
+<div class="voltar-container" style="margin-top: 20px; display: flex; justify-content: center;">
+  <a href="{% url 'tratamentos' %}" class="btn-voltar">
+      <img src="{% static 'img/voltar.png' %}" style="height: 60px;">
+  </a>
+</div>
 
 
 
