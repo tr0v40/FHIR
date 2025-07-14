@@ -1410,7 +1410,7 @@ img {
         
 <!-- Botão para ver as pesquisas, com o tamanho ajustado -->
 <div style="display: flex; justify-content: center; margin-top: 5px;">
-    <a href="% url 'evidencias_clinicas' slug=tratamento.slug %" 
+    <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" 
        style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 20px; font-size: 16px; color: #0094FF; border: 2px solid #0094FF; border-radius: 5px; text-decoration: none; width: auto;">
         Veja as pesquisas
         <img src="{% static 'img/seta.png' %}" alt="Seta" style="margin-left: 10px; width: 15px; height: 15px; vertical-align: middle;">
