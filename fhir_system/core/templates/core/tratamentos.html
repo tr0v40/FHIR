@@ -1024,15 +1024,35 @@ margin-top: -5px; /* Ajuste conforme necessário */
 @media (max-width: 768px) {
     .card-aviso-mobile {
         display: block;
+        .dropdown-toggle {
+        width: 100%;
+        padding: 10px 0;
+        background-color: #f8f9fa;
+        border: 1px solid #ccc;
+        text-align: left;
+        display: block;
     }
-}
-/* Estilo para rolagem nos filtros de contraindicações na versão mobile */
-@media (max-width: 768px) {
+
+    /* Filtro de Contraindicações */
     #contraindicationsOptions {
-        max-height: 200px; /* Ajuste a altura conforme necessário */
-        
+        max-height: 300px;  /* Defina a altura máxima que você achar necessário */
+        overflow-y: auto;   /* Permite a rolagem vertical */
+        padding: 10px;      /* Adiciona espaçamento interno */
+        display: block;     /* Assegura que as opções fiquem visíveis */
+    }
+
+    .form-check {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    /* Remover bordas e ajustes para garantir que o conteúdo fique bom */
+    .dropdown-menu {
+        border-radius: 0;
+    }
     }
 }
+
 
 
 
@@ -1152,25 +1172,19 @@ margin-top: -5px; /* Ajuste conforme necessário */
 
                     <!-- Dropdown de Contraindicações -->
                     <div class="dropdown">
-                        <!-- Botão para expandir/mostrar as opções -->
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownContra" data-bs-toggle="collapse" data-bs-target="#contraindicationsOptions" aria-expanded="false" aria-controls="contraindicationsOptions">
                             Selecione as contraindicações
                         </button>
-
-                        <!-- Opções de checkboxes escondidas que serão abertas ao clicar -->
+                    
                         <div id="contraindicationsOptions" class="collapse">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="contraindicacoes" value="nenhuma" id="contra_nenhuma" {% if not contraindicacoes_selecionadas %}checked{% endif %}>
-                                <label class="form-check-label" for="contra_nenhuma">
-                                    Nenhuma
-                                </label>
+                                <label class="form-check-label" for="contra_nenhuma">Nenhuma</label>
                             </div>
                             {% for item in contraindications|dictsort:"nome" %}
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="contraindicacoes" value="{{ item.id }}" id="contra_{{ item.id }}" {% if item.id|stringformat:"s" in contraindicacoes_selecionadas %}checked{% endif %}>
-                                    <label class="form-check-label" for="contra_{{ item.id }}">
-                                        {{ item.nome }}
-                                    </label>
+                                    <label class="form-check-label" for="contra_{{ item.id }}">{{ item.nome }}</label>
                                 </div>
                             {% endfor %}
                         </div>
