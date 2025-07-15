@@ -236,7 +236,7 @@ margin-top: -5px; /* Ajuste conforme necessário */
         width: 100%;  /* Barra lateral ocupa a tela inteira */
         height: auto;
         position: sticky; /* Evita que a sidebar fique fixa em dispositivos móveis */
-        height: 1230px;
+        height: 1400px;
     }
     .tratamento-content {
         display: flex;
@@ -1030,7 +1030,12 @@ margin-top: -5px; /* Ajuste conforme necessário */
 @media (max-width: 768px) {
     #contraindicationsOptions {
         max-height: 200px; /* Ajuste a altura conforme necessário */
-        overflow-y: auto;  /* Habilita rolagem vertical */
+        display: block;     /* Garante que o dropdown será visível */
+    }
+
+    /* Evitar que o dropdown fique escondido em dispositivos móveis */
+    .collapse {
+        display: block !important;  /* Força a visibilidade */
     }
 }
 
