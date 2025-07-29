@@ -17,6 +17,8 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" href="https://www.seusite.com/static/img/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
     <style>
         body {
             background-color: #ffffff;
@@ -61,7 +63,7 @@
         }
 
         .footer {
-    background-color: #fcfcfc;
+    background-color: white;
     padding: 40px 0;
     color: #000000;
 }
@@ -84,13 +86,13 @@
 
 /* Remover o sublinhado e alterar a cor dos links */
 .footer a {
-    color: #ced4da; /* Cinza claro */
+    color: #303030; /* Cinza claro */
     text-decoration: none; /* Remove o sublinhado */
 }
 
 .footer a:hover {
     text-decoration: underline; /* Sublinha ao passar o mouse */
-    color: #6c757d; /* Cor cinza escuro ao passar o mouse */
+    color: #3294ea; /* Cor cinza escuro ao passar o mouse */
 }
 
 /* Títulos em negrito */
@@ -105,7 +107,7 @@
 }
 
 .footer p {
-    color: #d1d0d0;
+    color: #a9a9a9;
     font-size: 14px;
     margin-bottom: 5px;
 }
@@ -145,10 +147,10 @@
             transition: 0.3s;
         }
         .btn-pdf:hover {
-            background-color: #545b62;
+            background-color: #2b71b7;
         }
         .footer a {
-            color: #d3d3d3;
+            color: #adadad;
         }
         .footer a:hover {
             text-decoration: underline;
@@ -488,28 +490,14 @@
 
 
 <!-- FOOTER -->
-
-<!-- FOOTER -->
 <footer class="footer mt-5 pt-4 border-top">
-  <div class="container text-center">
-
-    <!-- Redes sociais + Botões -->
-    <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-3 mb-3">
-      <!-- Redes sociais -->
-      <div class="footer-social d-flex justify-content-center">
-        <a href="https://www.instagram.com/telix.inf.br/" target="_blank" class="social-btn mx-2"><i class="fab fa-instagram fa-lg"></i></a>
-        <a href="https://www.facebook.com/people/Telix-contexto-na-sa%C3%BAde/100089318347896/" target="_blank" class="social-btn mx-2"><i class="fab fa-facebook-f fa-lg"></i></a>
-        <a href="https://www.linkedin.com/company/telix-canais-de-not%C3%ADcias" target="_blank" class="social-btn mx-2"><i class="fab fa-linkedin-in fa-lg"></i></a>
-        <a href="https://www.youtube.com/@TelixSaude"><i class="fab fa-youtube fa-lg"></i></a>
-      </div>
-    </div>
-
+  <div class="container">
     <!-- Área de links com centralização -->
-    <div class="row justify-content-center text-start mt-4" style="max-width: 960px; margin: 0 auto;">
+    <div class="row justify-content-between text-start mt-4" style="max-width: 960px; margin: 0 auto;">
       
-      <!-- Explorar -->
+      <!-- Explorar (alinhado à esquerda) -->
       <div class="col-12 col-md-4 mb-4">
-          <strong>Explorar</strong>
+        <strong>Explorar</strong>
         <ul class="list-unstyled">
           <li><a href="https://www.telix.inf.br/pacientes" target="_blank">Pacientes</a></li>
           <li><a href="https://www.telix.inf.br/profissionaisdesaude" target="_blank">Profissionais de Saúde</a></li>
@@ -519,31 +507,40 @@
         </ul>
       </div>
 
-      <!-- Tratamentos -->
-      <div class="col-12 col-md-4 mb-4">
-          <strong>Tratamentos</strong>
+      <!-- Tratamentos (centralizado) -->
+      <div class="col-12 col-md-4 mb-4 text-center">
+        <strong>Tratamentos</strong>
         <ul class="list-unstyled">
           <li><a href="http://cadastros.telix.inf.br/tratamentos/" target="_blank">Tratamentos</a></li>
           <li><a href="https://www.telix.inf.br/in%C3%ADcio" target="_blank">Opinião de Especialistas</a></li>
         </ul>
       </div>
 
-      <!-- Contato -->
-      <div class="col-12 col-md-4 mb-4">
-          <strong>Fale com a gente!</strong>
-          <p><a href="https://api.whatsapp.com/send/?phone=45999040371&text&type=phone_number&app_absent=0" target="_blank">(45) 99904-0371</a></p>
-
-          <p><a href="https://www.microsoft.com/pt-br/microsoft-365/outlook/email-and-calendar-software-microsoft-outlook?deeplink=%2fmail%2f0%2f%3fmailtouri%3dmailto%253Acontato%2540telix.inf.br%26nlp%3d0&sdf=0" target="_blank">contato@telix.inf.br</a></p>
-
+      <!-- Fale com a gente (alinhado à direita) -->
+      <div class="col-12 col-md-4 mb-4 text-end">
+        <strong>Fale com a gente!</strong>
+        <p><a href="https://api.whatsapp.com/send/?phone=45999040371&text&type=phone_number&app_absent=0" target="_blank">(45) 99904-0371</a></p>
+        <p><a href="https://www.microsoft.com/pt-br/microsoft-365/outlook/email-and-calendar-software-microsoft-outlook?deeplink=%2fmail%2f0%2f%3fmailtouri%3dmailto%253Acontato%2540telix.inf.br%26nlp%3d0&sdf=0" target="_blank">contato@telix.inf.br</a></p>
       </div>
-      </div>
-
-      <!-- Info empresa -->
-      <p class="col-12 col-md-4 mb-4">Linca Telecomunicações Ltda - CNPJ: 03.376.788-0001/23</p>
-
     </div>
+
+    <!-- Redes sociais + Info empresa -->
+    <div class="d-flex justify-content-center align-items-center gap-3 mb-3">
+      <!-- Redes sociais -->
+      <div class="footer-social d-flex justify-content-center gap-3">
+        <a href="https://www.instagram.com/telix.inf.br/" target="_blank" class="social-btn mx-2"><i class="fab fa-instagram fa-lg"></i></a>
+        <a href="https://www.facebook.com/people/Telix-contexto-na-sa%C3%BAde/100089318347896/" target="_blank" class="social-btn mx-2"><i class="fab fa-facebook-f fa-lg"></i></a>
+        <a href="https://www.linkedin.com/company/telix-canais-de-not%C3%ADcias" target="_blank" class="social-btn mx-2"><i class="fab fa-linkedin-in fa-lg"></i></a>
+        <a href="https://www.youtube.com/@TelixSaude"><i class="fab fa-youtube fa-lg"></i></a>
+      </div>
+      <!-- Info da empresa -->
+      <p class="mb-0">Linca Telecomunicações Ltda - CNPJ: 03.376.788-0001/23</p>
+    </div>
+
   </div>
 </footer>
+
+
 
 
 </body>

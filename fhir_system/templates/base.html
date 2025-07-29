@@ -11,6 +11,8 @@
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/png">
+
     
 
     <!-- Select2 CSS -->
@@ -39,10 +41,11 @@
             bottom: 0;
             left: 0;
             text-align: center;
+            border-top: none;
         }
 
         .footer-container {
-            background: #dbdddf;
+            background:transparent;
             display: flex;  
             justify-content: space-between;
             align-items: center;
@@ -51,6 +54,7 @@
             max-width: 1200px;
             margin: auto;
             padding: 0 20px;
+            border-top: none;
         }
 
         .footer-left img {
@@ -173,7 +177,7 @@
         <div class="footer-container">
             <div class="footer-left">
                 <a class="navbar-brand" href="https://www.telix.inf.br/">
-                    <img src="{% static 'img/logo.png' %}" alt="Telix Logo" style="height: 70px;">
+                 
                 </a>
                 <p class="footer-text">Linca Telecomunicações Ltda</p>
                 <p class="footer-text">CNPJ: 03.376.788-0001/23</p>
