@@ -182,41 +182,33 @@ def formatar_numeros(n):
 
 
 
-
-# views.py
-
 from django.shortcuts import render, get_object_or_404
 from .models import DetalhesTratamentoResumo, EvidenciasClinicas
 from django.db.models import Min, Max
 
 def detalhes_tratamentos(request, slug):
-    # Buscar o tratamento pelo ID
     tratamento = get_object_or_404(
         DetalhesTratamentoResumo.objects.prefetch_related(
-            'reacoes_adversas_detalhes',  # relação intermediária
-            'reacoes_adversas_detalhes__reacao_adversa'  # para carregar a reação em cada detalhe
+            'reacoes_adversas_detalhes',
+            'reacoes_adversas_detalhes__reacao_adversa'
         ), slug=slug
     )
 
-    # Buscar as evidências associadas ao tratamento
     evidencias = EvidenciasClinicas.objects.filter(tratamento=tratamento)
 
-    # Agregar a eficácia mínima e máxima das evidências
     eficacia_agregada = evidencias.aggregate(
         eficacia_min=Min('eficacia_min'),
         eficacia_max=Max('eficacia_max')
     )
+
     eficacia_min = eficacia_agregada.get('eficacia_min')
     eficacia_max = eficacia_agregada.get('eficacia_max')
 
-    # Inicializa prazo_efeito para evitar UnboundLocalError
+    # Prazo de efeito
     prazo_efeito = "Não disponível"
-
-    # Use método do model se existir (exemplo: prazo_efeito_faixa_formatada)
     if hasattr(tratamento, "prazo_efeito_faixa_formatada"):
         prazo_efeito = tratamento.prazo_efeito_faixa_formatada
     else:
-        # Se não existir, use sua lógica condicional antiga
         if tratamento.prazo_efeito_min and tratamento.prazo_efeito_max:
             if tratamento.prazo_efeito_max < 60:
                 prazo_efeito = f"{tratamento.prazo_efeito_min} min a {tratamento.prazo_efeito_max} min"
@@ -225,26 +217,36 @@ def detalhes_tratamentos(request, slug):
             elif tratamento.prazo_efeito_min >= 1440:
                 prazo_efeito = f"{tratamento.prazo_efeito_min // 1440} dia a {tratamento.prazo_efeito_max // 1440} dias"
 
-    # Garantir que a avaliação seja um número inteiro
     avaliacao = int(tratamento.avaliacao) if tratamento.avaliacao else 0
+    estrelas_preenchidas = [1 for _ in range(avaliacao)]
+    estrelas_vazias = [1 for _ in range(5 - avaliacao)]
 
-    # Criar uma lista de estrelas com base na avaliação
-    estrelas_preenchidas = [1 for i in range(avaliacao)]  # Lista de estrelas preenchidas
-    estrelas_vazias = [1 for i in range(5 - avaliacao)]  # Lista de estrelas vazias
-# Ordenar reações adversas do tratamento pela maior reação_max
-    detalhes_reacoes_ordenadas = tratamento.reacoes_adversas_detalhes.all().order_by('-reacao_max')
-    # Retornar a resposta renderizada com o contexto
+    # Formatando os valores
+    detalhes_formatados = []
+    for detalhe in tratamento.reacoes_adversas_detalhes.all():
+        detalhe.reacao_min = format(detalhe.reacao_min or 0, '.2f').replace('.', ',')
+        detalhe.reacao_max = format(detalhe.reacao_max or 0, '.2f').replace('.', ',')
+        detalhes_formatados.append(detalhe)
+
+    # Ordenar por reacao_max (convertido para float para manter a ordenação correta)
+    detalhes_reacoes_ordenadas = sorted(
+        detalhes_formatados,
+        key=lambda x: float(str(x.reacao_max).replace(',', '.')),
+        reverse=True
+    )
+
     return render(request, 'core/detalhes_tratamentos.html', {
         'tratamento': tratamento,
         'avaliacao': avaliacao,
-        'comentario': tratamento.comentario,  # Supondo que o comentário esteja no modelo
-        'eficacia_min': eficacia_min,
-        'eficacia_max': eficacia_max,
+        'comentario': tratamento.comentario,
+        'eficacia_min': format(eficacia_min or 0, '.2f').replace('.', ','),
+        'eficacia_max': format(eficacia_max or 0, '.2f').replace('.', ','),
+        'eficacia_max_css': eficacia_max or 0, 
         'risco': tratamento.risco,
         'tipo_tratamento': tratamento.tipo_tratamento,
-        'prazo_efeito': prazo_efeito,  # Adicionando a variável formatada ao contexto
+        'prazo_efeito': prazo_efeito,
         'estrelas_preenchidas': estrelas_preenchidas,
-        'estrelas_vazias': estrelas_vazias, # Passando a lista de estrelas para o template
+        'estrelas_vazias': estrelas_vazias,
         'detalhes_reacoes_adversas': detalhes_reacoes_ordenadas,
     })
 
