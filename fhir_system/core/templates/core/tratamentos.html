@@ -26,6 +26,8 @@
     <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
 
     <style>
+
+        
 /* CONFIGURAÇÃO GERAL */
 html, body {
     height: 100%;
@@ -238,7 +240,7 @@ margin-top: -5px; /* Ajuste conforme necessário */
         width: 100%;  /* Barra lateral ocupa a tela inteira */
         height: auto;
         position: sticky; /* Evita que a sidebar fique fixa em dispositivos móveis */
-        height: 2000px;
+        height: 1200px;
     }
     .tratamento-content {
         display: flex;
@@ -948,17 +950,16 @@ margin-top: -5px; /* Ajuste conforme necessário */
     }
 
     .footer .row {
-        text-align: center;
-        justify-content: center;
+        text-align: left;
+        justify-content: left;
     }
-    .footer-social {
-        display: block;  /* Faz com que os ícones se alinhem verticalmente */
-        text-align: left;  /* Alinha os ícones à esquerda */
-    }
+
 
     .social-btn {
         display: inline-block;  /* Faz com que os ícones fiquem lado a lado */
         margin-right: 10px;  /* Adiciona um pequeno espaço entre os ícones */
+        text-align: left;
+        justify-content: left;
     }
     /* Estilo para os parágrafos de contato */
 .footer p {
@@ -1053,6 +1054,122 @@ margin-top: -5px; /* Ajuste conforme necessário */
         border-radius: 0;
     }
     }
+
+    @media (max-width: 768px) {
+  .form-check {
+    margin-bottom: 12px;
+    font-size: 14px;
+  }
+
+  .form-check-input {
+    width: 18px;
+    height: 18px;
+  }
+
+  .form-check-label {
+    margin-left: 10px;
+  }
+  /* Para container com rolagem e melhor aparência */
+.contra-scroll {
+    max-height: 280px;
+    overflow-y: auto;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+}
+
+/* Estilo dos checkboxes */
+.contra-scroll .form-check {
+    padding: 5px 8px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.contra-scroll .form-check:last-child {
+    border-bottom: none;
+}
+
+.contra-scroll .form-check-input {
+    margin-right: 8px;
+}
+
+.contra-scroll .form-check-label {
+    font-size: 14px;
+    color: #333;
+}
+
+/* Para container com rolagem e melhor aparência */
+.contra-scroll {
+    max-height: 150px;
+    overflow-y: auto;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+}
+
+/* Estilo dos checkboxes */
+.contra-scroll .form-check {
+    padding: 5px 8px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.contra-scroll .form-check:last-child {
+    border-bottom: none;
+}
+
+.contra-scroll .form-check-input {
+    margin-right: 8px;
+}
+
+.contra-scroll .form-check-label {
+    font-size: 14px;
+    color: #333;
+}
+
+
+
+}
+
+
+/* Estilo da caixa colapsada de contraindicações */
+.contra-scroll {
+  max-height: 260px;
+  overflow-y: auto;
+  background-color: #fff;
+  padding-right: 10px;
+}
+
+/* Espaço interno das opções */
+.form-check.ps-2 {
+  padding-left: 12px;
+}
+
+/* Espaço entre os itens */
+.form-check + .form-check {
+  border-top: 1px solid #eee;
+  padding-top: 8px;
+  margin-top: 8px;
+}
+
+/* Para deixar o botão mais bonito e coerente */
+button.btn-outline-primary {
+  background-color: #f9f9f9;
+  text-align: left;
+}
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Espaçamento entre colunas no footer (somente para lista de tratamentos) */
+footer.footer .row > div {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+
 }
 
 
@@ -1081,6 +1198,24 @@ margin-top: -5px; /* Ajuste conforme necessário */
             <input type="checkbox" id="ordenacao-checkbox"  checked>
             <label for="ordenacao-checkbox" id="ordenacao-texto">Ordem decrescente de eficácia máxima</label>
       </div>
+
+      <a href="#area-filtros" class="btn d-inline-block mt-3" style="
+      background-color: #f0f0f0;
+      color: #060606;
+      border: 2px solid #e4e4e4;
+      font-weight: normal;
+      font-size: 12px;
+      padding: 8px 12px;
+      text-align: center;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+      max-width: 250px;">
+      Outros filtros e ordenações
+    </a>
+    
+  
+        
+
+
       <div class="card-aviso">
         <p><strong>Não se automedique.</strong><br>Consulte um profissional de saúde.</p>
       </div>
@@ -1136,7 +1271,8 @@ margin-top: -5px; /* Ajuste conforme necessário */
 
 <div class="content-area">
     <!-- Sidebar com filtros -->
-    <div class="left-sidebar" style="position: sticky; top: 20px; z-index: 100;">
+    <div class="left-sidebar" id="area-filtros" style="position: sticky; top: 20px; z-index: 100;">
+
         <form method="GET" action="{% url 'tratamentos' %}">
             <div class="filters bg-white p-3 rounded shadow-sm">
               
@@ -1166,35 +1302,43 @@ margin-top: -5px; /* Ajuste conforme necessário */
                          </div>
                     
                     
-                <!-- Filtro de Contraindicações -->
-                <div class="filters" style="position: sticky; margin-top: 30px; z-index: 100;">
-                    <h5><strong>Contraindicações</strong><img src="{% static 'img/icone.png' %}"  style="height: 24px; margin-left: 15x;"></h5>
 
-                    <p>Esse filtro vai excluir da lista os tratamentos com contraindicações às condições de saúde que você selecionar.</p>
 
-                    <!-- Dropdown de Contraindicações -->
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownContra" data-bs-toggle="collapse" data-bs-target="#contraindicationsOptions" aria-expanded="false" aria-controls="contraindicationsOptions">
-                            Selecione as contraindicações
-                        </button>
-                    
-                        <div id="contraindicationsOptions" class="collapse">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="contraindicacoes" value="nenhuma" id="contra_nenhuma" {% if not contraindicacoes_selecionadas %}checked{% endif %}>
-                                <label class="form-check-label" for="contra_nenhuma">Nenhuma</label>
-                            </div>
-                            {% for item in contraindications|dictsort:"nome" %}
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="contraindicacoes" value="{{ item.id }}" id="contra_{{ item.id }}" {% if item.id|stringformat:"s" in contraindicacoes_selecionadas %}checked{% endif %}>
-                                    <label class="form-check-label" for="contra_{{ item.id }}">{{ item.nome }}</label>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-
-                    <!-- Botão para submeter o filtro -->
-                    <button type="submit" class="btn btn-primary mt-3">Aplicar Filtro</button>
-                </div>
+<!-- Filtro de Contraindicações com accordion -->
+<div class="filters" style="margin-top: 30px;">
+    <h5><strong>Contraindicações</strong> 
+      <img src="{% static 'img/icone.png' %}" style="height: 20px; margin-left: 10px;">
+    </h5>
+    <p>Selecione as condições que você quer evitar nos tratamentos:</p>
+  
+    <!-- Botão para abrir colapsável -->
+    <button class="btn btn-outline-primary w-100 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#contraCollapse" aria-expanded="false" aria-controls="contraCollapse">
+      Selecionar contraindicações
+    </button>
+  
+    <!-- Lista recolhida por padrão -->
+    <div class="collapse" id="contraCollapse">
+      <div class="contra-scroll border rounded p-3">
+        <div class="form-check ps-2 mb-2">
+          <input class="form-check-input" type="checkbox" name="contraindicacoes" value="nenhuma" id="contra_nenhuma"
+            {% if not contraindicacoes_selecionadas %}checked{% endif %}>
+          <label class="form-check-label" for="contra_nenhuma">Nenhuma</label>
+        </div>
+        {% for item in contraindications|dictsort:"nome" %}
+        <div class="form-check ps-2 mb-2">
+          <input class="form-check-input" type="checkbox" name="contraindicacoes" value="{{ item.id }}" id="contra_{{ item.id }}"
+            {% if item.id|stringformat:"s" in contraindicacoes_selecionadas %}checked{% endif %}>
+          <label class="form-check-label" for="contra_{{ item.id }}">{{ item.nome }}</label>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  
+    <!-- Botão de aplicar -->
+    <button type="submit" class="btn btn-primary w-100 mt-3">Aplicar Filtro</button>
+  </div>
+  
+                
 
                     
 <!-- Filtro de Ordenação -->
@@ -1462,64 +1606,63 @@ margin-top: -5px; /* Ajuste conforme necessário */
     <p><strong>Não se automedique.</strong><br>Consulte um profissional de saúde.</p>
 </div>
 
-<!-- FOOTER -->
+<!-- FOOTER UNIFICADO -->
 <footer class="footer mt-5 pt-4 border-top">
     <div class="container text-center">
+        <!-- ÍCONES NO TOPO APENAS NO MOBILE -->
+  <div class="footer-social d-flex justify-content-center mb-4 d-md-none">
+    <a href="https://www.instagram.com/telix.inf.br/" target="_blank" class="social-btn mx-2"><i class="fab fa-instagram fa-lg"></i></a>
+    <a href="https://www.facebook.com/people/Telix-contexto-na-sa%C3%BAde/100089318347896/" target="_blank" class="social-btn mx-2"><i class="fab fa-facebook-f fa-lg"></i></a>
+    <a href="https://www.linkedin.com/company/telix-canais-de-not%C3%ADcias" target="_blank" class="social-btn mx-2"><i class="fab fa-linkedin-in fa-lg"></i></a>
+    <a href="https://www.youtube.com/@TelixSaude" target="_blank" class="social-btn mx-2"><i class="fab fa-youtube fa-lg"></i></a>
+  </div>
   
-
+      <!-- Redes sociais sempre no topo no mobile -->
   
-      <!-- Área de links com centralização -->
-      <div class="row justify-content-center text-start mt-4" style="max-width: 960px; margin: 0 auto;">
-        
-        <!-- Explorar -->
-        <div class="col-12 col-md-4 mb-4">
-            <strong>Explorar</strong>
+      <div class="row justify-content-center text-start mt-4">
+        <!-- Coluna 1 -->
+        <div class="col-12 col-md-4 mb-4"style="padding-right: 200px;">
+          <h5>Explorar</h5>
           <ul class="list-unstyled">
             <li><a href="https://www.telix.inf.br/pacientes" target="_blank">Pacientes</a></li>
             <li><a href="https://www.telix.inf.br/profissionaisdesaude" target="_blank">Profissionais de Saúde</a></li>
-            <li><a href="https://www.telix.inf.br/divulgacao-de-servicos-e-pesquisas-de-saude">Empresas</a></li>
+            <li><a href="https://www.telix.inf.br/divulgacao-de-servicos-e-pesquisas-de-saude" target="_blank">Empresas</a></li>
             <li><a href="https://www.telix.inf.br/blog" target="_blank">Blog</a></li>
             <li><a href="https://www.telix.inf.br/quem-somos-telix-contexto-na-saude" target="_blank">Quem somos</a></li>
-
-                  <!-- Redes sociais + Botões -->
-      <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-3 mb-3">
-        <!-- Redes sociais -->
-        <div class="footer-social d-flex justify-content-center">
-          <a href="https://www.instagram.com/telix.inf.br/" target="_blank" class="social-btn mx-2"><i class="fab fa-instagram fa-lg"></i></a>
-          <a href="https://www.facebook.com/people/Telix-contexto-na-sa%C3%BAde/100089318347896/" target="_blank" class="social-btn mx-2"><i class="fab fa-facebook-f fa-lg"></i></a>
-          <a href="https://www.linkedin.com/company/telix-canais-de-not%C3%ADcias" target="_blank" class="social-btn mx-2"><i class="fab fa-linkedin-in fa-lg"></i></a>
-          <a href="https://www.youtube.com/@TelixSaude" class="social-btn mx-2"><i class="fab fa-youtube fa-lg"></i></a>
-        </div>
-      </div>
-
           </ul>
         </div>
   
-        <!-- Tratamentos -->
-        <div class="col-12 col-md-4 mb-4">
-            <strong>Tratamentos</strong>
+        <!-- Coluna 2 -->
+        <div class="col-12 col-md-4 mb-4" >
+          <h5>Tratamentos</h5>
           <ul class="list-unstyled">
             <li><a href="http://cadastros.telix.inf.br/tratamentos/" target="_blank">Tratamentos</a></li>
             <li><a href="https://www.telix.inf.br/in%C3%ADcio" target="_blank">Opinião de Especialistas</a></li>
-
+            <div class="footer-social d-none d-md-flex justify-content-center mb-3"style="margin-right: 80px;">
+                <a href="https://www.instagram.com/telix.inf.br/" target="_blank" class="social-btn mx-2"><i class="fab fa-instagram fa-lg"></i></a>
+                <a href="https://www.facebook.com/people/Telix-contexto-na-sa%C3%BAde/100089318347896/" target="_blank" class="social-btn mx-2"><i class="fab fa-facebook-f fa-lg"></i></a>
+                <a href="https://www.linkedin.com/company/telix-canais-de-not%C3%ADcias" target="_blank" class="social-btn mx-2"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                <a href="https://www.youtube.com/@TelixSaude" target="_blank" class="social-btn mx-2"><i class="fab fa-youtube fa-lg"></i></a>
+              </div>
+          
           </ul>
         </div>
   
-        <!-- Contato -->
-        <div class="col-12 col-md-4 mb-4">
-            <strong>Fale com a gente!</strong>
-            <p><a href="https://api.whatsapp.com/send/?phone=45999040371&text&type=phone_number&app_absent=0" target="_blank">(45) 99904-0371</a></p>
-
-            <p><a href="https://www.microsoft.com/pt-br/microsoft-365/outlook/email-and-calendar-software-microsoft-outlook?deeplink=%2fmail%2f0%2f%3fmailtouri%3dmailto%253Acontato%2540telix.inf.br%26nlp%3d0&sdf=0" target="_blank">contato@telix.inf.br</a></p>
-
+        <!-- Coluna 3 -->
+        <div class="col-12 col-md-4 mb-4"style="padding-right: 100px;">
+          <h5>Fale com a gente!</h5>
+          <p><a href="https://api.whatsapp.com/send/?phone=45999040371&text&type=phone_number&app_absent=0" target="_blank">(45) 99904-0371</a></p>
+          <p><a href="mailto:contato@telix.inf.br">contato@telix.inf.br</a></p>
+          <p><a class="mt-3 mb-0">Linca Telecomunicações Ltda</a></p>
+          <p><a class="mt-0">CNPJ: 03.376.788/0001-23</a></p>
+  
         </div>
   
-        <!-- Info empresa -->
-        <p class="col-12 col-md-4 mb-4">Linca Telecomunicações Ltda - CNPJ: 03.376.788-0001/23</p>
   
       </div>
     </div>
   </footer>
+  
   
   
 

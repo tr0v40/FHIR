@@ -231,7 +231,8 @@ def detalhes_tratamentos(request, slug):
     # Criar uma lista de estrelas com base na avaliação
     estrelas_preenchidas = [1 for i in range(avaliacao)]  # Lista de estrelas preenchidas
     estrelas_vazias = [1 for i in range(5 - avaliacao)]  # Lista de estrelas vazias
-
+# Ordenar reações adversas do tratamento pela maior reação_max
+    detalhes_reacoes_ordenadas = tratamento.reacoes_adversas_detalhes.all().order_by('-reacao_max')
     # Retornar a resposta renderizada com o contexto
     return render(request, 'core/detalhes_tratamentos.html', {
         'tratamento': tratamento,
@@ -244,7 +245,7 @@ def detalhes_tratamentos(request, slug):
         'prazo_efeito': prazo_efeito,  # Adicionando a variável formatada ao contexto
         'estrelas_preenchidas': estrelas_preenchidas,
         'estrelas_vazias': estrelas_vazias, # Passando a lista de estrelas para o template
-        'detalhes_reacoes_adversas': tratamento.reacoes_adversas_detalhes.all(),
+        'detalhes_reacoes_adversas': detalhes_reacoes_ordenadas,
     })
 
 

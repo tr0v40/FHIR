@@ -82,16 +82,21 @@ TEMPLATES = [
     },
 ]
 
-# Redireciona de HTTP para HTTPS automaticamente
-SECURE_SSL_REDIRECT = True
+# settings.py
 
-# Caso você esteja usando um proxy reverso (como Nginx ou Apache), configure o Django para reconhecer o protocolo HTTPS.
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# Verifique se não está no modo de desenvolvimento
+if not DEBUG:
+    # Redireciona de HTTP para HTTPS automaticamente
+    SECURE_SSL_REDIRECT = True
 
-# HSTS - Essa configuração ajuda os navegadores a forçar HTTPS no futuro.
-SECURE_HSTS_SECONDS = 3600  # 1 hora de duração, você pode aumentar o tempo para 31536000 (1 ano)
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # HSTS para todos os subdomínios
-SECURE_HSTS_PRELOAD = True  # Se você quiser adicionar o seu domínio ao preload HSTS
+    # Caso você esteja usando um proxy reverso (como Nginx ou Apache), configure o Django para reconhecer o protocolo HTTPS.
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+    # HSTS - Essa configuração ajuda os navegadores a forçar HTTPS no futuro.
+    SECURE_HSTS_SECONDS = 31536000  # 1 ano de duração
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # HSTS para todos os subdomínios
+    SECURE_HSTS_PRELOAD = True  # Se você quiser adicionar o seu domínio ao preload HSTS
+
 
 
 
