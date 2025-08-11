@@ -9,6 +9,7 @@ from .models import (
     DetalhesTratamentoReacaoAdversaTeste,
     EvidenciasClinicas,
     TipoTratamento,
+    CondicaoSaude
 )
 
 admin.site.register([TipoTratamento])
@@ -29,14 +30,14 @@ class DetalhesTratamentoReacaoAdversaTesteForm(forms.ModelForm):
 class DetalhesTratamentoReacaoAdversaInline(admin.TabularInline):
     model = DetalhesTratamentoReacaoAdversa
     form = DetalhesTratamentoReacaoAdversaTesteForm
-    extra = 1
+    extra = 0
     autocomplete_fields = ['reacao_adversa']
     fields = ('reacao_adversa', 'grau_comunalidade', 'reacao_min', 'reacao_max')
 
 class DetalhesTratamentoReacaoAdversaTesteInline(admin.TabularInline):
     model = DetalhesTratamentoReacaoAdversaTeste
     form = DetalhesTratamentoReacaoAdversaTesteForm
-    extra = 1
+    extra = 0
     autocomplete_fields = ['reacao_adversa']
     fields = ('reacao_adversa', 'grau_comunalidade', 'reacao_min', 'reacao_max')
 
@@ -147,17 +148,25 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
        
     )
 
+
+
+
 @admin.register(ReacaoAdversa)
 class ReacaoAdversaAdmin(admin.ModelAdmin):
     list_display = ('nome', 'descricao')
     search_fields = ('nome',)
+
+@admin.register(CondicaoSaude)
+class CondicaoSaudeAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'descricao')
+    search_fields = ('nome',)  # obrigatório para autocomplete_fields
 
 @admin.register(EvidenciasClinicas)
 class EvidenciasClinicasAdmin(admin.ModelAdmin):
     list_display = (
         "titulo",
         "tratamento",
-        "condicao_saude",
+        "condicao_saude",  # agora é FK e mostra o nome da condição
         "rigor_da_pesquisa",
         "data_publicacao",
         "referencia_bibliografica",
@@ -170,6 +179,9 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
     list_filter = ("rigor_da_pesquisa", "data_publicacao")
     readonly_fields = ("imagem_preview", "visualizar_pdf")
 
+    # Para exibir como caixa de busca
+    autocomplete_fields = ("condicao_saude",)
+
     fieldsets = (
         (
             "Informações da Evidência",
@@ -178,7 +190,7 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
                     "tratamento",
                     "titulo",
                     "descricao",
-                    "condicao_saude",
+                    "condicao_saude",  # agora FK
                     "rigor_da_pesquisa",
                     "eficacia_min",
                     "eficacia_max",
@@ -212,15 +224,10 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
 
     def visualizar_pdf(self, obj):
         if obj.pdf_estudo:
-            return format_html(
-                f'<a href="{obj.pdf_estudo.url}" target="_blank">Baixar PDF</a>'
-            )
+            return format_html(f'<a href="{obj.pdf_estudo.url}" target="_blank">Baixar PDF</a>')
         elif obj.link_pdf_estudo:
-            return format_html(
-                f'<a href="{obj.link_pdf_estudo}" target="_blank">Acessar PDF Online</a>'
-            )
+            return format_html(f'<a href="{obj.link_pdf_estudo}" target="_blank">Acessar PDF Online</a>')
         return "Nenhum PDF disponível"
-
     visualizar_pdf.short_description = "PDF do Estudo"
 
     def imagem_preview(self, obj):
@@ -229,8 +236,13 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
                 f'<img src="{obj.imagem_estudo.url}" width="100px" height="100px" style="border-radius:10px;">'
             )
         return "Sem imagem"
-
     imagem_preview.short_description = "Pré-visualização"
 
 
+
 admin.site.register(Contraindicacao)
+
+
+from django.contrib import admin
+from .models import CondicaoSaude
+

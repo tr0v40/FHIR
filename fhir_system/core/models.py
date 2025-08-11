@@ -408,7 +408,14 @@ class EvidenciasClinicas(models.Model):
     titulo = models.CharField(max_length=255)
     descricao = models.TextField()
     numero_participantes = models.IntegerField() 
-    condicao_saude = models.CharField(max_length=255, blank=True, null=True)
+    condicao_saude = models.ForeignKey(
+        "CondicaoSaude",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="evidencias"
+    )
+
     rigor_da_pesquisa = models.IntegerField(default=0)
     link_estudo = models.URLField(blank=True, null=True)
     data_publicacao = models.DateField(blank=True, null=True)
@@ -445,3 +452,18 @@ class Avaliacao(models.Model):
 
     def __str__(self):
         return f"Avaliação para {self.tratamento.nome} - {self.estrelas} estrelas"
+    
+
+
+
+class CondicaoSaude(models.Model):
+    nome = models.CharField(max_length=255, verbose_name="Nome da Condição de Saúde")
+    descricao = models.TextField(verbose_name="Descrição", blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Condição de Saúde"
+        verbose_name_plural = "Condições de Saúde"
+
+    def __str__(self):
+        return self.nome
+
