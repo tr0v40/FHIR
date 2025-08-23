@@ -59,7 +59,7 @@ html, body {
 
     z-index: 1000;
     width: 300px;
-    height: 1330px;
+    height: 1600px;
      
 }
 
@@ -1404,6 +1404,48 @@ footer.footer .row > div {
     </div>
   </form>
   
+  <form method="GET" action="{% url 'tratamentos' %}">
+    <div class="filters">
+        <h5><strong>Filtrar por dado de pesquisa</strong></h5>
+        <p>Escolha o critério e defina o valor para filtrar os tratamentos.</p>
+        
+        <label for="filtro_criterio">Critério:</label>
+        <select id="filtro_criterio" name="filtro_criterio" class="form-control">
+            <option value="nenhum" {% if request.GET.filtro_criterio == "nenhum" or not request.GET.filtro_criterio %}selected{% endif %}>Nenhum</option>
+            <option value="participantes" {% if request.GET.filtro_criterio == "participantes" %}selected{% endif %}>Número de Participantes</option>
+
+            <option value="data" {% if request.GET.filtro_criterio == "data" %}selected{% endif %}>Data</option>
+            <option value="rigor" {% if request.GET.filtro_criterio == "rigor" %}selected{% endif %}>Rigor da Pesquisa</option>
+        </select>
+        
+        <div id="filtro_valor_container" style="display: none;">
+            <label for="comparacao">Comparação:</label>
+            <select id="comparacao" name="comparacao" class="form-control">
+                <option value="maior" {% if request.GET.comparacao == 'maior' %}selected{% endif %}>Maior que</option>
+                <option value="menor" {% if request.GET.comparacao == 'menor' %}selected{% endif %}>Menor que</option>
+            </select>
+            
+            <label for="filtro_valor">Valor:</label>
+            <input type="text" id="filtro_valor" name="filtro_valor" class="form-control" value="{{ request.GET.filtro_valor }}" placeholder="Digite o valor" />
+            
+            <button type="submit" class="btn btn-primary mt-3" style="display: block; margin-top: 20px;">Aplicar Filtro</button>
+        </div>
+    </div>
+</form>
+
+<script>
+document.getElementById('filtro_criterio').addEventListener('change', function() {
+    const filtroValorContainer = document.getElementById('filtro_valor_container');
+    if (this.value === "participantes" || this.value === "data" || this.value === "rigor") {
+        filtroValorContainer.style.display = 'block';  // Exibe o campo de valor
+    } else {
+        filtroValorContainer.style.display = 'none';  // Esconde o campo
+    }
+});
+</script>
+
+
+
 
 
 
@@ -1738,6 +1780,16 @@ footer.footer .row > div {
   <script>
 
 
+document.getElementById('filtro_criterio').addEventListener('change', function() {
+    const filtroValorContainer = document.getElementById('filtro_valor_container');
+    
+    // Verifica o valor selecionado e mostra o container de filtro
+    if (this.value === "participantes" || this.value === "data" || this.value === "rigor") {
+        filtroValorContainer.style.display = 'block';  // Exibe o campo de comparação
+    } else {
+        filtroValorContainer.style.display = 'none';  // Esconde o campo
+    }
+});
 
 
 function mudarExibicao(tipo) {

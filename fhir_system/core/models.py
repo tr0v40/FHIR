@@ -278,6 +278,20 @@ class DetalhesTratamentoReacaoAdversaTeste(models.Model):
 
     def __str__(self):
         return f"{self.tratamento.nome} - {self.reacao_adversa.nome}"
+    
+
+    
+class CondicaoSaude(models.Model):
+    nome = models.CharField(max_length=255, verbose_name="Nome da Condição de Saúde")
+    descricao = models.TextField(verbose_name="Descrição Relacionada à Condição de Saúde", blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Condição de Saúde"
+        verbose_name_plural = "Condições de Saúde"
+
+    def __str__(self):
+        return self.nome
+
 
 class DetalhesTratamentoResumo(models.Model):
 
@@ -297,6 +311,13 @@ class DetalhesTratamentoResumo(models.Model):
 
     nome = models.CharField(max_length=200)
     descricao = models.TextField()
+    condicao_saude = models.ForeignKey(
+        "CondicaoSaude",  # A tabela que será referenciada
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="detalhes_tratamento"
+    )
     comentario = models.TextField(blank=True, null=True)
     categoria = models.CharField(max_length=100, blank=True, null=True)
     evidencia_clinica = models.TextField(blank=True, null=True)
@@ -426,6 +447,8 @@ class EvidenciasClinicas(models.Model):
     pdf_estudo = models.FileField(upload_to="pdf_estudos/", blank=True, null=True)
     link_pdf_estudo = models.URLField(blank=True, null=True)
     referencia_bibliografica = models.TextField(blank=True, null=True)
+    tipos_eficacia = models.ManyToManyField('TipoEficacia', through='EficaciaPorEvidencia', related_name='evidencias_eficacia')
+
 
     # Novo campo para reações adversas
     risco_reacao = models.CharField(max_length=100, blank=True, null=True)  # ex: "1% a 10% COMUM"
@@ -455,15 +478,45 @@ class Avaliacao(models.Model):
     
 
 
-
-class CondicaoSaude(models.Model):
-    nome = models.CharField(max_length=255, verbose_name="Nome da Condição de Saúde")
-    descricao = models.TextField(verbose_name="Descrição", blank=True, null=True)
-
+# pré-requisito nos models (resumo)
+class TratamentoCondicao(models.Model):
+    tratamento = models.ForeignKey('DetalhesTratamentoResumo', on_delete=models.CASCADE, related_name='condicoes_relacionadas')
+    condicao  = models.ForeignKey('CondicaoSaude', on_delete=models.PROTECT, related_name='tratamentos_relacionados')
+    descricao = models.TextField(blank=True, null=True)   # descrição específica desta condição no contexto do tratamento
     class Meta:
-        verbose_name = "Condição de Saúde"
-        verbose_name_plural = "Condições de Saúde"
+        unique_together = ('tratamento', 'condicao')
+    class Meta:
+        verbose_name = "Tratamento Condição"
+        verbose_name_plural = "Tratamentos Condições"
 
     def __str__(self):
-        return self.nome
+        return f"{self.condicao.nome}"
+    
+
+class TipoEficacia(models.Model):
+    tipo_eficacia = models.CharField(max_length=255, verbose_name="Tipo de Eficácia")
+    descricao = models.TextField(blank=True, null=True, verbose_name="Descrição do Tipo de Eficácia")
+
+    def __str__(self):
+        return self.tipo_eficacia
+
+
+
+
+# models.py
+
+class EficaciaPorEvidencia(models.Model):
+    evidencia = models.ForeignKey(EvidenciasClinicas, on_delete=models.CASCADE)
+    tipo_eficacia = models.ForeignKey(TipoEficacia, on_delete=models.CASCADE)
+    percentual_eficacia = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    
+    # Campos para eficácia mínima e máxima
+    eficacia_min = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    eficacia_max = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+
+    class Meta:
+        unique_together = ('evidencia', 'tipo_eficacia')  # Garantir que cada combinação seja única
+
+    def __str__(self):
+        return f"{self.evidencia.titulo} - {self.tipo_eficacia.tipo_eficacia}"
 

@@ -1,13 +1,18 @@
 from django.contrib import admin
 from django import forms
+from django.http import JsonResponse
+from django.urls import path
 from django.utils.html import format_html
 from .models import (
     DetalhesTratamentoResumo,
     Contraindicacao,
     ReacaoAdversa,
+    TratamentoCondicao,
     DetalhesTratamentoReacaoAdversa,
     DetalhesTratamentoReacaoAdversaTeste,
     EvidenciasClinicas,
+    TipoEficacia,
+    EficaciaPorEvidencia,
     TipoTratamento,
     CondicaoSaude
 )
@@ -59,13 +64,39 @@ class DetalhesTratamentoResumoForm(forms.ModelForm):
             return int(prazo_max.replace('h', '').strip()) * 60
         return int(prazo_max)
 
+class TratamentoCondicaoInlineForm(forms.ModelForm):
+    class Meta:
+        model = TratamentoCondicao
+        fields = ('condicao', 'descricao')
+
+    class Media:
+        # JS para autofill da descrição da condição escolhida
+        js = ('core/js/autofill_condicao_descricao.js',)
+
+class TratamentoCondicaoInline(admin.TabularInline):
+    model = TratamentoCondicao
+    form = TratamentoCondicaoInlineForm
+    extra = 0
+    autocomplete_fields = ('condicao',)
+    fields = ('condicao', 'descricao')
+
+class DetalhesTratamentoReacaoAdversaInline(admin.TabularInline):
+    model = DetalhesTratamentoReacaoAdversa
+    extra = 0
+    autocomplete_fields = ['reacao_adversa']
+    fields = ('reacao_adversa', 'grau_comunalidade', 'reacao_min', 'reacao_max')
+
 @admin.register(DetalhesTratamentoResumo)
 class DetalhesTratamentoAdmin(admin.ModelAdmin):
     inlines = [
-        
-        DetalhesTratamentoReacaoAdversaInline,
-        
+        TratamentoCondicaoInline,
+        DetalhesTratamentoReacaoAdversaInline,  # Se você já tiver a classe inline
     ]
+
+    
+    class Media:
+        js = ('js/autofill_condicao_descricao.js',)
+
     list_display = (
         "nome",
         "fabricante",
@@ -74,8 +105,10 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
         "eficacia_min",
         "eficacia_max",
         "custo_medicamento",
+        "exibir_condicoes_saude",  # Exibe nome e descrição da condicao_saude
     )
-    filter_horizontal = ("contraindicacoes", "reacoes_adversas", "tipo_tratamento")  # removi 'reacoes_adversas_teste'
+
+    filter_horizontal = ("contraindicacoes", "reacoes_adversas", "tipo_tratamento")
     search_fields = ("nome", "fabricante", "principio_ativo", "grupo")
     list_filter = (
         "fabricante",
@@ -84,6 +117,7 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
         "eficacia_max",
         "custo_medicamento",
     )
+
     fieldsets = (
         (
             "Informações Gerais",
@@ -92,81 +126,147 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
                     "nome",
                     "fabricante",
                     "principio_ativo",
-                    "descricao",
+                    "condicao_saude",      # << mantém aqui o campo principal (FK)
+                    "descricao",           # descrição geral do tratamento
                     "imagem",
                     "imagem_detalhes",
                 )
             },
         ),
-        (
-            "Adesão ao Tratamento",
-            {
-                "fields": (
-                    "quando_usar",
-                    "prazo_efeito_min",
-                    "prazo_efeito_max",
-                    "prazo_efeito_unidade",
-                    "tipo_tratamento",
-                    "custo_medicamento",
-                )
-            },
-        ),
-        (
-            "Links e Alertas",
-            {
-                "fields": (
-                    "interacao_medicamentosa",
-                    "genericos_similares",
-                    "prescricao_eletronica",
-                    "opiniao_especialista",
-                    "links_profissionais",
-                    "alertas",
-                )
-            },
-        ),
-        (
-            "Indicação por Grupo",
-            {
-                "fields": (
-                    "indicado_criancas",
-                    "motivo_criancas",
-                    "indicado_adolescentes",
-                    "motivo_adolescentes",
-                    "indicado_idosos",
-                    "motivo_idosos",
-                    "indicado_adultos",
-                    "motivo_adultos",
-                    "indicado_lactantes",
-                    "motivo_lactantes",
-                    "indicado_gravidez",
-                    "motivo_gravidez",
-                )
-            },
-        ),
+        ("Adesão ao Tratamento", {
+            "fields": (
+                "quando_usar",
+                "prazo_efeito_min",
+                "prazo_efeito_max",
+                "prazo_efeito_unidade",
+                "tipo_tratamento",
+                "custo_medicamento",
+            )
+        }),
+        ("Links e Alertas", {
+            "fields": (
+                "interacao_medicamentosa",
+                "genericos_similares",
+                "prescricao_eletronica",
+                "opiniao_especialista",
+                "links_profissionais",
+                "alertas",
+            )
+        }),
+        ("Indicação por Grupo", {
+            "fields": (
+                "indicado_criancas",
+                "motivo_criancas",
+                "indicado_adolescentes",
+                "motivo_adolescentes",
+                "indicado_idosos",
+                "motivo_idosos",
+                "indicado_adultos",
+                "motivo_adultos",
+                "indicado_lactantes",
+                "motivo_lactantes",
+                "indicado_gravidez",
+                "motivo_gravidez",
+            )
+        }),
         ("Contraindicações", {"fields": ("contraindicacoes",)}),
-       
-       
     )
 
+    autocomplete_fields = ['condicao_saude']
+
+
+    # label mais claro para a descrição geral
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        if 'descricao' in form.base_fields:
+            form.base_fields['descricao'].label = "Descrição relacionada a condição de saúde"
+        return form
+
+    # Mostra a condição principal + extras
+    def exibir_condicoes_saude(self, obj):
+        partes = []
+        if getattr(obj, 'condicao_saude', None):
+            partes.append(f"Principal: {obj.condicao_saude.nome}")
+        extras = obj.condicoes_relacionadas.select_related('condicao').all()
+        if extras:
+            nomes = ", ".join(tc.condicao.nome for tc in extras)
+            partes.append(f"Extras: {nomes}")
+        return " | ".join(partes) if partes else "—"
+    exibir_condicoes_saude.short_description = "Condições de Saúde"
+
+    # endpoint para o JS buscar a descrição padrão da CondicaoSaude
+    def get_urls(self):
+        urls = super().get_urls()
+        custom = [
+            path(
+                'condicao/<int:pk>/descricao/',
+                self.admin_site.admin_view(self._condicao_descricao_view),
+                name='dettrat-condicao-descricao'
+            ),
+        ]
+        return custom + urls
+
+    def _condicao_descricao_view(self, request, pk):
+        desc = CondicaoSaude.objects.filter(pk=pk).values_list('descricao', flat=True).first() or ""
+        return JsonResponse({'descricao': desc})
 
 
 
+
+# --- Admin para Reação Adversa ---
 @admin.register(ReacaoAdversa)
 class ReacaoAdversaAdmin(admin.ModelAdmin):
     list_display = ('nome', 'descricao')
     search_fields = ('nome',)
 
+# --- Admin para Condição de Saúde ---
 @admin.register(CondicaoSaude)
 class CondicaoSaudeAdmin(admin.ModelAdmin):
     list_display = ('nome', 'descricao')
-    search_fields = ('nome',)  # obrigatório para autocomplete_fields
+    search_fields = ('nome',)  # Necessário para autocomplete_fields
 
+class EvidenciasClinicasForm(forms.ModelForm):
+    tipos_eficacia = forms.ModelMultipleChoiceField(
+        queryset=TipoEficacia.objects.all(),
+        widget=forms.CheckboxSelectMultiple,  # Usa checkboxes para múltiplas seleções
+        required=False,  # Permite que o campo seja opcional
+        label="Tipos de Eficácia"
+    )
+
+    class Meta:
+        model = EvidenciasClinicas
+        fields = ['tratamento', 'titulo', 'descricao', 'condicao_saude', 'rigor_da_pesquisa', 'tipos_eficacia', 'eficacia_min', 'eficacia_max', 'numero_participantes']
+
+
+# --- Formulário e Inline para Eficácia Por Evidência ---
+class EficaciaPorEvidenciaForm(forms.ModelForm):
+    class Meta:
+        model = EficaciaPorEvidencia
+        fields = ['tipo_eficacia', 'percentual_eficacia', 'eficacia_min', 'eficacia_max']  # Adicionando os novos campos
+
+class EficaciaPorEvidenciaInline(admin.TabularInline):
+    model = EficaciaPorEvidencia
+    form = EficaciaPorEvidenciaForm
+    extra = 0
+    fields = ['tipo_eficacia', 'percentual_eficacia', 'eficacia_min', 'eficacia_max']  # Exibindo os campos no inline
+    autocomplete_fields = ['tipo_eficacia']
+
+
+# --- Admin para Tipo de Eficácia ---
+@admin.register(TipoEficacia)
+class TipoEficaciaAdmin(admin.ModelAdmin):
+    list_display = ('tipo_eficacia', 'descricao')
+    search_fields = ('tipo_eficacia',)
+
+# --- Admin para Evidências Clínicas ---
 @admin.register(EvidenciasClinicas)
 class EvidenciasClinicasAdmin(admin.ModelAdmin):
+    form = EvidenciasClinicasForm  # Usando o formulário personalizado
+    inlines = [EficaciaPorEvidenciaInline]  # Adiciona o Inline para eficácia por evidência
     list_display = (
         "titulo",
         "tratamento",
-        "condicao_saude",  # agora é FK e mostra o nome da condição
+        "condicao_saude",  # Agora é FK e mostra o nome da condição
         "rigor_da_pesquisa",
         "data_publicacao",
         "referencia_bibliografica",
@@ -179,7 +279,6 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
     list_filter = ("rigor_da_pesquisa", "data_publicacao")
     readonly_fields = ("imagem_preview", "visualizar_pdf")
 
-    # Para exibir como caixa de busca
     autocomplete_fields = ("condicao_saude",)
 
     fieldsets = (
@@ -190,8 +289,9 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
                     "tratamento",
                     "titulo",
                     "descricao",
-                    "condicao_saude",  # agora FK
+                    "condicao_saude",  # FK para Condição de Saúde
                     "rigor_da_pesquisa",
+                    
                     "eficacia_min",
                     "eficacia_max",
                     "numero_participantes",
@@ -222,6 +322,7 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
         ("Imagem", {"fields": ("imagem_estudo", "imagem_preview")}),
     )
 
+    # Método para visualizar o PDF
     def visualizar_pdf(self, obj):
         if obj.pdf_estudo:
             return format_html(f'<a href="{obj.pdf_estudo.url}" target="_blank">Baixar PDF</a>')
@@ -230,6 +331,7 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
         return "Nenhum PDF disponível"
     visualizar_pdf.short_description = "PDF do Estudo"
 
+    # Método para visualizar a imagem
     def imagem_preview(self, obj):
         if obj.imagem_estudo:
             return format_html(
@@ -243,6 +345,4 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
 admin.site.register(Contraindicacao)
 
 
-from django.contrib import admin
-from .models import CondicaoSaude
 

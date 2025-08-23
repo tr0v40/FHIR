@@ -66,3 +66,5 @@ class Migration(migrations.Migration):
     operations = [
         migrations.RunSQL(SQL_FORWARD, reverse_sql=SQL_BACKWARD),
     ]
+
+

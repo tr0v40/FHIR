@@ -5,6 +5,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from core import views
 from django.contrib.auth.views import LoginView
+from core.views import CondicaoSaudeDetailView, tipo_eficacia_descricao_json
+
 
 
 urlpatterns = [
@@ -13,8 +15,10 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path("register/", views.register, name="register"),
     path('salvar-avaliacao/<int:tratamento_id>/', views.salvar_avaliacao, name='salvar_avaliacao'),
+    path('admin/core/tipoeficacia/<int:pk>/descricao/', tipo_eficacia_descricao_json, name='tipoeficacia-descricao'),
    
     path("tratamentos/", views.tratamentos, name="tratamentos"),
+    path('admin/core/condicaosaude/<int:pk>/change/', CondicaoSaudeDetailView.as_view(), name='condicao_saude_detail'),
     path(
         "tratamento/<slug:slug>/",
         views.detalhes_tratamentos,

@@ -35,16 +35,48 @@ def register(request):
 
     return render(request, "registration/register.html", {"form": form})
 
+from datetime import datetime
 
+def _parse_int_or_none(s):
+    try:
+        return int(str(s).strip())
+    except Exception:
+        return None
+
+def _parse_date_or_year(s):
+    """Aceita AAAA, DD/MM/AAAA ou AAAA-MM-DD. Retorna (year, date) para comparação."""
+    if not s:
+        return (None, None)
+    s = str(s).strip()
+    # AAAA
+    if s.isdigit() and len(s) == 4:
+        return (int(s), None)
+    # DD/MM/AAAA
+    try:
+        d = datetime.strptime(s, "%d/%m/%Y").date()
+        return (d.year, d)
+    except Exception:
+        pass
+    # AAAA-MM-DD
+    try:
+        d = datetime.strptime(s, "%Y-%m-%d").date()
+        return (d.year, d)
+    except Exception:
+        return (None, None)
 
 def tratamentos(request):
-    # Coleta dos parâmetros da URL
-    ordenacao = request.GET.get('ordenacao', '').strip()
-    ordenacao_opcao = request.GET.get('ordenacao_opcao', '').strip()
-    publico = request.GET.get('publico', 'todos').strip().lower()
-    nome = request.GET.get('nome', '').strip()
-    categoria = request.GET.get('categoria', '').strip()
+    # ---------- parâmetros ----------
+    ordenacao       = (request.GET.get('ordenacao') or '').strip()
+    ordenacao_opcao = (request.GET.get('ordenacao_opcao') or '').strip()
+    publico         = (request.GET.get('publico') or 'todos').strip().lower()
+    nome            = (request.GET.get('nome') or '').strip()
+    categoria       = (request.GET.get('categoria') or '').strip()
     contraindica_ids = request.GET.getlist('contraindicacoes')
+
+    # parâmetros do bloco "Filtrar por dado de pesquisa"
+    filtro_criterio = (request.GET.get('filtro_criterio') or 'nenhum').strip().lower()
+    comparacao      = (request.GET.get('comparacao') or '').strip().lower()
+    filtro_valor    = (request.GET.get('filtro_valor') or '').strip()
 
     tratamentos_list = DetalhesTratamentoResumo.objects.all()
     contraindications = Contraindicacao.objects.all()
@@ -102,6 +134,29 @@ def tratamentos(request):
         rigor_maximo=Max('evidencias__rigor_da_pesquisa'),
     )
 
+
+    # ---------- FILTRAR POR DADO DE PESQUISA ----------
+    if filtro_criterio in {"participantes", "rigor"}:
+        val = _parse_int_or_none(filtro_valor)
+        if val is not None:
+            if filtro_criterio == "participantes":
+                field = "max_participantes"
+            else:
+                field = "rigor_maximo"
+            if comparacao == "maior":
+                tratamentos_list = tratamentos_list.filter(**{f"{field}__gt": val})
+            elif comparacao == "menor":
+                tratamentos_list = tratamentos_list.filter(**{f"{field}__lt": val})
+
+    elif filtro_criterio == "data":
+        year, date_val = _parse_date_or_year(filtro_valor)
+        # trabalhamos pelo ano (mais tolerante à entrada do usuário)
+        if year:
+            if comparacao == "maior":
+                tratamentos_list = tratamentos_list.filter(ultima_pesquisa__year__gt=year)
+            elif comparacao == "menor":
+                tratamentos_list = tratamentos_list.filter(ultima_pesquisa__year__lt=year)
+
     # Mapeamento de campos para ordenação
     ordenacao_map = {
         'eficacia': 'eficacia_max_calc',
@@ -142,8 +197,9 @@ def tratamentos(request):
         'ordenacao_opcao': ordenacao_opcao,
         'publico': publico,
         'contraindicacoes_selecionadas': contraindica_ids,
+        # mantém os valores no form de filtro
+        'request': request,
     }
-
     return render(request, 'core/tratamentos.html', context)
 
 
@@ -403,6 +459,25 @@ def tratamento_view(request):
 
 
 
+from django.http import JsonResponse
+from django.views.generic import View
+from .models import CondicaoSaude
+
+class CondicaoSaudeDetailView(View):
+    def get(self, request, pk):
+        condicao_saude = CondicaoSaude.objects.get(pk=pk)
+        return JsonResponse({'fields': {'descricao': condicao_saude.descricao}})
+
+
+from django.http import JsonResponse
+from .models import TipoEficacia
+
+def tipo_eficacia_descricao_json(request, pk):
+    try:
+        tipo_eficacia = TipoEficacia.objects.get(pk=pk)
+    except TipoEficacia.DoesNotExist:
+        return JsonResponse({'descricao': ''}, status=404)
+    return JsonResponse({'descricao': tipo_eficacia.descricao})
 
 
 

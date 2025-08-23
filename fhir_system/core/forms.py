@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import EvidenciasClinicas
-
+from .models import DetalhesTratamentoResumo, CondicaoSaude
 
 class UserRegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -35,3 +35,16 @@ class EvidenciasClinicasForm(forms.ModelForm):
         fields = "__all__"
 
 
+
+
+class DetalhesTratamentoResumoForm(forms.ModelForm):
+    condicao_saude = forms.ModelMultipleChoiceField(
+        queryset=CondicaoSaude.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label="Condições de Saúde"
+    )
+
+    class Meta:
+        model = DetalhesTratamentoResumo
+        fields = ['nome', 'prazo_efeito_min', 'prazo_efeito_max', 'condicao_saude']
