@@ -481,7 +481,7 @@ class Avaliacao(models.Model):
 # pré-requisito nos models (resumo)
 class TratamentoCondicao(models.Model):
     tratamento = models.ForeignKey('DetalhesTratamentoResumo', on_delete=models.CASCADE, related_name='condicoes_relacionadas')
-    condicao  = models.ForeignKey('CondicaoSaude', on_delete=models.PROTECT, related_name='tratamentos_relacionados')
+    condicao  = models.ForeignKey('CondicaoSaude', on_delete=models.CASCADE, related_name='tratamentos_relacionados')
     descricao = models.TextField(blank=True, null=True)   # descrição específica desta condição no contexto do tratamento
     class Meta:
         unique_together = ('tratamento', 'condicao')
