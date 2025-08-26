@@ -313,7 +313,7 @@ class DetalhesTratamentoResumo(models.Model):
     descricao = models.TextField()
     condicao_saude = models.ForeignKey(
         "CondicaoSaude",  # A tabela que será referenciada
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         null=True,
         blank=True,
         related_name="detalhes_tratamento"
@@ -431,7 +431,7 @@ class EvidenciasClinicas(models.Model):
     numero_participantes = models.IntegerField() 
     condicao_saude = models.ForeignKey(
         "CondicaoSaude",
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         null=True,
         blank=True,
         related_name="evidencias"
