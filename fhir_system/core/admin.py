@@ -240,41 +240,59 @@ class EvidenciasClinicasForm(forms.ModelForm):
 from django.contrib import admin
 from .models import EficaciaPorEvidencia
 
+
+
+
 class EficaciaPorEvidenciaForm(forms.ModelForm):
     class Meta:
         model = EficaciaPorEvidencia
-        fields = ['evidencia', 'tipo_eficacia', 'participantes_iniciaram_tratamento', 'participantes_com_beneficio']
-        # Não incluímos 'percentual_eficacia_calculado' aqui porque é um método calculado e não um campo de banco de dados
+        fields = ['evidencia', 'tipo_eficacia',  'participantes_iniciaram_tratamento','participantes_com_beneficio']
+
+    # Calcula a eficácia automaticamente e exibe no admin
+    def clean_percentual_eficacia_calculado(self):
+        participantes_com_beneficio = self.cleaned_data['participantes_com_beneficio']
+        participantes_iniciaram_tratamento = self.cleaned_data['participantes_iniciaram_tratamento']
+        if participantes_iniciaram_tratamento > 0:
+            return round((participantes_com_beneficio / participantes_iniciaram_tratamento) * 100, 2)
+        return 0.0
+
 
 class EficaciaPorEvidenciaInline(admin.TabularInline):
     model = EficaciaPorEvidencia
     form = EficaciaPorEvidenciaForm
     extra = 0
-    fields = ['evidencia', 'tipo_eficacia', 'participantes_iniciaram_tratamento','participantes_com_beneficio']
+    fields = ['evidencia', 'tipo_eficacia', 'participantes_iniciaram_tratamento', 'participantes_com_beneficio', 'percentual_eficacia_calculado']
     autocomplete_fields = ['tipo_eficacia']
-
-class EficaciaPorEvidenciaAdmin(admin.ModelAdmin):
-    # Exibir os campos necessários no painel de administração
-    list_display = ['tipo_eficacia', 'participantes_iniciaram_tratamento',  'participantes_com_beneficio', 'percentual_eficacia_calculado']
     
-    # Tornar a propriedade percentual_eficacia_calculado somente leitura
+    # Tornar o campo percentual_eficacia_calculado somente leitura
     readonly_fields = ['percentual_eficacia_calculado']
-    
-    # Exibir o campo calculado no formulário de administração
-    fieldsets = (
-        (None, {
-            'fields': ('tipo_eficacia', 'participantes_iniciaram_tratamento',  'participantes_com_beneficio', 'percentual_eficacia_calculado')
-        }),
-    )
 
     def percentual_eficacia_calculado(self, obj):
-        """Método para calcular o percentual de eficácia no admin, arredondado para duas casas decimais"""
+        """Calcula a eficácia automaticamente no admin, limitando a 2 casas decimais"""
         if obj.participantes_iniciaram_tratamento > 0:
             return round((obj.participantes_com_beneficio / obj.participantes_iniciaram_tratamento) * 100, 2)
         return 0.0
+
     percentual_eficacia_calculado.short_description = 'Percentual de Eficácia'
 
-    # Renomear os campos para exibição com os novos nomes
+
+class EficaciaPorEvidenciaAdmin(admin.ModelAdmin):
+    # Exibindo o percentual de eficácia calculado diretamente na tabela de admin
+    list_display = ['tipo_eficacia',  'participantes_iniciaram_tratamento', 'participantes_com_beneficio', 'percentual_eficacia_calculado']
+    
+    # Calculando a eficácia diretamente no Admin
+    def percentual_eficacia_calculado(self, obj):
+        """Calcula o percentual de eficácia e limita a duas casas decimais"""
+        if obj.participantes_iniciaram_tratamento > 0:
+            return round((obj.participantes_com_beneficio / obj.participantes_iniciaram_tratamento) * 100, 2)
+        return 0.0
+
+    percentual_eficacia_calculado.short_description = 'Percentual de Eficácia'
+
+    # Tornar o campo somente leitura
+    readonly_fields = ['percentual_eficacia_calculado']
+
+    # Renomeando os campos para exibição com os novos nomes
     def participantes_com_beneficio(self, obj):
         return obj.participantes_com_beneficio
     participantes_com_beneficio.short_description = 'Quantidade de Participantes que obtiveram o benefício do tratamento'
@@ -282,6 +300,7 @@ class EficaciaPorEvidenciaAdmin(admin.ModelAdmin):
     def participantes_iniciaram_tratamento(self, obj):
         return obj.participantes_iniciaram_tratamento
     participantes_iniciaram_tratamento.short_description = 'Quantidade de Participantes que iniciaram o tratamento'
+
 
 # Registrar o modelo com o admin
 admin.site.register(EficaciaPorEvidencia, EficaciaPorEvidenciaAdmin)
