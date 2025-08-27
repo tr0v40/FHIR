@@ -237,19 +237,56 @@ class EvidenciasClinicasForm(forms.ModelForm):
         model = EvidenciasClinicas
         fields = ['tratamento', 'titulo', 'descricao', 'condicao_saude', 'rigor_da_pesquisa', 'tipos_eficacia', 'eficacia_min', 'eficacia_max', 'numero_participantes']
 
+from django.contrib import admin
+from .models import EficaciaPorEvidencia
 
-# --- Formulário e Inline para Eficácia Por Evidência ---
 class EficaciaPorEvidenciaForm(forms.ModelForm):
     class Meta:
         model = EficaciaPorEvidencia
-        fields = ['tipo_eficacia', 'percentual_eficacia', 'eficacia_min', 'eficacia_max']  # Adicionando os novos campos
+        fields = ['evidencia', 'tipo_eficacia', 'participantes_iniciaram_tratamento', 'participantes_com_beneficio']
+        # Não incluímos 'percentual_eficacia_calculado' aqui porque é um método calculado e não um campo de banco de dados
 
 class EficaciaPorEvidenciaInline(admin.TabularInline):
     model = EficaciaPorEvidencia
     form = EficaciaPorEvidenciaForm
     extra = 0
-    fields = ['tipo_eficacia', 'percentual_eficacia', 'eficacia_min', 'eficacia_max']  # Exibindo os campos no inline
+    fields = ['evidencia', 'tipo_eficacia', 'participantes_iniciaram_tratamento','participantes_com_beneficio']
     autocomplete_fields = ['tipo_eficacia']
+
+class EficaciaPorEvidenciaAdmin(admin.ModelAdmin):
+    # Exibir os campos necessários no painel de administração
+    list_display = ['tipo_eficacia', 'participantes_iniciaram_tratamento',  'participantes_com_beneficio', 'percentual_eficacia_calculado']
+    
+    # Tornar a propriedade percentual_eficacia_calculado somente leitura
+    readonly_fields = ['percentual_eficacia_calculado']
+    
+    # Exibir o campo calculado no formulário de administração
+    fieldsets = (
+        (None, {
+            'fields': ('tipo_eficacia', 'participantes_iniciaram_tratamento',  'participantes_com_beneficio', 'percentual_eficacia_calculado')
+        }),
+    )
+
+    def percentual_eficacia_calculado(self, obj):
+        """Método para calcular o percentual de eficácia no admin, arredondado para duas casas decimais"""
+        if obj.participantes_iniciaram_tratamento > 0:
+            return round((obj.participantes_com_beneficio / obj.participantes_iniciaram_tratamento) * 100, 2)
+        return 0.0
+    percentual_eficacia_calculado.short_description = 'Percentual de Eficácia'
+
+    # Renomear os campos para exibição com os novos nomes
+    def participantes_com_beneficio(self, obj):
+        return obj.participantes_com_beneficio
+    participantes_com_beneficio.short_description = 'Quantidade de Participantes que obtiveram o benefício do tratamento'
+
+    def participantes_iniciaram_tratamento(self, obj):
+        return obj.participantes_iniciaram_tratamento
+    participantes_iniciaram_tratamento.short_description = 'Quantidade de Participantes que iniciaram o tratamento'
+
+# Registrar o modelo com o admin
+admin.site.register(EficaciaPorEvidencia, EficaciaPorEvidenciaAdmin)
+
+
 
 
 # --- Admin para Tipo de Eficácia ---

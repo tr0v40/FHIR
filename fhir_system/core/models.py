@@ -313,7 +313,7 @@ class DetalhesTratamentoResumo(models.Model):
     descricao = models.TextField()
     condicao_saude = models.ForeignKey(
         "CondicaoSaude",  # A tabela que será referenciada
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name="detalhes_tratamento"
@@ -506,17 +506,21 @@ class TipoEficacia(models.Model):
 # models.py
 
 class EficaciaPorEvidencia(models.Model):
-    evidencia = models.ForeignKey(EvidenciasClinicas, on_delete=models.CASCADE)
+    evidencia = models.ForeignKey(EvidenciasClinicas, on_delete=models.CASCADE, related_name="eficacia_por_evidencias")
     tipo_eficacia = models.ForeignKey(TipoEficacia, on_delete=models.CASCADE)
-    percentual_eficacia = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     
-    # Campos para eficácia mínima e máxima
-    eficacia_min = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    eficacia_max = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-
-    class Meta:
-        unique_together = ('evidencia', 'tipo_eficacia')  # Garantir que cada combinação seja única
-
+    # Campos de participantes
+    participantes_com_beneficio = models.IntegerField(default=0)
+    participantes_iniciaram_tratamento = models.IntegerField(default=0)
+    
+    # Eficácia calculada
+    @property
+    def percentual_eficacia_calculado(self):
+        if self.participantes_iniciaram_tratamento > 0:
+            return (self.participantes_com_beneficio / self.participantes_iniciaram_tratamento) * 100
+        return 0.0
+    
     def __str__(self):
-        return f"{self.evidencia.titulo} - {self.tipo_eficacia.tipo_eficacia}"
+        return f"{self.evidencia.titulo} - {self.tipo_eficacia.tipo_eficacia} - Eficácia: {self.percentual_eficacia_calculado}%"
+
 
