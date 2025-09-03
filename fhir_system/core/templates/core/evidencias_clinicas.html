@@ -381,8 +381,27 @@
         
         <!-- Conteúdo -->
         <div class="conteudo" style="flex: 1; position: relative;">
+
+<!-- Exibindo os tipos de eficácia com o percentual calculado -->
+{% for tipo in tipo_eficacia %}
+    <div style="margin-bottom: 15px;">
+        <p style="font-size: 16px; font-weight: bold; color: #050505;">
+            {{ tipo.tipo }} - 
+            {% if tipo.percentual %}
+                {{ tipo.percentual|floatformat:2 }}%
+            {% else %}
+                Não especificado
+            {% endif %}
+        </p>
+    </div>
+{% empty %}
+    <p style="color: red;">Tipo de eficácia não especificado</p>
+{% endfor %}
+
+      
           <p style="font-weight: 700; font-size: 1.1rem; margin: 0 0 8px;">
             EFICÁCIA 
+            
             <span style="color: #bbb;">{{ evidencia.eficacia_min }}</span> 
             <span style="color: #bbb;">a</span> 
             <span>{{ evidencia.eficacia_max }}%</span>
@@ -435,8 +454,10 @@
             quantidade de participantes: <strong>{{ evidencia.numero_participantes }}</strong>
           </p>
           
-          <p style="margin: 0 0 20px; font-weight: 600; font-size: 1.1rem;">DATA <span style="font-weight: 400;">{{ evidencia.data_publicacao|date:"m/Y" }}</span></p>
+          <p style="margin: 0 0 20px; font-weight: 600; font-size: 1.1rem;">Data: <span style="font-weight: 400;">{{ evidencia.data_publicacao|date:"m/Y" }}</span></p>
           
+          <p style="margin: 0 0 20px; font-weight: 600; font-size: 1.1rem;">País: <span style="font-weight: 400;">{{ evidencia.pais}}</span></p>
+
           <p style="font-style: italic; font-size: 1rem; margin: 0 0 18px; width: 100%;">
             {{ evidencia.autores }}
           </p>

@@ -1260,6 +1260,11 @@ img {
 
                 <!-- Informações do Medicamento -->
                 <div class="tratamento-info">
+                
+                    <h2 style="font-size: 40px; font-weight: bold; color: #000; text-align: center; margin-bottom: 100px; margin-left: 400px;">
+                        <span style="color: #070707;">{{ tratamento.condicao_saude.nome }}</span>
+                    </h2>
+                    
 
 
 
@@ -1347,7 +1352,7 @@ img {
 <div class="efficacy-section" style="margin-bottom: 10px;">
     <!-- Título da seção de eficácia -->
     <h2 class="efficacy-title" style="font-family: Arial, sans-serif; font-weight: bold; font-size: 34px; color: #000; text-align: center;">
-        Eficácia 
+        Eficácia:  <span style="color: #007bff;">{{ tipo_eficacia  }}</span>
     </h2>
     <div class="efficacy-bar-container" style="
     width: 40%; 
@@ -1397,18 +1402,19 @@ img {
 
 
         
-            <!-- Descrição adicional sobre a eficácia -->
-            <p class="efficacy-info" style="font-size: 14px; color: #B0B0B0; text-align: center;">
-                O remédio funciona para todo mundo? 
-                <strong style="color: #0094FF; font-weight: bold;">
-                    Não, apenas para 
-                    <span class="highlight" style="color: #0094FF; font-weight: bold;">
-                        {% if eficacia_min is not None %}{{ eficacia_min }}{% else %}0.00{% endif %} ~ 
-                        {% if eficacia_max is not None and eficacia_max != 0 %}{{ eficacia_max }}{% else %}0.00{% endif %}%
-                    </span>.
-                </strong>
-            </p>
-        </div>
+<!-- Descrição adicional sobre a eficácia -->
+<p class="efficacy-info" style="font-size: 14px; color: #B0B0B0; text-align: center;">
+    Conforme os artigos científicos que constam em nossa<br> plataforma, de 
+    <strong style="color: #0094FF; font-weight: bold;">
+        <span class="highlight" style="color: #0094FF; font-weight: bold;">
+            {% if eficacia_min is not None %}{{ eficacia_min }}{% else %}0.00{% endif %} ~ 
+            {% if eficacia_max is not None and eficacia_max != 0 %}{{ eficacia_max }}{% else %}0.00{% endif %}%
+        </span>
+    </strong>
+
+    dos pacientes que fizeram esse <br> tratamento obtiveram o benefício citado.
+</p>
+
         
         
 <!-- Botão para ver as pesquisas, com o tamanho ajustado -->

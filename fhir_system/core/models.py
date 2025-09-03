@@ -188,6 +188,19 @@ class Contraindicacao(models.Model):
     descricao = models.TextField()
     imagem = models.ImageField(upload_to="contraindicacoes/", blank=True, null=True)
 
+    # 🔹 Novos campos vindos de ClinicalUseDefinition
+    contraindication_name = models.CharField(
+        max_length=255,
+        verbose_name="ClinicalUseDefinition.contraindication-name",
+        blank=True,
+        null=True
+    )
+    contraindication_description = models.TextField(
+        verbose_name="ClinicalUseDefinition.contraindication-description",
+        blank=True,
+        null=True
+    )
+
     class Meta:
         verbose_name = "Contraindicação"
         verbose_name_plural = "Contraindicações"
@@ -196,12 +209,25 @@ class Contraindicacao(models.Model):
         return self.nome
 
 
+
 class ReacaoAdversa(models.Model):
     nome = models.CharField(max_length=100)
     descricao = models.TextField()
 
     imagem = models.ImageField(upload_to='reacoes_adversas/', blank=True, null=True)
 
+    # Novos campos
+    undesirable_effect_name = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name="ClinicalUseDefinition.undesirableEffect-name"
+    )
+    undesirable_effect_description = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="ClinicalUseDefinition.undesirableEffect-description"
+    )
 
     class Meta:
         verbose_name = "Reação Adversa"
@@ -209,6 +235,7 @@ class ReacaoAdversa(models.Model):
 
     def __str__(self):
         return self.nome
+
     
 
 class DetalhesTratamentoReacaoAdversa(models.Model):
@@ -244,6 +271,13 @@ class DetalhesTratamentoReacaoAdversa(models.Model):
 class TipoTratamento(models.Model):
     nome = models.CharField(max_length=200)
 
+    # Novo campo
+    careplan_type = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name="CarePlan.type"
+    )
 
     class Meta:
         verbose_name = "Tipo de Tratamento"
@@ -251,6 +285,7 @@ class TipoTratamento(models.Model):
 
     def __str__(self):
         return self.nome
+
 
 
 class DetalhesTratamentoReacaoAdversaTeste(models.Model):
@@ -282,8 +317,25 @@ class DetalhesTratamentoReacaoAdversaTeste(models.Model):
 
     
 class CondicaoSaude(models.Model):
-    nome = models.CharField(max_length=255, verbose_name="Nome da Condição de Saúde")
-    descricao = models.TextField(verbose_name="Descrição Relacionada à Condição de Saúde", blank=True, null=True)
+    nome = models.CharField(
+        max_length=255,
+        verbose_name="Nome da Condição de Saúde"
+    )
+    descricao = models.TextField(
+        verbose_name="Descrição Relacionada à Condição de Saúde",
+        blank=True, null=True
+    )
+
+    # 🔹 Novos campos
+    condition = models.CharField(
+        max_length=255,
+        blank=True, null=True,
+        verbose_name="Condition"
+    )
+    condition_description = models.TextField(
+        blank=True, null=True,
+        verbose_name="Condition.description"
+    )
 
     class Meta:
         verbose_name = "Condição de Saúde"
@@ -293,7 +345,10 @@ class CondicaoSaude(models.Model):
         return self.nome
 
 
+
 class DetalhesTratamentoResumo(models.Model):
+    
+    tipos_eficacia = models.ManyToManyField('EficaciaPorEvidencia', blank=True)
 
     reacoes_adversas_teste = models.ManyToManyField(
         ReacaoAdversa,
@@ -311,6 +366,7 @@ class DetalhesTratamentoResumo(models.Model):
 
     nome = models.CharField(max_length=200)
     descricao = models.TextField()
+    
     condicao_saude = models.ForeignKey(
         "CondicaoSaude",  # A tabela que será referenciada
         on_delete=models.SET_NULL,
@@ -322,6 +378,7 @@ class DetalhesTratamentoResumo(models.Model):
     categoria = models.CharField(max_length=100, blank=True, null=True)
     evidencia_clinica = models.TextField(blank=True, null=True)
     principio_ativo = models.CharField(max_length=200)
+    
     
     slug = models.SlugField(max_length=200, blank=True, null=True, unique=True)
 
@@ -424,10 +481,27 @@ class DetalhesTratamentoResumo(models.Model):
     def __str__(self):
         return self.nome
 
+import pycountry
+
+# Monta a lista de países automaticamente
+COUNTRIES = [(country.name, country.name) for country in pycountry.countries]
+
+
+
 class EvidenciasClinicas(models.Model):
     tratamento = models.ForeignKey("DetalhesTratamentoResumo", on_delete=models.CASCADE, related_name="evidencias")
-    titulo = models.CharField(max_length=255)
+    titulo = models.CharField(
+        max_length=255,
+        verbose_name="Código",
+        blank=True,
+        null=True
+    )
     descricao = models.TextField()
+    evidence_description = models.TextField(
+        verbose_name="Evidence.description",
+        blank=True,
+        null=True
+    )
     numero_participantes = models.IntegerField() 
     condicao_saude = models.ForeignKey(
         "CondicaoSaude",
@@ -441,12 +515,39 @@ class EvidenciasClinicas(models.Model):
     link_estudo = models.URLField(blank=True, null=True)
     data_publicacao = models.DateField(blank=True, null=True)
     autores = models.CharField(max_length=255, blank=True, null=True)
+    pais = models.CharField(
+        max_length=100,
+        choices=COUNTRIES,
+        blank=True,
+        null=True,
+        verbose_name="País"
+    )
+    country = models.CharField(        
+        max_length=100,
+        choices=COUNTRIES,
+        blank=True,
+        null=True,
+        verbose_name="Country"
+    )
+
     imagem_estudo = models.ImageField(upload_to="evidencias/", blank=True, null=True)
+    fonte = models.CharField(max_length=255, blank=True, null=True, verbose_name="Fonte")
     eficacia_min = models.DecimalField(max_digits=5, decimal_places=2)
     eficacia_max = models.DecimalField(max_digits=5, decimal_places=2)
     pdf_estudo = models.FileField(upload_to="pdf_estudos/", blank=True, null=True)
     link_pdf_estudo = models.URLField(blank=True, null=True)
-    referencia_bibliografica = models.TextField(blank=True, null=True)
+    referencia_bibliografica = models.TextField(
+    blank=True,
+    null=True,
+    verbose_name="Título do artigo"
+)
+    evidence_title = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name="Evidence.title"
+    )
+
     tipos_eficacia = models.ManyToManyField('TipoEficacia', through='EficaciaPorEvidencia', related_name='evidencias_eficacia')
 
 
@@ -507,7 +608,7 @@ class TipoEficacia(models.Model):
 
 class EficaciaPorEvidencia(models.Model):
     evidencia = models.ForeignKey(EvidenciasClinicas, on_delete=models.CASCADE, related_name="eficacia_por_evidencias")
-    tipo_eficacia = models.ForeignKey(TipoEficacia, on_delete=models.CASCADE)
+    tipo_eficacia = models.ForeignKey(TipoEficacia, on_delete=models.CASCADE, related_name="eficacia_por_tipo")
     
     # Campos de participantes
     participantes_com_beneficio = models.IntegerField(default=0)

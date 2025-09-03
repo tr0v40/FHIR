@@ -213,17 +213,19 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
 
 
 
-# --- Admin para Reação Adversa ---
 @admin.register(ReacaoAdversa)
 class ReacaoAdversaAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'descricao')
-    search_fields = ('nome',)
+    list_display = ("nome", "descricao", "undesirable_effect_name", "undesirable_effect_description")
+    fields = ("nome", "descricao", "imagem", "undesirable_effect_name", "undesirable_effect_description")
+    search_fields = ("nome", "undesirable_effect_name")
 
-# --- Admin para Condição de Saúde ---
+
 @admin.register(CondicaoSaude)
 class CondicaoSaudeAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'descricao')
-    search_fields = ('nome',)  # Necessário para autocomplete_fields
+    list_display = ('nome', 'descricao', 'condition')  # se quiser
+    search_fields = ('nome',)
+    fields = ('nome', 'descricao', 'condition', 'condition_description')
+
 
 class EvidenciasClinicasForm(forms.ModelForm):
     tipos_eficacia = forms.ModelMultipleChoiceField(
@@ -278,7 +280,7 @@ class EficaciaPorEvidenciaInline(admin.TabularInline):
 
 class EficaciaPorEvidenciaAdmin(admin.ModelAdmin):
     # Exibindo o percentual de eficácia calculado diretamente na tabela de admin
-    list_display = ['tipo_eficacia',  'participantes_iniciaram_tratamento', 'participantes_com_beneficio', 'percentual_eficacia_calculado']
+    list_display = ['tipo_eficacia',  'participantes_iniciaram_tratamento','participantes_com_beneficio', 'percentual_eficacia_calculado']
     
     # Calculando a eficácia diretamente no Admin
     def percentual_eficacia_calculado(self, obj):
@@ -345,6 +347,7 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
                     "tratamento",
                     "titulo",
                     "descricao",
+                    "evidence_description",
                     "condicao_saude",  # FK para Condição de Saúde
                     "rigor_da_pesquisa",
                     
@@ -361,6 +364,8 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
                     "autores",
                     "link_estudo",
                     "data_publicacao",
+                    "pais",     
+                    "country",
                 )
             },
         ),
@@ -369,13 +374,14 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
             {
                 "fields": (
                     "referencia_bibliografica",
+                    "evidence_title",
                     "pdf_estudo",
                     "link_pdf_estudo",
                     "visualizar_pdf",
                 )
             },
         ),
-        ("Imagem", {"fields": ("imagem_estudo", "imagem_preview")}),
+        ("Imagem", {"fields": ("imagem_estudo",  "fonte", "imagem_preview")}),
     )
 
     # Método para visualizar o PDF
@@ -397,8 +403,12 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
     imagem_preview.short_description = "Pré-visualização"
 
 
+@admin.register(Contraindicacao)
+class ContraindicacaoAdmin(admin.ModelAdmin):
+    list_display = ("nome", "descricao", "contraindication_name", "contraindication_description")
+    fields = ("nome", "descricao", "imagem", "contraindication_name", "contraindication_description")
+    search_fields = ("nome", "contraindication_name")
 
-admin.site.register(Contraindicacao)
 
 
 

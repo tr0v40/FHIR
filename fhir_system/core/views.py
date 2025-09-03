@@ -77,11 +77,30 @@ def tratamentos(request):
     filtro_criterio = (request.GET.get('filtro_criterio') or 'nenhum').strip().lower()
     comparacao      = (request.GET.get('comparacao') or '').strip().lower()
     filtro_valor    = (request.GET.get('filtro_valor') or '').strip()
+    exibir          = request.GET.get('exibir', 'prazo')
 
     tratamentos_list = DetalhesTratamentoResumo.objects.all()
     contraindications = Contraindicacao.objects.all()
 
-    # Filtros
+
+    tratamentos_cura = DetalhesTratamentoResumo.objects.filter(
+        evidencias__tipos_eficacia__tipo_eficacia='Cura'
+    )
+
+    tratamentos_eliminacao = DetalhesTratamentoResumo.objects.filter(
+        evidencias__tipos_eficacia__tipo_eficacia='Eliminação dos sintomas'
+    )
+
+    tratamentos_reducao = DetalhesTratamentoResumo.objects.filter(
+        evidencias__tipos_eficacia__tipo_eficacia='Redução dos sintomas'
+    )
+
+    tratamentos_prevencao = DetalhesTratamentoResumo.objects.filter(
+        evidencias__tipos_eficacia__tipo_eficacia='Prevenção'
+    )
+
+    
+
     if nome:
         tratamentos_list = tratamentos_list.filter(nome__icontains=nome)
 
@@ -199,6 +218,13 @@ def tratamentos(request):
         'contraindicacoes_selecionadas': contraindica_ids,
         # mantém os valores no form de filtro
         'request': request,
+        'tratamentos_cura': tratamentos_list,
+        'tratamentos_eliminacao': tratamentos_list,
+        'tratamentos_reducao': tratamentos_list,
+        'tratamentos_prevencao': tratamentos_list,
+        'exibir': exibir,
+        
+       
     }
     return render(request, 'core/tratamentos.html', context)
 
@@ -249,6 +275,10 @@ def detalhes_tratamentos(request, slug):
             'reacoes_adversas_detalhes__reacao_adversa'
         ), slug=slug
     )
+
+    
+    tipo_eficacia = tratamento.tipos_eficacia.first().tipo_eficacia if tratamento.tipos_eficacia.exists() else "Não especificado"
+
 
     evidencias = EvidenciasClinicas.objects.filter(tratamento=tratamento)
 
@@ -304,6 +334,7 @@ def detalhes_tratamentos(request, slug):
         'estrelas_preenchidas': estrelas_preenchidas,
         'estrelas_vazias': estrelas_vazias,
         'detalhes_reacoes_adversas': detalhes_reacoes_ordenadas,
+        'tipo_eficacia': tipo_eficacia,
     })
 
 
@@ -347,8 +378,6 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
 
 
 
-
-
 def evidencias_clinicas(request, slug):
     """Exibe a página de evidências clínicas de um tratamento específico"""
 
@@ -358,11 +387,21 @@ def evidencias_clinicas(request, slug):
     # Buscando as evidências associadas a esse tratamento
     evidencias = EvidenciasClinicas.objects.filter(tratamento=tratamento)
 
+    tipo_eficacia = []
+
+    for evidencia in evidencias:
+        # Acessando a relação reversa corretamente
+        for tipo in evidencia.tipos_eficacia.all():
+            tipo_eficacia.append({
+                'tipo': tipo.tipo_eficacia,
+                'percentual': tipo.eficacia_por_tipo.first().percentual_eficacia_calculado if tipo.eficacia_por_tipo.first() else 'Não especificado'
+            })
+
     return render(request, "core/evidencias_clinicas.html", {
         "tratamento": tratamento,
         "evidencias": evidencias,
+        "tipo_eficacia": tipo_eficacia,
     })
-
 
 
 def listar_urls(request):
@@ -459,6 +498,11 @@ def tratamento_view(request):
 
 
 
+
+
+
+
+
 from django.http import JsonResponse
 from django.views.generic import View
 from .models import CondicaoSaude
@@ -478,6 +522,3 @@ def tipo_eficacia_descricao_json(request, pk):
     except TipoEficacia.DoesNotExist:
         return JsonResponse({'descricao': ''}, status=404)
     return JsonResponse({'descricao': tipo_eficacia.descricao})
-
-
-
