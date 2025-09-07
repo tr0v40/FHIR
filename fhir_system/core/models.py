@@ -548,31 +548,9 @@ class EvidenciasClinicas(models.Model):
         verbose_name="Evidence.title"
     )
 
-    tipos_eficacia = models.ManyToManyField('TipoEficacia', through='EficaciaPorEvidencia', related_name='evidencias_eficacia')
-    CURA = 'cura'
-    ELIMINACAO_SINTOMAS = 'eliminacao_sintomas'
-    REDUCAO_SINTOMAS = 'reducao_sintomas'
-    PREVENCAO = 'prevencao'
 
-    TIPO_EFICACIA_CHOICES = [
-        (CURA, 'Cura'),
-        (ELIMINACAO_SINTOMAS, 'Eliminação dos sintomas'),
-        (REDUCAO_SINTOMAS, 'Redução dos sintomas'),
-        (PREVENCAO, 'Prevenção'),
-    ]
 
-    # Adicionando o campo tipo_eficacia
-    tipo_eficacia = models.CharField(
-        max_length=20,
-        choices=TIPO_EFICACIA_CHOICES,
-        default=CURA,  # Você pode definir o valor padrão, caso necessário
-    )
 
-    # Outros campos da model
-    # ...
-
-    def __str__(self):
-        return self.tipo_eficacia
 
     participantes_com_beneficio = models.IntegerField(default=0)
     participantes_iniciaram_tratamento = models.IntegerField(default=0)
