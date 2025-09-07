@@ -1345,75 +1345,76 @@ img {
         
         
         
-        
-        
-            
-
-<div class="efficacy-section" style="margin-bottom: 10px;">
-    <!-- Título da seção de eficácia -->
-    <h2 class="efficacy-title" style="font-family: Arial, sans-serif; font-weight: bold; font-size: 34px; color: #000; text-align: center;">
-        Eficácia:  <span style="color: #007bff;">{{ tipo_eficacia  }}</span>
-    </h2>
-    <div class="efficacy-bar-container" style="
-    width: 40%; 
-    height: 70px; 
-    background-color: #e0f0ff; 
-    position: relative; 
-    margin: 0 auto; 
-    border-radius: 5px; 
-    overflow: hidden;
-">
-
-{% with eficacia=eficacia_max_css %}
-
-    <div class="efficacy-background" style="
-        height: 100%;
-        width: 100%;
-        background-image: linear-gradient(
-            to right,
-            #0094FF 0%,
-            #0094FF {{ eficacia }}%,
-            rgba(0, 148, 255, 0.3) {{ eficacia }}%,
-            rgba(0, 148, 255, 0.3) 100%
-        );
-        border-radius: 5px;
-    "></div>
-    {% endwith %}
-
-</div>
-
-    
-    <!-- Intervalo de eficácia -->
-    <p class="efficacy-range" style="
-        font-size: 20px; 
-        color: #B0B0B0; 
-        text-align: center; 
-        margin-top: 10px;
-    ">
-        <span class="low-efficacy" style="font-size: 40px; color: #B0B0B0;">
-            {% if eficacia_min is not None %}{{ eficacia_min }}{% else %}0,00{% endif %}
-        </span>
-        <span class="efficacy-separator" style="font-size: 30px; color: #B0B0B0; position: relative; top: 6px;"> a </span> 
-        <span class="high-efficacy" style="font-size: 40px; color: #000;">
-            {% if eficacia_max is not None and eficacia_max != 0 %}{{ eficacia_max }}{% else %}0.00{% endif %}%
-        </span>
-    </p>
-    
-
-
-        
-<!-- Descrição adicional sobre a eficácia -->
-<p class="efficacy-info" style="font-size: 14px; color: #B0B0B0; text-align: center;">
-    Conforme os artigos científicos que constam em nossa<br> plataforma, de 
-    <strong style="color: #0094FF; font-weight: bold;">
-        <span class="highlight" style="color: #0094FF; font-weight: bold;">
-            {% if eficacia_min is not None %}{{ eficacia_min }}{% else %}0.00{% endif %} ~ 
-            {% if eficacia_max is not None and eficacia_max != 0 %}{{ eficacia_max }}{% else %}0.00{% endif %}%
-        </span>
-    </strong>
-
-    dos pacientes que fizeram esse <br> tratamento obtiveram o benefício citado.
-</p>
+        <style>
+            /* estilos só desta seção */
+            .efficacy-title { font-family: Arial, sans-serif; font-weight: 700; font-size: 34px; text-align: center; }
+            .efficacy-label { color: #c7c7c7; font-weight: 700; margin-right: 6px; }
+            .efficacy-value { color: #000; font-weight: 800; }
+            .efficacy-bar-container {
+              width: 40%;
+              height: 70px;
+              background-color: #e0f0ff;
+              position: relative;
+              margin: 0 auto;
+              border-radius: 5px;
+              overflow: hidden;
+              max-width: 720px;   /* evita ficar estreito demais em telas largas */
+              min-width: 260px;   /* evita ficar minúsculo em telas muito pequenas */
+            }
+            .efficacy-range { font-size: 20px; color: #B0B0B0; text-align: center; margin-top: 10px; }
+            .efficacy-range .low-efficacy  { font-size: 40px; color: #B0B0B0; }
+            .efficacy-range .high-efficacy { font-size: 40px; color: #000; }
+            .efficacy-range .efficacy-separator { font-size: 30px; color: #B0B0B0; position: relative; top: 6px; }
+            .efficacy-info { font-size: 14px; color: #B0B0B0; text-align: center; }
+          </style>
+          
+          <div class="efficacy-section" style="margin-bottom: 10px;">
+            <!-- Título / tipo -->
+            <h2 class="efficacy-title">
+              <span class="efficacy-label">Eficácia:</span>
+              <span class="efficacy-value">{{ tipo_eficacia }}</span>
+            </h2>
+          
+            <!-- Barra -->
+            <div class="efficacy-bar-container" role="img" aria-label="Eficácia máxima {{ eficacia_max }}%">
+              {% with eficacia=eficacia_max_css %}
+                <div class="efficacy-background" style="
+                  height:100%;
+                  width:100%;
+                  background-image: linear-gradient(
+                    to right,
+                    #0094FF 0%,
+                    #0094FF {{ eficacia }}%,
+                    rgba(0,148,255,0.3) {{ eficacia }}%,
+                    rgba(0,148,255,0.3) 100%
+                  );
+                  border-radius:5px;
+                "></div>
+              {% endwith %}
+            </div>
+          
+            <!-- Intervalo -->
+            <p class="efficacy-range">
+              <span class="low-efficacy">
+                {% if eficacia_min %}{{ eficacia_min }}{% else %}0,00{% endif %}%
+              </span>
+              <span class="efficacy-separator"> a </span>
+              <span class="high-efficacy">
+                {% if eficacia_max %}{{ eficacia_max }}{% else %}0,00{% endif %}%
+              </span>
+            </p>
+          
+            <!-- Texto explicativo -->
+            <p class="efficacy-info">
+              Conforme os artigos científicos que constam em nossa<br> plataforma, de
+              <strong style="color:#0094FF; font-weight:700;">
+                {% if eficacia_min %}{{ eficacia_min }}{% else %}0,00{% endif %}% ~
+                {% if eficacia_max %}{{ eficacia_max }}{% else %}0,00{% endif %}%
+              </strong>
+              dos pacientes que fizeram esse tratamento obtiveram o benefício citado.
+            </p>
+          </div>
+          
 
         
         

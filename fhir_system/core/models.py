@@ -549,7 +549,34 @@ class EvidenciasClinicas(models.Model):
     )
 
     tipos_eficacia = models.ManyToManyField('TipoEficacia', through='EficaciaPorEvidencia', related_name='evidencias_eficacia')
+    CURA = 'cura'
+    ELIMINACAO_SINTOMAS = 'eliminacao_sintomas'
+    REDUCAO_SINTOMAS = 'reducao_sintomas'
+    PREVENCAO = 'prevencao'
 
+    TIPO_EFICACIA_CHOICES = [
+        (CURA, 'Cura'),
+        (ELIMINACAO_SINTOMAS, 'Eliminação dos sintomas'),
+        (REDUCAO_SINTOMAS, 'Redução dos sintomas'),
+        (PREVENCAO, 'Prevenção'),
+    ]
+
+    # Adicionando o campo tipo_eficacia
+    tipo_eficacia = models.CharField(
+        max_length=20,
+        choices=TIPO_EFICACIA_CHOICES,
+        default=CURA,  # Você pode definir o valor padrão, caso necessário
+    )
+
+    # Outros campos da model
+    # ...
+
+    def __str__(self):
+        return self.tipo_eficacia
+
+    participantes_com_beneficio = models.IntegerField(default=0)
+    participantes_iniciaram_tratamento = models.IntegerField(default=0)
+    percentual = models.CharField(max_length=100, blank=True, null=True) 
 
     # Novo campo para reações adversas
     risco_reacao = models.CharField(max_length=100, blank=True, null=True)  # ex: "1% a 10% COMUM"
@@ -560,6 +587,12 @@ class EvidenciasClinicas(models.Model):
 
     def __str__(self):
         return f"{self.titulo} - {self.tratamento.nome}"
+    @property
+    def percentual_eficacia(self):
+        """Calcula o percentual de eficácia automaticamente"""
+        if self.participantes_iniciaram_tratamento > 0:
+            return (self.participantes_com_beneficio / self.participantes_iniciaram_tratamento) * 100
+        return 0.0  # Caso não haja participantes iniciados, retorna 0
 
 
 class Tratamento(models.Model):
@@ -595,11 +628,32 @@ class TratamentoCondicao(models.Model):
     
 
 class TipoEficacia(models.Model):
-    tipo_eficacia = models.CharField(max_length=255, verbose_name="Tipo de Eficácia")
-    descricao = models.TextField(blank=True, null=True, verbose_name="Descrição do Tipo de Eficácia")
+    tipo_eficacia = models.CharField(max_length=255)  # Certifique-se de que este campo existe
+    descricao = models.TextField(blank=True, null=True)  # Se for esse campo, adicione-o
+
+    eficacia_por_tipo = models.ManyToManyField('EficaciaPorTipo', related_name='tipos_de_eficacia', blank=True)
+
+    def __str__(self):
+        return self.tipo_eficacia  # Isso deve ser acessado na admin
+
+
+
+
+
+class EficaciaPorTipo(models.Model):
+    tipo_eficacia = models.CharField(max_length=255)
+    percentual_eficacia_calculado = models.FloatField()
+    participantes_iniciaram_tratamento = models.IntegerField()
+    participantes_com_beneficio = models.IntegerField()
+
+    # Relacionamento com TipoEficacia (ManyToManyField)
+    tipos_eficacia = models.ManyToManyField(
+        TipoEficacia, related_name='eficacias_tipo', blank=True
+    )
 
     def __str__(self):
         return self.tipo_eficacia
+
 
 
 
@@ -608,7 +662,7 @@ class TipoEficacia(models.Model):
 
 class EficaciaPorEvidencia(models.Model):
     evidencia = models.ForeignKey(EvidenciasClinicas, on_delete=models.CASCADE, related_name="eficacia_por_evidencias")
-    tipo_eficacia = models.ForeignKey(TipoEficacia, on_delete=models.CASCADE, related_name="eficacia_por_tipo")
+    tipo_eficacia = models.ForeignKey(TipoEficacia, on_delete=models.CASCADE)
     
     # Campos de participantes
     participantes_com_beneficio = models.IntegerField(default=0)
@@ -623,5 +677,3 @@ class EficaciaPorEvidencia(models.Model):
     
     def __str__(self):
         return f"{self.evidencia.titulo} - {self.tipo_eficacia.tipo_eficacia} - Eficácia: {self.percentual_eficacia_calculado}%"
-
-

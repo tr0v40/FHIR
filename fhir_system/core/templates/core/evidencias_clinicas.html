@@ -358,57 +358,91 @@
         <!-- Imagem do estudo -->
         <div class="imagem-estudo" style="
         flex: 0 0 160px;
-        height: 140px;
+        min-height: 140px;        /* altura mínima, mas deixa o flex crescer */
         display: flex;
-        align-items: center;  /* centraliza verticalmente */
-        justify-content: center;
+        align-items: center;      /* centraliza verticalmente */
+        justify-content: center;  /* centraliza horizontalmente */
       ">
+      
       {% if evidencia.imagem_estudo %}
       <img src="{{ evidencia.imagem_estudo.url }}" alt="Imagem do estudo" style="
-        max-width: 100%;
-        max-height: 100%;
-        height: auto;
-        margin: auto 0;
-        border-radius: 6px;
-        object-fit: contain;
-        display: block;
-      ">
+      position: absolute;
+      top: 400px;
+      max-width: 90%;
+      max-height: 90%;
+      height: auto;
+      border-radius: 6px;
+      object-fit: contain;
+      display: block;
+    ">
+    
     {% else %}
       <p>Imagem não disponível</p>
     {% endif %}
     </div>
       
+    <style>
+      .eficacias-grid {
+        display: grid;
+        grid-template-columns: auto 1fr; /* coluna 1: título | coluna 2: valores */
+        row-gap: 4px;
+        column-gap: 8px;
+        width: 100%;
+      }
+    
+      .eficacias-label {
+        font-weight: 700;       /* negrito */
+        color: #757474;            /* cinza claro (#888 pode ser trocado por #999 se quiser ainda mais suave) */
+        margin-right: 6px;
+      }
+    
+      .eficacia-top {
+        font-weight: 700;
+        font-size: 1.05rem;
+      }
+      .eficacia-principal {
+        font-weight: 700;     /* deixa o valor principal em negrito */
+        font-size: 1.1rem;    /* um pouco maior para destacar */
+        color: #000;
+      }
+        
+      .eficacia-secundaria {
+        font-weight: 400;
+        font-size: 0.95rem;
+        color: #000000;
+        padding-left: 85px;
+      }
+    </style>
+    
         
         <!-- Conteúdo -->
         <div class="conteudo" style="flex: 1; position: relative;">
 
-<!-- Exibindo os tipos de eficácia com o percentual calculado -->
-{% for tipo in tipo_eficacia %}
-    <div style="margin-bottom: 15px;">
-        <p style="font-size: 16px; font-weight: bold; color: #050505;">
-            {{ tipo.tipo }} - 
-            {% if tipo.percentual %}
-                {{ tipo.percentual|floatformat:2 }}%
-            {% else %}
-                Não especificado
-            {% endif %}
+      <!-- Exibindo os tipos de eficácia com o percentual calculado -->
+      {% for tratamento in tratamentos %}
+      {% if tratamento.tipos_eficacia_completa and tratamento.tipos_eficacia_completa|length > 0 %}
+        <!-- Cabeçalho: "Eficácia:" + principal na mesma linha -->
+        <p class="eficacia-head">
+          <span class="eficacias-label">Eficácia:</span>
+          <span class="eficacia-principal">
+            {{ tratamento.tipos_eficacia_completa.0.tipo }} – {{ tratamento.tipos_eficacia_completa.0.valor_eficacia_str }}%
+          </span>
         </p>
-    </div>
-{% empty %}
-    <p style="color: red;">Tipo de eficácia não especificado</p>
-{% endfor %}
-
-      
-          <p style="font-weight: 700; font-size: 1.1rem; margin: 0 0 8px;">
-            EFICÁCIA 
-            
-            <span style="color: #bbb;">{{ evidencia.eficacia_min }}</span> 
-            <span style="color: #bbb;">a</span> 
-            <span>{{ evidencia.eficacia_max }}%</span>
+    
+        <!-- Linhas seguintes (uma abaixo da outra) -->
+        {% for tipo in tratamento.tipos_eficacia_completa|slice:"1:" %}
+          <p class="eficacia-secundaria">
+            {{ tipo.tipo }} – {{ tipo.valor_eficacia_str }}%
           </p>
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+    
+            
+ 
           
           <p style="margin: 0 0 14px; font-size: 1rem;">
-            Rigor da pesquisa:
+            <span class="eficacias-label">Rigor da pesquisa:</span>
             <span style="display: inline-flex; gap: 6px; margin-left: 8px; vertical-align: middle;">
               {% with rigor_value=evidencia.rigor_da_pesquisa %}
                 {% for i in "1234567" %}
@@ -451,12 +485,20 @@
           </p>
           
           <p style="margin: 0 0 14px; font-size: 1rem;">
-            quantidade de participantes: <strong>{{ evidencia.numero_participantes }}</strong>
+            <span class="eficacias-label">Quantidade de participantes:</span>
+            <strong>{{ evidencia.numero_participantes }}</strong>
           </p>
           
-          <p style="margin: 0 0 20px; font-weight: 600; font-size: 1.1rem;">Data: <span style="font-weight: 400;">{{ evidencia.data_publicacao|date:"m/Y" }}</span></p>
+          <p style="margin: 0 0 20px; font-size: 1rem;">
+            <span class="eficacias-label">Data:</span>
+            <strong>{{ evidencia.data_publicacao|date:"m/Y" }}</strong>
+          </p>
           
-          <p style="margin: 0 0 20px; font-weight: 600; font-size: 1.1rem;">País: <span style="font-weight: 400;">{{ evidencia.pais}}</span></p>
+          <p style="margin: 0 0 20px; font-size: 1rem;">
+            <span class="eficacias-label">País:</span>
+            <strong>{{ evidencia.pais }}</strong>
+          </p>
+          
 
           <p style="font-style: italic; font-size: 1rem; margin: 0 0 18px; width: 100%;">
             {{ evidencia.autores }}
@@ -478,18 +520,18 @@
           
           <!-- Caixa fixa da descrição -->
           <div style="
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 400px;
-        height: 150px;
-        padding: 12px 16px;
-        box-sizing: border-box;
-        font-size: 1rem;
-        line-height: 1.4;
-        color: #222;
-        white-space: normal;
-        ">
+            position: absolute;
+            top: 100px;   /* antes era 0 → agora desce 20px */
+            right: 0;
+            width: 400px;
+            height: 150px;
+            padding: 12px 16px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            line-height: 1.4;
+            color: #222;
+            white-space: normal;
+                    ">
           {{ evidencia.descricao|truncatechars:200|linebreaksbr }}
         </div>
           

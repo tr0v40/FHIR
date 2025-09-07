@@ -382,7 +382,18 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
             },
         ),
         ("Imagem", {"fields": ("imagem_estudo",  "fonte", "imagem_preview")}),
+
     )
+
+    # Método para exibir o campo calculado no admin
+    def percentual_eficacia(self, obj):
+        """Calcula o percentual de eficácia automaticamente"""
+        if obj.participantes_iniciaram_tratamento > 0:
+            return f"{(obj.participantes_com_beneficio / obj.participantes_iniciaram_tratamento) * 100:.2f}%"
+        return "Não especificado"  # Se não houver participantes iniciados
+
+    # Incluindo o método no list_display para ser exibido na lista de objetos
+    list_display = ('titulo', 'participantes_iniciaram_tratamento', 'participantes_com_beneficio', 'percentual_eficacia')
 
     # Método para visualizar o PDF
     def visualizar_pdf(self, obj):
