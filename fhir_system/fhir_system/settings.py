@@ -38,7 +38,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Instalar apps
 INSTALLED_APPS = [
-    
     "jazzmin",
     'django_extensions'
     "django.contrib.admin",
