@@ -1306,6 +1306,84 @@ footer.footer .row > div {
   max-width: 1130px;
   width: 100%;
 }
+
+/* Coloque isso no FINAL do seu <style> */
+    @media (max-width: 768px) {
+  .filters {
+    margin-bottom: 16px !important;   /* ou 20–24px, sem valor negativo */
+  }
+
+  .treatment-list h2 {
+    margin-top: 12px;      /* garante folga abaixo dos filtros */
+    display: block;
+    clear: both;           /* evita qualquer sobreposição/flutuação */
+  }
+
+  /* Se ainda notar “grudar”, remova o sticky da sidebar no mobile */
+  .left-sidebar {
+    position: static !important;
+    top: auto !important;
+    height: auto !important;
+  }
+}
+
+/* ==== MOBILE: filtros sempre por último ==== */
+@media (max-width: 768px) {
+  .content-area {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Garanta que todos os blocos de tratamentos venham antes */
+  .treatment-list,
+  .treatment-section,
+  .tratamentos-wrapper {
+    order: 1 !important;
+  }
+
+  /* Filtros/ordenações vão para o fim da coluna */
+  .left-sidebar,
+  .filters {
+    order: 9999 !important;
+    position: static !important;  /* evita “grudar” no meio */
+    top: auto !important;
+    height: auto !important;
+    margin-top: 24px !important;
+  }
+
+  /* Card preto pode ficar depois dos filtros (se quiser) */
+  .card-aviso-mobile {
+    order: 10000 !important;
+  }
+
+  /* Remova margens negativas que empurram elementos */
+  .filters {
+    margin-bottom: 16px !important;  /* em vez de -45px */
+  }
+}
+
+/* MOBILE: .left-sidebar sempre depois da lista inteira de tratamentos */
+@media (max-width: 768px) {
+  .content-area {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* aplique nos FILHOS DIRETOS do content-area */
+  .content-area > .treatment-list { order: 1 !important; }
+  .content-area > .left-sidebar   { order: 9999 !important; position: static !important; top: auto !important; height: auto !important; margin-top: 24px !important; }
+  .content-area > .card-aviso-mobile { order: 10000 !important; }
+
+  /* nada de margem negativa aqui */
+  .filters { margin-bottom: 16px !important; }
+}
+@media (max-width: 768px) {
+  .content-area { display:flex; flex-direction:column; }
+  .content-area > .lista-wrapper   { order: 1 !important; }
+  .content-area > .filtros-wrapper { order: 9999 !important; }
+  .filtros-wrapper .left-sidebar   { position: static !important; top:auto !important; height:auto !important; }
+}
+
 }
 
 
@@ -1739,25 +1817,38 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
           padding:8px 15px;
           border-radius:6px;
           margin-bottom:10px;
-          width:auto;                /* não fixa largura */
+          width:auto;   
+          text-align:left;                /* não fixa largura */
         }
+        .section-list{
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+        max-width:1120px;
+        align-items:flex-start;            /* 👈 garante filhos à esquerda */
+        }
+
+        .section-title{
+        display:inline-block;
+        font-size:16px;
+        font-weight:bold;
+        background:#f2f2f2;
+        padding:8px 15px;
+        border-radius:6px;
+        margin-bottom:10px;
+        width:auto;
+        text-align:left;
+        align-self:flex-start;             /* 👈 reforça caso o pai tente centralizar */
+        }
+
       </style>
       
     {# core/tratamentos.html #}
 
     {# ============================ SESSÃO: CURA ============================ #}
     <div class="treatment-list section-list">
-        <h2 style="
-        font-size: 16px;
-        font-weight: bold;
-        background-color: #f2f2f2;
-        padding: 8px 15px;
-        border-radius: 6px;
-        width: 430px;
-        margin-top: 100px;   /* 🔹 empurra o título para baixo */
-    ">
-      Tratamentos com eficácia de cura
-    </h2>
+        <h2 class="section-title">Tratamentos com eficácia de cura</h2>
+
     
       {% for item in tratamentos_cura %}
         {% with tratamento=item.obj %}
@@ -2037,14 +2128,30 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
 
 /* Título padrão */
 .section-title{
-  display:inline-block;
+  display:block;          /* ocupa a linha toda */
   font-size:16px;
   font-weight:700;
   background:#f2f2f2;
   padding:8px 15px;
   border-radius:6px;
   margin:0 0 15px 0;
-  width:auto;
+  text-align:left;  
+  gap: 50px      /* 👈 alinha o texto à esquerda */
+}
+
+/* se o título estiver dentro de um container com text-align:center */
+.section-title-wrapper{   /* aplique essa classe no wrapper do título */
+  text-align:left;        /* 👈 garante alinhamento do conteúdo */
+}
+
+/* se o pai usar flex com justify-content:center */
+.section-title{           /* mantém o título colado à esquerda */
+  align-self:flex-start;  /* 👈 ignora a centralização do flex pai */
+}
+
+/* caso o elemento tenha estilo inline centralizando, sobreponha */
+h1.section-title, h2.section-title, h3.section-title{
+  text-align:left !important;
 }
 
 /* Cards ocupam a mesma largura do container */
@@ -2668,6 +2775,7 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     });
 </script>
+
 
 
 </body>
