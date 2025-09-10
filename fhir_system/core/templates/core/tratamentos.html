@@ -1842,8 +1842,7 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
         }
 
       </style>
-    
-    
+      
     {# core/tratamentos.html #}
 
     {# ============================ SESSÃO: CURA ============================ #}
@@ -1952,462 +1951,568 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
     </div>
 
     <style id="right-align-eliminacao">
-      /* base de todas as seções */
-      :root { --cards-max: 1100px; }
+/* base de todas as seções */
+:root { --cards-max: 1100px; }
+
+.treatment-list.section-list {
+  width: 100%;
+  max-width: calc(var(--cards-max) + 20px); /* largura do bloco de listagem */
+  margin: 0 auto;                           /* padrão: central */
+  gap: 20px;
+}
+
+/* título padrão */
+.treatment-list.section-list > h2.section-title {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 700;
+  background: #f2f2f2;
+  padding: 8px 15px;
+  border-radius: 6px;
+  width: auto;
+  margin: 0 0 15px 0;                       /* sem hacks de margin-left */
+}
+
+/* card padrão */
+.treatment-list.section-list .tratamento-card {
+  width: 100%;
+  max-width: var(--cards-max);
+  margin: 0 auto;                           /* central por padrão */
+}
+
+/* VARIAÇÃO: coluna direita (mesmo alinhamento entre sessões) */
+.treatment-list.section-list.coluna-direita {
+  margin-left: auto;                        /* empurra o bloco inteiro pra direita */
+  margin-right: 0;
+}
+.treatment-list.section-list.coluna-direita > h2.section-title {
+  margin-left: auto;                        /* título acompanha */
+  margin-right: 0;
+}
+.treatment-list.section-list.coluna-direita .tratamento-card {
+  margin-left: auto;                        /* cada card encosta à direita */
+  margin-right: 0;
+}
+/* força TODAS as seções a ficarem como a de "Cura" (centralizadas) */
+.treatment-list.section-list { 
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto !important;            /* centraliza o container da seção */
+  gap: 20px;
+}
+
+.treatment-list.section-list > h2 { 
+  width: auto !important;
+  margin: 0 0 15px 0 !important;        /* sem margin-left "mágica" */
+}
+
+.treatment-list.section-list .tratamento-card {
+  width: 100% !important;
+  max-width: 1120px !important;
+  margin: 0 auto !important;            /* centraliza cada card */
+}
+
+/* mata qualquer variação que empurre para a direita */
+.treatment-list.section-list.coluna-direita { 
+  margin: 0 auto !important;
+}
+.treatment-list.section-list.coluna-direita > h2,
+.treatment-list.section-list.coluna-direita .tratamento-card {
+  margin: 0 auto !important;
+}
+/* === alinhamento fino das seções === */
+:root{
+  /* use o MESMO valor da largura máxima dos cards */
+  --cards-max: 1130px;   /* se seus cards estão em 1120px, troque aqui também */
+  --nudge: 150px;          /* micro-ajuste opcional (+/- 1 a 3px) */
+}
+
+.treatment-list.section-list{
+  display: flex;
+  flex-direction: column;
+  align-items: center;                 /* centraliza o bloco da seção */
+  gap: 20px;
+}
+
+.treatment-list.section-list > h2{
+  width: var(--cards-max);             /* título com a MESMA largura do card */
+  max-width: 100%;
+  margin: 0 0 15px 0;                  /* sem margin-left */
+  text-align: left;                    /* alinha o texto à esquerda */
+  transform: translateX(var(--nudge)); /* micro-ajuste, se precisar */
+}
+
+.treatment-list.section-list .tratamento-card{
+  width: 100%;
+  max-width: var(--cards-max);         /* idêntico ao título */
+  margin: 0 auto;
+}
+:root{
+  --cards-max: 1130px;  /* largura alvo do card */
+  --nudge: 24px;        /* “empurrãozinho” p/ a direita – ajuste aqui */
+}
+
+/* bloco das seções (compartilhado) */
+.treatment-list.section-list{
+  width: 100%;
+  max-width: var(--cards-max);
+  margin: 0 auto;
+  gap: 20px;
+}
+
+/* título padrão da seção */
+.treatment-list.section-list .section-title{
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 700;
+  background: #f2f2f2;
+  padding: 8px 15px;
+  border-radius: 6px;
+  width: auto;
+  margin: 0 0 15px 0;
+}
+
+/* cards padrão */
+.treatment-list.section-list .tratamento-card{
+  width: 100%;
+  max-width: var(--cards-max);
+  margin: 0 auto;
+}
+
+/* VARIAÇÃO: alinhar seção “um pouco mais à direita” */
+.treatment-list.section-list.coluna-direita .section-title,
+.treatment-list.section-list.coluna-direita .tratamento-card{
+  transform: translateX(var(--nudge));
+}
+/* ===== Alinhamento fino das seções ===== */
+:root{
+  --cards-max: 1120px;   /* mesma largura que você usa nos cards */
+  --empurra: 60px;       /* quanto quer empurrar p/ a DIREITA (ajuste aqui) */
+}
+
+/* padrão: centralizado (como a seção CURA) */
+.treatment-list.section-list{
+  max-width: var(--cards-max);
+  margin-left: calc((100% - var(--cards-max))/2);
+  margin-right: calc((100% - var(--cards-max))/2);
+}
+
+/* títulos e cards com a mesma largura do container */
+.treatment-list.section-list .section-title,
+.treatment-list.section-list .tratamento-card{
+  max-width: var(--cards-max);
+  margin: 0;            /* zera margens internas */
+}
+
+/* empurra só as seções “daqui pra baixo” (as que têm .coluna-direita) */
+.treatment-list.section-list.coluna-direita{
+  margin-left:  calc((100% - var(--cards-max))/2 + var(--empurra));
+  margin-right: calc((100% - var(--cards-max))/2 - var(--empurra));
+}
+
+/* garante que NENHUM inline vença */
+.treatment-list.section-list > h2[style],
+.treatment-list.section-list .tratamento-card[style]{
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  width: auto !important;
+}
+:root{ --cards-max:1120px; }
+
+/* Base igual para todas as seções */
+.treatment-list.section-list{
+  width:100%;
+  max-width:var(--cards-max);
+  gap:20px;
+}
+
+/* Título padrão */
+.section-title{
+  display:block;          /* ocupa a linha toda */
+  font-size:16px;
+  font-weight:700;
+  background:#f2f2f2;
+  padding:8px 15px;
+  border-radius:6px;
+  margin:0 0 15px 0;
+  text-align:left;  
+  gap: 50px      /* 👈 alinha o texto à esquerda */
+}
+
+/* se o título estiver dentro de um container com text-align:center */
+.section-title-wrapper{   /* aplique essa classe no wrapper do título */
+  text-align:left;        /* 👈 garante alinhamento do conteúdo */
+}
+
+/* se o pai usar flex com justify-content:center */
+.section-title{           /* mantém o título colado à esquerda */
+  align-self:flex-start;  /* 👈 ignora a centralização do flex pai */
+}
+
+/* caso o elemento tenha estilo inline centralizando, sobreponha */
+h1.section-title, h2.section-title, h3.section-title{
+  text-align:left !important;
+}
+
+/* Cards ocupam a mesma largura do container */
+.treatment-list.section-list .tratamento-card{
+  width:100%;
+  max-width:var(--cards-max);
+}
+
+/* Modo manual: aplica deslocamento igual ao título e aos cards */
+.treatment-list.section-list.manual{
+  /* centralizado por padrão */
+  margin-left:calc((100% - var(--cards-max))/2);
+  margin-right:calc((100% - var(--cards-max))/2);
+  --offset:0px; /* default */
+}
+
+/* aplica o offset na seção inteira (título + cards) */
+.treatment-list.section-list.manual > .section-title,
+.treatment-list.section-list.manual > .tratamento-card{
+  transform:translateX(var(--offset));
+}
+
+/* Offsets individuais (ajuste os valores à vontade) */
+.treatment-list.section-list.manual.cura       { --offset:  0px; }  /* referência */
+.treatment-list.section-list.manual.eliminacao { --offset: 160px; }
+.treatment-list.section-list.manual.reducao    { --offset: 160px; }
+.treatment-list.section-list.manual.prevencao  { --offset: 160px; }
+
+/* Em telas pequenas: zera os offsets para não “quebrar” no mobile */
+@media (max-width: 992px){
+  .treatment-list.section-list.manual{
+    margin-left:auto; margin-right:auto;
+  }
+  .treatment-list.section-list.manual > .section-title,
+  .treatment-list.section-list.manual > .tratamento-card{
+    transform:none;
+  }
+}
+
+
+      </style>
       
-      .treatment-list.section-list {
-        width: 100%;
-        max-width: calc(var(--cards-max) + 20px); /* largura do bloco de listagem */
-        margin: 0 auto;                           /* padrão: central */
-        gap: 20px;
-      }
-      
-      /* título padrão */
-      .treatment-list.section-list > h2.section-title {
-        display: inline-block;
-        font-size: 16px;
-        font-weight: 700;
-        background: #f2f2f2;
-        padding: 8px 15px;
-        border-radius: 6px;
-        width: auto;
-        margin: 0 0 15px 0;                       /* sem hacks de margin-left */
-      }
-      
-      /* card padrão */
-      .treatment-list.section-list .tratamento-card {
-        width: 100%;
-        max-width: var(--cards-max);
-        margin: 0 auto;                           /* central por padrão */
-      }
-      
-      /* VARIAÇÃO: coluna direita (mesmo alinhamento entre sessões) */
-      .treatment-list.section-list.coluna-direita {
-        margin-left: auto;                        /* empurra o bloco inteiro pra direita */
-        margin-right: 0;
-      }
-      .treatment-list.section-list.coluna-direita > h2.section-title {
-        margin-left: auto;                        /* título acompanha */
-        margin-right: 0;
-      }
-      .treatment-list.section-list.coluna-direita .tratamento-card {
-        margin-left: auto;                        /* cada card encosta à direita */
-        margin-right: 0;
-      }
-      /* força TODAS as seções a ficarem como a de "Cura" (centralizadas) */
-      .treatment-list.section-list { 
-        width: 100%;
-        max-width: 1120px;
-        margin: 0 auto !important;            /* centraliza o container da seção */
-        gap: 20px;
-      }
-      
-      .treatment-list.section-list > h2 { 
-        width: auto !important;
-        margin: 0 0 15px 0 !important;        /* sem margin-left "mágica" */
-      }
-      
-      .treatment-list.section-list .tratamento-card {
-        width: 100% !important;
-        max-width: 1120px !important;
-        margin: 0 auto !important;            /* centraliza cada card */
-      }
-      
-      /* mata qualquer variação que empurre para a direita */
-      .treatment-list.section-list.coluna-direita { 
-        margin: 0 auto !important;
-      }
-      .treatment-list.section-list.coluna-direita > h2,
-      .treatment-list.section-list.coluna-direita .tratamento-card {
-        margin: 0 auto !important;
-      }
-      /* === alinhamento fino das seções === */
-      :root{
-        /* use o MESMO valor da largura máxima dos cards */
-        --cards-max: 1130px;   /* se seus cards estão em 1120px, troque aqui também */
-        --nudge: 150px;          /* micro-ajuste opcional (+/- 1 a 3px) */
-      }
-      
-      .treatment-list.section-list{
-        display: flex;
-        flex-direction: column;
-        align-items: center;                 /* centraliza o bloco da seção */
-        gap: 20px;
-      }
-      
-      .treatment-list.section-list > h2{
-        width: var(--cards-max);             /* título com a MESMA largura do card */
-        max-width: 100%;
-        margin: 0 0 15px 0;                  /* sem margin-left */
-        text-align: left;                    /* alinha o texto à esquerda */
-        transform: translateX(var(--nudge)); /* micro-ajuste, se precisar */
-      }
-      
-      .treatment-list.section-list .tratamento-card{
-        width: 100%;
-        max-width: var(--cards-max);         /* idêntico ao título */
-        margin: 0 auto;
-      }
-      :root{
-        --cards-max: 1130px;  /* largura alvo do card */
-        --nudge: 24px;        /* “empurrãozinho” p/ a direita – ajuste aqui */
-      }
-      
-      /* bloco das seções (compartilhado) */
-      .treatment-list.section-list{
-        width: 100%;
-        max-width: var(--cards-max);
-        margin: 0 auto;
-        gap: 20px;
-      }
-      
-      /* título padrão da seção */
-      .treatment-list.section-list .section-title{
-        display: inline-block;
-        font-size: 16px;
-        font-weight: 700;
-        background: #f2f2f2;
-        padding: 8px 15px;
-        border-radius: 6px;
-        width: auto;
-        margin: 0 0 15px 0;
-      }
-      
-      /* cards padrão */
-      .treatment-list.section-list .tratamento-card{
-        width: 100%;
-        max-width: var(--cards-max);
-        margin: 0 auto;
-      }
-      
-      /* VARIAÇÃO: alinhar seção “um pouco mais à direita” */
-      .treatment-list.section-list.coluna-direita .section-title,
-      .treatment-list.section-list.coluna-direita .tratamento-card{
-        transform: translateX(var(--nudge));
-      }
-      /* ===== Alinhamento fino das seções ===== */
-      :root{
-        --cards-max: 1120px;   /* mesma largura que você usa nos cards */
-        --empurra: 60px;       /* quanto quer empurrar p/ a DIREITA (ajuste aqui) */
-      }
-      
-      /* padrão: centralizado (como a seção CURA) */
-      .treatment-list.section-list{
-        max-width: var(--cards-max);
-        margin-left: calc((100% - var(--cards-max))/2);
-        margin-right: calc((100% - var(--cards-max))/2);
-      }
-      
-      /* títulos e cards com a mesma largura do container */
-      .treatment-list.section-list .section-title,
-      .treatment-list.section-list .tratamento-card{
-        max-width: var(--cards-max);
-        margin: 0;            /* zera margens internas */
-      }
-      
-      /* empurra só as seções “daqui pra baixo” (as que têm .coluna-direita) */
-      .treatment-list.section-list.coluna-direita{
-        margin-left:  calc((100% - var(--cards-max))/2 + var(--empurra));
-        margin-right: calc((100% - var(--cards-max))/2 - var(--empurra));
-      }
-      
-      /* garante que NENHUM inline vença */
-      .treatment-list.section-list > h2[style],
-      .treatment-list.section-list .tratamento-card[style]{
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-        width: auto !important;
-      }
-      :root{ --cards-max:1120px; }
-      
-      /* Base igual para todas as seções */
-      .treatment-list.section-list{
-        width:100%;
-        max-width:var(--cards-max);
-        gap:20px;
-      }
-      
-      /* Título padrão */
-      .section-title{
-        display:block;          /* ocupa a linha toda */
-        font-size:16px;
-        font-weight:700;
-        background:#f2f2f2;
-        padding:8px 15px;
-        border-radius:6px;
-        margin:0 0 15px 0;
-        text-align:left;  
-        gap: 50px      /* 👈 alinha o texto à esquerda */
-      }
-      
-      /* se o título estiver dentro de um container com text-align:center */
-      .section-title-wrapper{   /* aplique essa classe no wrapper do título */
-        text-align:left;        /* 👈 garante alinhamento do conteúdo */
-      }
-      
-      /* se o pai usar flex com justify-content:center */
-      .section-title{           /* mantém o título colado à esquerda */
-        align-self:flex-start;  /* 👈 ignora a centralização do flex pai */
-      }
-      
-      /* caso o elemento tenha estilo inline centralizando, sobreponha */
-      h1.section-title, h2.section-title, h3.section-title{
-        text-align:left !important;
-      }
-      
-      /* Cards ocupam a mesma largura do container */
-      .treatment-list.section-list .tratamento-card{
-        width:100%;
-        max-width:var(--cards-max);
-      }
-      
-      /* Modo manual: aplica deslocamento igual ao título e aos cards */
-      .treatment-list.section-list.manual{
-        /* centralizado por padrão */
-        margin-left:calc((100% - var(--cards-max))/2);
-        margin-right:calc((100% - var(--cards-max))/2);
-        --offset:0px; /* default */
-      }
-      
-      /* aplica o offset na seção inteira (título + cards) */
-      .treatment-list.section-list.manual > .section-title,
-      .treatment-list.section-list.manual > .tratamento-card{
-        transform:translateX(var(--offset));
-      }
-      
-      /* Offsets individuais (ajuste os valores à vontade) */
-      .treatment-list.section-list.manual.cura       { --offset:  0px; }  /* referência */
-      .treatment-list.section-list.manual.eliminacao { --offset: 160px; }
-      .treatment-list.section-list.manual.reducao    { --offset: 160px; }
-      .treatment-list.section-list.manual.prevencao  { --offset: 160px; }
-      
-      /* Em telas pequenas: zera os offsets para não “quebrar” no mobile */
-      @media (max-width: 992px){
-        .treatment-list.section-list.manual{
-          margin-left:auto; margin-right:auto;
-        }
-        .treatment-list.section-list.manual > .section-title,
-        .treatment-list.section-list.manual > .tratamento-card{
-          transform:none;
-        }
-      }
-      
-      
-            </style>
-            
-          
-          {# ==================== SESSÃO: ELIMINAÇÃO DE SINTOMAS ==================== #}
-          <div class="treatment-list section-list manual eliminacao">
-              <h2 class="section-title">Tratamentos com eficácia de eliminação de sintomas</h2>
-      
-            {% for item in tratamentos_eliminacao %}
-              {% with tratamento=item.obj %}
-              <a href="{% url 'detalhes_tratamentos' tratamento.id %}" class="text-decoration-none text-dark">
-                  <div class="tratamento-card">
-                      <div class="tratamento-content">
-                    
-                    
-                    {% if tratamento.imagem %}
-                      <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}">
-                        <img src="{{ tratamento.imagem.url }}" alt="{{ tratamento.nome }}" class="img-fluid">
-                      </a>
-                      <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}" class="btn mt-2"></a>
-                    {% else %}
-                      <img src="{% static 'default-image.jpg' %}" alt="Imagem não disponível">
-                    {% endif %}
-          
-                    <div class="tratamento-info">
-                      <h3>{{ tratamento.nome }}</h3>
-                      <h3 style="color: #0094FF;font-size: 12px;">
-                        {% for tipo in tratamento.tipo_tratamento.all %}
-                          {{ tipo.nome }}{% if not forloop.last %}, {% endif %}
-                        {% empty %}Nenhum tipo selecionado{% endfor %}
-                      </h3>
-          
-                      <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo|default:"ND" }}</p>
-                      <p><strong>Fabricante:</strong> {{ tratamento.fabricante|default:"ND" }}</p>
-          
-                      <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ 'Eliminação de sintomas'|urlencode }}" class="btn"
-                         style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
-                         ver pesquisas
-                      </a>
-                      <p>{{ tratamento.descricao }}</p>
-                    </div>
-          
-                    <div class="eficacia-container">
-                      <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
-                        Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">Eliminação de sintomas</span>
-                      </p>
-          
-                      <div class="eficacia-bar-container">
-                        <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
-                        <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
-                      </div>
-          
-                      <p class="eficacia-range" style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 25px; text-align: left;">
-                        <span style="color: #888; font-weight: 500;">{{ item.min_str }} a</span>
-                        <span style="color: #000; font-weight: bold;"> {{ item.max_str }}%</span>
-                      </p>
-          
-                      <p id="titulo-prazo-{{ tratamento.id }}" style="margin: 0; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 15px; color: #000;">
-                        Prazo para efeito
-                      </p>
-                      <p id="valor-prazo-{{ tratamento.id }}" style="margin: 4px 0 0 0; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: bold; color: #000;">
-                        {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
-                      </p>
-          
-                      <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}" class="btn mt-2"
-                         style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
-                        ver detalhes <span style="font-weight: bold;">&#8250;</span>
-                      </a>
-          
-                      <span id="faixa-risco-{{ tratamento.id }}" class="replace-dot" style="display:none;">
-                        {{ tratamento.reacao_maxima}}%
-                      </span>
-                      <span id="faixa-eficacia-{{ tratamento.id }}" class="replace-dot" style="display:none;">
-                        {{ item.min|floatformat:2 }}% a {{ item.max|floatformat:2 }}%
-                      </span>
-                      <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
-                        {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
-                      </span>
-                      <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
-                        R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
-                      </p>
-                      <span id="faixa-rigor-{{ tratamento.id }}" style="display: none;">
-                        {% for i in "1234567" %}
-                          {% if i|add:"0" <= tratamento.rigor_maximo %}
-                            <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#fff;background:#007bff;">
-                              {{ i }}
-                            </span>
-                          {% else %}
-                            <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#007bff;background:transparent;">
-                              {{ i }}
-                            </span>
-                          {% endif %}
-                        {% endfor %}
-                      </span>
-                      <p id="faixa-data-{{ tratamento.id }}" style="display:none;">
-                        {{ tratamento.ultima_pesquisa|date:"m/Y"|default:"-" }}
-                      </p>
-                      <span id="faixa-participantes-{{ tratamento.id }}" style="display:none;">
-                        {{ tratamento.max_participantes|default:"-" }} participantes
-                      </span>
-                  </div>
-                </div>
-              </div>
-              {% endwith %}
-              {% endfor %}
-            </div> 
-            
-        </div>
-      
-      
-        {# ===================== SESSÃO: REDUÇÃO DE SINTOMAS ===================== #}
-        <div class="treatment-list section-list manual reducao">
-          <h2 class="section-title">Tratamentos com eficácia de redução de sintomas</h2>
-            
-          </h2>
-        
-          {% for item in tratamentos_reducao %}
-            {% with tratamento=item.obj %}
-            <a href="{% url 'detalhes_tratamentos' tratamento.id %}" class="text-decoration-none text-dark">
-              <div class="tratamento-card">
+    
+    {# ==================== SESSÃO: ELIMINAÇÃO DE SINTOMAS ==================== #}
+    <div class="treatment-list section-list manual eliminacao">
+        <h2 class="section-title">Tratamentos com eficácia de eliminação de sintomas</h2>
+
+      {% for item in tratamentos_eliminacao %}
+        {% with tratamento=item.obj %}
+        <a href="{% url 'detalhes_tratamentos' tratamento.id %}" class="text-decoration-none text-dark">
+            <div class="tratamento-card">
                 <div class="tratamento-content">
-                  {% if tratamento.imagem %}
-                    <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}">
-                      <img src="{{ tratamento.imagem.url }}" alt="{{ tratamento.nome }}" class="img-fluid">
-                    </a>
-                    <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}" class="btn mt-2"></a>
-                  {% else %}
-                    <img src="{% static 'default-image.jpg' %}" alt="Imagem não disponível">
-                  {% endif %}
-        
-                  <div class="tratamento-info">
-                    <h3>{{ tratamento.nome }}</h3>
-                    <h3 style="color: #0094FF;font-size: 12px;">
-                      {% for tipo in tratamento.tipo_tratamento.all %}
-                        {{ tipo.nome }}{% if not forloop.last %}, {% endif %}
-                      {% empty %}Nenhum tipo selecionado{% endfor %}
-                    </h3>
-        
-                    <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo|default:"ND" }}</p>
-                    <p><strong>Fabricante:</strong> {{ tratamento.fabricante|default:"ND" }}</p>
-        
-                    <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" class="btn"
-                       style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
-                       ver pesquisas
-                    </a>
-                    <p>{{ tratamento.descricao }}</p>
-                  </div>
-        
-                  <div class="eficacia-container">
-                    <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
-                      Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">Redução de sintomas</span>
-                    </p>
-        
-                    <div class="eficacia-bar-container">
-                      <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
-                      <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
-                    </div>
-        
-                    <p class="eficacia-range" style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 25px; text-align: left;">
-                      <span style="color: #888; font-weight: 500;">{{ item.min_str }} a</span>
-                      <span style="color: #000; font-weight: bold;"> {{ item.max_str }}%</span>
-                    </p>
-        
-                    <p id="titulo-prazo-{{ tratamento.id }}" style="margin: 0; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 15px; color: #000;">
-                      Prazo para efeito
-                    </p>
-                    <p id="valor-prazo-{{ tratamento.id }}" style="margin: 4px 0 0 0; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: bold; color: #000;">
-                      {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
-                    </p>
-        
-                    <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ 'Redução de sintomas'|urlencode }}" class="btn mt-2"
-                       style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
-                      ver detalhes <span style="font-weight: bold;">&#8250;</span>
-                    </a>
-        
-                    <span id="faixa-risco-{{ tratamento.id }}" class="replace-dot" style="display:none;">
-                      {{ tratamento.reacao_maxima}}%
-                    </span>
-                    <span id="faixa-eficacia-{{ tratamento.id }}" class="replace-dot" style="display:none;">
-                      {{ item.min|floatformat:2 }}% a {{ item.max|floatformat:2 }}%
-                    </span>
-                    <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
-                      {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
-                    </span>
-                    <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
-                      R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
-                    </p>
-                    <span id="faixa-rigor-{{ tratamento.id }}" style="display: none;">
-                      {% for i in "1234567" %}
-                        {% if i|add:"0" <= tratamento.rigor_maximo %}
-                          <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#fff;background:#007bff;">
-                            {{ i }}
-                          </span>
-                        {% else %}
-                          <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#007bff;background:transparent;">
-                            {{ i }}
-                          </span>
-                        {% endif %}
-                      {% endfor %}
-                    </span>
-                    <p id="faixa-data-{{ tratamento.id }}" style="display:none;">
-                      {{ tratamento.ultima_pesquisa|date:"m/Y"|default:"-" }}
-                    </p>
-                    <span id="faixa-participantes-{{ tratamento.id }}" style="display:none;">
-                      {{ tratamento.max_participantes|default:"-" }} participantes
-                  </span>
+              
+              
+              {% if tratamento.imagem %}
+                <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}">
+                  <img src="{{ tratamento.imagem.url }}" alt="{{ tratamento.nome }}" class="img-fluid">
+                </a>
+                <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}" class="btn mt-2"></a>
+              {% else %}
+                <img src="{% static 'default-image.jpg' %}" alt="Imagem não disponível">
+              {% endif %}
+    
+              <div class="tratamento-info">
+                <h3>{{ tratamento.nome }}</h3>
+                <h3 style="color: #0094FF;font-size: 12px;">
+                  {% for tipo in tratamento.tipo_tratamento.all %}
+                    {{ tipo.nome }}{% if not forloop.last %}, {% endif %}
+                  {% empty %}Nenhum tipo selecionado{% endfor %}
+                </h3>
+    
+                <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo|default:"ND" }}</p>
+                <p><strong>Fabricante:</strong> {{ tratamento.fabricante|default:"ND" }}</p>
+    
+                <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ 'Eliminação de sintomas'|urlencode }}" class="btn"
+                   style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
+                   ver pesquisas
+                </a>
+                <p>{{ tratamento.descricao }}</p>
               </div>
+    
+              <div class="eficacia-container">
+                <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
+                  Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">Eliminação de sintomas</span>
+                </p>
+    
+                <div class="eficacia-bar-container">
+                  <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
+                  <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
+                </div>
+    
+                <p class="eficacia-range" style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 25px; text-align: left;">
+                  <span style="color: #888; font-weight: 500;">{{ item.min_str }} a</span>
+                  <span style="color: #000; font-weight: bold;"> {{ item.max_str }}%</span>
+                </p>
+    
+                <p id="titulo-prazo-{{ tratamento.id }}" style="margin: 0; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 15px; color: #000;">
+                  Prazo para efeito
+                </p>
+                <p id="valor-prazo-{{ tratamento.id }}" style="margin: 4px 0 0 0; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: bold; color: #000;">
+                  {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+                </p>
+    
+                <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}" class="btn mt-2"
+                   style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
+                  ver detalhes <span style="font-weight: bold;">&#8250;</span>
+                </a>
+    
+                <span id="faixa-risco-{{ tratamento.id }}" class="replace-dot" style="display:none;">
+                  {{ tratamento.reacao_maxima}}%
+                </span>
+                <span id="faixa-eficacia-{{ tratamento.id }}" class="replace-dot" style="display:none;">
+                  {{ item.min|floatformat:2 }}% a {{ item.max|floatformat:2 }}%
+                </span>
+                <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
+                  {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+                </span>
+                <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
+                  R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
+                </p>
+                <span id="faixa-rigor-{{ tratamento.id }}" style="display: none;">
+                  {% for i in "1234567" %}
+                    {% if i|add:"0" <= tratamento.rigor_maximo %}
+                      <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#fff;background:#007bff;">
+                        {{ i }}
+                      </span>
+                    {% else %}
+                      <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#007bff;background:transparent;">
+                        {{ i }}
+                      </span>
+                    {% endif %}
+                  {% endfor %}
+                </span>
+                <p id="faixa-data-{{ tratamento.id }}" style="display:none;">
+                  {{ tratamento.ultima_pesquisa|date:"m/Y"|default:"-" }}
+                </p>
+                <span id="faixa-participantes-{{ tratamento.id }}" style="display:none;">
+                  {{ tratamento.max_participantes|default:"-" }} participantes
+                </span>
             </div>
           </div>
-          {% endwith %}
-          {% endfor %}
-        </div> 
-        
+        </div>
+        {% endwith %}
+        {% endfor %}
+      </div> 
+      
+  </div>
+
+
+  {# ===================== SESSÃO: REDUÇÃO DE SINTOMAS ===================== #}
+  <div class="treatment-list section-list manual reducao">
+    <h2 class="section-title">Tratamentos com eficácia de redução de sintomas</h2>
+      
+    </h2>
+  
+    {% for item in tratamentos_reducao %}
+      {% with tratamento=item.obj %}
+      <a href="{% url 'detalhes_tratamentos' tratamento.id %}" class="text-decoration-none text-dark">
+        <div class="tratamento-card">
+          <div class="tratamento-content">
+            {% if tratamento.imagem %}
+              <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}">
+                <img src="{{ tratamento.imagem.url }}" alt="{{ tratamento.nome }}" class="img-fluid">
+              </a>
+              <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}" class="btn mt-2"></a>
+            {% else %}
+              <img src="{% static 'default-image.jpg' %}" alt="Imagem não disponível">
+            {% endif %}
+  
+            <div class="tratamento-info">
+              <h3>{{ tratamento.nome }}</h3>
+              <h3 style="color: #0094FF;font-size: 12px;">
+                {% for tipo in tratamento.tipo_tratamento.all %}
+                  {{ tipo.nome }}{% if not forloop.last %}, {% endif %}
+                {% empty %}Nenhum tipo selecionado{% endfor %}
+              </h3>
+  
+              <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo|default:"ND" }}</p>
+              <p><strong>Fabricante:</strong> {{ tratamento.fabricante|default:"ND" }}</p>
+  
+              <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" class="btn"
+                 style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
+                 ver pesquisas
+              </a>
+              <p>{{ tratamento.descricao }}</p>
+            </div>
+  
+            <div class="eficacia-container">
+              <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
+                Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">Redução de sintomas</span>
+              </p>
+  
+              <div class="eficacia-bar-container">
+                <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
+                <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
+              </div>
+  
+              <p class="eficacia-range" style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 25px; text-align: left;">
+                <span style="color: #888; font-weight: 500;">{{ item.min_str }} a</span>
+                <span style="color: #000; font-weight: bold;"> {{ item.max_str }}%</span>
+              </p>
+  
+              <p id="titulo-prazo-{{ tratamento.id }}" style="margin: 0; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 15px; color: #000;">
+                Prazo para efeito
+              </p>
+              <p id="valor-prazo-{{ tratamento.id }}" style="margin: 4px 0 0 0; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: bold; color: #000;">
+                {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+              </p>
+  
+              <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ 'Redução de sintomas'|urlencode }}" class="btn mt-2"
+                 style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
+                ver detalhes <span style="font-weight: bold;">&#8250;</span>
+              </a>
+  
+              <span id="faixa-risco-{{ tratamento.id }}" class="replace-dot" style="display:none;">
+                {{ tratamento.reacao_maxima}}%
+              </span>
+              <span id="faixa-eficacia-{{ tratamento.id }}" class="replace-dot" style="display:none;">
+                {{ item.min|floatformat:2 }}% a {{ item.max|floatformat:2 }}%
+              </span>
+              <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
+                {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+              </span>
+              <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
+                R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
+              </p>
+              <span id="faixa-rigor-{{ tratamento.id }}" style="display: none;">
+                {% for i in "1234567" %}
+                  {% if i|add:"0" <= tratamento.rigor_maximo %}
+                    <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#fff;background:#007bff;">
+                      {{ i }}
+                    </span>
+                  {% else %}
+                    <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#007bff;background:transparent;">
+                      {{ i }}
+                    </span>
+                  {% endif %}
+                {% endfor %}
+              </span>
+              <p id="faixa-data-{{ tratamento.id }}" style="display:none;">
+                {{ tratamento.ultima_pesquisa|date:"m/Y"|default:"-" }}
+              </p>
+              <span id="faixa-participantes-{{ tratamento.id }}" style="display:none;">
+                {{ tratamento.max_participantes|default:"-" }} participantes
+            </span>
+        </div>
       </div>
-      
-      
+    </div>
+    {% endwith %}
+    {% endfor %}
+  </div> 
+  
+</div>
+
+
+
+{# =========================== SESSÃO: PREVENÇÃO =========================== #}
+<div class="treatment-list section-list manual prevencao">
+    <h2 class="section-title">Tratamentos com eficácia de prevenção</h2>
+ 
+  </h2>
+
+  {% for item in tratamentos_prevencao %}
+    {% with tratamento=item.obj %}
+    <a href="{% url 'detalhes_tratamentos' tratamento.id %}" class="text-decoration-none text-dark">
+        <div class="tratamento-card">
+        <div class="tratamento-content">
+          {% if tratamento.imagem %}
+            <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}">
+              <img src="{{ tratamento.imagem.url }}" alt="{{ tratamento.nome }}" class="img-fluid">
+            </a>
+            <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}" class="btn mt-2"></a>
+          {% else %}
+            <img src="{% static 'default-image.jpg' %}" alt="Imagem não disponível">
+          {% endif %}
+
+          <div class="tratamento-info">
+            <h3>{{ tratamento.nome }}</h3>
+            <h3 style="color: #0094FF;font-size: 12px;">
+              {% for tipo in tratamento.tipo_tratamento.all %}
+                {{ tipo.nome }}{% if not forloop.last %}, {% endif %}
+              {% empty %}Nenhum tipo selecionado{% endfor %}
+            </h3>
+
+            <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo|default:"ND" }}</p>
+            <p><strong>Fabricante:</strong> {{ tratamento.fabricante|default:"ND" }}</p>
+
+            <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" class="btn"
+               style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
+               ver pesquisas
+            </a>
+            <p>{{ tratamento.descricao }}</p>
+          </div>
+
+          <div class="eficacia-container">
+            <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
+              Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">Prevenção</span>
+            </p>
+
+            <div class="eficacia-bar-container">
+              <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
+              <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
+            </div>
+
+            <p class="eficacia-range" style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 25px; text-align: left;">
+              <span style="color: #888; font-weight: 500;">{{ item.min_str }} a</span>
+              <span style="color: #000; font-weight: bold;"> {{ item.max_str }}%</span>
+            </p>
+
+            <p id="titulo-prazo-{{ tratamento.id }}" style="margin: 0; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 15px; color: #000;">
+              Prazo para efeito
+            </p>
+            <p id="valor-prazo-{{ tratamento.id }}" style="margin: 4px 0 0 0; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: bold; color: #000;">
+              {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+            </p>
+
+            <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ 'Prevenção'|urlencode }}" class="btn mt-2"
+               style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
+              ver detalhes <span style="font-weight: bold;">&#8250;</span>
+            </a>
+
+            <span id="faixa-risco-{{ tratamento.id }}" class="replace-dot" style="display:none;">
+              {{ tratamento.reacao_maxima}}%
+            </span>
+            <span id="faixa-eficacia-{{ tratamento.id }}" class="replace-dot" style="display:none;">
+              {{ item.min|floatformat:2 }}% a {{ item.max|floatformat:2 }}%
+            </span>
+            <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
+              {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+            </span>
+            <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
+              R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
+            </p>
+            <span id="faixa-rigor-{{ tratamento.id }}" style="display: none;">
+              {% for i in "1234567" %}
+                {% if i|add:"0" <= tratamento.rigor_maximo %}
+                  <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#fff;background:#007bff;">
+                    {{ i }}
+                  </span>
+                {% else %}
+                  <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#007bff;background:transparent;">
+                    {{ i }}
+                  </span>
+                {% endif %}
+              {% endfor %}
+            </span>
+            <p id="faixa-data-{{ tratamento.id }}" style="display:none;">
+              {{ tratamento.ultima_pesquisa|date:"m/Y"|default:"-" }}
+            </p>
+            <span id="faixa-participantes-{{ tratamento.id }}" style="display:none;">
+              {{ tratamento.max_participantes|default:"-" }} participantes
+            </span>
+        </div>
+      </div>
+    </div>
+    {% endwith %}
+    {% endfor %}
+  </div> 
+  
+</div>
+
 
 
 <div class="card-aviso-mobile">
