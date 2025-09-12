@@ -239,8 +239,17 @@ def tratamentos(request):
     # Base com distinct p/ evitar duplicatas por joins (M2M)
     tratamentos_qs = DetalhesTratamentoResumo.objects.all().distinct()
 
+    print(tratamentos_qs.count())  # Verifica a quantidade de registros
+
+
     # Contraindicações para listar no template
     contraindications = Contraindicacao.objects.all()
+
+    
+    # Verifique diretamente no banco de dados
+    tratamentos = DetalhesTratamentoResumo.objects.all()
+    for t in tratamentos:
+        print(t.slug)  # Verifique se há slugs preenchidos
 
     # ---------- filtros simples ----------
     if nome:
@@ -353,7 +362,8 @@ def tratamentos(request):
 
     # ---------- context ----------
     context = {
-        'tratamentos': tratamentos_list,
+        'tratamentos_list': tratamentos_list,
+        'tratamentos': tratamentos,
         'contraindications': contraindications,
         'grupos_indicados': DetalhesTratamentoResumo.GRUPO_CHOICES,
         'nome': nome,
@@ -369,6 +379,8 @@ def tratamentos(request):
         'tratamentos_prevencao': tratamentos_prevencao,
     }
     return render(request, 'core/tratamentos.html', context)
+
+
 
 
 
