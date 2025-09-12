@@ -393,7 +393,7 @@ class DetalhesTratamentoResumo(models.Model):
     
     fabricante = models.CharField(max_length=200)
     comentario = models.TextField(null=True, blank=True)
-    avaliacao = models.IntegerField(null=True, blank=True)  
+    avaliacao = models.IntegerField(null=False, default=0) 
     eficacia_min = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     eficacia_max = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     prazo_efeito_min = models.IntegerField()  # Para armazenar o tempo em minutos
@@ -573,14 +573,6 @@ class EvidenciasClinicas(models.Model):
         return 0.0  # Caso não haja participantes iniciados, retorna 0
 
 
-class Tratamentos(models.Model):
-    nome = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True, blank=True)  # O slug deve ser único e não em branco
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.nome)  # Gera o slug automaticamente a partir do nome
-        super().save(*args, **kwargs)
 
 
 class Tratamento(models.Model):
