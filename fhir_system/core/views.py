@@ -7,7 +7,9 @@ from django.db.models import F, FloatField, ExpressionWrapper, Case, When, Min, 
 from .models import DetalhesTratamentoResumo, Contraindicacao, EvidenciasClinicas
 from django.utils.functional import lazy
 
-
+from math import isfinite
+from django.db.models import F, FloatField, Case, When, ExpressionWrapper, Max
+# (note: removemos o Min import porque não usaremos eficácia global)
 
 
 def home(request):
@@ -130,9 +132,7 @@ def calcular_eficacia(tratamentos_list):
 
 
 
-from math import isfinite
-from django.db.models import F, FloatField, Case, When, ExpressionWrapper, Max
-# (note: removemos o Min import porque não usaremos eficácia global)
+
 
 TIPOS_SECOES = ("Cura", "Eliminação de sintomas", "Redução de sintomas", "Prevenção")
 
