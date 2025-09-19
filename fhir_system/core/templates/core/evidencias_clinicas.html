@@ -356,30 +356,29 @@
     <div class="evidencia-item" style="display: flex; gap: 30px; padding-bottom: 40px; margin-bottom: 40px; align-items: flex-start; border-bottom: 5px solid #eeeeee;">
         
         <!-- Imagem do estudo -->
-        <div class="imagem-estudo" style="
-        flex: 0 0 160px;
-        min-height: 140px;        /* altura mínima, mas deixa o flex crescer */
-        display: flex;
-        align-items: center;      /* centraliza verticalmente */
-        justify-content: center;  /* centraliza horizontalmente */
-      ">
-      
-      {% if evidencia.imagem_estudo %}
-      <img src="{{ evidencia.imagem_estudo.url }}" alt="Imagem do estudo" style="
-      position: absolute;
-      top: 400px;
-      max-width: 90%;
-      max-height: 90%;
+<!-- Imagem do estudo -->
+<div class="imagem-estudo" style="
+  flex: 0 0 160px;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+">
+  {% if evidencia.imagem_estudo %}
+    <img src="{{ evidencia.imagem_estudo.url }}" alt="Imagem do estudo" style="
+      max-width: 100%;
+      max-height: 140px;    /* ajuste se quiser maior */
       height: auto;
-      border-radius: 6px;
+      width: auto;
       object-fit: contain;
+      border-radius: 6px;
       display: block;
     ">
-    
-    {% else %}
-      <p>Imagem não disponível</p>
-    {% endif %}
-    </div>
+  {% else %}
+    <p>Imagem não disponível</p>
+  {% endif %}
+</div>
+
       
     <style>
       .eficacias-grid {

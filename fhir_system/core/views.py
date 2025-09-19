@@ -360,16 +360,6 @@ def tratamentos(request):
     # ---------- Eficácia por tipo + seções ----------
     tratamentos_list = calcular_eficacias_por_tipo(tratamentos_qs)
 
-    tratamentos_cura       = _secao(tratamentos_list, "Cura")
-    tratamentos_eliminacao = _secao(tratamentos_list, "Eliminação de sintomas")
-    tratamentos_reducao    = _secao(tratamentos_list, "Redução de sintomas")
-    tratamentos_prevencao  = _secao(tratamentos_list, "Prevenção")
-
-    # só reordene por eficácia se NÃO houve ordenação explícita
-    if not campo:
-        for sec in (tratamentos_cura, tratamentos_eliminacao, tratamentos_reducao, tratamentos_prevencao):
-            sec.sort(key=lambda x: x["max"], reverse=True)
-
     # ---------- FILTRO PARA EXIBIÇÃO POR PRIORIDADE ----------
     prioridade_tipos = ["Cura", "Eliminação de sintomas", "Redução de sintomas", "Prevenção"]
     tratamentos_unicos = {}  # chave = tratamento.id, valor = primeiro tipo disponível por prioridade
@@ -377,10 +367,15 @@ def tratamentos(request):
     for t in tratamentos_list:
         for tipo in prioridade_tipos:
             if tipo in t.eficacias_por_tipo:
+                stats = t.eficacias_por_tipo[tipo]  # contém min, max, min_str, max_str, count
                 tratamentos_unicos[t.id] = {
                     "obj": t,
                     "tipo": tipo,
-                    **t.eficacias_por_tipo[tipo]
+                    "min": stats["min"],
+                    "max": stats["max"],
+                    "min_str": stats["min_str"],
+                    "max_str": stats["max_str"],
+                    "count": stats["count"],
                 }
                 break  # pega o primeiro tipo disponível e ignora os demais
 
@@ -389,6 +384,29 @@ def tratamentos(request):
     tratamentos_eliminacao = [v for v in tratamentos_unicos.values() if v["tipo"] == "Eliminação de sintomas"]
     tratamentos_reducao    = [v for v in tratamentos_unicos.values() if v["tipo"] == "Redução de sintomas"]
     tratamentos_prevencao  = [v for v in tratamentos_unicos.values() if v["tipo"] == "Prevenção"]
+
+# ---------- ORDENAR SEMPRE POR EFICÁCIA (maior -> menor) ----------
+    def _max_float(item: dict) -> float:
+        """
+        Converte o campo 'max' do item em float para ordenar corretamente.
+        Aceita float/Decimal/str (com vírgula) ou None.
+        """
+        v = item.get("max")
+        if v is None:
+            return -1.0
+        try:
+            return float(v)
+        except Exception:
+            s = str(v).strip()
+            # trata "12,34" ou "1.234,56"
+            s = s.replace('.', '').replace(',', '.')
+            try:
+                return float(s)
+            except Exception:
+                return -1.0
+
+    for sec in (tratamentos_cura, tratamentos_eliminacao, tratamentos_reducao, tratamentos_prevencao):
+        sec.sort(key=_max_float, reverse=True)
 
 
     # formatações finais (exibição)
@@ -667,6 +685,7 @@ def evidencias_clinicas(request, slug):
         "tratamentos": tratamentos,  # Passando os tratamentos com as eficácias ordenadas
         "evidencias": evidencias,
     })
+
 
 
 def listar_urls(request):
