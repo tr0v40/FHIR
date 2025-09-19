@@ -22,6 +22,7 @@ from django.db.models import Prefetch
 from django.utils.html import format_html
 from .models import DetalhesTratamentoResumo
 from .models import TipoEficacia
+import unicodedata
 
   # ==================== IMPORTS SESSIONS ==================== #
 
@@ -532,28 +533,7 @@ def detalhes_tratamentos(request, slug):
             "count": len(vals),
         })
 
-    # — escolha do tipo a mostrar —
-    tipo_eficacia = "Não especificado"
-    eficacia_min = "0,00"
-    eficacia_max = "0,00"
-    eficacia_max_css = 0.0
 
-    if eficacias_por_tipo:
-        # tenta usar o tipo pedido (?tipo=…)
-        escolhido = None
-        if tipo_req:
-            for e in eficacias_por_tipo:
-                if e["tipo"].strip().lower() == tipo_req.strip().lower():
-                    escolhido = e
-                    break
-        # fallback: maior max
-        if not escolhido:
-            escolhido = max(eficacias_por_tipo, key=lambda x: x["max"])
-
-        tipo_eficacia   = escolhido["tipo"]
-        eficacia_min    = escolhido["min_str"]
-        eficacia_max    = escolhido["max_str"]
-        eficacia_max_css = escolhido["max"]  # número 0–100 para a barra
 
     # --------- PRAZO PARA EFEITO (mesmo código que você já tinha) ---------
     prazo_efeito = "Não disponível"
@@ -590,6 +570,53 @@ def detalhes_tratamentos(request, slug):
         key=lambda x: float(str(x.reacao_max).replace(',', '.')),
         reverse=True
     )
+
+# --- helpers de normalização/prioridade (coloque perto dos outros helpers) ---
+    def _norm_txt(s: str) -> str:
+        s = (s or "").strip().lower()
+        s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode("ascii")
+        return s
+
+    PRIORIDADE_TIPOS = {
+        "cura": 0,
+        "eliminacao de sintomas": 1,
+        "eliminacao dos sintomas": 1,
+        "redução de sintomas": 2,
+        "reducao de sintomas": 2,
+        "reducao dos sintomas": 2,
+        "prevencao": 3,
+        "prevenção": 3,
+    }
+# ------- ORDENAR POR PRIORIDADE E, DENTRO, POR MAX DESC -------
+    eficacias_por_tipo.sort(
+        key=lambda e: (PRIORIDADE_TIPOS.get(_norm_txt(e["tipo"]), 99), -float(e["max"] or 0))
+    )
+
+# — escolha do tipo a mostrar —
+    tipo_eficacia = "Não especificado"
+    eficacia_min = "0,00"
+    eficacia_max = "0,00"
+    eficacia_max_css = 0.0
+
+    escolhido = None
+    if eficacias_por_tipo:
+        # se veio ?tipo=..., tenta respeitar
+        if tipo_req:
+            for e in eficacias_por_tipo:
+                if _norm_txt(e["tipo"]) == _norm_txt(tipo_req):
+                    escolhido = e
+                    break
+
+        # caso contrário, usa o PRIMEIRO da lista já ordenada por prioridade
+        if not escolhido:
+            escolhido = eficacias_por_tipo[0]
+
+    if escolhido:
+        tipo_eficacia    = escolhido["tipo"]
+        eficacia_min     = escolhido["min_str"]   # já vem com 2 casas
+        eficacia_max     = escolhido["max_str"]   # já vem com 2 casas
+        eficacia_max_css = float(escolhido["max"] or 0)  # para largura da barra
+
 
     return render(request, 'core/detalhes_tratamentos.html', {
         'tratamento': tratamento,

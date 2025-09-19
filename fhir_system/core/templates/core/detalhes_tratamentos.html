@@ -1546,7 +1546,7 @@ img {
              margin-bottom: 8px;">
      Eficácia:
    </p>
-        <div class="eff-bar efficacy-bar-container" role="img" aria-label="Eficácia máxima {{ tipo_eficacia.max }}%">
+        <div class="eff-bar efficacy-bar-container" role="img" aria-label="Eficácia máxima {{ tipo_eficacia.max|floatformat:2  }}%">
           <div class="efficacy-background" style="
             height:100%; width:100%;
             background-image: linear-gradient(
@@ -1565,7 +1565,7 @@ img {
         <span class="eff-type">{{ tipo_eficacia.tipo }}</span>
         <span class="eff-dash">–</span>
         <span class="eff-range">
-          {{ tipo_eficacia.min|floatformat:0 }} a {{ tipo_eficacia.max|floatformat:0 }}%
+          {{ tipo_eficacia.min|floatformat:2 }} a {{ tipo_eficacia.max|floatformat:2 }}%
         </span>
       </div>
     {% endfor %}
