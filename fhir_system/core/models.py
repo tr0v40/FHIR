@@ -1,5 +1,12 @@
+
+  # ==================== IMPORTS SESSIONS ==================== #
+
 from django.db import models
 from django.utils.text import slugify
+import pycountry
+
+
+  # ==================== IMPORTS SESSIONS ==================== #
 
 class Organization(models.Model):
     name = models.CharField(max_length=255)
@@ -481,7 +488,6 @@ class DetalhesTratamentoResumo(models.Model):
     def __str__(self):
         return self.nome
 
-import pycountry
 
 # Monta a lista de países automaticamente
 COUNTRIES = [(country.name, country.name) for country in pycountry.countries]

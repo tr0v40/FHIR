@@ -1,15 +1,31 @@
+  # ==================== IMPORTS SESSIONS ==================== #
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import admin
 from django.contrib.auth import login
 from django.contrib.auth.models import Group
 from .forms import UserRegisterForm
-from django.db.models import F, FloatField, ExpressionWrapper, Case, When, Min, Max
-from .models import DetalhesTratamentoResumo, Contraindicacao, EvidenciasClinicas
+from django.db.models import F, FloatField, ExpressionWrapper, Case, Min, Max
+from .models import Contraindicacao, EvidenciasClinicas
 from django.utils.functional import lazy
-
+from django.http import JsonResponse
+from django.views.generic import View
+from .models import CondicaoSaude
 from math import isfinite
-from django.db.models import F, FloatField, Case, When, ExpressionWrapper, Max
-# (note: removemos o Min import porque não usaremos eficácia global)
+from django.db.models import   When
+import unicodedata
+from django.db.models import (
+     Value, Q
+)
+from django.db.models.functions import Coalesce
+from django.db.models import Prefetch
+from django.utils.html import format_html
+from .models import DetalhesTratamentoResumo
+from .models import TipoEficacia
+
+  # ==================== IMPORTS SESSIONS ==================== #
+
+
 
 
 def home(request):
@@ -63,8 +79,6 @@ def _parse_date_or_year(s):
     except Exception:
         return (None, None)
 
-from math import isfinite
-import unicodedata
 
 def _norm(s: str) -> str:
     # normaliza para comparar com/sem acento
@@ -215,10 +229,6 @@ def _secao(tratamentos, tipo):
             })
     return itens
 
-from django.db.models import (
-    F, Value, FloatField, Case, When, Max, ExpressionWrapper, Q
-)
-from django.db.models.functions import Coalesce
 
 
 def tratamentos(request):
@@ -240,6 +250,7 @@ def tratamentos(request):
     tratamentos_qs = DetalhesTratamentoResumo.objects.all().distinct()
 
     print(tratamentos_qs.count())  # Verifica a quantidade de registros
+
 
 
     # Contraindicações para listar no template
@@ -281,6 +292,11 @@ def tratamentos(request):
     if ids_filtrados:
         tratamentos_qs = tratamentos_qs.exclude(contraindicacoes__id__in=ids_filtrados).distinct()
     contraindicacoes_selecionadas = [str(i) for i in ids_filtrados]
+
+
+    # ---------- Anotações ----------
+    tratamentos_list = calcular_eficacias_por_tipo(tratamentos_qs)
+
 
     # ---------- anotações seguras ----------
     multiplicadores = Case(
@@ -354,6 +370,27 @@ def tratamentos(request):
         for sec in (tratamentos_cura, tratamentos_eliminacao, tratamentos_reducao, tratamentos_prevencao):
             sec.sort(key=lambda x: x["max"], reverse=True)
 
+    # ---------- FILTRO PARA EXIBIÇÃO POR PRIORIDADE ----------
+    prioridade_tipos = ["Cura", "Eliminação de sintomas", "Redução de sintomas", "Prevenção"]
+    tratamentos_unicos = {}  # chave = tratamento.id, valor = primeiro tipo disponível por prioridade
+
+    for t in tratamentos_list:
+        for tipo in prioridade_tipos:
+            if tipo in t.eficacias_por_tipo:
+                tratamentos_unicos[t.id] = {
+                    "obj": t,
+                    "tipo": tipo,
+                    **t.eficacias_por_tipo[tipo]
+                }
+                break  # pega o primeiro tipo disponível e ignora os demais
+
+    # Cria listas separadas para cada seção do template
+    tratamentos_cura       = [v for v in tratamentos_unicos.values() if v["tipo"] == "Cura"]
+    tratamentos_eliminacao = [v for v in tratamentos_unicos.values() if v["tipo"] == "Eliminação de sintomas"]
+    tratamentos_reducao    = [v for v in tratamentos_unicos.values() if v["tipo"] == "Redução de sintomas"]
+    tratamentos_prevencao  = [v for v in tratamentos_unicos.values() if v["tipo"] == "Prevenção"]
+
+
     # formatações finais (exibição)
     for t in tratamentos_list:
         t.max_participantes   = formatar_numeros(getattr(t, "max_participantes", None))
@@ -417,11 +454,7 @@ def formatar_numeros(n):
 
 
 
-from django.shortcuts import render, get_object_or_404
-from django.db.models import Prefetch
-from math import isfinite
 
-from .models import DetalhesTratamentoResumo, EvidenciasClinicas
 
 def _nome_tipo(tipo_obj):
     return (getattr(tipo_obj, "nome", None) or str(tipo_obj) or "").strip()
@@ -562,7 +595,7 @@ def detalhes_tratamentos(request, slug):
 
 
 
-from django.utils.html import format_html
+
 
 class DetalhesTratamentoAdmin(admin.ModelAdmin):
     list_display = ("nome", "fabricante", "principio_ativo", "avaliacao", "prazo_efeito_formatado")  # Adicionei 'prazo_efeito_formatado' à lista
@@ -612,16 +645,29 @@ def evidencias_clinicas(request, slug):
     # Calcular os valores de eficácia para o tratamento
     tratamentos = calcular_eficacia([tratamento])  # Passando o tratamento para cálculo de eficácia
     
+    # Certificar-se de que 'eficacias_por_tipo' está presente
+    for t in tratamentos:
+        if not hasattr(t, 'eficacias_por_tipo'):
+            t.eficacias_por_tipo = {}  # Adiciona o atributo se não existir
+    
+    # Definindo a ordem de prioridade para os tipos de eficácia
+    prioridade_tipos = ["Cura", "Eliminação de sintomas", "Redução de sintomas", "Prevenção"]
+    
+    # Organizando as eficácias conforme a prioridade
+    for tratamento in tratamentos:
+        # Ordena os tipos de eficácia de acordo com a prioridade
+        eficacias_ordenadas = sorted(tratamento.eficacias_por_tipo.items(), key=lambda e: prioridade_tipos.index(e[0]), reverse=False)
+        
+        # Atualiza a lista de eficácias ordenadas no tratamento
+        tratamento.efics_ordenadas = eficacias_ordenadas
+
     # Exibindo os dados no template
     return render(request, "core/evidencias_clinicas.html", {
         "tratamento": tratamento,
-        "tratamentos": tratamentos,  # Aqui você passa os tratamentos com as eficácias calculadas
+        "tratamentos": tratamentos,  # Passando os tratamentos com as eficácias ordenadas
         "evidencias": evidencias,
-        
-
-
-
     })
+
 
 def listar_urls(request):
     """Lista todas as URLs registradas no Django e exibe em uma página HTML"""
@@ -633,9 +679,6 @@ def listar_urls(request):
 
     return render(request, "core/listar_urls.html", {"urls": urls})
 
-# views.py
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import DetalhesTratamentoResumo
 
 def salvar_avaliacao(request, tratamento_id):
     # Buscar o tratamento pelo ID
@@ -705,8 +748,7 @@ def unidade_formatada(self, valor):
         return self.prazo_efeito_unidade
     return exceptions.get(self.prazo_efeito_unidade, self.prazo_efeito_unidade + 's')
 
-# No views.py (exemplo)
-from django.shortcuts import render
+
 
 def tratamento_view(request):
     participantes = 1500  # Exemplo de número de participantes
@@ -718,22 +760,12 @@ def tratamento_view(request):
 
 
 
-
-
-
-
-from django.http import JsonResponse
-from django.views.generic import View
-from .models import CondicaoSaude
-
 class CondicaoSaudeDetailView(View):
     def get(self, request, pk):
         condicao_saude = CondicaoSaude.objects.get(pk=pk)
         return JsonResponse({'fields': {'descricao': condicao_saude.descricao}})
 
 
-from django.http import JsonResponse
-from .models import TipoEficacia
 
 def tipo_eficacia_descricao_json(request, pk):
     try:

@@ -20,7 +20,7 @@ urlpatterns = [
     path("tratamentos/", views.tratamentos, name="tratamentos"),
     path('admin/core/condicaosaude/<int:pk>/change/', CondicaoSaudeDetailView.as_view(), name='condicao_saude_detail'),
     path(
-        "tratamento/<slug:slug>/",
+        "tratamento/enxaqueca/<slug:slug>/",
         views.detalhes_tratamentos,
         name="detalhes_tratamentos",
     ),

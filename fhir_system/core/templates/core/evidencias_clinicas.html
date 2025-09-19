@@ -383,34 +383,43 @@
       
     <style>
       .eficacias-grid {
-        display: grid;
-        grid-template-columns: auto 1fr; /* coluna 1: título | coluna 2: valores */
-        row-gap: 4px;
-        column-gap: 8px;
-        width: 100%;
+        display: flex;
+        flex-direction: column;  /* Organiza os itens verticalmente */
+        gap: 0;  /* Remove qualquer espaçamento entre os itens */
+        margin: 0;  /* Remove margens adicionais */
+        padding: 0;  /* Remove o padding extra */
+        margin-top: 10px;
       }
     
       .eficacias-label {
-        font-weight: 700;       /* negrito */
-        color: #757474;            /* cinza claro (#888 pode ser trocado por #999 se quiser ainda mais suave) */
-        margin-right: 6px;
+        font-weight: 700;       /* Negrito */
+        color: #757474;         /* Cinza claro */
+        margin-right: 4px;      /* Reduz o espaço após o título */
+        display: inline-block;
+        margin-bottom: 0;    
       }
     
       .eficacia-top {
-        font-weight: 700;
+        font-weight: 800;
         font-size: 1.05rem;
+        margin-bottom: 2px; 
+        margin-top: 10px;
       }
       .eficacia-principal {
-        font-weight: 700;     /* deixa o valor principal em negrito */
-        font-size: 1.1rem;    /* um pouco maior para destacar */
+        font-weight: 700;
+        font-size: 1.1rem;
         color: #000;
+        margin-top: 10px;  /* Remove qualquer margem após o valor principal */
+        padding: 0;  /* Remove qualquer padding */
       }
         
       .eficacia-secundaria {
         font-weight: 400;
         font-size: 0.95rem;
         color: #000000;
-        padding-left: 85px;
+        padding-left: 82px;
+        margin-top: 2px;
+        
       }
     </style>
     
@@ -419,24 +428,23 @@
         <div class="conteudo" style="flex: 1; position: relative;">
 
       <!-- Exibindo os tipos de eficácia com o percentual calculado -->
-      {% for tratamento in tratamentos %}
-      {% if tratamento.tipos_eficacia_completa and tratamento.tipos_eficacia_completa|length > 0 %}
-        <!-- Cabeçalho: "Eficácia:" + principal na mesma linha -->
+      {% with efics=evidencia.efics_ordenadas|default:evidencia.eficacia_por_evidencias.all %}
+      {% if efics and efics|length > 0 %}
         <p class="eficacia-head">
           <span class="eficacias-label">Eficácia:</span>
           <span class="eficacia-principal">
-            {{ tratamento.tipos_eficacia_completa.0.tipo }} – {{ tratamento.tipos_eficacia_completa.0.valor_eficacia_str }}%
+            <strong>
+              {{ efics.0.tipo_eficacia.tipo_eficacia }} – {{ efics.0.percentual_eficacia_calculado|floatformat:2 }}%
+            </strong>
           </span>
         </p>
-    
-        <!-- Linhas seguintes (uma abaixo da outra) -->
-        {% for tipo in tratamento.tipos_eficacia_completa|slice:"1:" %}
-          <p class="eficacia-secundaria">
-            {{ tipo.tipo }} – {{ tipo.valor_eficacia_str }}%
+        {% for ef in efics|slice:"1:" %}
+        <p class="eficacia-secundaria" style="margin-top: 2px;">
+            {{ ef.tipo_eficacia.tipo_eficacia }} – {{ ef.percentual_eficacia_calculado|floatformat:2 }}%
           </p>
         {% endfor %}
       {% endif %}
-    {% endfor %}
+    {% endwith %}
     
             
  
@@ -521,7 +529,7 @@
           <!-- Caixa fixa da descrição -->
           <div style="
             position: absolute;
-            top: 100px;   /* antes era 0 → agora desce 20px */
+            top: 50px;   /* antes era 0 → agora desce 20px */
             right: 0;
             width: 400px;
             height: 150px;

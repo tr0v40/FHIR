@@ -1261,8 +1261,8 @@ img {
                 <!-- Informações do Medicamento -->
                 <div class="tratamento-info">
                 
-                    <h2 style="font-size: 40px; font-weight: bold; color: #000; text-align: center; margin-bottom: 100px; margin-left: 400px;">
-                        <span style="color: #070707;">{{ tratamento.condicao_saude.nome }}</span>
+                    <h2 style="font-size: 40px; font-weight: bold; color: #000; margin-bottom: 100px; display: flex; align-items: center; gap: 8px;">
+                        <span style="color: #070707;">Tratamento para: {{ tratamento.condicao_saude.nome }}</span>
                     </h2>
                     
 
@@ -1467,44 +1467,103 @@ img {
 }
 
 
-
-
-
-
           </style>
-{% for tipo_eficacia in eficacias_por_tipo %}
-<div class="efficacy-section" style="display: flex; align-items: center; margin-bottom: 20px; flex-direction: column; text-align: center;">
+
+
+<style>
+.efficacy-section {
+  margin-bottom: 0 !important;  /* Remove o espaçamento extra entre as seções */
+  display: flex;
+  flex-direction: column;  /* Alterando para coluna */
+  text-align: center;  /* Centraliza o conteúdo */
+  align-items: center;  /* Centraliza os itens dentro da seção */
+}
+
+.eff-row {
+  margin-bottom: 2px;  /* Espaçamento mínimo entre as linhas */
+  display: block;      /* Definindo a disposição como bloco */
+  text-align: center;  /* Centraliza o texto */
+}
+
+.eff-row.is-first {
+  font-weight: 800;
+  font-size: 32px;
+  color: #000;
+  margin-top: 5px;  /* Pequeno ajuste de espaçamento no topo da primeira linha */
+}
+
+.eff-row .eff-type {
+  font-weight: 700;
+}
+
+.eff-row .eff-range {
+  font-weight: 700;
+  color: #222;
+}
+
+.eff-row .eff-dash {
+  opacity: .8;
+}
+
+/* Ajuste da barra de eficácia */
+.eff-bar-container {
+  display: flex;
+  justify-content: center;  /* Centraliza a barra de eficácia */
+  width: 100%;  /* Garante que a barra ocupe toda a largura */
+}
+
+.eff-bar {
+  width: 40%;  /* Ajuste a largura da barra para o tamanho desejado */
+  background-color: #d9eaff;
+  height:60px;
+  border-radius: 9px;
+}
+
+.efficacy-marker {
+  position: absolute;
+  top: -6px;
+  width: 30px;
+  height: 60px;
+  background: white;
+  border: 3px solid #333;
+  border-radius: 8px;
+  transition: left 0.3s ease-in-out;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+
+  </style>
   
-  <!-- Barra de eficácia (apenas para o primeiro tipo) -->
-  {% if forloop.first %}
-  <div class="efficacy-bar-container" role="img" aria-label="Eficácia máxima {{ tipo_eficacia.max }}%">
-    <div class="efficacy-background" style="
-      height:100%;
-      width:100%;
-      background-image: linear-gradient(
-        to right,
-        #0094FF 0%,
-        #0094FF {{ tipo_eficacia.max }}%,
-        rgba(0,148,255,0.3) {{ tipo_eficacia.max }}%,
-        rgba(0,148,255,0.3) 100%
-      );
-      border-radius:5px;
-    "></div>
+
+
+  <div class="eff-block">
+    {% for tipo_eficacia in eficacias_por_tipo %}
+      {% if forloop.first %}
+        <div class="eff-bar efficacy-bar-container" role="img" aria-label="Eficácia máxima {{ tipo_eficacia.max }}%">
+          <div class="efficacy-background" style="
+            height:100%; width:100%;
+            background-image: linear-gradient(
+              to right,
+              #0094FF 0%,
+              #0094FF {{ tipo_eficacia.max }}%,
+              rgba(0,148,255,0.3) {{ tipo_eficacia.max }}%,
+              rgba(0,148,255,0.3) 100%
+            );
+            border-radius:5px;
+          "></div>
+        </div>
+      {% endif %}
+  
+      <div class="eff-row {% if forloop.first %}is-first{% endif %}">
+        <span class="eff-type">{{ tipo_eficacia.tipo }}</span>
+        <span class="eff-dash">–</span>
+        <span class="eff-range">
+          {{ tipo_eficacia.min|floatformat:0 }} a {{ tipo_eficacia.max|floatformat:0 }}%
+        </span>
+      </div>
+    {% endfor %}
   </div>
-{% endif %}
-
-  <!-- Título / tipo abaixo da barra -->
-  <h2 class="efficacy-title {% if forloop.first %} capitalize-title {% endif %}">
-    <span class="efficacy-label {% if forloop.counter > 1 %} smaller-label {% endif %}">
-      {{ tipo_eficacia.tipo }} 
-    </span>
-    <span class="efficacy-values {% if forloop.counter > 1 %} smaller-label {% endif %}">
-        - {{ tipo_eficacia.min|floatformat:2 }}% a {{ tipo_eficacia.max|floatformat:2 }}%
-    </span>
-  </h2>
-
-</div>
-{% endfor %}
+  
 <!-- Botão para ver as pesquisas, com o tamanho ajustado -->
 <div style="display: flex; justify-content: center; margin-top: 5px;">
     <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" 

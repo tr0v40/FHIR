@@ -1,3 +1,6 @@
+  # ==================== IMPORTS SESSIONS ==================== #
+
+
 from django.contrib import admin
 from django import forms
 from django.http import JsonResponse
@@ -16,6 +19,9 @@ from .models import (
     TipoTratamento,
     CondicaoSaude
 )
+
+
+  # ==================== IMPORTS SESSIONS ==================== #
 
 admin.site.register([TipoTratamento])
 
@@ -328,8 +334,6 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
         "rigor_da_pesquisa",
         "data_publicacao",
         "referencia_bibliografica",
-        "eficacia_min",
-        "eficacia_max",
         "numero_participantes",
         "visualizar_pdf",
     )
@@ -350,9 +354,6 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
                     "evidence_description",
                     "condicao_saude",  # FK para Condição de Saúde
                     "rigor_da_pesquisa",
-                    
-                    "eficacia_min",
-                    "eficacia_max",
                     "numero_participantes",
                 )
             },
@@ -392,8 +393,7 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
             return f"{(obj.participantes_com_beneficio / obj.participantes_iniciaram_tratamento) * 100:.2f}%"
         return "Não especificado"  # Se não houver participantes iniciados
 
-    # Incluindo o método no list_display para ser exibido na lista de objetos
-    list_display = ('titulo', 'participantes_iniciaram_tratamento', 'participantes_com_beneficio', 'percentual_eficacia')
+
 
     # Método para visualizar o PDF
     def visualizar_pdf(self, obj):
