@@ -1564,9 +1564,13 @@ img {
       <div class="eff-row {% if forloop.first %}is-first{% endif %}">
         <span class="eff-type">{{ tipo_eficacia.tipo }}</span>
         <span class="eff-dash">–</span>
+        {% load l10n %}
+
         <span class="eff-range">
-          {{ tipo_eficacia.min|floatformat:2 }} a {{ tipo_eficacia.max|floatformat:2 }}%
+          {{ tipo_eficacia.min_str }} a {{ tipo_eficacia.max_str }}%
         </span>
+        
+        
       </div>
     {% endfor %}
   </div>

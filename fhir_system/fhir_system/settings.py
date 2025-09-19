@@ -54,6 +54,11 @@ INSTALLED_APPS = [
 
 SITE_ID = 2
 
+LANGUAGE_CODE = 'pt-br'
+USE_L10N = True
+
+DECIMAL_SEPARATOR = ','
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
