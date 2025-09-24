@@ -362,7 +362,7 @@ def tratamentos(request):
     tratamentos_list = calcular_eficacias_por_tipo(tratamentos_qs)
 
     # ---------- FILTRO PARA EXIBIÇÃO POR PRIORIDADE ----------
-    prioridade_tipos = ["Cura", "Eliminação de sintomas", "Redução de sintomas", "Prevenção"]
+    prioridade_tipos = ["Cura", "Remissão", "Controle", "Eliminação de sintomas", "Redução de sintomas", "Prevenção"]
     tratamentos_unicos = {}  # chave = tratamento.id, valor = primeiro tipo disponível por prioridade
 
     for t in tratamentos_list:
@@ -382,9 +382,13 @@ def tratamentos(request):
 
     # Cria listas separadas para cada seção do template
     tratamentos_cura       = [v for v in tratamentos_unicos.values() if v["tipo"] == "Cura"]
+    tratamentos_remissao       = [v for v in tratamentos_unicos.values() if v["tipo"] == "Remissão"]
+    tratamentos_controle       = [v for v in tratamentos_unicos.values() if v["tipo"] == "Controle"]
     tratamentos_eliminacao = [v for v in tratamentos_unicos.values() if v["tipo"] == "Eliminação de sintomas"]
     tratamentos_reducao    = [v for v in tratamentos_unicos.values() if v["tipo"] == "Redução de sintomas"]
     tratamentos_prevencao  = [v for v in tratamentos_unicos.values() if v["tipo"] == "Prevenção"]
+
+
 
 # ---------- ORDENAR SEMPRE POR EFICÁCIA (maior -> menor) ----------
     def _max_float(item: dict) -> float:
@@ -406,7 +410,7 @@ def tratamentos(request):
             except Exception:
                 return -1.0
 
-    for sec in (tratamentos_cura, tratamentos_eliminacao, tratamentos_reducao, tratamentos_prevencao):
+    for sec in (tratamentos_cura, tratamentos_remissao, tratamentos_controle,  tratamentos_eliminacao, tratamentos_reducao, tratamentos_prevencao):
         sec.sort(key=_max_float, reverse=True)
 
 
@@ -430,6 +434,8 @@ def tratamentos(request):
         'contraindicacoes_selecionadas': contraindicacoes_selecionadas,
         'exibir': exibir,
         'tratamentos_cura': tratamentos_cura,
+        'tratamentos_remissao': tratamentos_remissao,
+        'tratamentos_controle':tratamentos_controle,
         'tratamentos_eliminacao': tratamentos_eliminacao,
         'tratamentos_reducao': tratamentos_reducao,
         'tratamentos_prevencao': tratamentos_prevencao,
