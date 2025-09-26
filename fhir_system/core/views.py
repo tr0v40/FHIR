@@ -368,17 +368,20 @@ def tratamentos(request):
     for t in tratamentos_list:
         for tipo in prioridade_tipos:
             if tipo in t.eficacias_por_tipo:
-                stats = t.eficacias_por_tipo[tipo]  # contém min, max, min_str, max_str, count
-                tratamentos_unicos[t.id] = {
-                    "obj": t,
-                    "tipo": tipo,
-                    "min": stats["min"],
-                    "max": stats["max"],
-                    "min_str": stats["min_str"],
-                    "max_str": stats["max_str"],
-                    "count": stats["count"],
-                }
-                break  # pega o primeiro tipo disponível e ignora os demais
+                stats = t.eficacias_por_tipo[tipo]
+                # Verifique se os valores estão presentes antes de adicionar
+                if stats["min"] is not None and stats["max"] is not None:
+                    tratamentos_unicos[t.id] = {
+                        "obj": t,
+                        "tipo": tipo,
+                        "min": stats["min"],
+                        "max": stats["max"],
+                        "min_str": stats["min_str"],
+                        "max_str": stats["max_str"],
+                        "count": stats["count"],
+                    }
+                    break  # pega o primeiro tipo disponível e ignora os demais
+
 
     # Cria listas separadas para cada seção do template
     tratamentos_cura       = [v for v in tratamentos_unicos.values() if v["tipo"] == "Cura"]
@@ -388,9 +391,15 @@ def tratamentos(request):
     tratamentos_reducao    = [v for v in tratamentos_unicos.values() if v["tipo"] == "Redução de sintomas"]
     tratamentos_prevencao  = [v for v in tratamentos_unicos.values() if v["tipo"] == "Prevenção"]
 
+    for t in tratamentos_list:
+        if 'Controle' in t.eficacias_por_tipo:
+            print(f"Controle: {t.id}, {t.eficacias_por_tipo['Controle']}")
 
 
-# ---------- ORDENAR SEMPRE POR EFICÁCIA (maior -> menor) ----------
+
+
+
+    # ---------- ORDENAR SEMPRE POR EFICÁCIA (maior -> menor) ----------
     def _max_float(item: dict) -> float:
         """
         Converte o campo 'max' do item em float para ordenar corretamente.
@@ -398,20 +407,24 @@ def tratamentos(request):
         """
         v = item.get("max")
         if v is None:
-            return -1.0
+            return -1.0  # Retorna um valor padrão quando não há dados
         try:
             return float(v)
         except Exception:
+            # Verifique se a conversão falhou devido a formato incorreto
             s = str(v).strip()
-            # trata "12,34" ou "1.234,56"
+            # Trata "12,34" ou "1.234,56"
             s = s.replace('.', '').replace(',', '.')
             try:
                 return float(s)
             except Exception:
-                return -1.0
+                return -1.0  # Retorna um valor padrão caso a conversão falhe
+
 
     for sec in (tratamentos_cura, tratamentos_remissao, tratamentos_controle,  tratamentos_eliminacao, tratamentos_reducao, tratamentos_prevencao):
         sec.sort(key=_max_float, reverse=True)
+
+
 
 
     # formatações finais (exibição)
