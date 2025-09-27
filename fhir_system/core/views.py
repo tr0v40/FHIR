@@ -283,9 +283,9 @@ def tratamentos(request):
     elif publico == "adultos":
         tratamentos_qs = tratamentos_qs.filter(indicado_adultos__iexact="SIM")
     elif publico == "lactantes":
-        tratamentos_qs = tratamentos_qs.exclude(indicado_lactantes="C")
+        tratamentos_qs = tratamentos_qs.filter(indicado_lactantes__iexact="SIM")
     elif publico == "gravidez":
-        tratamentos_qs = tratamentos_qs.exclude(indicado_gravidez__in=["D", "X"])
+        tratamentos_qs = tratamentos_qs.filter(indicado_gravidez__iexact="SIM")
 
     # ---------- Contraindicações (GET múltiplo) ----------
     contraindica_ids = request.GET.getlist('contraindicacoes')
