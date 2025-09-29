@@ -230,50 +230,46 @@ def _secao(tratamentos, tipo):
             })
     return itens
 
-
-
 def tratamentos(request):
     # ---------- parâmetros ----------
-    ordenacao        = (request.GET.get('ordenacao') or '').strip().lower()
-    ordenacao_opcao  = (request.GET.get('ordenacao_opcao') or '').strip().lower()  # 'menor-maior' | 'maior-menor'
-    publico          = (request.GET.get('publico') or 'todos').strip().lower()
-    nome             = (request.GET.get('nome') or '').strip()
-    categoria        = (request.GET.get('categoria') or '').strip()
+    ordenacao       = (request.GET.get('ordenacao') or '').strip().lower()
+    ordenacao_opcao = (request.GET.get('ordenacao_opcao') or '').strip().lower()  # 'menor-maior' | 'maior-menor'
+
+    publico   = (request.GET.get('publico') or 'todos').strip().lower()
+    nome      = (request.GET.get('nome') or '').strip()
+    categoria = (request.GET.get('categoria') or '').strip()
 
     # filtros “dados de pesquisa”
-    filtro_criterio  = (request.GET.get('filtro_criterio') or 'nenhum').strip().lower()  # 'participantes'|'rigor'|'data'|'nenhum'
-    comparacao       = (request.GET.get('comparacao') or '').strip().lower()             # 'maior'|'menor'
-    filtro_valor     = (request.GET.get('filtro_valor') or '').strip()
+    filtro_criterio = (request.GET.get('filtro_criterio') or 'nenhum').strip().lower()  # 'participantes'|'rigor'|'data'|'nenhum'
+    comparacao      = (request.GET.get('comparacao') or '').strip().lower()             # 'maior'|'menor'
+    filtro_valor    = (request.GET.get('filtro_valor') or '').strip()
 
-    exibir           = request.GET.get('exibir', 'prazo')
+    exibir = request.GET.get('exibir', 'prazo')
 
-    # Base com distinct p/ evitar duplicatas por joins (M2M)
+    # detectar “página limpa” (sem parâmetros relevantes)
+    PARAMS_RELEVANTES = {
+        'ordenacao', 'ordenacao_opcao', 'publico', 'nome', 'categoria',
+        'filtro_criterio', 'comparacao', 'filtro_valor', 'contraindicacoes'
+    }
+    tem_parametros = any(k in request.GET for k in PARAMS_RELEVANTES)
+    usar_eficacia_padrao = not tem_parametros
+
+    # ---------- base ----------
     tratamentos_qs = DetalhesTratamentoResumo.objects.all().distinct()
-
-    print(tratamentos_qs.count())  # Verifica a quantidade de registros
-
-
 
     # Contraindicações para listar no template
     contraindications = Contraindicacao.objects.all()
-
-    
-    # Verifique diretamente no banco de dados
-    tratamentos = DetalhesTratamentoResumo.objects.all()
-    for t in tratamentos:
-        print(t.slug)  # Verifique se há slugs preenchidos
 
     # ---------- filtros simples ----------
     if nome:
         tratamentos_qs = tratamentos_qs.filter(nome__icontains=nome)
 
     if categoria:
-        # cobre CharField 'categoria' OU relação 'categorias__nome'
         tratamentos_qs = tratamentos_qs.filter(
             Q(categoria__icontains=categoria) | Q(categorias__nome__icontains=categoria)
         ).distinct()
 
-    # Público-alvo
+    # Público-alvo (booleans/choices com "SIM")
     if publico == "criancas":
         tratamentos_qs = tratamentos_qs.filter(indicado_criancas__iexact="SIM")
     elif publico == "adolescentes":
@@ -294,12 +290,7 @@ def tratamentos(request):
         tratamentos_qs = tratamentos_qs.exclude(contraindicacoes__id__in=ids_filtrados).distinct()
     contraindicacoes_selecionadas = [str(i) for i in ids_filtrados]
 
-
-    # ---------- Anotações ----------
-    tratamentos_list = calcular_eficacias_por_tipo(tratamentos_qs)
-
-
-    # ---------- anotações seguras ----------
+    # ---------- anotações para ordenação/filtragem ----------
     multiplicadores = Case(
         When(prazo_efeito_unidade='segundo', then=Value(1/60.0)),
         When(prazo_efeito_unidade='minuto', then=Value(1.0)),
@@ -324,7 +315,7 @@ def tratamentos(request):
         rigor_maximo=Max('evidencias__rigor_da_pesquisa'),
     )
 
-    # ---------- FILTRAR POR DADO DE PESQUISA ----------
+    # ---------- FILTRO POR DADO DE PESQUISA ----------
     if filtro_criterio in {"participantes", "rigor"}:
         val = _parse_int_or_none(filtro_valor)
         if val is not None and comparacao in {"maior", "menor"}:
@@ -341,8 +332,53 @@ def tratamentos(request):
             else:
                 tratamentos_qs = tratamentos_qs.filter(**{f"ultima_pesquisa__year__{op}": year})
 
-    # ---------- Ordenação ----------
+    # ---------- calcular eficácia por tipo (depois das anotações) ----------
+    tratamentos_list = calcular_eficacias_por_tipo(tratamentos_qs)
+
+    # ---------- escolher “tipo principal” por prioridade (um por tratamento) ----------
+    prioridade_tipos = ["Cura", "Remissão", "Controle", "Eliminação de sintomas", "Redução de sintomas", "Prevenção"]
+    tratamentos_unicos = {}  # chave = tratamento.id
+
+    for t in tratamentos_list:
+        for tipo in prioridade_tipos:
+            stats = t.eficacias_por_tipo.get(tipo)
+            if stats and stats.get("min") is not None and stats.get("max") is not None:
+                tratamentos_unicos[t.id] = {
+                    "obj": t,
+                    "tipo": tipo,
+                    "min": stats["min"],
+                    "max": stats["max"],
+                    "min_str": stats["min_str"],
+                    "max_str": stats["max_str"],
+                    "count": stats["count"],
+                }
+                break
+
+    # ---------- listas por seção (sempre inicializadas) ----------
+    tratamentos_cura       = []
+    tratamentos_remissao   = []
+    tratamentos_controle   = []
+    tratamentos_eliminacao = []
+    tratamentos_reducao    = []
+    tratamentos_prevencao  = []
+
+    for v in tratamentos_unicos.values():
+        if v["tipo"] == "Cura":
+            tratamentos_cura.append(v)
+        elif v["tipo"] == "Remissão":
+            tratamentos_remissao.append(v)
+        elif v["tipo"] == "Controle":
+            tratamentos_controle.append(v)
+        elif v["tipo"] == "Eliminação de sintomas":
+            tratamentos_eliminacao.append(v)
+        elif v["tipo"] == "Redução de sintomas":
+            tratamentos_reducao.append(v)
+        elif v["tipo"] == "Prevenção":
+            tratamentos_prevencao.append(v)
+
+    # ---------- ordenação das seções ----------
     ordenacao_map = {
+        'eficacia': '__eficacia__',          # especial: usa item['max']
         'risco': 'reacao_maxima',
         'prazo': 'prazo_medio_minutos',
         'preco': 'custo_medicamento',
@@ -352,82 +388,60 @@ def tratamentos(request):
         'avaliacao': 'avaliacao',
     }
     campo = ordenacao_map.get(ordenacao)
-    if campo:
-        asc = (ordenacao_opcao == 'menor-maior')
-        tratamentos_qs = tratamentos_qs.order_by(campo if asc else f'-{campo}')
+
+    # fallback quando “página limpa” ou quando o usuário não escolheu campo válido
+    if usar_eficacia_padrao or not campo:
+        campo = '__eficacia__'
+        asc = False  # eficácia: maior -> menor
     else:
-        tratamentos_qs = tratamentos_qs.order_by('-ultima_pesquisa')
+        asc = (ordenacao_opcao == 'menor-maior')
 
-    # ---------- Eficácia por tipo + seções ----------
-    tratamentos_list = calcular_eficacias_por_tipo(tratamentos_qs)
+    # helpers robustos
+    from datetime import datetime
+    from math import isfinite
 
-    # ---------- FILTRO PARA EXIBIÇÃO POR PRIORIDADE ----------
-    prioridade_tipos = ["Cura", "Remissão", "Controle", "Eliminação de sintomas", "Redução de sintomas", "Prevenção"]
-    tratamentos_unicos = {}  # chave = tratamento.id, valor = primeiro tipo disponível por prioridade
-
-    for t in tratamentos_list:
-        for tipo in prioridade_tipos:
-            if tipo in t.eficacias_por_tipo:
-                stats = t.eficacias_por_tipo[tipo]
-                # Verifique se os valores estão presentes antes de adicionar
-                if stats["min"] is not None and stats["max"] is not None:
-                    tratamentos_unicos[t.id] = {
-                        "obj": t,
-                        "tipo": tipo,
-                        "min": stats["min"],
-                        "max": stats["max"],
-                        "min_str": stats["min_str"],
-                        "max_str": stats["max_str"],
-                        "count": stats["count"],
-                    }
-                    break  # pega o primeiro tipo disponível e ignora os demais
-
-
-    # Cria listas separadas para cada seção do template
-    tratamentos_cura       = [v for v in tratamentos_unicos.values() if v["tipo"] == "Cura"]
-    tratamentos_remissao       = [v for v in tratamentos_unicos.values() if v["tipo"] == "Remissão"]
-    tratamentos_controle       = [v for v in tratamentos_unicos.values() if v["tipo"] == "Controle"]
-    tratamentos_eliminacao = [v for v in tratamentos_unicos.values() if v["tipo"] == "Eliminação de sintomas"]
-    tratamentos_reducao    = [v for v in tratamentos_unicos.values() if v["tipo"] == "Redução de sintomas"]
-    tratamentos_prevencao  = [v for v in tratamentos_unicos.values() if v["tipo"] == "Prevenção"]
-
-    for t in tratamentos_list:
-        if 'Controle' in t.eficacias_por_tipo:
-            print(f"Controle: {t.id}, {t.eficacias_por_tipo['Controle']}")
-
-
-
-
-
-    # ---------- ORDENAR SEMPRE POR EFICÁCIA (maior -> menor) ----------
-    def _max_float(item: dict) -> float:
-        """
-        Converte o campo 'max' do item em float para ordenar corretamente.
-        Aceita float/Decimal/str (com vírgula) ou None.
-        """
-        v = item.get("max")
+    def _to_float_safe(v, default=-1.0):
         if v is None:
-            return -1.0  # Retorna um valor padrão quando não há dados
+            return default
         try:
-            return float(v)
+            f = float(v)
+            return f if isfinite(f) else default
         except Exception:
-            # Verifique se a conversão falhou devido a formato incorreto
-            s = str(v).strip()
-            # Trata "12,34" ou "1.234,56"
-            s = s.replace('.', '').replace(',', '.')
+            s = str(v).strip().replace('.', '').replace(',', '.')
             try:
-                return float(s)
+                f = float(s)
+                return f if isfinite(f) else default
             except Exception:
-                return -1.0  # Retorna um valor padrão caso a conversão falhe
+                return default
 
+    def _to_timestamp_safe(v, default=0.0):
+        if v is None:
+            return default
+        if hasattr(v, 'timestamp'):
+            try:
+                return v.timestamp()
+            except Exception:
+                return default
+        try:
+            return datetime.fromisoformat(str(v)).timestamp()
+        except Exception:
+            return default
 
-    for sec in (tratamentos_cura, tratamentos_remissao, tratamentos_controle,  tratamentos_eliminacao, tratamentos_reducao, tratamentos_prevencao):
-        sec.sort(key=_max_float, reverse=True)
+    def _key_por_ordenacao(item: dict):
+        if campo == '__eficacia__':
+            return _to_float_safe(item.get('max'), default=-1.0)
+        elif campo == 'ultima_pesquisa':
+            return _to_timestamp_safe(getattr(item['obj'], 'ultima_pesquisa', None))
+        else:
+            return _to_float_safe(getattr(item['obj'], campo, None), default=-1.0)
 
+    for sec in (
+        tratamentos_cura, tratamentos_remissao, tratamentos_controle,
+        tratamentos_eliminacao, tratamentos_reducao, tratamentos_prevencao
+    ):
+        sec.sort(key=_key_por_ordenacao, reverse=not asc)
 
-
-
-    # formatações finais (exibição)
+    # ---------- formatações finais (exibição) ----------
     for t in tratamentos_list:
         t.max_participantes   = formatar_numeros(getattr(t, "max_participantes", None))
         t.prazo_medio_minutos = formatar_numeros(getattr(t, "prazo_medio_minutos", None))
@@ -436,7 +450,6 @@ def tratamentos(request):
     # ---------- context ----------
     context = {
         'tratamentos_list': tratamentos_list,
-        'tratamentos': tratamentos,
         'contraindications': contraindications,
         'grupos_indicados': DetalhesTratamentoResumo.GRUPO_CHOICES,
         'nome': nome,
@@ -448,13 +461,13 @@ def tratamentos(request):
         'exibir': exibir,
         'tratamentos_cura': tratamentos_cura,
         'tratamentos_remissao': tratamentos_remissao,
-        'tratamentos_controle':tratamentos_controle,
+        'tratamentos_controle': tratamentos_controle,
         'tratamentos_eliminacao': tratamentos_eliminacao,
         'tratamentos_reducao': tratamentos_reducao,
         'tratamentos_prevencao': tratamentos_prevencao,
     }
     return render(request, 'core/tratamentos.html', context)
-
+    
 
 
 

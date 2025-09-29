@@ -302,27 +302,25 @@ margin-top: -5px; /* Ajuste conforme necessário */
     margin-bottom: 20px;
     text-align: center;
 }
-
-/* Rodapé que aparece apenas ao descer completamente */
-.footer {
-    position: fixed; /* Para manter o rodapé fixo na parte inferior */
-    bottom: 0;
-    width: 100%;
-    background-color: #fcfcfc;
-    padding: 40px 0;
-    color: #000000;
-    z-index: 999;
-    display: none; /* Inicialmente escondido */
+/* Rodapé fixo, começa oculto */
+.footer{
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  width: 100%;
+  background-color: #fcfcfc;
+  padding: 40px 0;
+  color: #000;
+  z-index: 999;
+  display: none;            /* oculto por padrão */
 }
+.footer.show{ display:block; }
 
-.footer.show {
-    display: block; /* Quando a classe 'show' for adicionada, o rodapé aparece */
-}
+/* Garante que a página tenha altura para rolar */
+html, body { min-height: 100%; }
 
-.footer .container {
-    max-width: 960px;
-    margin: 0 auto;
-    text-align: center;
+/* “Sentinela” que dispara a aparição do footer */
+#footer-sentinel{
+  height: 1px;              /* não ocupa espaço visual */
 }
 
 
@@ -2737,6 +2735,8 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
 </div>
 
 <!-- FOOTER UNIFICADO -->
+
+
 <footer class="footer mt-5 pt-4 border-top">
     <div class="container text-center">
         <!-- ÍCONES NO TOPO APENAS NO MOBILE -->
@@ -2917,21 +2917,6 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
 
-window.onload = function() {
-    window.onscroll = function() {
-        var footer = document.querySelector('.footer');
-        // Verifica se a rolagem chegou ao final da página
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-            footer.classList.add('show'); // Mostra o rodapé
-        } else {
-            footer.classList.remove('show'); // Esconde o rodapé novamente
-        }
-    };
-};
-
-
-
-
 });
 
     </script>
@@ -3007,6 +2992,34 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 </script>
 
+<script>
+(function () {
+  const root = document.documentElement;
+
+  function toggleFooter() {
+    const footer = document.querySelector('.footer');
+    if (!footer) return;
+
+    const scrollTop  = window.pageYOffset || root.scrollTop || 0;
+    const viewportH  = window.innerHeight || root.clientHeight;
+    const fullHeight = Math.max(
+      root.scrollHeight, root.offsetHeight, root.clientHeight,
+      document.body ? document.body.scrollHeight : 0
+    );
+
+    if (scrollTop + viewportH >= fullHeight - 1) {
+      footer.classList.add('show');
+    } else {
+      footer.classList.remove('show');
+    }
+  }
+
+  // Não sobrescreve handlers existentes
+  window.addEventListener('scroll', toggleFooter, {passive: true});
+  window.addEventListener('resize', toggleFooter);
+  window.addEventListener('DOMContentLoaded', toggleFooter);
+})();
+</script>
 
 
 </body>
