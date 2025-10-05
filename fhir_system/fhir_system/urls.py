@@ -8,7 +8,6 @@ from django.contrib.auth.views import LoginView
 from core.views import CondicaoSaudeDetailView, tipo_eficacia_descricao_json
 
 
-
 urlpatterns = [
     path("", LoginView.as_view(), name="home"),
     path("admin/", admin.site.urls),
@@ -30,3 +29,20 @@ urlpatterns = [
         name="evidencias_clinicas",
     ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Handlers precisam estar no URLconf raiz:
+handler404 = "core.views.page_not_found_404"
+handler500 = "core.views.server_error_500"
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+else:
+    # Permite servir estáticos mesmo com DEBUG=False (apenas em ambiente local!)
+    from django.views.static import serve
+    from django.urls import re_path
+
+    urlpatterns += [
+        re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
+        re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    ]

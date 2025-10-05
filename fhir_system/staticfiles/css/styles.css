@@ -12389,3 +12389,25 @@ html, body {
       width: 100%;
   }
 }
+/* Coluna esquerda do card: imagem + textos lado a lado */
+.tratamento-main{
+  display:flex;                 /* << faz a imagem e o texto ficarem lado a lado */
+  align-items:flex-start;
+  gap:20px;
+}
+
+/* Imagem dentro da coluna esquerda: encostada à esquerda, sem centralizar */
+.tratamento-main img{
+  display:block;
+  margin:0;                     /* << remove o margin: 0 auto que centralizava */
+  width:120px;
+  height:120px;
+  border-radius:8px;            /* se não quiser redonda */
+  object-fit:cover;
+}
+
+/* (opcional) no mobile pode empilhar novamente */
+@media (max-width: 768px){
+  .tratamento-main{ flex-direction:column; }
+  .tratamento-main img{ margin:0 auto 10px; } /* centraliza no mobile, se quiser */
+}

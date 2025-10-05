@@ -89,11 +89,16 @@ def _norm(s: str) -> str:
 
 PRIORIDADE = {
     "cura": 0,
-    "eliminacao de sintomas": 1,
-    "eliminacao dos sintomas": 1,   # sinônimos/variações
-    "reducao de sintomas": 2,
-    "reducao dos sintomas": 2,
-    "prevencao": 3,
+    "remissão": 1,
+    "remissao": 1,
+    "controle":2,
+    "Controle":2,
+    "eliminacao de sintomas": 3,
+    "eliminacao dos sintomas": 3,   # sinônimos/variações
+
+    "reducao de sintomas": 4,
+    "reducao dos sintomas": 4,
+    "prevencao": 5,
 }
 
 def calcular_eficacia(tratamentos_list):
@@ -149,7 +154,7 @@ def calcular_eficacia(tratamentos_list):
 
 
 
-TIPOS_SECOES = ("Cura", "Eliminação de sintomas", "Redução de sintomas", "Prevenção")
+TIPOS_SECOES = ("Cura", "Eliminação de sintomas", "Remissão", "Controle", "Redução de sintomas", "Prevenção")
 
 def _nome_tipo(tipo_obj):
     return (getattr(tipo_obj, "nome", None) or str(tipo_obj) or "").strip()
@@ -467,7 +472,7 @@ def tratamentos(request):
         'tratamentos_prevencao': tratamentos_prevencao,
     }
     return render(request, 'core/tratamentos.html', context)
-    
+
 
 
 
@@ -611,14 +616,21 @@ def detalhes_tratamentos(request, slug):
 
     PRIORIDADE_TIPOS = {
         "cura": 0,
-        "eliminacao de sintomas": 1,
-        "eliminacao dos sintomas": 1,
-        "redução de sintomas": 2,
-        "reducao de sintomas": 2,
-        "reducao dos sintomas": 2,
-        "prevencao": 3,
-        "prevenção": 3,
+        "remissão": 1,
+        "remissao": 1,
+        "controle":2,
+        "Controle":2,
+        "eliminacao de sintomas": 3,
+        "eliminacao dos sintomas": 3,   # sinônimos/variações
+        "redução de sintomas": 4,
+        "reducao de sintomas": 4,
+        "reducao dos sintomas": 4,
+        "prevencao": 5,
+        "prevenção:":5,
     }
+
+
+
 # ------- ORDENAR POR PRIORIDADE E, DENTRO, POR MAX DESC -------
     eficacias_por_tipo.sort(
         key=lambda e: (PRIORIDADE_TIPOS.get(_norm_txt(e["tipo"]), 99), -float(e["max"] or 0))
@@ -707,8 +719,22 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
             "fields": ("reacoes_adversas",)
         }),
     )
+ 
 
-
+PRIORIDADE_TIPOS = {
+    "cura": 0,
+    "remissão": 1,
+    "remissao": 1,
+    "controle": 2,
+    "Controle": 2,
+    "eliminacao de sintomas": 3,
+    "eliminacao dos sintomas": 3,
+    "redução de sintomas": 4,
+    "reducao de sintomas": 4,
+    "reducao dos sintomas": 4,
+    "prevencao": 5,
+    "prevenção": 5,  # Corrigido para usar o sinônimo adequado
+}
 
 def evidencias_clinicas(request, slug):
     """Exibe a página de evidências clínicas de um tratamento específico"""
@@ -724,26 +750,33 @@ def evidencias_clinicas(request, slug):
     
     # Certificar-se de que 'eficacias_por_tipo' está presente
     for t in tratamentos:
+        # Se não existe a relação 'eficacias_por_tipo', a atribuímos como lista vazia
         if not hasattr(t, 'eficacias_por_tipo'):
-            t.eficacias_por_tipo = {}  # Adiciona o atributo se não existir
-    
-    # Definindo a ordem de prioridade para os tipos de eficácia
-    prioridade_tipos = ["Cura", "Eliminação de sintomas", "Redução de sintomas", "Prevenção"]
-    
-    # Organizando as eficácias conforme a prioridade
-    for tratamento in tratamentos:
-        # Ordena os tipos de eficácia de acordo com a prioridade
-        eficacias_ordenadas = sorted(tratamento.eficacias_por_tipo.items(), key=lambda e: prioridade_tipos.index(e[0]), reverse=False)
+            t.eficacias_por_tipo = []
+
+        # Organizando as eficácias conforme a prioridade
+        eficacias = []
+        for eficacia in t.eficacias_por_tipo:
+            eficacias.append({
+                'tipo_eficacia': eficacia.tipo_eficacia.tipo_eficacia,
+                'percentual_eficacia_calculado': eficacia.percentual_eficacia_calculado,
+            })
+        
+        # Ordena os tipos de eficácia de acordo com a prioridade (verificando com PRIORIDADE_TIPOS)
+        eficacias_ordenadas = sorted(eficacias, key=lambda e: PRIORIDADE_TIPOS.get(e['tipo_eficacia'].lower(), 999))
         
         # Atualiza a lista de eficácias ordenadas no tratamento
-        tratamento.efics_ordenadas = eficacias_ordenadas
-
+        t.efics_ordenadas = eficacias_ordenadas
+        
+        
     # Exibindo os dados no template
     return render(request, "core/evidencias_clinicas.html", {
         "tratamento": tratamento,
         "tratamentos": tratamentos,  # Passando os tratamentos com as eficácias ordenadas
         "evidencias": evidencias,
     })
+
+
 
 
 
@@ -851,3 +884,11 @@ def tipo_eficacia_descricao_json(request, pk):
     except TipoEficacia.DoesNotExist:
         return JsonResponse({'descricao': ''}, status=404)
     return JsonResponse({'descricao': tipo_eficacia.descricao})
+
+
+
+def page_not_found_404(request, exception, template_name="404.html"):
+    return render(request, template_name, status=404)
+
+def server_error_500(request, template_name="500.html"):
+    return render(request, template_name, status=500)

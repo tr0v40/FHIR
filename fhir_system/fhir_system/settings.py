@@ -9,8 +9,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv(
     "DJANGO_SECRET_KEY", "chave-secreta"
 )  # Usa 'chave-secreta' se não houver .env
-DEBUG = os.getenv("DEBUG", "True") == "True"
-ALLOWED_HOSTS = ["127.0.0.1", "189.126.32.64", "cadastros.telix.inf.br"]
+DEBUG = False
+ALLOWED_HOSTS = ["*","127.0.0.1", "189.126.32.64", "cadastros.telix.inf.br"]
 
 
 # Configuração do Banco de Dados (PostgreSQL)
@@ -62,6 +62,7 @@ DECIMAL_SEPARATOR = ','
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware", 
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -91,10 +92,10 @@ TEMPLATES = [
 
 # settings.py
 
-# Verifique se não está no modo de desenvolvimento
 if not DEBUG:
-    # Redireciona de HTTP para HTTPS automaticamente
-    SECURE_SSL_REDIRECT = True
+
+    SECURE_SSL_REDIRECT = False
+
 
     # Caso você esteja usando um proxy reverso (como Nginx ou Apache), configure o Django para reconhecer o protocolo HTTPS.
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -169,3 +170,6 @@ if DEBUG:
     STATIC_ROOT = BASE_DIR / "staticfiles"  # Para coletar arquivos estáticos
     MEDIA_URL = "/media/"
     MEDIA_ROOT = BASE_DIR / "media"  # Local de armazenamento de uploads de mídia
+
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
