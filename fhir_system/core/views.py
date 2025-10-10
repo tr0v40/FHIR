@@ -23,6 +23,7 @@ from django.utils.html import format_html
 from .models import DetalhesTratamentoResumo
 from .models import TipoEficacia
 import unicodedata
+from datetime import datetime
 
   # ==================== IMPORTS SESSIONS ==================== #
 
@@ -51,7 +52,7 @@ def register(request):
 
     return render(request, "registration/register.html", {"form": form})
 
-from datetime import datetime
+
 
 def _parse_int_or_none(s):
     try:
@@ -238,7 +239,11 @@ def _secao(tratamentos, tipo):
 def tratamentos(request):
     # ---------- parâmetros ----------
     ordenacao       = (request.GET.get('ordenacao') or '').strip().lower()
-    ordenacao_opcao = (request.GET.get('ordenacao_opcao') or '').strip().lower()  # 'menor-maior' | 'maior-menor'
+    ordenacao_opcao = (
+        request.GET.get('ordenacao_opcao')
+        or request.GET.get('eficacia')   # <— alias para URLs antigas / botão “limpar filtros”
+        or ''
+    ).strip().lower()
 
     publico   = (request.GET.get('publico') or 'todos').strip().lower()
     nome      = (request.GET.get('nome') or '').strip()
@@ -401,9 +406,6 @@ def tratamentos(request):
     else:
         asc = (ordenacao_opcao == 'menor-maior')
 
-    # helpers robustos
-    from datetime import datetime
-    from math import isfinite
 
     def _to_float_safe(v, default=-1.0):
         if v is None:
@@ -440,11 +442,34 @@ def tratamentos(request):
         else:
             return _to_float_safe(getattr(item['obj'], campo, None), default=-1.0)
 
-    for sec in (
-        tratamentos_cura, tratamentos_remissao, tratamentos_controle,
-        tratamentos_eliminacao, tratamentos_reducao, tratamentos_prevencao
-    ):
-        sec.sort(key=_key_por_ordenacao, reverse=not asc)
+    # --- NOVA LÓGICA DE ORDENAÇÃO ---
+    todos_os_tratamentos = None # <— evita UnboundLocalError
+
+
+    if campo != '__eficacia__':
+        # Ordenação global (usada para risco, prazo, preço, etc.)
+        todos_os_tratamentos = (
+            tratamentos_cura + tratamentos_remissao + tratamentos_controle +
+            tratamentos_eliminacao + tratamentos_reducao + tratamentos_prevencao
+        )
+        todos_os_tratamentos.sort(key=_key_por_ordenacao, reverse=not asc)
+
+        # Redistribui os tratamentos nas listas
+        tratamentos_cura = [t for t in todos_os_tratamentos if t['tipo'] == 'Cura']
+        tratamentos_remissao = [t for t in todos_os_tratamentos if t['tipo'] == 'Remissão']
+        tratamentos_controle = [t for t in todos_os_tratamentos if t['tipo'] == 'Controle']
+        tratamentos_eliminacao = [t for t in todos_os_tratamentos if t['tipo'] == 'Eliminação de sintomas']
+        tratamentos_reducao = [t for t in todos_os_tratamentos if t['tipo'] == 'Redução de sintomas']
+        tratamentos_prevencao = [t for t in todos_os_tratamentos if t['tipo'] == 'Prevenção']
+    else:
+        # Volta para a ordenação por eficácia (padrão original)
+        todos_os_tratamentos = None
+        for sec in (
+            tratamentos_cura, tratamentos_remissao, tratamentos_controle,
+            tratamentos_eliminacao, tratamentos_reducao, tratamentos_prevencao
+        ):
+            sec.sort(key=_key_por_ordenacao, reverse=not asc)
+
 
     # ---------- formatações finais (exibição) ----------
     for t in tratamentos_list:
@@ -455,6 +480,8 @@ def tratamentos(request):
     # ---------- context ----------
     context = {
         'tratamentos_list': tratamentos_list,
+        'todos_os_tratamentos': todos_os_tratamentos,
+
         'contraindications': contraindications,
         'grupos_indicados': DetalhesTratamentoResumo.GRUPO_CHOICES,
         'nome': nome,
@@ -470,6 +497,7 @@ def tratamentos(request):
         'tratamentos_eliminacao': tratamentos_eliminacao,
         'tratamentos_reducao': tratamentos_reducao,
         'tratamentos_prevencao': tratamentos_prevencao,
+      
     }
     return render(request, 'core/tratamentos.html', context)
 

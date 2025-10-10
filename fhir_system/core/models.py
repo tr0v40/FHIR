@@ -400,7 +400,7 @@ class DetalhesTratamentoResumo(models.Model):
     
     fabricante = models.CharField(max_length=200)
     comentario = models.TextField(null=True, blank=True)
-    avaliacao = models.IntegerField(null=False, default=0) 
+    avaliacao = models.IntegerField(null=True, blank=True) 
     eficacia_min = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     eficacia_max = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     prazo_efeito_min = models.IntegerField()  # Para armazenar o tempo em minutos
@@ -616,6 +616,7 @@ class TratamentoCondicao(models.Model):
 class TipoEficacia(models.Model):
     tipo_eficacia = models.CharField(max_length=255)  # Certifique-se de que este campo existe
     descricao = models.TextField(blank=True, null=True)  # Se for esse campo, adicione-o
+    peso =  models.IntegerField(default=0)
 
     eficacia_por_tipo = models.ManyToManyField('EficaciaPorTipo', related_name='tipos_de_eficacia', blank=True)
 

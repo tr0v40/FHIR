@@ -1770,7 +1770,7 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
 
 <!-- Fim da sidebar -->
 <div style="margin-top: 40px;">
-    <a href="{% url 'tratamentos' %}?ordenacao=eficacia&eficacia=menor-maior" 
+    <a href="/tratamentos/?ordenacao=eficacia&ordenacao_opcao=menor-maior" 
        class="btn btn-secondary w-100">
       Limpar filtros
     </a>
@@ -2145,9 +2145,117 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
       
       
             </style>
-  {# core/tratamentos.html #}
+ {% load static %}
+{# core/tratamentos.html #}
+
 <div class="content-area">
   <div class="tratamentos">
+
+    {#=========================LISTAGEM ÚNICA (GLOBAL)========================= #}
+    {% if todos_os_tratamentos %}
+    <div class="tratamento-section all">
+      {% for item in todos_os_tratamentos %}
+        {% with tratamento=item.obj %}
+          <a href="{% url 'detalhes_tratamentos' tratamento.id %}" class="text-decoration-none text-dark">
+            <div class="tratamento-card">
+              <div class="tratamento-content">
+
+                {# Imagem #}
+                {% if tratamento.imagem %}
+                  <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}">
+                    <img src="{{ tratamento.imagem.url }}" alt="{{ tratamento.nome }}" class="img-fluid">
+                  </a>
+                {% else %}
+                  <img src="{% static 'default-image.jpg' %}" alt="Imagem não disponível">
+                {% endif %}
+
+                {# Info #}
+                <div class="tratamento-info">
+                  <h3>{{ tratamento.nome }}</h3>
+                  <h3 style="color: #0094FF; font-size: 12px;">
+                    {% for tipo in tratamento.tipo_tratamento.all %}
+                      {{ tipo.nome }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}Nenhum tipo selecionado{% endfor %}
+                  </h3>
+                  <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo|default:"ND" }}</p>
+                  <p><strong>Fabricante:</strong> {{ tratamento.fabricante|default:"ND" }}</p>
+                  <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" class="btn"
+                     style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
+                     ver pesquisas
+                  </a>
+                  <p>{{ tratamento.descricao }}</p>
+                </div>
+
+                {# Eficácia (usa o tipo escolhido no back) #}
+                <div class="eficacia-container">
+                  <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
+                    Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">{{ item.tipo }}</span>
+                  </p>
+                  <div class="eficacia-bar-container">
+                    <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
+                    <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
+                  </div>
+                  <p class="eficacia-range" style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 25px; text-align: left;">
+                    <span style="color: #888; font-weight: 500;">{{ item.min_str }} a</span>
+                    <span style="color: #000; font-weight: bold;"> {{ item.max_str }}%</span>
+                  </p>
+
+                  <p id="titulo-prazo-{{ tratamento.id }}" style="margin: 0; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 15px; color: #000;">
+                    Prazo para efeito
+                  </p>
+                  <p id="valor-prazo-{{ tratamento.id }}" style="margin: 4px 0 0 0; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: bold; color: #000;">
+                    {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+                  </p>
+
+                  <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}" class="btn mt-2"
+                     style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
+                    ver detalhes <span style="font-weight: bold;">&#8250;</span>
+                  </a>
+
+                  {# Campos auxiliares/ocultos mantidos #}
+                  <span id="faixa-risco-{{ tratamento.id }}" class="replace-dot" style="display:none;">
+                    {{ tratamento.reacao_maxima}}%
+                  </span>
+                  <span id="faixa-eficacia-{{ tratamento.id }}" class="replace-dot" style="display:none;">
+                    {{ item.min|floatformat:2 }}% a {{ item.max|floatformat:2 }}%
+                  </span>
+                  <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+                  </span>
+                  <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
+                    R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
+                  </p>
+                  <span id="faixa-rigor-{{ tratamento.id }}" style="display: none;">
+                    {% for i in "1234567" %}
+                      {% if i|add:"0" <= tratamento.rigor_maximo %}
+                        <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#fff;background:#007bff;">
+                          {{ i }}
+                        </span>
+                      {% else %}
+                        <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#007bff;background:transparent;">
+                          {{ i }}
+                        </span>
+                      {% endif %}
+                    {% endfor %}
+                  </span>
+                  <p id="faixa-data-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.ultima_pesquisa|date:"m/Y"|default:"-" }}
+                  </p>
+                  <span id="faixa-participantes-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.max_participantes|default:"-" }} participantes
+                  </span>
+                </div>
+
+              </div>
+            </div>
+          </a>
+        {% endwith %}
+      {% endfor %}
+    </div>
+
+    {# =========================EXIBIÇÃO POR SEÇÕES(padrão original)========================= #}
+    {% else %}
+
     <!-- Tratamentos de Cura -->
     <div class="tratamento-section cura">
       {% for item in tratamentos_cura %}
@@ -2178,66 +2286,62 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                   <p>{{ tratamento.descricao }}</p>
                 </div>
 
-              <div class="eficacia-container">
-                <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
-                  Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">Cura</span>
-                </p>
-    
-                <div class="eficacia-bar-container">
-                  <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
-                  <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
-                </div>
-    
-                <p class="eficacia-range" style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 25px; text-align: left;">
-                  <span style="color: #888; font-weight: 500;">{{ item.min_str }} a</span>
-                  <span style="color: #000; font-weight: bold;"> {{ item.max_str }}%</span>
-                </p>
-                <p id="titulo-prazo-{{ tratamento.id }}" style="margin: 0; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 15px; color: #000;">
-                  Prazo para efeito
-                </p>
-                <p id="valor-prazo-{{ tratamento.id }}" style="margin: 4px 0 0 0; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: bold; color: #000;">
-                  {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
-                </p>
-    
+                <div class="eficacia-container">
+                  <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
+                    Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">Cura</span>
+                  </p>
+                  <div class="eficacia-bar-container">
+                    <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
+                    <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
+                  </div>
+                  <p class="eficacia-range" style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 25px; text-align: left;">
+                    <span style="color: #888; font-weight: 500;">{{ item.min_str }} a</span>
+                    <span style="color: #000; font-weight: bold;"> {{ item.max_str }}%</span>
+                  </p>
+                  <p id="titulo-prazo-{{ tratamento.id }}" style="margin: 0; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 15px; color: #000;">
+                    Prazo para efeito
+                  </p>
+                  <p id="valor-prazo-{{ tratamento.id }}" style="margin: 4px 0 0 0; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: bold; color: #000;">
+                    {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+                  </p>
 
                   <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ 'Cura'|urlencode }}" class="btn mt-2"
                      style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
                     ver detalhes <span style="font-weight: bold;">&#8250;</span>
                   </a>
 
-                                {# Campos auxiliares/ocultos mantidos #}
-                <span id="faixa-risco-{{ tratamento.id }}" class="replace-dot" style="display:none;">
-                  {{ tratamento.reacao_maxima}}%
-                </span>
-                <span id="faixa-eficacia-{{ tratamento.id }}" class="replace-dot" style="display:none;">
-                  {{ item.min|floatformat:2 }}% a {{ item.max|floatformat:2 }}%
-                </span>
-                <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
-                  {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
-                </span>
-                <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
-                  R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
-                </p>
-                <span id="faixa-rigor-{{ tratamento.id }}" style="display: none;">
-                  {% for i in "1234567" %}
-                    {% if i|add:"0" <= tratamento.rigor_maximo %}
-                      <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#fff;background:#007bff;">
-                        {{ i }}
-                      </span>
-                    {% else %}
-                      <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#007bff;background:transparent;">
-                        {{ i }}
-                      </span>
-                    {% endif %}
-                  {% endfor %}
-                </span>
-                <p id="faixa-data-{{ tratamento.id }}" style="display:none;">
-                  {{ tratamento.ultima_pesquisa|date:"m/Y"|default:"-" }}
-                </p>
-                <span id="faixa-participantes-{{ tratamento.id }}" style="display:none;">
-                  {{ tratamento.max_participantes|default:"-" }} participantes
-                </span>
-
+                  {# ocultos #}
+                  <span id="faixa-risco-{{ tratamento.id }}" class="replace-dot" style="display:none;">
+                    {{ tratamento.reacao_maxima}}%
+                  </span>
+                  <span id="faixa-eficacia-{{ tratamento.id }}" class="replace-dot" style="display:none;">
+                    {{ item.min|floatformat:2 }}% a {{ item.max|floatformat:2 }}%
+                  </span>
+                  <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+                  </span>
+                  <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
+                    R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
+                  </p>
+                  <span id="faixa-rigor-{{ tratamento.id }}" style="display: none;">
+                    {% for i in "1234567" %}
+                      {% if i|add:"0" <= tratamento.rigor_maximo %}
+                        <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#fff;background:#007bff;">
+                          {{ i }}
+                        </span>
+                      {% else %}
+                        <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#007bff;background:transparent;">
+                          {{ i }}
+                        </span>
+                      {% endif %}
+                    {% endfor %}
+                  </span>
+                  <p id="faixa-data-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.ultima_pesquisa|date:"m/Y"|default:"-" }}
+                  </p>
+                  <span id="faixa-participantes-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.max_participantes|default:"-" }} participantes
+                  </span>
                 </div>
               </div>
             </div>
@@ -2300,39 +2404,39 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                      style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
                     ver detalhes <span style="font-weight: bold;">&#8250;</span>
                   </a>
-                   {# Campos auxiliares/ocultos mantidos #}
-                <span id="faixa-risco-{{ tratamento.id }}" class="replace-dot" style="display:none;">
-                  {{ tratamento.reacao_maxima}}%
-                </span>
-                <span id="faixa-eficacia-{{ tratamento.id }}" class="replace-dot" style="display:none;">
-                  {{ item.min|floatformat:2 }}% a {{ item.max|floatformat:2 }}%
-                </span>
-                <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
-                  {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
-                </span>
-                <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
-                  R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
-                </p>
-                <span id="faixa-rigor-{{ tratamento.id }}" style="display: none;">
-                  {% for i in "1234567" %}
-                    {% if i|add:"0" <= tratamento.rigor_maximo %}
-                      <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#fff;background:#007bff;">
-                        {{ i }}
-                      </span>
-                    {% else %}
-                      <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#007bff;background:transparent;">
-                        {{ i }}
-                      </span>
-                    {% endif %}
-                  {% endfor %}
-                </span>
-                <p id="faixa-data-{{ tratamento.id }}" style="display:none;">
-                  {{ tratamento.ultima_pesquisa|date:"m/Y"|default:"-" }}
-                </p>
-                <span id="faixa-participantes-{{ tratamento.id }}" style="display:none;">
-                  {{ tratamento.max_participantes|default:"-" }} participantes
-                </span>
 
+                  {# ocultos #}
+                  <span id="faixa-risco-{{ tratamento.id }}" class="replace-dot" style="display:none;">
+                    {{ tratamento.reacao_maxima}}%
+                  </span>
+                  <span id="faixa-eficacia-{{ tratamento.id }}" class="replace-dot" style="display:none;">
+                    {{ item.min|floatformat:2 }}% a {{ item.max|floatformat:2 }}%
+                  </span>
+                  <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+                  </span>
+                  <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
+                    R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
+                  </p>
+                  <span id="faixa-rigor-{{ tratamento.id }}" style="display: none;">
+                    {% for i in "1234567" %}
+                      {% if i|add:"0" <= tratamento.rigor_maximo %}
+                        <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#fff;background:#007bff;">
+                          {{ i }}
+                        </span>
+                      {% else %}
+                        <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#007bff;background:transparent;">
+                          {{ i }}
+                        </span>
+                      {% endif %}
+                    {% endfor %}
+                  </span>
+                  <p id="faixa-data-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.ultima_pesquisa|date:"m/Y"|default:"-" }}
+                  </p>
+                  <span id="faixa-participantes-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.max_participantes|default:"-" }} participantes
+                  </span>
                 </div>
               </div>
             </div>
@@ -2341,7 +2445,7 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
       {% endfor %}
     </div>
 
- <!-- Tratamentos de controle -->
+    <!-- Tratamentos de controle -->
     <div class="tratamento-section controle">
       {% for item in tratamentos_controle%}
         {% with tratamento=item.obj %}
@@ -2395,39 +2499,39 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                      style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
                     ver detalhes <span style="font-weight: bold;">&#8250;</span>
                   </a>
-                                  {# Campos auxiliares/ocultos mantidos #}
-                <span id="faixa-risco-{{ tratamento.id }}" class="replace-dot" style="display:none;">
-                  {{ tratamento.reacao_maxima}}%
-                </span>
-                <span id="faixa-eficacia-{{ tratamento.id }}" class="replace-dot" style="display:none;">
-                  {{ item.min|floatformat:2 }}% a {{ item.max|floatformat:2 }}%
-                </span>
-                <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
-                  {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
-                </span>
-                <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
-                  R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
-                </p>
-                <span id="faixa-rigor-{{ tratamento.id }}" style="display: none;">
-                  {% for i in "1234567" %}
-                    {% if i|add:"0" <= tratamento.rigor_maximo %}
-                      <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#fff;background:#007bff;">
-                        {{ i }}
-                      </span>
-                    {% else %}
-                      <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#007bff;background:transparent;">
-                        {{ i }}
-                      </span>
-                    {% endif %}
-                  {% endfor %}
-                </span>
-                <p id="faixa-data-{{ tratamento.id }}" style="display:none;">
-                  {{ tratamento.ultima_pesquisa|date:"m/Y"|default:"-" }}
-                </p>
-                <span id="faixa-participantes-{{ tratamento.id }}" style="display:none;">
-                  {{ tratamento.max_participantes|default:"-" }} participantes
-                </span>
 
+                  {# ocultos #}
+                  <span id="faixa-risco-{{ tratamento.id }}" class="replace-dot" style="display:none;">
+                    {{ tratamento.reacao_maxima}}%
+                  </span>
+                  <span id="faixa-eficacia-{{ tratamento.id }}" class="replace-dot" style="display:none;">
+                    {{ item.min|floatformat:2 }}% a {{ item.max|floatformat:2 }}%
+                  </span>
+                  <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+                  </span>
+                  <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
+                    R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
+                  </p>
+                  <span id="faixa-rigor-{{ tratamento.id }}" style="display: none;">
+                    {% for i in "1234567" %}
+                      {% if i|add:"0" <= tratamento.rigor_maximo %}
+                        <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#fff;background:#007bff;">
+                          {{ i }}
+                        </span>
+                      {% else %}
+                        <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#007bff;background:transparent;">
+                          {{ i }}
+                        </span>
+                      {% endif %}
+                    {% endfor %}
+                  </span>
+                  <p id="faixa-data-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.ultima_pesquisa|date:"m/Y"|default:"-" }}
+                  </p>
+                  <span id="faixa-participantes-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.max_participantes|default:"-" }} participantes
+                  </span>
                 </div>
               </div>
             </div>
@@ -2436,8 +2540,7 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
       {% endfor %}
     </div>
 
-
-    <!-- Tratamentos de eliminacao -->
+    <!-- Tratamentos de eliminação -->
     <div class="tratamento-section eliminacao">
       {% for item in tratamentos_eliminacao%}
         {% with tratamento=item.obj %}
@@ -2491,39 +2594,39 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                      style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
                     ver detalhes <span style="font-weight: bold;">&#8250;</span>
                   </a>
-                                  {# Campos auxiliares/ocultos mantidos #}
-                <span id="faixa-risco-{{ tratamento.id }}" class="replace-dot" style="display:none;">
-                  {{ tratamento.reacao_maxima}}%
-                </span>
-                <span id="faixa-eficacia-{{ tratamento.id }}" class="replace-dot" style="display:none;">
-                  {{ item.min|floatformat:2 }}% a {{ item.max|floatformat:2 }}%
-                </span>
-                <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
-                  {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
-                </span>
-                <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
-                  R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
-                </p>
-                <span id="faixa-rigor-{{ tratamento.id }}" style="display: none;">
-                  {% for i in "1234567" %}
-                    {% if i|add:"0" <= tratamento.rigor_maximo %}
-                      <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#fff;background:#007bff;">
-                        {{ i }}
-                      </span>
-                    {% else %}
-                      <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#007bff;background:transparent;">
-                        {{ i }}
-                      </span>
-                    {% endif %}
-                  {% endfor %}
-                </span>
-                <p id="faixa-data-{{ tratamento.id }}" style="display:none;">
-                  {{ tratamento.ultima_pesquisa|date:"m/Y"|default:"-" }}
-                </p>
-                <span id="faixa-participantes-{{ tratamento.id }}" style="display:none;">
-                  {{ tratamento.max_participantes|default:"-" }} participantes
-                </span>
 
+                  {# ocultos #}
+                  <span id="faixa-risco-{{ tratamento.id }}" class="replace-dot" style="display:none;">
+                    {{ tratamento.reacao_maxima}}%
+                  </span>
+                  <span id="faixa-eficacia-{{ tratamento.id }}" class="replace-dot" style="display:none;">
+                    {{ item.min|floatformat:2 }}% a {{ item.max|floatformat:2 }}%
+                  </span>
+                  <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+                  </span>
+                  <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
+                    R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
+                  </p>
+                  <span id="faixa-rigor-{{ tratamento.id }}" style="display: none;">
+                    {% for i in "1234567" %}
+                      {% if i|add:"0" <= tratamento.rigor_maximo %}
+                        <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#fff;background:#007bff;">
+                          {{ i }}
+                        </span>
+                      {% else %}
+                        <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#007bff;background:transparent;">
+                          {{ i }}
+                        </span>
+                      {% endif %}
+                    {% endfor %}
+                  </span>
+                  <p id="faixa-data-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.ultima_pesquisa|date:"m/Y"|default:"-" }}
+                  </p>
+                  <span id="faixa-participantes-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.max_participantes|default:"-" }} participantes
+                  </span>
                 </div>
               </div>
             </div>
@@ -2586,39 +2689,39 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                      style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
                     ver detalhes <span style="font-weight: bold;">&#8250;</span>
                   </a>
-                                  {# Campos auxiliares/ocultos mantidos #}
-                <span id="faixa-risco-{{ tratamento.id }}" class="replace-dot" style="display:none;">
-                  {{ tratamento.reacao_maxima}}%
-                </span>
-                <span id="faixa-eficacia-{{ tratamento.id }}" class="replace-dot" style="display:none;">
-                  {{ item.min|floatformat:2 }}% a {{ item.max|floatformat:2 }}%
-                </span>
-                <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
-                  {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
-                </span>
-                <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
-                  R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
-                </p>
-                <span id="faixa-rigor-{{ tratamento.id }}" style="display: none;">
-                  {% for i in "1234567" %}
-                    {% if i|add:"0" <= tratamento.rigor_maximo %}
-                      <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#fff;background:#007bff;">
-                        {{ i }}
-                      </span>
-                    {% else %}
-                      <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#007bff;background:transparent;">
-                        {{ i }}
-                      </span>
-                    {% endif %}
-                  {% endfor %}
-                </span>
-                <p id="faixa-data-{{ tratamento.id }}" style="display:none;">
-                  {{ tratamento.ultima_pesquisa|date:"m/Y"|default:"-" }}
-                </p>
-                <span id="faixa-participantes-{{ tratamento.id }}" style="display:none;">
-                  {{ tratamento.max_participantes|default:"-" }} participantes
-                </span>
 
+                  {# ocultos #}
+                  <span id="faixa-risco-{{ tratamento.id }}" class="replace-dot" style="display:none;">
+                    {{ tratamento.reacao_maxima}}%
+                  </span>
+                  <span id="faixa-eficacia-{{ tratamento.id }}" class="replace-dot" style="display:none;">
+                    {{ item.min|floatformat:2 }}% a {{ item.max|floatformat:2 }}%
+                  </span>
+                  <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+                  </span>
+                  <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
+                    R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
+                  </p>
+                  <span id="faixa-rigor-{{ tratamento.id }}" style="display: none;">
+                    {% for i in "1234567" %}
+                      {% if i|add:"0" <= tratamento.rigor_maximo %}
+                        <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#fff;background:#007bff;">
+                          {{ i }}
+                        </span>
+                      {% else %}
+                        <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#007bff;background:transparent;">
+                          {{ i }}
+                        </span>
+                      {% endif %}
+                    {% endfor %}
+                  </span>
+                  <p id="faixa-data-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.ultima_pesquisa|date:"m/Y"|default:"-" }}
+                  </p>
+                  <span id="faixa-participantes-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.max_participantes|default:"-" }} participantes
+                  </span>
                 </div>
               </div>
             </div>
@@ -2626,7 +2729,6 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
         {% endwith %}
       {% endfor %}
     </div>
-
 
     <!-- Tratamentos de Prevenção -->
     <div class="tratamento-section prevencao">
@@ -2682,47 +2784,49 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                      style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
                     ver detalhes <span style="font-weight: bold;">&#8250;</span>
                   </a>
-                                  {# Campos auxiliares/ocultos mantidos #}
-                <span id="faixa-risco-{{ tratamento.id }}" class="replace-dot" style="display:none;">
-                  {{ tratamento.reacao_maxima}}%
-                </span>
-                <span id="faixa-eficacia-{{ tratamento.id }}" class="replace-dot" style="display:none;">
-                  {{ item.min|floatformat:2 }}% a {{ item.max|floatformat:2 }}%
-                </span>
-                <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
-                  {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
-                </span>
-                <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
-                  R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
-                </p>
-                <span id="faixa-rigor-{{ tratamento.id }}" style="display: none;">
-                  {% for i in "1234567" %}
-                    {% if i|add:"0" <= tratamento.rigor_maximo %}
-                      <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#fff;background:#007bff;">
-                        {{ i }}
-                      </span>
-                    {% else %}
-                      <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#007bff;background:transparent;">
-                        {{ i }}
-                      </span>
-                    {% endif %}
-                  {% endfor %}
-                </span>
-                <p id="faixa-data-{{ tratamento.id }}" style="display:none;">
-                  {{ tratamento.ultima_pesquisa|date:"m/Y"|default:"-" }}
-                </p>
-                <span id="faixa-participantes-{{ tratamento.id }}" style="display:none;">
-                  {{ tratamento.max_participantes|default:"-" }} participantes
-                </span>
-                
+
+                  {# ocultos #}
+                  <span id="faixa-risco-{{ tratamento.id }}" class="replace-dot" style="display:none;">
+                    {{ tratamento.reacao_maxima}}%
+                  </span>
+                  <span id="faixa-eficacia-{{ tratamento.id }}" class="replace-dot" style="display:none;">
+                    {{ item.min|floatformat:2 }}% a {{ item.max|floatformat:2 }}%
+                  </span>
+                  <span id="faixa-prazo-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+                  </span>
+                  <p class="preco-range" id="faixa-preco-{{ tratamento.id }}" style="display:none;">
+                    R$ {{ tratamento.preco|default:tratamento.custo_medicamento }}
+                  </p>
+                  <span id="faixa-rigor-{{ tratamento.id }}" style="display: none;">
+                    {% for i in "1234567" %}
+                      {% if i|add:"0" <= tratamento.rigor_maximo %}
+                        <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#fff;background:#007bff;">
+                          {{ i }}
+                        </span>
+                      {% else %}
+                        <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;font-size:0.85rem;font-weight:600;border-radius:4px;border:1px solid #007bff;color:#007bff;background:transparent;">
+                          {{ i }}
+                        </span>
+                      {% endif %}
+                    {% endfor %}
+                  </span>
+                  <p id="faixa-data-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.ultima_pesquisa|date:"m/Y"|default:"-" }}
+                  </p>
+                  <span id="faixa-participantes-{{ tratamento.id }}" style="display:none;">
+                    {{ tratamento.max_participantes|default:"-" }} participantes
+                  </span>
                 </div>
               </div>
             </div>
-            
           </a>
         {% endwith %}
       {% endfor %}
     </div>
+
+    {% endif %}
+
   </div>
 </div>
 

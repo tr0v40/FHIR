@@ -320,6 +320,7 @@ admin.site.register(EficaciaPorEvidencia, EficaciaPorEvidenciaAdmin)
 @admin.register(TipoEficacia)
 class TipoEficaciaAdmin(admin.ModelAdmin):
     list_display = ('tipo_eficacia', 'descricao')
+    exclude = ('eficacia_por_tipo',)
     search_fields = ('tipo_eficacia',)
 
 # --- Admin para Evidências Clínicas ---
