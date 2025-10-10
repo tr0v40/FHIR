@@ -616,7 +616,7 @@ class TratamentoCondicao(models.Model):
 class TipoEficacia(models.Model):
     tipo_eficacia = models.CharField(max_length=255)  # Certifique-se de que este campo existe
     descricao = models.TextField(blank=True, null=True)  # Se for esse campo, adicione-o
-    peso =  models.IntegerField(default=0)
+
 
     eficacia_por_tipo = models.ManyToManyField('EficaciaPorTipo', related_name='tipos_de_eficacia', blank=True)
 
