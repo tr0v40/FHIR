@@ -176,8 +176,8 @@ class Tratamentos(models.Model):
     principio_ativo = models.CharField(max_length=200)
     fabricante = models.CharField(max_length=200)
     avaliacao = models.DecimalField(max_digits=3, decimal_places=2)
-    eficacia_min = models.DecimalField(max_digits=5, decimal_places=2)
-    eficacia_max = models.DecimalField(max_digits=5, decimal_places=2)
+    eficacia_min = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True)
+    eficacia_max = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True)
     prazo_efeito_min = models.CharField(max_length=50)
     prazo_efeito_max = models.CharField(max_length=50)
     imagem = models.ImageField(upload_to="medicamentos/", blank=True, null=True)
@@ -538,8 +538,8 @@ class EvidenciasClinicas(models.Model):
 
     imagem_estudo = models.ImageField(upload_to="evidencias/", blank=True, null=True)
     fonte = models.CharField(max_length=255, blank=True, null=True, verbose_name="Fonte")
-    eficacia_min = models.DecimalField(max_digits=5, decimal_places=2)
-    eficacia_max = models.DecimalField(max_digits=5, decimal_places=2)
+    eficacia_min = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True)
+    eficacia_max = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True)
     pdf_estudo = models.FileField(upload_to="pdf_estudos/", blank=True, null=True)
     link_pdf_estudo = models.URLField(blank=True, null=True)
     referencia_bibliografica = models.TextField(
