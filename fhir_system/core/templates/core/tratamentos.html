@@ -1770,7 +1770,7 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
 
 <!-- Fim da sidebar -->
 <div style="margin-top: 40px;">
-    <a href="/tratamentos/?ordenacao=eficacia&ordenacao_opcao=menor-maior" 
+    <a href="/tratamentos/?ordenacao=eficacia&ordenacao_opcao=manor-menor" 
        class="btn btn-secondary w-100">
       Limpar filtros
     </a>
@@ -2287,9 +2287,10 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                 </div>
 
                 <div class="eficacia-container">
-                  <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
-                    Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">Cura</span>
-                  </p>
+                <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
+                  Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">{{ item.tipo }}</span>
+                </p>
+
                   <div class="eficacia-bar-container">
                     <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
                     <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
@@ -2305,7 +2306,7 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                     {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
                   </p>
 
-                  <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ 'Cura'|urlencode }}" class="btn mt-2"
+                  <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}" class="btn mt-2"
                      style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
                     ver detalhes <span style="font-weight: bold;">&#8250;</span>
                   </a>
@@ -2381,9 +2382,10 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                 </div>
 
                 <div class="eficacia-container">
-                  <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
-                    Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">Remissão</span>
-                  </p>
+                <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
+                  Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">{{ item.tipo }}</span>
+                </p>
+
                   <div class="eficacia-bar-container">
                     <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
                     <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
@@ -2400,7 +2402,7 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                     {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
                   </p>
 
-                  <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ 'Remissão'|urlencode }}" class="btn mt-2"
+                  <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}"class="btn mt-2"
                      style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
                     ver detalhes <span style="font-weight: bold;">&#8250;</span>
                   </a>
@@ -2476,9 +2478,10 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                 </div>
 
                 <div class="eficacia-container">
-                  <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
-                    Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">Controle</span>
-                  </p>
+                <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
+                  Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">{{ item.tipo }}</span>
+                </p>
+
                   <div class="eficacia-bar-container">
                     <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
                     <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
@@ -2495,7 +2498,7 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                     {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
                   </p>
 
-                  <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ 'Remissão'|urlencode }}" class="btn mt-2"
+                  <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}"class="btn mt-2"
                      style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
                     ver detalhes <span style="font-weight: bold;">&#8250;</span>
                   </a>
@@ -2571,9 +2574,10 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                 </div>
 
                 <div class="eficacia-container">
-                  <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
-                    Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">Eliminação de sintomas</span>
-                  </p>
+                <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
+                  Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">{{ item.tipo }}</span>
+                </p>
+
                   <div class="eficacia-bar-container">
                     <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
                     <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
@@ -2590,7 +2594,7 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                     {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
                   </p>
 
-                  <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ 'Remissão'|urlencode }}" class="btn mt-2"
+                  <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}" class="btn mt-2"
                      style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
                     ver detalhes <span style="font-weight: bold;">&#8250;</span>
                   </a>
@@ -2666,9 +2670,10 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                 </div>
 
                 <div class="eficacia-container">
-                  <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
-                    Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">Redução de sintomas</span>
-                  </p>
+                <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
+                  Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">{{ item.tipo }}</span>
+                </p>
+
                   <div class="eficacia-bar-container">
                     <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
                     <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
@@ -2685,7 +2690,7 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                     {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
                   </p>
 
-                  <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ 'Remissão'|urlencode }}" class="btn mt-2"
+                  <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}" class="btn mt-2"
                      style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
                     ver detalhes <span style="font-weight: bold;">&#8250;</span>
                   </a>
@@ -2761,9 +2766,10 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                 </div>
 
                 <div class="eficacia-container">
-                  <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
-                    Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">Prevenção</span>
-                  </p>
+                <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
+                  Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">{{ item.tipo }}</span>
+                </p>
+
                   <div class="eficacia-bar-container">
                     <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
                     <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
@@ -2780,7 +2786,7 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                     {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
                   </p>
 
-                  <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ 'Remissão'|urlencode }}" class="btn mt-2"
+                  <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}" class="btn mt-2"
                      style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
                     ver detalhes <span style="font-weight: bold;">&#8250;</span>
                   </a>

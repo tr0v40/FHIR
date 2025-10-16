@@ -154,7 +154,6 @@ def calcular_eficacia(tratamentos_list):
 
 
 
-
 TIPOS_SECOES = ("Cura", "Eliminação de sintomas", "Remissão", "Controle", "Redução de sintomas", "Prevenção")
 
 def _nome_tipo(tipo_obj):
@@ -464,11 +463,39 @@ def tratamentos(request):
     else:
         # Volta para a ordenação por eficácia (padrão original)
         todos_os_tratamentos = None
-        for sec in (
-            tratamentos_cura, tratamentos_remissao, tratamentos_controle,
-            tratamentos_eliminacao, tratamentos_reducao, tratamentos_prevencao
-        ):
-            sec.sort(key=_key_por_ordenacao, reverse=not asc)
+    for sec in (
+        tratamentos_cura, tratamentos_remissao, tratamentos_controle,
+        tratamentos_eliminacao, tratamentos_reducao, tratamentos_prevencao
+    ):
+        sec.sort(key=_key_por_ordenacao, reverse=not asc)
+
+    # Agora ajusta a ordem de prioridade de exibição das seções
+    if asc:
+        # Menor → Maior: Prevenção deve vir primeiro
+        ordem_secoes = [
+            ("Prevenção", tratamentos_prevencao),
+            ("Redução de sintomas", tratamentos_reducao),
+            ("Eliminação de sintomas", tratamentos_eliminacao),
+            ("Controle", tratamentos_controle),
+            ("Remissão", tratamentos_remissao),
+            ("Cura", tratamentos_cura),
+        ]
+    else:
+        # Maior → Menor: Cura deve vir primeiro (padrão atual)
+        ordem_secoes = [
+            ("Cura", tratamentos_cura),
+            ("Remissão", tratamentos_remissao),
+            ("Controle", tratamentos_controle),
+            ("Eliminação de sintomas", tratamentos_eliminacao),
+            ("Redução de sintomas", tratamentos_reducao),
+            ("Prevenção", tratamentos_prevencao),
+        ]
+
+    # Reconstrói as listas no contexto final conforme a ordem definida
+    (
+        tratamentos_cura, tratamentos_remissao, tratamentos_controle,
+        tratamentos_eliminacao, tratamentos_reducao, tratamentos_prevencao
+    ) = [sec for _, sec in ordem_secoes]
 
 
     # ---------- formatações finais (exibição) ----------
