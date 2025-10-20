@@ -5,8 +5,8 @@ from django.contrib import admin
 from django.contrib.auth import login
 from django.contrib.auth.models import Group
 from .forms import UserRegisterForm
-from django.db.models import F, FloatField, ExpressionWrapper, Case, Min, Max
-from .models import Contraindicacao, EvidenciasClinicas
+from django.db.models import F, FloatField, ExpressionWrapper, Case, Min, Max, Avg, Count
+from .models import Contraindicacao, EvidenciasClinicas, DetalhesTratamentoResumo, TipoEficacia
 from django.utils.functional import lazy
 from django.http import JsonResponse
 from django.views.generic import View
@@ -20,10 +20,10 @@ from django.db.models import (
 from django.db.models.functions import Coalesce
 from django.db.models import Prefetch
 from django.utils.html import format_html
-from .models import DetalhesTratamentoResumo
-from .models import TipoEficacia
 import unicodedata
 from datetime import datetime
+from .models import Avaliacao
+
 
   # ==================== IMPORTS SESSIONS ==================== #
 
@@ -646,11 +646,16 @@ def detalhes_tratamentos(request, slug):
     except Exception:
         pass
 
-    # --------- Avaliação / Reações (seu código) ----------
-    avaliacao = int(tratamento.avaliacao) if tratamento.avaliacao else 0
-    estrelas_preenchidas = [1 for _ in range(avaliacao)]
-    estrelas_vazias = [1 for _ in range(5 - avaliacao)]
+        # --------- Avaliação / Reações (seu código) ----------
+    avaliacoes = Avaliacao.objects.filter(tratamento__id=tratamento.id).order_by('-data')
 
+    # Calcular média de estrelas (se houver avaliações)
+    media_estrelas = avaliacoes.aggregate(media=Avg('estrelas'))['media'] or 0
+    total_avaliacoes = avaliacoes.aggregate(qtd=Count('id'))['qtd'] or 0
+
+    # Preparar as estrelas médias para exibição
+    estrelas_preenchidas = [1 for _ in range(int(round(media_estrelas)))]
+    estrelas_vazias = [1 for _ in range(5 - int(round(media_estrelas)))]
     detalhes_formatados = []
     for detalhe in tratamento.reacoes_adversas_detalhes.all():
         detalhe.reacao_min = _fmt_pct(detalhe.reacao_min)
@@ -719,9 +724,10 @@ def detalhes_tratamentos(request, slug):
 
     return render(request, 'core/detalhes_tratamentos.html', {
         'tratamento': tratamento,
-        'avaliacao': avaliacao,
+        'avaliacoes': avaliacoes,
         'comentario': tratamento.comentario,
-
+        'media_estrelas': round(media_estrelas, 1),
+        'total_avaliacoes': total_avaliacoes,
         # o que seu template já usa:
         'tipo_eficacia': tipo_eficacia,
         'eficacia_min': eficacia_min,
@@ -846,24 +852,28 @@ def listar_urls(request):
     return render(request, "core/listar_urls.html", {"urls": urls})
 
 
+from django.shortcuts import get_object_or_404, redirect
+from .models import DetalhesTratamentoResumo, Avaliacao
+
 def salvar_avaliacao(request, tratamento_id):
-    # Buscar o tratamento pelo ID
-    tratamento = get_object_or_404(DetalhesTratamentoResumo, slug=tratamento.slug)
-    
+    tratamento = get_object_or_404(DetalhesTratamentoResumo, id=tratamento_id)
+
     if request.method == 'POST':
-        comentario = request.POST.get('comentario', '')
-        avaliacao = request.POST.get('rating', '')
-        
-        # Salvar o comentário e a avaliação diretamente na tabela de DetalhesTratamentoResumo
-        tratamento.comentario = comentario
-        tratamento.avaliacao = avaliacao
-        tratamento.save()
+        comentario = request.POST.get('comentario', '').strip()
 
-        # Redirecionar para a página de detalhes do tratamento após salvar
-        return redirect('detalhes_tratamentos', tratamento_id=tratamento.id)
+        # Só cria uma avaliação se o comentário não estiver vazio
+        if comentario:
+            Avaliacao.objects.create(
+                tratamento=tratamento,
+                comentario=comentario,
+                estrelas=0  # opcional, se não estiver usando estrelas
+            )
 
-    # Caso o método não seja POST, renderizar a página de detalhes com as avaliações
-    return render(request, 'core/detalhes_tratamentos.html', {'tratamento': tratamento})
+        # Redireciona de volta para a página do tratamento
+        return redirect('detalhes_tratamentos', slug=tratamento.slug)
+
+
+
 
 def tratamento_detail(request, pk):
     tratamento = get_object_or_404(Tratamento, pk=pk)

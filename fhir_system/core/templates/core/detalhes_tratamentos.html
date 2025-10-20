@@ -1869,21 +1869,36 @@ img {
 <div style="max-width: 800px; margin: 50px auto 0 auto; text-align: center; padding: 0 15px; box-sizing: border-box;">
 
     <!-- Formulário de Avaliação -->
-    <form method="POST" action="{% url 'salvar_avaliacao' tratamento.id %}">
+   <form method="POST" action="{% url 'salvar_avaliacao' tratamento.id %}">
+
         {% csrf_token %}
         
         <h3>Você já utilizou este medicamento?</h3>
   
-        <!-- Comentário -->
-        <div>
-            <textarea name="comentario" placeholder="Deixe sua mensagem" rows="4" style="width: 1000px; max-width: 800px; padding: 10px; font-size: 14px; box-sizing: border-box;"></textarea>
-        </div>
+<!-- Comentário -->
+<div style="max-width: 800px; margin: 0 auto; padding: 10px;">
+    <textarea 
+        name="comentario" 
+        placeholder="Deixe sua mensagem" 
+        rows="4"
+        style="
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+        ">
+    </textarea>
+</div>
+
   
         <!-- Estrelas para avaliação -->
-        <div style="margin: 15px 0;">
+        <!-- <div style="margin: 15px 0;">
             <label for="stars" style="font-size: 16px; display: block; margin-bottom: 5px;">Classifique este medicamento:</label>
             <div class="stars" style="display: inline-block;">
-                <!-- Cada estrela representa uma avaliação de 1 a 5 -->
+                Cada estrela representa uma avaliação de 1 a 5
                 <input type="radio" id="star5" name="rating" value="5">
                 <label for="star5">☆</label>
                 
@@ -1899,7 +1914,7 @@ img {
                 <input type="radio" id="star1" name="rating" value="1">
                 <label for="star1">☆</label>
             </div>
-        </div>
+        </div> -->
   
         <!-- Enviar botão -->
         <div>
@@ -1928,30 +1943,57 @@ img {
     </style>
   
     <!-- Exibindo o comentário e a avaliação do tratamento -->
-    <div style="margin-top: 50px; text-align: center;">
-        <h3>Comentário do Tratamento:</h3>
-        {% if comentario %}
-            <p>{{ comentario }}</p>
-        {% else %}
-            <p>Não há comentário para este tratamento.</p>
-        {% endif %}
+<div style="margin-top: 50px; text-align: center;">
+    <h3>Comentários dos usuários:</h3>
+
+    {% if avaliacoes %}
+        <div style="
+            max-height: 400px;  /* altura máxima (ajustável) */
+            overflow-y: auto;   /* adiciona rolagem vertical */
+            padding-right: 10px;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 750px;
+        ">
+            {% for avaliacao in avaliacoes %}
+                <div style="
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    padding: 15px;
+                    margin: 10px auto;
+                    background-color: #f9f9f9;
+                    text-align: left;
+                ">
+                    <p style="font-size: 15px; color: #333; margin: 0 0 5px 0;">
+                        {{ avaliacao.comentario }}
+                    </p>
+                    <small style="color: #666;">
+                        Publicado em {{ avaliacao.data|date:"d/m/Y H:i" }}
+                    </small>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Nenhum comentário ainda. Seja o primeiro a deixar o seu!</p>
+    {% endif %}
+</div>
+
   
-        <h3>Avaliação:</h3>
+        <!-- <h3>Avaliação:</h3>
         <div class="stars" style="display: inline-block;">
-            <!-- Exibindo as estrelas preenchidas -->
-            {% for i in estrelas_preenchidas %}
-                <span style="color: #ffcc00;">&#9733;</span>  <!-- Estrela preenchida -->
-            {% endfor %}
+            Exibindo as estrelas preenchidas -->
+            <!-- {% for i in estrelas_preenchidas %}
+                <span style="color: #ffcc00;">&#9733;</span>  Estrela preenchida -->
+            <!-- {% endfor %}
             
-            <!-- Exibindo as estrelas vazias -->
-            {% for i in estrelas_vazias %}
-                <span style="color: #ccc;">&#9733;</span>  <!-- Estrela vazia -->
-            {% endfor %}
+            Exibindo as estrelas vazias -->
+            <!-- {% for i in estrelas_vazias %}
+                <span style="color: #ccc;">&#9733;</span>   Estrela vazia -->
+            <!-- {% endfor %}
         </div>
     </div>
   
-  </div>
-  
+  </div> --> 
 
 <!-- Botão de voltar abaixo dos comentários -->
 <div class="voltar-container" style="margin-top: 20px; display: flex; justify-content: center;">

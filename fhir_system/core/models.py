@@ -587,7 +587,7 @@ class Tratamento(models.Model):
     # outros campos do tratamento
 
 class Avaliacao(models.Model):
-    tratamento = models.ForeignKey(Tratamento, on_delete=models.CASCADE, related_name='avaliacoes')
+    tratamento = models.ForeignKey(DetalhesTratamentoResumo, on_delete=models.CASCADE, related_name='avaliacoes')
     comentario = models.TextField()
     estrelas = models.PositiveIntegerField(choices=[(1, '1 estrela'), (2, '2 estrelas'), (3, '3 estrelas'), 
                                                     (4, '4 estrelas'), (5, '5 estrelas')])
