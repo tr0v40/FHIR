@@ -26,6 +26,10 @@ from .models import (
 admin.site.register([TipoTratamento])
 
 
+
+from django.contrib import admin
+from .models import Avaliacao
+
 from django import forms
 from .models import DetalhesTratamentoReacaoAdversaTeste
 
@@ -423,4 +427,23 @@ class ContraindicacaoAdmin(admin.ModelAdmin):
 
 
 
+from django.contrib import admin
+from .models import Avaliacao
+
+class AvaliacaoAdmin(admin.ModelAdmin):
+    list_display = ('tratamento', 'comentario', 'data')
+    list_filter = ('tratamento', 'data')
+    search_fields = ('comentario', 'tratamento__nome')
+    actions = ['delete_selected']  # Ação para excluir os selecionados
+
+    def delete_selected(self, request, queryset):
+        """Excluir múltiplos comentários selecionados no admin."""
+        queryset.delete()
+    delete_selected.short_description = "Excluir Comentários Selecionados"
+
+    # Definir o nome para o Admin
+    verbose_name = "Avaliação"
+    verbose_name_plural = "Avaliações"
+
+admin.site.register(Avaliacao, AvaliacaoAdmin)
 

@@ -588,13 +588,17 @@ class Tratamento(models.Model):
 
 class Avaliacao(models.Model):
     tratamento = models.ForeignKey(DetalhesTratamentoResumo, on_delete=models.CASCADE, related_name='avaliacoes')
-    comentario = models.TextField()
+    comentario = models.TextField(max_length=400)
     estrelas = models.PositiveIntegerField(choices=[(1, '1 estrela'), (2, '2 estrelas'), (3, '3 estrelas'), 
-                                                    (4, '4 estrelas'), (5, '5 estrelas')])
+                                                        (4, '4 estrelas'), (5, '5 estrelas')], blank=True, null=True)
     data = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Avaliação para {self.tratamento.nome} - {self.estrelas} estrelas"
+    
+    class Meta:
+        verbose_name = "Avaliação"
+        verbose_name_plural = "Avaliações"
     
 
 
