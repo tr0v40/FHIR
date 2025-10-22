@@ -1869,30 +1869,32 @@ img {
 <div style="max-width: 800px; margin: 50px auto 0 auto; text-align: center; padding: 0 15px; box-sizing: border-box;">
 
     <!-- Formulário de Avaliação -->
-   <form method="POST" action="{% url 'salvar_avaliacao' tratamento.id %}">
-
-        {% csrf_token %}
-        
-        <h3>Você já utilizou este medicamento?</h3>
+<form method="POST" action="{% url 'salvar_avaliacao' tratamento.id %}">
+    {% csrf_token %}
+    
+    <h3>Você já utilizou este medicamento?</h3>
   
-<!-- Comentário -->
-<div style="max-width: 800px; margin: 0 auto; padding: 10px;">
-    <textarea 
-        name="comentario" 
-        placeholder="Deixe sua mensagem" 
-        rows="4"
-        style="
-            width: 100%;
-            padding: 10px;
-            font-size: 14px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            resize: vertical;
-        ">
-    </textarea>
-</div>
-
+    <!-- Comentário -->
+    <div style="max-width: 800px; margin: 0 auto; padding: 10px;">
+        <textarea 
+            name="comentario" 
+            placeholder="Deixe sua mensagem" 
+            rows="4"
+            maxlength="400" 
+            oninput="updateCount(this)"
+            style="
+                width: 100%;
+                padding: 10px;
+                font-size: 14px;
+                box-sizing: border-box;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                resize: vertical;
+            ">
+        </textarea>
+        <div id="char-count" style="font-size: 14px; color: #666;">400 caracteres restantes</div>
+    </div>
+  
   
         <!-- Estrelas para avaliação -->
         <!-- <div style="margin: 15px 0;">
@@ -1923,6 +1925,16 @@ img {
             </button>
         </div>
     </form>
+
+    <script>
+    // Função para atualizar o contador de caracteres
+    function updateCount(textarea) {
+        const maxLength = textarea.getAttribute('maxlength');
+        const currentLength = textarea.value.length;
+        const remaining = maxLength - currentLength;
+        document.getElementById('char-count').innerText = remaining + " caracteres restantes";
+    }
+</script>
   
     <!-- Estilo básico para as estrelas -->
     <style>

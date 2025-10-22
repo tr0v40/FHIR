@@ -425,25 +425,42 @@ class ContraindicacaoAdmin(admin.ModelAdmin):
     fields = ("nome", "descricao", "imagem", "contraindication_name", "contraindication_description")
     search_fields = ("nome", "contraindication_name")
 
-
-
+from django import forms
 from django.contrib import admin
 from .models import Avaliacao
 
-class AvaliacaoAdmin(admin.ModelAdmin):
-    list_display = ('tratamento', 'comentario', 'data')
-    list_filter = ('tratamento', 'data')
-    search_fields = ('comentario', 'tratamento__nome')
-    actions = ['delete_selected']  # Ação para excluir os selecionados
+# Formulário personalizado para validar o tamanho do comentário
+class AvaliacaoForm(forms.ModelForm):
+    class Meta:
+        model = Avaliacao
+        fields = ['tratamento', 'comentario', 'estrelas']  # Remova o campo 'data'
 
+    def clean_comentario(self):
+        comentario = self.cleaned_data['comentario']
+        if len(comentario) > 400:
+            raise forms.ValidationError("O comentário não pode ultrapassar 400 caracteres.")
+        return comentario
+
+class AvaliacaoAdmin(admin.ModelAdmin):
+    form = AvaliacaoForm  # Usar o formulário personalizado
+
+    # Mostrar os campos que você quer exibir no Admin
+    list_display = ('tratamento', 'comentario', 'data', 'estrelas')
+    
+    # Adicionar filtro por tratamento e data
+    list_filter = ('tratamento', 'data')
+    
+    # Permitir busca por comentário e tratamento
+    search_fields = ('comentario', 'tratamento__nome')
+    
+    # Habilitar a exclusão em massa
+    actions = ['delete_selected']
+    
     def delete_selected(self, request, queryset):
         """Excluir múltiplos comentários selecionados no admin."""
         queryset.delete()
     delete_selected.short_description = "Excluir Comentários Selecionados"
 
-    # Definir o nome para o Admin
-    verbose_name = "Avaliação"
-    verbose_name_plural = "Avaliações"
-
+# Registrar o model no Admin
 admin.site.register(Avaliacao, AvaliacaoAdmin)
 
