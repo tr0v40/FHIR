@@ -1976,9 +1976,20 @@ img {
                     background-color: #f9f9f9;
                     text-align: left;
                 ">
-                    <p style="font-size: 15px; color: #333; margin: 0 0 5px 0;">
-                        {{ avaliacao.comentario }}
-                    </p>
+                <p style="
+                    font-size: 15px;
+                    color: #333;
+                    margin: 0 0 5px 0;
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                    white-space: pre-wrap;
+                    text-align: justify;
+                    line-height: 1.5;
+                ">
+                    {{ avaliacao.comentario }}
+                </p>
+
+
                     <small style="color: #666;">
                         Publicado em {{ avaliacao.data|date:"d/m/Y H:i" }}
                     </small>
