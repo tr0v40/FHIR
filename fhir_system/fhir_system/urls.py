@@ -28,6 +28,12 @@ urlpatterns = [
         views.evidencias_clinicas,
         name="evidencias_clinicas",
     ),
+    path(
+    "tratamentos-controle-enxaqueca/",
+    views.tratamentos_controle_enxaqueca,
+    name="tratamentos_controle_enxaqueca",
+),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Handlers precisam estar no URLconf raiz:
