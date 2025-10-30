@@ -41,13 +41,13 @@ html, body {
 
 /* CONTÊINER PRINCIPAL */
 .content-area {
-    display: flex;  /* Usando Flexbox para criar duas áreas */
-    justify-content: flex-start;
+    display: flex;
+    justify-content: center;  /* Centraliza o conteúdo horizontalmente */
     align-items: flex-start;
     gap: 30px;
     padding: 10px;
-    overflow: hidden; /* Impede a rolagem horizontal */
-    
+    overflow: hidden;
+    flex-wrap: wrap;  /* Garante que os itens não ultrapassem a tela em telas pequenas */
 }
 
 /* SIDEBAR - FILTROS E CLASSIFICAÇÕES */
@@ -302,55 +302,21 @@ margin-top: -5px; /* Ajuste conforme necessário */
     margin-bottom: 20px;
     text-align: center;
 }
-
-/* Layout básico para página */
-html, body {
-  height: 100%;
-  margin: 0;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;  /* Garantir que o corpo ocupe toda a altura da tela */
-}
-
-/* Conteúdo principal que ocupa o espaço restante */
-main {
-  flex: 1;
-}
-
-/* Rodapé fixo, mas aparece somente ao rolar até o fim */
-.footer {
+/* Rodapé fixo, começa oculto */
+.footer{
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
   width: 100%;
   background-color: #fcfcfc;
   padding: 40px 0;
   color: #000;
   z-index: 999;
-  border-top: 1px solid #e9ecef;
-  position: relative;  /* Modificar para "relative" para rodapé não sair da página */
-  margin-top: auto;    /* Garante que o rodapé fique no final */
-  display: none;       /* Rodapé fica oculto inicialmente */
+  display: none;            /* oculto por padrão */
 }
+.footer.show{ display:block; }
 
-/* Exibir o rodapé apenas quando chegar ao final da página */
-body:has(:last-child:in-viewport) .footer {
-  display: block; /* Mostra o rodapé apenas no final */
-}
-
-/* Links e textos dentro do rodapé */
-.footer a {
-  color: #6c757d;
-  text-decoration: none;
-}
-
-.footer a:hover {
-  color: #007bff;
-  text-decoration: underline;
-}
-
-
-
+/* Garante que a página tenha altura para rolar */
+html, body { min-height: 100%; }
 
 /* “Sentinela” que dispara a aparição do footer */
 #footer-sentinel{
@@ -1282,7 +1248,7 @@ footer.footer .row > div {
     flex-direction: column;
     gap: 20px; /* Espaço entre os cards */
     width: 100%; /* Ocupa toda a largura da tela */
-    max-width: 1200px; /* Limita a largura máxima */
+    max-width: 1500px; /* Limita a largura máxima */
     margin: 0 auto; /* Centraliza */
 }
 
@@ -1305,6 +1271,7 @@ footer.footer .row > div {
     gap: 20px;
     width: 100%;
     max-width: 400px; /* Ajuste a largura máxima do card */
+    max-height: 1500px;
     margin: 0 auto; /* Centraliza o card */
     padding: 20px;
     border-radius: 8px;
@@ -1447,7 +1414,7 @@ footer.footer .row > div {
             <img src="{% static 'img/logo.png' %}" alt="Telix Logo" style="height: 70px;">
         </a>
         
-      <h1>Enxaqueca e dor de cabeça crônica</h1>
+      <h1>Tratamentos de controle para enxaqueca</h1>
       
       <span style="color: #010009; font-weight: 600; font-family: 'Inter', sans-serif;">Tratamentos ordenados por:</span>
 
@@ -1462,7 +1429,7 @@ footer.footer .row > div {
             <label for="ordenacao-checkbox" id="ordenacao-texto">Ordem decrescente de eficácia máxima</label>
       </div>
 
-      <a href="#area-filtros" class="btn d-inline-block mt-3" style="
+      <a href="{% url 'tratamentos' %}" class="btn d-inline-block mt-3" style="
       background-color: #f0f0f0;
       color: #060606;
       border: 2px solid #e4e4e4;
@@ -1488,7 +1455,89 @@ footer.footer .row > div {
             <div class="checkbox-container mt-3"style="margin-left: 200px;margin-top: -30px;"> 
          
 
-        
+
+
+
+<script>
+// Adiciona o evento de 'submit' para o formulário uma única vez
+document.querySelector("form").addEventListener("submit", function(event) {
+    event.preventDefault();  // Previne o comportamento padrão do formulário, que causa o envio e recarregamento da página.
+    
+    // Quando o formulário for submetido, mantém a caixa de seleção visível
+    const filtroContainer = document.getElementById('filtro_criterio');
+    
+    // Força a caixa de seleção a permanecer aberta
+    filtroContainer.style.display = 'block';  // Mantém o dropdown aberto
+    filtroContainer.classList.add('open-select');  // Garante que o select permanece aberto
+
+    // Aplique a lógica de exibição do filtro
+    const filtroValorContainer = document.getElementById('filtro_valor_container');
+    const selectedValue = document.getElementById('filtro_criterio').value;
+
+    // Exibe ou esconde o campo de valor com base no critério selecionado
+    if (selectedValue === "participantes" || selectedValue === "data" || selectedValue === "rigor") {
+        filtroValorContainer.style.display = 'block';  // Exibe o campo de valor
+    } else {
+        filtroValorContainer.style.display = 'none';  // Esconde o campo
+    }
+});
+
+document.getElementById('filtro_criterio').addEventListener('change', function() {
+    const filtroValorContainer = document.getElementById('filtro_valor_container');
+    const filtroRigorContainer = document.getElementById('filtro_rigor_container');
+    const selectContainer = document.getElementById('filtro_criterio');
+    
+    // Exibe ou esconde o campo de valor com base no critério selecionado
+    if (this.value === "participantes" || this.value === "data") {
+        filtroValorContainer.style.display = 'block';  // Exibe o campo de valor
+        filtroRigorContainer.style.display = 'none';   // Esconde a lista de rigor
+    } else if (this.value === "rigor") {
+        filtroValorContainer.style.display = 'none';   // Esconde o campo de valor
+        filtroRigorContainer.style.display = 'block';  // Exibe a lista de rigor (1 a 7)
+    } else {
+        filtroValorContainer.style.display = 'none';   // Esconde o campo de valor
+        filtroRigorContainer.style.display = 'none';   // Esconde a lista de rigor
+    }
+});
+
+
+
+
+</script>
+
+
+
+
+                
+
+<!-- INÍCIO do bloco removido -->
+<!--
+<div class="mt-2">
+    <label for="preco_tratamento">Preço </label>
+    <div>
+        <input type="radio" id="preco_trat_maior" name="preco_tratamento" value="maior-menor" onclick="updateClassifications()">
+        <label for="preco_trat_maior" id="label-preco-trat-maior">Maior para menor</label><br>
+
+        <input type="radio" id="preco_trat_menor" name="preco_tratamento" value="menor-maior" onclick="updateClassifications()">
+        <label for="preco_trat_menor" id="label-preco-trat-menor">Menor para maior</label>
+    </div>
+</div>
+
+<button type="submit">Ordenar</button>
+-->
+<!-- FIM do bloco removido -->
+
+<!-- INSIRA isso no lugar, para manter estrutura -->
+<div class="text-end mt-3">
+    <!-- Se quiser remover completamente o botão, tire esta linha -->
+   
+</div>
+
+<!-- Atenção: mantenha o fechamento do form e div abaixo -->
+</div> <!-- fecha .filters -->
+</form>
+</div> <!-- fecha .left-sidebar -->
+
     <!-- LISTA DE TRATAMENTOS -->
     <style>
         /* container de cada seção */
@@ -1825,7 +1874,7 @@ footer.footer .row > div {
 
       }
       
-      
+       
             </style>
  {% load static %}
 {# core/tratamentos.html #}
