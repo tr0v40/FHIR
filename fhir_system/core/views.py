@@ -578,6 +578,7 @@ def _fmt_pct(val):
 
 def detalhes_tratamentos(request, slug):
     tipo_req = (request.GET.get("tipo") or request.GET.get("tipo_eficacia") or "").strip()
+    eficacias_por_tipo = TipoEficacia.objects.all() 
 
     tratamento = get_object_or_404(
         DetalhesTratamentoResumo.objects.prefetch_related(
@@ -614,17 +615,22 @@ def detalhes_tratamentos(request, slug):
                 val = 0.0
             if isfinite(val):
                 por_tipo.setdefault(tipo_nome, []).append(val)
-
     eficacias_por_tipo = []
     for tipo, vals in por_tipo.items():
         vmin, vmax = min(vals), max(vals)
+        # Aqui, adicionando a descrição corretamente ao dicionário
+        descricao_tipo_eficacia = TipoEficacia.objects.get(tipo_eficacia=tipo).descricao
+        imagem_tipo_eficacia = TipoEficacia.objects.get(tipo_eficacia=tipo).imagem
         eficacias_por_tipo.append({
             "tipo": tipo,
-            "min": vmin, "max": vmax,
-            "min_str": _fmt_pct(vmin), "max_str": _fmt_pct(vmax),
+            "descricao": descricao_tipo_eficacia,  # Adicionando a descrição
+            "imagem": imagem_tipo_eficacia,
+            "min": vmin, 
+            "max": vmax,
+            "min_str": _fmt_pct(vmin), 
+            "max_str": _fmt_pct(vmax),
             "count": len(vals),
         })
-
 
 
     # --------- PRAZO PARA EFEITO (mesmo código que você já tinha) ---------
@@ -724,6 +730,7 @@ def detalhes_tratamentos(request, slug):
 
     return render(request, 'core/detalhes_tratamentos.html', {
         'tratamento': tratamento,
+        'eficacias_por_tipo': eficacias_por_tipo,
         'avaliacoes': avaliacoes,
         'comentario': tratamento.comentario,
         'media_estrelas': round(media_estrelas, 1),
@@ -735,7 +742,7 @@ def detalhes_tratamentos(request, slug):
         'eficacia_max_css': eficacia_max_css,
 
         # opcional: lista completa para mostrar todos os tipos embaixo
-        'eficacias_por_tipo': eficacias_por_tipo,
+    
 
         'prazo_efeito': prazo_efeito,
         'estrelas_preenchidas': estrelas_preenchidas,
@@ -1251,4 +1258,3 @@ def tratamentos_controle_enxaqueca(request):
       
     }
     return render(request, "core/tratamentos_controle_enxaqueca.html", context)
-

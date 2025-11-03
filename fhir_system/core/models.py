@@ -606,7 +606,7 @@ class Avaliacao(models.Model):
 class TratamentoCondicao(models.Model):
     tratamento = models.ForeignKey('DetalhesTratamentoResumo', on_delete=models.CASCADE, related_name='condicoes_relacionadas')
     condicao  = models.ForeignKey('CondicaoSaude', on_delete=models.CASCADE, related_name='tratamentos_relacionados')
-    descricao = models.TextField(blank=True, null=True)   # descrição específica desta condição no contexto do tratamento
+    descricao = models.TextField(blank=True, null=True) 
     class Meta:
         unique_together = ('tratamento', 'condicao')
     class Meta:
@@ -618,14 +618,16 @@ class TratamentoCondicao(models.Model):
     
 
 class TipoEficacia(models.Model):
-    tipo_eficacia = models.CharField(max_length=255)  # Certifique-se de que este campo existe
-    descricao = models.TextField(blank=True, null=True)  # Se for esse campo, adicione-o
+    tipo_eficacia = models.CharField(max_length=255) 
+    descricao = models.TextField(blank=True, null=True)  
+    imagem = models.ImageField(upload_to='icones_eficacia/', blank=True, null=True)  # Campo de imagem para o ícone
+
 
 
     eficacia_por_tipo = models.ManyToManyField('EficaciaPorTipo', related_name='tipos_de_eficacia', blank=True)
 
     def __str__(self):
-        return self.tipo_eficacia  # Isso deve ser acessado na admin
+        return self.tipo_eficacia  
 
 
 

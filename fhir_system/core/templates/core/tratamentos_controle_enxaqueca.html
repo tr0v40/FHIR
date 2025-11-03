@@ -1910,9 +1910,9 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                   </h3>
                   <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo|default:"ND" }}</p>
                   <p><strong>Fabricante:</strong> {{ tratamento.fabricante|default:"ND" }}</p>
-                  <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" class="btn"
-                     style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
-                     ver pesquisas
+    <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}" class="btn mt-2"
+                     style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
+                    ver detalhes <span style="font-weight: bold;">&#8250;</span>
                   </a>
                   <p>{{ tratamento.descricao }}</p>
                 </div>
@@ -1938,9 +1938,9 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                     {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
                   </p>
 
-                  <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}" class="btn mt-2"
-                     style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
-                    ver detalhes <span style="font-weight: bold;">&#8250;</span>
+                  <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" class="btn"
+                     style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
+                     ver artigos
                   </a>
 
                   {# Campos auxiliares/ocultos mantidos #}
@@ -2010,18 +2010,18 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                   </h3>
                   <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo|default:"ND" }}</p>
                   <p><strong>Fabricante:</strong> {{ tratamento.fabricante|default:"ND" }}</p>
-                  <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" class="btn"
-                     style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
-                     ver pesquisas
+   <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}" class="btn mt-2"
+                     style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
+                    ver detalhes <span style="font-weight: bold;">&#8250;</span>
                   </a>
                   <p>{{ tratamento.descricao }}</p>
                 </div>
 
+                {# Eficácia (usa o tipo escolhido no back) #}
                 <div class="eficacia-container">
-                <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
-                  Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">{{ item.tipo }}</span>
-                </p>
-
+                  <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
+                    Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">{{ item.tipo }}</span>
+                  </p>
                   <div class="eficacia-bar-container">
                     <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
                     <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
@@ -2030,6 +2030,7 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                     <span style="color: #888; font-weight: 500;">{{ item.min_str }} a</span>
                     <span style="color: #000; font-weight: bold;"> {{ item.max_str }}%</span>
                   </p>
+
                   <p id="titulo-prazo-{{ tratamento.id }}" style="margin: 0; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 15px; color: #000;">
                     Prazo para efeito
                   </p>
@@ -2037,9 +2038,9 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                     {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
                   </p>
 
-                  <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}" class="btn mt-2"
-                     style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
-                    ver detalhes <span style="font-weight: bold;">&#8250;</span>
+                  <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" class="btn"
+                     style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
+                     ver artigos
                   </a>
 
                   {# ocultos #}
@@ -2105,18 +2106,18 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                   </h3>
                   <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo|default:"ND" }}</p>
                   <p><strong>Fabricante:</strong> {{ tratamento.fabricante|default:"ND" }}</p>
-                  <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" class="btn"
-                     style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
-                     ver pesquisas
+   <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}" class="btn mt-2"
+                     style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
+                    ver detalhes <span style="font-weight: bold;">&#8250;</span>
                   </a>
                   <p>{{ tratamento.descricao }}</p>
                 </div>
 
+                {# Eficácia (usa o tipo escolhido no back) #}
                 <div class="eficacia-container">
-                <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
-                  Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">{{ item.tipo }}</span>
-                </p>
-
+                  <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
+                    Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">{{ item.tipo }}</span>
+                  </p>
                   <div class="eficacia-bar-container">
                     <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
                     <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
@@ -2133,9 +2134,9 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                     {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
                   </p>
 
-                  <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}"class="btn mt-2"
-                     style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
-                    ver detalhes <span style="font-weight: bold;">&#8250;</span>
+                  <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" class="btn"
+                     style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
+                     ver artigos
                   </a>
 
                   {# ocultos #}
@@ -2201,18 +2202,18 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                   </h3>
                   <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo|default:"ND" }}</p>
                   <p><strong>Fabricante:</strong> {{ tratamento.fabricante|default:"ND" }}</p>
-                  <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" class="btn"
-                     style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
-                     ver pesquisas
+    <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}" class="btn mt-2"
+                     style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 1px; margin-left: auto;">
+                    ver detalhes <span style="font-weight: bold;">&#8250;</span>
                   </a>
                   <p>{{ tratamento.descricao }}</p>
                 </div>
 
+                {# Eficácia (usa o tipo escolhido no back) #}
                 <div class="eficacia-container">
-                <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
-                  Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">{{ item.tipo }}</span>
-                </p>
-
+                  <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
+                    Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">{{ item.tipo }}</span>
+                  </p>
                   <div class="eficacia-bar-container">
                     <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
                     <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
@@ -2229,11 +2230,10 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                     {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
                   </p>
 
-                  <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}"class="btn mt-2"
-                     style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
-                    ver detalhes <span style="font-weight: bold;">&#8250;</span>
+                  <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" class="btn"
+                     style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
+                     ver artigos
                   </a>
-
                   {# ocultos #}
                   <span id="faixa-risco-{{ tratamento.id }}" class="replace-dot" style="display:none;">
                     {{ tratamento.reacao_maxima}}%
@@ -2297,18 +2297,18 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                   </h3>
                   <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo|default:"ND" }}</p>
                   <p><strong>Fabricante:</strong> {{ tratamento.fabricante|default:"ND" }}</p>
-                  <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" class="btn"
-                     style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
-                     ver pesquisas
+   <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}" class="btn mt-2"
+                     style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
+                    ver detalhes <span style="font-weight: bold;">&#8250;</span>
                   </a>
                   <p>{{ tratamento.descricao }}</p>
                 </div>
 
+                {# Eficácia (usa o tipo escolhido no back) #}
                 <div class="eficacia-container">
-                <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
-                  Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">{{ item.tipo }}</span>
-                </p>
-
+                  <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
+                    Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">{{ item.tipo }}</span>
+                  </p>
                   <div class="eficacia-bar-container">
                     <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
                     <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
@@ -2325,9 +2325,9 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                     {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
                   </p>
 
-                  <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}" class="btn mt-2"
-                     style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
-                    ver detalhes <span style="font-weight: bold;">&#8250;</span>
+                  <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" class="btn"
+                     style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
+                     ver artigos
                   </a>
 
                   {# ocultos #}
@@ -2393,18 +2393,18 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                   </h3>
                   <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo|default:"ND" }}</p>
                   <p><strong>Fabricante:</strong> {{ tratamento.fabricante|default:"ND" }}</p>
-                  <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" class="btn"
-                     style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
-                     ver pesquisas
+    <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}" class="btn mt-2"
+                     style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
+                    ver detalhes <span style="font-weight: bold;">&#8250;</span>
                   </a>
                   <p>{{ tratamento.descricao }}</p>
                 </div>
 
+                {# Eficácia (usa o tipo escolhido no back) #}
                 <div class="eficacia-container">
-                <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
-                  Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">{{ item.tipo }}</span>
-                </p>
-
+                  <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
+                    Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">{{ item.tipo }}</span>
+                  </p>
                   <div class="eficacia-bar-container">
                     <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
                     <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
@@ -2421,11 +2421,10 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                     {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
                   </p>
 
-                  <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}" class="btn mt-2"
-                     style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
-                    ver detalhes <span style="font-weight: bold;">&#8250;</span>
+                  <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" class="btn"
+                     style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
+                     ver artigos
                   </a>
-
                   {# ocultos #}
                   <span id="faixa-risco-{{ tratamento.id }}" class="replace-dot" style="display:none;">
                     {{ tratamento.reacao_maxima}}%
@@ -2489,18 +2488,18 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                   </h3>
                   <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo|default:"ND" }}</p>
                   <p><strong>Fabricante:</strong> {{ tratamento.fabricante|default:"ND" }}</p>
-                  <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" class="btn"
-                     style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
-                     ver pesquisas
+    <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}" class="btn mt-2"
+                     style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
+                    ver detalhes <span style="font-weight: bold;">&#8250;</span>
                   </a>
                   <p>{{ tratamento.descricao }}</p>
                 </div>
 
+                {# Eficácia (usa o tipo escolhido no back) #}
                 <div class="eficacia-container">
-                <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
-                  Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">{{ item.tipo }}</span>
-                </p>
-
+                  <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
+                    Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">{{ item.tipo }}</span>
+                  </p>
                   <div class="eficacia-bar-container">
                     <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
                     <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
@@ -2517,11 +2516,10 @@ document.getElementById('filtro_criterio').addEventListener('change', function()
                     {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
                   </p>
 
-                  <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}" class="btn mt-2"
-                     style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
-                    ver detalhes <span style="font-weight: bold;">&#8250;</span>
+                  <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" class="btn"
+                     style="background-color: #feeedc; color: #000; border: none; text-transform: lowercase; padding: 4px 35px; margin-top: 4px; display: inline-block;">
+                     ver artigos
                   </a>
-
                   {# ocultos #}
                   <span id="faixa-risco-{{ tratamento.id }}" class="replace-dot" style="display:none;">
                     {{ tratamento.reacao_maxima}}%

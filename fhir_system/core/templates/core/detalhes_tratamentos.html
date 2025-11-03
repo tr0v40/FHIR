@@ -76,6 +76,7 @@
         .tratamento-info h2 {
             color: #007bff;
             font-weight: bold;
+            font-size: 15px;
         }
 
         .tratamento-info h3 {
@@ -1155,8 +1156,8 @@ img {
     width: 35px;
     height: 35px;
     margin-right: 5px;
-    vertical-align: middle;
-    margin-top: -4px;  /* Ajuste fino para subir */
+   
+    margin-top: 0px;  /* Ajuste fino para subir */
 }
     /* Estilo para os links no footer */
 .footer a {
@@ -1256,25 +1257,25 @@ img {
 
 
         <div class="container">
-            <div class="tratamento-container"style="margin-bottom: 150px;">
+            <div class="tratamento-container"style="margin-bottom: 10px;">
+
+                
+                        <!-- Botão Voltar -->
+                        <a href="{% url 'tratamentos' %}" class="btn-voltar-img">
+                            <img src="{% static 'img/seta-voltar.png' %}" alt="Voltar" style="width: 40px; height:40px; ">
+                        </a>
+                    
 
                 <!-- Informações do Medicamento -->
                 <div class="tratamento-info">
-                
-                    <h2 style="font-size: 40px; font-weight: bold; color: #000; margin-bottom: 100px; display: flex; align-items: center; gap: 8px;">
-                        <span style="color: #070707;">Tratamento para: {{ tratamento.condicao_saude.nome }}</span>
-                    </h2>
+                    <h3 style="font-family: sans, sans-serif; font-weight: bold; font-size: 40px; line-height: 1.2; color: #000;">
+                        <strong>{{ tratamento.nome }}<sup style="font-size: 0.6em;"></sup></strong>
+                    </h3>
                     
-
 
 
                     <h2 style="color: #0094FF; display: flex; align-items: center; gap:8px;">
 
-                        <!-- Botão Voltar -->
-                        <a href="{% url 'tratamentos' %}" class="btn-voltar-img">
-                            <img src="{% static 'img/seta-voltar.png' %}" alt="Voltar" class="icone-voltar" style="width: 40px; height:40px;">
-                        </a>
-                    
                         <!-- Texto do tipo de tratamento -->
                         <span>
                             {% for tipo in tratamento.tipo_tratamento.all %}
@@ -1285,9 +1286,7 @@ img {
                         </span>
                     
                     </h2>
-                    <h3 style="font-family: Arial, sans-serif; font-weight: bold; font-size: 32px; line-height: 1.2; color: #000;">
-                        <strong>{{ tratamento.nome }}<sup style="font-size: 0.6em;"></sup></strong>
-                    </h3>
+
                     <p>
                         <strong style="font-weight: normal; color: #000;">Fabricante:</strong> 
                         <span style="color: #B0B0B0;">{{ tratamento.fabricante }}</span>
@@ -1332,7 +1331,7 @@ img {
         </body>
         </html>
         
-        <div class="prerequisite-section" style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+        <div class="prerequisite-section" style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; margin-top: 150px;">
             <i class="fas fa-clock" style="font-size: 30px; color: #0094FF; margin-right: 10px;"></i>
             <span style="font-size: 18px; color: #808080; text-align: center;">
                 Prazo para efeito: 
@@ -1534,47 +1533,135 @@ img {
 
   </style>
   
+<style>
+.efficacy-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  text-align: center;
+  margin-top: 20px;
+}
 
+.efficacy-box {
+  width: 280px;
+  background: #fff;
+  border-radius: 2px;
+  padding: 10px;
+}
 
-  <div class="eff-block">
-    {% for tipo_eficacia in eficacias_por_tipo %}
-      {% if forloop.first %}
-      <p class="eff-label" 
-      style="font-weight: 700; 
-             font-size: 40px; 
-             text-align: center; 
-             margin-bottom: 8px;">
-     Eficácia:
-   </p>
-        <div class="eff-bar efficacy-bar-container" role="img" aria-label="Eficácia máxima {{ tipo_eficacia.max|floatformat:2  }}%">
-          <div class="efficacy-background" style="
-            height:100%; width:100%;
-            background-image: linear-gradient(
-              to right,
-              #0094FF 0%,
-              #0094FF {{ tipo_eficacia.max }}%,
-              rgba(0,148,255,0.3) {{ tipo_eficacia.max }}%,
-              rgba(0,148,255,0.3) 100%
-            );
-            border-radius:5px;
-          "></div>
-        </div>
+.efficacy-icon img {
+  width: 50px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.efficacy-title {
+  font-weight: 700;
+  color: #0094FF;
+  font-size: 18px;
+  margin-bottom: 2px;
+}
+
+.efficacy-subtitle {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.efficacy-bar {
+  position: relative;
+  height: 40px; /* Barra mais grossa */
+  border-radius: 4px;
+  background: linear-gradient(to right, #0094FF 0%, rgba(0,148,255,0.3) 100%);
+  margin: 6px 0;
+  width: 100%;
+}
+
+.efficacy-marker {
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 10px solid #1E1E1E;
+  transform: translateX(-50%);
+}
+
+.efficacy-range {
+  font-weight: 600;
+  font-size: 14px;
+  color: #000;
+}
+
+@media (max-width: 900px) {
+  .efficacy-box {
+    width: 45%;
+  }
+}
+
+@media (max-width: 600px) {
+  .efficacy-box {
+    width: 90%;
+  }
+}
+</style>
+<!-- Título principal -->
+<p style="font-weight: 700; font-size: 32px; text-align: center; margin-bottom: 8px;">
+  Eficácia no tratamento de: {{ tratamento.condicao_saude.nome }}
+</p>
+
+<div class="efficacy-container">
+  {% for tipo_eficacia in eficacias_por_tipo %}
+  <div class="efficacy-box">
+    <div class="efficacy-icon" style="display: inline-block; vertical-align: middle; margin-right: 10px;">
+      <!-- Exibindo a imagem de cada eficácia -->
+      {% if tipo_eficacia.imagem %}
+        <img src="{{ tipo_eficacia.imagem.url }}" alt="{{ tipo_eficacia.tipo }}" style="width: 50px; height: 50px; object-fit: contain;">
+      {% else %}
+        <img src="{% static 'img/default-icon.png' %}" alt="{{ tipo_eficacia.tipo }}" style="width: 50px; height: 50px; object-fit: contain;">
       {% endif %}
-  
-      <div class="eff-row {% if forloop.first %}is-first{% endif %}">
-        <span class="eff-type">{{ tipo_eficacia.tipo }}</span>
-        <span class="eff-dash">–</span>
-        {% load l10n %}
+    </div>
 
-        <span class="eff-range">
-          {{ tipo_eficacia.min_str }} a {{ tipo_eficacia.max_str }}%
-        </span>
-        
-        
-      </div>
-    {% endfor %}
+    <div class="efficacy-title" style="font-size: 40px; color: #c0c0c0; font-weight: 400; display: inline-block;">
+      Eficácia:
+    </div>
+
+    <div class="efficacy-title" style="font-size: 22px; color: #000; font-weight: 700; display: inline-block;">
+      {{ tipo_eficacia.tipo }}
+    </div>
+    
+    <!-- Descrição da eficácia -->
+    <div class="efficacy-subtitle" style="color: #bbb; font-size: 14px; margin-top: 5px;">
+      {{ tipo_eficacia.descricao }}
+    </div>
+
+    <!-- Barra de eficácia -->
+    <div class="efficacy-bar" style="background: linear-gradient(
+      to right,
+      #0094FF 0%,
+      #0094FF {{ tipo_eficacia.max }}%,
+      rgba(0,148,255,0.3) {{ tipo_eficacia.max }}%,
+      rgba(0,148,255,0.3) 100%
+    );">
+    </div>
+
+    <!-- Range de eficácia -->
+    <p class="eficacia-range" style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 25px; text-align: center;">
+      <span style="color: #888; font-weight: 500;">{{ tipo_eficacia.min_str }} a</span>
+      <span style="color: #000; font-weight: bold;">{{ tipo_eficacia.max_str }}%</span>
+    </p>
   </div>
-  
+  {% endfor %}
+</div>
+
+
+
+
+</div>
+
 <!-- Botão para ver as pesquisas, com o tamanho ajustado -->
 <div style="display: flex; justify-content: center; margin-top: 5px;">
     <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" 
