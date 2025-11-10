@@ -8,6 +8,8 @@ from django.contrib.auth.views import LoginView
 from core.views import CondicaoSaudeDetailView, tipo_eficacia_descricao_json
 
 
+
+
 urlpatterns = [
     path("", LoginView.as_view(), name="home"),
     path("admin/", admin.site.urls),
@@ -29,9 +31,14 @@ urlpatterns = [
         name="evidencias_clinicas",
     ),
     path(
-    "tratamentos-controle-enxaqueca/",
+    "tratamentos-controle-enxaqueca",
     views.tratamentos_controle_enxaqueca,
     name="tratamentos_controle_enxaqueca",
+),
+    path(
+    "tratamentos-crise-enxaqueca",
+    views.tratamentos_crise_enxaqueca,
+    name="tratamentos_crise_enxaqueca",
 ),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

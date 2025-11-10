@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.contrib.auth import login
 from django.contrib.auth.models import Group
 from .forms import UserRegisterForm
-from django.db.models import F, FloatField, ExpressionWrapper, Case, Min, Max, Avg, Count
+from django.db.models import F,  Q, FloatField, ExpressionWrapper, Case, Min, Max, Avg, Count
 from .models import Contraindicacao, EvidenciasClinicas, DetalhesTratamentoResumo, TipoEficacia
 from django.utils.functional import lazy
 from django.http import JsonResponse
@@ -1258,3 +1258,295 @@ def tratamentos_controle_enxaqueca(request):
       
     }
     return render(request, "core/tratamentos_controle_enxaqueca.html", context)
+
+
+
+def tratamentos_crise_enxaqueca(request):
+    # ---------- parâmetros ----------
+    
+    ordenacao       = (request.GET.get('ordenacao') or '').strip().lower()
+    ordenacao_opcao = (
+        request.GET.get('ordenacao_opcao')
+        or request.GET.get('eficacia')   # <— alias para URLs antigas / botão “limpar filtros”
+        or ''
+    ).strip().lower()
+
+    publico   = (request.GET.get('publico') or 'todos').strip().lower()
+    nome      = (request.GET.get('nome') or '').strip()
+    categoria = (request.GET.get('categoria') or '').strip()
+
+    # filtros “dados de pesquisa”
+    filtro_criterio = (request.GET.get('filtro_criterio') or 'nenhum').strip().lower()  # 'participantes'|'rigor'|'data'|'nenhum'
+    comparacao      = (request.GET.get('comparacao') or '').strip().lower()             # 'maior'|'menor'
+    filtro_valor    = (request.GET.get('filtro_valor') or '').strip()
+
+    exibir = request.GET.get('exibir', 'prazo')
+
+    # detectar “página limpa” (sem parâmetros relevantes)
+    PARAMS_RELEVANTES = {
+        'ordenacao', 'ordenacao_opcao', 'publico', 'nome', 'categoria',
+        'filtro_criterio', 'comparacao', 'filtro_valor', 'contraindicacoes'
+    }
+    tem_parametros = any(k in request.GET for k in PARAMS_RELEVANTES)
+    usar_eficacia_padrao = not tem_parametros
+
+    # ---------- base ----------
+    tratamentos_qs = DetalhesTratamentoResumo.objects.all().distinct()
+
+    # Contraindicações para listar no template
+    contraindications = Contraindicacao.objects.all()
+
+    # ---------- filtros simples ----------
+    if nome:
+        tratamentos_qs = tratamentos_qs.filter(nome__icontains=nome)
+
+    if categoria:
+        tratamentos_qs = tratamentos_qs.filter(
+            Q(categoria__icontains=categoria) | Q(categorias__nome__icontains=categoria)
+        ).distinct()
+
+    # Público-alvo (booleans/choices com "SIM")
+    if publico == "criancas":
+        tratamentos_qs = tratamentos_qs.filter(indicado_criancas__iexact="SIM")
+    elif publico == "adolescentes":
+        tratamentos_qs = tratamentos_qs.filter(indicado_adolescentes__iexact="SIM")
+    elif publico == "idosos":
+        tratamentos_qs = tratamentos_qs.filter(indicado_idosos__iexact="SIM")
+    elif publico == "adultos":
+        tratamentos_qs = tratamentos_qs.filter(indicado_adultos__iexact="SIM")
+    elif publico == "lactantes":
+        tratamentos_qs = tratamentos_qs.filter(indicado_lactantes__iexact="SIM")
+    elif publico == "gravidez":
+        tratamentos_qs = tratamentos_qs.filter(indicado_gravidez__iexact="SIM")
+
+    # ---------- Contraindicações (GET múltiplo) ----------
+    contraindica_ids = request.GET.getlist('contraindicacoes')
+    ids_filtrados = [i for i in contraindica_ids if i and i != 'nenhuma']
+    if ids_filtrados:
+        tratamentos_qs = tratamentos_qs.exclude(contraindicacoes__id__in=ids_filtrados).distinct()
+    contraindicacoes_selecionadas = [str(i) for i in ids_filtrados]
+
+    # ---------- anotações para ordenação/filtragem ----------
+    multiplicadores = Case(
+        When(prazo_efeito_unidade='segundo', then=Value(1/60.0)),
+        When(prazo_efeito_unidade='minuto', then=Value(1.0)),
+        When(prazo_efeito_unidade='hora',   then=Value(60.0)),
+        When(prazo_efeito_unidade='dia',    then=Value(1440.0)),
+        When(prazo_efeito_unidade='sessao', then=Value(10080.0)),
+        When(prazo_efeito_unidade='semana', then=Value(10080.0)),
+        default=Value(1.0),
+        output_field=FloatField(),
+    )
+
+    prazo_medio_minutos = ExpressionWrapper(
+        ((Coalesce(F('prazo_efeito_min'), 0.0) + Coalesce(F('prazo_efeito_max'), 0.0)) / 2.0) * multiplicadores,
+        output_field=FloatField(),
+    )
+
+    tratamentos_qs = tratamentos_qs.annotate(
+        max_participantes=Max('evidencias__numero_participantes'),
+        ultima_pesquisa=Max('evidencias__data_publicacao'),
+        reacao_maxima=Max('reacoes_adversas_detalhes__reacao_max'),
+        prazo_medio_minutos=prazo_medio_minutos,
+        rigor_maximo=Max('evidencias__rigor_da_pesquisa'),
+    )
+
+    # ---------- FILTRO POR DADO DE PESQUISA ----------
+    if filtro_criterio in {"participantes", "rigor"}:
+        val = _parse_int_or_none(filtro_valor)
+        if val is not None and comparacao in {"maior", "menor"}:
+            field = "max_participantes" if filtro_criterio == "participantes" else "rigor_maximo"
+            op = "gt" if comparacao == "maior" else "lt"
+            tratamentos_qs = tratamentos_qs.filter(**{f"{field}__{op}": val})
+
+    elif filtro_criterio == "data":
+        year, date_val = _parse_date_or_year(filtro_valor)
+        if year and comparacao in {"maior", "menor"}:
+            op = "gt" if comparacao == "maior" else "lt"
+            if date_val:
+                tratamentos_qs = tratamentos_qs.filter(**{f"ultima_pesquisa__date__{op}": date_val})
+            else:
+                tratamentos_qs = tratamentos_qs.filter(**{f"ultima_pesquisa__year__{op}": year})
+
+    # ---------- calcular eficácia por tipo (depois das anotações) ----------
+    tratamentos_list = calcular_eficacias_por_tipo(tratamentos_qs)
+
+    # ---------- escolher “tipo principal” por prioridade (um por tratamento) ----------
+    prioridade_tipos = ["Cura", "Remissão", "Controle", "Eliminação de sintomas", "Redução de sintomas", "Prevenção"]
+    tratamentos_unicos = {}  # chave = tratamento.id
+
+    for t in tratamentos_list:
+        for tipo in prioridade_tipos:
+            stats = t.eficacias_por_tipo.get(tipo)
+            if stats and stats.get("min") is not None and stats.get("max") is not None:
+                tratamentos_unicos[t.id] = {
+                    "obj": t,
+                    "tipo": tipo,
+                    "min": stats["min"],
+                    "max": stats["max"],
+                    "min_str": stats["min_str"],
+                    "max_str": stats["max_str"],
+                    "count": stats["count"],
+                }
+                break
+
+    # ---------- listas por seção (sempre inicializadas) ----------
+    tratamentos_cura       = []
+    tratamentos_remissao   = []
+    tratamentos_controle   = []
+    tratamentos_eliminacao = []
+    tratamentos_reducao    = []
+    tratamentos_prevencao  = []
+
+    for v in tratamentos_unicos.values():
+        if v["tipo"] == "Cura":
+            tratamentos_cura.append(v)
+        elif v["tipo"] == "Remissão":
+            tratamentos_remissao.append(v)
+        elif v["tipo"] == "Controle":
+            tratamentos_controle.append(v)
+        elif v["tipo"] == "Eliminação de sintomas":
+            tratamentos_eliminacao.append(v)
+        elif v["tipo"] == "Redução de sintomas":
+            tratamentos_reducao.append(v)
+        elif v["tipo"] == "Prevenção":
+            tratamentos_prevencao.append(v)
+
+    # ---------- ordenação das seções ----------
+    ordenacao_map = {
+        'eficacia': '__eficacia__',          # especial: usa item['max']
+        'risco': 'reacao_maxima',
+        'prazo': 'prazo_medio_minutos',
+        'preco': 'custo_medicamento',
+        'data': 'ultima_pesquisa',
+        'participantes': 'max_participantes',
+        'rigor': 'rigor_maximo',
+        'avaliacao': 'avaliacao',
+    }
+    campo = ordenacao_map.get(ordenacao)
+
+    # fallback quando “página limpa” ou quando o usuário não escolheu campo válido
+    if usar_eficacia_padrao or not campo:
+        campo = '__eficacia__'
+        asc = False  # eficácia: maior -> menor
+    else:
+        asc = (ordenacao_opcao == 'menor-maior')
+
+
+    def _to_float_safe(v, default=-1.0):
+        if v is None:
+            return default
+        try:
+            f = float(v)
+            return f if isfinite(f) else default
+        except Exception:
+            s = str(v).strip().replace('.', '').replace(',', '.')
+            try:
+                f = float(s)
+                return f if isfinite(f) else default
+            except Exception:
+                return default
+
+    def _to_timestamp_safe(v, default=0.0):
+        if v is None:
+            return default
+        if hasattr(v, 'timestamp'):
+            try:
+                return v.timestamp()
+            except Exception:
+                return default
+        try:
+            return datetime.fromisoformat(str(v)).timestamp()
+        except Exception:
+            return default
+
+    def _key_por_ordenacao(item: dict):
+        if campo == '__eficacia__':
+            return _to_float_safe(item.get('max'), default=-1.0)
+        elif campo == 'ultima_pesquisa':
+            return _to_timestamp_safe(getattr(item['obj'], 'ultima_pesquisa', None))
+        else:
+            return _to_float_safe(getattr(item['obj'], campo, None), default=-1.0)
+
+    # --- NOVA LÓGICA DE ORDENAÇÃO ---
+    todos_os_tratamentos = None # <— evita UnboundLocalError
+
+
+    if campo != '__eficacia__':
+        # Ordenação global (usada para risco, prazo, preço, etc.)
+        todos_os_tratamentos = (
+            tratamentos_cura + tratamentos_remissao + tratamentos_controle +
+            tratamentos_eliminacao + tratamentos_reducao + tratamentos_prevencao
+        )
+        todos_os_tratamentos.sort(key=_key_por_ordenacao, reverse=not asc)
+
+        # Redistribui os tratamentos nas listas
+        tratamentos_cura = [t for t in todos_os_tratamentos if t['tipo'] == 'Cura']
+        tratamentos_remissao = [t for t in todos_os_tratamentos if t['tipo'] == 'Remissão']
+        tratamentos_controle = [t for t in todos_os_tratamentos if t['tipo'] == 'Controle']
+        tratamentos_eliminacao = [t for t in todos_os_tratamentos if t['tipo'] == 'Eliminação de sintomas']
+        tratamentos_reducao = [t for t in todos_os_tratamentos if t['tipo'] == 'Redução de sintomas']
+        tratamentos_prevencao = [t for t in todos_os_tratamentos if t['tipo'] == 'Prevenção']
+    else:
+        # Volta para a ordenação por eficácia (padrão original)
+        todos_os_tratamentos = None
+    for sec in (
+        tratamentos_cura, tratamentos_remissao, tratamentos_controle,
+        tratamentos_eliminacao, tratamentos_reducao, tratamentos_prevencao
+    ):
+        sec.sort(key=_key_por_ordenacao, reverse=not asc)
+
+    # Agora ajusta a ordem de prioridade de exibição das seções
+    if asc:
+        # Menor → Maior: Prevenção deve vir primeiro
+        ordem_secoes = [
+            ("Prevenção", tratamentos_prevencao),
+            ("Redução de sintomas", tratamentos_reducao),
+            ("Eliminação de sintomas", tratamentos_eliminacao),
+            ("Controle", tratamentos_controle),
+            ("Remissão", tratamentos_remissao),
+            ("Cura", tratamentos_cura),
+        ]
+    else:
+        # Maior → Menor: Cura deve vir primeiro (padrão atual)
+        ordem_secoes = [
+            ("Cura", tratamentos_cura),
+            ("Remissão", tratamentos_remissao),
+            ("Controle", tratamentos_controle),
+            ("Eliminação de sintomas", tratamentos_eliminacao),
+            ("Redução de sintomas", tratamentos_reducao),
+            ("Prevenção", tratamentos_prevencao),
+        ]
+
+    # Reconstrói as listas no contexto final conforme a ordem definida
+    (
+        tratamentos_cura, tratamentos_remissao, tratamentos_controle,
+        tratamentos_eliminacao, tratamentos_reducao, tratamentos_prevencao
+    ) = [sec for _, sec in ordem_secoes]
+
+
+    # ---------- formatações finais (exibição) ----------
+    for t in tratamentos_list:
+        t.max_participantes   = formatar_numeros(getattr(t, "max_participantes", None))
+        t.prazo_medio_minutos = formatar_numeros(getattr(t, "prazo_medio_minutos", None))
+        t.reacao_maxima       = formatar_numeros(getattr(t, "reacao_maxima", None))
+
+    # ---------- context ----------
+    context = {
+        'tratamentos_list': tratamentos_list,
+        'todos_os_tratamentos': todos_os_tratamentos,
+
+        'contraindications': contraindications,
+        'grupos_indicados': DetalhesTratamentoResumo.GRUPO_CHOICES,
+        'nome': nome,
+        'categoria': categoria,
+        'ordenacao': ordenacao,
+        'ordenacao_opcao': ordenacao_opcao,
+        'publico': publico,
+        'contraindicacoes_selecionadas': contraindicacoes_selecionadas,
+        'exibir': exibir,
+        'tratamentos_reducao': tratamentos_reducao,
+   
+      
+    }
+    return render(request, "core/tratamentos_crises.html", context)
