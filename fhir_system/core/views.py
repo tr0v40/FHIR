@@ -1082,20 +1082,24 @@ def tratamentos_controle_enxaqueca(request):
     prioridade_tipos = ["Cura", "Remissão", "Controle", "Eliminação de sintomas", "Redução de sintomas", "Prevenção"]
     tratamentos_unicos = {}  # chave = tratamento.id
 
+# Escolher a eficácia 'Controle' se presente
     for t in tratamentos_list:
-        for tipo in prioridade_tipos:
-            stats = t.eficacias_por_tipo.get(tipo)
-            if stats and stats.get("min") is not None and stats.get("max") is not None:
-                tratamentos_unicos[t.id] = {
-                    "obj": t,
-                    "tipo": tipo,
-                    "min": stats["min"],
-                    "max": stats["max"],
-                    "min_str": stats["min_str"],
-                    "max_str": stats["max_str"],
-                    "count": stats["count"],
-                }
-                break
+        # Verificar se "Controle" está presente entre as eficácias
+        if "Controle" in t.eficacias_por_tipo:
+            stats_controle = t.eficacias_por_tipo["Controle"]
+            
+            # Armazenar os valores da eficácia de "Controle" no dicionário
+            tratamentos_unicos[t.id] = {
+                "obj": t,
+                "tipo": "Controle",
+                "min": stats_controle["min"],
+                "max": stats_controle["max"],
+                "min_str": stats_controle["min_str"],
+                "max_str": stats_controle["max_str"],
+                "count": stats_controle["count"],
+            
+                    }
+                
 
     # ---------- listas por seção (sempre inicializadas) ----------
     tratamentos_cura       = []
@@ -1376,20 +1380,23 @@ def tratamentos_crise_enxaqueca(request):
     tratamentos_unicos = {}  # chave = tratamento.id
 
     for t in tratamentos_list:
-        for tipo in prioridade_tipos:
-            stats = t.eficacias_por_tipo.get(tipo)
-            if stats and stats.get("min") is not None and stats.get("max") is not None:
-                tratamentos_unicos[t.id] = {
-                    "obj": t,
-                    "tipo": tipo,
-                    "min": stats["min"],
-                    "max": stats["max"],
-                    "min_str": stats["min_str"],
-                    "max_str": stats["max_str"],
-                    "count": stats["count"],
-                }
-                break
+        # Aqui, procuramos por "Redução de sintomas"
+        if "Redução de sintomas" in t.eficacias_por_tipo:
+            # Se o tratamento tem "Redução de sintomas", priorizamos essa eficácia
+            stats_reducao = t.eficacias_por_tipo["Redução de sintomas"]
+            
+            # A lógica para coletar a eficácia de redução de sintomas
+            tratamentos_unicos[t.id] = {
+                "obj": t,
+                "tipo": "Redução de sintomas",  # Mantemos a chave como "Redução de sintomas"
+                "min": stats_reducao["min"],
+                "max": stats_reducao["max"],
+                "min_str": stats_reducao["min_str"],
+                "max_str": stats_reducao["max_str"],
+                "count": stats_reducao["count"],
+            }
 
+               
     # ---------- listas por seção (sempre inicializadas) ----------
     tratamentos_cura       = []
     tratamentos_remissao   = []
