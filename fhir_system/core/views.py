@@ -1377,26 +1377,31 @@ def tratamentos_crise_enxaqueca(request):
 
     # ---------- escolher “tipo principal” por prioridade (um por tratamento) ----------
     prioridade_tipos = ["Cura", "Remissão", "Controle", "Eliminação de sintomas", "Redução de sintomas", "Prevenção"]
+
+    condicao_saude = "Enxaqueca".lower()  # Condição de saúde que queremos filtrar
+
     tratamentos_unicos = {}  # chave = tratamento.id
 
     for t in tratamentos_list:
-        # Aqui, procuramos por "Redução de sintomas"
+        # Verifique se o tratamento tem "Redução de sintomas"
         if "Redução de sintomas" in t.eficacias_por_tipo:
-            # Se o tratamento tem "Redução de sintomas", priorizamos essa eficácia
             stats_reducao = t.eficacias_por_tipo["Redução de sintomas"]
-            
-            # A lógica para coletar a eficácia de redução de sintomas
-            tratamentos_unicos[t.id] = {
-                "obj": t,
-                "tipo": "Redução de sintomas",  # Mantemos a chave como "Redução de sintomas"
-                "min": stats_reducao["min"],
-                "max": stats_reducao["max"],
-                "min_str": stats_reducao["min_str"],
-                "max_str": stats_reducao["max_str"],
-                "count": stats_reducao["count"],
-            }
 
-               
+            # Filtra os tratamentos pela condição de saúde (somente "Enxaqueca")
+            if t.condicao_saude and t.condicao_saude.nome.strip().lower() == condicao_saude:  # Adicionando a verificação t.condicao_saude
+                # Se o tratamento tem "Redução de sintomas" e condição de saúde "Enxaqueca"
+                tratamentos_unicos[t.id] = {
+                    "obj": t,
+                    "tipo": "Redução de sintomas",  # Mantemos a chave como "Redução de sintomas"
+                    "min": stats_reducao["min"],
+                    "max": stats_reducao["max"],
+                    "min_str": stats_reducao["min_str"],
+                    "max_str": stats_reducao["max_str"],
+                    "count": stats_reducao["count"],
+                }
+
+
+
     # ---------- listas por seção (sempre inicializadas) ----------
     tratamentos_cura       = []
     tratamentos_remissao   = []
@@ -1476,7 +1481,7 @@ def tratamentos_crise_enxaqueca(request):
             return _to_float_safe(getattr(item['obj'], campo, None), default=-1.0)
 
     # --- NOVA LÓGICA DE ORDENAÇÃO ---
-    todos_os_tratamentos = None # <— evita UnboundLocalError
+    todos_os_tratamentos = None  # <— evita UnboundLocalError
 
 
     if campo != '__eficacia__':
@@ -1531,7 +1536,6 @@ def tratamentos_crise_enxaqueca(request):
         tratamentos_eliminacao, tratamentos_reducao, tratamentos_prevencao
     ) = [sec for _, sec in ordem_secoes]
 
-
     # ---------- formatações finais (exibição) ----------
     for t in tratamentos_list:
         t.max_participantes   = formatar_numeros(getattr(t, "max_participantes", None))
@@ -1542,6 +1546,7 @@ def tratamentos_crise_enxaqueca(request):
     context = {
         'tratamentos_list': tratamentos_list,
         'todos_os_tratamentos': todos_os_tratamentos,
+        'tratamentos_reducao': tratamentos_reducao,
 
         'contraindications': contraindications,
         'grupos_indicados': DetalhesTratamentoResumo.GRUPO_CHOICES,
@@ -1552,8 +1557,6 @@ def tratamentos_crise_enxaqueca(request):
         'publico': publico,
         'contraindicacoes_selecionadas': contraindicacoes_selecionadas,
         'exibir': exibir,
-        'tratamentos_reducao': tratamentos_reducao,
-   
-      
+       
     }
     return render(request, "core/tratamentos_crises.html", context)
