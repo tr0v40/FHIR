@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "core",  # Adicione seu app aqui
     "django.contrib.sites",  # Caso esteja usando o framework de sites
+    "rest_framework",
+    "api", 
 ]
 
 

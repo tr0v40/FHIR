@@ -20,6 +20,7 @@ urlpatterns = [
    
     path("tratamentos/", views.tratamentos, name="tratamentos"),
     path('admin/core/condicaosaude/<int:pk>/change/', CondicaoSaudeDetailView.as_view(), name='condicao_saude_detail'),
+    path('api/', include('api.urls')),
     path(
         "enxaqueca/<slug:slug>/",
         views.detalhes_tratamentos,
