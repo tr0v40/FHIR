@@ -16,6 +16,27 @@
       gtag('config', 'G-BS67486CWG');  // Seu ID de medição GA4
     </script>
 
+        <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+          
+          // Inicialmente captura a URL atual
+          clarity('set', 'page_url', window.location.href); // Para a primeira carga da página
+
+          // Monitorando as mudanças de URL (quando o tratamento mudar na URL)
+          window.addEventListener('popstate', function(event) {
+              clarity('set', 'page_url', window.location.href); // Captura a nova URL após mudança de tratamento
+          });
+
+          // Caso a URL seja modificada sem reload, também captura
+          window.addEventListener('hashchange', function(event) {
+              clarity('set', 'page_url', window.location.href); // Captura a nova URL com hash ou tipo alterado
+          });
+      })(window, document, "clarity", "script", "ubap1t6puk");
+    </script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" href="https://www.seusite.com/static/img/favicon.png" type="image/png">
