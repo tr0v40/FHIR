@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import EvidenciasClinicas
 from .models import DetalhesTratamentoResumo, CondicaoSaude
+from django import forms
+from .models import Avaliacao
 
 class UserRegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -48,3 +50,14 @@ class DetalhesTratamentoResumoForm(forms.ModelForm):
     class Meta:
         model = DetalhesTratamentoResumo
         fields = ['nome', 'prazo_efeito_min', 'prazo_efeito_max', 'condicao_saude']
+
+
+        
+
+class ComentarioForm(forms.ModelForm):
+    class Meta:
+        model = Avaliacao
+        fields = ['usuario_nome', 'comentario']
+
+    usuario_nome = forms.CharField(max_length=255, required=True, label='Nome Completo', widget=forms.TextInput(attrs={'placeholder': 'Digite seu nome'}))
+    comentario = forms.CharField(widget=forms.Textarea, required=True, label='Comentário')

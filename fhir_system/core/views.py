@@ -23,6 +23,9 @@ from django.utils.html import format_html
 import unicodedata
 from datetime import datetime
 from .models import Avaliacao
+from .forms import ComentarioForm
+from django.contrib import messages
+from .models import Tratamento, Avaliacao 
 
 
   # ==================== IMPORTS SESSIONS ==================== #
@@ -578,7 +581,7 @@ def _fmt_pct(val):
 
 def detalhes_tratamentos(request, slug):
     tipo_req = (request.GET.get("tipo") or request.GET.get("tipo_eficacia") or "").strip()
-    eficacias_por_tipo = TipoEficacia.objects.all() 
+    eficacias_por_tipo = TipoEficacia.objects.all()
 
     tratamento = get_object_or_404(
         DetalhesTratamentoResumo.objects.prefetch_related(
@@ -595,6 +598,7 @@ def detalhes_tratamentos(request, slug):
     )
 
     # --------- EFICÁCIA POR TIPO ----------
+
     por_tipo = {}
     for ev in getattr(tratamento, 'evidencias', []).all():
         mgr = getattr(ev, 'eficacia_por_evidencias', None)
@@ -604,36 +608,37 @@ def detalhes_tratamentos(request, slug):
             tipo_nome = _nome_tipo(getattr(epe, 'tipo_eficacia', None))
             if not tipo_nome:
                 continue
+
             val = getattr(epe, 'percentual_eficacia', None)
             if val in (None, ""):
                 denom = getattr(epe, 'participantes_iniciaram_tratamento', 0) or 0
                 num   = getattr(epe, 'participantes_com_beneficio', 0) or 0
                 val = (100.0 * num / denom) if denom > 0 else 0.0
+
             try:
                 val = float(val)
             except Exception:
                 val = 0.0
+
             if isfinite(val):
                 por_tipo.setdefault(tipo_nome, []).append(val)
+
     eficacias_por_tipo = []
     for tipo, vals in por_tipo.items():
         vmin, vmax = min(vals), max(vals)
-        # Aqui, adicionando a descrição corretamente ao dicionário
-        descricao_tipo_eficacia = TipoEficacia.objects.get(tipo_eficacia=tipo).descricao
-        imagem_tipo_eficacia = TipoEficacia.objects.get(tipo_eficacia=tipo).imagem
+        te = TipoEficacia.objects.get(tipo_eficacia=tipo)
         eficacias_por_tipo.append({
             "tipo": tipo,
-            "descricao": descricao_tipo_eficacia,  # Adicionando a descrição
-            "imagem": imagem_tipo_eficacia,
-            "min": vmin, 
+            "descricao": te.descricao,
+            "imagem": te.imagem,
+            "min": vmin,
             "max": vmax,
-            "min_str": _fmt_pct(vmin), 
+            "min_str": _fmt_pct(vmin),
             "max_str": _fmt_pct(vmax),
             "count": len(vals),
         })
 
-
-    # --------- PRAZO PARA EFEITO (mesmo código que você já tinha) ---------
+    # --------- PRAZO PARA EFEITO (igual estava) ----------
     prazo_efeito = "Não disponível"
     try:
         if getattr(tratamento, "prazo_efeito_faixa_formatada", ""):
@@ -652,16 +657,24 @@ def detalhes_tratamentos(request, slug):
     except Exception:
         pass
 
-        # --------- Avaliação / Reações (seu código) ----------
-    avaliacoes = Avaliacao.objects.filter(tratamento__id=tratamento.id).order_by('-data')
+    # --------- FORM AVALIAÇÃO ----------
+    if request.method == "POST":
+        usuario_nome = (request.POST.get("usuario_nome") or "").strip()
+        comentario   = (request.POST.get("comentario") or "").strip()
+        if usuario_nome and comentario:
+            Avaliacao.objects.create(
+                tratamento=tratamento,
+                usuario_nome=usuario_nome,
+                comentario=comentario,
+            )
+            return redirect(request.get_full_path())
 
-    # Calcular média de estrelas (se houver avaliações)
+    avaliacoes = Avaliacao.objects.filter(tratamento__id=tratamento.id).order_by('-data')
     media_estrelas = avaliacoes.aggregate(media=Avg('estrelas'))['media'] or 0
     total_avaliacoes = avaliacoes.aggregate(qtd=Count('id'))['qtd'] or 0
-
-    # Preparar as estrelas médias para exibição
     estrelas_preenchidas = [1 for _ in range(int(round(media_estrelas)))]
     estrelas_vazias = [1 for _ in range(5 - int(round(media_estrelas)))]
+
     detalhes_formatados = []
     for detalhe in tratamento.reacoes_adversas_detalhes.all():
         detalhe.reacao_min = _fmt_pct(detalhe.reacao_min)
@@ -674,7 +687,7 @@ def detalhes_tratamentos(request, slug):
         reverse=True
     )
 
-# --- helpers de normalização/prioridade (coloque perto dos outros helpers) ---
+    # --- helpers de normalização/prioridade ---
     def _norm_txt(s: str) -> str:
         s = (s or "").strip().lower()
         s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode("ascii")
@@ -682,33 +695,31 @@ def detalhes_tratamentos(request, slug):
 
     PRIORIDADE_TIPOS = {
         "cura": 0,
-        "remissão": 1,
-        "remissao": 1,
-        "controle":2,
-        "Controle":2,
-        "eliminacao de sintomas": 3,
-        "eliminacao dos sintomas": 3,   # sinônimos/variações
-        "redução de sintomas": 4,
-        "reducao de sintomas": 4,
-        "reducao dos sintomas": 4,
+        "remissao": 3,
+        "controle": 2,
+        "eliminacao de sintomas": 4,
+        "eliminacao dos sintomas": 4,
+        "reducao de sintomas": 1,
+        "reducao dos sintomas": 1,
         "prevencao": 5,
-        "prevenção:":5,
     }
 
-
-
-# ------- ORDENAR POR PRIORIDADE E, DENTRO, POR MAX DESC -------
+    # 1) ordena pela prioridade geral (para o fallback)
     eficacias_por_tipo.sort(
-        key=lambda e: (PRIORIDADE_TIPOS.get(_norm_txt(e["tipo"]), 99), -float(e["max"] or 0))
+        key=lambda e: (PRIORIDADE_TIPOS.get(_norm_txt(e["tipo"]), 99),
+                       -float(e["max"] or 0))
     )
 
-# — escolha do tipo a mostrar —
-    tipo_eficacia = "Não especificado"
-    eficacia_min = "0,00"
-    eficacia_max = "0,00"
-    eficacia_max_css = 0.0
+    # 2) escolha do tipo a mostrar (sempre só UM)
+    tipo_eficacia      = "Não especificado"
+    eficacia_min       = "0,00"
+    eficacia_max       = "0,00"
+    eficacia_max_css   = 0.0
+    descricao_eficacia = ""
+    imagem_eficacia    = None
 
     escolhido = None
+
     if eficacias_por_tipo:
         # se veio ?tipo=..., tenta respeitar
         if tipo_req:
@@ -717,15 +728,45 @@ def detalhes_tratamentos(request, slug):
                     escolhido = e
                     break
 
-        # caso contrário, usa o PRIMEIRO da lista já ordenada por prioridade
+        # prioridade 1: REMISSÃO
+        if not escolhido:
+            for e in eficacias_por_tipo:
+                if _norm_txt(e["tipo"]) == "remissao":
+                    escolhido = e
+                    break
+
+        # prioridade 2: CONTROLE
+        if not escolhido:
+            for e in eficacias_por_tipo:
+                if _norm_txt(e["tipo"]) == "controle":
+                    escolhido = e
+                    break
+
+        # se não tem remissão nem controle, usa a ordem de prioridade geral
         if not escolhido:
             escolhido = eficacias_por_tipo[0]
 
+    # Preenche variáveis e limita lista para o template mostrar só o escolhido
     if escolhido:
-        tipo_eficacia    = escolhido["tipo"]
-        eficacia_min     = escolhido["min_str"]   # já vem com 2 casas
-        eficacia_max     = escolhido["max_str"]   # já vem com 2 casas
-        eficacia_max_css = float(escolhido["max"] or 0)  # para largura da barra
+        tipo_eficacia      = escolhido["tipo"]
+        eficacia_min       = escolhido["min_str"]
+        eficacia_max       = escolhido["max_str"]
+        eficacia_max_css   = float(escolhido["max"] or 0)
+        descricao_eficacia = escolhido["descricao"]
+        imagem_eficacia    = escolhido["imagem"]
+
+        # *** AQUI: força a lista a ter somente o escolhido ***
+        eficacias_por_tipo = [escolhido]
+    else:
+        eficacias_por_tipo = []
+
+    tipo_eficacia_label = tipo_eficacia  # padrão
+
+    norm_tipo = _norm_txt(tipo_eficacia)
+    if norm_tipo == "controle":
+        tipo_eficacia_label = "Controle: redução persistente de sintomas"
+    elif norm_tipo in ("reducao de sintomas", "reducao dos sintomas", "redução de sintomas"):
+        tipo_eficacia_label = "Redução temporária de sintomas:"
 
 
     return render(request, 'core/detalhes_tratamentos.html', {
@@ -735,21 +776,18 @@ def detalhes_tratamentos(request, slug):
         'comentario': tratamento.comentario,
         'media_estrelas': round(media_estrelas, 1),
         'total_avaliacoes': total_avaliacoes,
-        # o que seu template já usa:
         'tipo_eficacia': tipo_eficacia,
+        'tipo_eficacia_label': tipo_eficacia_label,   # <-- AQUI
         'eficacia_min': eficacia_min,
         'eficacia_max': eficacia_max,
         'eficacia_max_css': eficacia_max_css,
-
-        # opcional: lista completa para mostrar todos os tipos embaixo
-    
-
+        'descricao_eficacia': descricao_eficacia,
+        'imagem_eficacia': imagem_eficacia,
         'prazo_efeito': prazo_efeito,
         'estrelas_preenchidas': estrelas_preenchidas,
         'estrelas_vazias': estrelas_vazias,
         'detalhes_reacoes_adversas': detalhes_reacoes_ordenadas,
     })
-
 
 
 
@@ -860,24 +898,33 @@ def listar_urls(request):
 
 
 from django.shortcuts import get_object_or_404, redirect
-from .models import DetalhesTratamentoResumo, Avaliacao
+# se já tiver esse import, não precisa repetir
 
 def salvar_avaliacao(request, tratamento_id):
+    if request.method != "POST":
+        # Se não for POST, volta para a página do tratamento
+        tratamento = get_object_or_404(DetalhesTratamentoResumo, id=tratamento_id)
+        return redirect('detalhes_tratamentos', slug=tratamento.slug)
+
     tratamento = get_object_or_404(DetalhesTratamentoResumo, id=tratamento_id)
 
-    if request.method == 'POST':
-        comentario = request.POST.get('comentario', '').strip()
+    usuario_nome = (request.POST.get("usuario_nome") or "").strip()
+    comentario   = (request.POST.get("comentario") or "").strip()
 
-        # Só cria uma avaliação se o comentário não estiver vazio
-        if comentario:
-            Avaliacao.objects.create(
-                tratamento=tratamento,
-                comentario=comentario,
-                estrelas=0  # opcional, se não estiver usando estrelas
-            )
+    # Só salva se tiver comentário; o nome você pode forçar ou não
+    if comentario:
+        if not usuario_nome:
+            usuario_nome = "Usuário Anônimo"
 
-        # Redireciona de volta para a página do tratamento
-        return redirect('detalhes_tratamentos', slug=tratamento.slug)
+        Avaliacao.objects.create(
+            tratamento=tratamento,
+            usuario_nome=usuario_nome,
+            comentario=comentario,
+        )
+
+    # Redireciona usando o nome da rota, sem precisar de reverse()
+    return redirect('detalhes_tratamentos', slug=tratamento.slug)
+
 
 
 
@@ -1560,3 +1607,40 @@ def tratamentos_crise_enxaqueca(request):
        
     }
     return render(request, "core/tratamentos_crises.html", context)
+
+
+def comentario_view(request):
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            # Salvar o formulário no banco de dados
+            form.save()
+            return redirect('sucesso')  # Redireciona para uma página de sucesso ou outra
+
+    else:
+        form = ComentarioForm()
+
+    return render(request, 'detalhes_tratamentos.html', {'form': form})
+
+
+from django.shortcuts import render
+
+def sucesso_view(request):
+    return render(request, 'sucesso.html')  # Defina o template de sucesso
+
+
+# views.py
+from django.shortcuts import render, redirect
+from .forms import ComentarioForm
+
+def enviar_avaliacao(request):
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            form.save()  # Isso irá salvar o nome do usuário no banco de dados
+            return redirect('detalhes_tratamentos')
+    else:
+        form = ComentarioForm()
+
+    avaliacoes = Avaliacao.objects.all()
+    return render(request, 'detalhes_tratamentos.html', {'form': form, 'avaliacoes': avaliacoes})

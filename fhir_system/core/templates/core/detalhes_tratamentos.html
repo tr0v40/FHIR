@@ -89,6 +89,19 @@
             flex-wrap: wrap;
             margin-bottom: 50px;
         }
+.card-aviso {
+    background-color: #000;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 6px;
+    font-size: 14px;
+    max-width: 280px;
+    min-width: 02;
+    text-align: center;
+    line-height: 1.4;
+    margin-left: auto;
+    margin-top:-50px;
+}
 
         .tratamento-info {
             max-width: 50%;
@@ -1054,9 +1067,14 @@
 
 .footer .footer-social {
     display: flex;
-    justify-content: center;
-    gap: 15px;
+    justify-content: flex-end;  /* Alinha os ícones à direita */
+    gap: 10px;  /* Aumenta o espaçamento entre os ícones */
+    width: 100%;  /* Garante que a div ocupe toda a largura disponível */
+    margin-right: 0;  /* Remove qualquer margem extra */
+    padding-right: 30px;  /* Adiciona um preenchimento à direita para um pequeno ajuste */
 }
+
+
 
 .footer .list-unstyled li {
     padding: 5px 0;
@@ -1281,11 +1299,11 @@ img {
             <div class="tratamento-container"style="margin-bottom: 10px;">
 
                 
-                        <!-- Botão Voltar -->
+                        <!-- Botão Voltar
                         <a href="{% url 'tratamentos' %}" class="btn-voltar-img">
                             <img src="{% static 'img/seta-voltar.png' %}" alt="Voltar" style="width: 40px; height:40px; ">
                         </a>
-                    
+                     -->
 
                 <!-- Informações do Medicamento -->
                 <div class="tratamento-info">
@@ -1350,22 +1368,8 @@ img {
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         
         </body>
-        </html>
-        
-        <div class="prerequisite-section" style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; margin-top: 150px;">
-            <i class="fas fa-clock" style="font-size: 30px; color: #0094FF; margin-right: 10px;"></i>
-            <span style="font-size: 18px; color: #808080; text-align: center;">
-                Prazo para efeito: 
-                <strong>
-                    {{ prazo_efeito }} <!-- Exibe diretamente a variável formatada -->
-                </strong>
-            </span>
-        </div>
-        
-        
-        
-        
-        <style>
+
+      <style>
             /* estilos só desta seção */
             .efficacy-title { font-family: Arial, sans-serif; font-weight: 700; font-size: 34px; text-align: center; }
             .efficacy-label { color: #000000; font-weight: 700; margin-right: 6px; }
@@ -1596,7 +1600,7 @@ img {
   border-radius: 4px;
   background: linear-gradient(to right, #0094FF 0%, rgba(0,148,255,0.3) 100%);
   margin: 6px 0;
-  width: 100%;
+  width: 40%;
 }
 
 .efficacy-marker {
@@ -1617,6 +1621,121 @@ img {
   color: #000;
 }
 
+/* ===== Eficácia ===== */
+
+.eficacia-section {
+  max-width: 720px;
+  margin: 20px auto 0 auto;
+  text-align: center;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+/* Cada tipo de eficácia */
+.eficacia-item {
+  margin-bottom: 24px;
+}
+
+/* Wrapper da barra para garantir centralização */
+.efficacy-bar-wrapper {
+  display: flex;
+  justify-content: center;   /* centraliza a barra */
+}
+
+/* Barra em si */
+.efficacy-bar {
+  position: relative;
+  width: 70%;                /* largura da barra */
+  max-width: 400px;
+  height: 50px;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+/* Texto “90,00 a 90,00%” abaixo da barra */
+.eficacia-range {
+  margin-top: 8px;
+  margin-bottom: 4px;
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.eficacia-range span:first-child {
+  color: #888;
+  font-weight: 500;
+}
+
+/* Linha com ícone + descrição */
+.eficacia-caption {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;   /* centraliza ícone + texto */
+  gap: 8px;
+  font-size: 15px;
+  color: #444;
+}
+
+.eficacia-caption-icon img {
+  width: 50px;
+  height: 36px;
+  object-fit: contain;
+}
+.eficacia-caption-text-strong {
+  font-weight: 700;
+}
+.eficacia-caption-range-min {
+  color: #555;
+}
+.eficacia-caption-range-max {
+  font-weight: 700;
+}
+
+/* Título principal da seção */
+.eficacia-titulo {
+  font-weight: 700;
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.agende-btn-wrapper {
+    display: flex;
+   margin-left: 100px;
+    margin-top: 40px;      /* ajusta o espaçamento como quiser */
+    margin-bottom: 20px;
+}
+
+.btn-agende-consulta {
+    display: block;
+    width: 100%;
+    max-width: 600px;      /* controla o “comprimento” do botão */
+    padding: 12px 20px;
+    background-color: #0094FF;
+    color: #ffffff;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-agende-consulta:hover {
+    background-color: #0080e0;
+}
+
+.quando-usar-texto {
+    max-width: 420px;      /* largura máxima do parágrafo */
+    margin: 0 auto;        /* centraliza o bloco */
+    text-align: center;    /* centraliza o texto */
+    font-size: 16px;
+    color: #000;
+}
+
+
+
 @media (max-width: 900px) {
   .efficacy-box {
     width: 45%;
@@ -1628,57 +1747,89 @@ img {
     width: 90%;
   }
 }
+@media (max-width: 768px) {
+  .adhesion-clock {
+    display: none !important;
+  }
+}
+
 </style>
 <!-- Título principal -->
-<p style="font-weight: 700; font-size: 32px; text-align: center; margin-bottom: 8px;">
-  Eficácia no tratamento de: {{ tratamento.condicao_saude.nome }}
+
+
+</style>
+<!-- Título principal -->
+
+        
+        <div class="prerequisite-section" style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; margin-top: 150px;">
+            <i class="fas fa-clock" style="font-size: 30px; color: #0094FF; margin-right: 10px;"></i>
+            <span style="font-size: 18px; color: #808080; text-align: center;">
+                Prazo para efeito: 
+                <strong>
+                    {{ prazo_efeito }} <!-- Exibe diretamente a variável formatada -->
+                </strong>
+            </span>
+        </div>
+        
+
+<!-- Título principal -->
+<p class="eficacia-titulo">
+  Eficácia no tratamento de {{ tratamento.condicao_saude.nome }}
 </p>
 
-<div class="efficacy-container">
+<div class="eficacia-section">
+
   {% for tipo_eficacia in eficacias_por_tipo %}
-  <div class="efficacy-box">
-    <div class="efficacy-icon" style="display: inline-block; vertical-align: middle; margin-right: 10px;">
-      <!-- Exibindo a imagem de cada eficácia -->
-      {% if tipo_eficacia.imagem %}
-        <img src="{{ tipo_eficacia.imagem.url }}" alt="{{ tipo_eficacia.tipo }}" style="width: 50px; height: 50px; object-fit: contain;">
-      {% else %}
-        <img src="{% static 'img/default-icon.png' %}" alt="{{ tipo_eficacia.tipo }}" style="width: 50px; height: 50px; object-fit: contain;">
-      {% endif %}
-    </div>
+    <div class="eficacia-item">
 
-    <div class="efficacy-title" style="font-size: 40px; color: #c0c0c0; font-weight: 400; display: inline-block;">
-      Eficácia:
-    </div>
+      <!-- Barra centralizada -->
+      <div class="efficacy-bar-wrapper">
+        <div class="efficacy-bar"
+             style="background: linear-gradient(
+               to right,
+               #0094FF 0%,
+               #0094FF {{ tipo_eficacia.max }}%,
+               rgba(0,148,255,0.3) {{ tipo_eficacia.max }}%,
+               rgba(0,148,255,0.3) 100%
+             );">
+        </div>
+      </div>
 
-    <div class="efficacy-title" style="font-size: 22px; color: #000; font-weight: 700; display: inline-block;">
-      {{ tipo_eficacia.tipo }}
-    </div>
-    
-    <!-- Descrição da eficácia -->
-    <div class="efficacy-subtitle" style="color: #bbb; font-size: 14px; margin-top: 5px;">
-      {{ tipo_eficacia.descricao }}
-    </div>
+      <!-- Range centralizado -->
+      <!-- <p class="eficacia-range">
+        <span>{{ tipo_eficacia.min_str }} a</span>
+        <span>{{ tipo_eficacia.max_str }}%</span>
+      </p> -->
 
-    <!-- Barra de eficácia -->
-    <div class="efficacy-bar" style="background: linear-gradient(
-      to right,
-      #0094FF 0%,
-      #0094FF {{ tipo_eficacia.max }}%,
-      rgba(0,148,255,0.3) {{ tipo_eficacia.max }}%,
-      rgba(0,148,255,0.3) 100%
-    );">
-    </div>
+      <!-- Linha com ícone + descrição, também centralizada -->
+      <div class="eficacia-caption">
+        <span class="eficacia-caption-icon">
+          {% if tipo_eficacia.imagem %}
+            <img src="{{ tipo_eficacia.imagem.url }}" alt="{{ tipo_eficacia_label }}">
+          {% else %}
+            <img src="{% static 'img/default-icon.png' %}" alt="{{ tipo_eficacia_label }}">
+          {% endif %}
+        </span>
 
-    <!-- Range de eficácia -->
-    <p class="eficacia-range" style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 25px; text-align: center;">
-      <span style="color: #888; font-weight: 500;">{{ tipo_eficacia.min_str }} a</span>
-      <span style="color: #000; font-weight: bold;">{{ tipo_eficacia.max_str }}%</span>
-    </p>
-  </div>
+        <span class="eficacia-caption-text">
+          <span class="eficacia-caption-text-strong">
+            {{ tipo_eficacia_label }}
+          </span>
+          <span class="eficacia-caption-range-min">
+            {{ tipo_eficacia.min_str }}
+          </span>
+          a
+          <span class="eficacia-caption-range-max">
+            {{ tipo_eficacia.max_str }}%
+          </span>
+
+        </span>
+      </div>
+
+    </div>
   {% endfor %}
+
 </div>
-
-
 
 
 </div>
@@ -1697,25 +1848,28 @@ img {
 
 <!-- Seção de Adesão -->
 <div class="adhesion-section mt-5">
-    <!-- Texto alinhado à esquerda -->
-    <div class="d-flex justify-content-center align-items-center flex-wrap">
-      <div style="max-width: 400px; text-align: center; padding-right: 20px;margin-top: 10px;">
-        <h2 style="color: #0094FF; font-size: 20px; margin-bottom: 2px; font-weight: 600;">
-          Quando usar?
-        </h2>
-        <p style="margin: 0; font-size: 16px; color: #000;">
-          {{ tratamento.quando_usar }}
-        </p>
-      </div>
-  
-      <!-- Ícone à direita -->
-      <div>
-        <img src="{% static 'img/relogio.png' %}" alt="Relógio Adesão" style="width: 270px; height: auto;">
-      </div>
+  <div class="d-flex justify-content-center align-items-center flex-wrap">
+    
+    <!-- Bloco do texto -->
+    <div style="padding-right: 20px; margin-top: 10px;">
+      <h2 style="color: #0094FF; font-size: 20px; margin-bottom: 2px; font-weight: 600; text-align: center;">
+        Quando usar?
+      </h2>
+      <p class="quando-usar-texto">
+        {{ tratamento.quando_usar }}
+      </p>
     </div>
-  </div>
-  
 
+    <!-- Ícone à direita -->
+    <div>
+      <img src="{% static 'img/relogio.png' %}"
+           alt="Relógio Adesão"
+           class="adhesion-clock"
+           style="width: 270px; height: auto;">
+    </div>
+
+  </div>
+</div>
 
 
 
@@ -1839,7 +1993,7 @@ img {
           <li class="d-flex align-items-start mb-3">
             <img src="{% static 'img/cifrao.png' %}" alt="Ícone de custo" style="width: 26px; height: 30px; align-self: start; margin-top: 2px;" class="me-2">
             <div>
-              <span style="color: #999;">Custo do medicamento: </span>
+              <span style="color: #999;">Valor do tratamento: </span>
               <a  target="_blank" class="text-dark fw-bold ms-1">
                 a partir de R${{ tratamento.custo_medicamento }}
               </a>
@@ -1858,48 +2012,31 @@ img {
           {% endif %}
         </ul>
       </div>
-  
-      <!-- Sessão Links -->
-      <div class="col-md-5 ps-md-4">
-        <h5 class="fw-bold mb-3 text-dark">Links</h5>
-        <ul class="list-unstyled mb-0">
-          {% if tratamento.opiniao_especialista %}
-          <li class="fw-bold text-dark mb-2">
-            <a href="{{ tratamento.opiniao_especialista }}" target="_blank" class="text-decoration-none text-dark">
-              Opinião de especialista
-            </a>
-          </li>
-          {% endif %}
-  
-          {% if tratamento.interacao_medicamentosa %}
-          <li class="text-secondary fw-semibold mb-1">
-            <a href="{{ tratamento.interacao_medicamentosa }}" target="_blank" class="text-decoration-none text-secondary fw-semibold">
-              Interações medicamentosas
-            </a>
-          </li>
-          {% endif %}
-  
-          {% if tratamento.genericos_similares %}
-          <li class="text-secondary fw-semibold mb-1">
-            <a href="{{ tratamento.genericos_similares }}" target="_blank" class="text-decoration-none text-secondary fw-semibold">
-              Genéricos e similares
-            </a>
-          </li>
-          {% endif %}
-  
-          {% if tratamento.prescricao_eletronica %}
-          <li class="text-secondary fw-semibold">
-            <a href="{{ tratamento.prescricao_eletronica }}" target="_blank" class="text-decoration-none text-secondary fw-semibold">
-              Prescrição eletrônica
-            </a>
-          </li>
-          {% endif %}
-        </ul>
-      </div>
-  
-    </div>
-  </div>
-  
+
+      <ul class="list-unstyled mb-0">
+  <li class="fw-bold text-dark mb-2">
+    <a href="#opiniao" class="text-decoration-none text-dark">
+      Opinião de especialista
+    </a>
+  </li>
+  <li class="text-secondary fw-semibold mb-1">
+    <a href="#interacao" class="text-decoration-none text-secondary fw-semibold">
+      Interações medicamentosas
+    </a>
+  </li>
+  <li class="text-secondary fw-semibold mb-1">
+    <a href="#genericos" class="text-decoration-none text-secondary fw-semibold">
+      Genéricos e similares
+    </a>
+  </li>
+  <li class="text-secondary fw-semibold">
+    <a href="#prescricao" class="text-decoration-none text-secondary fw-semibold">
+      Prescrição eletrônica
+    </a>
+  </li>
+</ul>
+
+
   
 
 
@@ -1959,14 +2096,31 @@ img {
   </div>
 
   
-
-
-<!-- Botão para ver as pesquisas, com o tamanho ajustado -->
-<div style="display: flex; justify-content: center; margin-top: 20px;">
-    <a href="{{ tratamento.links_profissionais }}" 
-       style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 20px; font-size: 16px; color: #0094FF; border: 2px solid #0094FF; border-radius: 5px; text-decoration: none; width: auto;">
-       Profissionais que indicam esse tratamento
-        <img src="{% static 'img/seta.png' %}" alt="Seta" style="margin-left: 10px; width: 15px; height: 15px; vertical-align: middle;">
+<!-- Botão Agende sua consulta -->
+<div style="
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 40px 0 20px 0;
+">
+    <a href="https://www.telix.inf.br/neurologistas-clinicos-gerais-tratamento-enxaqueca"
+       target="_blank"
+       style="
+           display: block;
+           width: 100%;
+           max-width: 600px;      /* comprimento do botão */
+           padding: 12px 20px;
+           background-color: #0094FF;
+           color: #ffffff;
+           text-align: center;
+           text-decoration: none;
+           font-size: 18px;
+           font-weight: 700;
+           border-radius: 4px;
+           border: none;
+           cursor: pointer;
+       ">
+        Agende sua consulta
     </a>
 </div>
 
@@ -1980,70 +2134,242 @@ img {
 <form method="POST" action="{% url 'salvar_avaliacao' tratamento.id %}">
     {% csrf_token %}
     
-    <h3>Você já utilizou este medicamento?</h3>
-  
-    <!-- Comentário -->
-    <div style="max-width: 800px; margin: 0 auto; padding: 10px;">
-        <textarea 
-            name="comentario" 
-            placeholder="Deixe sua mensagem" 
-            rows="4"
-            maxlength="400" 
-            oninput="updateCount(this)"
-            style="
-                width: 100%;
-                padding: 10px;
-                font-size: 14px;
-                box-sizing: border-box;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                resize: vertical;
-            ">
-        </textarea>
-        <div id="char-count" style="font-size: 14px; color: #666;">400 caracteres restantes</div>
-    </div>
-  
-  
-        <!-- Estrelas para avaliação -->
-        <!-- <div style="margin: 15px 0;">
-            <label for="stars" style="font-size: 16px; display: block; margin-bottom: 5px;">Classifique este medicamento:</label>
-            <div class="stars" style="display: inline-block;">
-                Cada estrela representa uma avaliação de 1 a 5
-                <input type="radio" id="star5" name="rating" value="5">
-                <label for="star5">☆</label>
-                
-                <input type="radio" id="star4" name="rating" value="4">
-                <label for="star4">☆</label>
-                
-                <input type="radio" id="star3" name="rating" value="3">
-                <label for="star3">☆</label>
-                
-                <input type="radio" id="star2" name="rating" value="2">
-                <label for="star2">☆</label>
-                
-                <input type="radio" id="star1" name="rating" value="1">
-                <label for="star1">☆</label>
-            </div>
-        </div> -->
-  
-        <!-- Enviar botão -->
-        <div>
-            <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;">
-                Enviar Avaliação
-            </button>
-        </div>
-    </form>
 
-    <script>
+<label style="color: #0094FF; font-size: 1.2rem; font-weight: bold; text-align: left; display: block; margin-bottom: 5px;">Compartilhe sua experiência</label>
+
+<h3 style="text-align: left; margin-bottom: 10px;">Você já utilizou este medicamento?</h3>
+<!-- FORMULÁRIO DE AVALIAÇÃO -->
+<form id="formAvaliacao" method="post" action="{% url 'salvar_avaliacao' tratamento.id %}">
+    {% csrf_token %}
+
+    <!-- Campo oculto que será preenchido pelo modal -->
+    <input type="hidden" id="usuario_nome" name="usuario_nome">
+
+
+    <textarea
+        id="comentario"
+        name="comentario"
+        placeholder="Deixe sua mensagem"
+        rows="4"
+        maxlength="400"
+        required
+        oninput="updateCount(this)"
+        style="
+            width:100%;
+            padding:12px;
+            font-size:14px;
+            box-sizing:border-box;
+            border:1px solid #ccc;
+            border-radius:6px;
+            resize:vertical;
+        "
+    ></textarea>
+
+    <div id="char-count" style="font-size:13px; color:#777; margin-top:4px; text-align:right;">
+        400 caracteres restantes
+    </div>
+
+    <!-- Botão que chama apenas JS -->
+    <div style="text-align:center; margin-top:20px;">
+        <button type="button" onclick="handleSubmit()"
+                style="
+                    padding:10px 20px;
+                    background-color:#007bff;
+                    color:white;
+                    border:none;
+                    border-radius:6px;
+                    font-size:16px;
+                    cursor:pointer;
+                    font-weight:500;
+                    transition:background 0.3s;
+                "
+                onmouseover="this.style.backgroundColor='#0056b3'"
+                onmouseout="this.style.backgroundColor='#007bff'">
+            Enviar Avaliação
+        </button>
+    </div>
+</form>
+
+
+<div class="modal fade" id="modalNome" tabindex="-1" aria-labelledby="modalNomeLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalNomeLabel">Como você quer aparecer nos comentários?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="nome_modal" class="form-control" placeholder="Digite seu nome ou apelido">
+        <small class="text-muted">Esse nome será exibido publicamente junto ao seu comentário.</small>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <!-- data-bs-dismiss fecha o modal, onclick envia -->
+        <button type="button"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                onclick="salvarNomeEEnviar()">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// contador de caracteres
+function updateCount(textarea) {
+    const maxLength   = textarea.getAttribute('maxlength');
+    const currentLength = textarea.value.length;
+    const remaining   = maxLength - currentLength;
+    document.getElementById('char-count').innerText =
+        remaining + " caracteres restantes";
+}
+
+// helper para pegar o form com segurança
+function getFormAvaliacao() {
+    // tenta pelo id
+    let form = document.getElementById('formAvaliacao');
+    // fallback: qualquer form que poste para salvar-avaliacao
+    if (!form) {
+        form = document.querySelector('form[action*="salvar-avaliacao"]');
+    }
+    if (!form) {
+        console.error('Form de avaliação não encontrado no DOM');
+    }
+    return form;
+}
+
+// primeiro clique em "Enviar Avaliação"
+function handleSubmit() {
+    const comentario = document.getElementById('comentario').value.trim();
+    const nomeHidden = document.getElementById('usuario_nome').value.trim();
+
+    if (!comentario) {
+        alert("Por favor, escreva seu comentário antes de enviar.");
+        return;
+    }
+
+    const form = getFormAvaliacao();
+    if (!form) return;  // se não achou, não tenta enviar
+
+    // se já tem nome salvo (hidden), envia direto
+    if (nomeHidden) {
+        form.submit();
+        return;
+    }
+
+    // abre o modal para pedir o nome
+    const modalElement = document.getElementById('modalNome');
+    const modal = new bootstrap.Modal(modalElement);
+    modal.show();
+}
+
+// clique em "Confirmar" dentro do modal
+function salvarNomeEEnviar() {
+    const nomeModal = document.getElementById('nome_modal').value.trim();
+    if (!nomeModal) {
+        alert("Por favor, informe seu nome ou apelido.");
+        return;
+    }
+
+    // grava o nome no hidden
+    document.getElementById('usuario_nome').value = nomeModal;
+
+    const form = getFormAvaliacao();
+    if (!form) return;
+
+    // o botão do modal já tem data-bs-dismiss="modal",
+    // então aqui só precisamos enviar o form
+    form.submit();
+}
+</script>
+
+
+</body>
+</html>
+
+
+{# LISTA DE COMENTÁRIOS #}
+<div style="margin-top: 50px; text-align: center;">
+    <h3 style="color: #007bff; font-size: 1.6rem; font-weight: bold;">
+        Comentários dos usuários:
+    </h3>
+
+    {% if avaliacoes %}
+        <div style="
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 750px;
+        ">
+            {% for avaliacao in avaliacoes %}
+                <div style="
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    padding: 15px;
+                    margin: 10px auto;
+                    background-color: #f9f9f9;
+                    text-align: left;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+                "
+                     onmouseover="this.style.backgroundColor='#f0f8ff'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';"
+                     onmouseout="this.style.backgroundColor='#f9f9f9'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.1)';">
+
+                    <!-- Nome do usuário (com fallback para anônimo em registros antigos) -->
+                    <h4 style="color: #007bff; font-size: 1.2rem; font-weight: bold; margin-bottom: 10px;">
+                        {% if avaliacao.usuario_nome %}
+                            {{ avaliacao.usuario_nome }}
+                        {% else %}
+                            Usuário Anônimo
+                        {% endif %}
+                    </h4>
+
+
+                    <!-- Comentário -->
+                    <p style="
+                        font-size: 1rem;
+                        color: #333;
+                        margin: 0 0 5px 0;
+                        word-wrap: break-word;
+                        overflow-wrap: break-word;
+                        white-space: pre-wrap;
+                        text-align: justify;
+                        line-height: 1.6;
+                    ">
+                        {{ avaliacao.comentario }}
+                    </p>
+
+                    <!-- Data -->
+                    <small style="color: #666; font-size: 0.9rem;">
+                        Publicado em {{ avaliacao.data|date:"d/m/Y H:i" }}
+                    </small>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="font-size: 1.2rem; color: #888;">
+            Nenhum comentário ainda. Seja o primeiro a deixar o seu!
+        </p>
+    {% endif %}
+</div>
+
+<script>
     // Função para atualizar o contador de caracteres
     function updateCount(textarea) {
         const maxLength = textarea.getAttribute('maxlength');
         const currentLength = textarea.value.length;
         const remaining = maxLength - currentLength;
-        document.getElementById('char-count').innerText = remaining + " caracteres restantes";
+        document.getElementById('char-count').innerText =
+            remaining + " caracteres restantes";
     }
 </script>
-  
+
+
     <!-- Estilo básico para as estrelas -->
     <style>
         .stars input[type="radio"] {
@@ -2061,53 +2387,8 @@ img {
             color: #ff9900;
         }
     </style>
-  
-    <!-- Exibindo o comentário e a avaliação do tratamento -->
-<div style="margin-top: 50px; text-align: center;">
-    <h3>Comentários dos usuários:</h3>
-
-    {% if avaliacoes %}
-        <div style="
-            max-height: 400px;  /* altura máxima (ajustável) */
-            overflow-y: auto;   /* adiciona rolagem vertical */
-            padding-right: 10px;
-            margin: 0 auto;
-            width: 100%;
-            max-width: 750px;
-        ">
-            {% for avaliacao in avaliacoes %}
-                <div style="
-                    border: 1px solid #ddd;
-                    border-radius: 8px;
-                    padding: 15px;
-                    margin: 10px auto;
-                    background-color: #f9f9f9;
-                    text-align: left;
-                ">
-                <p style="
-                    font-size: 15px;
-                    color: #333;
-                    margin: 0 0 5px 0;
-                    word-wrap: break-word;
-                    overflow-wrap: break-word;
-                    white-space: pre-wrap;
-                    text-align: justify;
-                    line-height: 1.5;
-                ">
-                    {{ avaliacao.comentario }}
-                </p>
 
 
-                    <small style="color: #666;">
-                        Publicado em {{ avaliacao.data|date:"d/m/Y H:i" }}
-                    </small>
-                </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <p>Nenhum comentário ainda. Seja o primeiro a deixar o seu!</p>
-    {% endif %}
-</div>
 
   
         <!-- <h3>Avaliação:</h3>
@@ -2193,8 +2474,12 @@ img {
           <p><a class="mt-0">CNPJ: 03.376.788/0001-23</a></p>
           
 
+
         </div>
   
+      <div class="card-aviso">
+        <p><strong>Não se automedique.</strong><br>Consulte um profissional de saúde.</p>
+      </div>
 
       </div>
     </div>

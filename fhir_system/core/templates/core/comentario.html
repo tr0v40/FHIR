@@ -1,0 +1,42 @@
+<!-- Formulário de Comentário -->
+<div style="margin-top: 50px; text-align: center;">
+    <h3>Compartilhe sua experiência</h3>
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        <!-- Campo para Nome -->
+        <div>
+            <label for="id_usuario_nome" style="font-size: 1rem;">Nome Completo</label>
+            <input type="text" name="usuario_nome" maxlength="255" required id="id_usuario_nome" placeholder="Digite seu nome">
+        </div>
+
+        <!-- Campo para Comentário -->
+        <div>
+            <label for="id_comentario" style="font-size: 1rem;">Comentário</label>
+            <textarea name="comentario" id="id_comentario" rows="4" placeholder="Compartilhe sua experiência" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enviar Avaliação</button>
+    </form>
+
+    <div style="margin-top: 50px;">
+        <h3>Comentários dos usuários:</h3>
+
+        {% if avaliacoes %}
+            <div style="max-height: 400px; overflow-y: auto; padding-right: 10px; margin: 0 auto; width: 100%; max-width: 750px;">
+                {% for avaliacao in avaliacoes %}
+                    <div style="border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin: 10px auto; background-color: #f9f9f9; text-align: left;">
+                        <h4 style="color: #007bff; font-size: 16px; margin-bottom: 10px;">{{ avaliacao.usuario_nome }}</h4>
+                        <p style="font-size: 15px; color: #333; margin: 0 0 5px 0; word-wrap: break-word; overflow-wrap: break-word; white-space: pre-wrap; text-align: justify; line-height: 1.5;">
+                            {{ avaliacao.comentario }}
+                        </p>
+                        <small style="color: #666;">Publicado em {{ avaliacao.data|date:"d/m/Y H:i" }}</small>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Nenhum comentário ainda. Seja o primeiro a deixar o seu!</p>
+        {% endif %}
+    </div>
+</div>

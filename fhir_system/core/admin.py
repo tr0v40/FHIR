@@ -441,26 +441,20 @@ class AvaliacaoForm(forms.ModelForm):
             raise forms.ValidationError("O comentário não pode ultrapassar 400 caracteres.")
         return comentario
 
-class AvaliacaoAdmin(admin.ModelAdmin):
-    form = AvaliacaoForm  # Usar o formulário personalizado
 
-    # Mostrar os campos que você quer exibir no Admin
-    list_display = ('tratamento', 'comentario', 'data', 'estrelas')
-    
-    # Adicionar filtro por tratamento e data
-    list_filter = ('tratamento', 'data')
-    
-    # Permitir busca por comentário e tratamento
-    search_fields = ('comentario', 'tratamento__nome')
-    
-    # Habilitar a exclusão em massa
+class AvaliacaoAdmin(admin.ModelAdmin):
+    form = AvaliacaoForm
+
+    list_display = ('tratamento', 'usuario_nome', 'comentario', 'data', 'estrelas')  # mostra o nome
+    list_filter  = ('tratamento', 'data')
+    search_fields = ('usuario_nome', 'comentario', 'tratamento__nome')
+
     actions = ['delete_selected']
-    
+
     def delete_selected(self, request, queryset):
-        """Excluir múltiplos comentários selecionados no admin."""
         queryset.delete()
     delete_selected.short_description = "Excluir Comentários Selecionados"
 
-# Registrar o model no Admin
+
 admin.site.register(Avaliacao, AvaliacaoAdmin)
 
