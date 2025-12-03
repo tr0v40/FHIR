@@ -2018,28 +2018,43 @@ img {
         </ul>
       </div>
 
-      <ul class="list-unstyled mb-0">
-  <li class="fw-bold text-dark mb-2">
-    <a href="#opiniao" class="text-decoration-none text-dark">
-      Opinião de especialista
-    </a>
-  </li>
-  <li class="text-secondary fw-semibold mb-1">
-    <a href="#interacao" class="text-decoration-none text-secondary fw-semibold">
-      Interações medicamentosas
-    </a>
-  </li>
-  <li class="text-secondary fw-semibold mb-1">
-    <a href="#genericos" class="text-decoration-none text-secondary fw-semibold">
-      Genéricos e similares
-    </a>
-  </li>
-  <li class="text-secondary fw-semibold">
-    <a href="#prescricao" class="text-decoration-none text-secondary fw-semibold">
-      Prescrição eletrônica
-    </a>
-  </li>
-</ul>
+<!-- Sessão Links -->
+<div class="col-md-5 ps-md-4">
+  <h5 class="fw-bold mb-3 text-dark">Links</h5>
+  <ul class="list-unstyled mb-0">
+    {% if tratamento.opiniao_especialista %}
+    <li class="fw-bold text-dark mb-2">
+      <a href="{{ tratamento.opiniao_especialista }}" class="text-decoration-none text-dark">
+        Opinião de especialista
+      </a>
+    </li>
+    {% endif %}
+
+    {% if tratamento.interacao_medicamentosa %}
+    <li class="text-secondary fw-semibold mb-1">
+      <a href="{{ tratamento.interacao_medicamentosa }}" class="text-decoration-none text-secondary fw-semibold">
+        Interações medicamentosas
+      </a>
+    </li>
+    {% endif %}
+
+    {% if tratamento.genericos_similares %}
+    <li class="text-secondary fw-semibold mb-1">
+      <a href="{{ tratamento.genericos_similares }}" class="text-decoration-none text-secondary fw-semibold">
+        Genéricos e similares
+      </a>
+    </li>
+    {% endif %}
+
+    {% if tratamento.prescricao_eletronica %}
+    <li class="text-secondary fw-semibold">
+      <a href="{{ tratamento.prescricao_eletronica }}" class="text-decoration-none text-secondary fw-semibold">
+        Prescrição eletrônica
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</div>
 
 
   
@@ -2102,6 +2117,7 @@ img {
 
   
 <!-- Botão Agende sua consulta -->
+
 <div style="
     width: 100%;
     display: flex;
@@ -2109,7 +2125,6 @@ img {
     margin: 40px 0 20px 0;
 ">
     <a href="https://www.telix.inf.br/neurologistas-clinicos-gerais-tratamento-enxaqueca"
-       target="_blank"
        style="
            display: block;
            width: 100%;
