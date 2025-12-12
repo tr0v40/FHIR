@@ -370,7 +370,8 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
                     "autores",
                     "link_estudo",
                     "data_publicacao",
-                    "pais",     
+                    "pais", 
+                    "paises",    
                     "country",
                 )
             },
@@ -390,6 +391,10 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
         ("Imagem", {"fields": ("imagem_estudo",  "fonte", "imagem_preview")}),
 
     )
+    class Media:
+        css = {
+            'all': ('admin/css/custom_admin.css',)  # Caminho correto para o arquivo
+        }
 
     # Método para exibir o campo calculado no admin
     def percentual_eficacia(self, obj):

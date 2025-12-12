@@ -61,3 +61,19 @@ class ComentarioForm(forms.ModelForm):
 
     usuario_nome = forms.CharField(max_length=255, required=True, label='Nome Completo', widget=forms.TextInput(attrs={'placeholder': 'Digite seu nome'}))
     comentario = forms.CharField(widget=forms.Textarea, required=True, label='Comentário')
+
+
+from django import forms
+from django_select2.forms import Select2MultipleWidget
+from .models import EvidenciasClinicas, Pais
+
+class EvidenciasClinicasForm(forms.ModelForm):
+    pais = forms.ModelMultipleChoiceField(
+        queryset=Pais.objects.all(),  # Garante que estamos carregando os países do banco de dados
+        widget=Select2MultipleWidget(),  # Usando o widget Select2 para uma boa interface
+        required=False  # Não torna o campo obrigatório
+    )
+
+    class Meta:
+        model = EvidenciasClinicas
+        fields = ['titulo', 'descricao', 'paises']  # Incluindo o campo pais

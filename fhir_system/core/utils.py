@@ -15,3 +15,4 @@ def buscar_imagem_google(medicamento):
     if len(imagens) > 1:
         return imagens[1]["src"]  # A primeira imagem costuma ser do Google
     return None
+ 

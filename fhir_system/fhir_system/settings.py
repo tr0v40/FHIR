@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv(
     "DJANGO_SECRET_KEY", "chave-secreta"
 )  # Usa 'chave-secreta' se não houver .env
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ["*","127.0.0.1", "189.126.32.64", "cadastros.telix.inf.br"]
 
 
@@ -39,6 +39,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # Instalar apps
 INSTALLED_APPS = [
     "jazzmin",
+    "corsheaders",
     "fhir_system",
     'django_extensions',
     "django.contrib.admin",
@@ -64,6 +65,7 @@ DECIMAL_SEPARATOR = ','
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware", 
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -72,6 +74,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Configurações de URLs e Templates
 ROOT_URLCONF = "fhir_system.urls"
