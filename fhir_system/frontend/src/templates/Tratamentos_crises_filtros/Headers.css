@@ -23,9 +23,9 @@
 
 .navbar-brand .logo-img,
 .logo-img {
-  height: 250px;     /* mantém o tamanho que você quer */
+  height: 200px;     /* mantém o tamanho que você quer */
   width: auto;       /* ✅ não força largura */
-  max-width: 260px;  /* opcional: evita estourar */
+  max-width: 200px;  /* opcional: evita estourar */
   display: block;
   object-fit: contain;
   image-rendering: auto;

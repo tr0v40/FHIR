@@ -25,15 +25,20 @@ DATABASES = {
     }
 }
 
-
-# Arquivos Estáticos
 STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+REACT_BUILD_DIR = BASE_DIR / "frontend" / "build"
+
 STATICFILES_DIRS = [
-    BASE_DIR / "static",                     # seus estáticos antigos
-    BASE_DIR / "frontend" / "build" / "static",  # static do React
+    BASE_DIR / "static",
+    REACT_BUILD_DIR / "static",
 ]
 
-STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+
 
 # Arquivos de Mídia (para uploads de arquivos, como imagens)
 MEDIA_URL = "/media/"
@@ -185,4 +190,3 @@ if DEBUG:
     MEDIA_ROOT = BASE_DIR / "media"  # Local de armazenamento de uploads de mídia
 
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

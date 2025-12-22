@@ -1,12 +1,11 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include,re_path
 from core.views import home
 from django.conf import settings
 from django.conf.urls.static import static
 from core import views
 from django.contrib.auth.views import LoginView
 from core.views import CondicaoSaudeDetailView, tipo_eficacia_descricao_json
-
 
 
 
@@ -35,15 +34,15 @@ urlpatterns = [
         name="evidencias_clinicas",
     ),
     path(
-    "tratamentos-controle-enxaqueca",
+    "tratamentos-controle-enxaqueca/",
     views.tratamentos_controle_enxaqueca,
     name="tratamentos_controle_enxaqueca",
 ),
-    path(
-        "tratamentos-crise-enxaqueca",
-        views.react_app,
-        name="tratamentos_crise_enxaqueca",
-    ),
+    path("tratamentos-crise-enxaqueca/", views.react_app, name="tratamentos_crise_enxaqueca"),
+
+    #  qualquer subrota do React (se tiver)
+    re_path(r"^tratamentos-crise-enxaqueca/.*$", views.react_app),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Handlers precisam estar no URLconf raiz:

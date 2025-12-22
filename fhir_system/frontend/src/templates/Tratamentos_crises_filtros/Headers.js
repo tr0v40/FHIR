@@ -1,5 +1,11 @@
 import React from 'react';
 import './Headers.css';
+import { Link } from 'react-router-dom';
+
+
+const TRATAMENTOS_URL =
+  process.env.REACT_APP_TRATAMENTOS_URL || 'http://127.0.0.1:8000/tratamentos/';
+
 
 function Header() {
   return (
@@ -29,10 +35,14 @@ function Header() {
             </label>
           </div>
 
-          <a href="/tratamentos" className="btn-filters">
+
+
+          <a href={TRATAMENTOS_URL} className="btn-filters">
             Outros filtros e ordenações
           </a>
         </div>
+
+
 
         <div className="right">
           <div className="card-aviso">

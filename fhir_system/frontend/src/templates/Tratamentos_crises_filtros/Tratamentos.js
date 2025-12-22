@@ -8,6 +8,7 @@ import Footer from './Footer';
 import Filtros from './Filtros';
 import './Tratamentos.css';
 
+
 const API_ORIGIN =
   process.env.REACT_APP_API_BASE?.replace(/\/$/, '') || '';
 

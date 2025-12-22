@@ -26,6 +26,9 @@ from .models import Avaliacao
 from .forms import ComentarioForm
 from django.contrib import messages
 from .models import Tratamento, Avaliacao 
+from django.http import FileResponse, Http404
+from django.conf import settings
+import os
 
 
   # ==================== IMPORTS SESSIONS ==================== #
@@ -1646,5 +1649,14 @@ def enviar_avaliacao(request):
     return render(request, 'detalhes_tratamentos.html', {'form': form, 'avaliacoes': avaliacoes})
 
 
+
+import os
+from django.conf import settings
+from django.http import FileResponse, HttpResponseServerError
+
 def react_app(request):
-    return render(request, "index.html")
+    index_path = os.path.join(settings.REACT_BUILD_DIR, "index.html")
+    try:
+        return FileResponse(open(index_path, "rb"), content_type="text/html")
+    except FileNotFoundError:
+        return HttpResponseServerError(f"React build não encontrado em: {index_path}")
