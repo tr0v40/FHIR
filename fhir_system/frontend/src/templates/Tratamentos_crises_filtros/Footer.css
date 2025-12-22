@@ -1,0 +1,146 @@
+/* Área principal do rodapé */
+.footer {
+  background-color: #ffffff;  /* fundo branco */
+  border-top: 5px solid #e9e9e9;
+  font-size: 0.rem;
+  padding-top: 100px;
+  padding-bottom: 85px;
+}
+
+/* Containers */
+.container {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 25px;
+}
+
+/* Divisão em 3 colunas */
+.row {
+  margin-left: 200px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.col-12 {
+  width: 100%;
+}
+
+.col-md-4 {
+  width: 33.3333%; /* Ajuste de largura para 3 colunas */
+}
+
+/* Estilo para os links do footer */
+.footer a {
+  text-decoration: none;
+  color: #888a90ff;
+  font-size: 1.2rem;
+}
+
+.footer a:hover {
+  color: #0b66ff;
+  text-decoration: underline;
+}
+
+.footer h5 {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.footer p {
+  font-size: 1.2rem;
+  margin: 5px 0;
+}
+
+/* Ajustes para os ícones das redes sociais */
+.footer-social {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.social-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #ffffffff;
+  color: #413f3fff;
+  font-size: 18px;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  margin-right: 30px;
+}
+
+.social-btn:hover {
+  
+  transform: translateY(-2px);
+  
+  box-shadow: 0 6px 16px rgba(11, 102, 255, 0.18);
+}
+
+/*Mobile*/
+
+@media (max-width: 768px) {
+  .footer {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  .container {
+    padding: 0 18px;
+  }
+
+  .row {
+    margin-left: 0 !important;       
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 28px;
+  }
+
+  .col-md-4 {
+    width: 100%;
+  }
+
+  /* remove bullets e recuos se tiver UL/LI */
+  .footer ul,
+  .footer ol {
+    list-style: none !important;
+    padding-left: 0 !important;
+    margin: 0 !important;
+  }
+
+  .footer li {
+    list-style: none !important;
+    padding-left: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Títulos e links alinhados à esquerda */
+  .footer h5 {
+    font-size: 1.35rem;
+    margin-bottom: 10px;
+  }
+
+  .footer a,
+  .footer p {
+    font-size: 1.05rem;
+  }
+
+  /* Ícones no topo e alinhados à esquerda (como sua imagem) */
+  .footer-social {
+    justify-content: flex-start !important;
+    gap: 16px;
+    margin-bottom: 10px;
+  }
+
+  .social-btn {
+    margin-right: 0;                 
+    width: 44px;
+    height: 44px;
+  }
+}
+

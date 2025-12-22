@@ -7,6 +7,8 @@ from .views import (
     ReacaoAdversaViewSet,
     ContraindicacaoViewSet,
     EvidenciasClinicasViewSet,
+    EficaciaPorEvidenciaViewSet,
+    DetalhesTratamentoReacaoAdversaViewSet,
 )
 
 router = DefaultRouter()
@@ -14,6 +16,9 @@ router.register(r'detalhes-tratamentos', DetalhesTratamentoResumoViewSet, basena
 router.register(r'reacoes-adversas', ReacaoAdversaViewSet)
 router.register(r'contraindicacoes', ContraindicacaoViewSet)
 router.register(r'evidencias-clinicas', EvidenciasClinicasViewSet)
+router.register(r'eficacia-por-evidencia', EficaciaPorEvidenciaViewSet)
+router.register(r'tratamento-reacoes-adversas', DetalhesTratamentoReacaoAdversaViewSet, basename='tratamento-reacoes-adversas')
+
 
 urlpatterns = [
     path('', include(router.urls)),

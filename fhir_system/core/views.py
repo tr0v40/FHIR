@@ -1644,3 +1644,7 @@ def enviar_avaliacao(request):
 
     avaliacoes = Avaliacao.objects.all()
     return render(request, 'detalhes_tratamentos.html', {'form': form, 'avaliacoes': avaliacoes})
+
+
+def react_app(request):
+    return render(request, "index.html")

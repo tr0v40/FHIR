@@ -1,0 +1,311 @@
+
+
+
+/* --- Zona da sidebar continua com UMA borda externa --- */
+.tratamentos-layout .sidebar .left-sidebar {
+  border: 2px solid #d1d5db;
+  border-radius: 10px;
+  background: #fff;              /* mantenha claro para a borda aparecer */
+  padding: 18px;
+  box-shadow: none;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+/* --- Zona da sidebar com borda externa --- */
+.tratamentos-layout .sidebar .left-sidebar {
+  border: 3px solid #d1d5db;
+  border-radius: 10px;
+  background: #fff;
+  padding: 18px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  position: static;  /* Alterado para 'static' para não ficar preso em uma posição fixa */
+  top: auto;  /* Remover o topo fixo */
+  margin-top: 0;  /* Remover qualquer margem superior extra */
+}
+
+/* --- REMOVER "card" do cabeçalho/descrição dos filtros --- */
+.left-sidebar .card-filtro,
+.left-sidebar .card-header,
+.left-sidebar .card-title,
+.left-sidebar .card-desc {
+  background: transparent !important; /* sem fundo */
+  border: none !important;            /* sem borda própria */
+  box-shadow: none !important;        /* sem sombra */
+}
+
+/* Ajustes adicionais para o layout */
+.left-sidebar .card-header {
+  margin: 0 0 6px 0; /* Ajuste pequeno abaixo do título */
+  padding: 0;
+}
+
+.left-sidebar .card-title {
+  font-family: var(--font-sans, "Inter", sans-serif);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #111827;
+  margin: 0;
+}
+
+.left-sidebar .card-desc {
+  font-family: var(--font-sans, "Inter", sans-serif);
+  font-size: 15px;
+  line-height: 1.5;
+  color: #374151;
+  margin: 4px 0 8px;
+}
+
+/* Ajuste do layout geral para maior proximidade */
+.tratamentos-layout {
+  max-width: 1544px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: grid;
+  grid-template-columns:  280px 1fr;
+  gap: 16px;
+  align-items: start;
+  box-sizing: border-box;
+}
+
+/* Ajuste de espaçamento entre sidebar e tratamentos */
+.tratamentos-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 10px; /* Ajuste de distância entre o topo e o primeiro card */
+}
+
+/* --- REMOVER “card” do cabeçalho/descrição dos filtros --- */
+.left-sidebar .card-filtro,
+.left-sidebar .card-header,
+.left-sidebar .card-title,
+.left-sidebar .card-desc {
+  background: transparent !important; /* sem fundo */
+  border: none !important;            /* sem borda própria */
+  box-shadow: none !important;        /* sem sombra */
+}
+
+/* Se existir alguma classe .card ou .card-header vindo de framework: zere aqui também */
+.left-sidebar .card,
+.left-sidebar .card-header {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* --- Espaçamento enxuto e tipografia maior --- */
+.left-sidebar .card-header {
+  margin: 0 0 6px 0;               /* pequeno respiro abaixo do título */
+  padding: 0;
+}
+
+.left-sidebar .card-title {
+  font-family: var(--font-sans, "Inter", sans-serif);
+  font-size: 20px;                 /* ↑ maior que 15px anterior */
+  font-weight: 700;
+  letter-spacing: -0.01em;         /* leve “tight” moderno */
+  color: #111827;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.left-sidebar .card-desc {
+  font-family: var(--font-sans, "Inter", sans-serif);
+  font-size: 15px;                 /* ↑ maior que 12px anterior */
+  line-height: 1.5;                /* melhora leitura */
+  color: #374151;                  /* um pouco mais escuro que o cinza claro */
+  margin: 4px 0 8px;               /* espaço mínimo */
+}
+
+/* --- Campos e botões com tipografia maior (mantendo flat) --- */
+.left-sidebar .campo { gap: 8px; }  /* espaço suficiente sem “card” por trás */
+
+.left-sidebar .campo-label {
+  font-size: 14px;                 /* ↑ */
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+}
+
+.left-sidebar .campo-select,
+.left-sidebar .campo-select-multi {
+  width: 100%;
+  padding: 10px 19px;              /* ↑ */
+  font-size: 15px;                 /* ↑ */
+  border: 1px solid #cfd4da;
+  border-radius: 8px;
+  background: #fff;
+  color: #1f2937;
+}
+
+/* Radios */
+.left-sidebar .radio-group { gap: 12px; margin-top: 10px; }
+.left-sidebar .radio { font-size: 15px; color: #374151; }
+
+/* Botões */
+.left-sidebar .btn-aplicar,
+.left-sidebar .btn-secondary,
+.left-sidebar .btn-reset {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 15px;                /* ↑ */
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+/* Ícone de informação: se estiver “quebrado” ou feio, esconda */
+.left.left-sidebar .info-icon {
+  display: none;    
+}
+
+.card-title  { font-size: 15px; font-weight: 700; color: var(--text-strong); }
+.card-desc   { font-size: 15px; color: var(--text-muted); }
+
+.campo-label { font-size: 13px; font-weight: 600; color: var(--text-body); }
+
+.campo-select,
+.campo-select-multi {
+  font-size: 15px;
+  color: var(--text-body);
+}
+
+.radio { font-size: 14px; color: var(--text-body); }
+
+.btn-aplicar,
+.btn-secondary,
+.btn-reset {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
+/* Gap entre sidebar e tratamentos (garanta no layout) */
+/* No Tratamentos.css, mantenha: .tratamentos-layout { gap: 30px; } */
+
+/* ===== Conteúdo dos filtros ===== */
+.filtros {
+  display: flex;
+  flex-direction: column;
+  gap: 0;                          /* usaremos divisórias por bloco */
+}
+
+/* Blocos internos sem caixas próprias */
+.card-filtro {
+  border: none;
+  background: transparent;
+  padding: 25px 0;                 /* respiro vertical por bloco */
+  margin: 0;
+}
+
+/* Linha divisória entre cada bloco (como no mock) */
+.card-filtro + .card-filtro {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 16px;               /* respiro após a linha */
+}
+
+/* Cabeçalhos compactos */
+.card-header { margin: 0 0 8px 0; padding: 0; }
+.card-title  { font-size: 15px; font-weight: 700; color: #111827; margin: 0; }
+.card-desc   { font-size: 1px; color: #6B7280; margin: 4px 0 8px; }
+
+/* Campos com respiro e tamanho confortável */
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;                        /* NÃO tão grande (evita “espremido”) */
+}
+
+.campo-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+}
+
+.campo-select,
+.campo-select-multi {
+  width: 100%;
+  padding: 9px 12px;               /* agradável ao toque */
+  font-size: 14px;
+  border: 1px solid #cfd4da;
+  border-radius: 8px;
+  background: #fff;
+}
+
+/* Radios com espaçamento */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+}
+.radio { font-size: 14px; color: #374151; }
+
+/* Botões confortáveis */
+.card-actions { margin-top: 8px; }
+.btn-aplicar,
+.btn-secondary,
+.btn-reset {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border-radius: 8px;
+}
+
+.btn-aplicar {
+  border: 1px solid #c7cbd1;
+  background-color: #afb7c2;
+  color: #fff;
+  font-weight: 600;
+}
+.btn-aplicar:hover { background-color: #8fa0b5; }
+
+.btn-secondary {
+  border: 1px solid #c7cbd1;
+  background-color: #ffffff;
+  color: #374151;
+}
+
+.global-actions { margin-top: 6px; }
+.btn-reset {
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  color: #374151;
+  font-size: 13px;
+}
+.btn-reset:hover { background: #f3f4f6; }
+
+/* Chips (contraindicações) com respiro */
+.contra-pane { display: flex; flex-direction: column; gap: 8px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 14px;
+  background: #eef2ff;
+  color: #1f2937;
+  font-size: 12px;
+}
+.chip-close {
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* Responsivo (se necessário empilhar) */
+@media (max-width: 1024px) {
+  .tratamentos-layout .sidebar .left-sidebar {
+    position: static;
+    top: auto;
+  }
+}

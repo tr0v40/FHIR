@@ -40,11 +40,10 @@ urlpatterns = [
     name="tratamentos_controle_enxaqueca",
 ),
     path(
-    "tratamentos-crise-enxaqueca",
-    views.tratamentos_crise_enxaqueca,
-    name="tratamentos_crise_enxaqueca",
-),
-
+        "tratamentos-crise-enxaqueca",
+        views.react_app,
+        name="tratamentos_crise_enxaqueca",
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Handlers precisam estar no URLconf raiz:

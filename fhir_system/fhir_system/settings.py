@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv(
     "DJANGO_SECRET_KEY", "chave-secreta"
 )  # Usa 'chave-secreta' se não houver .env
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ["*","127.0.0.1", "189.126.32.64", "cadastros.telix.inf.br"]
 
 
@@ -28,9 +28,12 @@ DATABASES = {
 
 # Arquivos Estáticos
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = [
+    BASE_DIR / "static",                     # seus estáticos antigos
+    BASE_DIR / "frontend" / "build" / "static",  # static do React
+]
 
-STATIC_ROOT = BASE_DIR / "staticfiles"  # Para o comando `collectstatic`
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Arquivos de Mídia (para uploads de arquivos, como imagens)
 MEDIA_URL = "/media/"
@@ -83,8 +86,11 @@ ROOT_URLCONF = "fhir_system.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],  # Diretório para templates
-        "APP_DIRS": True,  # Procurar templates dentro das pastas dos apps
+        "DIRS": [
+            BASE_DIR / "templates",                 # templates Django antigos
+            BASE_DIR / "frontend" / "build",        # index.html do React
+        ],
+        "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
@@ -95,6 +101,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 # settings.py
 

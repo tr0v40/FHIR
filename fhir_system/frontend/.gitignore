@@ -1,23 +1,27 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Python
+__pycache__/
+*.pyc
+.env
+.env.*
+*.log
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
+# Django
+staticfiles/
+media/
 
-# testing
-/coverage
+# React / Node (funciona na raiz e dentro do frontend)
+node_modules/
+**/node_modules/
 
-# production
-/build
 
-# misc
+*.map
+
+.env
+.env.*
+**/.env
+**/.env.*
+
+# OS / Editor
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+.vscode/
+.idea/

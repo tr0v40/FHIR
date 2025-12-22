@@ -1,3 +1,48 @@
+
+/* src/index.css */
+
+/* Stack com fallback de sistema */
+:root {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, "Helvetica Neue", Arial, "Noto Sans",
+               "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+
+  /* Cores de texto usuais para melhor contraste */
+  --text-strong: #111827; /* títulos */
+  --text-body:   #1f2937; /* corpo */
+  --text-muted:  #6b7280; /* descrições/auxiliar */
+}
+
+html {
+  font-family: var(--font-sans);
+  font-size: 16px;                 /* base recomendada */
+  line-height: 1.5;                /* leitura confortável */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  color: var(--text-body);
+}
+
+/* Hierarquia de títulos */
+h1 { font-weight: 700; letter-spacing: -0.01em; color: var(--text-strong); }
+h2 { font-weight: 700; letter-spacing: -0.01em; color: var(--text-strong); }
+h3 { font-weight: 600; letter-spacing: -0.005em; color: var(--text-strong); }
+
+/* Parágrafos e labels */
+p, li, label, input, select, button {
+  font-weight: 400;
+  font-size: 16px; /* pode reduzir localmente onde necessário */
+}
+
+/* Links e botões */
+a, .btn {
+  font-weight: 600;
+}
+
+
 .App {
   text-align: center;
 }
@@ -27,6 +72,8 @@
 .App-link {
   color: #61dafb;
 }
+
+
 
 @keyframes App-logo-spin {
   from {

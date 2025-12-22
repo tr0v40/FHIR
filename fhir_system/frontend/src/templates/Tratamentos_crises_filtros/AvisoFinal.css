@@ -1,0 +1,24 @@
+/* desktop: não aparece */
+.aviso-final {
+  display: none;
+}
+
+/* mobile: aparece no final */
+@media (max-width: 768px) {
+  .aviso-final {
+    display: block;
+    max-width: 1550px;
+    margin: 16px auto 40px;
+    padding: 0 20px;
+  }
+
+  .aviso-final__card {
+    background: #000;
+    color: #fff;
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+}

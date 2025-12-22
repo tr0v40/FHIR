@@ -10,7 +10,15 @@ from core.models import (
     Avaliacao,
     EficaciaPorEvidencia,
     TipoEficacia,
+    DetalhesTratamentoReacaoAdversa,
+    
 )
+
+class DetalhesTratamentoReacaoAdversaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DetalhesTratamentoReacaoAdversa
+        fields = ['id', 'tratamento', 'reacao_adversa', 'grau_comunalidade', 'reacao_min', 'reacao_max']
+
 
 
 class CondicaoSaudeSerializer(serializers.ModelSerializer):
@@ -40,20 +48,23 @@ class TipoTratamentoSerializer(serializers.ModelSerializer):
 class TipoEficaciaSerializer(serializers.ModelSerializer):
     class Meta:
         model = TipoEficacia
-        fields = '__all__'
-
+        fields = ['id', 'tipo_eficacia', 'descricao', 'imagem']
 
 class EficaciaPorEvidenciaSerializer(serializers.ModelSerializer):
     tipo_eficacia = TipoEficaciaSerializer(read_only=True)
-    percentual_eficacia_calculado = serializers.FloatField(read_only=True)
+    percentual_eficacia_calculado = serializers.ReadOnlyField()  # Usando ReadOnlyField para acessar a propriedade
+    nome_tratamento = serializers.CharField(source='evidencia.tratamento.nome', read_only=True)  # Nome do tratamento
 
     class Meta:
         model = EficaciaPorEvidencia
-        fields = '__all__'
+        fields = ['tipo_eficacia', 'participantes_com_beneficio', 'participantes_iniciaram_tratamento', 'percentual_eficacia_calculado', 'nome_tratamento']
+
+
 
 
 class EvidenciasClinicasSerializer(serializers.ModelSerializer):
     condicao_saude = CondicaoSaudeSerializer(read_only=True)
+    eficacia_por_evidencia = EficaciaPorEvidenciaSerializer(many=True, read_only=True)
 
     class Meta:
         model = EvidenciasClinicas
@@ -83,3 +94,4 @@ class DetalhesTratamentoResumoSerializer(serializers.ModelSerializer):
     class Meta:
         model = DetalhesTratamentoResumo
         fields = '__all__'
+
