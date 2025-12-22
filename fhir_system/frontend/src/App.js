@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Tratamentos from './templates/Tratamentos_crises_filtros/Tratamentos'; 
 // Inter (exemplo):
 import "@fontsource/inter/400.css";
@@ -12,12 +13,12 @@ import "@fontsource/inter/700.css";
 
 
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <Tratamentos />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/tratamentos-crise-enxaqueca" element={<Tratamentos />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-export default App;
