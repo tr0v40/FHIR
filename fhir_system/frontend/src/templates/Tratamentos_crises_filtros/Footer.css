@@ -95,6 +95,22 @@
 }
 
 
+.footer-links li {
+  margin-bottom: 10px; /* Ajuste o valor conforme necessário (ex.: 10px ou 12px) */
+}
+
+
+.footer ul li {
+  margin-bottom: 10px; /* Ajuste conforme necessário, ex.: 10px ou 12px */
+}
+
+
+
+.footer .col-md-4 p {
+  margin-bottom: 10px; /* Ajuste para 10px ou 12px se quiser mais espaço */
+}
+
+
 /*Mobile*/
 
 @media (max-width: 768px) {
