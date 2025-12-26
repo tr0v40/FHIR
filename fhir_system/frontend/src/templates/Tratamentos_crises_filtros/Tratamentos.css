@@ -124,7 +124,7 @@ html, body {
 
 /* Largura total suficiente para 320px (sidebar) + 24px (gap) + 1200px (cards) */
 .tratamentos-layout {
-  max-width: 1544px;     /* 320 + 24 + 1200 + margem de segurança */
+  max-width: 1400px;     /* 320 + 24 + 1200 + margem de segurança */
   margin: 0 auto;
   padding: 24px 16px;
   display: grid;
@@ -146,7 +146,7 @@ html, body {
 /* Sidebar (posição e largura) */
 .sidebar {
   position: sticky;
-  top: 100px;                 /* ajuste conforme a altura do Header */
+  top: 20px;                 /* ajuste conforme a altura do Header */
   width: 260px;              /* <<< garante a largura menor */
   height: fit-content;
 }
@@ -401,9 +401,10 @@ html, body {
 }
 
 /* ========= MOBILE ========= */
+/* Ajustes para mobile */
 @media (max-width: 720px) {
-  /* Layout da página: cards primeiro e filtros depois (você já queria isso) */
-  .tratamentos-layout{
+  /* Layout da página: cards primeiro e filtros depois */
+  .tratamentos-layout {
     display: flex !important;
     flex-direction: column !important;
     grid-template-columns: none !important;
@@ -411,11 +412,11 @@ html, body {
     max-width: 100% !important;
   }
 
-  .conteudo{
+  .conteudo {
     order: 1 !important;
   }
 
-  .sidebar{
+  .sidebar {
     order: 2 !important;
     width: 100% !important;
     position: static !important;
@@ -423,49 +424,49 @@ html, body {
   }
 
   .left-sidebar,
-  .filtros{
+  .filtros {
     position: static !important;
   }
 
-  /* --------- AQUI É O PRINCIPAL: card empilhado no mobile --------- */
-  .tratamento-card{
+  /* Cards compactos no mobile */
+  .tratamento-card {
     padding: 16px !important;
+    width: 100% !important;  /* Garante que os cards ocupem toda a largura */
   }
 
-  .tratamento-content{
+  .tratamento-content {
     flex-direction: column !important;
     align-items: center !important;
     gap: 14px !important;
   }
 
-  .tratamento-imagem{
+  .tratamento-imagem {
     width: 100% !important;
     display: flex !important;
     justify-content: center !important;
   }
 
-  .tratamento-imagem img{
+  .tratamento-imagem img {
     max-width: 160px !important;
     width: 100% !important;
     height: auto !important;
     object-fit: contain !important;
   }
 
-  .tratamento-info{
+  .tratamento-info {
     width: 100% !important;
     text-align: center !important;
   }
 
-  /* botões centralizados e consistentes no mobile */
-  .tratamento-info .btn{
+  /* Centralizar botões no mobile */
+  .tratamento-info .btn {
     display: inline-flex !important;
     justify-content: center !important;
     align-items: center !important;
     margin: 8px auto 0 !important;
   }
 
-
-  /* container da eficácia */
+  /* Ajustes na eficácia */
   .eficacia-container {
     width: 100% !important;
     display: flex !important;
@@ -474,26 +475,22 @@ html, body {
     text-align: center !important;
   }
 
-  /* título "Eficácia: Redução de sintomas" */
   .eficacia-title {
     text-align: center !important;
     width: 100% !important;
   }
 
-  /* barra */
   .eficacia-bar-container {
     width: 100% !important;
     max-width: 320px !important;
     margin: 8px auto !important;
   }
 
-  /* faixa percentual */
   .eficacia-range {
     text-align: center !important;
     width: 100% !important;
   }
 
-  /* prazo */
   .prazo-title,
   .prazo-value {
     text-align: center !important;
@@ -501,69 +498,133 @@ html, body {
   }
 }
 
-@media (max-width: 1024px) {
-  /* troque .titulo-pagina pelo seletor real do seu H1 */
-  .titulo-pagina {
-    font-size: 28px;          /* ajuste: 26–30 */
-    line-height: 1.15;
-    white-space: normal;      /* permite quebrar */
-    word-break: break-word;   /* evita estourar */
-    overflow-wrap: anywhere;  /* quebra se precisar */
-  }
-}
-
+/* Ajustes de sidebar */
 @media (max-width: 480px) {
-  .titulo-pagina {
-    font-size: 15px;          /* bem mobile */
+  .sidebar {
+    width: 100% !important;
+    padding: 10px 0 !important;
+  }
+
+  .left-sidebar {
+    padding: 0 10px !important;
   }
 }
 
-@media (max-width: 720px) {
-  .titulo-pagina h1 {
-    font-size: 20px !important;
-    line-height: 1.15 !important;
-    white-space: normal !important;
-    overflow-wrap: anywhere !important;
-    word-break: break-word !important;
-  }
-}
-/* Desktop / padrão */
-.titulo-pagina {
-  font-size: 40px; /* ou o seu padrão */
-  line-height: 1.1;
-}
-
-/* Tablet/Mobile */
-@media (max-width: 720px) {
-  .titulo-pagina {
-    font-size: 28px !important;
-    line-height: 1.15 !important;
-    white-space: normal !important;
-    overflow-wrap: anywhere !important;
-    word-break: break-word !important;
-  }
-}
-
-
-/* mobile */
-@media (max-width: 720px) {
-  .titulo-pagina {
-    font-size: 26px !important;
-    line-height: 1.2 !important;
-
-    max-width: 90%;          /* 🔑 força quebra */
-    margin: 0 auto;          /* centraliza */
-    
-    white-space: normal;     /* permite quebrar */
-    overflow-wrap: break-word;
-    word-break: normal;
-  }
-}
-
-/* mobile pequeno */
+/* Ajustes de tipografia e espaço para dispositivos menores */
 @media (max-width: 480px) {
   .titulo-pagina {
     font-size: 22px !important;
     max-width: 95%;
+  }
+
+  .card-title {
+    font-size: 14px !important;
+  }
+
+  .card-desc {
+    font-size: 12px !important;
+  }
+}
+/* Ajustes para mobile */
+@media (max-width: 720px) {
+  /* Ajusta a sidebar para ocupar 80% da largura na versão mobile */
+  .left-sidebar {
+    width: 80% !important;  /* Reduz a largura para 80% da tela */
+    padding: 10px 16px !important;  /* Ajusta o padding para melhor espaçamento */
+    border: none !important;  /* Remove borda para maior fluidez */
+    box-shadow: none !important;  /* Remove a sombra */
+  }
+
+  /* Ajuste dos filtros para 80% da largura da tela no mobile */
+  .filtros {
+    width: 80% !important;
+    margin: 0 auto;  /* Centraliza os filtros na tela */
+  }
+
+  /* Ajuste de espaçamento entre os filtros */
+  .card-filtro {
+    padding: 20px 0 !important;  /* Menos espaço entre os filtros */
+  }
+
+  /* Ajuste do conteúdo para se adaptar à largura reduzida */
+  .tratamento-card {
+    width: 90% !important;  /* Garante que os cards ocupem toda a largura disponível */
+    padding: 16px !important;  /* Menos padding no card */
+  }
+
+  /* Ajuste da imagem dos tratamentos */
+  .tratamento-imagem img {
+    max-width: 160px !important;
+    width: 90% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+
+  /* Centralizar os botões */
+  .tratamento-info .btn {
+    margin: 8px auto 0 !important;
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  /* Ajuste da eficácia e do prazo */
+  .eficacia-container {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .eficacia-bar-container {
+    width: 90% !important;
+    max-width: 320px !important;
+    margin: 8px auto !important;
+  }
+
+  /* Ajuste de texto e título para caber melhor na tela */
+  .prazo-title,
+  .prazo-value {
+    text-align: center !important;
+    width: 100% !important;
+  }
+}
+
+/* Ajuste para telas muito pequenas (menores que 480px) */
+@media (max-width: 480px) {
+  .left-sidebar {
+    width: 100% !important;  /* A sidebar ocupa toda a largura */
+    
+  }
+
+  .filtros {
+    width: 90% !important;
+    padding: 10px 0 !important; /* Ajusta o padding para telas menores */
+  }
+
+  .card-filtro {
+    padding: 16px 0 !important; /* Menos padding nos filtros */
+  }
+}
+
+/* Ajuste para telas muito pequenas (menores que 480px) */
+@media (max-width: 480px) {
+  .left-sidebar {
+    width: 100% !important;  /* A sidebar ocupa toda a largura */
+  }
+
+  .filtros {
+    width: 90% !important;
+    padding: 5px 0 !important; /* Ajusta o padding para telas menores */
+    border: 2px solid #d1d5db; /* Adiciona a borda */
+    border-radius: 10px; /* Borda arredondada */
+    background-color: #fff; /* Fundo branco para a borda se destacar */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1); /* Sombra suave para dar destaque */
+    margin: 4 auto; /* Centraliza os filtros */
+  }
+
+  .card-filtro {
+    padding: 10px 0 !important; /* Menos padding nos filtros */
   }
 }

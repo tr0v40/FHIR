@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 
 import AvisoFinal from './AvisoFinal';
 import Header from './Headers';
@@ -9,8 +9,8 @@ import Filtros from './Filtros';
 import './Tratamentos.css';
 
 
-const API_ORIGIN =
-  process.env.REACT_APP_API_BASE?.replace(/\/$/, '') || '';
+//const API_ORIGIN =
+  //process.env.REACT_APP_API_BASE?.replace(/\/$/, '') || '';
 
 const API_BASE = '/api';
 
@@ -29,9 +29,10 @@ const DEFAULT_FILTROS = {
   prazoMax: 100,
   publico: 'todos',
   contraindicacoes: [],
-  ordenarCaracteristica: 'nenhuma', // 'nenhuma' | 'eficacia' | 'prazo' | 'custo' | 'risco'
-  ordemCaracteristica: 'desc', // 'desc' | 'asc'
+  ordenarCaracteristica: 'eficacia', // ✅ default: eficácia
+  ordemCaracteristica: 'desc',       // ✅ default: maior -> menor
 };
+
 
 const normalizeKey = (v) =>
   String(v ?? '')
@@ -268,30 +269,21 @@ function Tratamentos() {
   
 
   // sidebar offset
-  const adjustSidebarOffset = () => {
-    try {
-      const layoutEl = layoutRef.current;
-      const sidebarElWrapper = sidebarWrapperRef.current;
-      if (!layoutEl || !sidebarElWrapper) return;
+const adjustSidebarOffset = () => {
+  try {
+    const sidebarElWrapper = sidebarWrapperRef.current;
+    if (!sidebarElWrapper) return;
 
-      const sidebarBox =
-        sidebarElWrapper.querySelector('.left-sidebar') || sidebarElWrapper;
+    const sidebarBox =
+      sidebarElWrapper.querySelector('.left-sidebar') || sidebarElWrapper;
 
-      const firstCard = layoutEl.querySelector('.tratamentos-list .tratamento-card');
-      if (!firstCard) {
-        sidebarBox.style.marginTop = '0px';
-        return;
-      }
+    sidebarBox.style.marginTop = '0px'; // ✅ não empurra para baixo
+  } catch (e) {
+    console.warn('Não foi possível ajustar o offset da sidebar:', e);
+  }
+};
 
-      const layoutTopAbs = layoutEl.getBoundingClientRect().top + window.scrollY;
-      const cardTopAbs = firstCard.getBoundingClientRect().top + window.scrollY;
-      const offset = Math.max(0, Math.round(cardTopAbs - layoutTopAbs));
-
-      sidebarBox.style.marginTop = `${Math.max(0, offset - 20)}px`;
-    } catch (e) {
-      console.warn('Não foi possível ajustar o offset da sidebar:', e);
-    }
-  };
+// useEffect para ativar o ajuste ao carregar a página ou ao redimensionar a janela
 useEffect(() => {
   adjustSidebarOffset();
 
@@ -301,6 +293,7 @@ useEffect(() => {
   window.addEventListener('resize', onResize);
   window.addEventListener('load', onLoad);
 
+  // Recalcular o ajuste após algum tempo para garantir que o layout esteja carregado
   const t = setTimeout(adjustSidebarOffset, 300);
 
   return () => {
@@ -308,7 +301,7 @@ useEffect(() => {
     window.removeEventListener('load', onLoad);
     clearTimeout(t);
   };
-}, [tratamentos.length]);
+}, [tratamentos.length]); // Dependência ajustada para quando os tratamentos forem alterados
 
 
   // quando carrega pela primeira vez, também buscar risco max
@@ -345,53 +338,61 @@ useEffect(() => {
   ]);
 
   // ORDENADOS (apenas quando clicar aplicar -> usa filtrosAplicados)
-  const tratamentosOrdenados = useMemo(() => {
-    const arr = [...tratamentosFiltrados];
-    const criterio = filtrosAplicados.ordenarCaracteristica;
+const tratamentosOrdenados = useMemo(() => {
+  const arr = [...tratamentosFiltrados];
 
-    if (!criterio || criterio === 'nenhuma') return arr;
+  // ✅ se o usuário não escolheu nada, a tela ainda ordena por eficácia (desc)
+  const criterio = filtrosAplicados.ordenarCaracteristica || 'eficacia';
+  const ordem = filtrosAplicados.ordemCaracteristica || 'desc';
 
-    const dir = filtrosAplicados.ordemCaracteristica === 'asc' ? 1 : -1;
+  const dir = ordem === 'asc' ? 1 : -1;
 
-    const getVal = (t) => {
-      if (criterio === 'eficacia') {
-        return eficaciaStatsByNome.get(t.nome)?.max ?? -Infinity;
-      }
+  const getVal = (t) => {
+    if (criterio === 'eficacia') {
+      // max maior primeiro; se não tiver, joga pro final
+      return eficaciaStatsByNome.get(t.nome)?.max ?? -Infinity;
+    }
 
-      if (criterio === 'prazo') {
-        // ✅ PRIORIDADE: usar campo do backend (já normalizado em minutos)
-        const apiVal = toNumber(t?.prazo_medio_minutos);
-        if (apiVal !== null) return apiVal;
+    if (criterio === 'prazo') {
+      const apiVal = toNumber(t?.prazo_medio_minutos);
+      if (apiVal !== null) return apiVal;
+      const v = prazoMedioEmMinutosFront(t);
+      return Number.isFinite(v) ? v : Infinity;
+    }
 
-        // fallback: calcula no front
-        const v = prazoMedioEmMinutosFront(t);
-        return Number.isFinite(v) ? v : Infinity;
-      }
+    if (criterio === 'custo') {
+      const v = toNumber(t?.custo_medicamento ?? t?.preco);
+      return v !== null ? v : Infinity;
+    }
 
-      if (criterio === 'custo') {
-        const v = toNumber(t?.custo_medicamento ?? t?.preco);
-        return v !== null ? v : Infinity;
-      }
+    if (criterio === 'risco') {
+      const v = riscoMaxPorTratamentoId?.[t?.id];
+      const n = toNumber(v);
+      return n !== null ? n : Infinity;
+    }
 
-      if (criterio === 'risco') {
-        // ✅ usa o mapa da API nova: Max(reacao_max) por tratamento
-        const v = riscoMaxPorTratamentoId?.[t?.id];
-        const n = toNumber(v);
-        return n !== null ? n : Infinity;
-      }
+    return 0;
+  };
 
-      return 0;
-    };
-
-    arr.sort((a, b) => (getVal(a) - getVal(b)) * dir);
+  // ✅ mesmo que venha "nenhuma", ordena por eficácia desc
+  if (criterio === 'nenhuma') {
+    arr.sort((a, b) =>
+      ((eficaciaStatsByNome.get(a.nome)?.max ?? -Infinity) -
+        (eficaciaStatsByNome.get(b.nome)?.max ?? -Infinity)) * -1
+    );
     return arr;
-  }, [
-    tratamentosFiltrados,
-    filtrosAplicados.ordenarCaracteristica,
-    filtrosAplicados.ordemCaracteristica,
-    eficaciaStatsByNome,
-    riscoMaxPorTratamentoId,
-  ]);
+  }
+
+  arr.sort((a, b) => (getVal(a) - getVal(b)) * dir);
+  return arr;
+}, [
+  tratamentosFiltrados,
+  filtrosAplicados.ordenarCaracteristica,
+  filtrosAplicados.ordemCaracteristica,
+  eficaciaStatsByNome,
+  riscoMaxPorTratamentoId,
+]);
+
 
   // Visual imediato: só muda o campo de baixo (prazo/preço/risco)
   const criterioVisual = filtros.ordenarCaracteristica;

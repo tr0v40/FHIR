@@ -2,7 +2,11 @@ from rest_framework import viewsets
 from django.db.models import Max
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.db.models import Case, When, Value, FloatField, F, ExpressionWrapper
+from django.db.models.functions import Coalesce
 
+
+  # ==================== IMPORTS SESSIONS ==================== #
 
 from core.models import (
     DetalhesTratamentoResumo,
@@ -61,8 +65,6 @@ class DetalhesTratamentoReacaoAdversaViewSet(viewsets.ReadOnlyModelViewSet):
         return Response(list(data))
 
 
-from django.db.models import Case, When, Value, FloatField, F, ExpressionWrapper
-from django.db.models.functions import Coalesce
 
 class DetalhesTratamentoResumoViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = DetalhesTratamentoResumoSerializer

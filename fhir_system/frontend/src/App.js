@@ -1,18 +1,20 @@
+
+
+
 import React from "react";
+import { Routes, Route } from "react-router-dom";
 import Tratamentos from "./templates/Tratamentos_crises_filtros/Tratamentos";
 
-// fontes
+// Inter
 import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
 import "@fontsource/inter/700.css";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <Tratamentos />
-    </div>
+    <Routes>
+      <Route path="/" element={<Tratamentos />} />
+    </Routes>
   );
 }
-
-export default App;

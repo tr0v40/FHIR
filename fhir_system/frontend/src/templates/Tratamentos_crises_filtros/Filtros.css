@@ -12,6 +12,7 @@
 }
 /* --- Zona da sidebar com borda externa --- */
 .tratamentos-layout .sidebar .left-sidebar {
+  
   border: 3px solid #d1d5db;
   border-radius: 10px;
   background: #fff;

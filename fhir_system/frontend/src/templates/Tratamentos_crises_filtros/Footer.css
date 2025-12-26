@@ -9,14 +9,14 @@
 
 /* Containers */
 .container {
-  max-width: 1500px;
+  max-width: 1250px;
   margin: 0 auto;
   padding: 0 25px;
 }
 
 /* Divisão em 3 colunas */
 .row {
-  margin-left: 200px;
+  margin-left: 280px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -56,7 +56,7 @@
 /* Ajustes para os ícones das redes sociais */
 .footer-social {
   display: flex;
-  gap: 20px;
+  gap: 30px;
   justify-content: center;
 }
 
@@ -71,7 +71,8 @@
   color: #413f3fff;
   font-size: 18px;
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
-  margin-right: 30px;
+  margin-right: 10px;
+  margin-top:10px;
 }
 
 .social-btn:hover {
@@ -80,6 +81,19 @@
   
   box-shadow: 0 6px 16px rgba(11, 102, 255, 0.18);
 }
+
+/* Remove os bullets (pontinhos) das listas do footer */
+.footer ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+/* Garante que os <li> não recriem marcador */
+.footer li {
+  list-style: none;
+}
+
 
 /*Mobile*/
 
@@ -112,6 +126,7 @@
     padding-left: 0 !important;
     margin: 0 !important;
   }
+  
 
   .footer li {
     list-style: none !important;
@@ -141,6 +156,18 @@
     margin-right: 0;                 
     width: 44px;
     height: 44px;
-  }
+  
+  /* Remove os bullets (pontinhos) das listas do footer */
+.footer ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+/* Garante que os <li> não recriem marcador */
+.footer li {
+  list-style: none;
+}
+}
 }
 

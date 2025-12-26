@@ -1,10 +1,10 @@
 .site-header {
   background-color: #ffffff;
-  padding: 70px 0 64px;
+  padding: 0px 0 20px;
 }
 
 .header-content {
-  max-width: 1550px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 58px;
 }
@@ -13,7 +13,7 @@
   display: flex;
   align-items: flex-start;
   padding-top: 12px;
-  padding-bottom: 30px;
+  padding-bottom: 20px;
 }
 
 .navbar-left {
@@ -23,9 +23,9 @@
 
 .navbar-brand .logo-img,
 .logo-img {
-  height: 200px;     /* mantém o tamanho que você quer */
-  width: auto;       /* ✅ não força largura */
-  max-width: 200px;  /* opcional: evita estourar */
+  height: 150px;     /* mantém o tamanho que você quer */
+  width: auto;       /*  não força largura */
+  max-width: 150px;  /* opcional: evita estourar */
   display: block;
   object-fit: contain;
   image-rendering: auto;
@@ -47,11 +47,11 @@
 }
 
 .titulo-pagina {
-  font-size: 42px;
+  font-size: 35px;
   font-weight: 800;
   color: #010009;
   margin: 0 0 14px;
-  line-height: 1.1;
+  line-height: 1.0;
   font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -59,7 +59,7 @@
   color: #010009;
   font-weight: 600;
   font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .checkbox-container {
@@ -70,7 +70,7 @@
 }
 
 .checkbox-container input[type="checkbox"] {
-  transform: scale(1.2);
+  transform: scale(1.6);
   cursor: pointer;
 }
 
@@ -111,11 +111,11 @@
   background-color: #000;
   color: #fff;
   border-radius: 10px;
-  font-size: 18px;
+  font-size: 16px;
   width: 100%;
-  max-width: 550px;
+  max-width: 250px;
   text-align: center;
-  line-height: 1.4;
+  line-height: 1.2;
   padding: 18px;
   margin: 0;              
   display: flex;
@@ -148,12 +148,12 @@
 
   .titulo-pagina {
     font-size: 35px;
-    line-height: 1.15;
+    line-height: 1.05;
     white-space: normal;
     overflow-wrap: break-word;
     word-break: normal;
     margin: 0 0 10px;
-     margin-top:30px
+    margin-top:30px
   }
 
   .subtitulo { font-size: 15px; margin-top:30px}
@@ -162,6 +162,7 @@
     width: 100%;
     justify-content: flex-start;
   }
+  
 
  
   .card-aviso {
