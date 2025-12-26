@@ -34,10 +34,11 @@ const Filtros = ({
             <h3 id="perfil-title" className="card-title">
               <span>Filtros</span>
               <img
-                src={`${process.env.PUBLIC_URL}/filtros.png`}
-                alt="Ícone de filtros"
-                className="titulo-icone"
-              />
+		  src={"/static/filtros.png"}
+		  alt="Ícone de filtros"
+ 		  className="titulo-icone"
+		/>
+
             </h3>
 
             <p className="card-desc">
@@ -80,12 +81,13 @@ const Filtros = ({
             <h3 id="contra-title" className="card-title">
               Contraindicações <span aria-hidden="true" className="info-icon"></span>
               <img
-                src={`${process.env.PUBLIC_URL}/contra.png`}
-                alt="Ícone de contraindicações"
-                className="titulo-icone"
-                width={60}
-                height={50}
-              />
+  src="/static/contra.png"
+  alt="Ícone de contraindicações"
+  className="titulo-icone"
+  width={60}
+  height={50}	
+		/>
+                
             </h3>
             <p className="card-desc">
               Selecione as condições que você quer evitar nos tratamentos

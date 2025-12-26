@@ -1,0 +1,31 @@
+/* Aumenta o tamanho da caixa de seleção */
+.select2-selection__choice {
+    font-size: 16px;  /* Aumenta o tamanho da fonte */
+    background-color: #f4f4f4;  /* Cor de fundo das opções */
+    border-radius: 5px;  /* Borda arredondada */
+    padding: 10px 15px;  /* Aumenta o padding para tornar as caixas maiores */
+    height: 40px;  /* Ajusta a altura das caixas */
+}
+
+/* Aumenta a altura da caixa de entrada de seleção */
+.select2-selection__rendered {
+    font-size: 16px; /* Aumenta o tamanho da fonte do campo */
+    height: 50px; /* Ajusta a altura */
+    padding-top: 10px; /* Ajuste o espaçamento interno */
+}
+
+/* Ajuste para a lista de opções no dropdown */
+.select2-results__options {
+    font-size: 16px; /* Aumenta o tamanho da fonte das opções na lista */
+}
+
+/* Ajuste do tamanho da caixa de seleção */
+.select2-container--default .select2-selection--multiple {
+    min-height: 50px;  /* Aumenta a altura da caixa de seleção múltipla */
+    font-size: 16px;  /* Tamanho da fonte */
+}
+
+/* Ajusta a altura e o estilo do texto */
+.select2-selection__choice {
+    line-height: 1.5;  /* Ajusta o espaçamento entre as linhas */
+}
