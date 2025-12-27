@@ -37,9 +37,14 @@ function Header() {
 
 
 
-          <a href={TRATAMENTOS_URL} className="btn-filters">
-            Outros filtros e ordenações
-          </a>
+       
+      <button
+        className="btn btn-default"
+        onClick={() => window.location.href = 'https://cadastros.telix.inf.br/tratamentos/'}
+      >
+        Outros filtros e ordenações
+      </button>
+
         </div>
 
 
