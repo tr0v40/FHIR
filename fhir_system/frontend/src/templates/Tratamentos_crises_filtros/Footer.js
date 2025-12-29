@@ -8,16 +8,37 @@ function Footer() {
       <div className="container">
         <div className="row">
           {/* Coluna 1 - Explorar */}
-<div className="col-12 col-md-4 mb-4">
-  <h5>Explorar</h5>
-  <ul className="list-unstyled footer-links">
-    <li><a href="/pacientes">Pacientes</a></li>
-    <li><a href="/profissionais">Profissionais de Saúde</a></li>
-    <li><a href="/empresas">Empresas</a></li>
-    <li><a href="/blog">Blog</a></li>
-    <li><a href="/quem-somos">Quem somos</a></li>
-  </ul>
-</div>
+        <div className="col-12 col-md-4 mb-4">
+          <h5>Explorar</h5>
+          <ul className="list-unstyled footer-links">
+            <li>
+              <a href="https://www.telix.inf.br/pacientes">
+                Pacientes
+              </a>
+            </li>
+            <li>
+              <a href="https://www.telix.inf.br/profissionaisdesaude">
+                Profissionais de Saúde
+              </a>
+            </li>
+            <li>
+              <a href="https://www.telix.inf.br/divulgacao-de-servicos-e-pesquisas-de-saude">
+                Empresas
+              </a>
+            </li>
+            <li>
+              <a href="https://www.telix.inf.br/blog">
+                Blog
+              </a>
+            </li>
+            <li>
+              <a href="https://www.telix.inf.br/quem-somos-telix-contexto-na-saude">
+                Quem somos
+              </a>
+            </li>
+          </ul>
+        </div>
+
 
         {/* Coluna 2 - Tratamentos + Redes Sociais */}
         <div className="col-12 col-md-4 mb-4">

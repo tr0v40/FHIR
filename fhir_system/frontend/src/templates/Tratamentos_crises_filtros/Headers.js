@@ -1,11 +1,12 @@
 import React from 'react';
 import './Headers.css';
-// import { Link } from 'react-router-dom';
 
-
+// URL padrão de produção + fallback local
 const TRATAMENTOS_URL =
-  process.env.REACT_APP_TRATAMENTOS_URL || 'http://127.0.0.1:8000/tratamentos/';
-
+  process.env.REACT_APP_TRATAMENTOS_URL ||
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://127.0.0.1:8000/tratamentos/'
+    : 'https://www.telix.inf.br/tratamentos');
 
 function Header() {
   return (
@@ -35,19 +36,10 @@ function Header() {
             </label>
           </div>
 
-
-
-       
-      <button
-        className="btn btn-default"
-        onClick={() => window.location.href = 'https://cadastros.telix.inf.br/tratamentos/'}
-      >
-        Outros filtros e ordenações
-      </button>
-
+          <a href={TRATAMENTOS_URL} className="btn-filters">
+            Outros filtros e ordenações
+          </a>
         </div>
-
-
 
         <div className="right">
           <div className="card-aviso">
