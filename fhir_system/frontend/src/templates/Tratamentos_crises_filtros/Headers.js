@@ -6,7 +6,7 @@ const TRATAMENTOS_URL =
   process.env.REACT_APP_TRATAMENTOS_URL ||
   (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://127.0.0.1:8000/tratamentos/'
-    : 'https://www.telix.inf.br/tratamentos');
+    : 'https://cadastros.telix.inf.br/tratamentos/');
 
 function Header() {
   return (
