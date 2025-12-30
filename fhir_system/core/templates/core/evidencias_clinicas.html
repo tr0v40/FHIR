@@ -62,7 +62,55 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
         }
+
+        /* container */
+.tooltip-container {
+  position: relative;
+  cursor: default;
+}
+
+/* tooltip em si */
+.tooltip-paises {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  bottom: 125%;
+  left: 0;
+  z-index: 10;
+
+  background-color: #ffffff;   /* fundo branco */
+  color: #000000;              /* texto preto */
+  border: 1px solid #000000;   /* borda preta */
+
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  white-space: nowrap;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  transition: opacity 0.2s ease;
+}
+
+/* seta opcional */
+.tooltip-paises::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 12px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: #000000 transparent transparent transparent;
+}
+
+/* hover */
+.tooltip-container:hover .tooltip-paises {
+  visibility: visible;
+  opacity: 1;
+}
+
         .table th {
             background-color: #343a40;
             color: white;
@@ -524,11 +572,41 @@
             <strong>{{ evidencia.data_publicacao|date:"m/Y" }}</strong>
           </p>
           
-          <p style="margin: 0 0 20px; font-size: 1rem;">
-            <span class="eficacias-label">País:</span>
-            <strong>{{ evidencia.pais }}</strong>
-          </p>
-          
+<p style="margin: 0 0 22px; font-size: 1rem;">
+  <span class="eficacias-label">País(es):</span>
+        {% with qs=evidencia.paises.all %}
+          {% if qs %}
+            {# monta lista completa para tooltip #}
+            {% with all_list="" %}
+              {% for p in qs %}
+                {% if forloop.first %}
+                  {% with all_list=p.get_nome_display|default:p.nome %}
+                  {% endwith %}
+                {% endif %}
+              {% endfor %}
+            {% endwith %}
+
+<strong class="paises-box tooltip-container">
+  {% for p in qs|slice:":3" %}
+    {{ p.get_nome_display|default:p.nome }}{% if not forloop.last %}, {% endif %}
+  {% endfor %}
+  {% if qs|length > 3 %}
+    … (+{{ qs|length|add:"-3" }})
+  {% endif %}
+
+  <span class="tooltip-paises">
+    {% for p in qs %}
+      {{ p.get_nome_display|default:p.nome }}{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+  </span>
+</strong>
+
+          {% else %}
+            —
+          {% endif %}
+        {% endwith %}
+
+
 
           <p style="font-style: italic; font-size: 1rem; margin: 0 0 18px; width: 100%;">
             {{ evidencia.autores }}
