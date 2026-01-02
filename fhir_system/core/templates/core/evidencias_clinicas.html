@@ -587,6 +587,7 @@
             {% endwith %}
 
 <strong class="paises-box tooltip-container">
+  {# Exibição resumida: até 3 países #}
   {% for p in qs|slice:":3" %}
     {{ p.get_nome_display|default:p.nome }}{% if not forloop.last %}, {% endif %}
   {% endfor %}
@@ -594,9 +595,17 @@
     … (+{{ qs|length|add:"-3" }})
   {% endif %}
 
+  {# Tooltip completo com quebra a cada 7 países #}
   <span class="tooltip-paises">
     {% for p in qs %}
-      {{ p.get_nome_display|default:p.nome }}{% if not forloop.last %}, {% endif %}
+      {{ p.get_nome_display|default:p.nome }}
+      {% if not forloop.last %}
+        , 
+      {% endif %}
+
+      {% if forloop.counter|divisibleby:7 and not forloop.last %}
+        <br>
+      {% endif %}
     {% endfor %}
   </span>
 </strong>
