@@ -29,9 +29,11 @@ from .models import Tratamento, Avaliacao
 from django.http import FileResponse, Http404
 from django.conf import settings
 import os
+from .forms import ComentarioForm
+from django.conf import settings
+from django.http import FileResponse, HttpResponseServerError
 
-
-  # ==================== IMPORTS SESSIONS ==================== #
+  # ==================== IMPORTS ==================== #
 
 
 
@@ -166,13 +168,7 @@ def _nome_tipo(tipo_obj):
     return (getattr(tipo_obj, "nome", None) or str(tipo_obj) or "").strip()
 
 def calcular_eficacias_por_tipo(tratamentos_qs):
-    """
-    Para cada tratamento, cria t.eficacias_por_tipo = {
-        "Cura": {"min": x, "max": y, "count": n, "min_str": "x,xx", "max_str": "y,yy"},
-        ...
-    }
-    """
-    # >>> Simples e robusto: apenas siga as relações pelo nome que você já tem <<<
+
     tratamentos = (tratamentos_qs
                    .prefetch_related('evidencias__eficacia_por_evidencias__tipo_eficacia')
                    .distinct())
@@ -225,10 +221,7 @@ def _secao(tratamentos, tipo):
 
 
 def _secao(tratamentos, tipo):
-    """
-    Retorna lista de dicts prontos para o template somente dos tratamentos que
-    possuem eficácia do 'tipo' informado.
-    """
+
     itens = []
     for t in tratamentos:
         stats = t.eficacias_por_tipo.get(tipo)
@@ -242,11 +235,11 @@ def _secao(tratamentos, tipo):
     return itens
 
 def tratamentos(request):
-    # ---------- parâmetros ----------
+    # ---------- parâmetros ----------#
     ordenacao       = (request.GET.get('ordenacao') or '').strip().lower()
     ordenacao_opcao = (
         request.GET.get('ordenacao_opcao')
-        or request.GET.get('eficacia')   # <— alias para URLs antigas / botão “limpar filtros”
+        or request.GET.get('eficacia')  
         or ''
     ).strip().lower()
 
@@ -255,8 +248,8 @@ def tratamentos(request):
     categoria = (request.GET.get('categoria') or '').strip()
 
     # filtros “dados de pesquisa”
-    filtro_criterio = (request.GET.get('filtro_criterio') or 'nenhum').strip().lower()  # 'participantes'|'rigor'|'data'|'nenhum'
-    comparacao      = (request.GET.get('comparacao') or '').strip().lower()             # 'maior'|'menor'
+    filtro_criterio = (request.GET.get('filtro_criterio') or 'nenhum').strip().lower()  
+    comparacao      = (request.GET.get('comparacao') or '').strip().lower()             
     filtro_valor    = (request.GET.get('filtro_valor') or '').strip()
 
     exibir = request.GET.get('exibir', 'prazo')
@@ -447,12 +440,11 @@ def tratamentos(request):
         else:
             return _to_float_safe(getattr(item['obj'], campo, None), default=-1.0)
 
-    # --- NOVA LÓGICA DE ORDENAÇÃO ---
-    todos_os_tratamentos = None # <— evita UnboundLocalError
+    todos_os_tratamentos = None 
 
 
     if campo != '__eficacia__':
-        # Ordenação global (usada para risco, prazo, preço, etc.)
+      
         todos_os_tratamentos = (
             tratamentos_cura + tratamentos_remissao + tratamentos_controle +
             tratamentos_eliminacao + tratamentos_reducao + tratamentos_prevencao
@@ -467,7 +459,7 @@ def tratamentos(request):
         tratamentos_reducao = [t for t in todos_os_tratamentos if t['tipo'] == 'Redução de sintomas']
         tratamentos_prevencao = [t for t in todos_os_tratamentos if t['tipo'] == 'Prevenção']
     else:
-        # Volta para a ordenação por eficácia (padrão original)
+       
         todos_os_tratamentos = None
     for sec in (
         tratamentos_cura, tratamentos_remissao, tratamentos_controle,
@@ -475,9 +467,9 @@ def tratamentos(request):
     ):
         sec.sort(key=_key_por_ordenacao, reverse=not asc)
 
-    # Agora ajusta a ordem de prioridade de exibição das seções
+   
     if asc:
-        # Menor → Maior: Prevenção deve vir primeiro
+       
         ordem_secoes = [
             ("Prevenção", tratamentos_prevencao),
             ("Redução de sintomas", tratamentos_reducao),
@@ -487,7 +479,7 @@ def tratamentos(request):
             ("Cura", tratamentos_cura),
         ]
     else:
-        # Maior → Menor: Cura deve vir primeiro (padrão atual)
+       
         ordem_secoes = [
             ("Cura", tratamentos_cura),
             ("Remissão", tratamentos_remissao),
@@ -497,7 +489,7 @@ def tratamentos(request):
             ("Prevenção", tratamentos_prevencao),
         ]
 
-    # Reconstrói as listas no contexto final conforme a ordem definida
+
     (
         tratamentos_cura, tratamentos_remissao, tratamentos_controle,
         tratamentos_eliminacao, tratamentos_reducao, tratamentos_prevencao
@@ -514,7 +506,6 @@ def tratamentos(request):
     context = {
         'tratamentos_list': tratamentos_list,
         'todos_os_tratamentos': todos_os_tratamentos,
-
         'contraindications': contraindications,
         'grupos_indicados': DetalhesTratamentoResumo.GRUPO_CHOICES,
         'nome': nome,
@@ -540,19 +531,15 @@ def tratamentos(request):
 
 
 def formatar_numeros(n):
-    """
-    Função que formata números para o padrão brasileiro:
-    - Substitui o ponto por vírgula
-    - Formata com separador de milhar
-    """
+
     if n is None:
         return "-"
     
     try:
         # Se for uma porcentagem
         if isinstance(n, str) and n.endswith('%'):
-            num_str = n[:-1]  # Remove o símbolo de porcentagem
-            num = float(num_str)  # Converte para float
+            num_str = n[:-1] 
+            num = float(num_str) 
             # Formata o número e adiciona o símbolo de porcentagem
             return f"{num:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".") + '%'
 
@@ -641,7 +628,7 @@ def detalhes_tratamentos(request, slug):
             "count": len(vals),
         })
 
-    # --------- PRAZO PARA EFEITO (igual estava) ----------
+
     prazo_efeito = "Não disponível"
     try:
         if getattr(tratamento, "prazo_efeito_faixa_formatada", ""):
@@ -707,13 +694,13 @@ def detalhes_tratamentos(request, slug):
         "prevencao": 5,
     }
 
-    # 1) ordena pela prioridade geral (para o fallback)
+    #  ordena pela prioridade geral (para o fallback)
     eficacias_por_tipo.sort(
         key=lambda e: (PRIORIDADE_TIPOS.get(_norm_txt(e["tipo"]), 99),
                        -float(e["max"] or 0))
     )
 
-    # 2) escolha do tipo a mostrar (sempre só UM)
+    #  escolha do tipo a mostrar (sempre só UM)
     tipo_eficacia      = "Não especificado"
     eficacia_min       = "0,00"
     eficacia_max       = "0,00"
@@ -724,32 +711,30 @@ def detalhes_tratamentos(request, slug):
     escolhido = None
 
     if eficacias_por_tipo:
-        # se veio ?tipo=..., tenta respeitar
         if tipo_req:
             for e in eficacias_por_tipo:
                 if _norm_txt(e["tipo"]) == _norm_txt(tipo_req):
                     escolhido = e
                     break
 
-        # prioridade 1: REMISSÃO
         if not escolhido:
             for e in eficacias_por_tipo:
                 if _norm_txt(e["tipo"]) == "remissao":
                     escolhido = e
                     break
 
-        # prioridade 2: CONTROLE
+
         if not escolhido:
             for e in eficacias_por_tipo:
                 if _norm_txt(e["tipo"]) == "controle":
                     escolhido = e
                     break
 
-        # se não tem remissão nem controle, usa a ordem de prioridade geral
+
         if not escolhido:
             escolhido = eficacias_por_tipo[0]
 
-    # Preenche variáveis e limita lista para o template mostrar só o escolhido
+
     if escolhido:
         tipo_eficacia      = escolhido["tipo"]
         eficacia_min       = escolhido["min_str"]
@@ -758,12 +743,11 @@ def detalhes_tratamentos(request, slug):
         descricao_eficacia = escolhido["descricao"]
         imagem_eficacia    = escolhido["imagem"]
 
-        # *** AQUI: força a lista a ter somente o escolhido ***
         eficacias_por_tipo = [escolhido]
     else:
         eficacias_por_tipo = []
 
-    tipo_eficacia_label = tipo_eficacia  # padrão
+    tipo_eficacia_label = tipo_eficacia  
 
     norm_tipo = _norm_txt(tipo_eficacia)
     if norm_tipo == "controle":
@@ -780,7 +764,7 @@ def detalhes_tratamentos(request, slug):
         'media_estrelas': round(media_estrelas, 1),
         'total_avaliacoes': total_avaliacoes,
         'tipo_eficacia': tipo_eficacia,
-        'tipo_eficacia_label': tipo_eficacia_label,   # <-- AQUI
+        'tipo_eficacia_label': tipo_eficacia_label,   
         'eficacia_min': eficacia_min,
         'eficacia_max': eficacia_max,
         'eficacia_max_css': eficacia_max_css,
@@ -796,7 +780,7 @@ def detalhes_tratamentos(request, slug):
 
 
 class DetalhesTratamentoAdmin(admin.ModelAdmin):
-    list_display = ("nome", "fabricante", "principio_ativo", "avaliacao", "prazo_efeito_formatado")  # Adicionei 'prazo_efeito_formatado' à lista
+    list_display = ("nome", "fabricante", "principio_ativo", "avaliacao", "prazo_efeito_formatado") 
     search_fields = ("nome", "fabricante", "principio_ativo")
     list_filter = ("fabricante", "grupo", "avaliacao")
 
@@ -842,11 +826,11 @@ PRIORIDADE_TIPOS = {
     "reducao de sintomas": 4,
     "reducao dos sintomas": 4,
     "prevencao": 5,
-    "prevenção": 5,  # Corrigido para usar o sinônimo adequado
+    "prevenção": 5,  
 }
 
 def evidencias_clinicas(request, slug):
-    """Exibe a página de evidências clínicas de um tratamento específico"""
+   
     
     # Buscando o tratamento pelo slug
     tratamento = get_object_or_404(DetalhesTratamentoResumo, slug=slug)
@@ -855,9 +839,8 @@ def evidencias_clinicas(request, slug):
     evidencias = EvidenciasClinicas.objects.filter(tratamento=tratamento)
    
     # Calcular os valores de eficácia para o tratamento
-    tratamentos = calcular_eficacia([tratamento])  # Passando o tratamento para cálculo de eficácia
-    
-    # Certificar-se de que 'eficacias_por_tipo' está presente
+    tratamentos = calcular_eficacia([tratamento]) 
+ 
     for t in tratamentos:
         # Se não existe a relação 'eficacias_por_tipo', a atribuímos como lista vazia
         if not hasattr(t, 'eficacias_por_tipo'):
@@ -881,7 +864,7 @@ def evidencias_clinicas(request, slug):
     # Exibindo os dados no template
     return render(request, "core/evidencias_clinicas.html", {
         "tratamento": tratamento,
-        "tratamentos": tratamentos,  # Passando os tratamentos com as eficácias ordenadas
+        "tratamentos": tratamentos,
         "evidencias": evidencias,
     })
 
@@ -890,7 +873,7 @@ def evidencias_clinicas(request, slug):
 
 
 def listar_urls(request):
-    """Lista todas as URLs registradas no Django e exibe em uma página HTML"""
+  
     resolver = get_resolver()
     urls = []
 
@@ -899,9 +882,6 @@ def listar_urls(request):
 
     return render(request, "core/listar_urls.html", {"urls": urls})
 
-
-from django.shortcuts import get_object_or_404, redirect
-# se já tiver esse import, não precisa repetir
 
 def salvar_avaliacao(request, tratamento_id):
     if request.method != "POST":
@@ -934,7 +914,7 @@ def salvar_avaliacao(request, tratamento_id):
 
 def tratamento_detail(request, pk):
     tratamento = get_object_or_404(Tratamento, pk=pk)
-    # URL fixa para voltar para a página principal de tratamentos (ou outra que quiser)
+  
     url_retorno = '/tratamentos/'  
     context = {
         'tratamento': tratamento,
@@ -984,8 +964,7 @@ def unidade_formatada(self, valor):
 
 
 def tratamento_view(request):
-    participantes = 1500  # Exemplo de número de participantes
-    # Formatar o número com separador de milhar
+    participantes = 1500  
     participantes_formatado = "{:,}".format(participantes).replace(",", ".")
     
     return render(request, 'tratamentos.html', {'participantes': participantes_formatado})
@@ -1024,7 +1003,7 @@ def tratamentos_controle_enxaqueca(request):
     ordenacao       = (request.GET.get('ordenacao') or '').strip().lower()
     ordenacao_opcao = (
         request.GET.get('ordenacao_opcao')
-        or request.GET.get('eficacia')   # <— alias para URLs antigas / botão “limpar filtros”
+        or request.GET.get('eficacia')  
         or ''
     ).strip().lower()
 
@@ -1033,8 +1012,8 @@ def tratamentos_controle_enxaqueca(request):
     categoria = (request.GET.get('categoria') or '').strip()
 
     # filtros “dados de pesquisa”
-    filtro_criterio = (request.GET.get('filtro_criterio') or 'nenhum').strip().lower()  # 'participantes'|'rigor'|'data'|'nenhum'
-    comparacao      = (request.GET.get('comparacao') or '').strip().lower()             # 'maior'|'menor'
+    filtro_criterio = (request.GET.get('filtro_criterio') or 'nenhum').strip().lower()  
+    comparacao      = (request.GET.get('comparacao') or '').strip().lower()            
     filtro_valor    = (request.GET.get('filtro_valor') or '').strip()
 
     exibir = request.GET.get('exibir', 'prazo')
@@ -1132,13 +1111,13 @@ def tratamentos_controle_enxaqueca(request):
     prioridade_tipos = ["Cura", "Remissão", "Controle", "Eliminação de sintomas", "Redução de sintomas", "Prevenção"]
     tratamentos_unicos = {}  # chave = tratamento.id
 
-# Escolher a eficácia 'Controle' se presente
+
     for t in tratamentos_list:
-        # Verificar se "Controle" está presente entre as eficácias
+      
         if "Controle" in t.eficacias_por_tipo:
             stats_controle = t.eficacias_por_tipo["Controle"]
             
-            # Armazenar os valores da eficácia de "Controle" no dicionário
+          
             tratamentos_unicos[t.id] = {
                 "obj": t,
                 "tipo": "Controle",
@@ -1175,7 +1154,7 @@ def tratamentos_controle_enxaqueca(request):
 
     # ---------- ordenação das seções ----------
     ordenacao_map = {
-        'eficacia': '__eficacia__',          # especial: usa item['max']
+        'eficacia': '__eficacia__',          
         'risco': 'reacao_maxima',
         'prazo': 'prazo_medio_minutos',
         'preco': 'custo_medicamento',
@@ -1186,10 +1165,10 @@ def tratamentos_controle_enxaqueca(request):
     }
     campo = ordenacao_map.get(ordenacao)
 
-    # fallback quando “página limpa” ou quando o usuário não escolheu campo válido
+
     if usar_eficacia_padrao or not campo:
         campo = '__eficacia__'
-        asc = False  # eficácia: maior -> menor
+        asc = False 
     else:
         asc = (ordenacao_opcao == 'menor-maior')
 
@@ -1229,19 +1208,19 @@ def tratamentos_controle_enxaqueca(request):
         else:
             return _to_float_safe(getattr(item['obj'], campo, None), default=-1.0)
 
-    # --- NOVA LÓGICA DE ORDENAÇÃO ---
-    todos_os_tratamentos = None # <— evita UnboundLocalError
+
+    todos_os_tratamentos = None 
 
 
     if campo != '__eficacia__':
-        # Ordenação global (usada para risco, prazo, preço, etc.)
+     
         todos_os_tratamentos = (
             tratamentos_cura + tratamentos_remissao + tratamentos_controle +
             tratamentos_eliminacao + tratamentos_reducao + tratamentos_prevencao
         )
         todos_os_tratamentos.sort(key=_key_por_ordenacao, reverse=not asc)
 
-        # Redistribui os tratamentos nas listas
+     
         tratamentos_cura = [t for t in todos_os_tratamentos if t['tipo'] == 'Cura']
         tratamentos_remissao = [t for t in todos_os_tratamentos if t['tipo'] == 'Remissão']
         tratamentos_controle = [t for t in todos_os_tratamentos if t['tipo'] == 'Controle']
@@ -1249,7 +1228,7 @@ def tratamentos_controle_enxaqueca(request):
         tratamentos_reducao = [t for t in todos_os_tratamentos if t['tipo'] == 'Redução de sintomas']
         tratamentos_prevencao = [t for t in todos_os_tratamentos if t['tipo'] == 'Prevenção']
     else:
-        # Volta para a ordenação por eficácia (padrão original)
+  
         todos_os_tratamentos = None
     for sec in (
         tratamentos_cura, tratamentos_remissao, tratamentos_controle,
@@ -1257,9 +1236,9 @@ def tratamentos_controle_enxaqueca(request):
     ):
         sec.sort(key=_key_por_ordenacao, reverse=not asc)
 
-    # Agora ajusta a ordem de prioridade de exibição das seções
+    
     if asc:
-        # Menor → Maior: Prevenção deve vir primeiro
+        
         ordem_secoes = [
             ("Prevenção", tratamentos_prevencao),
             ("Redução de sintomas", tratamentos_reducao),
@@ -1269,7 +1248,7 @@ def tratamentos_controle_enxaqueca(request):
             ("Cura", tratamentos_cura),
         ]
     else:
-        # Maior → Menor: Cura deve vir primeiro (padrão atual)
+      
         ordem_secoes = [
             ("Cura", tratamentos_cura),
             ("Remissão", tratamentos_remissao),
@@ -1279,7 +1258,7 @@ def tratamentos_controle_enxaqueca(request):
             ("Prevenção", tratamentos_prevencao),
         ]
 
-    # Reconstrói as listas no contexto final conforme a ordem definida
+   
     (
         tratamentos_cura, tratamentos_remissao, tratamentos_controle,
         tratamentos_eliminacao, tratamentos_reducao, tratamentos_prevencao
@@ -1296,7 +1275,6 @@ def tratamentos_controle_enxaqueca(request):
     context = {
         'tratamentos_list': tratamentos_list,
         'todos_os_tratamentos': todos_os_tratamentos,
-
         'contraindications': contraindications,
         'grupos_indicados': DetalhesTratamentoResumo.GRUPO_CHOICES,
         'nome': nome,
@@ -1306,7 +1284,6 @@ def tratamentos_controle_enxaqueca(request):
         'publico': publico,
         'contraindicacoes_selecionadas': contraindicacoes_selecionadas,
         'exibir': exibir,
-
         'tratamentos_controle': tratamentos_controle,
    
       
@@ -1316,12 +1293,12 @@ def tratamentos_controle_enxaqueca(request):
 
 
 def tratamentos_crise_enxaqueca(request):
-    # ---------- parâmetros ----------
+
     
     ordenacao       = (request.GET.get('ordenacao') or '').strip().lower()
     ordenacao_opcao = (
         request.GET.get('ordenacao_opcao')
-        or request.GET.get('eficacia')   # <— alias para URLs antigas / botão “limpar filtros”
+        or request.GET.get('eficacia')  
         or ''
     ).strip().lower()
 
@@ -1330,13 +1307,12 @@ def tratamentos_crise_enxaqueca(request):
     categoria = (request.GET.get('categoria') or '').strip()
 
     # filtros “dados de pesquisa”
-    filtro_criterio = (request.GET.get('filtro_criterio') or 'nenhum').strip().lower()  # 'participantes'|'rigor'|'data'|'nenhum'
-    comparacao      = (request.GET.get('comparacao') or '').strip().lower()             # 'maior'|'menor'
+    filtro_criterio = (request.GET.get('filtro_criterio') or 'nenhum').strip().lower()
+    comparacao      = (request.GET.get('comparacao') or '').strip().lower()         
     filtro_valor    = (request.GET.get('filtro_valor') or '').strip()
 
     exibir = request.GET.get('exibir', 'prazo')
 
-    # detectar “página limpa” (sem parâmetros relevantes)
     PARAMS_RELEVANTES = {
         'ordenacao', 'ordenacao_opcao', 'publico', 'nome', 'categoria',
         'filtro_criterio', 'comparacao', 'filtro_valor', 'contraindicacoes'
@@ -1344,13 +1320,13 @@ def tratamentos_crise_enxaqueca(request):
     tem_parametros = any(k in request.GET for k in PARAMS_RELEVANTES)
     usar_eficacia_padrao = not tem_parametros
 
-    # ---------- base ----------
+
     tratamentos_qs = DetalhesTratamentoResumo.objects.all().distinct()
 
-    # Contraindicações para listar no template
+   
     contraindications = Contraindicacao.objects.all()
 
-    # ---------- filtros simples ----------
+
     if nome:
         tratamentos_qs = tratamentos_qs.filter(nome__icontains=nome)
 
@@ -1359,7 +1335,7 @@ def tratamentos_crise_enxaqueca(request):
             Q(categoria__icontains=categoria) | Q(categorias__nome__icontains=categoria)
         ).distinct()
 
-    # Público-alvo (booleans/choices com "SIM")
+   
     if publico == "criancas":
         tratamentos_qs = tratamentos_qs.filter(indicado_criancas__iexact="SIM")
     elif publico == "adolescentes":
@@ -1438,11 +1414,11 @@ def tratamentos_crise_enxaqueca(request):
             stats_reducao = t.eficacias_por_tipo["Redução de sintomas"]
 
             # Filtra os tratamentos pela condição de saúde (somente "Enxaqueca")
-            if t.condicao_saude and t.condicao_saude.nome.strip().lower() == condicao_saude:  # Adicionando a verificação t.condicao_saude
+            if t.condicao_saude and t.condicao_saude.nome.strip().lower() == condicao_saude: 
                 # Se o tratamento tem "Redução de sintomas" e condição de saúde "Enxaqueca"
                 tratamentos_unicos[t.id] = {
                     "obj": t,
-                    "tipo": "Redução de sintomas",  # Mantemos a chave como "Redução de sintomas"
+                    "tipo": "Redução de sintomas",  
                     "min": stats_reducao["min"],
                     "max": stats_reducao["max"],
                     "min_str": stats_reducao["min_str"],
@@ -1452,7 +1428,7 @@ def tratamentos_crise_enxaqueca(request):
 
 
 
-    # ---------- listas por seção (sempre inicializadas) ----------
+
     tratamentos_cura       = []
     tratamentos_remissao   = []
     tratamentos_controle   = []
@@ -1476,7 +1452,7 @@ def tratamentos_crise_enxaqueca(request):
 
     # ---------- ordenação das seções ----------
     ordenacao_map = {
-        'eficacia': '__eficacia__',          # especial: usa item['max']
+        'eficacia': '__eficacia__',       
         'risco': 'reacao_maxima',
         'prazo': 'prazo_medio_minutos',
         'preco': 'custo_medicamento',
@@ -1487,10 +1463,9 @@ def tratamentos_crise_enxaqueca(request):
     }
     campo = ordenacao_map.get(ordenacao)
 
-    # fallback quando “página limpa” ou quando o usuário não escolheu campo válido
     if usar_eficacia_padrao or not campo:
         campo = '__eficacia__'
-        asc = False  # eficácia: maior -> menor
+        asc = False 
     else:
         asc = (ordenacao_opcao == 'menor-maior')
 
@@ -1530,19 +1505,19 @@ def tratamentos_crise_enxaqueca(request):
         else:
             return _to_float_safe(getattr(item['obj'], campo, None), default=-1.0)
 
-    # --- NOVA LÓGICA DE ORDENAÇÃO ---
-    todos_os_tratamentos = None  # <— evita UnboundLocalError
+   
+    todos_os_tratamentos = None 
 
 
     if campo != '__eficacia__':
-        # Ordenação global (usada para risco, prazo, preço, etc.)
+       
         todos_os_tratamentos = (
             tratamentos_cura + tratamentos_remissao + tratamentos_controle +
             tratamentos_eliminacao + tratamentos_reducao + tratamentos_prevencao
         )
         todos_os_tratamentos.sort(key=_key_por_ordenacao, reverse=not asc)
 
-        # Redistribui os tratamentos nas listas
+
         tratamentos_cura = [t for t in todos_os_tratamentos if t['tipo'] == 'Cura']
         tratamentos_remissao = [t for t in todos_os_tratamentos if t['tipo'] == 'Remissão']
         tratamentos_controle = [t for t in todos_os_tratamentos if t['tipo'] == 'Controle']
@@ -1550,7 +1525,7 @@ def tratamentos_crise_enxaqueca(request):
         tratamentos_reducao = [t for t in todos_os_tratamentos if t['tipo'] == 'Redução de sintomas']
         tratamentos_prevencao = [t for t in todos_os_tratamentos if t['tipo'] == 'Prevenção']
     else:
-        # Volta para a ordenação por eficácia (padrão original)
+     
         todos_os_tratamentos = None
     for sec in (
         tratamentos_cura, tratamentos_remissao, tratamentos_controle,
@@ -1558,9 +1533,9 @@ def tratamentos_crise_enxaqueca(request):
     ):
         sec.sort(key=_key_por_ordenacao, reverse=not asc)
 
-    # Agora ajusta a ordem de prioridade de exibição das seções
+  
     if asc:
-        # Menor → Maior: Prevenção deve vir primeiro
+        
         ordem_secoes = [
             ("Prevenção", tratamentos_prevencao),
             ("Redução de sintomas", tratamentos_reducao),
@@ -1570,7 +1545,7 @@ def tratamentos_crise_enxaqueca(request):
             ("Cura", tratamentos_cura),
         ]
     else:
-        # Maior → Menor: Cura deve vir primeiro (padrão atual)
+        
         ordem_secoes = [
             ("Cura", tratamentos_cura),
             ("Remissão", tratamentos_remissao),
@@ -1597,7 +1572,6 @@ def tratamentos_crise_enxaqueca(request):
         'tratamentos_list': tratamentos_list,
         'todos_os_tratamentos': todos_os_tratamentos,
         'tratamentos_reducao': tratamentos_reducao,
-
         'contraindications': contraindications,
         'grupos_indicados': DetalhesTratamentoResumo.GRUPO_CHOICES,
         'nome': nome,
@@ -1626,15 +1600,12 @@ def comentario_view(request):
     return render(request, 'detalhes_tratamentos.html', {'form': form})
 
 
-from django.shortcuts import render
 
 def sucesso_view(request):
-    return render(request, 'sucesso.html')  # Defina o template de sucesso
+    return render(request, 'sucesso.html') 
 
 
-# views.py
-from django.shortcuts import render, redirect
-from .forms import ComentarioForm
+
 
 def enviar_avaliacao(request):
     if request.method == 'POST':
@@ -1648,11 +1619,6 @@ def enviar_avaliacao(request):
     avaliacoes = Avaliacao.objects.all()
     return render(request, 'detalhes_tratamentos.html', {'form': form, 'avaliacoes': avaliacoes})
 
-
-
-import os
-from django.conf import settings
-from django.http import FileResponse, HttpResponseServerError
 
 def react_app(request):
     index_path = os.path.join(settings.REACT_BUILD_DIR, "index.html")

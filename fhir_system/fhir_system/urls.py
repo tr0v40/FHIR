@@ -33,15 +33,38 @@ urlpatterns = [
         views.evidencias_clinicas,
         name="evidencias_clinicas",
     ),
-    path(
-    "tratamentos-controle-enxaqueca/",
-    views.tratamentos_controle_enxaqueca,
-    name="tratamentos_controle_enxaqueca",
-),
-    path("tratamentos-crise-enxaqueca/", views.react_app, name="tratamentos_crise_enxaqueca"),
 
-    #  qualquer subrota do React (se tiver)
+    path(
+        "tratamentos-controle-enxaqueca/",
+        views.tratamentos_controle_enxaqueca,
+        name="tratamentos_controle_enxaqueca",
+    ),
+
+    path(
+        "tratamentos-controle-enxaqueca-com-filtros/",
+        views.react_app,
+        name="tratamentos_controle_enxaqueca",
+    ),
+    re_path(r"^tratamentos-controle-enxaqueca-com-filtros/.*$", views.react_app),
+
+    path(
+        "tratamentos-crise-enxaqueca/",
+        views.tratamentos_crise_enxaqueca,
+        name="tratamentos_crise_enxaqueca",
+    ),
+
+    path(
+        "tratamentos-crise-enxaqueca-com-filtros/",
+        views.react_app,
+        name="tratamentos_crise_enxaqueca-com-filtros",
+    ),
     re_path(r"^tratamentos-crise-enxaqueca/.*$", views.react_app),
+
+
+
+
+ 
+    
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

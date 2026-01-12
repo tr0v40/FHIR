@@ -46,7 +46,6 @@
   padding-left: 10px;
 }
 
-
 .titulo-pagina {
   font-size: 40px;
   font-weight: 400;   /* normal (sem negrito) */
@@ -54,6 +53,7 @@
   margin: 0 0 8px 0;
   font-family: inherit;
 }
+
 
 .subtitulo {
   color: #010009;
@@ -80,19 +80,9 @@
 }
 
 .btn-filters {
-  display: inline-block;
-  background-color: #f0f0f0;
-  color: #060606;
-  border: 2px solid #e4e4e4;
-  font-size: 14px;
-  padding: 8px 12px;
-  text-align: center;
-  transition: background-color 0.8s ease, border-color 0.8s ease;
-  max-width: 350px;
-  margin-top: 12px;
-  text-decoration: none;
-  border-radius: 4px;
+  display: none;
 }
+
 
 .btn-filters:hover {
   background-color: #e0e0e0;
@@ -129,7 +119,7 @@
   .header-top { padding-bottom: 16px; }
 
   .logo-img {
-    height: 88px;
+    height: 150px;
     width: auto;
   }
 

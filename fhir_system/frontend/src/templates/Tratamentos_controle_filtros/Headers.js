@@ -25,11 +25,12 @@ function Header() {
 
       <div className="header-content header-bottom">
         <div className="left">
-          <h1 className="titulo-pagina">Tratamentos para crises de enxaqueca</h1>
+          <h1 className="titulo-pagina">Tratamentos para controle de enxaqueca</h1>
 
-          {/* <span className="subtitulo">Tratamentos ordenados por:</span>
 
-          <div className="checkbox-container">
+          {/* <span className="subtitulo">Tratamentos ordenados por:</span> */}
+
+          {/* <div className="checkbox-container">
             <input type="checkbox" id="ordenacao-checkbox" checked readOnly />
             <label htmlFor="ordenacao-checkbox" id="ordenacao-texto">
               Ordem decrescente de eficácia máxima

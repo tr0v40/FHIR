@@ -14,6 +14,7 @@
   top: auto;  /* Remover o topo fixo */
   margin-top: 0;  /* Remover qualquer margem superior extra */
 }
+
 /* --- REMOVER "card" do cabeçalho/descrição dos filtros --- */
 .left-sidebar .card-filtro,
 .left-sidebar .card-header,
@@ -37,25 +38,6 @@
   letter-spacing: -0.01em;
   color: #111827;
   margin: 0;
-}
-
-
-/* Estilo padrão para os botões */
-.btn-aplicar,
-.btn-reset {
-  background-color: #6c757d; /* Cor cinza do botão */
-  color: #fff; /* Texto branco */
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease; /* Transição suave ao passar o mouse */
-}
-
-/* Efeito de hover para os botões */
-.btn-aplicar:hover,
-.btn-reset:hover {
-  background-color: #007bff; /* Cor azul ao passar o mouse */
 }
 
 .left-sidebar .card-desc {
@@ -158,7 +140,7 @@
 .left-sidebar .radio-group { gap: 12px; margin-top: 10px; }
 .left-sidebar .radio { font-size: 15px; color: #374151; }
 
-/
+/* Botões */
 /* Botões - Estilo inicial */
 .left-sidebar .btn-aplicar,
 .left-sidebar .btn-secondary,
@@ -166,16 +148,16 @@
   width: 100%;
   padding: 10px 12px;
   font-size: 12px;
-  font-weight: 300;
+  font-weight: 400;
   border-radius: 5px;
   transition: background-color 0.3s ease; /* Transição suave ao passar o mouse */
 }
 
 /* Botão Aplicar - Cinza por padrão, azul no hover */
 .left-sidebar .btn-aplicar {
-  background-color: #bbbcbeff;  /* Cor inicial do botão (cinza) */
-  color: #fff;
-  border: 1px solid #c7cbd1;
+  background-color: #f6f6f6ff;  /* Cor inicial do botão (cinza) */
+  color: #524f4fff;
+  border: 1px solid #d0d1d3ff;
 }
 
 .left-sidebar .btn-aplicar:hover {
@@ -216,6 +198,7 @@
   transition: background-color 0.3s ease; /* Transição suave */
 }
 
+
 /* Ícone de informação: se estiver “quebrado” ou feio, esconda */
 .left.left-sidebar .info-icon {
   display: none;    
@@ -237,8 +220,7 @@
 .btn-aplicar,
 .btn-secondary,
 .btn-reset {
-  font-size: 14px;
-  font-weight: 600;
+  font-weight: 400; /* normal — sem negrito */
 }
 
 

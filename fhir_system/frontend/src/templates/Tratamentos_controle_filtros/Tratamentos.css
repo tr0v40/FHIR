@@ -1,0 +1,634 @@
+        
+/* CONFIGURAÇÃO GERAL */
+
+html, body {
+    height: 100%;
+    margin: 0px;
+    padding: 0;
+    background-color: #fefefe;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+    
+}
+
+/* === GERAL === */
+.content-area {
+  display: flex;
+  justify-content: space-between; /* Garante que a sidebar e os tratamentos fiquem com espaço entre si */
+  padding: 10px;
+  gap: 20px; /* Espaço entre a sidebar e os tratamentos */
+  flex-wrap: wrap; /* Garante que o conteúdo não ultrapasse a tela em telas pequenas */
+}
+
+
+.tratamento-card:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15); /* Aumenta a sombra para dar destaque */
+}
+
+.tratamento-card .tratamento-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.tratamento-card img {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 20px auto;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* TITULO DO TRATAMENTO */
+.tratamento-info h3 {
+    font-size: 30px;
+    font-weight: bold;
+    color: #050606;
+    flex-grow: 1;
+    margin-top: 0px;
+}
+
+/* Estilo do botão de detalhes */
+.tratamento-info .btn {
+    text-decoration: none;
+    background-color: #e7e7e7;
+    color: rgb(0, 0, 0);
+    padding: 10px 50px;
+    border-radius: 5px;
+    text-align: center;
+    display: inline-block;
+    margin-top: 1px;  /* Espaço entre o fabricante e o botão */
+}
+
+.tratamento-info .btn:hover {
+    background-color: #c7cccc;
+}
+
+/* BARRA DE EFICÁCIA */
+.eficacia-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+    min-width: 260px;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.eficacia-bar-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    height: 20px;
+    border-radius: 25px;
+    position: relative;
+    margin-bottom: 5px;
+    margin-top: 1px;
+}
+
+.efficacy-filled {
+    height: 100%;
+    border-radius: 8px;
+    background-color: #0094FF;
+}
+
+.efficacy-marker {
+    width: 14px;
+    height: 14px;
+    background-color: #0094FF;
+    position: absolute;
+    top: 0;
+    left: calc(100% - 7px);
+    transform: translateX(-50%);
+    border-radius: 50%;
+}
+
+/* DESCRIÇÃO DO TRATAMENTO */
+.tratamento-info p {
+    font-size: 20px;  /* Aumentei o tamanho da fonte da descrição */
+    color: #000000;
+    line-height: 1.6;
+    gap: 1px;
+    margin-top: 10px;
+}
+
+
+/* Página geral */
+.tratamentos-page {
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+/* Layout de duas colunas */
+
+
+/* Largura total suficiente para 320px (sidebar) + 24px (gap) + 1200px (cards) */
+.tratamentos-layout {
+  max-width: 1400px;     /* 320 + 24 + 1200 + margem de segurança */
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: grid;
+  grid-template-columns:  280px 1fr; /* fixa a coluna de conteúdo em 1200px */
+  gap: 30px;
+  align-items: start;
+  box-sizing: border-box;
+  transform: translateY(-8px);
+  transition: background-color 0.8s ease, border-color 0.8s ease;
+}
+
+/* Cards ocupam a largura inteira da coluna de conteúdo */
+.tratamentos-list { width: 100%; }
+.tratamento-card  { width: 100%; }
+
+
+
+
+/* Sidebar (posição e largura) */
+.sidebar {
+  position: sticky;
+  top: 20px;                 /* ajuste conforme a altura do Header */
+  width: 260px;              /* <<< garante a largura menor */
+  height: fit-content;
+}
+
+
+
+.left-sidebar {
+  position: static;
+  width: 100%;               /* herda os 260px da coluna */
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  border: 5px;
+}
+
+
+/* Área de conteúdo/lista */
+
+.conteudo {
+  min-width: 0;
+}
+
+
+
+.tratamentos-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tratamento-card .btn {
+  opacity: 0.7;
+  cursor: default;
+}
+
+/* Card dos tratamentos (ajuste próximo ao mock) */
+
+.tratamento-card {
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+  padding: 24px;                 /* ↑ padding maior */
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+
+.tratamento-content {
+  display: grid;
+  grid-template-columns: 120px 1fr 300px;  /* imagem | infos | eficácia (mais larga) */
+  gap: 24px;                                /* ↑ espaço entre colunas */
+  align-items: stretch;                     /* ← faz as colunas terem mesma altura */
+  min-height: 300px;                        /* altura mínima confortável (ajuste se quiser) */
+}
+
+
+
+/* --- Coluna de imagem --- */
+.tratamento-imagem .img-fluid {
+  width: 210px;            /* ↑ imagem um pouco maior */
+  height: 150px;
+  object-fit: contain;
+}
+
+
+.tratamento-info h3:first-child {
+  font-size: 22px;          /* nome do tratamento maior */
+  font-weight: 700;
+  margin: 0 0 6px 0;
+  color: #111827;
+}
+
+.tratamento-info h3:nth-of-type(2) {
+  color: #0094FF;
+  font-size: 16px;          /* subtítulo (tipo) */
+  font-weight: 600;
+  margin: 0 0 10px 0;
+}
+
+.tratamento-info p {
+  font-size: 15px;          /* textos gerais maiores */
+  line-height: 1.6;         /* ↑ leitura confortável */
+  color: #374151;
+  margin: 6px 0;
+}
+
+.tratamento-info .btn {
+  display: inline-block;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+/* --- Coluna de Eficácia: ocupa toda a altura --- */
+.eficacia-container {
+  display: flex;             /* ocupa a coluna e distribui verticalmente */
+  flex-direction: column;
+  justify-content: space-between; /* títulos/topo, barra/meio, prazo/baixo */
+  gap: 12px;                 /* espaçamento interno entre elementos */
+  height: 100%;              /* ← estica para a altura do card */
+  padding: 20px 0;            /* leve respiro vertical */
+}
+
+/* Títulos e subtítulos */
+.eficacia-title {
+  font-size: 22px;           /* ↑ maior */
+  font-weight: 700;
+  color: #b1b5bdff;            /* cinza como no mock */
+  margin: 0;
+}
+
+.eficacia-sub {
+  color: #111827;
+  font-weight: 700;
+}
+
+/* Barra de eficácia */
+.eficacia-bar-container {
+  position: relative;
+  width: 100%;
+  height: 20px;              /* ↑ barra mais alta */
+  background: #E5E7EB;
+  border-radius: 6px;
+  margin: 6px 0 8px;
+}
+
+.efficacy-filled {
+  height: 100%;
+  background: #0094FF;
+  border-radius: 6px;
+}
+
+
+
+/* Valores de eficácia */
+.eficacia-range {
+  font-size: 27px;           /* ↑ valores maiores */
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.eficacia-min {
+  color: #777b84ff;
+  font-weight: 500;
+}
+
+.eficacia-max {
+  color: #111827;
+  font-weight: 700;
+}
+
+/* Prazo */
+.prazo-title {
+  margin: 0;
+  font-size: 16px;           /* ↑ */
+  font-weight: 600;
+  color: #000;
+}
+
+.prazo-value {
+  margin: 4px 0 0 0;
+  font-size: 18px;           /* ↑ */
+  font-weight: 700;
+  color: #737171ff;
+}
+
+/* Container rolável para a lista de checkboxes */
+.checkbox-list {
+  max-height: 160px;              /* ajuste a altura conforme o mock */
+  overflow-y: auto;
+  border: 1px solid #cfd4da;      /* mesma família do select */
+  border-radius: 8px;
+  background: #fff;
+  padding: 8px;
+}
+
+/* Cada linha de checkbox */
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 4px;               /* respiro entre itens */
+  font-size: 14px;
+  color: #1f2937;
+}
+
+/* Checkbox padrão e texto */
+.checkbox-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+.checkbox-text {
+  line-height: 1.4;
+}
+
+/* (opcional) Dar um hover leve nos itens */
+.checkbox-item:hover {
+  background: #f9fafb;
+  border-radius: 6px;
+}
+
+/* Já existentes (chips) ficam com respiro */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 10px;
+  border-radius: 14px;
+  background: #eef2ff;
+  color: #1f2937;
+  font-size: 12px;
+}
+.chip-close {
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* src/Filtros.css */
+
+.left-sidebar {
+  font-family: var(--font-sans);
+}
+
+.card-title  { font-size: 15px; font-weight: 700; color: var(--text-strong); }
+.card-desc   { font-size: 12px; color: var(--text-muted); }
+
+.campo-label { font-size: 13px; font-weight: 600; color: var(--text-body); }
+
+.campo-select,
+.campo-select-multi {
+  font-size: 14px;
+  color: var(--text-body);
+}
+
+.radio { font-size: 14px; color: var(--text-body); }
+
+.btn-aplicar,
+.btn-secondary,
+.btn-reset {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
+.tratamento-info .tipo-tratamento {
+  font-size: 15px;
+  color: #0094FF;
+  margin-top: px;
+  margin-bottom: 6px;
+  font-weight: 500;
+  font-weight: bold;
+}
+
+/* ========= MOBILE ========= */
+/* Ajustes para mobile */
+@media (max-width: 720px) {
+  /* Layout da página: cards primeiro e filtros depois */
+  .tratamentos-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: none !important;
+    gap: 16px !important;
+    max-width: 100% !important;
+  }
+
+  .conteudo {
+    order: 1 !important;
+  }
+
+  .sidebar {
+    order: 2 !important;
+    width: 100% !important;
+    position: static !important;
+    top: auto !important;
+  }
+
+  .left-sidebar,
+  .filtros {
+    position: static !important;
+  }
+
+  /* Cards compactos no mobile */
+  .tratamento-card {
+    padding: 16px !important;
+    width: 100% !important;  /* Garante que os cards ocupem toda a largura */
+  }
+
+  .tratamento-content {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 14px !important;
+  }
+
+  .tratamento-imagem {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  .tratamento-imagem img {
+    max-width: 160px !important;
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+
+  .tratamento-info {
+    width: 100% !important;
+    text-align: center !important;
+  }
+
+  /* Centralizar botões no mobile */
+  .tratamento-info .btn {
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: 8px auto 0 !important;
+  }
+
+  /* Ajustes na eficácia */
+  .eficacia-container {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .eficacia-title {
+    text-align: center !important;
+    width: 100% !important;
+  }
+
+  .eficacia-bar-container {
+    width: 100% !important;
+    max-width: 320px !important;
+    margin: 8px auto !important;
+  }
+
+  .eficacia-range {
+    text-align: center !important;
+    width: 100% !important;
+  }
+
+  .prazo-title,
+  .prazo-value {
+    text-align: center !important;
+    width: 100% !important;
+  }
+}
+
+/* Ajustes de sidebar */
+@media (max-width: 480px) {
+  .sidebar {
+    width: 100% !important;
+    padding: 10px 0 !important;
+  }
+
+  .left-sidebar {
+    padding: 0 10px !important;
+  }
+}
+
+/* Ajustes de tipografia e espaço para dispositivos menores */
+@media (max-width: 480px) {
+  .titulo-pagina {
+    font-size: 22px !important;
+    max-width: 95%;
+  }
+
+  .card-title {
+    font-size: 14px !important;
+  }
+
+  .card-desc {
+    font-size: 12px !important;
+  }
+}
+/* Ajustes para mobile */
+@media (max-width: 720px) {
+  /* Ajusta a sidebar para ocupar 80% da largura na versão mobile */
+  .left-sidebar {
+    width: 80% !important;  /* Reduz a largura para 80% da tela */
+    padding: 10px 16px !important;  /* Ajusta o padding para melhor espaçamento */
+    border: none !important;  /* Remove borda para maior fluidez */
+    box-shadow: none !important;  /* Remove a sombra */
+  }
+
+  /* Ajuste dos filtros para 80% da largura da tela no mobile */
+  .filtros {
+    width: 80% !important;
+    margin: 0 auto;  /* Centraliza os filtros na tela */
+  }
+
+  /* Ajuste de espaçamento entre os filtros */
+  .card-filtro {
+    padding: 20px 0 !important;  /* Menos espaço entre os filtros */
+  }
+
+  /* Ajuste do conteúdo para se adaptar à largura reduzida */
+  .tratamento-card {
+    width: 90% !important;  /* Garante que os cards ocupem toda a largura disponível */
+    padding: 16px !important;  /* Menos padding no card */
+  }
+
+  /* Ajuste da imagem dos tratamentos */
+  .tratamento-imagem img {
+    max-width: 160px !important;
+    width: 90% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+
+  /* Centralizar os botões */
+  .tratamento-info .btn {
+    margin: 8px auto 0 !important;
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  /* Ajuste da eficácia e do prazo */
+  .eficacia-container {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .eficacia-bar-container {
+    width: 90% !important;
+    max-width: 320px !important;
+    margin: 8px auto !important;
+  }
+
+  /* Ajuste de texto e título para caber melhor na tela */
+  .prazo-title,
+  .prazo-value {
+    text-align: center !important;
+    width: 100% !important;
+  }
+}
+
+/* Ajuste para telas muito pequenas (menores que 480px) */
+@media (max-width: 480px) {
+  .left-sidebar {
+    width: 100% !important;  /* A sidebar ocupa toda a largura */
+    
+  }
+
+  .filtros {
+    width: 90% !important;
+    padding: 10px 0 !important; /* Ajusta o padding para telas menores */
+  }
+
+  .card-filtro {
+    padding: 16px 0 !important; /* Menos padding nos filtros */
+  }
+}
+
+/* Ajuste para telas muito pequenas (menores que 480px) */
+@media (max-width: 480px) {
+  .left-sidebar {
+    width: 100% !important;  /* A sidebar ocupa toda a largura */
+  }
+
+  .filtros {
+    width: 90% !important;
+    padding: 5px 0 !important; /* Ajusta o padding para telas menores */
+    border: 2px solid #d1d5db; /* Adiciona a borda */
+    border-radius: 10px; /* Borda arredondada */
+    background-color: #fff; /* Fundo branco para a borda se destacar */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1); /* Sombra suave para dar destaque */
+    margin: 4 auto; /* Centraliza os filtros */
+  }
+
+  .card-filtro {
+    padding: 10px 0 !important; /* Menos padding nos filtros */
+  }
+}

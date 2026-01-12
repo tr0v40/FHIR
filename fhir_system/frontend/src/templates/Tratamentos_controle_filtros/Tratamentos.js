@@ -181,7 +181,8 @@ function Tratamentos() {
     const map = new Map();
 
     for (const e of eficaciaPorEvidencia || []) {
-      if (e?.tipo_eficacia?.tipo_eficacia !== 'Redução de sintomas') continue;
+      if (e?.tipo_eficacia?.tipo_eficacia !== 'Controle') continue;
+
 
       const nome = e?.nome_tratamento;
       const val = Number(e?.percentual_eficacia_calculado);
@@ -463,7 +464,6 @@ return (
                         <p><strong>Princípio ativo:</strong> {tratamento.principio_ativo || 'ND'}</p>
                         <p><strong>Fabricante:</strong> {tratamento.fabricante || 'ND'}</p>
 
-                        {/* Botão "ver detalhes" visual */}
                         <div className="btn mt-2" style={{ opacity: 0.7 }}>
                           ver detalhes <span style={{ fontWeight: 'bold' }}>&#8250;</span>
                         </div>
@@ -474,7 +474,7 @@ return (
                       {/* TOPO FIXO (Eficácia sempre aparece) + Campo de baixo muda */}
                       <div className="eficacia-container">
                         <p className="eficacia-title">
-                          Eficácia: <span className="eficacia-sub">Redução de sintomas</span>
+                          Eficácia: <span className="eficacia-sub">Controle</span>
                         </p>
 
                         <div className="eficacia-bar-container">
