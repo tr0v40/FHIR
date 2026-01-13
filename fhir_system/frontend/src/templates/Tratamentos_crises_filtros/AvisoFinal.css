@@ -1,9 +1,8 @@
-/* desktop: não aparece */
+
 .aviso-final {
   display: none;
 }
 
-/* mobile: aparece no final */
 @media (max-width: 768px) {
   .aviso-final {
     display: block;

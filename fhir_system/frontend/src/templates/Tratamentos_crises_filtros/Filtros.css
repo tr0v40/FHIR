@@ -2,7 +2,7 @@
 
 
 
-/* --- Zona da sidebar com borda externa --- */
+
 .tratamentos-layout .sidebar .left-sidebar {
   
   border: 3px solid #e8e9ebff;
@@ -10,23 +10,23 @@
   background: #fff;
   padding: 20px;
   box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-  position: static;  /* Alterado para 'static' para não ficar preso em uma posição fixa */
-  top: auto;  /* Remover o topo fixo */
-  margin-top: 0;  /* Remover qualquer margem superior extra */
+  position: static;  
+  top: auto;  
+  margin-top: 0;  
 }
-/* --- REMOVER "card" do cabeçalho/descrição dos filtros --- */
+
 .left-sidebar .card-filtro,
 .left-sidebar .card-header,
 .left-sidebar .card-title,
 .left-sidebar .card-desc {
-  background: transparent !important; /* sem fundo */
-  border: none !important;            /* sem borda própria */
-  box-shadow: none !important;        /* sem sombra */
+  background: transparent !important; 
+  border: none !important;            
+  box-shadow: none !important;       
 }
 
-/* Ajustes adicionais para o layout */
+
 .left-sidebar .card-header {
-  margin: 0 0 6px 0; /* Ajuste pequeno abaixo do título */
+  margin: 0 0 6px 0;
   padding: 0;
 }
 
@@ -40,22 +40,22 @@
 }
 
 
-/* Estilo padrão para os botões */
+
 .btn-aplicar,
 .btn-reset {
-  background-color: #6c757d; /* Cor cinza do botão */
-  color: #fff; /* Texto branco */
+  background-color: #6c757d; 
+  color: #fff; 
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease; /* Transição suave ao passar o mouse */
+  transition: background-color 0.3s ease; 
 }
 
-/* Efeito de hover para os botões */
+
 .btn-aplicar:hover,
 .btn-reset:hover {
-  background-color: #007bff; /* Cor azul ao passar o mouse */
+  background-color: #007bff;
 }
 
 .left-sidebar .card-desc {
@@ -66,7 +66,6 @@
   margin: 4px 0 8px;
 }
 
-/* Ajuste do layout geral para maior proximidade */
 .tratamentos-layout {
   max-width: 1544px;
   margin: 0 auto;
@@ -78,26 +77,23 @@
   box-sizing: border-box;
 }
 
-/* Ajuste de espaçamento entre sidebar e tratamentos */
 .tratamentos-list {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-top: 10px; /* Ajuste de distância entre o topo e o primeiro card */
+  margin-top: 10px; 
 }
 
-/* --- REMOVER “card” do cabeçalho/descrição dos filtros --- */
 .left-sidebar .card-filtro,
 .left-sidebar .card-header,
 .left-sidebar .card-title,
 .left-sidebar .card-desc {
-  background: transparent !important; /* sem fundo */
-  border: none !important;            /* sem borda própria */
-  box-shadow: none !important;        /* sem sombra */
+  background: transparent !important; 
+  border: none !important;       
+  box-shadow: none !important;        
 }
 
-/* Se existir alguma classe .card ou .card-header vindo de framework: zere aqui também */
 .left-sidebar .card,
 .left-sidebar .card-header {
   background: transparent !important;
@@ -107,17 +103,15 @@
   margin: 0 !important;
 }
 
-/* --- Espaçamento enxuto e tipografia maior --- */
 .left-sidebar .card-header {
-  margin: 0 0 6px 0;               /* pequeno respiro abaixo do título */
+  margin: 0 0 6px 0;              
   padding: 0;
 }
 
 .left-sidebar .card-title {
   font-family: var(--font-sans, "Inter", sans-serif);
-  font-size: 20px;                 /* ↑ maior que 15px anterior */
+  font-size: 20px;                 
   font-weight: 700;
-  letter-spacing: -0.01em;         /* leve “tight” moderno */
   color: #111827;
   margin: 0;
   display: inline-flex;
@@ -127,17 +121,16 @@
 
 .left-sidebar .card-desc {
   font-family: var(--font-sans, "Inter", sans-serif);
-  font-size: 15px;                 /* ↑ maior que 12px anterior */
-  line-height: 1.5;                /* melhora leitura */
-  color: #374151;                  /* um pouco mais escuro que o cinza claro */
-  margin: 4px 0 8px;               /* espaço mínimo */
+  font-size: 15px;              
+  line-height: 1.5;                
+  color: #374151;                  
+  margin: 4px 0 8px;              
 }
 
-/* --- Campos e botões com tipografia maior (mantendo flat) --- */
-.left-sidebar .campo { gap: 8px; }  /* espaço suficiente sem “card” por trás */
+.left-sidebar .campo { gap: 8px; }  
 
 .left-sidebar .campo-label {
-  font-size: 14px;                 /* ↑ */
+  font-size: 14px;               
   font-weight: 600;
   color: #374151;
   margin: 0;
@@ -146,19 +139,18 @@
 .left-sidebar .campo-select,
 .left-sidebar .campo-select-multi {
   width: 100%;
-  padding: 10px 19px;              /* ↑ */
-  font-size: 15px;                 /* ↑ */
+  padding: 10px 19px;            
+  font-size: 15px;                
   border: 1px solid #cfd4da;
   border-radius: 5px;
   background: #fff;
   color: #1f2937;
 }
 
-/* Radios */
 .left-sidebar .radio-group { gap: 12px; margin-top: 10px; }
 .left-sidebar .radio { font-size: 15px; color: #374151; }
 
-/
+
 /* Botões - Estilo inicial */
 .left-sidebar .btn-aplicar,
 .left-sidebar .btn-secondary,
