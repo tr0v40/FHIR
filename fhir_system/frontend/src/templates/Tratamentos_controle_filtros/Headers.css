@@ -23,16 +23,15 @@
 
 .navbar-brand .logo-img,
 .logo-img {
-  height: 150px;     /* mantém o tamanho que você quer */
-  width: auto;       /*  não força largura */
-  max-width: 150px;  /* opcional: evita estourar */
+  height: 150px;    
+  width: auto;    
+  max-width: 150px; 
   display: block;
   object-fit: contain;
   image-rendering: auto;
 }
 
 
-/* ===== DESKTOP HEADER ===== */
 .header-bottom {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 500px;
@@ -48,7 +47,7 @@
 
 .titulo-pagina {
   font-size: 40px;
-  font-weight: 400;   /* normal (sem negrito) */
+  font-weight: 400;  
   color: #000000;
   margin: 0 0 8px 0;
   font-family: inherit;
@@ -113,7 +112,7 @@
   justify-content: center;
 }
 
-/* ===== MOBILE HEADER ===== */
+
 @media (max-width: 768px) {
   .header-content
   .header-top { padding-bottom: 16px; }
