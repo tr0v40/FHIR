@@ -29,8 +29,8 @@ const DEFAULT_FILTROS = {
   prazoMax: 100,
   publico: 'todos',
   contraindicacoes: [],
-  ordenarCaracteristica: 'eficacia', // ✅ default: eficácia
-  ordemCaracteristica: 'desc',       // ✅ default: maior -> menor
+  ordenarCaracteristica: 'eficacia',
+  ordemCaracteristica: 'desc',    
 };
 
 
@@ -142,27 +142,81 @@ function Tratamentos() {
   const sidebarWrapperRef = useRef(null);
 
   // carregar dados iniciais
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const [tratRes, efRes] = await Promise.all([
-          axios.get(`${API_BASE}/detalhes-tratamentos/`),
-          axios.get(`${API_BASE}/eficacia-por-evidencia/`),
-        ]);
+useEffect(() => {
+  let mounted = true;
 
-        const data = tratRes.data || [];
-        setTratamentos(data);
-        setTratamentosBase(data);
-        setEficaciaPorEvidencia(efRes.data || []);
-      } catch (e) {
-        console.error('Erro ao carregar dados:', e);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const CACHE_KEY = 'tratamentos_crises_eficacia_cache_v1';
+  const CACHE_TTL_MS = 1000 * 60 * 60 * 6; // 6 horas
 
-    load();
-  }, []);
+  const readCache = () => {
+    try {
+      const raw = sessionStorage.getItem(CACHE_KEY);
+      if (!raw) return null;
+
+      const parsed = JSON.parse(raw);
+      if (!parsed?.ts) return null;
+
+      const expired = Date.now() - parsed.ts > CACHE_TTL_MS;
+      if (expired) return null;
+
+      return parsed; // { ts, tratamentos, eficaciaPorEvidencia }
+    } catch {
+      return null;
+    }
+  };
+
+  const writeCache = (payload) => {
+    try {
+      sessionStorage.setItem(CACHE_KEY, JSON.stringify(payload));
+    } catch {}
+  };
+
+  const load = async () => {
+    // 0) hidrata do cache imediatamente (se existir)
+    const cached = readCache();
+    if (cached && mounted) {
+      setTratamentos(cached.tratamentos || []);
+      setTratamentosBase(cached.tratamentos || []);
+      setEficaciaPorEvidencia(cached.eficaciaPorEvidencia || []);
+      setLoading(false);
+    }
+
+    try {
+      // 1) revalida em background
+      const [tratRes, efRes] = await Promise.all([
+        axios.get(`${API_BASE}/detalhes-tratamentos/`),
+        axios.get(`${API_BASE}/eficacia-por-evidencia/`),
+      ]);
+
+      if (!mounted) return;
+
+      const tratamentosData = tratRes.data || [];
+      const eficaciaData = efRes.data || [];
+
+      setTratamentos(tratamentosData);
+      setTratamentosBase(tratamentosData);
+      setEficaciaPorEvidencia(eficaciaData);
+      setLoading(false);
+
+      // 2) salva cache para o proximo reload abrir na hora
+      writeCache({
+        ts: Date.now(),
+        tratamentos: tratamentosData,
+        eficaciaPorEvidencia: eficaciaData,
+      });
+    } catch (e) {
+      console.error('Erro ao carregar dados:', e);
+      if (mounted) setLoading(false);
+    }
+  };
+
+  load();
+
+  return () => {
+    mounted = false;
+  };
+}, []);
+
 
   // opções de contraindicações (dinâmico)
   const contraOpcoes = useMemo(() => {
@@ -341,7 +395,7 @@ useEffect(() => {
 const tratamentosOrdenados = useMemo(() => {
   const arr = [...tratamentosFiltrados];
 
-  // ✅ se o usuário não escolheu nada, a tela ainda ordena por eficácia (desc)
+ 
   const criterio = filtrosAplicados.ordenarCaracteristica || 'eficacia';
   const ordem = filtrosAplicados.ordemCaracteristica || 'desc';
 
@@ -399,6 +453,7 @@ const tratamentosOrdenados = useMemo(() => {
 
 return (
   <div className="tratamentos-page">
+     <div id="topo" />
     <Header />
 
     <main className="tratamentos-layout" ref={layoutRef}>
@@ -489,23 +544,25 @@ return (
 
                         {/* SOMENTE A PARTE DE BAIXO MUDA */}
                         {criterioVisual === 'custo' ? (
-                          <>
-                            <p className="prazo-title">Preço</p>
+                          <div className="prazo-container">
+                            <p className="prazo-title">Preço:   </p>
                             <p className="prazo-value">{precoFormatado}</p>
-                          </>
+                          </div>
                         ) : criterioVisual === 'risco' ? (
                           <>
-                            <p className="prazo-title">Risco de reação adversa</p>
+                            <p className="prazo-title">Risco de reação adversa:</p>
                             <p className="prazo-value">{riscoFormatado}</p>
                           </>
                         ) : (
                           <>
-                            <p className="prazo-title">Prazo para efeito</p>
+                            <p className="prazo-title">Prazo para efeito:</p>
                             <p className="prazo-value">
                               {tratamento.prazo_efeito_min_formatado} a {tratamento.prazo_efeito_max_formatado}
                             </p>
                           </>
                         )}
+
+
                       </div>
                     </div>
                   </a>

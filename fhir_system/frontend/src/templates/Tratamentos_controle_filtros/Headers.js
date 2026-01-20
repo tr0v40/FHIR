@@ -18,6 +18,7 @@ function Header() {
               src={`${process.env.PUBLIC_URL}/logo.png`}
               alt="Telix Logo"
               className="logo-img"
+              style={{ height: '180px' }}
             />
           </a>
         </div>
@@ -26,6 +27,8 @@ function Header() {
       <div className="header-content header-bottom">
         <div className="left">
           <h1 className="titulo-pagina">Tratamentos para controle de enxaqueca</h1>
+
+          Ordene por eficácia, risco, prazo para efeito ou preço, e filtre por grupo ou contraindicações.
 
 
           {/* <span className="subtitulo">Tratamentos ordenados por:</span> */}
