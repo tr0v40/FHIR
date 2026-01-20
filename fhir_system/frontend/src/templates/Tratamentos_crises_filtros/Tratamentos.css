@@ -399,6 +399,32 @@ html, body {
   font-weight: 500;
   font-weight: bold;
 }
+.prazo-title, .prazo-value {
+  display: inline; /* Isso fará com que os dois fiquem na mesma linha */
+  margin-right: 10px;  /* Espaço entre "Preço" e o valor */
+}
+
+.prazo-value {
+  font-weight: bold;  /* Deixar o valor do preço em negrito para destaque */
+}
+.prazo-container {
+  display: flex;
+  align-items: center;  /* Garante que o título e o valor fiquem alinhados */
+}
+
+.prazo-title {
+  margin-right: 5px;  /* Ajuste o valor para o espaço desejado entre o título e o valor */
+  font-weight: normal;  /* Ajuste no peso da fonte do título */
+}
+
+.prazo-value {
+  font-weight: bold;  /* Valor do preço em negrito */
+}
+
+.prazo-value::before {
+  content: " ";  /* Adiciona um espaço antes de "R$" */
+  margin-right: 5px;  /* Separa o "R$" do ":" */
+}
 
 /* ========= MOBILE ========= */
 /* Ajustes para mobile */

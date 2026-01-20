@@ -1,44 +1,131 @@
 import React, { useState, useMemo } from 'react';
 import './Filtros.css';
 
+const DEFAULT_FILTROS = {
+  tipo: '',
+  fabricante: '',
+  eficaciaMin: 0,
+  eficaciaMax: 100,
+  prazoMin: 0,
+  prazoMax: 100,
+  publico: 'todos',
+  contraindicacoes: [],
+  ordenarCaracteristica: 'eficacia', // Valor padrão
+  ordemCaracteristica: 'desc',       // Valor padrão
+};
+
 const Filtros = ({
   filtros,
   setFiltros,
   aplicarFiltros,
   resetFiltros,
-  contraOpcoes = [], // ✅ vem da API (Tratamentos.js)
+  contraOpcoes = [], // vem da API (Tratamentos.js)
 }) => {
   const [mostrarContra, setMostrarContra] = useState(false);
 
   const handleAplicar = (e) => {
     e?.preventDefault();
     aplicarFiltros?.(filtros);
+    
+    // Rolar para o topo após aplicar o filtro
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Opcional para efeito de rolagem suave
+    });
   };
 
   const handleReset = (e) => {
     e?.preventDefault();
-    resetFiltros?.();
+    setFiltros(DEFAULT_FILTROS); // Reseta os filtros para os valores padrão
+    aplicarFiltros(DEFAULT_FILTROS); // Aplica os filtros padrão (sem nenhum filtro)
   };
 
-  // ✅ fallback: se a API ainda não trouxe nada, não quebra
+  // fallback: se a API ainda não trouxe nada, não quebra
   const contraLista = useMemo(() => {
     return Array.isArray(contraOpcoes) ? contraOpcoes : [];
   }, [contraOpcoes]);
 
   return (
     <aside className="left-sidebar">
+      <div id="topo"></div>
+
       <div className="filtros">
+        {/* CARD: ORDENAR */}
+        <section className="card-filtro" aria-labelledby="ordenar-title">
+          <header className="card-header">
+            <h3 id="ordenar-title" className="card-title">
+              Ordenar por característica
+            </h3>
+          </header>
+
+          <div className="campo">
+            <label htmlFor="ordenar-select" className="campo-label"></label>
+            <select
+              id="ordenar-select"
+              className="campo-select"
+              value={filtros.ordenarCaracteristica}
+              onChange={(e) =>
+                setFiltros({ ...filtros, ordenarCaracteristica: e.target.value })
+              }
+            >
+              <option value="nenhuma">Nenhuma</option>
+              <option value="eficacia">Eficácia</option>
+              <option value="risco">Risco</option>
+              <option value="prazo">Prazo para efeito</option>
+              <option value="custo">Preço</option>
+            </select>
+          </div>
+
+          <div className="radio-group">
+            <label className="radio">
+              <input
+                type="radio"
+                name="ordemCaracteristica"
+                value="desc"
+                checked={filtros.ordemCaracteristica === 'desc'}
+                onChange={(e) =>
+                  setFiltros({ ...filtros, ordemCaracteristica: e.target.value })
+                }
+              />
+              Maior para menor
+            </label>
+
+            <label className="radio">
+              <input
+                type="radio"
+                name="ordemCaracteristica"
+                value="asc"
+                checked={filtros.ordemCaracteristica === 'asc'}
+                onChange={(e) =>
+                  setFiltros({ ...filtros, ordemCaracteristica: e.target.value })
+                }
+              />
+              Menor para maior
+            </label>
+          </div>
+
+          <div className="card-actions">
+          <a
+            href="#topo"
+            className="btn-aplicar"
+            onClick={() => aplicarFiltros?.(filtros)}
+          >
+            Aplicar Filtro
+          </a>
+
+          </div>
+        </section>
+
         {/* CARD: PERFIL */}
         <section className="card-filtro" aria-labelledby="perfil-title">
           <header className="card-header">
             <h3 id="perfil-title" className="card-title">
-              <span>Filtros</span>
+              <span>Filtre por grupo</span>
               <img
-		  src={"/static/filtros.png"}
-		  alt="Ícone de filtros"
- 		  className="titulo-icone"
-		/>
-
+                src={"/static/filtros.png"}
+                alt="Ícone de filtros"
+                className="titulo-icone"
+              />
             </h3>
 
             <p className="card-desc">
@@ -81,13 +168,12 @@ const Filtros = ({
             <h3 id="contra-title" className="card-title">
               Contraindicações <span aria-hidden="true" className="info-icon"></span>
               <img
-  src="/static/contra.png"
-  alt="Ícone de contraindicações"
-  className="titulo-icone"
-  width={60}
-  height={50}	
-		/>
-                
+                src="/static/contra.png"
+                alt="Ícone de contraindicações"
+                className="titulo-icone"
+                width={60}
+                height={50}
+              />
             </h3>
             <p className="card-desc">
               Selecione as condições que você quer evitar nos tratamentos
@@ -164,67 +250,6 @@ const Filtros = ({
                 )}
               </div>
             )}
-          </div>
-
-          <div className="card-actions">
-            <button className="btn-aplicar" onClick={handleAplicar}>
-              Aplicar Filtro
-            </button>
-          </div>
-        </section>
-
-        {/* CARD: ORDENAR */}
-        <section className="card-filtro" aria-labelledby="ordenar-title">
-          <header className="card-header">
-            <h3 id="ordenar-title" className="card-title">
-              Ordenar por característica
-            </h3>
-          </header>
-
-          <div className="campo">
-            <label htmlFor="ordenar-select" className="campo-label"></label>
-            <select
-              id="ordenar-select"
-              className="campo-select"
-              value={filtros.ordenarCaracteristica}
-              onChange={(e) =>
-                setFiltros({ ...filtros, ordenarCaracteristica: e.target.value })
-              }
-            >
-              <option value="nenhuma">Nenhuma</option>
-              <option value="eficacia">Eficácia</option>
-              <option value="risco">Risco</option>
-              <option value="prazo">Prazo para efeito</option>
-              <option value="custo">Preço</option>
-            </select>
-          </div>
-
-          <div className="radio-group">
-            <label className="radio">
-              <input
-                type="radio"
-                name="ordemCaracteristica"
-                value="desc"
-                checked={filtros.ordemCaracteristica === 'desc'}
-                onChange={(e) =>
-                  setFiltros({ ...filtros, ordemCaracteristica: e.target.value })
-                }
-              />
-              Maior para menor
-            </label>
-
-            <label className="radio">
-              <input
-                type="radio"
-                name="ordemCaracteristica"
-                value="asc"
-                checked={filtros.ordemCaracteristica === 'asc'}
-                onChange={(e) =>
-                  setFiltros({ ...filtros, ordemCaracteristica: e.target.value })
-                }
-              />
-              Menor para maior
-            </label>
           </div>
 
           <div className="card-actions">

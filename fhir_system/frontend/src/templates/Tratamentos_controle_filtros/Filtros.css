@@ -330,6 +330,43 @@
   font-size: 14px;
   line-height: 1;
 }
+/* Efeito de afundamento do botão */
+.btn-aplicar {
+  transition: all 0.3s ease-in-out; /* Aumenta a duração da transição para dar um efeito mais suave */
+}
+
+.btn-aplicar:active {
+  transform: translateY(8px); /* Movendo o botão 8px para baixo */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* Aumentando a sombra para um efeito mais forte */
+}
+
+.btn-reset {
+  transition: all 0.3s ease-in-out; /* Aumenta a duração da transição */
+}
+
+.btn-reset:active {
+  transform: translateY(8px); /* Movendo o botão 8px para baixo */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* Aumentando a sombra para um efeito mais forte */
+}
+.btn-aplicar,
+.btn-reset {
+  width: 100%;
+  display: block;
+  padding: 10px 12px;
+  border-radius: 6px;
+  box-sizing: border-box;
+  text-decoration: none; 
+    display: flex;              /* garante alinhamento interno */
+  align-items: center;        /* centraliza verticalmente */
+  justify-content: center;    /* centraliza horizontalmente */
+  text-align: center; 
+}
+.left-sidebar {
+  max-height: calc(100vh - 20px); /* ajusta se tiver header fixo */
+  overflow-y: auto;
+  overflow-x: hidden;
+} 
+
 
 
 @media (max-width: 1024px) {
