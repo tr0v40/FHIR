@@ -27,6 +27,5 @@ node_modules/
 .idea/
 
 
+# Ignorar a pasta de build do React
 build/
-!build/
-!build/**
