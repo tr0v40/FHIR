@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/tratamentos-crise-enxaqueca/static/css/main.7b8cb541.css",
-    "main.js": "/tratamentos-crise-enxaqueca/static/js/main.0e5eec98.js",
+    "main.css": "/tratamentos-crise-enxaqueca/static/css/main.d37a1cc5.css",
+    "main.js": "/tratamentos-crise-enxaqueca/static/js/main.6cc1b867.js",
     "static/media/inter-latin-ext-600-normal.woff": "/tratamentos-crise-enxaqueca/static/media/inter-latin-ext-600-normal.4d0d5017d71ea1750fc1.woff",
     "static/media/inter-latin-ext-700-normal.woff": "/tratamentos-crise-enxaqueca/static/media/inter-latin-ext-700-normal.d4a91814dd3f1e022ab1.woff",
     "static/media/inter-latin-ext-500-normal.woff": "/tratamentos-crise-enxaqueca/static/media/inter-latin-ext-500-normal.2f93aaa35e870cec4704.woff",
@@ -59,11 +59,11 @@
     "static/media/inter-vietnamese-600-normal.woff2": "/tratamentos-crise-enxaqueca/static/media/inter-vietnamese-600-normal.6984cf5e8583fac83be3.woff2",
     "static/media/inter-vietnamese-400-normal.woff2": "/tratamentos-crise-enxaqueca/static/media/inter-vietnamese-400-normal.44c9df135eec470b0ab6.woff2",
     "index.html": "/tratamentos-crise-enxaqueca/index.html",
-    "main.7b8cb541.css.map": "/tratamentos-crise-enxaqueca/static/css/main.7b8cb541.css.map",
-    "main.0e5eec98.js.map": "/tratamentos-crise-enxaqueca/static/js/main.0e5eec98.js.map"
+    "main.d37a1cc5.css.map": "/tratamentos-crise-enxaqueca/static/css/main.d37a1cc5.css.map",
+    "main.6cc1b867.js.map": "/tratamentos-crise-enxaqueca/static/js/main.6cc1b867.js.map"
   },
   "entrypoints": [
-    "static/css/main.7b8cb541.css",
-    "static/js/main.0e5eec98.js"
+    "static/css/main.d37a1cc5.css",
+    "static/js/main.6cc1b867.js"
   ]
 }
