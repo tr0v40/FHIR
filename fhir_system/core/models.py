@@ -371,8 +371,8 @@ class DetalhesTratamentoResumo(models.Model):
         ("gravidez", "Gravidez"),
     )
 
-    nome = models.CharField(max_length=200)
-    descricao = models.TextField()
+    nome = models.CharField(max_length=200,blank=True)
+    descricao = models.TextField(blank=True)
     
     condicao_saude = models.ForeignKey(
         "CondicaoSaude",  # A tabela que será referenciada
@@ -384,7 +384,7 @@ class DetalhesTratamentoResumo(models.Model):
     comentario = models.TextField(blank=True, null=True)
     categoria = models.CharField(max_length=100, blank=True, null=True)
     evidencia_clinica = models.TextField(blank=True, null=True)
-    principio_ativo = models.CharField(max_length=200)
+    principio_ativo = models.CharField(max_length=20000,blank=True)
     
     
     slug = models.SlugField(max_length=200, blank=True, null=True, unique=True)
@@ -392,19 +392,25 @@ class DetalhesTratamentoResumo(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.nome)
+            base_slug = slugify(self.nome)
+            slug = base_slug
+            i = 2
+            while DetalhesTratamentoResumo.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{i}"
+                i += 1
+            self.slug = slug
         super().save(*args, **kwargs)
 
     def __str__(self):
         return self.nome
     
-    fabricante = models.CharField(max_length=200)
+    fabricante = models.CharField(max_length=200,blank=True)
     comentario = models.TextField(null=True, blank=True)
     avaliacao = models.IntegerField(null=True, blank=True) 
     eficacia_min = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     eficacia_max = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    prazo_efeito_min = models.IntegerField()  # Para armazenar o tempo em minutos
-    prazo_efeito_max = models.IntegerField()
+    prazo_efeito_min = models.IntegerField(blank=True, null=True)  # Para armazenar o tempo em minutos
+    prazo_efeito_max = models.IntegerField(blank=True, null=True)
     reacoes_adversas = models.ManyToManyField(
         ReacaoAdversa,
         through='DetalhesTratamentoReacaoAdversa',  # modelo intermediário
@@ -458,7 +464,7 @@ class DetalhesTratamentoResumo(models.Model):
     imagem = models.ImageField(upload_to="tratamentos/", blank=True, null=True)
     imagem_detalhes = models.ImageField(upload_to="tratamentos/detalhes/", blank=True, null=True)
 
-    quando_usar = models.TextField()    
+    quando_usar = models.TextField(blank=True)    
     tipo_tratamento = models.ManyToManyField(TipoTratamento, blank=True)
 
     custo_medicamento = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)

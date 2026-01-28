@@ -3,6 +3,8 @@
 
 from django.contrib import admin
 from django import forms
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 from django.http import JsonResponse
 from django.urls import path
 from django.utils.html import format_html
@@ -96,8 +98,18 @@ class DetalhesTratamentoReacaoAdversaInline(admin.TabularInline):
     autocomplete_fields = ['reacao_adversa']
     fields = ('reacao_adversa', 'grau_comunalidade', 'reacao_min', 'reacao_max')
 
+
+class DetalhesTratamentoResumoResource(resources.ModelResource):
+    class Meta:
+        model = DetalhesTratamentoResumo
+        fields = ("id", "nome", "fabricante", "principio_ativo")
+        import_id_fields = ("nome",)
+        skip_unchanged = True
+
+
 @admin.register(DetalhesTratamentoResumo)
-class DetalhesTratamentoAdmin(admin.ModelAdmin):
+class DetalhesTratamentoAdmin(ImportExportModelAdmin):
+    resource_class = DetalhesTratamentoResumoResource
     inlines = [
         TratamentoCondicaoInline,
         DetalhesTratamentoReacaoAdversaInline,  # Se você já tiver a classe inline
@@ -114,8 +126,8 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
         "grupo",
         "eficacia_min",
         "eficacia_max",
-        "custo_medicamento",
-        "exibir_condicoes_saude",  # Exibe nome e descrição da condicao_saude
+        "custo_medicamento", 
+        "condicao_saude",
     )
 
     filter_horizontal = ("contraindicacoes", "reacoes_adversas", "tipo_tratamento")
@@ -126,6 +138,7 @@ class DetalhesTratamentoAdmin(admin.ModelAdmin):
         "eficacia_min",
         "eficacia_max",
         "custo_medicamento",
+        "condicao_saude"
     )
 
     fieldsets = (
@@ -462,4 +475,3 @@ class AvaliacaoAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Avaliacao, AvaliacaoAdmin)
-
