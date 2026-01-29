@@ -513,7 +513,7 @@ html, body {
 
 @media (max-width: 480px) {
   .sidebar {
-    width: 100% !important;
+    width: 90% !important;
     padding: 10px 0 !important;
   }
 

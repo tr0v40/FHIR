@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv(
     "DJANGO_SECRET_KEY", "chave-secreta"
 )  # Usa 'chave-secreta' se não houver .env
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ["*","127.0.0.1", "189.126.32.64", "cadastros.telix.inf.br"]
 
 
