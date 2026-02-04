@@ -430,16 +430,13 @@ html, body {
     order: 1 !important;
   }
 
-  .sidebar {
-    order: 2 !important;
-    width: 100% !important;
-    position: static !important;
-    top: auto !important;
-  }
-
-  .left-sidebar,
   .filtros {
-    position: static !important;
+    padding: 15px; /* Adiciona padding interno para afastar do contêiner */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+    margin: 10px auto; /* Centraliza e dá uma margem externa */
+    width: 95%; /* Deixa os filtros com uma largura de 95% da tela */
   }
 
 
@@ -514,49 +511,13 @@ html, body {
 @media (max-width: 480px) {
   .sidebar {
     width: 90% !important;
-    padding: 10px 0 !important;
-  }
-
-  .left-sidebar {
-    padding: 0 10px !important;
-  }
-}
-
-
-@media (max-width: 480px) {
-  .titulo-pagina {
-    font-size: 22px !important;
-    max-width: 95%;
-  }
-
-  .card-title {
-    font-size: 14px !important;
-  }
-
-  .card-desc {
-    font-size: 12px !important;
+    padding: 30px 0 !important;
   }
 }
 
 @media (max-width: 720px) {
  
-  .left-sidebar {
-    width: 80% !important; 
-    padding: 10px 16px !important;  
-    border: none !important;
-    box-shadow: none !important;
-  }
-
-  .filtros {
-    width: 80% !important;
-    margin: 0 auto;  
-  }
-
  
-  .card-filtro {
-    padding: 20px 0 !important;  
-  }
-
   .tratamento-card {
     width: 90% !important;  
     padding: 16px !important;  
@@ -601,39 +562,42 @@ html, body {
 }
 
 
-@media (max-width: 480px) {
-  .left-sidebar {
-    width: 100% !important;  
-    
-  }
-
+@media (max-width: 720px) {
+  /* Ajusta o contêiner principal de filtros com 20px de espaçamento das bordas */
   .filtros {
-    width: 90% !important;
-    padding: 10px 0 !important; 
+    padding: 20px; /* Adiciona um padding interno de 20px para afastar do contêiner */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+    margin: 10px auto; /* Centraliza e dá uma margem externa */
+    width: 95%; /* Deixa os filtros com uma largura de 95% da tela */
   }
 
+  /* Ajuste de cada item de filtro com borda e padding */
   .card-filtro {
-    padding: 16px 0 !important; 
+    padding: 20px; /* Aumenta o padding dentro de cada filtro */
+    margin-bottom: 20px; /* Dá mais espaço entre os filtros */
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd; /* Adiciona borda suave */
+  }
+
+  /* Ajuste dos campos de seleção dentro dos filtros */
+  .card-filtro select,
+  .card-filtro button {
+    width: 100%; /* Faz com que o botão e a seleção ocupem toda a largura */
+    padding: 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #ddd; /* Borda leve */
+    margin-top: 10px; /* Dá mais espaço entre os campos */
+  }
+
+  /* Ajuste do espaçamento entre os filtros */
+  .filtros .form-group {
+    margin-bottom: 20px; /* Mais espaço entre as seções dos filtros */
   }
 }
 
 
-@media (max-width: 480px) {
-  .left-sidebar {
-    width: 100% !important; 
-  }
 
-  .filtros {
-    width: 90% !important;
-    padding: 5px 0 !important;
-    border: 2px solid #d1d5db; 
-    border-radius: 10px; 
-    background-color: #fff; 
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1); 
-    margin: 4 auto; 
-  }
-
-  .card-filtro {
-    padding: 10px 0 !important; 
-  }
-}

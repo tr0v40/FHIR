@@ -374,13 +374,13 @@ class DetalhesTratamentoResumo(models.Model):
     nome = models.CharField(max_length=200,blank=True)
     descricao = models.TextField(blank=True)
     
-    condicao_saude = models.ForeignKey(
-        "CondicaoSaude",  # A tabela que será referenciada
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="detalhes_tratamento"
-    )
+
+
+    condicoes_saude = models.ManyToManyField(
+    "CondicaoSaude",
+    blank=True,
+    related_name="detalhes_tratamentos"
+)
     comentario = models.TextField(blank=True, null=True)
     categoria = models.CharField(max_length=100, blank=True, null=True)
     evidencia_clinica = models.TextField(blank=True, null=True)
@@ -713,6 +713,18 @@ class Pais(models.Model):
 
     def __str__(self):
         return self.nome
+    
+
+class DetalheTratamentoCondicaoSaude(models.Model):
+    tratamento = models.ForeignKey('DetalhesTratamentoResumo', on_delete=models.CASCADE)
+    condicao = models.ForeignKey('CondicaoSaude', on_delete=models.CASCADE)
+
+    # campo extra específico dessa relação
+    descricao_relacionada = models.TextField(blank=True, null=True)
+
+    class Meta:
+        unique_together = ('tratamento', 'condicao')  
+
 
 class EvidenciasClinicas(models.Model):
     tratamento = models.ForeignKey("DetalhesTratamentoResumo", on_delete=models.CASCADE, related_name="evidencias")

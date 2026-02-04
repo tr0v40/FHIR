@@ -1805,8 +1805,17 @@ img {
         
 
 <!-- Título principal -->
+
+{# título #}
 <p class="eficacia-titulo">
-  Eficácia no tratamento de {{ tratamento.condicao_saude.nome }}
+  Eficácia no tratamento de
+  {% with cs=tratamento.condicoes_saude.all %}
+    {% if cs %}
+      {{ cs|join:", " }}
+    {% else %}
+      —                         {# fallback quando não há seleção #}
+    {% endif %}
+  {% endwith %}
 </p>
 
 <div class="eficacia-section">
@@ -2440,28 +2449,7 @@ function salvarNomeEEnviar() {
 
 
   
-        <!-- <h3>Avaliação:</h3>
-        <div class="stars" style="display: inline-block;">
-            Exibindo as estrelas preenchidas -->
-            <!-- {% for i in estrelas_preenchidas %}
-                <span style="color: #ffcc00;">&#9733;</span>  Estrela preenchida -->
-            <!-- {% endfor %}
-            
-            Exibindo as estrelas vazias -->
-            <!-- {% for i in estrelas_vazias %}
-                <span style="color: #ccc;">&#9733;</span>   Estrela vazia -->
-            <!-- {% endfor %}
-        </div>
-    </div>
-  
-  </div> --> 
 
-<!-- Botão de voltar abaixo dos comentários -->
-<div class="voltar-container" style="margin-top: 20px; display: flex; justify-content: center;">
-    <a href="{% url 'tratamentos' %}" class="btn-voltar">
-        <img src="{% static 'img/voltar.png' %}" style="height: 60px;">
-    </a>
-</div>
 
 
 

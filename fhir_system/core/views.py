@@ -974,8 +974,8 @@ def tratamento_view(request):
 
 class CondicaoSaudeDetailView(View):
     def get(self, request, pk):
-        condicao_saude = CondicaoSaude.objects.get(pk=pk)
-        return JsonResponse({'fields': {'descricao': condicao_saude.descricao}})
+        condicoes_saude = CondicaoSaude.objects.get(pk=pk)
+        return JsonResponse({'fields': {'descricao': condicoes_saude.descricao}})
 
 
 
@@ -1404,27 +1404,28 @@ def tratamentos_crise_enxaqueca(request):
     # ---------- escolher “tipo principal” por prioridade (um por tratamento) ----------
     prioridade_tipos = ["Cura", "Remissão", "Controle", "Eliminação de sintomas", "Redução de sintomas", "Prevenção"]
 
-    condicao_saude = "Enxaqueca".lower()  # Condição de saúde que queremos filtrar
+    condicoes_saude = "Enxaqueca".lower()  # Condição de saúde que queremos filtrar
 
     tratamentos_unicos = {}  # chave = tratamento.id
 
     for t in tratamentos_list:
-        # Verifique se o tratamento tem "Redução de sintomas"
         if "Redução de sintomas" in t.eficacias_por_tipo:
             stats_reducao = t.eficacias_por_tipo["Redução de sintomas"]
 
-            # Filtra os tratamentos pela condição de saúde (somente "Enxaqueca")
-            if t.condicao_saude and t.condicao_saude.nome.strip().lower() == condicao_saude: 
-                # Se o tratamento tem "Redução de sintomas" e condição de saúde "Enxaqueca"
-                tratamentos_unicos[t.id] = {
-                    "obj": t,
-                    "tipo": "Redução de sintomas",  
-                    "min": stats_reducao["min"],
-                    "max": stats_reducao["max"],
-                    "min_str": stats_reducao["min_str"],
-                    "max_str": stats_reducao["max_str"],
-                    "count": stats_reducao["count"],
-                }
+            # Corrige a forma de acessar os nomes do relacionamento ManyToMany
+            if t.condicoes_saude:
+                for condicao in t.condicoes_saude.all():  # Iterando sobre os objetos relacionados
+                    if condicao.nome.strip().lower() == "enxaqueca":
+                        tratamentos_unicos[t.id] = {
+                            "obj": t,
+                            "tipo": "Redução de sintomas",  
+                            "min": stats_reducao["min"],
+                            "max": stats_reducao["max"],
+                            "min_str": stats_reducao["min_str"],
+                            "max_str": stats_reducao["max_str"],
+                            "count": stats_reducao["count"],
+                        }
+
 
 
 
@@ -1626,3 +1627,6 @@ def react_app(request):
         return FileResponse(open(index_path, "rb"), content_type="text/html")
     except FileNotFoundError:
         return HttpResponseServerError(f"React build não encontrado em: {index_path}")
+
+
+

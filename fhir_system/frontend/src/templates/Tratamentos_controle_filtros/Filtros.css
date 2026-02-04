@@ -375,3 +375,237 @@
     top: auto;
   }
 }
+/* =======================================================
+   MOBILE ONLY – “desgrudar” conteúdo e compactar controles
+   ======================================================= */
+@media (max-width: 768px) {
+
+  /* Gutter lateral que cria o respiro dentro dos cards */
+  :root { --mob-gutter: 10px; }  /* pode ajustar p/ 12px se quiser mais respiro */
+
+  /* O card em si já ganha um pouco mais de padding */
+  .left-sidebar .card-filtro {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px;                 /* respiro do card */
+    box-shadow: 0 1px 2px rgba(16,24,40,.06);
+    margin: 10px 0;                /* separa cards entre si */
+  }
+
+  /* Título/descrição mais compactos */
+  .left-sidebar .card-title { font-size: 1.05rem; line-height: 1.25; margin: 0; }
+  .left-sidebar .card-desc  { font-size: .98rem; line-height: 1.5; margin: 6px 0 10px; }
+
+  /* Cada bloco de campo com espaçamento coerente */
+  .left-sidebar .campo { margin-bottom: 12px; }
+
+  /* Labels menores */
+  .left-sidebar .campo-label { font-size: .95rem; margin: 6px 0 6px; }
+
+  /* ==========================
+     AQUI está o “desgrude” real
+     ========================== */
+  /* Campos, selects e inputs – menor altura e com gutters laterais */
+  .left-sidebar .campo-select,
+  .left-sidebar .campo-select-multi,
+  .left-sidebar select,
+  .left-sidebar input[type="text"],
+  .left-sidebar input[type="number"] {
+    width: calc(100% - (var(--mob-gutter) * 2));  /* encolhe para não encostar na borda */
+    margin-inline: var(--mob-gutter);             /* cria o respiro nas laterais */
+    padding: 8px 12px;                            /* altura menor */
+    font-size: .95rem;
+    border: 1px solid #cfd4da;
+    border-radius: 10px;
+    background: #fff;
+    box-sizing: border-box;
+  }
+
+  /* Radios/checkboxes – também entram no gutter */
+  .left-sidebar .radio-group,
+  .left-sidebar .checkbox-list {
+    display: grid;
+    gap: 8px;
+    margin: 6px 0 10px;
+    padding-inline: var(--mob-gutter);            /* respiro lateral */
+  }
+  .left-sidebar .radio,
+  .left-sidebar .checkbox-item { font-size: .95rem; gap: 8px; }
+
+  /* Botões – menor altura e com gutters laterais */
+  .left-sidebar .btn-aplicar,
+  .left-sidebar .btn-secondary,
+  .left-sidebar .btn-reset {
+    width: calc(100% - (var(--mob-gutter) * 2));
+    margin-inline: var(--mob-gutter);
+    padding: 9px 12px;                            /* compacta a altura */
+    font-size: .98rem;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: #f1f5f9;
+    color: #0f172a;
+  }
+  .left-sidebar .btn-secondary { background: #fff; }
+  .left-sidebar .btn-reset     { background: #fff; margin-top: 8px; }
+
+  /* Painel de contraindicações (texto maior e mais respiro) */
+  .left-sidebar .card-filtro.contraindicacoes .card-title { 
+    font-size: 1.22rem; 
+    margin-bottom: 4px; 
+  }
+  .left-sidebar .card-filtro.contraindicacoes .card-desc  { 
+    font-size: 1.03rem; 
+    line-height: 1.6; 
+    margin-bottom: 12px; 
+  }
+
+  /* Chips e painel */
+  .left-sidebar .contra-pane { gap: 10px; padding-inline: var(--mob-gutter); }
+  .left-sidebar .chips { gap: 8px; padding-inline: var(--mob-gutter); }
+  .left-sidebar .chip  { padding: 6px 10px; border-radius: 999px; }
+
+  /* Remove a linha separadora entre cards no mobile,
+     já que agora cada card tem sua própria borda/padding */
+  .card-filtro + .card-filtro {
+    border-top: none;
+    padding-top: 0;
+  }
+}
+
+/* =========================================
+   MOBILE – Gutter (respiro) em TUDO, incl. labels
+   ========================================= */
+@media (max-width: 768px) {
+  :root { --mob-gutter: 12px; } /* ajuste fino: 10–14px */
+
+  /* Card com respiro interno */
+  .left-sidebar .card-filtro {
+    padding: 16px; /* mantém um padding base no card */
+  }
+
+  /* ---------------------------
+     TÍTULO + DESCRIÇÃO do card
+     --------------------------- */
+  /* Aplica gutter lateral no header */
+  .left-sidebar .card-header {
+    padding-inline: var(--mob-gutter);
+    margin-bottom: 10px;
+  }
+
+  .left-sidebar .card-title {
+    font-size: 1.08rem;
+    line-height: 1.25;
+    margin: 0;
+    /* se o ícone encostar no texto, aumente o gap */
+    display: inline-flex;
+    align-items: center;
+    gap: 10px; /* afastar o ícone do texto */
+  }
+
+  .left-sidebar .card-desc {
+    padding-inline: var(--mob-gutter);  /* <<< respiro lateral */
+    font-size: .98rem;
+    line-height: 1.5;
+    margin: 6px 0 12px;
+  }
+
+  /* ---------------------------
+     LABELS dos campos
+     --------------------------- */
+  .left-sidebar .campo {
+    margin-bottom: 12px;
+  }
+
+  .left-sidebar .campo-label {
+    display: block;
+    padding-inline: var(--mob-gutter);  /* <<< desencosta das bordas */
+    font-size: .95rem;
+    margin: 6px 0 6px;
+  }
+
+  /* Selects/inputs com gutter lateral (já tinha, mantendo aqui) */
+  .left-sidebar .campo-select,
+  .left-sidebar .campo-select-multi,
+  .left-sidebar select,
+  .left-sidebar input[type="text"],
+  .left-sidebar input[type="number"] {
+    width: calc(100% - (var(--mob-gutter) * 2));
+    margin-inline: var(--mob-gutter);
+    padding: 8px 12px;
+    font-size: .95rem;
+    border: 1px solid #cfd4da;
+    border-radius: 10px;
+    box-sizing: border-box;
+    background: #fff;
+  }
+
+  /* ---------------------------
+     Radios / Checkboxes
+     --------------------------- */
+  .left-sidebar .radio-group,
+  .left-sidebar .checkbox-list {
+    padding-inline: var(--mob-gutter);  /* <<< respiro lateral */
+    display: grid;
+    gap: 8px;
+    margin: 6px 0 10px;
+  }
+
+  .left-sidebar .radio,
+  .left-sidebar .checkbox-item {
+    gap: 8px;
+    font-size: .95rem;
+  }
+
+  /* ---------------------------
+     Botões
+     --------------------------- */
+  .left-sidebar .card-actions { margin-top: 8px; }
+
+  .left-sidebar .btn-aplicar,
+  .left-sidebar .btn-secondary,
+  .left-sidebar .btn-reset {
+    width: calc(100% - (var(--mob-gutter) * 2));
+    margin-inline: var(--mob-gutter);
+    padding: 9px 12px;
+    font-size: .98rem;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: #f1f5f9;
+    color: #0f172a;
+  }
+  .left-sidebar .btn-secondary { background: #fff; }
+  .left-sidebar .btn-reset     { background: #fff; margin-top: 8px; }
+
+  /* ---------------------------
+     Contraindicações – arejado
+     --------------------------- */
+  .left-sidebar .card-filtro.contraindicacoes .card-title {
+    font-size: 1.22rem;
+  }
+  .left-sidebar .card-filtro.contraindicacoes .card-desc {
+    font-size: 1.03rem;
+    line-height: 1.6;
+  }
+
+  /* Remove separador entre cards no mobile */
+  .card-filtro + .card-filtro { border-top: none; padding-top: 0; }
+}
+
+/* Alinhar apenas os títulos (.card-title) no mobile */
+@media (max-width: 768px) {
+  :root { --mob-gutter: 12px; } /* ajuste fino: 10–14px */
+
+  .left-sidebar .card-title {
+    /* desloca o título para “dentro”, alinhando com labels/inputs */
+    width: calc(100% - (var(--mob-gutter) * 2));
+    margin-inline: var(--mob-gutter);
+
+    /* mantém o visual atual */
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;            /* afasta o ícone do texto, se houver */
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}

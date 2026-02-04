@@ -72,16 +72,18 @@ class DetalhesTratamentoResumoViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         queryset = (
             DetalhesTratamentoResumo.objects
-            .select_related('condicao_saude')
+
             .prefetch_related(
+                'condicoes_saude',    
                 'tipo_tratamento',
                 'contraindicacoes',
                 'reacoes_adversas',
                 'evidencias',
                 'avaliacoes',
                 'tipos_eficacia',
-                'reacoes_adversas_detalhes',  # se quiser manter o join pronto
+                'reacoes_adversas_detalhes',
             )
+
         )
 
         multiplicadores = Case(

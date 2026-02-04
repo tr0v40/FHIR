@@ -4,6 +4,7 @@
 from django.contrib import admin
 from django import forms
 from import_export import resources
+from django.contrib.admin import RelatedOnlyFieldListFilter
 from import_export.admin import ImportExportModelAdmin
 from django.http import JsonResponse
 from django.urls import path
@@ -107,15 +108,15 @@ class DetalhesTratamentoResumoResource(resources.ModelResource):
         skip_unchanged = True
 
 
+
 @admin.register(DetalhesTratamentoResumo)
 class DetalhesTratamentoAdmin(ImportExportModelAdmin):
     resource_class = DetalhesTratamentoResumoResource
+
     inlines = [
-        TratamentoCondicaoInline,
-        DetalhesTratamentoReacaoAdversaInline,  # Se você já tiver a classe inline
+        DetalhesTratamentoReacaoAdversaInline,
     ]
 
-    
     class Media:
         js = ('js/autofill_condicao_descricao.js',)
 
@@ -126,19 +127,24 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
         "grupo",
         "eficacia_min",
         "eficacia_max",
-        "custo_medicamento", 
-        "condicao_saude",
+        "custo_medicamento",
+        "condicoes_saude_list",   # método
     )
 
-    filter_horizontal = ("contraindicacoes", "reacoes_adversas", "tipo_tratamento")
+    # Se algum destes não for M2M, remova-o daqui:
+    filter_horizontal = ("contraindicacoes", "reacoes_adversas", "tipo_tratamento", "condicoes_saude")
+    # Se preferir autocomplete:
+    # autocomplete_fields = ('condicoes_saude',)
+
     search_fields = ("nome", "fabricante", "principio_ativo", "grupo")
+
     list_filter = (
         "fabricante",
         "grupo",
         "eficacia_min",
         "eficacia_max",
         "custo_medicamento",
-        "condicao_saude"
+        "condicoes_saude",
     )
 
     fieldsets = (
@@ -149,8 +155,8 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
                     "nome",
                     "fabricante",
                     "principio_ativo",
-                    "condicao_saude",      # << mantém aqui o campo principal (FK)
-                    "descricao",           # descrição geral do tratamento
+                    "condicoes_saude",     # M2M
+                    "descricao",
                     "imagem",
                     "imagem_detalhes",
                 )
@@ -195,8 +201,15 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
         ("Contraindicações", {"fields": ("contraindicacoes",)}),
     )
 
-    autocomplete_fields = ['condicao_saude']
+    # Renderiza o M2M na list view
+    @admin.display(description='Condições de Saúde')
+    def condicoes_saude_list(self, obj):
+        return ", ".join(obj.condicoes_saude.values_list('nome', flat=True))
 
+    # evita N+1 na list view
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.prefetch_related('condicoes_saude')
 
     # label mais claro para a descrição geral
     def get_form(self, request, obj=None, **kwargs):
@@ -205,24 +218,12 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
             form.base_fields['descricao'].label = "Descrição relacionada a condição de saúde"
         return form
 
-    # Mostra a condição principal + extras
-    def exibir_condicoes_saude(self, obj):
-        partes = []
-        if getattr(obj, 'condicao_saude', None):
-            partes.append(f"Principal: {obj.condicao_saude.nome}")
-        extras = obj.condicoes_relacionadas.select_related('condicao').all()
-        if extras:
-            nomes = ", ".join(tc.condicao.nome for tc in extras)
-            partes.append(f"Extras: {nomes}")
-        return " | ".join(partes) if partes else "—"
-    exibir_condicoes_saude.short_description = "Condições de Saúde"
-
-    # endpoint para o JS buscar a descrição padrão da CondicaoSaude
+    # endpoints auxiliares (mantidos)
     def get_urls(self):
         urls = super().get_urls()
         custom = [
             path(
-                'condicao/<int:pk>/descricao/',
+                'condicao/<int:pk>/descricao/',   # << aqui sem &lt; &gt;
                 self.admin_site.admin_view(self._condicao_descricao_view),
                 name='dettrat-condicao-descricao'
             ),
@@ -232,7 +233,6 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
     def _condicao_descricao_view(self, request, pk):
         desc = CondicaoSaude.objects.filter(pk=pk).values_list('descricao', flat=True).first() or ""
         return JsonResponse({'descricao': desc})
-
 
 
 
