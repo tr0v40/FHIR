@@ -27,7 +27,7 @@ const DJANGO_BASE =
 
 const API_BASE = '/api';
 
-const ENXAQUECA_ID = 5;
+// const ENXAQUECA_ID = 5;
 const ENXAQUECA_LABEL = 'Enxaqueca';
 
 const TIPO_EFICACIA_OBRIGATORIO = 'Controle';
