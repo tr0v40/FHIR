@@ -27,7 +27,7 @@ const DJANGO_BASE =
 
 const API_BASE = '/api';
 
-// const ENXAQUECA_ID = 5;
+
 const ENXAQUECA_LABEL = 'Enxaqueca';
 
 const TIPO_EFICACIA_OBRIGATORIO = 'Controle';
@@ -150,31 +150,74 @@ const prazoMedioEmMinutosFront = (t) => {
   return ((minV + maxV) / 2) * mult;
 };
 
-// ✅ Condição de saúde: SOMENTE Enxaqueca
-const isSomenteEnxaqueca = (tratamento) => {
+const ENXAQUECA_KEY = 'enxaqueca';
+
+function getCondicaoKeysFromTratamento(tratamento) {
+  const keys = [];
+
+  // 1) condicoes_saude pode vir como:
+  // - [5, 7]
+  // - [{id:5, nome:"Enxaqueca"}]
+  // - ["Enxaqueca", "Outra"]
   const cs = tratamento?.condicoes_saude;
-
   if (Array.isArray(cs)) {
-    if (cs.length === 0) return false;
-    return cs.every((x) => Number(x) === ENXAQUECA_ID);
+    for (const item of cs) {
+      if (typeof item === 'string') keys.push(normalizeKey(item));
+      else if (item && typeof item === 'object') {
+        keys.push(normalizeKey(item?.nome ?? item?.label ?? item?.titulo ?? ''));
+      }
+      // se for número (id), não dá pra confiar; ignora aqui
+    }
+  } else if (typeof cs === 'string') {
+    keys.push(normalizeKey(cs));
   }
 
-  // fallback por evidências (se condicoes_saude não vier)
+  // 2) alguns backends expõem listas prontas
+  const extras =
+    tratamento?.condicoes_saude_labels ??
+    tratamento?.condicoes_saude_nomes ??
+    tratamento?.condicoes_saude_nome;
+
+  if (Array.isArray(extras)) {
+    for (const s of extras) keys.push(normalizeKey(s));
+  } else if (typeof extras === 'string') {
+    // pode vir "Enxaqueca, Outra"
+    extras
+      .split(',')
+      .map((s) => normalizeKey(s))
+      .forEach((k) => keys.push(k));
+  }
+
+  // 3) fallback: evidências
   const evids = tratamento?.evidencias;
-  if (Array.isArray(evids) && evids.length > 0) {
-    const ids = evids
-      .map((e) => Number(e?.condicao_saude?.id))
-      .filter((id) => Number.isFinite(id));
-    if (ids.length === 0) return false;
-    return ids.every((id) => id === ENXAQUECA_ID);
+  if (Array.isArray(evids)) {
+    for (const e of evids) {
+      const c = e?.condicao_saude;
+      if (typeof c === 'string') keys.push(normalizeKey(c));
+      else if (c && typeof c === 'object') {
+        keys.push(normalizeKey(c?.nome ?? c?.label ?? c?.condicao_saude ?? ''));
+      }
+    }
   }
 
-  return false;
+  return keys.filter(Boolean);
+}
+
+// SOMENTE Enxaqueca (por label/nome)
+const isSomenteEnxaqueca = (tratamento) => {
+  const keys = getCondicaoKeysFromTratamento(tratamento);
+
+  // se não temos nenhuma label/nome, não dá pra validar -> reprova (mais seguro)
+  if (!keys.length) return false;
+
+  // "somente enxaqueca": todas as condições precisam ser enxaqueca
+  return keys.every((k) => k === ENXAQUECA_KEY);
 };
 
-// ✅ filtros obrigatórios (travados)
+
+//  filtros obrigatórios (travados)
 const DEFAULT_FILTROS = {
-  condicaoSaudeId: ENXAQUECA_ID,
+  
   condicaoSaudeLabel: ENXAQUECA_LABEL,
   tipoEficacia: TIPO_EFICACIA_OBRIGATORIO,
 
@@ -205,7 +248,7 @@ const labelOrdenacao = {
 function enforceMandatoryFilters(f) {
   return {
     ...f,
-    condicaoSaudeId: ENXAQUECA_ID,
+   
     condicaoSaudeLabel: ENXAQUECA_LABEL,
     tipoEficacia: TIPO_EFICACIA_OBRIGATORIO,
   };
