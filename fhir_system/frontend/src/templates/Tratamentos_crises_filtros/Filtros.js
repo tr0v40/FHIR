@@ -1,54 +1,40 @@
 import React, { useState, useMemo } from 'react';
 import './Filtros.css';
 
-const DEFAULT_FILTROS = {
-  tipo: '',
-  fabricante: '',
-  eficaciaMin: 0,
-  eficaciaMax: 100,
-  prazoMin: 0,
-  prazoMax: 100,
-  publico: 'todos',
-  contraindicacoes: [],
-  ordenarCaracteristica: 'eficacia', // Valor padrão
-  ordemCaracteristica: 'desc',       // Valor padrão
-};
-
 const Filtros = ({
   filtros,
   setFiltros,
   aplicarFiltros,
   resetFiltros,
-  contraOpcoes = [], // vem da API (Tratamentos.js)
+  contraOpcoes = [], 
 }) => {
   const [mostrarContra, setMostrarContra] = useState(false);
 
   const handleAplicar = (e) => {
     e?.preventDefault();
+    // Atualizar os filtros primeiro
     aplicarFiltros?.(filtros);
-    
-    // Rolar para o topo após aplicar o filtro
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth' // Opcional para efeito de rolagem suave
-    });
+
+    // Garantir que a rolagem para o topo aconteça após a atualização
+    setTimeout(() => {
+      window.scrollTo(0, 0); // Rolar para o topo da página
+    }, 100); // Delay para garantir que a atualização tenha ocorrido
   };
 
   const handleReset = (e) => {
     e?.preventDefault();
-    setFiltros(DEFAULT_FILTROS); // Reseta os filtros para os valores padrão
-    aplicarFiltros(DEFAULT_FILTROS); // Aplica os filtros padrão (sem nenhum filtro)
+    resetFiltros?.();
   };
 
-  // fallback: se a API ainda não trouxe nada, não quebra
+  //  fallback: se a API ainda não trouxe nada, não quebra
   const contraLista = useMemo(() => {
     return Array.isArray(contraOpcoes) ? contraOpcoes : [];
   }, [contraOpcoes]);
 
+  
+
   return (
     <aside className="left-sidebar">
-      <div id="topo"></div>
-
       <div className="filtros">
         {/* CARD: ORDENAR */}
         <section className="card-filtro" aria-labelledby="ordenar-title">
@@ -56,6 +42,7 @@ const Filtros = ({
             <h3 id="ordenar-title" className="card-title">
               Ordenar por característica
             </h3>
+            
           </header>
 
           <div className="campo">
@@ -112,7 +99,6 @@ const Filtros = ({
           >
             Aplicar Filtro
           </a>
-
           </div>
         </section>
 
@@ -253,9 +239,9 @@ const Filtros = ({
           </div>
 
           <div className="card-actions">
-            <button className="btn-aplicar" onClick={handleAplicar}>
-              Aplicar Filtro
-            </button>
+<a href="#topo" className="btn-aplicar" onClick={handleAplicar}>
+  Aplicar Filtro
+</a>
           </div>
         </section>
 

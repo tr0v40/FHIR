@@ -23,7 +23,7 @@
 
 .navbar-brand .logo-img,
 .logo-img {
-  height: 150px;    
+  height: 180px;    
   width: auto;    
   max-width: 150px; 
   display: block;
@@ -156,4 +156,244 @@
   .card-aviso {
     display: none;
   }
+}
+
+
+/* =========================
+   HEADER (Desktop igual ao print)
+   ========================= */
+.site-header{
+  width: 100%;
+  background: #fff;
+}
+
+.header-inner{
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 18px 20px;
+
+  display: grid;
+  grid-template-columns: 1fr auto;      /* esquerda | card */
+  grid-template-rows: auto auto;        /* logo | conteúdo */
+  grid-template-areas:
+    "logo logo"
+    "main warning";
+
+  column-gap: 18px;
+  row-gap: 8px;                         /* 🔻 diminui espaço entre logo e título */
+  align-items: start;
+}
+
+.brand{ grid-area: logo; text-decoration: none; }
+.header-main{ grid-area: main; min-width: 0; }
+.header-warning{ grid-area: warning; }
+
+.logo-telix{
+  height: 200px;                         /* ajuste fino desktop */
+  margin-left: -20px;
+}
+
+.page-title{
+  margin: 0;
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.page-subtitle{
+  margin: 6px 0 0 0;
+  font-size: 20px;
+  color: #010009;
+  font-weight: 400;
+  font-family: Inter, Arial, sans-serif;
+}
+
+.btn-filtros{
+  margin-top: 12px;
+  background-color: #f0f0f0;
+  color: #060606;
+  border: 2px solid #e4e4e4;
+  font-weight: 400;
+  font-size: 12px;
+  padding: 8px 12px;
+  display: inline-block;
+  max-width: 250px;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.header-warning{
+  background: #000000ff;
+  color: #fff;
+  padding: 20px 30px;
+  border-radius: 6px;
+  font-size: 16px;
+  line-height: 1.4;
+  max-width: 300px;
+  align-self: start;
+  margin-top: 2px;                      /* micro-ajuste de alinhamento */
+}
+
+/* ============/* =========================================
+   HEADER –  MOBILE 
+   ========================================= */
+@media (max-width: 768px){
+  .site-header{
+    padding: 0;
+  }
+
+  .header-inner{
+    /* mesmo padding para logo e texto => mesma “linha de início” */
+    padding: 14px 16px 10px !important;
+    row-gap: 6px !important;
+    justify-items: start;
+  }
+
+  .brand{
+    justify-self: start;
+  }
+
+  .logo-telix{
+    height: 100px !important;   /*  logo maior no mobile */
+    width: auto !important;
+    margin-left: -10px !important; /*  remove o “puxão” do desktop */
+    display: block;
+  }
+
+  .header-main{
+    width: 100%;
+  }
+
+  .page-title{
+    font-size: 24px !important;
+    line-height: 1.15 !important;
+    margin: 8px 0 20px 0 !important;   /*  espaço título -> subtítulo */
+  }
+
+  .page-subtitle{
+    font-size: 14px !important;
+    line-height: 1.45 !important;
+    margin: 0 0 14px 0 !important;     /*  espaço subtítulo -> label */
+  }
+
+  .header-warning{
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px){
+  .tratamentos-layout{
+    display: flex;            /* troca grid por pilha */
+    flex-direction: column;
+  }
+
+  .tratamentos-layout .sidebar{
+    order: 1;                 /* filtros primeiro */
+    width: 100%;
+  }
+
+  .tratamentos-layout .conteudo{
+    order: 2;                 /* tratamentos depois */
+    width: 100%;
+  }
+
+  .tratamentos-list{
+    margin-top: 0;            /* remove “buraco” antes do 1º card */
+  }
+}
+
+resumo-filtros {
+  margin-top: 6px;
+}
+
+.resumo-item {
+  margin: 2px 0;
+}
+
+.resumo-label {
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.resumo-value {
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.resumo-contra-lista {
+  margin: 6px 0 0 0;
+  padding-left: 18px;
+}
+
+.resumo-contra-item {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/*  Labels do resumo iguais ao título */
+.resumo-label{
+  font-family: inherit;           /* garante mesma fonte do header */
+  font-size: inherit;             /* vai herdar do container abaixo */
+  font-weight: inherit;           /* herda o peso do container */
+  color: inherit;                 /* herda a cor do container */
+  line-height: 1.2;
+}
+
+/* Container do resumo herda EXATAMENTE o estilo do título */
+.resumo-filtros{
+  margin-top: 6px;
+
+  /* 👇 força o resumo a usar o mesmo "estilo do título" */
+  font-size: 22px;                /* use o MESMO valor do seu .page-title */
+  font-weight: 700;               /* use o MESMO peso do seu .page-title */
+  color: #000;                    /* use a MESMA cor do seu .page-title */
+  line-height: 1.15;
+}
+
+/* Linhas */
+.resumo-linha{
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+/*  Valores SEM negrito, mas com o mesmo tamanho do título */
+.resumo-valor{
+  font-size: inherit;             /* mesmo tamanho do título */
+  font-weight: 400;               /* sem negrito */
+  color: inherit;
+}
+
+/* Lista das contraindicações (sem bullets duplicados) */
+.resumo-contra-lista{
+  margin: 4px 0 0 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+/* Itens da lista: mesmo tamanho do título, sem negrito */
+.resumo-contra-item{
+  font-size: inherit;
+  font-weight: 400;
+  color: inherit;
+  margin: 2px 0;
+  padding-left: 18px;
+  position: relative;
+}
+
+.resumo-contra-item::before{
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+@media (max-width: 768px){
+  main.tratamentos-layout{
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  main.tratamentos-layout > aside.sidebar{ order: 1 !important; }
+  main.tratamentos-layout > section.conteudo{ order: 2 !important; }
 }

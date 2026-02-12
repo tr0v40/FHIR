@@ -1,2301 +1,653 @@
 {% load static %}
 
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tratamentos para Enxaqueca</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tratamentos para crises de enxaqueca</title>
 
-    <!-- Código de rastreio do GA4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BS67486CWG"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-BS67486CWG');  // Seu ID de medição GA4
-    </script>
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BS67486CWG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BS67486CWG');
+  </script>
 
-    <!-- Estilos Bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-    
-    <!-- FontAwesome atualizado -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="icon" href="https://www.seusite.com/static/img/favicon.png" type="image/png">
-    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+  <!-- Bootstrap + FontAwesome -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <style>
+  <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
 
-        
-/* CONFIGURAÇÃO GERAL */
-html, body {
-    height: 100%;
-    margin: 0px;
-    padding: 0;
-    background-color: #fefefe;
-    font-family: Arial, sans-serif;
+  <style>
+    /* =========================================================
+       BASE / LAYOUT (mantém o comportamento atual)
+       ========================================================= */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background-color: #fefefe;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
 
-    overflow-x: hidden;
-}
+    .content-area{
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      gap:30px;
+      padding:10px;
+      overflow:hidden;
+      flex-wrap:wrap;
+    }
 
-/* CONTÊINER PRINCIPAL */
-.content-area {
-    display: flex;
-    justify-content: center;  /* Centraliza o conteúdo horizontalmente */
-    align-items: flex-start;
-    gap: 30px;
-    padding: 10px;
-    overflow: hidden;
-    flex-wrap: wrap;  /* Garante que os itens não ultrapassem a tela em telas pequenas */
-}
-
-/* SIDEBAR - FILTROS E CLASSIFICAÇÕES */
-.left-sidebar {
-    position: sticky;
-    top: 900px;
-    margin-left: -10px;
-    border: 3px solid #eeeeee;
-
-    z-index: 1000;
-    width: 300px;
-    height: 1700px;
-     
-}
-
-.topo-container h1 {
-    margin-top: 40px;
-
-
-}
-
-
-.topo-container {
-    max-width: 1250px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-.logo-telix {
-    height: 50px;
-    display: block;
-    margin-bottom: 25px; /* aumenta o espaçamento para o título */
-}
-
-
-
-
-.titulo-exibir {
-    text-align: left;
-    font-size: 24px;
-    font-weight: bold;
-    padding-left: 20px;   /* mesmo padding dos cards e filtros */
-    margin: 40px 0 15px;
-}
-
-
-
-/* Estilo do card preto */
-.card-aviso {
-    background-color: #000;
-    color: white;
-    padding: 16px 24px;
-    border-radius: 6px;
-    font-size: 14px;
-    max-width: 280px;
-    text-align: center;
-    line-height: 1.4;
-    margin-left: auto;
-    margin-top: -100px;
-}
-
-/* Alinhamento do título e card preto */
-.titulo-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin: 20px 0;
-    padding: 0 10px;
-}
-
-
-/* Subtítulo com fonte menor */
-.subtitulo {
-    font-size: 15px;  /* Tamanho menor que o título */
-    color: #000000;  /* Cor mais suave */
-    font-weight: bold;
-    margin-top: 1px;  /* Espaçamento entre o título e o subtítulo */
-    
-}
-
-
-.ordenacao-bloco {
-  display: flex;
-  align-items: center;
-  gap: 12px; /* espaço entre o texto e o checkbox */
-  margin-top: 8px;
- 
-}
-
-
-
-/* Checkbox e label próximos */
-.checkbox-container {
-margin-top: -5px; /* Ajuste conforme necessário */
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.checkbox-container input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  margin: 0;
-}
-
-#ordenacao-texto {
-  font-size: 14px;
-  color: #000;
-  margin: 0;
-}
-/* Oculta o checkbox nativo */
-.checkbox-container input[type="checkbox"] {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  position: relative;
-  cursor: pointer;
-  margin-right: 8px;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-/* Caixa azul */
-.checkbox-container input[type="checkbox"]:checked {
-  background-color: #0094FF;
-  border-color: #0094FF;
-}
-
-/* Check centralizado */
-.checkbox-container input[type="checkbox"]:checked::after {
-  content: '✔';
-  color: white;
-  font-size: 14px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-};
-
-
-
-/* Ajuste para a parte de classificação com rolagem interna */
-.classificar-container {
-    max-height: 400px; /* Ajuste a altura conforme necessário */
-    overflow-y: auto; /* Permite rolar se o conteúdo exceder */
-    margin-bottom: 20px; /* Adiciona espaço abaixo da área de classificação */
-}
-
-
-/* Filtros e Botão Classificar */
-.filters, .classificar-container {
-    margin-bottom: 20px;
-}
-
-/* Layout Responsivo para dispositivos móveis */
-@media (max-width: 768px) {
-    .content-area {
-        display: flex;
-        flex-direction: column;  /* Em dispositivos menores, exibe o conteúdo verticalmente */
+    /* =========================================================
+       HEADER (igual ao que você já tinha refatorado)
+       ========================================================= */
+    .site-header{ width:100%; background:#fff; }
+    .header-inner{
+      max-width:1250px;
+      margin:0 auto;
+      padding:28px 20px;
+      display:grid;
+      grid-template-columns: 1fr 300px;
+      grid-template-rows:auto auto;
+      column-gap:48px;
+      align-items:start;
+    }
+    .brand{ grid-column:1; grid-row:1; text-decoration:none; display:inline-flex; }
+    .logo-telix{ height:180px; width:auto; display:block; margin-left:-20px; }
+    .header-main{ grid-column:1; grid-row:2; }
+    .page-title{ margin:0; font-size:35px; font-weight:450; line-height:1.15; }
+    .page-subtitle{ margin-top:6px; font-size:13px; color:#000; }
+    .btn-filtros{
+      margin-top:14px;
+      background-color:#f0f0f0;
+      color:#060606;
+      border:1px solid #e4e4e4;
+      border-radius:4px;
+      font-weight:400;
+      font-size:12px;
+      padding:6px 12px;
+      display:inline-block;
+      text-decoration:none;
+    }
+    .header-warning{
+      grid-column:2;
+      grid-row:2;
+      align-self:flex-start;
+      justify-self:end;
+      background:#000;
+      color:#fff;
+      padding:18px 22px;
+      border-radius:6px;
+      font-size:13px;
+      line-height:1.4;
+      width:260px;
+      text-align:center;
+      margin-top:4px;
     }
 
     
-    /* Esconder o checkbox e o título "Exibir" no mobile */
-    .checkbox-container, 
-    .checkbox-container + p {
-        display: none !important;
-    }
-
-    /* Deixe os tratamentos aparecerem primeiro */
-    .treatment-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0px; /* Remova ou ajuste o valor de gap, dependendo do que você deseja */
+/* 1) Cards (o <a class="tratamento-card">) nunca herda azul */
+a.tratamento-card,
+a.tratamento-card:visited,
+a.tratamento-card:hover,
+a.tratamento-card:active,
+a.tratamento-card:focus {
+  color: inherit !important;
+  text-decoration: none !important;
+  outline: none !important;
 }
 
-    /* Agora os filtros vão aparecer abaixo dos tratamentos */
-    .filters {
-        order: 2; /* Os filtros ficam depois da lista de tratamentos */
-        margin-top: 20px;  /* Ajuste o valor conforme necessário para espaçamento */
-    }
-    
+ /* =========================
+   FOOTER (ÚNICO e FINAL)
+   ========================= */
 
-    .left-sidebar {
-        order: 3; /* Os filtros ficam depois da lista de tratamentos */
-        margin-top: 20px;  /* Ajuste o valor conforme necessário para espaçamento */
-        width: 100%;  /* Barra lateral ocupa a tela inteira */
-        height: auto;
-        position: sticky; /* Evita que a sidebar fique fixa em dispositivos móveis */
-        height: 1500px;
-    }
-    .tratamento-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center; /* Centraliza horizontalmente */
-        justify-content: center; /* Alinha verticalmente */
-        text-align: center; /* Centraliza o texto se houver */
-    }
-
-    .tratamento-content img {
-        display: block;
-        max-width: 10%; /* Limita a imagem a largura máxima do container */
-        margin: 0 auto 10px auto; /* Centraliza horizontalmente e adiciona um espaço inferior */
-        height: auto; /* Garante que a altura seja proporcional */
-    }
-    
-    
-   /* O conteúdo ocupa toda a largura */
-    }
-
-
-
-
-/* Centralizar as imagens */
-.tratamento-card img {
-    display: block;
-    margin: 0 auto; /* Isso vai centralizar as imagens horizontalmente */
+/* Mantém a mesma largura do header (opcional, mas ajuda a “casar” o eixo) */
+.footer .container{
+  max-width:1250px;
 }
 
-/* Container dos filtros */
-.filters {
-    
-    
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Alinha os itens no centro */
-    justify-content: center; /* Garante que o conteúdo está centralizado */
-    padding: 20px;
-    margin-bottom: -45px;
-    box-shadow: none !important;
-    border: none;
-    border-radius: 1px;
-    width: 100%; /* Ajuste a largura para a largura total disponível */
-   
-        }
-
-
-
-/* Labels dos filtros */
-.filters label {
-    font-size: 14px;
-    font-weight: normal;
-    
-    color: #555;
-    margin-top: 10px;
+/* Links do footer NÃO ficam azuis no hover */
+.footer a{
+  color:#6c757d;
+  text-decoration:none;
 }
-.filters h3 {
-    font-size: 20px;
-    font-weight: bold;
-    color: #0056b3;
-    margin-bottom: 20px;
-    text-align: center;
+.footer a:hover{
+  color:#6c757d;
+  text-decoration:underline;
 }
 
-
-/* “Sentinela” que dispara a aparição do footer */
-#footer-sentinel{
-  height: 1px;              /* não ocupa espaço visual */
+/* Títulos */
+.footer h5{
+  font-weight:bold;
+  color:#000;
 }
 
+/* Deixa as listas alinhadas à esquerda, mas o bloco todo centralizado */
+.footer ul.list-unstyled{
+  display:inline-block;
+  text-align:left;
+  margin:0 auto;
+}
+.footer .list-unstyled li{ padding:5px 0; }
 
-
-.footer .social-btn {
-    font-size: 1.5rem;
-    margin-right: 15px;
-    color: #6c757d;
-    transition: color 0.3s ease;
+/* Texto */
+.footer p{
+  color:#6c757d;
+  font-size:14px;
+  margin-bottom:5px;
 }
 
-.footer .social-btn:hover {
-    color: #007bff;
-}
-
-/* Remover o sublinhado e alterar a cor dos links */
-.footer a {
-    color: #ced4da; /* Cinza claro */
-    text-decoration: none; /* Remove o sublinhado */
-}
-
-.footer a:hover {
-    text-decoration: underline; /* Sublinha ao passar o mouse */
-    color: #6c757d; /* Cor cinza escuro ao passar o mouse */
-}
-
-/* Títulos em negrito */
-.footer h5 {
-    font-weight: bold;
-    color: #000000; /* Cor escura para os títulos */
-}
-
-.footer .row {
-    text-align: center;
-    justify-content: center;
-}
-
-.footer p {
-    color: #d1d0d0;
-    font-size: 14px;
-    margin-bottom: 5px;
-}
-
-.footer p + p {
-    margin-top: 0;
-}
-
-.footer-bottom {
-    width: 100%;
-    text-align: center;
-    padding: 10px 0;
-    background-color: #f5f5f5;
-}
-
-.footer-social a {
-    font-size: 1.2rem;
-}
-
-.footer .footer-social {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
-
-.footer .list-unstyled li {
-    padding: 5px 0;
-}
-
-        .btn-pdf {
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: 0.3s;
-        }
-        .btn-pdf:hover {
-            background-color: #545b62;
-        }
-        .footer a {
-            color: #d3d3d3;
-        }
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-.filters select {
-    width: 90%; /* Ajusta a largura do select */
-    max-width: 350px; /* Limita a largura máxima */
-
-    font-size: 14px;
-}
-
-
-.filters button {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-
-    font-size: 14px;
-}
-
-/* Estilo para o select de Contraindicações */
-.filters select {
-    border: 2px solid #e4e4e4;  /* Remove a borda externa do select */
-    background-color: #f9f9f9; /* Cor de fundo clara */
-    padding: 8px 10px;  /* Padding confortável */
-    font-size: 13px;  /* Tamanho da fonte */
-    border-radius: 4px;  /* Bordas arredondadas */
-    width: 100%;  /* Ocupa toda a largura disponível */
-    box-sizing: border-box; /* Garante que o padding não ultrapasse a largura */
-}
-
-/* Estilo para a lista de contra-indicações */
-.form-check {
-    margin-bottom: 10px;  /* Espaçamento entre as opções */
-    font-size: 13px;  /* Tamanho da fonte */
-}
-
-/* Estilo do botão "Aplicar Filtro" */
-.filters button {
-    background-color: #afaeae;  /* Fundo cinza claro */
-    color: #007bff; /* Texto azul */
-    border-top: 1px solid #ccc;
-    font-weight: normal;  /* Peso de fonte normal */
-    justify-content: center;
-    border: 1px solid #ccc;  /* Borda cinza clara */
-    border-radius: 4px;  /* Cantos arredondados */
-    gap: 50px;
-    padding: 8px 16px;  /* Padding confortável */
-    width: 100%;  /* Largura 100% */
-    font-size: 14px;  /* Tamanho da fonte */
-    text-align: center;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-
-/* ===== EXIBIR (radio buttons) iguais ===== */
-.filter-buttons{
+/* Ícones (sem azul no hover) */
+.footer .footer-social{
   display:flex;
-  flex-wrap:wrap;           /* quebra só se faltar espaço */
-  gap:12px;
-  justify-content:center;   /* centraliza a fileira */
-  margin-bottom: 40px;
+  justify-content:center;
+  align-items:center;
+  gap:14px;
+  width:100%;
 }
 
-.filter-btn {
-    display: inline-flex;
+.footer .social-btn{
+  font-size:1.5rem;
+  color:#6c757d;
+  text-decoration:none;
+  margin:0;              /* importante: NÃO usar margin-right */
+  transition:none;
+}
+.footer .social-btn:hover{
+  color:#6c757d;         /* tira o azul */
+  text-decoration:none;
+}
+
+
+    footer.footer .row > div{
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+
+    @media (max-width:768px){
+      .header-inner{ grid-template-columns:1fr; padding:10px 10px; gap:0; }
+      .logo-telix{ height:180px; margin-left:-25px; }
+      .page-title{ font-size:25px; margin-top:-25px; }
+      .page-subtitle{ font-size:15px; margin-top:25px; }
+      .header-warning{ display:none; }
+      .btn-filtros{ margin-top:25px; max-width:100%; }
+    }
+
+    /* =========================================================
+       CARD / LISTAGEM
+       ========================================================= */
+    .tratamento-card{
+      display:flex !important;
+      flex-direction:row !important;
+      align-items:center !important;
+      justify-content:space-between;
+      gap:24px;
+      width:100%;
+      max-width:1200px;
+      margin:20px auto;
+      padding:18px 28px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+      transition: transform .3s, box-shadow .2s ease;
+      text-decoration:none;
+      color:inherit;
+    }
+    .tratamento-card:hover{
+      transform:scale(1.02);
+      box-shadow:0 4px 12px rgba(0,0,0,0.15);
+      cursor:pointer;
+    }
+    .tratamento-content{
+      display:flex !important;
+      flex-direction:row !important;
+      align-items:center !important;
+      gap:24px;
+      width:100%;
+    }
+    .tratamento-card img{
+      width:120px !important;
+      height:120px !important;
+      border-radius:50%;
+      object-fit:cover;
+      flex:0 0 120px;
+      margin:0 !important;
+      display:block;
+    }
+    .tratamento-info{ flex: 1 1 auto; min-width:0; }
+    .tratamento-info h3{ font-size:25px; font-weight:bold; color:#050606; margin:0 0 6px 0; }
+
+    .eficacia-container{
+      flex: 0 0 260px;
+      width: 260px;
+      margin-left:auto;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-self:center;
+      align-items:flex-start;
+      text-align:left;
+    }
+    .eficacia-bar-container{
+      width:100%;
+      background-color:#e0e0e0;
+      height:20px;
+      border-radius:8px;
+      position:relative;
+      margin-bottom:5px;
+    }
+    .efficacy-filled{ height:100%; border-radius:8px; background-color:#0094FF; }
+    .efficacy-marker{
+      width:14px;height:14px;
+      background-color:#0094FF;
+      position:absolute;top:0;
+      transform:translateX(-50%);
+      border-radius:50%;
+    }
+/* Centraliza os ícones abaixo de "Tratamentos" */
+.footer-social-center{
+  display: flex;
+  justify-content: center !important;
   align-items: center;
-  justify-content: center;
-  padding: 10px 14px;
-  border: 1px solid #c9c9c9;
-  border-radius: 6px;
-  background: #f7f7f7;
-  color: #007bff;
-  cursor: pointer;
-  white-space: nowrap;   /* impede quebra no texto */
-  text-align: center;
-
-  /* 🔹 Força todos os botões a terem o mesmo tamanho */
-  flex: 0 0 220px;       /* largura fixa de 180px */
-  max-width: 225px;
-  min-width: 225px;
-}
-
-.filter-btn input{
-  margin-right:8px;
-  flex:0 0 auto;
-}
-
-.filter-btn:hover {
-    background-color: #e0e0e0;
-}
-
-
-.filter-btn input:checked {
-    background-color: #007bff;
-    color: white;
-}
-
-.filters .form-check {
-    text-align: left;
-    margin-top: 10; /* Garante que as labels dos checkboxes ficam alinhadas à esquerda */
-    margin-bottom: 5px; /* Diminui o espaçamento entre as opções */
-    padding: 0; /* Remove qualquer padding adicional */
-}
-
-.filters .form-check input {
-    margin-top: 10; /* Remove qualquer margem superior extra */
-    padding: 0; /* Remove o padding */
-}
-
-.filters .form-check label {
-    margin-top: 0; /* Remove margem superior extra nas labels */
-}
-
-.filters .dropdown-toggle {
-    width: 100%; /* Ajusta a largura do botão para ocupar 100% do espaço disponível */
-    padding: 10px 35px; /* Ajuste do padding para garantir uma boa aparência */
-    font-size: 12px; /* Tamanho da fonte */
-    border-radius: 4px; /* Bordas arredondadas */
-    border: 1px solid #ccc; /* Cor da borda */
-    background-color: #f8f9fa; /* Cor de fundo */
-    text-align: left; /* Alinha o texto à esquerda */
-}
-
-/* Efeito de hover no botão */
-.filters button:hover {
-    background-color: #e0e0e0;  /* Cor de fundo mais escura */
-    border-color: #007bff;  /* Borda azul */
-}
-
-
-/* Remover a borda de foco (quando o select estiver em foco) */
-.filters select:focus {
-    outline: none;  /* Remove a borda de foco */
-    background-color: #ffffff;  /* Fundo branco ao focar */
-}
-
-/* Estilo para o título "Exibir" */
-.filters h6 {
-    font-weight: bold;  /* Título em negrito */
-    color: #000000;  /* Cor preta */
-    margin-bottom: 0px; /* Espaçamento abaixo do título */
-    text-align: left;
-    font-size: 20px;
-}
-
-
-/* BOTÃO FILTRAR */
-
-.filters button {
-    border: 2px solid #e4e4e4;
-    background-color: #f0f0f0;  /* Fundo cinza claro */
-    color: #060606; /* Texto azul */
-    margin-top: 1px;
-    font-weight: normal;  /* Peso de fonte normal */
-    padding: 8px 16px;  /* Padding confortável */
-
-    max-width: 100%; /* cartão mais largo */
-    min-height: 15px;
-    font-size: 12px;  /* Tamanho da fonte */
-    text-align: center;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-    margin-top: 25px;
-}
-
-.filters button:hover {
-    background: linear-gradient(90deg, #0056b3, #004494);
-    transform: scale(1.05);
-}
-
-
-/* Estilo dos checkboxes */
-.form-check-input {
-    width: 16px; /* Tamanho do checkbox */
-    height: 16px;
-    margin-top: 2px; /* Ajuste de alinhamento vertical */
-}
-
-.form-check-label {
-    font-size: 14px; /* Ajuste do tamanho da fonte */
-    color: #333; /* Cor do texto */
-}
-
-
-
-
-/* LISTA DE TRATAMENTOS */
-.treatment-list {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    flex: 1;
-}
-
-/* CARTÃO DO TRATAMENTO */
-.tratamento-card {
-    display: flex;
-    
-    align-items: center;
-    margin: 5px auto;
-    width: 100%;
-    max-width: 1200px; /* cartão mais largo */
-    min-height: 220px;
-    padding: 15px 30px;
-    margin: 20px auto;
-    border-radius: 00px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
- 
-    gap: 5px;
-    transition: transform 0.3s, box-shadow 0.2s ease;
-}
-
-.tratamento-card:hover {
-    transform: scale(1.02);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    cursor: pointer;
-} 
-/* CONTEÚDO DO TRATAMENTO */
-.tratamento-content {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.tratamento-card .tratamento-content {
-    display: flex;
-    align-items: center; /* Alinha o conteúdo ao topo */
-    gap: 20px; /* Espaço entre a imagem e o texto */
-}
-
-.tratamento-card img {
-    width: 120px;  /* Ajuste o tamanho da imagem conforme necessário */
-    height: 120px; /* Ajuste a altura da imagem conforme necessário */
-    margin: 0 auto 10px auto; /* Centraliza horizontalmente */
-    border-radius: 50%;  /* Torna a imagem redonda */
-    object-fit: cover;  /* Garante que a imagem se ajuste sem distorção */
-}
-
-/* TITULO DO TRATAMENTO */
-.tratamento-info h3 {
-    font-size: 25px;
-    font-weight: bold;
-    color: #050606;
-    flex-grow: 1;
-}
-
-/* BARRA DE EFICÁCIA MAIOR */
-.eficacia-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 260px;          /* 🔹 largura fixa */
-    min-width: 240px;  
-    align-items: flex-start; /* ✅ alinha à esquerda */
-    text-align: left;        /* ✅ texto à esquerda */
-}
-
-/* BARRA DE EFICÁCIA  */
-.eficacia-bar-container {
-    width: 100%;
-    background-color: #e0e0e0; /* Cor de fundo da barra (cinza claro) */
-    height: 14px;
-    border-radius: 8px;
-    position: relative;
-    margin-bottom: 5px;
-}
-
-.efficacy-filled {
-    height: 100%;
-    border-radius: 8px;
-    background-color: #0094FF;; /* Cor azul para a parte preenchida */
-}
-
-.efficacy-marker {
-    width: 14px;
-    height: 14px;
-    background-color: #0094FF;/* Cor azul para o marcador */
-    position: absolute;
-    top: 0;
-    left: calc(100% - 7px); /* O marcador fica no final da barra */
-    transform: translateX(-50%);
-    border-radius: 50%;
-}
-
-/* Estilo para as opções de ordenação (radio buttons) */
-.ordenacao-options {
-    margin-top: 10px;
-    display: flex;
-    flex-direction: column;  /* Alinha as opções na vertical */
-    gap: 10px;  /* Espaçamento entre as opções */
-}
-
-.ordenacao-options label {
-    font-size: 14px;
-    color: #01060c;
-    display: inline-flex;
-    align-items: center;
-}
-
-.ordenacao-options input[type="radio"] {
-    margin-right: 8px;  /* Espaço entre o radio button e o texto */
-}
-
-/* Card preto no topo - visível só no desktop */
-/* Card preto no topo - visível só no desktop */
-.card-aviso {
-    display: block;
-}
-
-/* Esconde o card no topo no mobile */
-@media (max-width: 768px) {
-    .card-aviso {
-        display: none;
-    }
-}
-
-/* Mostra o card no final da página no mobile */
-.card-aviso-mobile {
-    display: none;
-    background-color: #000;
-    color: white;
-    padding: 16px 24px;
-    border-radius: 6px;
-    font-size: 14px;
-    max-width: 280px;
-    text-align: center;
-    line-height: 1.4;
-    margin: 30px auto;
-}
-
-@media (max-width: 768px) {
-    .card-aviso-mobile {
-        display: block;
-    }
-}
-/* RESPONSIVIDADE */
-@media (max-width: 768px) {
-
-    .tratamento-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center; /* Centraliza horizontalmente */
-        justify-content: center; /* Alinha verticalmente */
-        text-align: center; /* Centraliza o texto se houver */
-    }
-    .tratamento-card img {
-      
-        
-        max-width: 100%; /* Limita a imagem a largura máxima do container */
-     
-        height: right; /* Garante que a altura seja proporcional */
-        margin-left: 500px;
-    }
-    .tratamento-content img {
-        margin-bottom: 10px; /* espaço entre a imagem e o título */
-    }
-    @media (max-width: 768px) {
-    /* Certifique-se de que a área de "Tratamentos ordenados por" será visível na versão mobile */
-    .ordenacao-bloco {
-        display: block !important;  /* Garante que o bloco de ordenação seja exibido */
-        text-align: left;  /* Centraliza o texto na tela */
-        margin-top: 20px;  /* Ajuste o espaçamento conforme necessário */
-    }
-
-    .checkbox-container {
-        display: block !important; /* Garantir que o checkbox também seja visível */
-        text-align: left; /* Alinha o checkbox centralizado */
-    }
-
-    #ordenacao-texto {
-        font-size: 14px;  /* Ajuste o tamanho da fonte para uma exibição melhor no mobile */
-        color: #000;  /* Cor do texto */
-    }
-}
-
-
-    .tratamento-info {
-        align-items: center;
-        text-align: center;
-    }
-
-    .tratamento-info h3,
-    .tratamento-info p,
-    .tratamento-info a {
-        text-align: center;
-    }
-
-    .eficacia-container {
-        align-items: center;
-        text-align: center;
-    }
-
-    .eficacia-container {
-        width: 100%;
-        align-items: center;
-        text-align: center;
-        justify-content: center;
-    }
-
-    .eficacia-bar-container {
-        margin: 0 auto 5px auto; /* Centraliza a barra */
-    }
-
-    .eficacia-range {
-        text-align: center;
-    }
-
-    .eficacia-container p {
-        text-align: center;
-    }
-    
-    .filters > .filter-buttons {
-        display: none; /* Esconde apenas a parte "Exibir" */
-    }
-    .filters > .filter-buttons,
-    .filters h6 {
-        display: none; /* Esconde o filtro "Exibir" e o título "Exibir" */
-    }
-    .filters {
-        margin-top: 30px; /* Ajuste o valor conforme necessário */
-        padding-top: 20px;
-        display: block;
-    }
-
-    /* Opcional: Ajuste o layout da lista de tratamentos */
-    .treatment-list {
-        margin-bottom: 20px; /* Adiciona um pequeno espaço abaixo da lista de tratamentos */
-    }
-    .content-area {
-        flex-direction: column;  /* Exibe o conteúdo verticalmente (tratamentos e filtros) */
-    }
-    
-    /* Mover os filtros para baixo da lista de tratamentos */
-    .filters {
-        order: 2;  /* Coloca os filtros após a lista de tratamentos */
-        margin-top: 20px; /* Ajuste a margem superior conforme necessário */
-        padding-top: 20px;
-    }
-
-    /* Lista de tratamentos deve ocupar a parte superior na versão mobile */
-    .treatment-list {
-        order: 1;  /* Coloca a lista de tratamentos primeiro */
-        margin-bottom: 20px;  /* Pequeno espaço abaixo dos tratamentos */
-    }
-}
-    /* Para telas pequenas, ajusta os estilos */
-    @media (max-width: 768px) {
-        .container {
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .titulo {
-            font-size: 14px;
-        }
-    }
-    /* Para telas ainda menores (exemplo de celular) */
-    @media (max-width: 480px) {
-        .container {
-            padding: 10px;
-        }
-
-        .titulo {
-            font-size: 12px;
-        }
-    }
-
-        /* Responsividade para dispositivos móveis */
-        @media (max-width: 768px) {
-        .content-area {
-            flex-direction: column;  /* Exibe o conteúdo verticalmente (tratamentos e filtros) */
-        }
-
-        /* Mover os filtros para baixo da lista de tratamentos */
-        .filters {
-            order: 2;  /* Coloca os filtros após a lista de tratamentos */
-            margin-top: 20px; /* Ajuste a margem superior conforme necessário */
-            padding-top: 20px;
-        }
-
-        /* Lista de tratamentos deve ocupar a parte superior na versão mobile */
-        .treatment-list {
-            order: 1;  /* Coloca a lista de tratamentos primeiro */
-            margin-bottom: 20px;  /* Pequeno espaço abaixo dos tratamentos */
-        }
-    }
-
-    .tratamento-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .tratamento-info {
-        flex: 1;
-        padding: 15px;
-    }
-
-    .tratamento-img {
-        width: 150px;  /* Tamanho fixo da imagem */
-        height: 200px;
-        object-fit: contain; /* Evita distorções */
-        margin-right: 20px;
-    }
-
-    .tratamento-descricao {
-        text-align: justify;
-        max-width: 600px;
-    }
-
-
-    .container {
-        width: 100%; /* 100% da largura da tela */
-        padding: 2em; /* Um valor relativo baseado no tamanho da fonte */
-        display: flex;
-        flex-wrap: wrap;
-        position: relative;
-        z-index: 10; /* Ajuste o valor conforme necessário */
-    }
-    .accordion-button:focus {
-    box-shadow: none !important;
-    outline: none !important;
-}
-
-
-.box-avaliacao {
-    display: none !important;
-}
-
-.card-aviso-mobile {
-    background-color: #000;
-    color: white;
-    padding: 16px 24px;
-    border-radius: 6px;
-    font-size: 14px;
-    max-width: 280px;
-    text-align: center;
-    line-height: 1.4;
-    margin: 30px auto;
-}
-
-/* Estilo para os links no footer */
-.footer a {
-    color: #6c757d;  /* Cor cinza */
-    text-decoration: none;  /* Remove o sublinhado */
-}
-
-.footer a:hover {
-    color: #007bff;  /* Cor ao passar o mouse, pode ser ajustada */
-    text-decoration: underline;  /* Sublinha ao passar o mouse */
-}
-
-/* Alinha o conteúdo do footer na versão mobile */
-@media (max-width: 768px) {
-    .footer .container {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-
-    .footer-social a {
-        font-size: 1.2rem;  /* Tamanho maior dos ícones para facilitar clique */
-    }
-
-    .footer .row {
-        text-align: left;
-        justify-content: left;
-    }
-
-
-    .social-btn {
-        display: inline-block;  /* Faz com que os ícones fiquem lado a lado */
-        margin-right: 10px;  /* Adiciona um pequeno espaço entre os ícones */
-        text-align: left;
-        justify-content: left;
-    }
-    /* Estilo para os parágrafos de contato */
-.footer p {
-    color: #6c757d;  /* Cor cinza */
-    margin-bottom: 5px;  /* Diminui o espaço entre os parágrafos */
-}
-
-/* Se quiser aumentar a proximidade entre os dois parágrafos */
-.footer p + p {
-    margin-top: 0;  /* Remove o espaço acima do segundo parágrafo */
-}
-}
-/* Estilo para os parágrafos de contato */
-.footer p {
-    color: #6c757d;  /* Cor cinza */
-    margin-bottom: 5px;  /* Diminui o espaço entre os parágrafos */
-}
-
-/* Se quiser aumentar a proximidade entre os dois parágrafos */
-.footer p + p {
-    margin-top: 0;  /* Remove o espaço acima do segundo parágrafo */
-}
-.footer-bottom {
-    width: 100%;  /* Faz com que ocupe toda a largura da tela */
-    text-align: center;  /* Centraliza o texto */
-    padding: 10px 0;  /* Adiciona um pequeno padding para que o texto não fique colado nas bordas */
-    background-color: #f5f5f5;  /* Mantém a cor de fundo */
-}
-.footer-social {
-        display: block;  /* Faz com que os ícones se alinhem verticalmente */
-        text-align: left;  /* Alinha os ícones à esquerda */
-    }
-
-    .social-btn {
-        display: inline-block;  /* Faz com que os ícones fiquem lado a lado */
-        margin-right: 10px;  /* Adiciona um pequeno espaço entre os ícones */
-    }
-
-    .tratamento-card img {
-        display: block;
-        margin: 0 auto 10px auto; /* Centraliza a imagem e dá um espaço abaixo */
-        width: 120px;  /* Ajuste o tamanho da imagem conforme necessário */
-        height: 120px; /* Ajuste a altura da imagem conforme necessário */
-        border-radius: 50%;  /* Torna a imagem redonda */
-        object-fit: cover;  /* Garante que a imagem cubra a área sem distorção */
-    }
-    .footer p {
-    color: #6c757d;  /* Cor cinza */
-    margin-bottom: 5px;  /* Diminui o espaço entre os parágrafos */
-}
-/* Mostra o card no final da página no mobile */
-.card-aviso-mobile {
-    display: none;
-    background-color: #000;
-    color: white;
-    padding: 16px 24px;
-    border-radius: 6px;
-    font-size: 14px;
-    max-width: 280px;
-    text-align: center;
-    line-height: 1.4;
-    margin: 30px auto;
-}
-
-@media (max-width: 768px) {
-    .card-aviso-mobile {
-        display: block;
-        .dropdown-toggle {
-        width: 100%;
-        padding: 10px 0;
-        background-color: #f8f9fa;
-        border: 1px solid #ccc;
-        text-align: left;
-        display: block;
-    }
-
-    /* Filtro de Contraindicações */
-    #contraindicationsOptions {
-        max-height: 300px;  /* Defina a altura máxima que você achar necessário */
-        overflow-y: auto;   /* Permite a rolagem vertical */
-        padding: 10px;      /* Adiciona espaçamento interno */
-        display: block;     /* Assegura que as opções fiquem visíveis */
-    }
-
-    .form-check {
-        font-size: 14px;
-        margin-bottom: 10px;
-    }
-
-    /* Remover bordas e ajustes para garantir que o conteúdo fique bom */
-    .dropdown-menu {
-        border-radius: 0;
-    }
-    }
-
-    @media (max-width: 768px) {
-  .form-check {
-    margin-bottom: 12px;
-    font-size: 14px;
-  }
-
-  .form-check-input {
-    width: 18px;
-    height: 18px;
-  }
-
-  .form-check-label {
-    margin-left: 10px;
-  }
-  /* Para container com rolagem e melhor aparência */
-.contra-scroll {
-    max-height: 280px;
-    overflow-y: auto;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    background-color: #fff;
-}
-
-/* Estilo dos checkboxes */
-.contra-scroll .form-check {
-    padding: 5px 8px;
-    border-bottom: 1px solid #f1f1f1;
-}
-
-.contra-scroll .form-check:last-child {
-    border-bottom: none;
-}
-
-.contra-scroll .form-check-input {
-    margin-right: 8px;
-}
-
-.contra-scroll .form-check-label {
-    font-size: 14px;
-    color: #333;
-}
-
-/* Para container com rolagem e melhor aparência */
-.contra-scroll {
-    max-height: 150px;
-    overflow-y: auto;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    background-color: #fff;
-}
-
-/* Estilo dos checkboxes */
-.contra-scroll .form-check {
-    padding: 5px 8px;
-    border-bottom: 1px solid #f1f1f1;
-}
-
-.contra-scroll .form-check:last-child {
-    border-bottom: none;
-}
-
-.contra-scroll .form-check-input {
-    margin-right: 8px;
-}
-
-.contra-scroll .form-check-label {
-    font-size: 14px;
-    color: #333;
-}
-
-
-
-}
-
-
-/* Estilo da caixa colapsada de contraindicações */
-.contra-scroll {
-  max-height: 260px;
-  overflow-y: auto;
-  background-color: #fff;
-  padding-right: 10px;
-}
-
-/* Espaço interno das opções */
-.form-check.ps-2 {
-  padding-left: 12px;
-}
-
-/* Espaço entre os itens */
-.form-check + .form-check {
-  border-top: 1px solid #eee;
-  padding-top: 8px;
-  margin-top: 8px;
-}
-
-/* Para deixar o botão mais bonito e coerente */
-button.btn-outline-primary {
-  background-color: #f9f9f9;
-  text-align: left;
-}
-
-
-html {
-  scroll-behavior: smooth;
-}
-
-/* Espaçamento entre colunas no footer (somente para lista de tratamentos) */
-footer.footer .row > div {
-    padding-left: 30px;
-    padding-right: 30px;
-}
-
-/* Força alinhamento à esquerda apenas no bloco filtros-left */
-.filtros-left {
-  align-items: flex-start;   /* em vez de center */
-  text-align: left;          /* títulos e textos à esquerda */
-}
-
-/* Garante que textos e labels fiquem alinhados e ocupem a largura */
-.filtros-left h5,
-.filtros-left p,
-.filtros-left label {
-  text-align: left;
-  width: 100%;
-  margin-left: 0;
-}
-
-.filters select {
-    width: 100%;  /* Aumenta a largura para ocupar todo o espaço disponível */
-    max-width: 350px; /* Limita a largura máxima, mas você pode ajustar conforme necessário */
-    font-size: 14px; /* Ajuste o tamanho da fonte, se necessário */
-    padding: 5px; /* Ajusta o padding interno para melhor visualização */
-}
-.open-select {
-    display: block !important;
-    visibility: visible;
-}
-
-#rigor-options {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
-}
-
-.rigor-option {
-    padding: 8px 14px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.rigor-option:hover {
-    background-color: #0056b3;
-}
-.treatment-list h2 {
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #f2f2f2;
-    padding: 8px 15px;
-    border-radius: 6px;
-    width: 100%;  /* Faz com que o título ocupe toda a largura da seção */
-    margin: 0 auto 15px; /* Centraliza o título e coloca um espaço abaixo */
-}
-/* Container para os tratamentos */
-.treatment-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px; /* Espaço entre os cards */
-    width: 100%; /* Ocupa toda a largura da tela */
-    max-width: 1500px; /* Limita a largura máxima */
-    margin: 0 auto; /* Centraliza */
-}
-
-/* Cabeçalhos das seções de tratamentos */
-.treatment-list h2 {
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #f2f2f2;
-    padding: 8px 15px;
-    border-radius: 6px;
-    width: 100%; /* Ocupa toda a largura */
-    margin: 0 auto 15px; /* Centraliza o título e coloca um espaço abaixo */
-}
-
-/* Alinha as caixas de tratamento (cards) */
-.tratamento-card {
-    display: flex;
-    flex-direction: column; /* Ajusta os itens do card em coluna */
-    justify-content: space-between;
-    gap: 20px;
-    width: 100%;
-    max-width: 400px; /* Ajuste a largura máxima do card */
-    max-height: 1500px;
-    margin: 0 auto; /* Centraliza o card */
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.2s ease;
-}
-
-/* Efetua um pequeno efeito ao passar o mouse */
-.tratamento-card:hover {
-    transform: scale(1.02);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Ajusta as imagens */
-.tratamento-card img {
-    max-width: 100%; /* A imagem ocupa toda a largura disponível */
-    height: auto; /* Mantém a proporção */
-    border-radius: 50%; /* Torna as imagens redondas */
-}
-
-/* Alinha o texto dentro do card */
-.tratamento-info {
-    text-align: center;
-}
-
-/* Certifique-se de que todos os itens (imagem, título, descrição, etc.) estão centralizados */
-.tratamento-info h3 {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.tratamento-info p {
-    font-size: 14px;
-    color: #555;
-}
-.tratamento-card.direita {
-  margin-left: auto;
-  margin-right: 0;
-  max-width: 1130px;
+  gap: 14px;
+  margin-top: 14px;
   width: 100%;
 }
 
-/* Coloque isso no FINAL do seu <style> */
-    @media (max-width: 768px) {
-  .filters {
-    margin-bottom: 16px !important;   /* ou 20–24px, sem valor negativo */
-  }
+    @media (max-width:768px){
+      .tratamento-card{
+        flex-direction:column !important;
+        align-items:center !important;
+        text-align:center;
+        padding:16px 18px;
+      }
+      .tratamento-content{
+        flex-direction:column !important;
+        align-items:center !important;
+      }
+      .eficacia-container{
+        width:100%;
+        align-items:center;
+        text-align:center;
+      }
+      .eficacia-container p{ text-align:center !important; }
+    }
 
-  .treatment-list h2 {
-    margin-top: 12px;      /* garante folga abaixo dos filtros */
-    display: block;
-    clear: both;           /* evita qualquer sobreposição/flutuação */
-  }
+    /* Card aviso mobile */
+    .card-aviso-mobile{
+      display:none;
+      background-color:#000;
+      color:#fff;
+      padding:16px 24px;
+      border-radius:6px;
+      font-size:14px;
+      max-width:280px;
+      text-align:center;
+      line-height:1.4;
+      margin:30px auto;
+    }
+    @media (max-width:768px){
+      .card-aviso-mobile{ display:block; }
+    }
 
-  /* Se ainda notar “grudar”, remova o sticky da sidebar no mobile */
-  .left-sidebar {
-    position: static !important;
-    top: auto !important;
-    height: auto !important;
-  }
-}
-
-/* ==== MOBILE: filtros sempre por último ==== */
-@media (max-width: 768px) {
-  .content-area {
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Garanta que todos os blocos de tratamentos venham antes */
-  .treatment-list,
-  .treatment-section,
-  .tratamentos-wrapper {
-    order: 1 !important;
-  }
-
-  /* Filtros/ordenações vão para o fim da coluna */
-  .left-sidebar,
-  .filters {
-    order: 9999 !important;
-    position: static !important;  /* evita “grudar” no meio */
-    top: auto !important;
-    height: auto !important;
-    margin-top: 24px !important;
-  }
-
-  /* Card preto pode ficar depois dos filtros (se quiser) */
-  .card-aviso-mobile {
-    order: 10000 !important;
-  }
-
-  /* Remova margens negativas que empurram elementos */
-  .filters {
-    margin-bottom: 16px !important;  /* em vez de -45px */
-  }
-}
-
-/* MOBILE: .left-sidebar sempre depois da lista inteira de tratamentos */
-@media (max-width: 768px) {
-  .content-area {
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* aplique nos FILHOS DIRETOS do content-area */
-  .content-area > .treatment-list { order: 1 !important; }
-  .content-area > .left-sidebar   { order: 9999 !important; position: static !important; top: auto !important; height: auto !important; margin-top: 24px !important; }
-  .content-area > .card-aviso-mobile { order: 10000 !important; }
-
-  /* nada de margem negativa aqui */
-  .filters { margin-bottom: 16px !important; }
-}
-@media (max-width: 768px) {
-  .content-area { display:flex; flex-direction:column; }
-  .content-area > .lista-wrapper   { order: 1 !important; }
-  .content-area > .filtros-wrapper { order: 9999 !important; }
-  .filtros-wrapper .left-sidebar   { position: static !important; top:auto !important; height:auto !important; }
-}
-      /* Offsets individuais (ajuste os valores à vontade) */
-      .treatment-list.section-list.manual.cura       { --offset: 160px; }  /* referência */
-      .treatment-list.section-list.manual.remissao { --offset: 160px; }
-      .treatment-list.section-list.manual.controle   { --offset: 160px; }  /* referência */
-      .treatment-list.section-list.manual.eliminacao { --offset: 160px; }
-      .treatment-list.section-list.manual.reducao    { --offset: 160px; }
-      .treatment-list.section-list.manual.prevencao  { --offset: 160px; }
-      
-}
-
-
-
-
-    </style>
+    /* FOOTER */
+    .footer a{ color:#6c757d; text-decoration:none; }
+    .footer a:hover{ color:#007bff; text-decoration:underline; }
+    .footer p{ color:#6c757d; margin-bottom:5px; }
+    .footer .social-btn{
+      font-size:1.5rem;
+      margin-right:15px;
+      color:#6c757d;
+      transition:color .3s ease;
+    }
+    .footer .social-btn:hover{ color:#007bff; }
+  </style>
 </head>
+
 <body>
 
-    <div class="topo-container">
-        <a href="https://www.telix.inf.br/">
-            <img src="{% static 'img/logo.png' %}" alt="Telix Logo" style="height: 180px;">
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+
+      <a class="brand" href="https://www.telix.inf.br/">
+        <img class="logo-telix" src="{% static 'img/logo.png' %}" alt="Telix Logo">
+      </a>
+
+      <div class="header-main">
+        <h1 class="page-title">Tratamentos para crises de enxaqueca</h1>
+
+        <p class="page-subtitle" id="ordenacao-subtitle">
+          Tratamentos ordenados por: Ordem decrescente de eficácia máxima
+        </p>
+
+        <a
+          href="#"
+          class="btn-filtros"
+          onclick="
+            event.preventDefault();
+            const path = '/tratamentos-crise-enxaqueca-com-filtros/';
+            const isDevDjango = (location.hostname === '127.0.0.1' || location.hostname === 'localhost') && location.port === '8000';
+            const target = isDevDjango ? ('http://localhost:3000' + path) : (location.origin + path);
+            window.location.href = target;
+          "
+        >
+          Outros filtros e ordenações
         </a>
-        
-      <h1>Tratamentos para crises de enxaqueca</h1>
-      
-   <span style="color: #010009; font-weight: 400; font-family: 'Inter', sans-serif;">Tratamentos ordenados por: Ordem decrescente de eficácia máxima</span>
-
-
-
-
-
-
-      
-        <div class="checkbox-container mt-3"style="margin-top: -30px;"> 
-         
-   
       </div>
 
-
-
-<a
-  href="#"
-  class="btn d-inline-block mt-3"
-  style="
-    background-color: #f0f0f0;
-    color: #060606;
-    border: 2px solid #e4e4e4;
-    font-weight: normal;
-    font-size: 12px;
-    padding: 8px 12px;
-    text-align: center;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-    max-width: 250px;
-  "
-  onclick="
-    event.preventDefault();
-    const path = '/tratamentos-crise-enxaqueca-com-filtros/';
-    const isDevDjango =
-      (location.hostname === '127.0.0.1' || location.hostname === 'localhost') &&
-      location.port === '8000';
-    const target = isDevDjango
-      ? ('http://localhost:3000' + path)
-      : (location.origin + path);
-    window.location.href = target;
-  "
->
-  Outros filtros e ordenações
-</a>
-
-    
-  
-        
-
-
-      <div class="card-aviso">
+      <aside class="header-warning">
         <p><strong>Não se automedique.</strong><br>Consulte um profissional de saúde.</p>
-      </div>
-      
+      </aside>
 
-            <!-- Checkbox para mostrar a ordenação -->
-            <div class="checkbox-container mt-3"style="margin-left: 200px;margin-top: -30px;"> 
-         
-
-
-
-
-<script>
-// Adiciona o evento de 'submit' para o formulário uma única vez
-document.querySelector("form").addEventListener("submit", function(event) {
-    event.preventDefault();  // Previne o comportamento padrão do formulário, que causa o envio e recarregamento da página.
-    
-    // Quando o formulário for submetido, mantém a caixa de seleção visível
-    const filtroContainer = document.getElementById('filtro_criterio');
-    
-    // Força a caixa de seleção a permanecer aberta
-    filtroContainer.style.display = 'block';  // Mantém o dropdown aberto
-    filtroContainer.classList.add('open-select');  // Garante que o select permanece aberto
-
-    // Aplique a lógica de exibição do filtro
-    const filtroValorContainer = document.getElementById('filtro_valor_container');
-    const selectedValue = document.getElementById('filtro_criterio').value;
-
-    // Exibe ou esconde o campo de valor com base no critério selecionado
-    if (selectedValue === "participantes" || selectedValue === "data" || selectedValue === "rigor") {
-        filtroValorContainer.style.display = 'block';  // Exibe o campo de valor
-    } else {
-        filtroValorContainer.style.display = 'none';  // Esconde o campo
-    }
-});
-
-document.getElementById('filtro_criterio').addEventListener('change', function() {
-    const filtroValorContainer = document.getElementById('filtro_valor_container');
-    const filtroRigorContainer = document.getElementById('filtro_rigor_container');
-    const selectContainer = document.getElementById('filtro_criterio');
-    
-    // Exibe ou esconde o campo de valor com base no critério selecionado
-    if (this.value === "participantes" || this.value === "data") {
-        filtroValorContainer.style.display = 'block';  // Exibe o campo de valor
-        filtroRigorContainer.style.display = 'none';   // Esconde a lista de rigor
-    } else if (this.value === "rigor") {
-        filtroValorContainer.style.display = 'none';   // Esconde o campo de valor
-        filtroRigorContainer.style.display = 'block';  // Exibe a lista de rigor (1 a 7)
-    } else {
-        filtroValorContainer.style.display = 'none';   // Esconde o campo de valor
-        filtroRigorContainer.style.display = 'none';   // Esconde a lista de rigor
-    }
-});
-
-
-
-
-</script>
-
-
-
-
-                
-
-<!-- INÍCIO do bloco removido -->
-<!--
-<div class="mt-2">
-    <label for="preco_tratamento">Preço </label>
-    <div>
-        <input type="radio" id="preco_trat_maior" name="preco_tratamento" value="maior-menor" onclick="updateClassifications()">
-        <label for="preco_trat_maior" id="label-preco-trat-maior">Maior para menor</label><br>
-
-        <input type="radio" id="preco_trat_menor" name="preco_tratamento" value="menor-maior" onclick="updateClassifications()">
-        <label for="preco_trat_menor" id="label-preco-trat-menor">Menor para maior</label>
     </div>
-</div>
+  </header>
 
-<button type="submit">Ordenar</button>
--->
-<!-- FIM do bloco removido -->
+  <!-- LISTAGEM -->
+  <div class="content-area">
+    <div class="tratamentos">
 
-<!-- INSIRA isso no lugar, para manter estrutura -->
-<div class="text-end mt-3">
-    <!-- Se quiser remover completamente o botão, tire esta linha -->
-   
-</div>
+      {% if todos_os_tratamentos %}
+        <div class="tratamento-section all">
+          {% for item in todos_os_tratamentos %}
+            {% with tratamento=item.obj %}
+              <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}?tipo={{ item.tipo|urlencode }}" class="tratamento-card">
+                <div class="tratamento-content">
 
-<!-- Atenção: mantenha o fechamento do form e div abaixo -->
-</div> <!-- fecha .filters -->
-</form>
-</div> <!-- fecha .left-sidebar -->
+                  {% if tratamento.imagem %}
+                    <img src="{{ tratamento.imagem.url }}" alt="{{ tratamento.nome }}" class="img-fluid">
+                  {% else %}
+                    <img src="{% static 'default-image.jpg' %}" alt="Imagem não disponível">
+                  {% endif %}
 
-    <!-- LISTA DE TRATAMENTOS -->
-    <style>
-        /* container de cada seção */
-        .section-list{
-          display: flex;
-          flex-direction: column;    /* empilha */
-          gap: 24px;                 /* espaço entre cartões */
-          max-width: 1120px;
-        }
-      
-        /* cada cartão ocupa toda a largura disponível do container */
-        .tratamento-card{
-          width: 100% !important;
-          margin: 0 !important;      /* zera deslocamentos laterais */
-        }
-      
-        /* título da seção: largura automática */
-        .section-title{
-          display:inline-block;
-          font-size:16px;
-          font-weight:bold;
-          background:#f2f2f2;
-          padding:8px 15px;
-          border-radius:6px;
-          margin-bottom:10px;
-          width:auto;   
-          text-align:left;                /* não fixa largura */
-        }
-        .section-list{
-        display:flex;
-        flex-direction:column;
-        gap:10px;
-        max-width:1120px;
-        align-items:flex-start;            /* 👈 garante filhos à esquerda */
-        }
+                  <div class="tratamento-info">
+                    <h3>{{ tratamento.nome }}</h3>
 
-        .section-title{
-        display:inline-block;
-        font-size:16px;
-        font-weight:bold;
-        background:#f2f2f2;
-        padding:8px 15px;
-        border-radius:6px;
-        margin-bottom:10px;
-        width:auto;
-        text-align:left;
-        align-self:flex-start;             /* 👈 reforça caso o pai tente centralizar */
-        }
+                    <h3 style="color:#0094FF; font-size:12px;">
+                      {% for tipo in tratamento.tipo_tratamento.all %}
+                        {{ tipo.nome }}{% if not forloop.last %}, {% endif %}
+                      {% empty %}
+                        Nenhum tipo selecionado
+                      {% endfor %}
+                    </h3>
 
-      </style>
-      
-    <style id="right-align-eliminacao">
-      /* base de todas as seções */
-      :root { --cards-max: 1100px; }
-      
-      .treatment-list.section-list {
-        width: 100%;
-        max-width: calc(var(--cards-max) + 20px); /* largura do bloco de listagem */
-        margin: 0 auto;                           /* padrão: central */
-        gap: 20px;
-      }
-      
-      /* título padrão */
-      .treatment-list.section-list > h2.section-title {
-        display: inline-block;
-        font-size: 16px;
-        font-weight: 700;
-        background: #f2f2f2;
-        padding: 8px 15px;
-        border-radius: 6px;
-        width: auto;
-        margin: 0 0 15px 0;                       /* sem hacks de margin-left */
-      }
-      
-      /* card padrão */
-      .treatment-list.section-list .tratamento-card {
-        width: 100%;
-        max-width: var(--cards-max);
-        margin: 0 auto;                           /* central por padrão */
-      }
-      
-      /* VARIAÇÃO: coluna direita (mesmo alinhamento entre sessões) */
-      .treatment-list.section-list.coluna-direita {
-        margin-left: auto;                        /* empurra o bloco inteiro pra direita */
-        margin-right: 0;
-      }
-      .treatment-list.section-list.coluna-direita > h2.section-title {
-        margin-left: auto;                        /* título acompanha */
-        margin-right: 0;
-      }
-      .treatment-list.section-list.coluna-direita .tratamento-card {
-        margin-left: auto;                        /* cada card encosta à direita */
-        margin-right: 0;
-      }
-      /* força TODAS as seções a ficarem como a de "Cura" (centralizadas) */
-      .treatment-list.section-list { 
-        width: 100%;
-        max-width: 1120px;
-        margin: 0 auto !important;            /* centraliza o container da seção */
-        gap: 20px;
-      }
-      
-      .treatment-list.section-list > h2 { 
-        width: auto !important;
-        margin: 0 0 15px 0 !important;        /* sem margin-left "mágica" */
-      }
-      
-      .treatment-list.section-list .tratamento-card {
-        width: 100% !important;
-        max-width: 1120px !important;
-        margin: 0 auto !important;            /* centraliza cada card */
-      }
-      
-      /* mata qualquer variação que empurre para a direita */
-      .treatment-list.section-list.coluna-direita { 
-        margin: 0 auto !important;
-      }
-      .treatment-list.section-list.coluna-direita > h2,
-      .treatment-list.section-list.coluna-direita .tratamento-card {
-        margin: 0 auto !important;
-      }
-      /* === alinhamento fino das seções === */
-      :root{
-        /* use o MESMO valor da largura máxima dos cards */
-        --cards-max: 1130px;   /* se seus cards estão em 1120px, troque aqui também */
-        --nudge: 150px;          /* micro-ajuste opcional (+/- 1 a 3px) */
-      }
-      
-      .treatment-list.section-list{
-        display: flex;
-        flex-direction: column;
-        align-items: center;                 /* centraliza o bloco da seção */
-        gap: 20px;
-      }
-      
-      .treatment-list.section-list > h2{
-        width: var(--cards-max);             /* título com a MESMA largura do card */
-        max-width: 100%;
-        margin: 0 0 15px 0;                  /* sem margin-left */
-        text-align: left;                    /* alinha o texto à esquerda */
-        transform: translateX(var(--nudge)); /* micro-ajuste, se precisar */
-      }
-      
-      .treatment-list.section-list .tratamento-card{
-        width: 100%;
-        max-width: var(--cards-max);         /* idêntico ao título */
-        margin: 0 auto;
-      }
-      :root{
-        --cards-max: 1130px;  /* largura alvo do card */
-        --nudge: 24px;        /* “empurrãozinho” p/ a direita – ajuste aqui */
-      }
-      
-      /* bloco das seções (compartilhado) */
-      .treatment-list.section-list{
-        width: 100%;
-        max-width: var(--cards-max);
-        margin: 0 auto;
-        gap: 20px;
-      }
-      
-      /* título padrão da seção */
-      .treatment-list.section-list .section-title{
-        display: inline-block;
-        font-size: 16px;
-        font-weight: 700;
-        background: #f2f2f2;
-        padding: 8px 15px;
-        border-radius: 6px;
-        width: auto;
-        margin: 0 0 15px 0;
-      }
-      
-      /* cards padrão */
-      .treatment-list.section-list .tratamento-card{
-        width: 100%;
-        max-width: var(--cards-max);
-        margin: 0 auto;
-      }
-      
-      /* VARIAÇÃO: alinhar seção “um pouco mais à direita” */
-      .treatment-list.section-list.coluna-direita .section-title,
-      .treatment-list.section-list.coluna-direita .tratamento-card{
-        transform: translateX(var(--nudge));
-      }
-      /* ===== Alinhamento fino das seções ===== */
-      :root{
-        --cards-max: 1120px;   /* mesma largura que você usa nos cards */
-        --empurra: 60px;       /* quanto quer empurrar p/ a DIREITA (ajuste aqui) */
-      }
-      
-      /* padrão: centralizado (como a seção CURA) */
-      .treatment-list.section-list{
-        max-width: var(--cards-max);
-        margin-left: calc((100% - var(--cards-max))/2);
-        margin-right: calc((100% - var(--cards-max))/2);
-      }
-      
-      /* títulos e cards com a mesma largura do container */
-      .treatment-list.section-list .section-title,
-      .treatment-list.section-list .tratamento-card{
-        max-width: var(--cards-max);
-        margin: 0;            /* zera margens internas */
-      }
-      
-      /* empurra só as seções “daqui pra baixo” (as que têm .coluna-direita) */
-      .treatment-list.section-list.coluna-direita{
-        margin-left:  calc((100% - var(--cards-max))/2 + var(--empurra));
-        margin-right: calc((100% - var(--cards-max))/2 - var(--empurra));
-      }
-      
-      /* garante que NENHUM inline vença */
-      .treatment-list.section-list > h2[style],
-      .treatment-list.section-list .tratamento-card[style]{
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-        width: auto !important;
-      }
-      :root{ --cards-max:1120px; }
-      
-      /* Base igual para todas as seções */
-      .treatment-list.section-list{
-        width:100%;
-        max-width:var(--cards-max);
-        gap:20px;
-      }
-      
-      /* Título padrão */
-      .section-title{
-        display:block;          /* ocupa a linha toda */
-        font-size:16px;
-        font-weight:700;
-        background:#f2f2f2;
-        padding:8px 15px;
-        border-radius:6px;
-        margin:0 0 15px 0;
-        text-align:left;  
-        gap: 50px      /* 👈 alinha o texto à esquerda */
-      }
-      
-      /* se o título estiver dentro de um container com text-align:center */
-      .section-title-wrapper{   /* aplique essa classe no wrapper do título */
-        text-align:left;        /* 👈 garante alinhamento do conteúdo */
-      }
-      
-      /* se o pai usar flex com justify-content:center */
-      .section-title{           /* mantém o título colado à esquerda */
-        align-self:flex-start;  /* 👈 ignora a centralização do flex pai */
-      }
-      
-      /* caso o elemento tenha estilo inline centralizando, sobreponha */
-      h1.section-title, h2.section-title, h3.section-title{
-        text-align:left !important;
-      }
-      
-      /* Cards ocupam a mesma largura do container */
-      .treatment-list.section-list .tratamento-card{
-        width:100%;
-        max-width:var(--cards-max);
-      }
-      
-      /* Modo manual: aplica deslocamento igual ao título e aos cards */
-      .treatment-list.section-list.manual{
-        /* centralizado por padrão */
-        margin-left:calc((100% - var(--cards-max))/2);
-        margin-right:calc((100% - var(--cards-max))/2);
-        --offset:0px; /* default */
-      }
-      
-      /* aplica o offset na seção inteira (título + cards) */
-      .treatment-list.section-list.manual > .section-title,
-      .treatment-list.section-list.manual > .tratamento-card{
-        transform:translateX(var(--offset));
-      }
-      
-      /* Offsets individuais (ajuste os valores à vontade) */
-      .treatment-list.section-list.manual.cura       { --offset: 160px; }  /* referência */
-      .treatment-list.section-list.manual.remissao { --offset: 160px; }
-      .treatment-list.section-list.manual.controle   { --offset: 160px; }  /* referência */
-      .treatment-list.section-list.manual.eliminacao { --offset: 160px; }
-      .treatment-list.section-list.manual.reducao    { --offset: 160px; }
-      .treatment-list.section-list.manual.prevencao  { --offset: 160px; }
+                    <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo|default:"ND" }}</p>
+                    <p><strong>Fabricante:</strong> {{ tratamento.fabricante|default:"ND" }}</p>
 
-        .tratamento-descricao {
-      margin-top: 20px;  /* Adiciona espaço acima */
-      margin-bottom: 20px;  /* Adiciona espaço abaixo */
-  }
-      
-      /* Em telas pequenas: zera os offsets para não “quebrar” no mobile */
-      @media (max-width: 992px){
-        .treatment-list.section-list.manual{
-          margin-left:auto; margin-right:auto;
-        }
-        .treatment-list.section-list.manual > .section-title,
-        .treatment-list.section-list.manual > .tratamento-card{
-          transform:none;
-        }
+                    <div class="btn mt-2"
+                      style="background-color:#e0e0e0; color:#000; border:none; font-weight:500; font-size:14px; padding:5px 35px; display:inline-flex; align-items:center; gap:5px;">
+                      ver detalhes <span style="font-weight:bold;">&#8250;</span>
+                    </div>
 
-        /* Quando a seção de Cura estiver vazia, mova o conteúdo restante para cima */
-        .empty-cure .content-area {
-            display: flex;
-            flex-direction: column; /* Exibe os tratamentos em coluna */
-        }
+                    <p class="tratamento-descricao" style="margin-top:20px; margin-bottom:20px;">
+                      {{ tratamento.descricao }}
+                    </p>
+                  </div>
 
-        .empty-cure .left-sidebar {
-            width: 100%; /* Sidebar ocupa toda a largura, se não houver cura */
-            height: auto; /* A altura se adapta automaticamente */
-            position: relative; /* Não fixa a sidebar */
-        }
+                  <div class="eficacia-container">
+                    <p style="font-size:20px; font-weight:700; font-family:'Inter',sans-serif; color:rgb(163,162,162); margin:0 0 8px 0;">
+                      Eficácia:
+                      <span style="color:#000; font-weight:700; font-size:20px;">{{ item.tipo }}</span>
+                    </p>
 
-        /* Certifique-se de que os tratamentos não fiquem espaçados */
-        .empty-cure .treatment-list {
-            margin-top: 0 !important; /* Remove o espaçamento desnecessário */
-        }
-/* Garante que os elementos dentro de .content-area fiquem empilhados verticalmente */
-.content-area {
-    display: flex;
-    flex-direction: column; /* Coloca os itens em uma coluna */
-    gap: 20px; /* Espaço entre as seções */
-}
+                    <div class="eficacia-bar-container">
+                      <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
+                      <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
+                    </div>
 
-/* Garantir que os cards de tratamento se alinhem corretamente */
-.tratamento-section {
-    display: block;
-    width: 100%; /* Garante que as seções ocupem toda a largura */
-    margin-bottom: 20px; /* Espaçamento entre as seções */
-}
+                    <p class="eficacia-range" style="font-family:'Inter',sans-serif; font-weight:700; font-size:25px; margin:0 0 10px 0;">
+                      <span style="color:#888; font-weight:500;">{{ item.min_str }} a</span>
+                      <span style="color:#000; font-weight:bold;"> {{ item.max_str }}%</span>
+                    </p>
 
-/* Responsividade para telas menores */
-@media (max-width: 768px) {
-    .content-area {
-        flex-direction: column; /* Certifica-se de que os itens ainda estejam empilhados */
-    }
-    .tratamento-card {
-        margin-bottom: 15px; /* Espaço entre os cards */
-    }
-}
+                    <p id="titulo-prazo-{{ tratamento.id }}"
+                       style="margin:0; font-family:'Inter',sans-serif; font-weight:500; font-size:15px; color:#000;">
+                      Prazo para efeito
+                    </p>
+                    <p id="valor-prazo-{{ tratamento.id }}"
+                       style="margin:4px 0 0 0; font-family:'Inter',sans-serif; font-size:16px; font-weight:bold; color:#000;">
+                      {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+                    </p>
 
+                    <!-- Fontes “ocultas” (se você usa mudarExibicao via DOM, podem vir do backend também) -->
+                    <!-- Ex.: <span id="faixa-eficacia-{{ tratamento.id }}" class="d-none">...</span> -->
+                  </div>
 
-      }
-      
-       
-            </style>
- {% load static %}
-{# core/tratamentos.html #}
+                </div>
+              </a>
+            {% endwith %}
+          {% endfor %}
+        </div>
 
-<div class="content-area">
-  <div class="tratamentos">
-
-    {#=========================LISTAGEM ÚNICA (GLOBAL)========================= #}
-    {% if todos_os_tratamentos %}
-    <div class="tratamento-section all">
-      {% for item in todos_os_tratamentos %}
-        {% with tratamento=item.obj %}
-<a href="{% url 'detalhes_tratamentos' tratamento.id %}" class="text-decoration-none text-dark">
-  <div class="tratamento-card">
-    <div class="tratamento-content">
-      
-      {# Imagem (já ajustado, sem a tag <a> interna) #}
-      {% if tratamento.imagem %}
-        <img src="{{ tratamento.imagem.url }}" alt="{{ tratamento.nome }}" class="img-fluid">
       {% else %}
-        <img src="{% static 'default-image.jpg' %}" alt="Imagem não disponível">
+
+        <!-- Exemplo mantendo seu fallback (reducao). Repita para outras seções se existirem -->
+        <div class="tratamento-section reducao">
+          {% for item in tratamentos_reducao %}
+            {% with tratamento=item.obj %}
+              <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}" class="tratamento-card">
+                <div class="tratamento-content">
+
+                  {% if tratamento.imagem %}
+                    <img src="{{ tratamento.imagem.url }}" alt="{{ tratamento.nome }}" class="img-fluid">
+                  {% else %}
+                    <img src="{% static 'default-image.jpg' %}" alt="Imagem não disponível">
+                  {% endif %}
+
+                  <div class="tratamento-info">
+                    <h3>{{ tratamento.nome }}</h3>
+
+                    <h3 style="color:#0094FF; font-size:12px;">
+                      {% for tipo in tratamento.tipo_tratamento.all %}
+                        {{ tipo.nome }}{% if not forloop.last %}, {% endif %}
+                      {% empty %}Nenhum tipo selecionado{% endfor %}
+                    </h3>
+
+                    <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo|default:"ND" }}</p>
+                    <p><strong>Fabricante:</strong> {{ tratamento.fabricante|default:"ND" }}</p>
+
+                    <div class="btn mt-2"
+                      style="background-color:#e0e0e0; color:#000; border:none; font-weight:500; font-size:14px; padding:5px 35px; display:inline-flex; align-items:center; gap:5px;">
+                      ver detalhes <span style="font-weight:bold;">&#8250;</span>
+                    </div>
+
+                    <p class="tratamento-descricao" style="margin-top:20px; margin-bottom:20px;">
+                      {{ tratamento.descricao }}
+                    </p>
+                  </div>
+
+                  <div class="eficacia-container">
+                    <p style="font-size:20px; font-weight:700; font-family:'Inter',sans-serif; color:rgb(163,162,162); margin:0 0 8px 0;">
+                      Eficácia:
+                      <span style="color:#000; font-weight:700; font-size:20px;">{{ item.tipo }}</span>
+                    </p>
+
+                    <div class="eficacia-bar-container">
+                      <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
+                      <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
+                    </div>
+
+                    <p class="eficacia-range" style="font-family:'Inter',sans-serif; font-weight:700; font-size:25px; margin:0 0 10px 0;">
+                      <span style="color:#888; font-weight:500;">{{ item.min_str }} a</span>
+                      <span style="color:#000; font-weight:bold;"> {{ item.max_str }}%</span>
+                    </p>
+
+                    <p id="titulo-prazo-{{ tratamento.id }}" style="margin:0; font-family:'Inter',sans-serif; font-weight:500; font-size:15px; color:#000;">
+                      Prazo para efeito
+                    </p>
+                    <p id="valor-prazo-{{ tratamento.id }}" style="margin:4px 0 0 0; font-family:'Inter',sans-serif; font-size:16px; font-weight:bold; color:#000;">
+                      {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+                    </p>
+                  </div>
+
+                </div>
+              </a>
+            {% endwith %}
+          {% endfor %}
+        </div>
+
       {% endif %}
-
-      {# Info #}
-      <div class="tratamento-info">
-        <h3>{{ tratamento.nome }}</h3>
-        <h3 style="color: #0094FF; font-size: 12px;">
-          {% for tipo in tratamento.tipo_tratamento.all %}
-            {{ tipo.nome }}{% if not forloop.last %}, {% endif %}
-          {% empty %}Nenhum tipo selecionado{% endfor %}
-        </h3>
-        <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo|default:"ND" }}</p>
-        <p><strong>Fabricante:</strong> {{ tratamento.fabricante|default:"ND" }}</p>
-        
-        <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}" class="btn mt-2"
-           style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
-          ver detalhes <span style="font-weight: bold;">&#8250;</span>
-        </a>
-
-        <p>{{ tratamento.descricao }}</p>
-      </div>
-
-      {# Eficácia #}
-      <div class="eficacia-container">
-        <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
-          Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">{{ item.tipo }}</span>
-        </p>
-        <div class="eficacia-bar-container">
-          <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
-          <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
-        </div>
-        <p class="eficacia-range" style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 25px; text-align: left;">
-          <span style="color: #888; font-weight: 500;">{{ item.min_str }} a</span>
-          <span style="color: #000; font-weight: bold;"> {{ item.max_str }}%</span>
-        </p>
-
-        <p id="titulo-prazo-{{ tratamento.id }}" style="margin: 0; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 15px; color: #000;">
-          Prazo para efeito
-        </p>
-        <p id="valor-prazo-{{ tratamento.id }}" style="margin: 4px 0 0 0; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: bold; color: #000;">
-          {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
-        </p>
-      </div>
-
     </div>
   </div>
-</a>
 
-        {% endwith %}
-      {% endfor %}
-    </div>
-
-    {# =========================EXIBIÇÃO POR SEÇÕES(padrão original)========================= #}
-    {% else %}
-
-<!-- Tratamentos de Redução de sintomas -->
-<div class="tratamento-section reducao">
-  {% for item in tratamentos_reducao %}
-    {% with tratamento=item.obj %}
-      <!-- Envolva o card inteiro com o link <a> -->
-      <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}" class="tratamento-card text-decoration-none text-dark">
-        <div class="tratamento-content">
-
-          {# Imagem (sem a tag <a> interna, agora está diretamente clicável) #}
-          {% if tratamento.imagem %}
-            <img src="{{ tratamento.imagem.url }}" alt="{{ tratamento.nome }}" class="img-fluid">
-          {% else %}
-            <img src="{% static 'default-image.jpg' %}" alt="Imagem não disponível">
-          {% endif %}
-
-          {# Info #}
-          <div class="tratamento-info">
-            <h3>{{ tratamento.nome }}</h3>
-            <h3 style="color: #0094FF; font-size: 12px;">
-              {% for tipo in tratamento.tipo_tratamento.all %}
-                {{ tipo.nome }}{% if not forloop.last %}, {% endif %}
-              {% empty %}Nenhum tipo selecionado{% endfor %}
-            </h3>
-            <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo|default:"ND" }}</p>
-            <p><strong>Fabricante:</strong> {{ tratamento.fabricante|default:"ND" }}</p>
-
-            <div class="btn mt-2" style="background-color: #e0e0e0; color: #000; border: none; font-weight: 500; font-size: 14px; padding: 5px 35px; display: inline-flex; align-items: center; gap: 5px; margin-left: auto;">
-              ver detalhes <span style="font-weight: bold;">&#8250;</span>
-            </div>
-
-            <p class="tratamento-descricao">{{ tratamento.descricao }}</p>
-          </div>
-
-          {# Eficácia #}
-          <div class="eficacia-container">
-            <p style="font-size: 20px; font-weight: 700; text-align: left; font-family: 'Inter', sans-serif; color: rgb(163,162,162);">
-              Eficácia: <span style="color: #000; font-weight: 700; font-size: 20px;">{{ item.tipo }}</span>
-            </p>
-            <div class="eficacia-bar-container">
-              <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
-              <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
-            </div>
-            <p class="eficacia-range" style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 25px; text-align: left;">
-              <span style="color: #888; font-weight: 500;">{{ item.min_str }} a</span>
-              <span style="color: #000; font-weight: bold;"> {{ item.max_str }}%</span>
-            </p>
-
-            <p id="titulo-prazo-{{ tratamento.id }}" style="margin: 0; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 15px; color: #000;">
-              Prazo para efeito
-            </p>
-            <p id="valor-prazo-{{ tratamento.id }}" style="margin: 4px 0 0 0; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: bold; color: #000;">
-              {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
-            </p>
-          </div>
-
-        </div>
-      </a> 
-    {% endwith %}
-  {% endfor %}
-</div>
-
-
-    {% endif %}
-
-  </div>
-</div>
-
-
-
-
-
-<div class="card-aviso-mobile">
+  <div class="card-aviso-mobile">
     <p><strong>Não se automedique.</strong><br>Consulte um profissional de saúde.</p>
-</div>
-
-<!-- FOOTER UNIFICADO -->
-
-
-<footer class="footer mt-5 pt-4 border-top">
-    <div class="container text-center">
-        <!-- ÍCONES NO TOPO APENAS NO MOBILE -->
-<div class="footer-social d-flex justify-content-center mb-4 d-md-none">
-    <a href="https://www.instagram.com/telix.inf.br/" target="_blank" class="social-btn mx-2"><i class="fab fa-instagram fa-lg"></i></a>
-    <a href="https://www.facebook.com/people/Telix-contexto-na-sa%C3%BAde/100089318347896/" class="social-btn mx-2"><i class="fab fa-facebook-f fa-lg"></i></a>
-    <a href="https://www.linkedin.com/company/telix-canais-de-not%C3%ADcias" class="social-btn mx-2"><i class="fab fa-linkedin-in fa-lg"></i></a>
-    <a href="https://www.youtube.com/@TelixSaude"  class="social-btn mx-2"><i class="fab fa-youtube fa-lg"></i></a>
   </div>
-  
-      <!-- Redes sociais sempre no topo no mobile -->
 
-      <div class="row justify-content-center text-start mt-4">
-        <!-- Coluna 1 -->
+  <!-- FOOTER -->
+  <footer class="footer mt-5 pt-4 border-top">
+    <div class="container text-center">
+
+      <div class="footer-social d-flex justify-content-center mb-4 d-md-none">
+        <a href="https://www.instagram.com/telix.inf.br/" target="_blank" class="social-btn mx-2"><i class="fab fa-instagram fa-lg"></i></a>
+        <a href="https://www.facebook.com/people/Telix-contexto-na-sa%C3%BAde/100089318347896/" class="social-btn mx-2"><i class="fab fa-facebook-f fa-lg"></i></a>
+        <a href="https://www.linkedin.com/company/telix-canais-de-not%C3%ADcias" class="social-btn mx-2"><i class="fab fa-linkedin-in fa-lg"></i></a>
+        <a href="https://www.youtube.com/@TelixSaude" class="social-btn mx-2"><i class="fab fa-youtube fa-lg"></i></a>
+      </div>
+
+      <div class="row justify-content-center text-center mt-4">
+
         <div class="col-12 col-md-4 mb-4">
           <h5>Explorar</h5>
           <ul class="list-unstyled">
-            <li><a href="https://www.telix.inf.br/pacientes" >Pacientes</a></li>
+            <li><a href="https://www.telix.inf.br/pacientes">Pacientes</a></li>
             <li><a href="https://www.telix.inf.br/profissionaisdesaude">Profissionais de Saúde</a></li>
-            <li><a href="https://www.telix.inf.br/divulgacao-de-servicos-e-pesquisas-de-saude" >Empresas</a></li>
-            <li><a href="https://www.telix.inf.br/blog" >Blog</a></li>
-            <li><a href="https://www.telix.inf.br/quem-somos-telix-contexto-na-saude" >Quem somos</a></li>
+            <li><a href="https://www.telix.inf.br/divulgacao-de-servicos-e-pesquisas-de-saude">Empresas</a></li>
+            <li><a href="https://www.telix.inf.br/blog">Blog</a></li>
+            <li><a href="https://www.telix.inf.br/quem-somos-telix-contexto-na-saude">Quem somos</a></li>
           </ul>
         </div>
-  
-        <!-- Coluna 2 -->
-        <div class="col-12 col-md-4 mb-4">
-          <h5>Tratamentos</h5>
-          <ul class="list-unstyled">
-            <li><a href="http://cadastros.telix.inf.br/tratamentos/">Tratamentos</a></li>
-            <li><a href="https://www.telix.inf.br/in%C3%ADcio" >Opinião de Especialistas</a></li>
-            <div class="footer-social d-none d-md-flex justify-content-center mb-3"style="margin-right: 158px; padding-top: 20px;">
-                <a href="https://www.instagram.com/telix.inf.br/" class="social-btn mx-2"><i class="fab fa-instagram fa-lg"></i></a>
-                <a href="https://www.facebook.com/people/Telix-contexto-na-sa%C3%BAde/100089318347896/"class="social-btn mx-2"><i class="fab fa-facebook-f fa-lg"></i></a>
-                <a href="https://www.linkedin.com/company/telix-canais-de-not%C3%ADcias" class="social-btn mx-2"><i class="fab fa-linkedin-in fa-lg"></i></a>
-                <a href="https://www.youtube.com/@TelixSaude" class="social-btn mx-2"><i class="fab fa-youtube fa-lg"></i></a>
-              </div>
-          
-          </ul>
-        </div>
-  
-        <!-- Coluna 3 -->
+<div class="col-12 col-md-4 mb-4">
+  <h5>Tratamentos</h5>
+  <ul class="list-unstyled">
+    <li><a href="http://cadastros.telix.inf.br/tratamentos/">Tratamentos</a></li>
+  </ul>
+
+  <!-- ÍCONES CENTRALIZADOS ABAIXO -->
+  <div class="footer-social footer-social-center d-none d-md-flex">
+    <a href="https://www.instagram.com/telix.inf.br/" class="social-btn"><i class="fab fa-instagram fa-lg"></i></a>
+    <a href="https://www.facebook.com/people/Telix-contexto-na-sa%C3%BAde/100089318347896/" class="social-btn"><i class="fab fa-facebook-f fa-lg"></i></a>
+    <a href="https://www.linkedin.com/company/telix-canais-de-not%C3%ADcias" class="social-btn "><i class="fab fa-linkedin-in fa-lg"></i></a>
+    <a href="https://www.youtube.com/@TelixSaude" class="social-btn"><i class="fab fa-youtube fa-lg"></i></a>
+  </div>
+</div>
+
+
         <div class="col-12 col-md-4 mb-4">
           <h5>Fale com a gente!</h5>
-          <p><a href="https://api.whatsapp.com/send/?phone=45999040371&text&type=phone_number&app_absent=0" >(45) 99904-0371</a></p>
+          <p><a href="https://api.whatsapp.com/send/?phone=45999040371&text&type=phone_number&app_absent=0">(45) 99904-0371</a></p>
           <p><a href="mailto:contato@telix.inf.br">contato@telix.inf.br</a></p>
-          <p style="padding-top: 20px;"><a class="mt-3 mb-0">Linca Telecomunicações Ltda</a></p>
-          <p><a class="mt-0">CNPJ: 03.376.788/0001-23</a></p>
-          
-
-
+          <p style="padding-top:20px;"><a>Linca Telecomunicações Ltda</a></p>
+          <p><a>CNPJ: 03.376.788/0001-23</a></p>
         </div>
-  
- 
-
       </div>
     </div>
   </footer>
-  
-  
-  
 
-<!-- JavaScript Bootstrap -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-
-    
-
-    <!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Tela de Teste - Filtros Dinâmicos</title>
-    <style>
-        /* Estilo básico */
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-
-
-
-        .filter-btn {
-            padding: 10px 15px;
-            border: 1px solid;
-            border-radius: 5px;
-            background-color: #f0f0f0;
-            cursor: pointer;
-            color: #007bff;
-        }
-
-        .filter-btn input {
-            margin-right: 6px;
-        }
-
-        .card {
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-        }
-
-        .card strong {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-        }
-
-        .prazo-btn {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 18px;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Exemplo de cartão com dados dinâmicos do Django -->
-
-
-<!-- Dentro do loop de tratamentos -->
-
-  <!-- JavaScript corrigido -->
+  <!-- =========================================================
+       JS ÚNICO (sem duplicar listeners)
+       - Não quebra se não existir filtro/form na tela
+       ========================================================= -->
   <script>
-
-
-
-document.getElementById('filtro_criterio').addEventListener('change', function() {
-    const filtroValorContainer = document.getElementById('filtro_valor_container');
-    
-    // Verifica o valor selecionado e mostra o container de filtro
-    if (this.value === "participantes" || this.value === "data" || this.value === "rigor") {
-        filtroValorContainer.style.display = 'block';  // Exibe o campo de comparação
-    } else {
-        filtroValorContainer.style.display = 'none';  // Esconde o campo
-    }
-});
-
-
-function mudarExibicao(tipo) {
-  if (!tipo) return;
-
-  const titulos = {
-    eficacia: 'Eficácia',
-    risco: 'Risco de Reação Adversa',
-    prazo: 'Prazo para efeito',
-    preco: 'Preço do Tratamento',
-    participantes: 'Número de participantes',
-    rigor: 'Rigor da Pesquisa',
-    data: 'Data da Pesquisa'
-  };
-
-  const classe = 'faixa-' + tipo;
-
-  // Atualiza título dinâmico
-  document.querySelectorAll('[id^="titulo-prazo-"]').forEach(el => {
-    el.innerText = titulos[tipo] || '';
-  });
-
-  // Atualiza valor dinâmico
-  document.querySelectorAll('[id^="valor-prazo-"]').forEach(el => {
-    const id = el.id.split('-').pop();
-    const fonte = document.getElementById(`${classe}-${id}`);
-    el.innerHTML = fonte ? fonte.innerHTML : '-';
-
-  });
-}
-
-
-
-
-window.addEventListener('DOMContentLoaded', () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const criterio = urlParams.get('ordenacao');
-  if (criterio) {
-    mudarExibicao(criterio);
-  }
-
-
-});
-
-    </script>
-<script>
-function substituirPontosPorVirgulas() {
-    const elementos = document.querySelectorAll(
+    function substituirPontosPorVirgulas() {
+      const elementos = document.querySelectorAll(
         '.eficacia-range, .preco-range, .eficacia-bar-container, .prazo-btn, .preco-tratamento, .faixa-risco, .faixa-participantes'
-    );
+      );
 
-    elementos.forEach((el) => {
+      elementos.forEach((el) => {
         if (el.innerHTML) {
-            // Substitui os pontos por vírgulas nos números decimais
-            el.innerHTML = el.innerHTML.replace(/\d+\.\d+/g, (match) => {
-                const num = parseFloat(match);
-                return Number.isInteger(num) ? num.toString() : match.replace('.', ',');
-            });
+          el.innerHTML = el.innerHTML.replace(/\d+\.\d+/g, (match) => {
+            const num = parseFloat(match);
+            return Number.isInteger(num) ? num.toString() : match.replace('.', ',');
+          });
         }
 
-        // Formatar o número de participantes com separador de milhar
         if (el.classList.contains('faixa-participantes')) {
-            const num = el.innerHTML.trim().split(' ')[0];  // Obtém o número antes do texto "participantes"
-            const formattedNumber = Number(num).toLocaleString('pt-BR');  // Formata o número
-            el.innerHTML = formattedNumber + ' participantes';  // Atualiza o conteúdo com o número formatado
+          const num = el.innerHTML.trim().split(' ')[0];
+          const formattedNumber = Number(num).toLocaleString('pt-BR');
+          el.innerHTML = formattedNumber + ' participantes';
         }
-    });
-
-    // Atualiza a largura das barras de eficácia
-    const eficaciaBars = document.querySelectorAll('.efficacy-filled');
-    eficaciaBars.forEach((bar) => {
-        let percentage = bar.style.width;
-        if (percentage.includes('.')) {
-            const num = parseFloat(percentage);
-            bar.style.width = Number.isInteger(num)
-                ? `${num}%`
-                : `${percentage.replace('.', ',')}`;
-        }
-    });
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-    substituirPontosPorVirgulas();
-
-    // Observar alterações no conteúdo dos cards
-    const targetNode = document.getElementById('cards-container');
-
-    if (targetNode) {
-        const observer = new MutationObserver(() => {
-            substituirPontosPorVirgulas();
-        });
-
-        observer.observe(targetNode, {
-            childList: true,
-            subtree: true,
-        });
+      });
     }
-});
 
-    </script>
+    function mudarExibicao(tipo) {
+      if (!tipo) return;
 
-<script>
-    window.addEventListener('DOMContentLoaded', (event) => {
-        // Seleciona todos os elementos que possuem a classe 'replace-dot'
-        const elements = document.querySelectorAll('.replace-dot');
-        
-        // Para cada elemento, substitui o ponto por vírgula
-        elements.forEach(el => {
-            const value = el.innerHTML;
-            // Substitui ponto por vírgula e exibe no elemento
-            if (value.includes('.')) {
-                el.innerHTML = value.replace('.', ',');
-            }
+      const titulos = {
+        eficacia: 'Eficácia',
+        risco: 'Risco de Reação Adversa',
+        prazo: 'Prazo para efeito',
+        preco: 'Preço do Tratamento',
+        participantes: 'Número de participantes',
+        rigor: 'Rigor da Pesquisa',
+        data: 'Data da Pesquisa'
+      };
+
+      const classe = 'faixa-' + tipo;
+
+      document.querySelectorAll('[id^="titulo-prazo-"]').forEach(el => {
+        el.innerText = titulos[tipo] || '';
+      });
+
+      document.querySelectorAll('[id^="valor-prazo-"]').forEach(el => {
+        const id = el.id.split('-').pop();
+        const fonte = document.getElementById(`${classe}-${id}`);
+        el.innerHTML = fonte ? fonte.innerHTML : '-';
+      });
+
+      // se você quiser refletir isso no subtítulo do header:
+      const sub = document.getElementById('ordenacao-subtitle');
+      if (sub && titulos[tipo]) sub.textContent = 'Tratamentos ordenados por: ' + titulos[tipo];
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      // Só tenta bindar filtros se existirem na página
+      const filtroCriterio = document.getElementById('filtro_criterio');
+      const form = document.querySelector('form');
+
+      if (form) {
+        form.addEventListener('submit', function(event) {
+          event.preventDefault();
         });
+      }
+
+      if (filtroCriterio) {
+        filtroCriterio.addEventListener('change', function() {
+          const filtroValorContainer = document.getElementById('filtro_valor_container');
+          const filtroRigorContainer = document.getElementById('filtro_rigor_container');
+
+          if (!filtroValorContainer) return;
+
+          if (this.value === 'participantes' || this.value === 'data') {
+            filtroValorContainer.style.display = 'block';
+            if (filtroRigorContainer) filtroRigorContainer.style.display = 'none';
+          } else if (this.value === 'rigor') {
+            filtroValorContainer.style.display = 'none';
+            if (filtroRigorContainer) filtroRigorContainer.style.display = 'block';
+          } else {
+            filtroValorContainer.style.display = 'none';
+            if (filtroRigorContainer) filtroRigorContainer.style.display = 'none';
+          }
+        });
+      }
+
+      // aplica critério por URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const criterio = urlParams.get('ordenacao');
+      if (criterio) mudarExibicao(criterio);
+
+      substituirPontosPorVirgulas();
     });
-</script>
-
-
+  </script>
 
 </body>
 </html>

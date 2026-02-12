@@ -123,49 +123,165 @@
   justify-content: center;
 }
 
-/* ===== MOBILE HEADER ===== */
-@media (max-width: 768px) {
-  .header-content
-  .header-top { padding-bottom: 16px; }
 
-  .logo-img {
-    height: 88px;
-    width: auto;
+/* ============/* =========================================
+   HEADER –  MOBILE 
+   ========================================= */
+@media (max-width: 768px){
+  .site-header{
+    padding: 0;
   }
 
-  .header-bottom {
-    display: flex;
+  .header-inner{
+    /* mesmo padding para logo e texto => mesma “linha de início” */
+    padding: 14px 16px 10px !important;
+    row-gap: 6px !important;
+    justify-items: start;
+  }
+
+  .brand{
+    justify-self: start;
+  }
+
+  .logo-telix{
+    height: 100px !important;   /*  logo maior no mobile */
+    width: auto !important;
+    margin-left: -10px !important; /*  remove o “puxão” do desktop */
+    display: block;
+  }
+
+  .header-main{
+    width: 100%;
+  }
+
+  .page-title{
+    font-size: 24px !important;
+    line-height: 1.15 !important;
+    margin: 8px 0 20px 0 !important;   /*  espaço título -> subtítulo */
+  }
+
+  .page-subtitle{
+    font-size: 14px !important;
+    line-height: 1.45 !important;
+    margin: 0 0 14px 0 !important;     /*  espaço subtítulo -> label */
+  }
+
+  .header-warning{
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px){
+  .tratamentos-layout{
+    display: flex;            /* troca grid por pilha */
     flex-direction: column;
-    gap: 16px;
-    margin-bottom: 24px;
-    
   }
 
-  .left {
+  .tratamentos-layout .sidebar{
+    order: 1;                 /* filtros primeiro */
     width: 100%;
-    padding-left: 0;
   }
 
-  .titulo-pagina {
-    font-size: 35px;
-    line-height: 1.05;
-    white-space: normal;
-    overflow-wrap: break-word;
-    word-break: normal;
-    margin: 0 0 10px;
-    margin-top:30px
-  }
-
-  .subtitulo { font-size: 15px; margin-top:30px}
-
-  .right {
+  .tratamentos-layout .conteudo{
+    order: 2;                 /* tratamentos depois */
     width: 100%;
-    justify-content: flex-start;
   }
-  
 
- 
-  .card-aviso {
-    display: none;
+  .tratamentos-list{
+    margin-top: 0;            /* remove “buraco” antes do 1º card */
   }
+}
+.resumo-filtros {
+  margin-top: 6px;
+}
+
+.resumo-item {
+  margin: 2px 0;
+}
+
+.resumo-label {
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.resumo-value {
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.resumo-contra-lista {
+  margin: 6px 0 0 0;
+  padding-left: 18px;
+}
+
+.resumo-contra-item {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.4;
+}
+/*  Labels do resumo iguais ao título */
+.resumo-label{
+  font-family: inherit;           /* garante mesma fonte do header */
+  font-size: inherit;             /* vai herdar do container abaixo */
+  font-weight: inherit;           /* herda o peso do container */
+  color: inherit;                 /* herda a cor do container */
+  line-height: 1.2;
+}
+
+/* Container do resumo herda EXATAMENTE o estilo do título */
+.resumo-filtros{
+  margin-top: 6px;
+
+  /* 👇 força o resumo a usar o mesmo "estilo do título" */
+  font-size: 32px;                /* use o MESMO valor do seu .page-title */
+  font-weight: 700;               /* use o MESMO peso do seu .page-title */
+  color: #000;                    /* use a MESMA cor do seu .page-title */
+  line-height: 1.15;
+}
+
+/* Linhas */
+.resumo-linha{
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+
+.resumo-valor{
+  font-size: inherit;             /* mesmo tamanho do título */
+  font-weight: 400;               /* sem negrito */
+  color: inherit;
+}
+
+/* Lista das contraindicações (sem bullets duplicados) */
+.resumo-contra-lista{
+  margin: 4px 0 0 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+/* Itens da lista: mesmo tamanho do título, sem negrito */
+.resumo-contra-item{
+  font-size: inherit;
+  font-weight: 400;
+  color: inherit;
+  margin: 2px 0;
+  padding-left: 18px;
+  position: relative;
+}
+
+.resumo-contra-item::before{
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+@media (max-width: 768px){
+  main.tratamentos-layout{
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  main.tratamentos-layout > aside.sidebar{ order: 1 !important; }
+  main.tratamentos-layout > section.conteudo{ order: 2 !important; }
 }

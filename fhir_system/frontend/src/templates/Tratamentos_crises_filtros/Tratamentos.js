@@ -1,4 +1,12 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+  useTransition,
+  useDeferredValue,
+} from 'react';
 import axios from 'axios';
 import AvisoFinal from './AvisoFinal';
 import Header from './Headers';
@@ -9,61 +17,36 @@ import './Tratamentos.css';
 const DJANGO_BASE =
   process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8000' : '';
 
+const API_BASE = '/api';
+
+const ENXAQUECA_ID = 5;
+const ENXAQUECA_LABEL = 'Enxaqueca';
+
+const TIPO_EFICACIA_OBRIGATORIO = 'Redução de sintomas';
+
+// ====== PERF / CACHE ======
+const CACHE_KEY = 'tratamentos_enxaqueca_reducao_v3';
+const CACHE_TTL_MS = 10 * 60 * 1000; // 10 min
+const PAGE_SIZE = 24;
+
+let MEMORY_CACHE = {
+  ts: 0,
+  tratamentosBaseRaw: null,
+  reducaoArr: null, // Array<[nomeNormalizado, pct]>
+};
+
+const api = axios.create({
+  baseURL: API_BASE,
+  timeout: 20000,
+  headers: { Accept: 'application/json' },
+});
+
 const normalizeKey = (v) =>
   String(v ?? '')
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
     .trim();
-
-const isSim = (v) => {
-  const n = normalizeKey(v);
-  return n === 'sim' || n === 's' || n === 'yes' || n === 'true' || n === '1';
-};
-
-// PERFIL: usa indicado_<perfil> = "SIM" / "NÃO"
-const isIndicadoParaPublico = (tratamento, publico) => {
-  if (!publico || publico === 'todos') return true;
-  const campo = `indicado_${publico}`; // ex: indicado_lactantes
-  const raw = tratamento?.[campo];
-  return isSim(raw) || String(raw ?? '').toUpperCase() === 'SIM';
-};
-
-// Contraindicações do tratamento (robusto)
-const extractContraNames = (tratamento) => {
-  const raw =
-    tratamento?.contraindicacoes ??
-    tratamento?.contraindicacoes_resumo ??
-    tratamento?.contraindicacoes_lista ??
-    tratamento?.contraindicacoesList;
-
-  if (!raw) return [];
-
-  if (Array.isArray(raw)) {
-    return raw
-      .map((item) => {
-        if (typeof item === 'string') return item;
-        return (
-          item?.nome ??
-          item?.name ??
-          item?.titulo ??
-          item?.contraindicacao?.nome ??
-          ''
-        );
-      })
-      .map((s) => String(s).trim())
-      .filter(Boolean);
-  }
-
-  if (typeof raw === 'string') {
-    return raw
-      .split(',')
-      .map((s) => s.trim())
-      .filter(Boolean);
-  }
-
-  return [];
-};
 
 const toNumber = (v) => {
   if (v === null || v === undefined) return null;
@@ -76,14 +59,50 @@ const toNumber = (v) => {
   return null;
 };
 
-const formatPercentBR = (n) => {
-  if (n === null || n === undefined) return 'ND';
-  if (!Number.isFinite(n)) return 'ND';
-  if (n > 0 && n < 1) return `${n.toFixed(2).replace('.', ',')}%`;
-  return `${n.toFixed(0).replace('.', ',')}%`;
+const isSim = (v) => {
+  const n = normalizeKey(v);
+  return n === 'sim' || n === 's' || n === 'yes' || n === 'true' || n === '1';
 };
 
-// fallback (caso prazo_medio_minutos não venha do backend)
+const isIndicadoParaPublico = (tratamento, publico) => {
+  if (!publico || publico === 'todos') return true;
+  const campo = `indicado_${publico}`;
+  const raw = tratamento?.[campo];
+  return isSim(raw) || String(raw ?? '').toUpperCase() === 'SIM';
+};
+
+const extractContraNames = (tratamento) => {
+  const raw = tratamento?.contraindicacoes;
+  if (!raw) return [];
+  if (Array.isArray(raw)) {
+    return raw
+      .map((item) => (typeof item === 'string' ? item : item?.nome ?? ''))
+      .map((s) => String(s).trim())
+      .filter(Boolean);
+  }
+  return [];
+};
+
+const isSomenteEnxaqueca = (tratamento) => {
+  const cs = tratamento?.condicoes_saude;
+
+  if (Array.isArray(cs)) {
+    if (cs.length === 0) return false;
+    return cs.every((x) => Number(x) === ENXAQUECA_ID);
+  }
+
+  const evids = tratamento?.evidencias;
+  if (Array.isArray(evids) && evids.length > 0) {
+    const ids = evids
+      .map((e) => Number(e?.condicao_saude?.id))
+      .filter((id) => Number.isFinite(id));
+    if (ids.length === 0) return false;
+    return ids.every((id) => id === ENXAQUECA_ID);
+  }
+
+  return false;
+};
+
 const prazoMedioEmMinutosFront = (t) => {
   const unit = normalizeKey(t?.prazo_efeito_unidade);
   const mult =
@@ -109,178 +128,302 @@ const prazoMedioEmMinutosFront = (t) => {
   return ((minV + maxV) / 2) * mult;
 };
 
-const API_BASE = '/api';
-const CACHE_KEY = 'tratamentos_crises_eficacia_cache_v1';
-const CACHE_TTL_MS = 1000 * 60 * 60 * 6; // 6 horas
+const formatPercentBR = (n) => {
+  if (n === null || n === undefined) return 'ND';
+  if (!Number.isFinite(n)) return 'ND';
+  if (n > 0 && n < 1) return `${n.toFixed(2).replace('.', ',')}%`;
+  return `${n.toFixed(0).replace('.', ',')}%`;
+};
+
+// AGORA estes dois filtros voltam a existir na UI,
+// mas são obrigatórios e ficam travados.
 const DEFAULT_FILTROS = {
-  tipo: '',
-  fabricante: '',
-  eficaciaMin: 0,
-  eficaciaMax: 100,
-  prazoMin: 0,
-  prazoMax: 100,
+  condicaoSaudeId: ENXAQUECA_ID,
+  condicaoSaudeLabel: ENXAQUECA_LABEL,
+  tipoEficacia: TIPO_EFICACIA_OBRIGATORIO,
+
   publico: 'todos',
   contraindicacoes: [],
   ordenarCaracteristica: 'eficacia',
   ordemCaracteristica: 'desc',
 };
 
+const labelPublico = {
+  todos: 'Todos',
+  criancas: 'Crianças',
+  adolescentes: 'Adolescentes',
+  adultos: 'Adultos',
+  idosos: 'Idosos',
+  lactantes: 'Lactantes',
+  gravidez: 'Gravidez',
+};
+
+const labelOrdenacao = {
+  nenhuma: 'Nenhuma',
+  eficacia: 'Eficácia',
+  risco: 'Risco',
+  prazo: 'Prazo para efeito',
+  custo: 'Preço',
+};
+
+function readCache() {
+  if (
+    MEMORY_CACHE?.tratamentosBaseRaw &&
+    MEMORY_CACHE?.reducaoArr &&
+    Date.now() - (MEMORY_CACHE.ts || 0) <= CACHE_TTL_MS
+  ) {
+    return MEMORY_CACHE;
+  }
+  try {
+    const raw = sessionStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed?.ts || Date.now() - parsed.ts > CACHE_TTL_MS) return null;
+    MEMORY_CACHE = parsed;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+function writeCache(payload) {
+  try {
+    const toStore = { ts: Date.now(), ...payload };
+    MEMORY_CACHE = toStore;
+    sessionStorage.setItem(CACHE_KEY, JSON.stringify(toStore));
+  } catch {}
+}
+
+const backToTopStyle = {
+  position: 'fixed',
+  right: 18,
+  bottom: 18,
+  borderRadius: 999,
+  padding: '10px 14px',
+  border: '1px solid #e4e4e4',
+  background: '#f0f0f0',
+  cursor: 'pointer',
+  zIndex: 9999,
+};
+
+const detailsBtnStyle = { opacity: 0.7, marginBottom: 12 };
+
+//  força sempre os filtros obrigatórios (mesmo que alguém tente mudar na UI)
+function enforceMandatoryFilters(f) {
+  return {
+    ...f,
+    condicaoSaudeId: ENXAQUECA_ID,
+    condicaoSaudeLabel: ENXAQUECA_LABEL,
+    tipoEficacia: TIPO_EFICACIA_OBRIGATORIO,
+  };
+}
+
 function Tratamentos() {
-  const [tratamentos, setTratamentos] = useState([]);
-  const [tratamentosBase, setTratamentosBase] = useState([]);
-  const [eficaciaPorEvidencia, setEficaciaPorEvidencia] = useState([]);
-  const [loading, setLoading] = useState(true); // Controle de carregamento de conteúdo (pós-boot)
-  const [page, setPage] = useState(1); // Página atual
-  const [totalPages, setTotalPages] = useState(1); // Total de páginas (se vier da API)
-
-  const [riscoMaxPorTratamentoId, setRiscoMaxPorTratamentoId] = useState({});
-  const [filtros, setFiltros] = useState(DEFAULT_FILTROS);
-  const [filtrosAplicados, setFiltrosAplicados] = useState(DEFAULT_FILTROS);
-
-  // 🔒 Gate de renderização total (boot inicial)
+  const [tratamentosBaseRaw, setTratamentosBaseRaw] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [isBootstrapping, setIsBootstrapping] = useState(true);
   const [bootError, setBootError] = useState(null);
 
-  const layoutRef = useRef(null); // Ref do layout
-  const sidebarWrapperRef = useRef(null); // Ref da sidebar
 
-  const readCache = () => {
-    try {
-      const raw = sessionStorage.getItem(CACHE_KEY);
-      if (!raw) return null;
+  const [filtros, setFiltros] = useState(DEFAULT_FILTROS);
+  const [filtrosAplicados, setFiltrosAplicados] = useState(DEFAULT_FILTROS);
+  const [destacarOrdenacao, setDestacarOrdenacao] = useState(false);
 
-      const parsed = JSON.parse(raw);
-      if (!parsed?.ts) return null;
+  const [reducaoSintomasByTratamento, setReducaoSintomasByTratamento] = useState(
+    new Map()
+  );
 
-      const expired = Date.now() - parsed.ts > CACHE_TTL_MS;
-      if (expired) return null;
+  const [isPending, startTransition] = useTransition();
+  const filtrosAplicadosDeferred = useDeferredValue(filtrosAplicados);
 
-      return parsed; // { ts, tratamentos, eficaciaPorEvidencia }
-    } catch {
-      return null;
-    }
-  };
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
-  const writeCache = (payload) => {
-    try {
-      sessionStorage.setItem(CACHE_KEY, JSON.stringify(payload));
-    } catch {}
-  };
+  const layoutRef = useRef(null);
+  const sidebarWrapperRef = useRef(null);
+  
 
-  // --- Utilitário: constrói o mapa de risco máximo e retorna (sem setState) ---
-  const buildRiscoMaxMap = async (tratamentosList) => {
-    try {
-      const ids = (tratamentosList || [])
-        .map((t) => t?.id)
-        .filter((id) => Number.isFinite(id) || /^\d+$/.test(String(id)));
-
-      if (!ids.length) return {};
-
-      const CHUNK = 100;
-      const map = {};
-
-      for (let i = 0; i < ids.length; i += CHUNK) {
-        const slice = ids.slice(i, i + CHUNK);
-        const resp = await axios.get(
-          `${API_BASE}/tratamento-reacoes-adversas/max-por-tratamento/`,
-          { params: { ids: slice.join(',') } }
-        );
-
-        for (const row of resp.data || []) {
-          const tid = row?.tratamento_id;
-          const mx = toNumber(row?.reacao_max);
-          if (tid != null && mx != null) map[tid] = mx;
-        }
-      }
-
-      return map;
-    } catch (e) {
-      console.error('Erro ao construir risco máximo por tratamento:', e);
-      return {};
-    }
-  };
-
-  // Wrapper para atualizar o estado do risco (usado em filtros e pós-boot)
-  const fetchRiscoMax = async (tratamentosList) => {
-    const map = await buildRiscoMaxMap(tratamentosList);
-    setRiscoMaxPorTratamentoId(map);
-    return map;
-  };
-
-  // 🚀 Carregamento inicial e também ao trocar de página
+  const [showBackToTop, setShowBackToTop] = useState(false);
   useEffect(() => {
-    let mounted = true;
+    const onScroll = () => setShowBackToTop(window.scrollY > 350);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const scrollToTop = useCallback(() => {
+    const el = document.getElementById('topo');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [filtrosAplicadosDeferred]);
+
+
+  
+  // Header resumo (inclui condição/eficácia)
+  const resumo = useMemo(() => {
+    const grupo = labelPublico[filtrosAplicados.publico] ?? 'Todos';
+    const ord = filtrosAplicados.ordenarCaracteristica ?? 'nenhuma';
+    const ordemTxt =
+      filtrosAplicados.ordemCaracteristica === 'asc' ? 'crescente' : 'decrescente';
+
+    const ordenacao =
+      ord && ord !== 'nenhuma'
+        ? `${labelOrdenacao[ord] ?? ord} (${ordemTxt})`
+        : 'Nenhuma';
+
+    const contra = Array.isArray(filtrosAplicados.contraindicacoes)
+      ? filtrosAplicados.contraindicacoes.filter(Boolean)
+      : [];
+
+    return {
+      grupo,
+      ordenacao,
+      contraindicacoes: contra,
+      condicao: filtrosAplicados.condicaoSaudeLabel,
+      eficacia: filtrosAplicados.tipoEficacia,
+    };
+  }, [filtrosAplicados]);
+
+  // ===== BOOT =====
+  useEffect(() => {
+    const controller = new AbortController();
 
     const load = async () => {
       setBootError(null);
       setLoading(true);
 
+
+
+      const cached = readCache();
+      if (cached?.tratamentosBaseRaw && cached?.reducaoArr) {
+        const mapReducao = new Map(cached.reducaoArr);
+        setReducaoSintomasByTratamento(mapReducao);
+        setTratamentosBaseRaw(cached.tratamentosBaseRaw);
+        setLoading(false);
+        setIsBootstrapping(false);
+        return;
+      }
+
       try {
-        // Busca sempre da API para "pronto" real
-        const [tratRes, efRes] = await Promise.all([
-          axios.get(`${API_BASE}/detalhes-tratamentos/`, {
-            params: { page, per_page: 10 },
-          }),
-          axios.get(`${API_BASE}/eficacia-por-evidencia/`),
+        const [detalhesResp, eficaciaResp] = await Promise.all([
+          api.get(`/detalhes-tratamentos/`, { signal: controller.signal }),
+          api.get(`/eficacia-por-evidencia/`, { signal: controller.signal }),
         ]);
 
-        if (!mounted) return;
+        const detalhes = Array.isArray(detalhesResp.data) ? detalhesResp.data : [];
+        const eficacia = Array.isArray(eficaciaResp.data) ? eficaciaResp.data : [];
 
-        const tratamentosData = tratRes.data || [];
-        const eficaciaData = efRes.data || [];
+        const mapReducao = new Map();
+        const alvo = normalizeKey(TIPO_EFICACIA_OBRIGATORIO);
 
-        // Regras de "pronto": precisa ter lista e eficácia associada
-        const temLista = Array.isArray(tratamentosData) && tratamentosData.length > 0;
-        const temEficacia = Array.isArray(eficaciaData) && eficaciaData.length > 0;
+        for (let i = 0; i < eficacia.length; i++) {
+          const row = eficacia[i];
+          const nomeTrat = normalizeKey(row?.nome_tratamento);
+          if (!nomeTrat) continue;
 
-        if (!temLista || !temEficacia) {
-          throw new Error('Os tratamentos ainda não estão prontos para exibição.');
+          const tipo = normalizeKey(row?.tipo_eficacia?.tipo_eficacia);
+          if (tipo !== alvo) continue;
+
+          const pct = toNumber(row?.percentual_eficacia_calculado);
+          if (pct === null) continue;
+
+          const atual = mapReducao.get(nomeTrat);
+          if (atual === undefined || pct > atual) mapReducao.set(nomeTrat, pct);
         }
 
-        // Carrega o risco máximo PRÉVIO à liberação da página
-        const riscoMap = await buildRiscoMaxMap(tratamentosData);
-        if (!mounted) return;
+        const baseFiltrada = [];
+        for (let i = 0; i < detalhes.length; i++) {
+          const t = detalhes[i];
+          if (!isSomenteEnxaqueca(t)) continue;
 
-        // Stato atualizado de uma vez (evita flicker)
-        setTratamentos(tratamentosData);
-        setTratamentosBase(tratamentosData);
-        setEficaciaPorEvidencia(eficaciaData);
-        setRiscoMaxPorTratamentoId(riscoMap);
+          const nomeKey = normalizeKey(t?.nome);
+          if (!nomeKey) continue;
 
-        // (opcional) se sua API retornar paginação total, ajuste aqui:
-        // setTotalPages(tratRes.data?.total_pages ?? 1);
+          if (!mapReducao.has(nomeKey)) continue;
+          baseFiltrada.push(t);
+        }
 
-        // Cache para próximas aberturas
         writeCache({
-          ts: Date.now(),
-          tratamentos: tratamentosData,
-          eficaciaPorEvidencia: eficaciaData,
+          tratamentosBaseRaw: baseFiltrada,
+          reducaoArr: Array.from(mapReducao.entries()),
         });
+
+        setReducaoSintomasByTratamento(mapReducao);
+        setTratamentosBaseRaw(baseFiltrada);
       } catch (e) {
-        console.error('Erro ao carregar dados iniciais:', e);
-        if (mounted) {
-          setBootError(e?.message || 'Falha ao preparar a página.');
-        }
+        if (e?.name === 'CanceledError' || e?.code === 'ERR_CANCELED') return;
+        console.error('Erro no boot:', e);
+        setBootError(e?.message || 'Falha ao preparar a página.');
       } finally {
-        if (mounted) {
-          setLoading(false);
-          setIsBootstrapping(false); // ✅ Libera a página inteira somente agora
-        }
+        setLoading(false);
+        setIsBootstrapping(false);
+       
       }
     };
 
     load();
+    return () => controller.abort();
+  }, []);
 
-    return () => {
-      mounted = false;
-    };
-  }, [page]);
+  // ===== Pré-cálculo por item =====
+  const tratamentosBase = useMemo(() => {
+    const mapReducao = reducaoSintomasByTratamento;
+    if (!tratamentosBaseRaw?.length) return [];
 
-  // opções de contraindicações (dinâmico)
+    const out = new Array(tratamentosBaseRaw.length);
+
+    for (let i = 0; i < tratamentosBaseRaw.length; i++) {
+      const t = tratamentosBaseRaw[i];
+
+      const nomeKey = normalizeKey(t?.nome);
+      const pctReducao = mapReducao.get(nomeKey) ?? null;
+
+      const contraNames = extractContraNames(t);
+      const contraKeys = contraNames.map(normalizeKey).filter(Boolean);
+      const contraSet = new Set(contraKeys);
+
+      const precoNumero = toNumber(t?.custo_medicamento ?? t?.preco);
+      const precoFormatado =
+        precoNumero !== null
+          ? precoNumero.toLocaleString('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            })
+          : 'ND';
+
+      const riscoNumero = toNumber(t?.risco);
+      const riscoFormatado = formatPercentBR(riscoNumero);
+
+      const prazoMedioMin =
+        toNumber(t?.prazo_medio_minutos) ?? prazoMedioEmMinutosFront(t);
+
+      out[i] = {
+        ...t,
+        _nomeKey: nomeKey,
+        _pctReducao: pctReducao,
+        _contraNames: contraNames,
+        _contraSet: contraSet,
+        _precoNumero: precoNumero,
+        _precoFormatado: precoFormatado,
+        _riscoNumero: riscoNumero,
+        _riscoFormatado: riscoFormatado,
+        _prazoMedioMin: prazoMedioMin,
+      };
+    }
+
+    return out;
+  }, [tratamentosBaseRaw, reducaoSintomasByTratamento]);
+
   const contraOpcoes = useMemo(() => {
     const map = new Map();
-    for (const t of tratamentosBase) {
-      for (const c of extractContraNames(t)) {
+    for (let i = 0; i < tratamentosBase.length; i++) {
+      const t = tratamentosBase[i];
+      const names = t?._contraNames || [];
+      for (let j = 0; j < names.length; j++) {
+        const c = names[j];
         const key = normalizeKey(c);
         if (key && !map.has(key)) map.set(key, c);
       }
@@ -288,259 +431,174 @@ function Tratamentos() {
     return Array.from(map.values()).sort((a, b) => a.localeCompare(b, 'pt-BR'));
   }, [tratamentosBase]);
 
-  // eficácia min/max por nome_tratamento (Redução de sintomas)
-  const eficaciaStatsByNome = useMemo(() => {
-    const map = new Map();
+  const aplicarFiltros = useCallback(
+    (f = filtros, opts = {}) => {
+      const safe = enforceMandatoryFilters(f);
 
-    for (const e of eficaciaPorEvidencia || []) {
-      if (e?.tipo_eficacia?.tipo_eficacia !== 'Redução de sintomas') continue;
+      if (opts.reset) setDestacarOrdenacao(false);
+      else setDestacarOrdenacao(true);
 
-      const nome = e?.nome_tratamento;
-      const val = Number(e?.percentual_eficacia_calculado);
-      if (!nome || !Number.isFinite(val)) continue;
+      startTransition(() => {
+        setFiltrosAplicados(safe);
+      });
+    },
+    [filtros, startTransition]
+  );
 
-      const cur = map.get(nome);
-      if (!cur) map.set(nome, { min: val, max: val });
-      else map.set(nome, { min: Math.min(cur.min, val), max: Math.max(cur.max, val) });
-    }
+  const resetFiltros = useCallback(() => {
+    const safe = enforceMandatoryFilters(DEFAULT_FILTROS);
+    setFiltros(safe);
+    setDestacarOrdenacao(false);
+    aplicarFiltros(safe, { reset: true });
+  }, [aplicarFiltros]);
 
-    return map;
-  }, [eficaciaPorEvidencia]);
-
-  // sidebar offset (mantido)
-  const adjustSidebarOffset = () => {
-    try {
-      const sidebarElWrapper = sidebarWrapperRef.current;
-      if (!sidebarElWrapper) return;
-
-      const sidebarBox =
-        sidebarElWrapper.querySelector('.left-sidebar') || sidebarElWrapper;
-
-      sidebarBox.style.marginTop = '0px';
-    } catch (e) {
-      console.warn('Não foi possível ajustar o offset da sidebar:', e);
-    }
-  };
-
-  useEffect(() => {
-    adjustSidebarOffset();
-
-    const onResize = () => adjustSidebarOffset();
-    const onLoad = () => adjustSidebarOffset();
-
-    window.addEventListener('resize', onResize);
-    window.addEventListener('load', onLoad);
-
-    // Recalcular após algum tempo para garantir que o layout esteja carregado
-    const t = setTimeout(adjustSidebarOffset, 300);
-
-    return () => {
-      window.removeEventListener('resize', onResize);
-      window.removeEventListener('load', onLoad);
-      clearTimeout(t);
-    };
-  }, [tratamentos.length]); // quando a lista muda
-
-  // FILTRADOS (perfil + contraindicações + precisa ter eficácia)
   const tratamentosFiltrados = useMemo(() => {
-    return (tratamentos || []).filter((tratamento) => {
-      // 1) perfil
-      if (!isIndicadoParaPublico(tratamento, filtrosAplicados.publico)) return false;
+    const f = enforceMandatoryFilters(filtrosAplicadosDeferred);
 
-      // 2) contraindicações (excluir se tiver alguma selecionada)
-      const selecionadas = (filtrosAplicados.contraindicacoes || [])
-        .map(normalizeKey)
-        .filter(Boolean);
+    const selecionadas = (f.contraindicacoes || []).map(normalizeKey).filter(Boolean);
+    const publico = f.publico;
 
+    return (tratamentosBase || []).filter((t) => {
+      // guardas
+      if (!t?._nomeKey) return false;
+      if (t?._pctReducao === null) return false;
+
+      // obrigatório
+      if (!isSomenteEnxaqueca(t)) return false;
+
+      // público
+      if (!isIndicadoParaPublico(t, publico)) return false;
+
+      // contra
       if (selecionadas.length > 0) {
-        const contrasDoTrat = extractContraNames(tratamento).map(normalizeKey);
-        const temAlguma = selecionadas.some((c) => contrasDoTrat.includes(c));
-        if (temAlguma) return false;
+        const set = t._contraSet;
+        for (let i = 0; i < selecionadas.length; i++) {
+          if (set.has(selecionadas[i])) return false;
+        }
       }
 
-      // 3) precisa ter eficácia "Redução de sintomas"
-      return !!eficaciaStatsByNome.get(tratamento.nome);
+      return true;
     });
   }, [
-    tratamentos,
-    filtrosAplicados.publico,
-    filtrosAplicados.contraindicacoes,
-    eficaciaStatsByNome,
+    tratamentosBase,
+    filtrosAplicadosDeferred.publico,
+    filtrosAplicadosDeferred.contraindicacoes,
   ]);
 
-  // ORDENADOS (apenas quando clicar aplicar -> usa filtrosAplicados)
   const tratamentosOrdenados = useMemo(() => {
+    const f = enforceMandatoryFilters(filtrosAplicadosDeferred);
     const arr = [...tratamentosFiltrados];
 
-    const criterio = filtrosAplicados.ordenarCaracteristica || 'eficacia';
-    const ordem = filtrosAplicados.ordemCaracteristica || 'desc';
+    const criterio = f.ordenarCaracteristica || 'eficacia';
+    const ordem = f.ordemCaracteristica || 'desc';
     const dir = ordem === 'asc' ? 1 : -1;
 
+    if (criterio === 'nenhuma') return arr;
+
     const getVal = (t) => {
-      if (criterio === 'eficacia') {
-        // max maior primeiro; se não tiver, joga pro final
-        return eficaciaStatsByNome.get(t.nome)?.max ?? -Infinity;
-      }
-
-      if (criterio === 'prazo') {
-        const apiVal = toNumber(t?.prazo_medio_minutos);
-        if (apiVal !== null) return apiVal;
-        const v = prazoMedioEmMinutosFront(t);
-        return Number.isFinite(v) ? v : Infinity;
-      }
-
-      if (criterio === 'custo') {
-        const v = toNumber(t?.custo_medicamento ?? t?.preco);
-        return v !== null ? v : Infinity;
-      }
-
-      if (criterio === 'risco') {
-        const v = riscoMaxPorTratamentoId?.[t?.id];
-        const n = toNumber(v);
-        return n !== null ? n : Infinity;
-      }
-
+      if (criterio === 'eficacia') return t._pctReducao ?? -Infinity;
+      if (criterio === 'prazo')
+        return Number.isFinite(t._prazoMedioMin) ? t._prazoMedioMin : Infinity;
+      if (criterio === 'custo') return t._precoNumero !== null ? t._precoNumero : Infinity;
+      if (criterio === 'risco') return t._riscoNumero !== null ? t._riscoNumero : Infinity;
       return 0;
     };
-
-    if (criterio === 'nenhuma') {
-      arr.sort(
-        (a, b) =>
-          ((eficaciaStatsByNome.get(a.nome)?.max ?? -Infinity) -
-            (eficaciaStatsByNome.get(b.nome)?.max ?? -Infinity)) * -1
-      );
-      return arr;
-    }
 
     arr.sort((a, b) => (getVal(a) - getVal(b)) * dir);
     return arr;
   }, [
     tratamentosFiltrados,
-    filtrosAplicados.ordenarCaracteristica,
-    filtrosAplicados.ordemCaracteristica,
-    eficaciaStatsByNome,
-    riscoMaxPorTratamentoId,
+    filtrosAplicadosDeferred.ordenarCaracteristica,
+    filtrosAplicadosDeferred.ordemCaracteristica,
   ]);
 
-  // aplicar filtros (chamado pelo botão)
-  const aplicarFiltros = async (f = filtros) => {
-    setFiltrosAplicados(f);
+  const tratamentosParaRenderizar = useMemo(() => {
+    return tratamentosOrdenados.slice(0, visibleCount);
+  }, [tratamentosOrdenados, visibleCount]);
 
-    const params = {
-      tipo: f.tipo,
-      fabricante: f.fabricante,
-      eficaciaMin: f.eficaciaMin,
-      eficaciaMax: f.eficaciaMax,
-      prazoMin: f.prazoMin,
-      prazoMax: f.prazoMax,
-      publico: f.publico,
-      contraindicacoes: f.contraindicacoes,
-      ordenarCaracteristica: f.ordenarCaracteristica,
-      ordemCaracteristica: f.ordemCaracteristica,
-    };
 
-    try {
-      const resp = await axios.get(`${API_BASE}/detalhes-tratamentos/`, {
-        params,
-      });
-      const data = resp.data || [];
-      setTratamentos(data);
 
-      // atualiza risco max para os itens na tela
-      fetchRiscoMax(data);
-    } catch (e) {
-      console.error('Erro ao aplicar filtros:', e);
-    }
-  };
+  const pageReady =
+  !bootError &&
+  !isBootstrapping &&
+  !loading &&
+  !isPending &&
+  Array.isArray(tratamentosBaseRaw) &&
+  tratamentosBaseRaw.length > 0 &&
+  reducaoSintomasByTratamento instanceof Map &&
+  reducaoSintomasByTratamento.size > 0;
 
-  const resetFiltros = () => {
-    setFiltros(DEFAULT_FILTROS);
-    aplicarFiltros(DEFAULT_FILTROS);
-  };
 
-  // Visual imediato: só muda o campo de baixo (prazo/preço/risco)
+// ===== RENDER GATES =====
+
+if (bootError) {
+  return (
+    <div className="tratamentos-error-container">
+      <div className="tratamentos-error-box">
+        <h2>Ops!</h2>
+        <p>{bootError}</p>
+        <button
+          className="tratamentos-error-button"
+          onClick={() => window.location.reload()}
+        >
+          Tentar novamente
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// Enquanto NÃO estiver pronto, mostra SÓ o spinner
+if (!pageReady) {
+  return (
+    <div className="tratamentos-loader-container">
+      <div className="tratamentos-loader-spinner" />
+    </div>
+  );
+}
+
+
   const criterioVisual = filtros.ordenarCaracteristica;
-
-  // ==================== GATE DE RENDERIZAÇÃO TOTAL ====================
-  if (isBootstrapping) {
-    return (
-      <div className="tratamentos-loader-container">
-        <div className="tratamentos-loader-spinner" />
-        <p className="tratamentos-loader-text"></p>
-      </div>
-    );
-  }
-
-  if (bootError) {
-    return (
-      <div className="tratamentos-error-container">
-        <div className="tratamentos-error-box">
-          <h2>Ops!</h2>
-          <p>{bootError}</p>
-          <button
-            className="tratamentos-error-button"
-            onClick={() => window.location.reload()}
-          >
-            Tentar novamente
-          </button>
-        </div>
-      </div>
-    );
-  }
-  // ====================================================================
 
   return (
     <div className="tratamentos-page">
       <div id="topo" />
-      <Header />
+      <Header resumo={resumo} />
+
       <main className="tratamentos-layout" ref={layoutRef}>
         <aside className="sidebar" ref={sidebarWrapperRef}>
           <Filtros
-            filtros={filtros}
-            setFiltros={setFiltros}
+            filtros={enforceMandatoryFilters(filtros)}
+            setFiltros={(next) => setFiltros(enforceMandatoryFilters(next))}
             aplicarFiltros={aplicarFiltros}
             resetFiltros={resetFiltros}
             contraOpcoes={contraOpcoes}
+            //  se você quiser, use isso no Filtros para desabilitar explicitamente
+            lockedMandatory
           />
         </aside>
+<section className="conteudo">
+  <div className="tratamentos-list">
+    {tratamentosOrdenados.length === 0 ? (
+      <p></p>
+    ) : (
+      tratamentosParaRenderizar.map((tratamento, index) => {
+        const pctReducao = tratamento._pctReducao;
 
-        <section className="conteudo">
-          {loading ? (
-            // Mantém seu comportamento de loading local (apenas conteúdo)
-            <p></p>
-          ) : (
-            <div className="tratamentos-list">
-              {tratamentosOrdenados.length === 0 ? (
-                <p>Não há tratamentos disponíveis com os filtros atuais.</p>
-              ) : (
-                tratamentosOrdenados.map((tratamento, index) => {
-                  const stats = eficaciaStatsByNome.get(tratamento.nome);
-                  const eficaciaMinima = stats ? stats.min.toFixed(2) : 'ND';
-                  const eficaciaMaxima = stats ? stats.max.toFixed(2) : 'ND';
+        const eficaciaMinima = pctReducao !== null ? pctReducao : null;
+        const eficaciaMaxima = pctReducao !== null ? pctReducao : null;
 
-                  const precoNumero = toNumber(
-                    tratamento?.custo_medicamento ?? tratamento?.preco
-                  );
-                  const precoFormatado =
-                    precoNumero !== null
-                      ? precoNumero.toLocaleString('pt-BR', {
-                          style: 'currency',
-                          currency: 'BRL',
-                        })
-                      : 'ND';
-
-                  // risco correto vindo da API max-por-tratamento
-                  const riscoNumero = toNumber(
-                    riscoMaxPorTratamentoId?.[tratamento?.id]
-                  );
-                  const riscoFormatado = formatPercentBR(riscoNumero);
+        const widthBar =
+          eficaciaMaxima !== null
+            ? Math.max(0, Math.min(100, eficaciaMaxima))
+            : 0;
 
                   return (
                     <a
-                      key={tratamento?.id ?? index}
+                      key={tratamento?.id ?? `${tratamento?._nomeKey ?? 't'}-${index}`}
                       href={`${DJANGO_BASE}/enxaqueca/${tratamento.slug}/?tipo=Controle`}
                       className="tratamento-card"
-                      style={{ textDecoration: 'none' }} // Remover o sublinhado do link
+                      style={{ textDecoration: 'none' }}
                     >
                       <div className="tratamento-content">
                         <div className="tratamento-imagem">
@@ -548,99 +606,123 @@ function Tratamentos() {
                             src={tratamento.imagem || '/default-image.jpg'}
                             alt={tratamento.nome || 'Imagem não disponível'}
                             className="img-fluid"
+                            loading="lazy"
+                            decoding="async"
+                            fetchPriority={index < 2 ? 'high' : 'auto'}
                           />
                         </div>
 
                         <div className="tratamento-info">
                           <h3>{tratamento.nome}</h3>
 
-                          {Array.isArray(tratamento.tipo_tratamento) &&
-                            tratamento.tipo_tratamento.length > 0 && (
-                              <p className="tipo-tratamento">
-                                {tratamento.tipo_tratamento
-                                  .map((t) => t.nome)
-                                  .join(' • ')}
-                              </p>
-                            )}
-
                           <p>
                             <strong>Princípio ativo:</strong>{' '}
                             {tratamento.principio_ativo || 'ND'}
                           </p>
                           <p>
-                            <strong>Fabricante:</strong>{' '}
-                            {tratamento.fabricante || 'ND'}
+                            <strong>Fabricante:</strong> {tratamento.fabricante || 'ND'}
                           </p>
 
-                          {/* Botão "ver detalhes" visual */}
-                          <div className="btn mt-2" style={{ opacity: 0.7 }}>
-                            ver detalhes{' '}
-                            <span style={{ fontWeight: 'bold' }}>&#8250;</span>
+                          <div className="btn mt-2" style={detailsBtnStyle}>
+                            ver detalhes <span style={{ fontWeight: 'bold' }}>&#8250;</span>
                           </div>
 
                           <p>{tratamento.descricao}</p>
                         </div>
 
-                        {/* TOPO FIXO (Eficácia sempre aparece) + Campo de baixo muda */}
                         <div className="eficacia-container">
                           <p className="eficacia-title">
                             Eficácia:{' '}
-                            <span className="eficacia-sub">
-                              Redução de sintomas
-                            </span>
+                            <span className="eficacia-sub">{TIPO_EFICACIA_OBRIGATORIO}</span>
                           </p>
 
                           <div className="eficacia-bar-container">
-                            <div
-                              className="efficacy-filled"
-                              style={{ width: `${eficaciaMaxima}%` }}
-                            />
+                            <div className="efficacy-filled" style={{ width: `${widthBar}%` }} />
                             <div
                               className="efficacy-marker"
-                              style={{ left: `calc(${eficaciaMaxima}% - 7px)` }}
+                              style={{ left: `calc(${widthBar}% - 7px)` }}
                             />
                           </div>
 
                           <p className="eficacia-range">
                             <span className="eficacia-min">
-                              {String(eficaciaMinima).replace('.', ',')} a
+                              {eficaciaMinima !== null
+                                ? `${String(eficaciaMinima.toFixed(2)).replace('.', ',')} a`
+                                : 'ND a'}
                             </span>
                             <span className="eficacia-max">
                               {' '}
-                              {String(eficaciaMaxima).replace('.', ',')}%
+                              {eficaciaMaxima !== null
+                                ? `${String(eficaciaMaxima.toFixed(2)).replace('.', ',')}%`
+                                : 'ND%'}
                             </span>
                           </p>
 
-                          {/* SOMENTE A PARTE DE BAIXO MUDA */}
-                          {criterioVisual === 'custo' ? (
-                            <div className="prazo-container">
-                              <p className="prazo-title">Preço: </p>
-                              <p className="prazo-value">{precoFormatado}</p>
-                            </div>
-                          ) : criterioVisual === 'risco' ? (
-                            <>
-                              <p className="prazo-title">
-                                Risco de reação adversa:
-                              </p>
-                              <p className="prazo-value">{riscoFormatado}</p>
-                            </>
-                          ) : (
-                            <>
-                              <p className="prazo-title">Prazo para efeito:</p>
-                              <p className="prazo-value">
-                                {tratamento.prazo_efeito_min_formatado} a{' '}
-                                {tratamento.prazo_efeito_max_formatado}
-                              </p>
-                            </>
-                          )}
+                          <div
+                            className={`campo-variavel ${
+                              criterioVisual === 'custo'
+                                ? 'campo-variavel--inline'
+                                : 'campo-variavel--stack'
+                            } ${destacarOrdenacao ? 'campo-variavel--highlight' : ''}`}
+                          >
+                            {criterioVisual === 'custo' ? (
+                              <div className="prazo-container">
+                                <p className="prazo-title">Preço:</p>
+                                <p className="prazo-value">{tratamento._precoFormatado}</p>
+                              </div>
+                            ) : criterioVisual === 'risco' ? (
+                              <>
+                                <p className="prazo-title">Risco de reação adversa:</p>
+                                <p className="prazo-value">{tratamento._riscoFormatado}</p>
+                              </>
+                            ) : (
+                              <>
+                                <p className="prazo-title">Prazo para efeito:</p>
+                                <p className="prazo-value">
+                                  {tratamento.prazo_efeito_min_formatado} a{' '}
+                                  {tratamento.prazo_efeito_max_formatado}
+                                </p>
+                              </>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </a>
                   );
                 })
               )}
+
+              {tratamentosOrdenados.length > visibleCount && (
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}>
+                  <button
+                    type="button"
+                    onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
+                    style={{
+                      borderRadius: 10,
+                      padding: '10px 14px',
+                      border: '1px solid #e4e4e4',
+                      background: '#f0f0f0',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Carregar mais
+                  </button>
+                </div>
+              )}
+
+              {showBackToTop && (
+                <button
+                  type="button"
+                  onClick={scrollToTop}
+                  style={backToTopStyle}
+                  aria-label="Voltar ao topo"
+                  title="Voltar ao topo"
+                >
+                  ↑
+                </button>
+              )}
             </div>
-          )}
+          
         </section>
       </main>
 

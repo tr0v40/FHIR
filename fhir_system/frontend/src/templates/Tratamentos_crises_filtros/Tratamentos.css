@@ -456,10 +456,7 @@ html, body {
   font-weight: 500;
   font-weight: bold;
 }
-.prazo-title, .prazo-value {
-  display: inline; /* Isso fará com que os dois fiquem na mesma linha */
-  margin-right: 10px;  /* Espaço entre "Preço" e o valor */
-}
+
 
 .prazo-value {
   font-weight: bold;  /* Deixar o valor do preço em negrito para destaque */
@@ -478,9 +475,212 @@ html, body {
   font-weight: bold;  /* Valor do preço em negrito */
 }
 
-.prazo-value::before {
-  content: " ";  /* Adiciona um espaço antes de "R$" */
-  margin-right: 5px;  /* Separa o "R$" do ":" */
+
+.campo-variavel{
+  width: 100%;                 /* mesma largura da barra */
+  padding: 6px 10px;           /* menor altura */
+  border-radius: 8px;
+  margin-top: 6px;
+  box-sizing: border-box;      /* importante: não estoura largura */
+  transition: background-color .25s ease, border-color .25s ease;
+}
+
+
+.campo-variavel--highlight{
+  background: #FFF3C4;           /* amarelo suave */
+  border: 1px solid #F2D675;
+}
+.prazo-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.prazo-title {
+  margin: 0;
+  font-weight: 600; /* pode manter normal se quiser */
+}
+
+.prazo-value {
+  margin: 0;
+  font-weight: 700;
+}
+/* Caixa toda do resumo */
+.resumo-filtros{
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Linha "Grupo / Ordenação / Contraindicações" */
+.resumo-linha{
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+}
+
+/*  LABEL com o mesmo peso/estilo "forte" do título */
+.resumo-label{
+  font-size: 18px;         /* maior */
+  font-weight: 800;        /* bem forte */
+  color: #111827;
+  line-height: 1.2;
+}
+
+/* Valores SEM negrito */
+.resumo-valor{
+  font-size: 14px;
+  font-weight: 400;
+  color: #111827;
+  line-height: 1.3;
+}
+
+/* Lista das contraindicações */
+.resumo-contra-lista{
+  margin: 2px 0 0 0;
+  padding-left: 0;         /* a gente controla o recuo no item */
+  list-style: none;        /* tira o bullet padrão */
+}
+
+/* Cada item com bullet “bonitinho” e alinhado */
+.resumo-contra-item{
+  font-size: 14px;
+  font-weight: 400;
+  color: #111827;
+  margin: 2px 0;
+  padding-left: 14px;
+  position: relative;
+}
+
+.resumo-contra-item::before{
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #111827;
+}
+
+.resumo-label{
+  font-family: inherit;           /* garante mesma fonte do header */
+  font-size: inherit;             /* vai herdar do container abaixo */
+  font-weight: inherit;           /* herda o peso do container */
+  color: inherit;                 /* herda a cor do container */
+  line-height: 1.2;
+}
+
+/* Container do resumo herda EXATAMENTE o estilo do título */
+.resumo-filtros{
+  margin-top: 6px;
+
+  /* 👇 força o resumo a usar o mesmo "estilo do título" */
+  font-size:21px;              /* use o MESMO valor do seu .page-title */
+  font-weight: 700;               /* use o MESMO peso do seu .page-title */
+  color: #000;                    /* use a MESMA cor do seu .page-title */
+  line-height: 1.15;
+}
+
+/* Linhas */
+.resumo-linha{
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+/*  Valores SEM negrito, mas com o mesmo tamanho do título */
+.resumo-valor{
+  font-size: inherit;             /* mesmo tamanho do título */
+  font-weight: 400;               /* sem negrito */
+  color: inherit;
+}
+
+/* Lista das contraindicações (sem bullets duplicados) */
+.resumo-contra-lista{
+  margin: 4px 0 0 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+/* Itens da lista: mesmo tamanho do título, sem negrito */
+.resumo-contra-item{
+  font-size: inherit;
+  font-weight: 400;
+  color: inherit;
+  margin: 2px 0;
+  padding-left: 18px;
+  position: relative;
+}
+
+.resumo-contra-item::before{
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.back-to-top{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(0,0,0,.25);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease, filter .18s ease;
+  z-index: 9999;
+}
+
+.back-to-top.is-visible{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.back-to-top:hover{
+  filter: brightness(1.1);
+}
+
+.back-to-top:active{
+  transform: translateY(1px);
+}
+
+.back-to-top-icon{
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 700;
+  transform: translateY(-1px);
+}
+
+.tratamentos-loader-container{
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tratamentos-loader-spinner{
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 4px solid #e6e6e6;
+  border-top-color: #0b5fff;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin{
+  to { transform: rotate(360deg); }
 }
 
 /* ========= MOBILE ========= */
@@ -573,6 +773,26 @@ html, body {
     text-align: center !important;
     width: 100% !important;
   }
+  .tratamentos-loader-container{
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tratamentos-loader-spinner{
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 4px solid #e6e6e6;
+  border-top-color: #0b5fff;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin{
+  to { transform: rotate(360deg); }
+}
+
 
   .prazo-title,
   .prazo-value {
@@ -674,6 +894,38 @@ html, body {
   }
 }
 
+
+.back-to-top-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0 8px;
+}
+
+.back-to-top-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.10);
+}
+
+.back-to-top-inline:hover {
+  transform: translateY(-1px);
+}
+
+.back-to-top-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.back-to-top-text {
+  font-weight: 600;
+}
+
 /* Ajuste para telas muito pequenas (menores que 480px) */
 @media (max-width: 480px) {
   .left-sidebar {
@@ -709,5 +961,85 @@ html, body {
 
   .card-filtro {
     padding: 10px 0 !important; /* Menos padding nos filtros */
+  }
+
+  .back-to-top{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(0,0,0,.25);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease, filter .18s ease;
+  z-index: 9999;
+}
+
+.back-to-top.is-visible{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.back-to-top:hover{
+  filter: brightness(1.1);
+}
+
+.back-to-top:active{
+  transform: translateY(1px);
+}
+
+.back-to-top-icon{
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 700;
+  transform: translateY(-1px);
+}
+
+
+}
+/* ===== Resumo (Grupo / Ordenação / Contraindicações) menor no mobile ===== */
+@media (max-width: 720px) {
+  .resumo-filtros{
+    font-size: 14px !important;   /* antes estava 21px */
+    line-height: 1.15 !important;
+    margin-top: 4px !important;
+    gap: 4px !important;
+  }
+
+  .resumo-linha{
+    gap: 6px !important;
+  }
+
+  .resumo-valor{
+    font-weight: 400 !important;
+  }
+
+  .resumo-contra-lista{
+    margin-top: 2px !important;
+  }
+
+  .resumo-contra-item{
+    padding-left: 14px !important;
+    margin: 1px 0 !important;
+  }
+}
+
+/* Opcional: em telas bem pequenas, menor ainda */
+@media (max-width: 480px) {
+  .resumo-filtros{
+    font-size: 13px !important;
   }
 }

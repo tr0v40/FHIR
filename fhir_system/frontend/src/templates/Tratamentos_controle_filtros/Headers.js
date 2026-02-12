@@ -1,62 +1,74 @@
-import React from 'react';
-import './Headers.css';
+import React, { useMemo } from "react";
+import "./Headers.css";
 
-// URL padrão de produção + fallback local
-const TRATAMENTOS_URL =
-  process.env.REACT_APP_TRATAMENTOS_URL ||
-  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? 'http://127.0.0.1:8000/tratamentos/'
-    : 'https://cadastros.telix.inf.br/tratamentos/');
+export default function Header({ resumo }) {
+  const dados = useMemo(() => {
+    const grupo = resumo?.grupo ?? "Todos";
+    const ordenacao = resumo?.ordenacao ?? "Nenhuma";
+    const contraindicacoes = Array.isArray(resumo?.contraindicacoes)
+      ? resumo.contraindicacoes.filter(Boolean)
+      : [];
 
-function Header() {
+    return { grupo, ordenacao, contraindicacoes };
+  }, [resumo]);
+
+  const temContra = dados.contraindicacoes.length > 0;
+
   return (
     <header className="site-header">
-      <nav className="header-content header-top">
-        <div className="container-fluid navbar-left">
-          <a className="navbar-brand" href="https://www.telix.inf.br/">
-            <img
-              src={`${process.env.PUBLIC_URL}/logo.png`}
-              alt="Telix Logo"
-              className="logo-img"
-              style={{ height: '180px' }}
-            />
-          </a>
-        </div>
-      </nav>
+      <div className="header-inner">
+        <a className="brand" href="https://www.telix.inf.br/">
+          <img
+            src={`${process.env.PUBLIC_URL}/logo.png`}
+            alt="Telix Logo"
+            className="logo-telix"
+          />
+        </a>
 
-      <div className="header-content header-bottom">
-        <div className="left">
-          <h1 className="titulo-pagina">Tratamentos para controle de enxaqueca</h1>
+        <div className="header-main">
+          <h1 className="page-title">Tratamentos para controle de enxaqueca</h1>
 
-          Ordene por eficácia, risco, prazo para efeito ou preço, e filtre por grupo ou contraindicações.
+          
+  <p className="page-subtitle">
+            Tratamentos ordenados e filtrados por: <strong></strong>
+          </p>
 
+          <div className="resumo-filtros">
+            <div className="resumo-linha">
+              <span className="resumo-label">Grupo:</span>
+              <span className="resumo-valor">{dados.grupo}</span>
+            </div>
 
-          {/* <span className="subtitulo">Tratamentos ordenados por:</span> */}
+            <div className="resumo-linha">
+              <span className="resumo-label">Ordenação:</span>
+              <span className="resumo-valor">{dados.ordenacao}</span>
+            </div>
 
-          {/* <div className="checkbox-container">
-            <input type="checkbox" id="ordenacao-checkbox" checked readOnly />
-            <label htmlFor="ordenacao-checkbox" id="ordenacao-texto">
-              Ordem decrescente de eficácia máxima
-            </label>
-          </div> */}
+            <div className="resumo-linha">
+              <span className="resumo-label">Contraindicações:</span>
+              <span className="resumo-valor">{temContra ? "" : "Nenhuma"}</span>
+            </div>
 
-          <a href={TRATAMENTOS_URL} className="btn-filters">
-            Outros filtros e ordenações
-          </a>
-        </div>
-
-        <div className="right">
-          <div className="card-aviso">
-            <p>
-              <strong>Não se automedique.</strong>
-              <br />
-              Consulte um profissional de saúde.
-            </p>
+            {temContra && (
+              <ul className="resumo-contra-lista">
+                {dados.contraindicacoes.map((c) => (
+                  <li key={c} className="resumo-contra-item">
+                    {c}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
+
+        <aside className="header-warning">
+          <p>
+            <strong>Não se automedique.</strong>
+            <br />
+            Consulte um profissional de saúde.
+          </p>
+        </aside>
       </div>
     </header>
   );
 }
-
-export default Header;

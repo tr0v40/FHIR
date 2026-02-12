@@ -34,6 +34,10 @@ urlpatterns = [
         name="evidencias_clinicas",
     ),
 
+
+
+
+
     path(
         "tratamentos-controle-enxaqueca/",
         views.tratamentos_controle_enxaqueca,
@@ -47,11 +51,18 @@ urlpatterns = [
     ),
     re_path(r"^tratamentos-controle-enxaqueca-com-filtros/.*$", views.react_app),
 
+
+
+
+
     path(
         "tratamentos-crise-enxaqueca/",
         views.tratamentos_crise_enxaqueca,
         name="tratamentos_crise_enxaqueca",
     ),
+
+
+
 
     path(
         "tratamentos-crise-enxaqueca-com-filtros/",

@@ -6,7 +6,7 @@ const Filtros = ({
   setFiltros,
   aplicarFiltros,
   resetFiltros,
-  contraOpcoes = [], //✅ vem da API (Tratamentos.js)
+  contraOpcoes = [], 
 }) => {
   const [mostrarContra, setMostrarContra] = useState(false);
 
@@ -239,9 +239,9 @@ const Filtros = ({
           </div>
 
           <div className="card-actions">
-            <button className="btn-aplicar" onClick={handleAplicar}>
-              Aplicar Filtro
-            </button>
+<a href="#topo" className="btn-aplicar" onClick={handleAplicar}>
+  Aplicar Filtro
+</a>
           </div>
         </section>
 

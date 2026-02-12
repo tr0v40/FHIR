@@ -1629,4 +1629,3 @@ def react_app(request):
         return HttpResponseServerError(f"React build não encontrado em: {index_path}")
 
 
-

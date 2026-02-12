@@ -412,10 +412,101 @@ html, body {
   font-weight: bold;  /* Valor do preço em negrito */
 }
 
-.prazo-value::before {
-  content: " ";  /* Adiciona um espaço antes de "R$" */
-  margin-right: 5px;  /* Separa o "R$" do ":" */
+
+
+.campo-variavel{
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;        /* menor */
+  border-radius: 6px;       /* igual barra */
+  transition: background-color .25s ease, border-color .25s ease;
 }
+
+.campo-variavel--highlight{
+  background: #FFF3C4;
+  border: 1px solid #F2D675;
+}
+
+/* preço em linha */
+.campo-variavel--inline{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* risco/prazo em 2 linhas */
+.campo-variavel--stack{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+  .back-to-top{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(0,0,0,.25);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease, filter .18s ease;
+  z-index: 9999;
+}
+
+.back-to-top.is-visible{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.back-to-top:hover{
+  filter: brightness(1.1);
+}
+
+.back-to-top:active{
+  transform: translateY(1px);
+}
+
+.back-to-top-icon{
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 700;
+  transform: translateY(-1px);
+}
+
+.tratamentos-loader-container{
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tratamentos-loader-spinner{
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 4px solid #e6e6e6;
+  border-top-color: #0b5fff;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin{
+  to { transform: rotate(360deg); }
+}
+
+
 
 @media (max-width: 720px) {
   .tratamentos-layout {
@@ -601,3 +692,379 @@ html, body {
 
 
 
+
+
+  .back-to-top{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(0,0,0,.25);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease, filter .18s ease;
+  z-index: 9999;
+}
+
+.back-to-top.is-visible{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.back-to-top:hover{
+  filter: brightness(1.1);
+}
+
+.back-to-top:active{
+  transform: translateY(1px);
+}
+
+.back-to-top-icon{
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 700;
+  transform: translateY(-1px);
+}
+
+
+
+
+
+.campo-variavel{
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;        /* menor */
+  border-radius: 6px;       /* igual barra */
+  transition: background-color .25s ease, border-color .25s ease;
+}
+
+.campo-variavel--highlight{
+  background: #FFF3C4;
+  border: 1px solid #F2D675;
+}
+
+/* preço em linha */
+.campo-variavel--inline{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* risco/prazo em 2 linhas */
+.campo-variavel--stack{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+  .back-to-top{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(0,0,0,.25);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease, filter .18s ease;
+  z-index: 9999;
+}
+
+.back-to-top.is-visible{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.back-to-top:hover{
+  filter: brightness(1.1);
+}
+
+.back-to-top:active{
+  transform: translateY(1px);
+}
+
+.back-to-top-icon{
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 700;
+  transform: translateY(-1px);
+}
+
+
+
+
+@media (max-width: 720px) {
+  .tratamentos-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: none !important;
+    gap: 16px !important;
+    max-width: 100% !important;
+  }
+
+  .conteudo {
+    order: 1 !important;
+  }
+
+  .filtros {
+    padding: 15px; /* Adiciona padding interno para afastar do contêiner */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+    margin: 10px auto; /* Centraliza e dá uma margem externa */
+    width: 95%; /* Deixa os filtros com uma largura de 95% da tela */
+  }
+
+
+  .tratamento-card {
+    padding: 16px !important;
+    width: 100% !important; 
+  }
+
+  .tratamento-content {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 14px !important;
+  }
+
+  .tratamento-imagem {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  .tratamento-imagem img {
+    max-width: 160px !important;
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+
+  .tratamento-info {
+    width: 100% !important;
+    text-align: center !important;
+  }
+
+  .tratamento-info .btn {
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: 8px auto 0 !important;
+  }
+
+  .eficacia-container {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .eficacia-title {
+    text-align: center !important;
+    width: 100% !important;
+  }
+
+  .eficacia-bar-container {
+    width: 100% !important;
+    max-width: 320px !important;
+    margin: 8px auto !important;
+  }
+
+  .eficacia-range {
+    text-align: center !important;
+    width: 100% !important;
+  }
+
+  .prazo-title,
+  .prazo-value {
+    text-align: center !important;
+    width: 100% !important;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .sidebar {
+    width: 90% !important;
+    padding: 30px 0 !important;
+  }
+}
+
+@media (max-width: 720px) {
+ 
+ 
+  .tratamento-card {
+    width: 90% !important;  
+    padding: 16px !important;  
+  }
+
+
+  .tratamento-imagem img {
+    max-width: 160px !important;
+    width: 90% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+
+
+  .tratamento-info .btn {
+    margin: 8px auto 0 !important;
+    display: inline-flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .eficacia-container {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .eficacia-bar-container {
+    width: 90% !important;
+    max-width: 320px !important;
+    margin: 8px auto !important;
+  }
+
+
+  .prazo-title,
+  .prazo-value {
+    text-align: center !important;
+    width: 100% !important;
+  }
+}
+
+
+@media (max-width: 720px) {
+  /* Ajusta o contêiner principal de filtros com 20px de espaçamento das bordas */
+  .filtros {
+    padding: 20px; /* Adiciona um padding interno de 20px para afastar do contêiner */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+    margin: 10px auto; /* Centraliza e dá uma margem externa */
+    width: 95%; /* Deixa os filtros com uma largura de 95% da tela */
+  }
+
+  /* Ajuste de cada item de filtro com borda e padding */
+  .card-filtro {
+    padding: 20px; /* Aumenta o padding dentro de cada filtro */
+    margin-bottom: 20px; /* Dá mais espaço entre os filtros */
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd; /* Adiciona borda suave */
+  }
+
+  /* Ajuste dos campos de seleção dentro dos filtros */
+  .card-filtro select,
+  .card-filtro button {
+    width: 100%; /* Faz com que o botão e a seleção ocupem toda a largura */
+    padding: 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #ddd; /* Borda leve */
+    margin-top: 10px; /* Dá mais espaço entre os campos */
+  }
+  .tratamentos-loader-container{
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tratamentos-loader-spinner{
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 4px solid #e6e6e6;
+  border-top-color: #0b5fff;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin{
+  to { transform: rotate(360deg); }
+}
+
+
+  /* Ajuste do espaçamento entre os filtros */
+  .filtros .form-group {
+    margin-bottom: 20px; /* Mais espaço entre as seções dos filtros */
+  }
+}
+
+
+
+
+
+  .back-to-top{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(0,0,0,.25);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease, filter .18s ease;
+  z-index: 9999;
+}
+
+.back-to-top.is-visible{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.back-to-top:hover{
+  filter: brightness(1.1);
+}
+
+.back-to-top:active{
+  transform: translateY(1px);
+}
+
+.back-to-top-icon{
+  font-size: 20px;
+  line-height: 1;
+  font-weight: 700;
+  transform: translateY(-1px);
+}
