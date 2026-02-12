@@ -613,6 +613,81 @@
       .filters h6{
         display: none !important;
       }
+
+      @media (max-width: 768px){
+
+  /* Card inteiro vira coluna */
+  .tratamento-card{
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 14px !important;
+    padding: 16px 14px !important;
+    margin: 14px auto !important;
+    width: 100% !important;
+    max-width: 520px !important;
+  }
+
+  /* Conteúdo interno também vira coluna (isso corrige o “lado a lado” do print) */
+  .tratamento-content{
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 14px !important;
+    width: 100% !important;
+  }
+
+  /* Imagem centralizada e menor */
+  .tratamento-card img{
+    width: 96px !important;
+    height: 96px !important;
+    flex: 0 0 auto !important;
+    margin: 0 auto !important;
+  }
+
+  /* Texto ocupa a largura toda */
+  .tratamento-info{
+    width: 100% !important;
+    text-align: center !important;
+  }
+
+  .tratamento-info h3{
+    font-size: 22px !important;
+  }
+
+  /* Botão "ver detalhes" centralizado (remove margin-left: auto do inline) */
+  .tratamento-info .btn.mt-2{
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    justify-content: center !important;
+    width: 100% !important;
+    max-width: 160px !important;
+  }
+
+  /* Descrição melhor no mobile */
+  .tratamento-descricao{
+    text-align: justify !important;
+    margin-top: 16px !important;
+  }
+
+  /* Eficácia deixa de ter largura fixa 260px */
+  .eficacia-container{
+    width: 100% !important;
+    flex: 0 0 auto !important;
+    margin-left: 0 !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .eficacia-bar-container{
+    width: 100% !important;
+  }
+
+  .eficacia-range{
+    text-align: center !important;
+  }
+}
+
     }
   </style>
 </head>
