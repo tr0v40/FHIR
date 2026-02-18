@@ -170,6 +170,9 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
                 "prazo_efeito_unidade",
                 "tipo_tratamento",
                 "custo_medicamento",
+                "link_para_compra_de_tratamento",
+                "especificacao_do_custo"
+
             )
         }),
         ("Links e Alertas", {

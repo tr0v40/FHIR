@@ -1766,6 +1766,16 @@ img {
     color: #000;
 }
 
+.preco-link{
+  color:#000;
+  font-weight:700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.preco-desc{
+  color:#000;
+  font-size: 0.95rem;
+}
 
 
 @media (max-width: 900px) {
@@ -2033,16 +2043,37 @@ img {
         <h5 class="fw-bold mb-3" style="color: #000;">Detalhes</h5>
         <ul class="list-unstyled mb-0">
           <!-- Custo do Medicamento -->
-          <li class="d-flex align-items-start mb-3">
-            <img src="{% static 'img/cifrao.png' %}" alt="Ícone de custo" style="width: 26px; height: 30px; align-self: start; margin-top: 2px;" class="me-2">
-            <div>
-              <span style="color: #999;">Valor do tratamento: </span>
-              <a  target="_blank" class="text-dark fw-bold ms-1">
-                a partir de R${{ tratamento.custo_medicamento }}
-              </a>
-            </div>
-          </li>
-  
+<li class="d-flex align-items-start mb-3">
+  <img src="{% static 'img/cifrao.png' %}" alt="Ícone de custo"
+       style="width: 26px; height: 30px; align-self: start; margin-top: 2px;"
+       class="me-2">
+
+  <div>
+    <div>
+      <span style="color:#999;">Valor do tratamento: </span>
+
+      {% if tratamento.link_para_compra_de_tratamento %}
+        <a href="{{ tratamento.link_para_compra_de_tratamento }}"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="preco-link">
+          R${{ tratamento.custo_medicamento|floatformat:2 }}
+        </a>
+      {% else %}
+        <span class="preco-link" style="text-decoration:none;">
+          R${{ tratamento.custo_medicamento|floatformat:2 }}
+        </span>
+      {% endif %}
+    </div>
+
+    {% if tratamento.especificacao_do_custo %}
+      <div class="preco-desc fw-bold">
+        ({{ tratamento.especificacao_do_custo }})
+      </div>
+    {% endif %}
+  </div>
+</li>
+
           <!-- Alerta -->
           {% if tratamento.alertas %}
           <li class="d-flex align-items-start">
