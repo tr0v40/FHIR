@@ -1,12 +1,11 @@
+from django.core.cache import cache
 from rest_framework import viewsets
-from django.db.models import Max
+from django.db.models import Max, Count
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Case, When, Value, FloatField, F, ExpressionWrapper
 from django.db.models.functions import Coalesce
-
-
-  # ==================== IMPORTS SESSIONS ==================== #
+from django.db.models import Prefetch
 
 from core.models import (
     DetalhesTratamentoResumo,
@@ -15,17 +14,19 @@ from core.models import (
     EvidenciasClinicas,
     EficaciaPorEvidencia,
     DetalhesTratamentoReacaoAdversa,
-    
+    TipoTratamento,
 )
 
 from .serializers import (
     DetalhesTratamentoResumoSerializer,
+    DetalhesTratamentoResumoTelaControleSerializer,
     ReacaoAdversaSerializer,
     ContraindicacaoSerializer,
     EvidenciasClinicasSerializer,
     EficaciaPorEvidenciaSerializer,
-     DetalhesTratamentoReacaoAdversaSerializer,
+    DetalhesTratamentoReacaoAdversaSerializer,
 )
+
 
 class DetalhesTratamentoReacaoAdversaViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = (
@@ -37,22 +38,11 @@ class DetalhesTratamentoReacaoAdversaViewSet(viewsets.ReadOnlyModelViewSet):
 
     @action(detail=False, methods=['get'], url_path='max-por-tratamento')
     def max_por_tratamento(self, request):
-        """
-        Retorna MAX(reacao_max) por tratamento.
-        Ex:
-          /api/tratamento-reacoes-adversas/max-por-tratamento/
-          /api/tratamento-reacoes-adversas/max-por-tratamento/?ids=1,2,3
-        """
         ids = request.query_params.get('ids', '').strip()
-
         qs = self.get_queryset()
 
         if ids:
-            id_list = []
-            for x in ids.split(','):
-                x = x.strip()
-                if x.isdigit():
-                    id_list.append(int(x))
+            id_list = [int(x) for x in ids.split(',') if x.strip().isdigit()]
             if id_list:
                 qs = qs.filter(tratamento_id__in=id_list)
 
@@ -61,62 +51,76 @@ class DetalhesTratamentoReacaoAdversaViewSet(viewsets.ReadOnlyModelViewSet):
               .annotate(reacao_max=Max('reacao_max'))
               .order_by('tratamento_id')
         )
-
         return Response(list(data))
 
 
-
 class DetalhesTratamentoResumoViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = DetalhesTratamentoResumoSerializer
+    """
+    /api/detalhes-tratamentos/           -> completo (por padrão)
+    /api/detalhes-tratamentos/?tela=controle -> lean (só campos da tela Controle)
+    """
+    def get_serializer_class(self):
+        tela = (self.request.query_params.get("tela") or "").lower().strip()
+        if tela == "controle":
+            return DetalhesTratamentoResumoTelaControleSerializer
+        return DetalhesTratamentoResumoSerializer
 
     def get_queryset(self):
-        queryset = (
-            DetalhesTratamentoResumo.objects
+        tela = (self.request.query_params.get("tela") or "").lower().strip()
+        cache_key = f"detalhes_tratamento_resumo:{tela or 'full'}"
 
-            .prefetch_related(
-                'condicoes_saude',    
-                'tipo_tratamento',
-                'contraindicacoes',
-                'reacoes_adversas',
-                'evidencias',
-                'avaliacoes',
-                'tipos_eficacia',
-                'reacoes_adversas_detalhes',
-            )
+        cached = cache.get(cache_key)
+        if cached is not None:
+            return cached
 
+        # Prefetch "enxuto" pros relacionamentos usados na tela
+        pref_tipo = Prefetch(
+            "tipo_tratamento",
+            queryset=TipoTratamento.objects.only("id", "nome"),
         )
+        pref_contra = Prefetch(
+            "contraindicacoes",
+            queryset=Contraindicacao.objects.only("id", "nome"),
+        )
+
+        qs = (
+            DetalhesTratamentoResumo.objects
+            .prefetch_related("condicoes_saude", pref_tipo, pref_contra)
+            .filter(condicoes_saude__nome="Enxaqueca")
+            .distinct()
+        )
+
+        # ✅ Se você quer "SOMENTE Enxaqueca" (e não Enxaqueca + outras):
+        somente = self.request.query_params.get("somente_enxaqueca")
+        if str(somente).lower() in ("1", "true", "sim", "yes"):
+            qs = (
+                qs.annotate(qtd_condicoes=Count("condicoes_saude", distinct=True))
+                  .filter(qtd_condicoes=1)
+            )
 
         multiplicadores = Case(
             When(prazo_efeito_unidade='segundo', then=Value(1/60.0)),
             When(prazo_efeito_unidade='minuto', then=Value(1.0)),
             When(prazo_efeito_unidade='hora',   then=Value(60.0)),
             When(prazo_efeito_unidade='dia',    then=Value(1440.0)),
-            When(prazo_efeito_unidade='sessao', then=Value(10080.0)),  # se sessão = semana (ajuste se necessário)
+            When(prazo_efeito_unidade='sessao', then=Value(10080.0)),
             When(prazo_efeito_unidade='semana', then=Value(10080.0)),
             default=Value(1.0),
             output_field=FloatField(),
         )
 
         prazo_medio_minutos = ExpressionWrapper(
-            (
-                (Coalesce(F('prazo_efeito_min'), 0.0) + Coalesce(F('prazo_efeito_max'), 0.0)) / 2.0
-            ) * multiplicadores,
+            ((Coalesce(F('prazo_efeito_min'), 0.0) + Coalesce(F('prazo_efeito_max'), 0.0)) / 2.0)
+            * multiplicadores,
             output_field=FloatField(),
         )
 
-        queryset = queryset.annotate(prazo_medio_minutos=prazo_medio_minutos)
+        qs = qs.annotate(prazo_medio_minutos=prazo_medio_minutos)
 
-        
-        ordenar = self.request.query_params.get('ordenarCaracteristica')
-        ordem = self.request.query_params.get('ordemCaracteristica', 'desc')
-
-        if ordenar == 'prazo':
-            campo = 'prazo_medio_minutos'
-            queryset = queryset.order_by(f'-{campo}' if ordem == 'desc' else campo)
-
-        return queryset
-
-
+        # cachear QuerySet é ok em memória local, mas em Redis às vezes é ruim.
+        # se você usa Redis/memcached: prefira cachear lista de IDs.
+        cache.set(cache_key, qs, timeout=600)
+        return qs
 
 
 class ReacaoAdversaViewSet(viewsets.ReadOnlyModelViewSet):
@@ -135,5 +139,20 @@ class EvidenciasClinicasViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class EficaciaPorEvidenciaViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = EficaciaPorEvidencia.objects.all()
+    queryset = EficaciaPorEvidencia.objects.all()  # ✅ necessário pro router
     serializer_class = EficaciaPorEvidenciaSerializer
+
+    def get_queryset(self):
+        qs = (
+            super().get_queryset()
+            .select_related("tipo_eficacia", "evidencia__tratamento")  # ✅ evita N+1
+        )
+
+        tipo_eficacia = self.request.query_params.get("tipoEficacia")
+        if tipo_eficacia:
+            return qs.filter(tipo_eficacia__tipo_eficacia=tipo_eficacia)
+
+        return qs.filter(
+            tipo_eficacia__tipo_eficacia__in=["Controle", "Redução de sintomas"]
+        )
+

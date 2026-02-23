@@ -11,14 +11,16 @@ from core.models import (
     EficaciaPorEvidencia,
     TipoEficacia,
     DetalhesTratamentoReacaoAdversa,
-    
 )
+
+# -------------------------
+# Serializers "completos" (compatibilidade)
+# -------------------------
 
 class DetalhesTratamentoReacaoAdversaSerializer(serializers.ModelSerializer):
     class Meta:
         model = DetalhesTratamentoReacaoAdversa
         fields = ['id', 'tratamento', 'reacao_adversa', 'grau_comunalidade', 'reacao_min', 'reacao_max']
-
 
 
 class CondicaoSaudeSerializer(serializers.ModelSerializer):
@@ -50,21 +52,25 @@ class TipoEficaciaSerializer(serializers.ModelSerializer):
         model = TipoEficacia
         fields = ['id', 'tipo_eficacia', 'descricao', 'imagem']
 
+
 class EficaciaPorEvidenciaSerializer(serializers.ModelSerializer):
     tipo_eficacia = TipoEficaciaSerializer(read_only=True)
-    percentual_eficacia_calculado = serializers.ReadOnlyField()  # Usando ReadOnlyField para acessar a propriedade
-    nome_tratamento = serializers.CharField(source='evidencia.tratamento.nome', read_only=True)  # Nome do tratamento
+    percentual_eficacia_calculado = serializers.ReadOnlyField()
+    nome_tratamento = serializers.CharField(source='evidencia.tratamento.nome', read_only=True)
 
     class Meta:
         model = EficaciaPorEvidencia
-        fields = ['tipo_eficacia', 'participantes_com_beneficio', 'participantes_iniciaram_tratamento', 'percentual_eficacia_calculado', 'nome_tratamento']
-
-
+        fields = [
+            'tipo_eficacia',
+            'participantes_com_beneficio',
+            'participantes_iniciaram_tratamento',
+            'percentual_eficacia_calculado',
+            'nome_tratamento',
+        ]
 
 
 class EvidenciasClinicasSerializer(serializers.ModelSerializer):
     condicao_saude = CondicaoSaudeSerializer(read_only=True)
-    eficacia_por_evidencia = EficaciaPorEvidenciaSerializer(many=True, read_only=True)
 
     class Meta:
         model = EvidenciasClinicas
@@ -86,7 +92,6 @@ class DetalhesTratamentoResumoSerializer(serializers.ModelSerializer):
     avaliacoes = AvaliacaoSerializer(many=True, read_only=True)
     tipos_eficacia = EficaciaPorEvidenciaSerializer(many=True, read_only=True)
 
-    # se quiser expor os prazos já formatados:
     prazo_efeito_min_formatado = serializers.ReadOnlyField()
     prazo_efeito_max_formatado = serializers.ReadOnlyField()
     prazo_efeito_faixa_formatada = serializers.ReadOnlyField()
@@ -95,3 +100,46 @@ class DetalhesTratamentoResumoSerializer(serializers.ModelSerializer):
         model = DetalhesTratamentoResumo
         fields = '__all__'
 
+# -------------------------
+# Serializers "lean" (tela Controle)
+# -------------------------
+
+class ContraindicacaoLeanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contraindicacao
+        fields = ["nome"]
+
+class TipoTratamentoLeanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TipoTratamento
+        fields = ["nome"]
+
+class DetalhesTratamentoResumoTelaControleSerializer(serializers.ModelSerializer):
+    tipo_tratamento = TipoTratamentoLeanSerializer(many=True, read_only=True)
+    contraindicacoes = ContraindicacaoLeanSerializer(many=True, read_only=True)
+
+    prazo_efeito_min_formatado = serializers.ReadOnlyField()
+    prazo_efeito_max_formatado = serializers.ReadOnlyField()
+
+    class Meta:
+        model = DetalhesTratamentoResumo
+        fields = [
+            "id", "slug", "imagem", "nome", "descricao",
+            "principio_ativo", "fabricante",
+            "tipo_tratamento",
+            "custo_medicamento",
+            "prazo_medio_minutos",
+            "prazo_efeito_min_formatado",
+            "prazo_efeito_max_formatado",
+            "prazo_efeito_unidade",
+            "prazo_efeito_min",
+            "prazo_efeito_max",
+            "contraindicacoes",
+            "indicado_criancas",
+            "indicado_adolescentes",
+            "indicado_adultos",
+            "indicado_idosos",
+            "indicado_lactantes",
+            "indicado_gravidez",
+            "condicoes_saude",
+        ]

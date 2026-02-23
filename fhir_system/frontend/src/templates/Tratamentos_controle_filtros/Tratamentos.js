@@ -1,10 +1,3 @@
-// TratamentosControle.js (OTIMIZADO igual Redução de sintomas)
-// Regras obrigatórias:
-// 1) NÃO mostrar tratamentos com condição de saúde diferente de "Enxaqueca"
-//    => condicoes_saude deve ser [5] (somente 5, sem outros ids)
-// 2) NÃO mostrar tratamentos cuja eficácia NÃO seja "Controle"
-//    => precisa existir em /api/eficacia-por-evidencia/ um registro com
-//       tipo_eficacia.tipo_eficacia == "Controle" para aquele tratamento
 
 import React, {
   useState,
@@ -15,6 +8,7 @@ import React, {
   useTransition,
   useDeferredValue,
 } from 'react';
+
 import axios from 'axios';
 import AvisoFinal from './AvisoFinal';
 import Header from './Headers';
@@ -579,7 +573,7 @@ function TratamentosControle() {
     aplicarFiltros(safe, { reset: true });
   }, [aplicarFiltros]);
 
-  // ✅ filtros locais (enxaqueca/controle já garantidos no boot)
+  //  filtros locais (enxaqueca/controle já garantidos no boot)
   const tratamentosFiltrados = useMemo(() => {
     const f = enforceMandatoryFilters(filtrosAplicadosDeferred);
 
