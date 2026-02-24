@@ -1,4 +1,5 @@
 
+
 import React, {
   useState,
   useEffect,
@@ -8,7 +9,6 @@ import React, {
   useTransition,
   useDeferredValue,
 } from 'react';
-
 import axios from 'axios';
 import AvisoFinal from './AvisoFinal';
 import Header from './Headers';
@@ -249,11 +249,13 @@ function enforceMandatoryFilters(f) {
 }
 
 function readCache() {
+  //  aceita cache mesmo com array vazio ([])
+  //  não trava se eficaciaArr/riscoArr estiverem ausentes
   if (
-    MEMORY_CACHE?.tratamentosBaseRaw &&
-    MEMORY_CACHE?.eficaciaArr &&
-    MEMORY_CACHE?.riscoArr &&
-    Date.now() - (MEMORY_CACHE.ts || 0) <= CACHE_TTL_MS
+    MEMORY_CACHE &&
+    typeof MEMORY_CACHE.ts === 'number' &&
+    Date.now() - MEMORY_CACHE.ts <= CACHE_TTL_MS &&
+    Array.isArray(MEMORY_CACHE.tratamentosBaseRaw)
   ) {
     return MEMORY_CACHE;
   }
@@ -261,8 +263,21 @@ function readCache() {
   try {
     const raw = sessionStorage.getItem(CACHE_KEY);
     if (!raw) return null;
+
     const parsed = JSON.parse(raw);
-    if (!parsed?.ts || Date.now() - parsed.ts > CACHE_TTL_MS) return null;
+
+    if (
+      !parsed ||
+      typeof parsed.ts !== 'number' ||
+      Date.now() - parsed.ts > CACHE_TTL_MS ||
+      !Array.isArray(parsed.tratamentosBaseRaw)
+    ) {
+      return null;
+    }
+
+    // normaliza pra não quebrar quando for usar
+    parsed.eficaciaArr = Array.isArray(parsed.eficaciaArr) ? parsed.eficaciaArr : [];
+    parsed.riscoArr = Array.isArray(parsed.riscoArr) ? parsed.riscoArr : [];
 
     MEMORY_CACHE = parsed;
     return parsed;
@@ -273,7 +288,15 @@ function readCache() {
 
 function writeCache(payload) {
   try {
-    const toStore = { ts: Date.now(), ...payload };
+    const toStore = {
+      ts: Date.now(),
+      tratamentosBaseRaw: Array.isArray(payload?.tratamentosBaseRaw)
+        ? payload.tratamentosBaseRaw
+        : [],
+      eficaciaArr: Array.isArray(payload?.eficaciaArr) ? payload.eficaciaArr : [],
+      riscoArr: Array.isArray(payload?.riscoArr) ? payload.riscoArr : [],
+    };
+
     MEMORY_CACHE = toStore;
     sessionStorage.setItem(CACHE_KEY, JSON.stringify(toStore));
   } catch {}
@@ -343,11 +366,11 @@ function TratamentosControle() {
   const [filtrosAplicados, setFiltrosAplicados] = useState(DEFAULT_FILTROS);
   const [destacarOrdenacao, setDestacarOrdenacao] = useState(false);
 
-  // nome_normalizado -> {min,max} para "Controle"
-  const [controleStatsByNomeKey, setControleStatsByNomeKey] = useState(new Map());
+// nome_normalizado -> {min,max} para "Controle"
+const [controleStatsByNomeKey, setControleStatsByNomeKey] = useState(null);
 
-  // id_tratamento -> riscoMax
-  const [riscoMaxById, setRiscoMaxById] = useState(new Map());
+// id_tratamento -> riscoMax
+const [riscoMaxById, setRiscoMaxById] = useState(null);
 
   const [isPending, startTransition] = useTransition();
   const filtrosAplicadosDeferred = useDeferredValue(filtrosAplicados);
@@ -400,7 +423,7 @@ function TratamentosControle() {
     };
   }, [filtrosAplicados]);
 
-  // ===== BOOT (cache + abort) =====
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -422,13 +445,18 @@ function TratamentosControle() {
 
       try {
         // endpoints em paralelo
-        const [detalhesResp, eficaciaResp] = await Promise.all([
-          api.get(`/detalhes-tratamentos/`, { signal: controller.signal }),
-          api.get(`/eficacia-por-evidencia/`, { signal: controller.signal }),
+        const [detalhesResp, eficaciaResp] = await Promise.all([ 
+          
+          api.get('/detalhes-tratamentos/', {params: { tela: 'controle' ,somente_enxaqueca: 1 },}),
+
+          api.get(`/eficacia-por-evidencia/`, {params: { tipoEficacia: 'Controle'}, signal: controller.signal }),
         ]);
 
-        const detalhes = Array.isArray(detalhesResp.data) ? detalhesResp.data : [];
-        const eficacia = Array.isArray(eficaciaResp.data) ? eficaciaResp.data : [];
+        const asList = (data) =>
+          Array.isArray(data) ? data : Array.isArray(data?.results) ? data.results : [];
+
+        const detalhes = asList(detalhesResp.data);
+        const eficacia = asList(eficaciaResp.data);
 
         // nomeKey -> {min,max} para tipo=Controle
         const statsMap = new Map();
@@ -455,7 +483,7 @@ function TratamentosControle() {
         const baseFiltrada = [];
         for (let i = 0; i < detalhes.length; i++) {
           const t = detalhes[i];
-          if (!isSomenteEnxaqueca(t)) continue;
+        
 
           const nomeKey = normalizeKey(t?.nome);
           if (!nomeKey) continue;
@@ -501,7 +529,8 @@ function TratamentosControle() {
       const t = tratamentosBaseRaw[i];
 
       const nomeKey = normalizeKey(t?.nome);
-      const stats = controleStatsByNomeKey.get(nomeKey) ?? null;
+     const stats = controleStatsByNomeKey?.get?.(nomeKey) ?? null;
+
 
       const contraNames = extractContraNames(t);
       const contraKeys = contraNames.map(normalizeKey).filter(Boolean);
@@ -516,8 +545,8 @@ function TratamentosControle() {
       const riscoNumero = riscoMaxById.get(Number(t?.id)) ?? null;
       const riscoFormatado = formatPercentBR(toNumber(riscoNumero));
 
-      const prazoMedioMin =
-        toNumber(t?.prazo_medio_minutos) ?? prazoMedioEmMinutosFront(t);
+      const prazoMedioMin = toNumber(t?.prazo_medio_minutos);
+
 
       out[i] = {
         ...t,
@@ -551,7 +580,7 @@ function TratamentosControle() {
     return Array.from(map.values()).sort((a, b) => a.localeCompare(b, 'pt-BR'));
   }, [tratamentosBase]);
 
-  // ✅ aplicar filtros (local + transition)
+  //  aplicar filtros (local + transition)
   const aplicarFiltros = useCallback(
     (f = filtros, opts = {}) => {
       const safe = enforceMandatoryFilters(f);
@@ -586,8 +615,6 @@ function TratamentosControle() {
       // obrigatório: precisa ter stats de Controle
       if (!t?._statsControle) return false;
 
-      // guarda extra (em caso de inconsistência do backend/cache)
-      if (!isSomenteEnxaqueca(t)) return false;
 
       // público
       if (!isIndicadoParaPublico(t, publico)) return false;
@@ -608,7 +635,7 @@ function TratamentosControle() {
     filtrosAplicadosDeferred.contraindicacoes,
   ]);
 
-  // ✅ ordenação local
+  //  ordenação local
   const tratamentosOrdenados = useMemo(() => {
     const f = enforceMandatoryFilters(filtrosAplicadosDeferred);
     const arr = [...tratamentosFiltrados];
@@ -640,17 +667,17 @@ function TratamentosControle() {
     return tratamentosOrdenados.slice(0, visibleCount);
   }, [tratamentosOrdenados, visibleCount]);
 
-  // ✅ PAGE READY (gate único pra liberar a tela completa)
-  const pageReady =
-    !bootError &&
-    !isBootstrapping &&
-    !loading &&
-    !isPending &&
-    Array.isArray(tratamentosBaseRaw) &&
-    tratamentosBaseRaw.length > 0 &&
-    controleStatsByNomeKey instanceof Map &&
-    controleStatsByNomeKey.size > 0 &&
-    riscoMaxById instanceof Map; // risco pode ser 0, então só garante que é Map
+  
+
+const pageReady =
+  !bootError &&
+  !isBootstrapping &&
+  !loading &&
+  !isPending &&
+  Array.isArray(tratamentosBaseRaw) &&
+  controleStatsByNomeKey instanceof Map &&
+  controleStatsByNomeKey.size > 0 &&     // <- importante
+  riscoMaxById instanceof Map;           // risco pode ser 0, mas Map tem que existir
 
 
   
@@ -673,7 +700,9 @@ function TratamentosControle() {
     );
   }
 
-  // ✅ Enquanto prepara a página, mostra SÓ o spinner (nada de Header/Filtros/Footer)
+
+  
+  //  Enquanto prepara a página, mostra SÓ o spinner (nada de Header/Filtros/Footer)
   if (!pageReady) {
     return (
       <div className="tratamentos-loader-container">

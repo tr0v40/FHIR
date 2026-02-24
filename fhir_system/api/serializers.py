@@ -121,6 +121,8 @@ class DetalhesTratamentoResumoTelaControleSerializer(serializers.ModelSerializer
     prazo_efeito_min_formatado = serializers.ReadOnlyField()
     prazo_efeito_max_formatado = serializers.ReadOnlyField()
 
+    prazo_medio_minutos = serializers.ReadOnlyField()
+
     class Meta:
         model = DetalhesTratamentoResumo
         fields = [
