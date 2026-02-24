@@ -418,13 +418,13 @@ html, body {
   width: 100%;
   box-sizing: border-box;
   padding: 8px 10px;        /* menor */
-  border-radius: 6px;       /* igual barra */
+  border-radius: 0px;       /* igual barra */
   transition: background-color .25s ease, border-color .25s ease;
 }
 
 .campo-variavel--highlight{
   background: #FFF3C4;
-  border: 1px solid #F2D675;
+  border: 0px solid #F2D675;
 }
 
 /* preço em linha */

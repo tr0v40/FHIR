@@ -61,7 +61,7 @@ class DetalhesTratamentoResumoViewSet(viewsets.ReadOnlyModelViewSet):
     """
     def get_serializer_class(self):
         tela = (self.request.query_params.get("tela") or "").lower().strip()
-        if tela == "controle":
+        if tela in ("controle", "crise", "crises"):
             return DetalhesTratamentoResumoTelaControleSerializer
         return DetalhesTratamentoResumoSerializer
 
@@ -90,7 +90,7 @@ class DetalhesTratamentoResumoViewSet(viewsets.ReadOnlyModelViewSet):
             .distinct()
         )
 
-        # ✅ Se você quer "SOMENTE Enxaqueca" (e não Enxaqueca + outras):
+        # "SOMENTE Enxaqueca" (e não Enxaqueca + outras):
         somente = self.request.query_params.get("somente_enxaqueca")
         if str(somente).lower() in ("1", "true", "sim", "yes"):
             qs = (
@@ -139,13 +139,13 @@ class EvidenciasClinicasViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class EficaciaPorEvidenciaViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = EficaciaPorEvidencia.objects.all()  # ✅ necessário pro router
+    queryset = EficaciaPorEvidencia.objects.all()  
     serializer_class = EficaciaPorEvidenciaSerializer
 
     def get_queryset(self):
         qs = (
             super().get_queryset()
-            .select_related("tipo_eficacia", "evidencia__tratamento")  # ✅ evita N+1
+            .select_related("tipo_eficacia", "evidencia__tratamento")  
         )
 
         tipo_eficacia = self.request.query_params.get("tipoEficacia")

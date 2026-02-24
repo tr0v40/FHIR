@@ -479,7 +479,7 @@ html, body {
 .campo-variavel{
   width: 100%;                 /* mesma largura da barra */
   padding: 6px 10px;           /* menor altura */
-  border-radius: 8px;
+  border-radius: 0px;
   margin-top: 6px;
   box-sizing: border-box;      /* importante: não estoura largura */
   transition: background-color .25s ease, border-color .25s ease;
@@ -488,7 +488,7 @@ html, body {
 
 .campo-variavel--highlight{
   background: #FFF3C4;           /* amarelo suave */
-  border: 1px solid #F2D675;
+  border: 0px solid #F2D675;
 }
 .prazo-container {
   display: flex;
@@ -539,11 +539,11 @@ html, body {
 /* Lista das contraindicações */
 .resumo-contra-lista{
   margin: 2px 0 0 0;
-  padding-left: 0;         /* a gente controla o recuo no item */
-  list-style: none;        /* tira o bullet padrão */
+  padding-left: 0;        
+  list-style: none;        
 }
 
-/* Cada item com bullet “bonitinho” e alinhado */
+
 .resumo-contra-item{
   font-size: 14px;
   font-weight: 400;
@@ -573,7 +573,7 @@ html, body {
 .resumo-filtros{
   margin-top: 6px;
 
-  /* 👇 força o resumo a usar o mesmo "estilo do título" */
+  /*  força o resumo a usar o mesmo "estilo do título" */
   font-size:21px;              /* use o MESMO valor do seu .page-title */
   font-weight: 700;               /* use o MESMO peso do seu .page-title */
   color: #000;                    /* use a MESMA cor do seu .page-title */
