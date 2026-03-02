@@ -6,7 +6,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes do Tratamento</title>
+    <title>
+    {{ page.meta_title|default:tratamento.nome }}
+</title>
+
+<meta name="description" content="{{ page.meta_description }}">
     <!-- Código de rastreio do GA4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-BS67486CWG"></script>
     <script>
@@ -58,7 +62,7 @@
             flex: 1;
             max-width: 1200px;
             margin: auto;
-            padding: 20px;
+            padding: 20px; /* Garante que o conteúdo empurre o footer para baixo */
         }
 
             .navbar-brand img.logo-telix{
@@ -68,12 +72,12 @@
             }
 
         .header {
-            background-color: white; 
-            padding: 15px 20px; 
+            background-color: white; /* Fundo branco */
+            padding: 15px 20px; /* Espaçamento interno */
             display: flex;
-            justify-content: flex-start;
+            justify-content: flex-start; /* Alinha à esquerda */
             align-items: center;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #ddd; /* Linha sutil abaixo do header */
         }
 
         .container {
@@ -82,6 +86,7 @@
             padding: 20px;
         }
 
+                /* Estilo para o layout do tratamento */
         .tratamento-container {
             display: flex;
             align-items: center;
@@ -155,6 +160,7 @@
             padding: 0 20px;
         }
 
+        /* Ajuste responsivo */
         @media (max-width: 992px) {
             .tratamento-container {
                 flex-direction: column;
@@ -186,8 +192,8 @@
             font-size: 0.9rem; }
 
             .footer p {
-            color: #bbbdbf; 
-            margin-bottom: 5px;  }
+            color: #bbbdbf;  /* Cor cinza */
+            margin-bottom: 5px;  /* Diminui o espaço entre os parágrafos */}
 
             .footer a {
             color: #babcbe;
@@ -253,17 +259,17 @@
             font-weight: bold;
             display: flex;
             align-items: left;
-            gap: 8px;
+            gap: 8px; /* Espaço entre o ícone e o texto */
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         .footer-btn i {
-            font-size: 18px; 
+            font-size: 18px; /* Tamanho do ícone ajustado */
         }
 
         .footer-btn:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
+            background-color: #0056b3; /* Azul mais escuro ao passar o mouse */
+            transform: scale(1.05); /* Pequeno efeito de zoom */
         }
 
         .footer-social {
@@ -292,7 +298,7 @@
         /* Espaçamento entre os botões */
         .nav-buttons {
             display: flex;
-            gap: 15px; 
+            gap: 15px; /* Aumenta a distância entre os botões */
         }
 
         /* Ajusta o tamanho dos botões */
@@ -315,7 +321,7 @@
             color: white;
         }
 
-
+        /* Cadastro com fundo azul */
         .btn-signup {
             background-color: #007bff;
             color: white;
@@ -354,7 +360,7 @@
         .medication-header img {
             max-width: 250px;
         }
-
+/* 🔹 Estilo para a tabela */
 .table-container {
     margin-top: 30px;
     width: 100%;
@@ -364,27 +370,27 @@
 }
 
 .table {
-    width: 95%; 
-    max-width: 1300px; 
+    width: 95%; /* 🔹 Aumentando a largura sem ocupar tudo */
+    max-width: 1300px; /* 🔹 Aumentamos um pouco o tamanho */
     border-collapse: collapse;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     overflow: hidden;
 }
 
-/*  Estilização do cabeçalho da tabela */
+/* 🔹 Estilização do cabeçalho da tabela */
 .table th {
-    background: linear-gradient(90deg, #ffffff, #ffffff); 
+    background: linear-gradient(90deg, #ffffff, #ffffff); /* Azul */
     color: rgb(12, 1, 1);
     text-align: center;
     padding: 12px;
     font-size: 16px;
-    text-transform: uppercase;
-    font-weight: bold; 
-    border-bottom: 6px solid #f1f1f1; 
+    text-transform: uppercase; /* Transformando o texto em caixa alta */
+    font-weight: bold; /* Deixando o texto em negrito */
+    border-bottom: 6px solid #f1f1f1; /* Borda abaixo do cabeçalho */
     border: 6px solid #f1f1f1
 }
-/*  Estilização das células da tabela */
+/* 🔹 Estilização das células da tabela */
 .table td {
     text-align: center;
     padding: 12px;
@@ -392,18 +398,18 @@
     border: 6px solid #f1f1f1
 }
 
-/*  Linhas alternadas com cor mais clara */
+/* 🔹 Linhas alternadas com cor mais clara */
 .table tbody tr:nth-child(even) {
     background-color: 6px solid #f1f1f1;;
 }
 
-/*  Efeito hover nas linhas da tabela */
+/* 🔹 Efeito hover nas linhas da tabela */
 .table tbody tr:hover {
     background-color:  6px solid #f1f1f1;;
     transition: background-color 0.3s ease;
 }
 
-/*  Cores específicas para os valores SIM / NÃO */
+/* 🔹 Cores específicas para os valores SIM / NÃO */
 .no {
     background-color: #dc3545; /* Vermelho */
     color: white;
@@ -443,7 +449,7 @@
     border-radius: 5px;
 }
 
-/*  Responsividade */
+/* 🔹 Responsividade */
 @media (max-width: 768px) {
     .table {
         width: 100%;
@@ -459,7 +465,7 @@
         font-size: 14px;
     }
 }
-
+/* Cores específicas */
 .lactantes-indicacao {
     background-color: #ffcc00;
     color: black;
@@ -496,14 +502,14 @@
             font-family: Arial, sans-serif;
         }
 
-       
+        /* 🔹 AUMENTO DO TAMANHO DO TÍTULO */
         .efficacy-subtitle {
-            font-size: 18px; 
+            font-size: 18px; /* Antes era 16px */
             color: #007bff;
             font-weight: bold;
         }
 
-      
+        /* 🔹 AUMENTO DO TAMANHO DA BARRA */
         .efficacy-bar-container {
             display: flex;
             justify-content: center;
@@ -514,7 +520,7 @@
         .efficacy-bar {
             background: #d9eaff;
             width: 350px;
-            height: 18px; 
+            height: 18px; /* Antes era 12px */
             border-radius: 9px;
             position: relative;
             overflow: hidden;
@@ -528,12 +534,12 @@
             transition: width 0.6s ease-in-out;
         }
 
-      
+        /* 🔹 MARCADOR AJUSTADO PARA FICAR PROPORCIONAL À NOVA BARRA */
         .efficacy-marker {
             position: absolute;
             top: -6px;
-            width: 18px;
-            height: 36px;
+            width: 18px; /* Ajustado para ficar proporcional */
+            height: 36px; /* Antes era 32px */
             background: white;
             border: 3px solid #333;
             border-radius: 8px;
@@ -541,9 +547,9 @@
             box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
         }
 
-        /*  TAMANHO DOS NÚMEROS AJUSTADOS */
+        /* 🔹 TAMANHO DOS NÚMEROS AJUSTADOS */
         .efficacy-range {
-            font-size: 28px; 
+            font-size: 28px; /* Antes era 26px */
             font-weight: bold;
             margin-top: 10px;
             display: flex;
@@ -553,21 +559,21 @@
 
         .low-efficacy {
             color: #888;
-            font-size: 24px; 
+            font-size: 24px; /* Antes era 22px */
         }
 
         .high-efficacy {
             color: #000;
-            font-size: 30px;
+            font-size: 30px; /* Antes era 28px */
         }
 
-        
+        /* Separador entre os números */
         .efficacy-separator {
             color: #555;
             font-size: 22px;
         }
 
- 
+        /* Texto abaixo */
         .efficacy-info {
             font-size: 14px;
             color: gray;
@@ -579,11 +585,11 @@
             font-weight: bold;
         }
 
-    
+        /* 🔹 MELHORIA DA RESPONSIVIDADE */
         @media (max-width: 600px) {
             .efficacy-bar {
                 width: 280px;
-                height: 16px;
+                height: 16px; /* Ajustado proporcionalmente */
             }
 
             .efficacy-range {
@@ -600,7 +606,7 @@
             }
         }
 
-            /*  Seção de Adesão */
+            /* 🔹 Estilização da Seção de Adesão */
             .adhesion-section {
                 text-align: center;
                 margin-top: 40px;
@@ -643,13 +649,13 @@
                 line-height: 1.5;
             }
 
-            /* Ícone do Relógio */
+            /* 🔹 Ícone do Relógio */
             .adhesion-icon {
                 font-size: 80px;
                 color: #007bff;
             }
 
-           
+            /* 🔹 Responsividade */
             @media (max-width: 768px) {
                 .adhesion-content {
                     flex-direction: column;
@@ -660,7 +666,7 @@
                     font-size: 70px;
                 }
             }
-           
+            /* 🔹 Estilização da Seção de Adesão */
             .adhesion-section {
                 text-align: center;
                 margin-top: 40px;
@@ -703,12 +709,13 @@
                 line-height: 1.5;
             }
 
-    
+            /* 🔹 Imagem do Relógio */
             .adhesion-icon img {
                 width: 150px;
                 height: auto;
             }
 
+            /* 🔹 Responsividade */
             @media (max-width: 768px) {
                 .adhesion-content {
                     flex-direction: column;
@@ -722,13 +729,13 @@
 
 
 
-           
+            /* 🔹 Adiciona borda superior na tabela para melhor separação */
             .table-container {
                 border-top: 1px solid #ddd;
                 padding-top: 40px;
             }
 
-         
+            /* 🔹 Ajuste Responsivo */
             @media (max-width: 768px) {
                 .efficacy-section,
                 .adhesion-section,
@@ -744,7 +751,7 @@
                 }
             }
 
-          
+            /* 🔹 Linha divisória única e discreta */
             .section-divider {
                 width: 60%;
                 height: 1px;
@@ -753,13 +760,13 @@
                 border: none;
             }
 
-           
+            /* 🔹 Seção de Contraindicações */
             .contraindications-section {
                 margin-top: 80px;
                 padding-top: 60px;
             }
 
-            /* Título */
+            /* 🔹 Título */
             .contraindications-title {
                 font-size: 28px;
                 font-weight: bold;
@@ -767,7 +774,7 @@
                 margin-bottom: 40px;
             }
 
-            /*  Container Principal */
+            /* 🔹 Container Principal */
             .contraindications-container {
                 display: flex;
                 flex-wrap: wrap;
@@ -775,7 +782,7 @@
                 justify-content: center;
             }
 
-            /*  Cartão de Contraindicação */
+            /* 🔹 Cartão de Contraindicação */
             .contraindication-card {
                 background: white;
                 border-radius: 12px;
@@ -786,39 +793,39 @@
                 padding-bottom: 18px;
             }
 
-            /*  Imagem */
+            /* 🔹 Imagem */
             .contraindication-img {
                 width: 100%;
                 height: 220px;
                 object-fit: cover;
             }
 
-            /*  Conteúdo */
+            /* 🔹 Conteúdo */
             .contraindication-content {
                 padding: 20px;
             }
 
-            /*  Nome da Contraindicação */
+            /* 🔹 Nome da Contraindicação */
             .contraindication-name {
                 font-size: 20px;
                 font-weight: bold;
             }
 
-            /*  Descrição */
+            /* 🔹 Descrição */
             .contraindication-description {
                 font-size: 16px;
                 color: #666;
                 line-height: 1.6;
             }
 
-            /*  Mensagem quando não houver contraindicações */
+            /* 🔹 Mensagem quando não houver contraindicações */
             .no-contraindications {
                 font-size: 18px;
                 text-align: center;
                 color: #999;
             }
 
-     
+            /* 🔹 Responsividade */
             @media (max-width: 768px) {
                 .contraindications-container {
                     flex-direction: column;
@@ -837,7 +844,7 @@
     margin-bottom: 20px;
 }
 
-
+/* Container das imagens */
 .reacoes-container {
     display: flex;
     flex-wrap: wrap;
@@ -845,9 +852,9 @@
     gap: 20px;
 }
 
-
+/* Cartões de reações adversas */
 .reacao-card {
-    width: 250px;  
+    width: 250px;  /* Define um tamanho fixo */
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -856,7 +863,7 @@
     text-align: center;
 }
 
-
+/* Efeito de escala ao passar o mouse */
 .reacao-card:hover {
     transform: scale(1.05);
 }
@@ -864,8 +871,8 @@
 /* Imagens das reações */
 .reacao-card img {
     width: 100%;
-    height: 180px; 
-    object-fit: cover;
+    height: 180px; /* Altura uniforme para todas as imagens */
+    object-fit: cover; /* Garante que a imagem preencha sem distorcer */
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
@@ -885,7 +892,7 @@
     color: #333;
 }
 
-
+/* Responsividade */
 @media (max-width: 768px) {
     .reacoes-container {
         gap: 10px;
@@ -902,26 +909,26 @@
     }
 }
 
-/*  Estilização do formulário de filtros */
+/* 🔹 Estilização do formulário de filtros */
 .search-bar {
     background: #f8f9fa;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Labels */
+/* 🔹 Labels */
 .form-label {
     font-weight: bold;
     color: #333;
 }
 
-/*  Inputs e Select */
+/* 🔹 Inputs e Select */
 .form-control {
     border-radius: 5px;
     padding: 8px;
 }
 
-/*  Botões */
+/* 🔹 Botões */
 .btn-primary {
     background-color: #007bff;
     border: none;
@@ -1027,7 +1034,7 @@
     background-color: #fcfcfc;
     padding: 40px 0;
     color: #000000;
-    width: 100%; 
+    width: 100%;  /* Garante que o footer ocupe toda a largura da tela */
     margin: 0;  
 }
 
@@ -1046,21 +1053,21 @@
 
 
 
-
+/* Remover o sublinhado e alterar a cor dos links */
 .footer a {
-    color: #ffffff; 
-    text-decoration: none; 
+    color: #ffffff; /* Cinza claro */
+    text-decoration: none; /* Remove o sublinhado */
 }
 
 .footer a:hover {
-    text-decoration: underline; 
-    color: #48aaff; 
+    text-decoration: underline; /* Sublinha ao passar o mouse */
+    color: #48aaff; /* Cor cinza escuro ao passar o mouse */
 }
 
 /* Títulos em negrito */
 .footer h5 {
     font-weight: bold;
-    color: #000000;
+    color: #000000; /* Cor escura para os títulos */
 }
 
 .footer .row {
@@ -1091,11 +1098,11 @@
 
 .footer .footer-social {
     display: flex;
-    justify-content: flex-end;  
-    gap: 10px;  
-    width: 100%;  
-    margin-right: 0;  
-    padding-right: 30px; 
+    justify-content: flex-end;  /* Alinha os ícones à direita */
+    gap: 10px;  /* Aumenta o espaçamento entre os ícones */
+    width: 100%;  /* Garante que a div ocupe toda a largura disponível */
+    margin-right: 0;  /* Remove qualquer margem extra */
+    padding-right: 30px;  /* Adiciona um preenchimento à direita para um pequeno ajuste */
 }
 
 
@@ -1122,7 +1129,7 @@
         .footer a:hover {
             text-decoration: underline;
         }
-
+/* 🔹 Ajuste da largura e alinhamento dos filtros */
 .search-bar {
     background: #f8f9fa;
     padding: 15px 20px;
@@ -1135,17 +1142,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 10px; /* Espaço entre os filtros */
 }
 
-
+/* 🔹 Define um tamanho adequado para os selects */
 .search-bar select {
     width: 100%;
     height: 40px;
     font-size: 14px;
 }
 
-
+/* 🔹 Ajuste do botão de busca */
 .btn-primary {
     height: 40px;
     display: flex;
@@ -1156,16 +1163,16 @@
     white-space: nowrap;
 }
 .header-inner {
-  max-width: 1200px;
-  margin-left: 800px;  
-  margin-right: auto; 
+  max-width: 1200px;   /* ajuste fino para bater com o card */
+  margin-left: 800px;   /* empurra para a direita */
+  margin-right: auto;  /* mantém alinhado com o centro */
 }
 
 .logo-telix {
   height: 220px;      
 }
 
-
+/* 🔹 Responsividade: Ajusta para telas menores */
 @media (max-width: 768px) {
     .search-bar .row {
         flex-direction: column;
@@ -1176,7 +1183,7 @@
         width: 100%;
     }
 
-    
+    /* Forçar a remoção de bordas para todas as imagens */
 img {
     border: none !important;
     margin: 0 !important;
@@ -1184,7 +1191,7 @@ img {
     border-radius: 0 !important;
 }
 
-
+/* Remover borda e sombra do contêiner */
 .col-md-5, .shadow-sm {
     border: none !important;
     outline: none !important;
@@ -1194,7 +1201,7 @@ img {
     border-radius: 0 !important;
 }
 
-
+/* Estilo para o título */
 .contra-indicado-title {
     display: flex;
     justify-content: center;
@@ -1202,20 +1209,20 @@ img {
     font-size: 24px;
     text-transform: uppercase;
     margin-bottom: 20px;
-    font-weight: bold;  
-    color: black;
+    font-weight: bold;  /* Deixa o texto em negrito */
+    color: black; /* Deixa o texto em preto */
 }
 
 .contraindicado-title {
     display: flex;
-    justify-content: space-between;  
-    align-items: center; 
+    justify-content: space-between;  /* Coloca o título à esquerda e o ícone à direita */
+    align-items: center;  /* Alinha verticalmente o ícone com o texto */
 }
 
 .contraindicado-icon {
-    width: 30px;
+    width: 30px; /* Ajuste o tamanho do ícone conforme necessário */
     height: auto;
-    margin-left: auto; 
+    margin-left: auto; /* Move o ícone para a extrema direita */
 }
 
 .background-image:{linear-gradient(
@@ -1229,12 +1236,12 @@ img {
     height: 35px;
     margin-right: 5px;
    
-    margin-top: 0px; 
+    margin-top: 0px;  /* Ajuste fino para subir */
 }
     /* Estilo para os links no footer */
 .footer a {
-    color: #6c757d;  
-    text-decoration: none;  
+    color: #6c757d;  /* Cor cinza */
+    text-decoration: none;  /* Remove o sublinhado */
 }
 
 .footer a:hover {
@@ -1250,7 +1257,7 @@ img {
     }
 
     .footer-social a {
-        font-size: 1.2rem;  
+        font-size: 1.2rem;  /* Tamanho maior dos ícones para facilitar clique */
     }
 
     .footer .row {
@@ -1258,49 +1265,49 @@ img {
         justify-content: center;
     }
     .footer-social {
-        display: block; 
-        text-align: left; 
+        display: block;  /* Faz com que os ícones se alinhem verticalmente */
+        text-align: left;  /* Alinha os ícones à esquerda */
     }
 
     .social-btn {
-        display: inline-block;  
-        margin-right: 10px; 
+        display: inline-block;  /* Faz com que os ícones fiquem lado a lado */
+        margin-right: 10px;  /* Adiciona um pequeno espaço entre os ícones */
     }
-    
+    /* Estilo para os parágrafos de contato */
 .footer p {
-    color: #6c757d;  
-    margin-bottom: 5px; 
+    color: #6c757d;  /* Cor cinza */
+    margin-bottom: 5px;  /* Diminui o espaço entre os parágrafos */
 }
 
-
+/* Se quiser aumentar a proximidade entre os dois parágrafos */
 .footer p + p {
-    margin-top: 0; 
+    margin-top: 0;  /* Remove o espaço acima do segundo parágrafo */
 }
 }
-
+/* Estilo para os parágrafos de contato */
 .footer p {
-    color: #6c757d;  
-    margin-bottom: 5px; 
+    color: #6c757d;  /* Cor cinza */
+    margin-bottom: 5px;  /* Diminui o espaço entre os parágrafos */
 }
 
-
+/* Se quiser aumentar a proximidade entre os dois parágrafos */
 .footer p + p {
-    margin-top: 0; 
+    margin-top: 0;  /* Remove o espaço acima do segundo parágrafo */
 }
 .footer-bottom {
-    width: 100%;  
-    text-align: center; 
-    padding: 10px 0;  
-    background-color: #f5f5f5;  
+    width: 100%;  /* Faz com que ocupe toda a largura da tela */
+    text-align: center;  /* Centraliza o texto */
+    padding: 10px 0;  /* Adiciona um pequeno padding para que o texto não fique colado nas bordas */
+    background-color: #f5f5f5;  /* Mantém a cor de fundo */
 }
 .footer-social {
-        display: block;  
-        text-align: left; 
+        display: block;  /* Faz com que os ícones se alinhem verticalmente */
+        text-align: left;  /* Alinha os ícones à esquerda */
     }
 
     .social-btn {
-        display: inline-block;  
-        margin-right: 10px;
+        display: inline-block;  /* Faz com que os ícones fiquem lado a lado */
+        margin-right: 10px;  /* Adiciona um pequeno espaço entre os ícones */
     }
 }
 
@@ -1373,7 +1380,7 @@ img {
             
             
             <style>
-      
+        /* Remova a classe de zoom ou qualquer transformação */
         .zoom-img {
             transition: none !important;
             transform: none !important;
@@ -1394,7 +1401,7 @@ img {
         </body>
 
       <style>
-     
+            /* estilos só desta seção */
             .efficacy-title { font-family: Arial, sans-serif; font-weight: 700; font-size: 34px; text-align: center; }
             .efficacy-label { color: #000000; font-weight: 700; margin-right: 6px; }
             .efficacy-value { color: #000; font-weight: 800; }
@@ -1406,8 +1413,8 @@ img {
               margin: 0 auto;
               border-radius: 5px;
               overflow: hidden;
-              max-width: 720px; 
-              min-width: 260px;   
+              max-width: 720px;   /* evita ficar estreito demais em telas largas */
+              min-width: 260px;   /* evita ficar minúsculo em telas muito pequenas */
             }
             .efficacy-range { font-size: 20px; color: #B0B0B0; text-align: center; margin-top: 10px; }
             .efficacy-range .low-efficacy  { font-size: 40px; color: #B0B0B0; }
@@ -1426,13 +1433,13 @@ img {
   margin-right: 5px;
 }
 .larger-label {
-  font-size: 26px !important; 
-  font-weight: bold !important;  
+  font-size: 26px !important;  /* Aumenta o tamanho da label para o primeiro item */
+  font-weight: bold !important;  /* Deixa a label em negrito */
 }
 
 .larger-values {
-  font-size: 22px !important; 
-  font-weight: bold !important;  
+  font-size: 22px !important;  /* Aumenta o tamanho dos valores para o primeiro item */
+  font-weight: bold !important;  /* Deixa os valores em negrito */
 }
 
 .efficacy-values {
@@ -1444,7 +1451,7 @@ img {
   margin-bottom: 2px;
   background-color: transparent;
   margin-top: 5px;
-  position: relative; 
+  position: relative; /* Important for positioning the marker */
 }
 
 .efficacy-bar {
@@ -1457,7 +1464,7 @@ img {
 .efficacy-marker {
   position: absolute;
   top: -10px;
-  left: 52%; 
+  left: 52%;  /* Adjust this based on the percentage you want */
   transform: translateX(-50%);
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
@@ -1485,33 +1492,33 @@ img {
 .efficacy-section {
   display: flex;
   align-items: center;
-  margin-bottom: 0px; 
+  margin-bottom: 0px;  /* Remover espaçamento entre as seções */
   flex-direction: column;
   text-align: center;
 }
 
 .efficacy-label, .efficacy-values {
-  margin-bottom: 5px;  
+  margin-bottom: 5px;  /* Pequeno espaçamento entre a label e os valores */
 }
 .efficacy-section {
   display: flex;
   align-items: center;
-  margin-bottom: 0px;  
+  margin-bottom: 0px;  /* Remover espaçamento entre as seções */
   flex-direction: column;
   text-align: center;
-  padding: 0;  
+  padding: 0;  /* Remover qualquer padding extra */
 }
 
 .efficacy-title {
-  margin-bottom: 0px; 
+  margin-bottom: 0px;  /* Remover espaçamento entre a barra e o título */
 }
 
 .efficacy-label, .efficacy-values {
-  margin-bottom: 0px; 
+  margin-bottom: 0px;  /* Remover margem entre a label e os valores */
 }
 
 .efficacy-bar-container {
-  margin-bottom: 0px;
+  margin-bottom: 0px;  /* Remover margem extra da barra de eficácia */
 }
 
 
@@ -1520,24 +1527,24 @@ img {
 
 <style>
 .efficacy-section {
-  margin-bottom: 0 !important;  
+  margin-bottom: 0 !important;  /* Remove o espaçamento extra entre as seções */
   display: flex;
-  flex-direction: column;  
-  text-align: center; 
-  align-items: center; 
+  flex-direction: column;  /* Alterando para coluna */
+  text-align: center;  /* Centraliza o conteúdo */
+  align-items: center;  /* Centraliza os itens dentro da seção */
 }
 
 .eff-row {
-  margin-bottom: 2px;  
-  display: block;     
-  text-align: center;  
+  margin-bottom: 2px;  /* Espaçamento mínimo entre as linhas */
+  display: block;      /* Definindo a disposição como bloco */
+  text-align: center;  /* Centraliza o texto */
 }
 
 .eff-row.is-first {
   font-weight: 800;
   font-size: 32px;
   color: #000;
-  margin-top: 5px;  
+  margin-top: 5px;  /* Pequeno ajuste de espaçamento no topo da primeira linha */
 }
 
 .eff-row .eff-type {
@@ -1553,15 +1560,15 @@ img {
   opacity: .8;
 }
 
-
+/* Ajuste da barra de eficácia */
 .eff-bar-container {
   display: flex;
-  justify-content: center;  
-  width: 100%; 
+  justify-content: center;  /* Centraliza a barra de eficácia */
+  width: 100%;  /* Garante que a barra ocupe toda a largura */
 }
 
 .eff-bar {
-  width: 40%; 
+  width: 40%;  /* Ajuste a largura da barra para o tamanho desejado */
   background-color: #d9eaff;
   height:60px;
   border-radius: 9px;
@@ -1620,7 +1627,7 @@ img {
 
 .efficacy-bar {
   position: relative;
-  height: 40px; 
+  height: 40px; /* Barra mais grossa */
   border-radius: 4px;
   background: linear-gradient(to right, #0094FF 0%, rgba(0,148,255,0.3) 100%);
   margin: 6px 0;
@@ -1662,13 +1669,13 @@ img {
 /* Wrapper da barra para garantir centralização */
 .efficacy-bar-wrapper {
   display: flex;
-  justify-content: center; 
+  justify-content: center;   /* centraliza a barra */
 }
 
-
+/* Barra em si */
 .efficacy-bar {
   position: relative;
-  width: 70%;              
+  width: 70%;                /* largura da barra */
   max-width: 400px;
   height: 50px;
   border-radius: 3px;
@@ -1694,7 +1701,7 @@ img {
   margin-top: 6px;
   display: flex;
   align-items: center;
-  justify-content: center; 
+  justify-content: center;   /* centraliza ícone + texto */
   gap: 8px;
   font-size: 15px;
   color: #444;
@@ -1731,14 +1738,14 @@ img {
 .agende-btn-wrapper {
     display: flex;
    margin-left: 100px;
-    margin-top: 40px;     
+    margin-top: 40px;      /* ajusta o espaçamento como quiser */
     margin-bottom: 20px;
 }
 
 .btn-agende-consulta {
     display: block;
     width: 100%;
-    max-width: 600px;      
+    max-width: 600px;      /* controla o “comprimento” do botão */
     padding: 12px 20px;
     background-color: #0094FF;
     color: #ffffff;
@@ -1756,9 +1763,9 @@ img {
 }
 
 .quando-usar-texto {
-    max-width: 420px;     
-    margin: 0 auto;       
-    text-align: center;   
+    max-width: 420px;      /* largura máxima do parágrafo */
+    margin: 0 auto;        /* centraliza o bloco */
+    text-align: center;    /* centraliza o texto */
     font-size: 16px;
     color: #000;
 }
@@ -1795,48 +1802,41 @@ img {
 
 @media (max-width: 768px) {
   .tratamento-info h2 {
-    justify-content: center !important; 
+    justify-content: center !important; /* centraliza o flex */
     text-align: center !important;
     width: 100%;
   }
 
   .tratamento-info h2 > span {
-    display: block;                 
-    text-align: center !important;  
+    display: block;                 /* garante que ocupe a linha */
+    text-align: center !important;  /* centraliza o texto */
     width: 100%;
   }
 }
 </style>
-
+<!-- Título principal -->
 
 
 </style>
-
+<!-- Título principal -->
 
         
-        <div class="prerequisite-section" style="display: flex; align-items: center; justify-content: center; margin-bottom: 20px; margin-top: 150px;">
-            <i class="fas fa-clock" style="font-size: 30px; color: #0094FF; margin-right: 10px;"></i>
-            <span style="font-size: 18px; color: #808080; text-align: center;">
-                Prazo para efeito: 
-                <strong>
-                    {{ prazo_efeito }} <!-- Exibe diretamente a variável formatada -->
-                </strong>
-            </span>
-        </div>
+{% if prazo_efeito %}
+<div class="prerequisite-section" style="display:flex;align-items:center;justify-content:center;margin-bottom:20px;margin-top:150px;">
+  <i class="fas fa-clock" style="font-size:30px;color:#0094FF;margin-right:10px;"></i>
+  <span style="font-size:18px;color:#808080;text-align:center;">
+    Prazo para efeito: <strong>{{ prazo_efeito }}</strong>
+  </span>
+</div>
+{% endif %}
         
 
 <!-- Título principal -->
 
 {# título #}
 <p class="eficacia-titulo">
-  Eficácia no tratamento de
-  {% with cs=tratamento.condicoes_saude.all %}
-    {% if cs %}
-      {{ cs|join:", " }}
-    {% else %}
-      —                         {# fallback quando não há seleção #}
-    {% endif %}
-  {% endwith %}
+ 
+Eficácia no tratamento de {{ condicao.nome }}
 </p>
 
 <div class="eficacia-section">
@@ -1898,9 +1898,9 @@ img {
 
 </div>
 
-<!-- Botão para ver as pesquisas -->
+<!-- Botão para ver as pesquisas, com o tamanho ajustado -->
 <div style="display: flex; justify-content: center; margin-top: 5px;">
-    <a href="{% url 'evidencias_clinicas' slug=tratamento.slug %}" 
+    <a href="{% url 'pesquisas_tratamento' condicao.slug tratamento.slug %}"
        style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 20px; font-size: 16px; color: #0094FF; border: 2px solid #0094FF; border-radius: 5px; text-decoration: none; width: auto;">
         Veja as pesquisas
         <img src="{% static 'img/seta.png' %}" alt="Seta" style="margin-left: 10px; width: 15px; height: 15px; vertical-align: middle;">
@@ -1934,6 +1934,12 @@ img {
 
   </div>
 </div>
+
+
+
+
+
+<!-- Tabela de Indicações -->
 
 <!-- Tabela de Indicações -->
 <div class="table-container">

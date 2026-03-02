@@ -57,8 +57,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "core",  # Adicione seu app aqui
-    "django.contrib.sites",  # Caso esteja usando o framework de sites
+    "core",  
+    "django.contrib.sites",  
     "rest_framework",
     "api", 
 ]
@@ -93,8 +93,8 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            BASE_DIR / "templates",                 # templates Django antigos
-            BASE_DIR / "frontend" / "build",        # index.html do React
+            BASE_DIR / "templates",                
+            BASE_DIR / "frontend" / "build",        
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -116,13 +116,13 @@ if not DEBUG:
     SECURE_SSL_REDIRECT = False
 
 
-    # Caso você esteja usando um proxy reverso (como Nginx ou Apache), configure o Django para reconhecer o protocolo HTTPS.
+    
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
     # HSTS - Essa configuração ajuda os navegadores a forçar HTTPS no futuro.
     SECURE_HSTS_SECONDS = 31536000  # 1 ano de duração
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # HSTS para todos os subdomínios
-    SECURE_HSTS_PRELOAD = True  # Se você quiser adicionar o seu domínio ao preload HSTS
+    SECURE_HSTS_PRELOAD = True  
 
 
 

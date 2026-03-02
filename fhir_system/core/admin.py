@@ -2,7 +2,16 @@
 
 
 from django.contrib import admin
+from django.urls import reverse
+from django.utils.html import format_html
+from .models import PaginaDetalheTratamento
+from .models import Avaliacao
 from django import forms
+from django.contrib import admin, messages
+from django.utils.safestring import mark_safe
+from .models import DetalhesTratamentoReacaoAdversaTeste
+from django.urls import path
+from core.admin_urls_view import admin_urls_list
 from import_export import resources
 from django.contrib.admin import RelatedOnlyFieldListFilter
 from import_export.admin import ImportExportModelAdmin
@@ -30,11 +39,6 @@ admin.site.register([TipoTratamento])
 
 
 
-from django.contrib import admin
-from .models import Avaliacao
-
-from django import forms
-from .models import DetalhesTratamentoReacaoAdversaTeste
 
 class DetalhesTratamentoReacaoAdversaTesteForm(forms.ModelForm):
     class Meta:
@@ -128,13 +132,11 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
         "eficacia_min",
         "eficacia_max",
         "custo_medicamento",
-        "condicoes_saude_list",   # método
+        "condicoes_saude_list",   
     )
 
-    # Se algum destes não for M2M, remova-o daqui:
     filter_horizontal = ("contraindicacoes", "reacoes_adversas", "tipo_tratamento", "condicoes_saude")
-    # Se preferir autocomplete:
-    # autocomplete_fields = ('condicoes_saude',)
+
 
     search_fields = ("nome", "fabricante", "principio_ativo", "grupo")
 
@@ -155,7 +157,7 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
                     "nome",
                     "fabricante",
                     "principio_ativo",
-                    "condicoes_saude",     # M2M
+                    "condicoes_saude",     
                     "descricao",
                     "imagem",
                     "imagem_detalhes",
@@ -214,14 +216,14 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
         qs = super().get_queryset(request)
         return qs.prefetch_related('condicoes_saude')
 
-    # label mais claro para a descrição geral
+
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
         if 'descricao' in form.base_fields:
             form.base_fields['descricao'].label = "Descrição relacionada a condição de saúde"
         return form
 
-    # endpoints auxiliares (mantidos)
+    # endpoints auxiliares 
     def get_urls(self):
         urls = super().get_urls()
         custom = [
@@ -248,7 +250,7 @@ class ReacaoAdversaAdmin(admin.ModelAdmin):
 
 @admin.register(CondicaoSaude)
 class CondicaoSaudeAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'descricao', 'condition')  # se quiser
+    list_display = ('nome', 'descricao', 'condition') 
     search_fields = ('nome',)
     fields = ('nome', 'descricao', 'condition', 'condition_description')
 
@@ -256,8 +258,8 @@ class CondicaoSaudeAdmin(admin.ModelAdmin):
 class EvidenciasClinicasForm(forms.ModelForm):
     tipos_eficacia = forms.ModelMultipleChoiceField(
         queryset=TipoEficacia.objects.all(),
-        widget=forms.CheckboxSelectMultiple,  # Usa checkboxes para múltiplas seleções
-        required=False,  # Permite que o campo seja opcional
+        widget=forms.CheckboxSelectMultiple, 
+        required=False, 
         label="Tipos de Eficácia"
     )
 
@@ -291,8 +293,7 @@ class EficaciaPorEvidenciaInline(admin.TabularInline):
     extra = 0
     fields = ['evidencia', 'tipo_eficacia', 'participantes_iniciaram_tratamento', 'participantes_com_beneficio', 'percentual_eficacia_calculado']
     autocomplete_fields = ['tipo_eficacia']
-    
-    # Tornar o campo percentual_eficacia_calculado somente leitura
+
     readonly_fields = ['percentual_eficacia_calculado']
 
     def percentual_eficacia_calculado(self, obj):
@@ -305,10 +306,9 @@ class EficaciaPorEvidenciaInline(admin.TabularInline):
 
 
 class EficaciaPorEvidenciaAdmin(admin.ModelAdmin):
-    # Exibindo o percentual de eficácia calculado diretamente na tabela de admin
+  
     list_display = ['tipo_eficacia',  'participantes_iniciaram_tratamento','participantes_com_beneficio', 'percentual_eficacia_calculado']
-    
-    # Calculando a eficácia diretamente no Admin
+  
     def percentual_eficacia_calculado(self, obj):
         """Calcula o percentual de eficácia e limita a duas casas decimais"""
         if obj.participantes_iniciaram_tratamento > 0:
@@ -317,7 +317,7 @@ class EficaciaPorEvidenciaAdmin(admin.ModelAdmin):
 
     percentual_eficacia_calculado.short_description = 'Percentual de Eficácia'
 
-    # Tornar o campo somente leitura
+
     readonly_fields = ['percentual_eficacia_calculado']
 
     # Renomeando os campos para exibição com os novos nomes
@@ -329,8 +329,6 @@ class EficaciaPorEvidenciaAdmin(admin.ModelAdmin):
         return obj.participantes_iniciaram_tratamento
     participantes_iniciaram_tratamento.short_description = 'Quantidade de Participantes que iniciaram o tratamento'
 
-
-# Registrar o modelo com o admin
 admin.site.register(EficaciaPorEvidencia, EficaciaPorEvidenciaAdmin)
 
 
@@ -346,12 +344,12 @@ class TipoEficaciaAdmin(admin.ModelAdmin):
 # --- Admin para Evidências Clínicas ---
 @admin.register(EvidenciasClinicas)
 class EvidenciasClinicasAdmin(admin.ModelAdmin):
-    form = EvidenciasClinicasForm  # Usando o formulário personalizado
-    inlines = [EficaciaPorEvidenciaInline]  # Adiciona o Inline para eficácia por evidência
+    form = EvidenciasClinicasForm  
+    inlines = [EficaciaPorEvidenciaInline]  
     list_display = (
         "titulo",
         "tratamento",
-        "condicao_saude",  # Agora é FK e mostra o nome da condição
+        "condicao_saude",  
         "rigor_da_pesquisa",
         "data_publicacao",
         "referencia_bibliografica",
@@ -373,7 +371,7 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
                     "titulo",
                     "descricao",
                     "evidence_description",
-                    "condicao_saude",  # FK para Condição de Saúde
+                    "condicao_saude",
                     "rigor_da_pesquisa",
                     "numero_participantes",
                 )
@@ -409,15 +407,14 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
     )
     class Media:
         css = {
-            'all': ('admin/css/custom_admin.css',)  # Caminho correto para o arquivo
+            'all': ('admin/css/custom_admin.css',)
         }
 
-    # Método para exibir o campo calculado no admin
     def percentual_eficacia(self, obj):
         """Calcula o percentual de eficácia automaticamente"""
         if obj.participantes_iniciaram_tratamento > 0:
             return f"{(obj.participantes_com_beneficio / obj.participantes_iniciaram_tratamento) * 100:.2f}%"
-        return "Não especificado"  # Se não houver participantes iniciados
+        return "Não especificado" 
 
 
 
@@ -446,15 +443,11 @@ class ContraindicacaoAdmin(admin.ModelAdmin):
     fields = ("nome", "descricao", "imagem", "contraindication_name", "contraindication_description")
     search_fields = ("nome", "contraindication_name")
 
-from django import forms
-from django.contrib import admin
-from .models import Avaliacao
 
-# Formulário personalizado para validar o tamanho do comentário
 class AvaliacaoForm(forms.ModelForm):
     class Meta:
         model = Avaliacao
-        fields = ['tratamento', 'comentario', 'estrelas']  # Remova o campo 'data'
+        fields = ['tratamento', 'comentario', 'estrelas'] 
 
     def clean_comentario(self):
         comentario = self.cleaned_data['comentario']
@@ -466,7 +459,7 @@ class AvaliacaoForm(forms.ModelForm):
 class AvaliacaoAdmin(admin.ModelAdmin):
     form = AvaliacaoForm
 
-    list_display = ('tratamento', 'usuario_nome', 'comentario', 'data', 'estrelas')  # mostra o nome
+    list_display = ('tratamento', 'usuario_nome', 'comentario', 'data', 'estrelas')  
     list_filter  = ('tratamento', 'data')
     search_fields = ('usuario_nome', 'comentario', 'tratamento__nome')
 
@@ -478,3 +471,98 @@ class AvaliacaoAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Avaliacao, AvaliacaoAdmin)
+
+
+
+# rota extra dentro do admin
+_original_get_urls = admin.site.get_urls
+
+def get_urls():
+    urls = _original_get_urls()
+    custom = [
+        path("urls-disponiveis/", admin_urls_list, name="urls-disponiveis"),
+    ]
+    return custom + urls
+
+admin.site.get_urls = get_urls
+
+
+
+
+
+
+@admin.register(PaginaDetalheTratamento)
+class PaginaDetalheTratamentoAdmin(admin.ModelAdmin):
+    change_form_template = "admin/core/paginadetalhetratamento/change_form.html"
+
+    list_display = (
+        "condicao",
+        "tratamento",
+        "badge_publicacao",
+        "url_publica_link",
+        "preview",
+        "copiar_url",
+        "created_at",
+    )
+
+    list_filter = ("publicada", "condicao")
+    search_fields = ("condicao__nome", "condicao__slug", "tratamento__nome", "tratamento__slug")
+    autocomplete_fields = ("condicao", "tratamento")
+    list_select_related = ("condicao", "tratamento")
+    ordering = ("-created_at",)
+    date_hierarchy = "created_at"
+
+    fieldsets = (
+        ("Publicação", {"fields": ("publicada", "condicao", "tratamento")}),
+        ("SEO", {"fields": ("meta_title", "meta_description")}),
+        ("Conteúdo (opcional)", {"fields": ("titulo_custom", "descricao_custom")}),
+        ("CTA (opcional)", {"fields": ("cta_label", "cta_url")}),
+        ("Sistema", {"fields": ("created_at",), "classes": ("collapse",)}),
+    )
+    readonly_fields = ("created_at",)
+
+ 
+    def _public_url_path(self, obj):
+        return reverse(
+            "pagina_detalhe_tratamento",
+            kwargs={"condicao_slug": obj.condicao.slug, "tratamento_slug": obj.tratamento.slug},
+        )
+
+    def _public_url_abs(self, request, obj):
+        return request.build_absolute_uri(self._public_url_path(obj))
+
+    @admin.display(description="Status")
+    def badge_publicacao(self, obj):
+        if obj.publicada:
+            return format_html('<span style="padding:2px 8px;border-radius:999px;background:#DCFCE7;color:#166534;font-weight:600;">Publicada</span>')
+        return format_html('<span style="padding:2px 8px;border-radius:999px;background:#FEF3C7;color:#92400E;font-weight:600;">Rascunho</span>')
+
+    @admin.display(description="URL")
+    def url_publica_link(self, obj):
+        url = self._public_url_path(obj)
+        return format_html('<a href="{}" target="_blank">{}</a>', url, url)
+
+    @admin.display(description="Preview")
+    def preview(self, obj):
+        url = self._public_url_path(obj)
+        return format_html('<a class="button" href="{}" target="_blank">Abrir</a>', url)
+
+    @admin.display(description="Copiar")
+    def copiar_url(self, obj):
+        
+        url = self._public_url_path(obj)
+        return format_html(
+            "<button type='button' class='button' onclick=\"navigator.clipboard.writeText('{}')\">Copiar</button>",
+            url,
+        )
+    actions = ("publicar", "despublicar")
+
+    @admin.action(description="Publicar páginas selecionadas")
+    def publicar(self, request, queryset):
+        updated = queryset.update(publicada=True)
+        self.message_user(request, f"{updated} página(s) publicada(s).", level=messages.SUCCESS)
+
+    @admin.action(description="Despublicar páginas selecionadas")
+    def despublicar(self, request, queryset):
+        updated = queryset.update(publicada=False)
+        self.message_user(request, f"{updated} página(s) despublicada(s).", level=messages.WARNING)

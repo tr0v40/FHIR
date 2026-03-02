@@ -23,9 +23,7 @@
   <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
 
   <style>
-    /* =========================
-      RESET / BASE
-    ========================= */
+
     html, body {
       height: 100%;
       margin: 0;
@@ -62,7 +60,7 @@
     }
 
     /* =========================
-      HEADER (DESKTOP igual print)
+      HEADER (DESKTOP)
     ========================= */
     .site-header {
       width: 100%;
@@ -74,8 +72,8 @@
       margin: 0 auto;
       padding: 28px 20px;
       display: grid;
-      grid-template-columns: 1fr 300px;   /* texto | aviso */
-      grid-template-rows: auto auto;      /* logo | título */
+      grid-template-columns: 1fr 300px;
+      grid-template-rows: auto auto;      
       column-gap: 48px;
       align-items: start;
     }
@@ -142,7 +140,7 @@
       text-align: center;
     }
 
-    /* Card preto duplicado fora do header: mantido mas escondido no desktop */
+
     .card-aviso { display: none; }
 
     /* Mobile do header */
@@ -172,7 +170,7 @@
     }
 
     /* =========================
-      CHECKBOX / ORDENACAO (mantido)
+      CHECKBOX / ORDENACAO
     ========================= */
     .ordenacao-bloco {
       display: flex;
@@ -225,7 +223,7 @@
     }
 
     /* =========================
-      FILTROS (mantido)
+      FILTROS 
     ========================= */
     .filters{
       display: flex;
@@ -237,7 +235,7 @@
       border: none;
       border-radius: 1px;
       width: 100%;
-      margin-bottom: 16px; /* (era -45; removi negativo para evitar “grudar”) */
+      margin-bottom: 16px;
     }
 
     .filters label{
@@ -318,7 +316,7 @@
       color: #333;
     }
 
-    /* EXIBIR (radio-like) */
+    /* EXIBIR  */
     .filter-buttons{
       display:flex;
       flex-wrap:wrap;
@@ -442,7 +440,7 @@
       border-radius:50%;
     }
     .tratamento-descricao{
-  margin-top: 28px;   /* aumenta o gap abaixo do botão */
+  margin-top: 28px;   
   margin-bottom: 20px;
   text-align: justify;
 
@@ -608,7 +606,7 @@
         justify-content: center;
       }
 
-      /* esconde “Exibir” no mobile, como antes */
+     
       .filters > .filter-buttons,
       .filters h6{
         display: none !important;
@@ -628,7 +626,6 @@
     max-width: 520px !important;
   }
 
-  /* Conteúdo interno também vira coluna (isso corrige o “lado a lado” do print) */
   .tratamento-content{
     flex-direction: column !important;
     align-items: center !important;
@@ -637,7 +634,6 @@
     width: 100% !important;
   }
 
-  /* Imagem centralizada e menor */
   .tratamento-card img{
     width: 96px !important;
     height: 96px !important;
@@ -645,7 +641,6 @@
     margin: 0 auto !important;
   }
 
-  /* Texto ocupa a largura toda */
   .tratamento-info{
     width: 100% !important;
     text-align: center !important;
@@ -655,7 +650,7 @@
     font-size: 22px !important;
   }
 
-  /* Botão "ver detalhes" centralizado (remove margin-left: auto do inline) */
+  /* Botão "ver detalhes" centralizado */
   .tratamento-info .btn.mt-2{
     margin-left: 0 !important;
     margin-right: 0 !important;
@@ -664,7 +659,7 @@
     max-width: 160px !important;
   }
 
-  /* Descrição melhor no mobile */
+  /* Descrição  mobile */
   .tratamento-descricao{
     text-align: justify !important;
     margin-top: 16px !important;
@@ -724,15 +719,11 @@
     </div>
   </header>
 
-  <!-- (mantido) Card aviso mobile no final -->
-  <!-- (mantido) Card aviso duplicado fora do header (não aparece no desktop) -->
+ 
   <div class="card-aviso">
     <p><strong>Não se automedique.</strong><br>Consulte um profissional de saúde.</p>
   </div>
 
-  <!-- =========================
-      CONTEÚDO (Django)
-  ========================= -->
   <div class="content-area">
     <div class="tratamentos">
 
@@ -909,7 +900,7 @@
     </div>
   </div>
 
-  <!-- Card aviso no final do mobile -->
+
   <div class="card-aviso-mobile">
     <p><strong>Não se automedique.</strong><br>Consulte um profissional de saúde.</p>
   </div>
@@ -986,7 +977,7 @@
       }
 
       /* =========================
-        Filtros dinâmicos (sem duplicar listeners)
+        Filtros dinâmicos 
       ========================= */
       const criterioSelect = document.getElementById('filtro_criterio');
       const valorContainer = document.getElementById('filtro_valor_container');
@@ -1046,17 +1037,14 @@
         Substituir ponto por vírgula + formatar participantes
       ========================= */
       function substituirPontosPorVirgulas() {
-        // 1) Ajusta números decimais em blocos visíveis
+     
         const elementos = document.querySelectorAll('.eficacia-range, .preco-range, .replace-dot');
         elementos.forEach((el) => {
           if (!el || !el.innerHTML) return;
           el.innerHTML = el.innerHTML.replace(/\d+\.\d+/g, (match) => match.replace('.', ','));
         });
 
-        // 2) Participantes (quando for exibido via mudarExibicao, ele vem do innerHTML do span)
-        // Se você tiver um bloco visível com "participantes", pode ajustar aqui também.
-
-        // 3) Barras (width em % no estilo) — mantém como você já faz (não muda layout)
+    
         document.querySelectorAll('.efficacy-filled').forEach((bar) => {
           const w = bar.style.width || '';
           if (w.includes(',')) {

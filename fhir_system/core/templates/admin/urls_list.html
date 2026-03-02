@@ -1,0 +1,206 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{# CSS adicional inserido no bloco correto #}
+{% block extrastyle %}
+  <style>
+    .urls-container {
+      background: #fff;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      border: 1px solid #e5e5e5;
+    }
+
+    .urls-title {
+      margin: 0 0 16px 0;
+      font-size: 22px;
+      font-weight: 600;
+      color: #2c2c2c;
+    }
+
+    .subtle {
+      color: #666;
+      margin-bottom: 14px;
+      font-size: 13px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .filter-input {
+      width: 420px;
+      max-width: 100%;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #cfcfcf;
+      transition: border .2s, box-shadow .2s;
+    }
+
+    .filter-input:focus {
+      border-color: #417690;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(65,118,144,0.15);
+      background: #fff;
+    }
+
+    .counter {
+      font-size: 13px;
+      color: #555;
+    }
+
+    table.url-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 4px;
+      background: #fff;
+    }
+
+    table.url-table th {
+      background: #f5f5f5;
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 2px solid #ddd;
+      font-weight: 600;
+      color: #333;
+      position: sticky;
+      top: 0; /* cabeçalho “gruda” ao rolar */
+      z-index: 1;
+    }
+
+    table.url-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #eee;
+      vertical-align: top;
+    }
+
+    table.url-table tr:hover {
+      background: #fafafa;
+    }
+
+    code {
+      background: #f7f7f7;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    .copy-btn {
+      margin-left: 8px;
+      border: 1px solid #d7d7d7;
+      background: #fff;
+      color: #333;
+      padding: 2px 6px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .copy-btn:hover {
+      border-color: #417690;
+      color: #17485e;
+    }
+
+    /* responsivo */
+    @media (max-width: 640px) {
+      .urls-container { padding: 16px; }
+      .filter-input { width: 100%; }
+      .urls-title { font-size: 20px; }
+      table.url-table th:nth-child(3),
+      table.url-table td:nth-child(3) { display: none; } /* esconde a coluna View em telas muito estreitas */
+    }
+  </style>
+{% endblock extrastyle %}
+
+{% block content %}
+  <div class="urls-container">
+    <h1 class="urls-title">URLs disponíveis</h1>
+    <p class="subtle">Visualize e filtre as rotas registradas no projeto.</p>
+
+    <div class="toolbar">
+      <input
+        id="filtro"
+        type="text"
+        placeholder="Filtrar por /api, admin, nome, view..."
+        class="filter-input"
+        autocomplete="off"
+        aria-label="Filtro de URLs"
+      />
+      <span class="counter" id="match-counter"></span>
+    </div>
+
+    <div style="overflow:auto; max-height: 70vh; border: 1px solid #eee; border-radius: 6px;">
+      <table class="url-table">
+        <thead>
+          <tr>
+            <th style="width: 40%;">Path</th>
+            <th style="width: 25%;">Name</th>
+            <th>View</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          {% for r in rows %}
+            <tr>
+              <td>
+                <code>{{ r.pattern }}</code>
+                <button class="copy-btn" data-copy="{{ r.pattern|escape }}">Copiar</button>
+              </td>
+              <td>{{ r.name }}</td>
+              <td><small>{{ r.lookup_str }}</small></td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="3" style="color:#666; font-style: italic;">Nenhuma URL encontrada.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const input = document.getElementById("filtro");
+      const tbody = document.getElementById("tbody");
+      const counter = document.getElementById("match-counter");
+
+      function updateCounter() {
+        const total = tbody.querySelectorAll("tr").length;
+        const visible = Array.from(tbody.querySelectorAll("tr")).filter(
+          tr => tr.style.display !== "none"
+        ).length;
+        counter.textContent = visible === total
+          ? `${total} URLs`
+          : `${visible} de ${total} URLs`;
+      }
+
+      function filter() {
+        const q = (input.value || "").toLowerCase().trim();
+        for (const tr of tbody.querySelectorAll("tr")) {
+          const text = tr.innerText.toLowerCase();
+          tr.style.display = text.includes(q) ? "" : "none";
+        }
+        updateCounter();
+      }
+
+      input.addEventListener("input", filter);
+      updateCounter(); // inicializa contador
+
+      // Copiar para a área de transferência
+      tbody.addEventListener("click", (e) => {
+        const btn = e.target.closest(".copy-btn");
+        if (!btn) return;
+        const value = btn.getAttribute("data-copy");
+        navigator.clipboard?.writeText(value).then(() => {
+          const old = btn.textContent;
+          btn.textContent = "Copiado!";
+          setTimeout(() => (btn.textContent = old), 900);
+        });
+      });
+    })();
+  </script>
+{% endblock content %}

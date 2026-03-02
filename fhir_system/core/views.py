@@ -103,7 +103,7 @@ PRIORIDADE = {
     "controle":2,
     "Controle":2,
     "eliminacao de sintomas": 3,
-    "eliminacao dos sintomas": 3,   # sinônimos/variações
+    "eliminacao dos sintomas": 3,   
 
     "reducao de sintomas": 4,
     "reducao dos sintomas": 4,
@@ -137,7 +137,7 @@ def calcular_eficacia(tratamentos_list):
 
                 if isfinite(valor):
                     # Se houver múltiplos epe do mesmo tipo, mantenha o MAIOR valor.
-                    # (troque para "o último" se preferir)
+                    
                     tipos_map[tipo_nome] = max(tipos_map.get(tipo_nome, 0.0), valor)
 
         # monta lista e ORDENA por prioridade definida
@@ -146,7 +146,7 @@ def calcular_eficacia(tratamentos_list):
                 "tipo": tipo,
                 "valor_eficacia": pct,
                 "valor_eficacia_str": f"{pct:.2f}".replace('.', ','),
-                "ord": PRIORIDADE.get(_norm(tipo), 99),  # desconhecidos vão pro fim
+                "ord": PRIORIDADE.get(_norm(tipo), 99),  
             }
             for tipo, pct in tipos_map.items()
         ]
@@ -386,7 +386,7 @@ def tratamentos(request):
 
     # ---------- ordenação das seções ----------
     ordenacao_map = {
-        'eficacia': '__eficacia__',          # especial: usa item['max']
+        'eficacia': '__eficacia__',         
         'risco': 'reacao_maxima',
         'prazo': 'prazo_medio_minutos',
         'preco': 'custo_medicamento',
@@ -400,7 +400,7 @@ def tratamentos(request):
     # fallback quando “página limpa” ou quando o usuário não escolheu campo válido
     if usar_eficacia_padrao or not campo:
         campo = '__eficacia__'
-        asc = False  # eficácia: maior -> menor
+        asc = False  
     else:
         asc = (ordenacao_opcao == 'menor-maior')
 
@@ -552,7 +552,7 @@ def formatar_numeros(n):
             return f"{n:,}".replace(",", ".")
         
     except Exception as e:
-        return str(n)  # Caso ocorra algum erro, retorna o valor como string (caso não seja um número)
+        return str(n) 
 
     return str(n)
 
@@ -700,7 +700,7 @@ def detalhes_tratamentos(request, slug):
                        -float(e["max"] or 0))
     )
 
-    #  escolha do tipo a mostrar (sempre só UM)
+
     tipo_eficacia      = "Não especificado"
     eficacia_min       = "0,00"
     eficacia_max       = "0,00"
@@ -832,7 +832,7 @@ PRIORIDADE_TIPOS = {
 def evidencias_clinicas(request, slug):
    
     
-    # Buscando o tratamento pelo slug
+    
     tratamento = get_object_or_404(DetalhesTratamentoResumo, slug=slug)
     
     # Buscando as evidências associadas a esse tratamento
@@ -946,7 +946,7 @@ def evidencias_clinicas_detail(request, pk):
 
 
 def sua_view(request):
-    # seu código
+    
     contexto = {
         "evidencias": evidencias,
         'rigor_range': range(1,8),
@@ -954,7 +954,7 @@ def sua_view(request):
     return render(request, 'evidencias_clinicas.html', contexto)
 
 
-# No seu model, método para pluralizar só a unidade:
+
 def unidade_formatada(self, valor):
     exceptions = {'sessao': 'sessões'}
     if valor == 1:
@@ -1018,7 +1018,6 @@ def tratamentos_controle_enxaqueca(request):
 
     exibir = request.GET.get('exibir', 'prazo')
 
-    # detectar “página limpa” (sem parâmetros relevantes)
     PARAMS_RELEVANTES = {
         'ordenacao', 'ordenacao_opcao', 'publico', 'nome', 'categoria',
         'filtro_criterio', 'comparacao', 'filtro_valor', 'contraindicacoes'
@@ -1591,7 +1590,7 @@ def comentario_view(request):
     if request.method == 'POST':
         form = ComentarioForm(request.POST)
         if form.is_valid():
-            # Salvar o formulário no banco de dados
+            
             form.save()
             return redirect('sucesso')  # Redireciona para uma página de sucesso ou outra
 
@@ -1612,7 +1611,7 @@ def enviar_avaliacao(request):
     if request.method == 'POST':
         form = ComentarioForm(request.POST)
         if form.is_valid():
-            form.save()  # Isso irá salvar o nome do usuário no banco de dados
+            form.save()  
             return redirect('detalhes_tratamentos')
     else:
         form = ComentarioForm()

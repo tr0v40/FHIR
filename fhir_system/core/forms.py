@@ -71,9 +71,9 @@ class EvidenciasClinicasForm(forms.ModelForm):
     pais = forms.ModelMultipleChoiceField(
         queryset=Pais.objects.all(),  # Garante que estamos carregando os países do banco de dados
         widget=Select2MultipleWidget(),  # Usando o widget Select2 para uma boa interface
-        required=False  # Não torna o campo obrigatório
+        required=False  
     )
 
     class Meta:
         model = EvidenciasClinicas
-        fields = ['titulo', 'descricao', 'paises']  # Incluindo o campo pais
+        fields = ['titulo', 'descricao', 'paises']  

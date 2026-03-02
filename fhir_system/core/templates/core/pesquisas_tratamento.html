@@ -1,0 +1,495 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estudos e Evidências</title>
+
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BS67486CWG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BS67486CWG');
+  </script>
+
+  <!-- Clarity -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+
+      clarity('set', 'page_url', window.location.href);
+
+      window.addEventListener('popstate', function() {
+        clarity('set', 'page_url', window.location.href);
+      });
+
+      window.addEventListener('hashchange', function() {
+        clarity('set', 'page_url', window.location.href);
+      });
+    })(window, document, "clarity", "script", "ubap1t6puk");
+  </script>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+
+  <style>
+    body { background-color:#fff; font-family: Arial, sans-serif; }
+    .container { margin-top: 40px; max-width: 95%; }
+    .titulo { font-size: 28px; font-weight: bold; margin-bottom: 20px; text-align: center; }
+    .card { background:#fff; padding:20px; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,.1); }
+
+    .tooltip-container { position: relative; cursor: default; }
+    .tooltip-paises {
+      visibility: hidden; opacity: 0; position: absolute; bottom: 125%; left: 0; z-index: 10;
+      background-color: #ffffff; color: #000000; border: 1px solid #000000;
+      padding: 8px 10px; border-radius: 6px; font-size: .9rem; line-height: 1.4; white-space: nowrap;
+      box-shadow: 0 4px 10px rgba(0,0,0,.12); transition: opacity .2s ease;
+    }
+    .tooltip-paises::after {
+      content:""; position:absolute; top:100%; left:12px; border-width:6px; border-style:solid;
+      border-color:#000000 transparent transparent transparent;
+    }
+    .tooltip-container:hover .tooltip-paises { visibility: visible; opacity: 1; }
+
+    .topo-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    .logo-telix { height: 50px; display:block; margin-bottom: 40px; }
+
+    .footer { background-color:white; padding:40px 0; color:#000; }
+    .footer a { color:#303030; text-decoration:none; }
+    .footer a:hover { text-decoration: underline; color:#3294ea; }
+    .footer h5 { font-weight:bold; color:#000; }
+
+    @media (max-width: 768px) {
+      .evidencias-container { max-width:100% !important; padding:20px 16px !important; }
+      .evidencia-item { display:flex; flex-direction:column; gap:15px; padding-bottom:40px; margin-bottom:40px; align-items:flex-start; border-bottom:5px solid #eee; }
+      .evidencia-item .conteudo > div:last-child { position:static !important; width:100% !important; height:auto !important; padding:0 !important; margin-top:20px; }
+      p[style*="font-size: 30px"] { font-size:18px !important; margin-top:5px !important; }
+      .imagem-estudo { width:100%; height:auto; }
+      .imagem-estudo img { max-width:100%; height:auto; }
+      .titulo-tratamento { font-weight:700; font-size:24px; color:#111; text-align:center; margin-top:40px; }
+    }
+
+  .site-footer {
+    background: #fff;
+    padding: 48px 0 28px;
+    border-top: 1px solid #eaeaea;
+  }
+
+  .site-footer .wrap {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 36px;
+    align-items: start;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .footer-col h5 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #111;
+    margin: 0 0 10px;
+  }
+
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-links li {
+    margin: 6px 0;
+  }
+
+  .footer-links a,
+  .footer-col a {
+    color: #8a8a8a;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .footer-links a:hover,
+  .footer-col a:hover {
+    color: #2b71b7;
+    text-decoration: underline;
+  }
+
+  .footer-social {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 10px;
+  }
+
+  .footer-social a {
+    color: #6f6f6f;
+    font-size: 16px;
+    transition: transform .15s ease, color .15s ease;
+  }
+
+  .footer-social a:hover {
+    color: #2b71b7;
+    transform: translateY(-1px);
+  }
+
+  .footer-small {
+    margin-top: 14px;
+    font-size: 11.5px;
+    color: #9a9a9a;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 768px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+  }
+
+  </style>
+</head>
+
+<body>
+  <div class="topo-container">
+    <a href="https://www.telix.inf.br/">
+      <img src="{% static 'img/logo.png' %}" alt="Telix Logo" style="height: 210px;">
+    </a>
+
+    <style>
+      .back-link { color:#007bff; text-decoration:none; display:flex; align-items:center; cursor:pointer; transition: color .3s ease; }
+      .back-link svg { width:40px; height:28px; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transform-origin:center; transition: transform .3s ease; }
+      .back-link:hover { color:#e3e4e5; }
+      .back-link:hover svg { transform: translateX(-8px); }
+      h1.titulo-tratamento {
+        font-weight:700; font-size:28px; color:#111; text-align:center;
+        display:flex; align-items:center; justify-content:center; gap:12px; margin-top:40px;
+      }
+      .eficacias-label { font-weight:700; color:#757474; margin-right:4px; display:inline-block; margin-bottom:0; }
+      .eficacia-principal { font-weight:700; font-size:1.1rem; color:#000; margin-top:10px; padding:0; }
+      .eficacia-secundaria { font-weight:400; font-size:.95rem; color:#000; padding-left:82px; margin-top:2px; }
+    </style>
+
+    <h1 class="titulo-tratamento">
+      <!-- BACK dinâmico -->
+      <a class="back-link" href="{% url 'pagina_detalhe_tratamento' condicao.slug tratamento.slug %}">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </a>
+
+      <span>
+        Pesquisas sobre eficácia do tratamento:
+        <a href="#" style="color:#007bff; text-decoration:none;">
+          {{ tratamento.nome }}
+        </a>
+      </span>
+    </h1>
+
+    <!--   filtrado -->
+    <p style="color:#999999; font-weight:400; font-size:30px; margin-top:10px; text-align:center;">
+      para: <strong>{{ condicao.nome }}</strong>
+    </p>
+
+    {% if evidencias %}
+      <div class="evidencias-container" style="max-width:1100px; background:white; box-shadow:0 0 25px rgb(0 0 0 / 0.2); border-radius:10px; padding:40px 36px; font-family:Arial, sans-serif; color:#222; margin:30px auto; font-size:1.1rem;">
+        {% for evidencia in evidencias %}
+          <div class="evidencia-item" style="display:flex; gap:30px; padding-bottom:40px; margin-bottom:40px; align-items:flex-start; border-bottom:5px solid #eeeeee;">
+
+            <!-- Imagem do estudo -->
+            <div class="imagem-estudo" style="flex:0 0 160px; min-height:140px; display:flex; align-items:center; justify-content:center;">
+              {% if evidencia.imagem_estudo %}
+                <img src="{{ evidencia.imagem_estudo.url }}" alt="Imagem do estudo" style="max-width:100%; max-height:140px; height:auto; width:auto; object-fit:contain; border-radius:6px; display:block;">
+              {% else %}
+                <p>Imagem não disponível</p>
+              {% endif %}
+            </div>
+
+            <!-- Conteúdo -->
+            <div class="conteudo" style="flex:1; position:relative;">
+
+              {% with efics=evidencia.efics_ordenadas|default:evidencia.eficacia_por_evidencias.all %}
+                {% if efics and efics|length > 0 %}
+                  <p class="eficacia-head">
+                    <span class="eficacias-label">Eficácia:</span>
+                    <span class="eficacia-principal">
+                      <strong>
+                        {{ efics.0.tipo_eficacia.tipo_eficacia }} – {{ efics.0.percentual_eficacia_calculado|floatformat:2 }}%
+                      </strong>
+                    </span>
+                  </p>
+                  {% for ef in efics|slice:"1:" %}
+                    <p class="eficacia-secundaria" style="margin-top:2px;">
+                      {{ ef.tipo_eficacia.tipo_eficacia }} – {{ ef.percentual_eficacia_calculado|floatformat:2 }}%
+                    </p>
+                  {% endfor %}
+                {% endif %}
+              {% endwith %}
+
+              <p style="margin:0 0 14px; font-size:1rem;">
+                <span class="eficacias-label">Rigor da pesquisa:</span>
+                <span style="display:inline-flex; gap:6px; margin-left:8px; vertical-align:middle;">
+                  {% with rigor_value=evidencia.rigor_da_pesquisa %}
+                    {% for i in "1234567" %}
+                      {% if i|add:"0" <= rigor_value %}
+                        <span style="display:flex; align-items:center; justify-content:center; width:24px; height:24px; font-size:.85rem; font-weight:600; border-radius:4px; border:1px solid #007bff; color:white; background-color:#007bff;">
+                          {{ i }}
+                        </span>
+                      {% else %}
+                        <span style="display:flex; align-items:center; justify-content:center; width:24px; height:24px; font-size:.85rem; font-weight:600; border-radius:4px; border:1px solid #007bff; color:#007bff; background-color:transparent;">
+                          {{ i }}
+                        </span>
+                      {% endif %}
+                    {% endfor %}
+                  {% endwith %}
+                </span>
+              </p>
+
+              <p style="margin:0 0 14px; font-size:1rem;">
+                <span class="eficacias-label">Quantidade de participantes:</span>
+                <strong>{{ evidencia.numero_participantes }}</strong>
+              </p>
+
+              <p style="margin:0 0 20px; font-size:1rem;">
+                <span class="eficacias-label">Data:</span>
+                <strong>{{ evidencia.data_publicacao|date:"m/Y" }}</strong>
+              </p>
+
+              <p style="margin:0 0 22px; font-size:1rem;">
+                <span class="eficacias-label">País(es):</span>
+                {% with qs=evidencia.paises.all %}
+                  {% if qs %}
+                    <strong class="paises-box tooltip-container">
+                      {% for p in qs|slice:":3" %}
+                        {{ p.get_nome_display|default:p.nome }}{% if not forloop.last %}, {% endif %}
+                      {% endfor %}
+                      {% if qs|length > 3 %}
+                        … (+{{ qs|length|add:"-3" }})
+                      {% endif %}
+
+                      <span class="tooltip-paises">
+                        {% for p in qs %}
+                          {{ p.get_nome_display|default:p.nome }}{% if not forloop.last %}, {% endif %}
+                          {% if forloop.counter|divisibleby:7 and not forloop.last %}<br>{% endif %}
+                        {% endfor %}
+                      </span>
+                    </strong>
+                  {% else %}
+                    —
+                  {% endif %}
+                {% endwith %}
+              </p>
+
+              <p style="font-style:italic; font-size:1rem; margin:0 0 18px; width:100%;">
+                {{ evidencia.autores }}
+              </p>
+
+              {% if evidencia.referencia_bibliografica %}
+                <p style="font-size:.95rem; margin:0 0 18px; color:#555; width:100%;">
+                  {{ evidencia.referencia_bibliografica }}
+                </p>
+              {% endif %}
+
+              <p style="font-size:1.1rem; margin:0 0 14px;">
+                {{ evidencia.titulo_estudo }}
+              </p>
+
+              <a href="{{ evidencia.link_estudo }}" target="_blank"
+                 style="font-size:1rem; color:#007bff; text-decoration:underline; display:inline-block; margin-bottom:12px; word-break: break-all; max-width:100%;">
+                {{ evidencia.link_estudo }}
+              </a>
+
+              <div style="position:absolute; top:50px; right:0; width:400px; height:150px; padding:12px 16px; box-sizing:border-box; font-size:1rem; line-height:1.4; color:#222; white-space:normal;">
+                {{ evidencia.descricao|truncatechars:200|linebreaksbr }}
+              </div>
+
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div style="max-width:1100px; margin: 30px auto; padding: 20px; border-radius: 10px; background: #fafafa; border: 1px solid #eee;">
+        <strong>Sem evidências cadastradas</strong> para <strong>{{ tratamento.nome }}</strong> em <strong>{{ condicao.nome }}</strong>.
+      </div>
+    {% endif %}
+
+  </div>
+
+<style>
+  .site-footer {
+    background: #fff;
+    padding: 48px 0 28px;
+    border-top: 1px solid #eaeaea;
+  }
+
+  .site-footer .wrap {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    align-items: start;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .footer-col h5 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+    margin: 0 0 10px;
+  }
+
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-links li {
+    margin: 6px 0;
+  }
+
+  .footer-links a,
+  .footer-col a {
+    color: #8a8a8a;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .footer-links a:hover,
+  .footer-col a:hover {
+    color: #2b71b7;
+    text-decoration: underline;
+  }
+
+  .footer-social {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 10px;
+  }
+
+  .footer-social a {
+    color: #6f6f6f;
+    font-size: 22px;
+    transition: transform .15s ease, color .15s ease;
+  }
+
+  .footer-social a:hover {
+    color: #2b71b7;
+    transform: translateY(-1px);
+  }
+
+  .footer-small {
+    margin-top: 14px;
+    font-size: 11.5px;
+    color: #9a9a9a;
+    line-height: 1.5;
+  }
+/* Título das colunas */
+.footer-col h5{
+  font-size: 20px;   
+}
+
+/* Links */
+.footer-links a,
+.footer-col a{
+  font-size: 16px;  
+}
+
+/* Texto pequeno da coluna contato (empresa/CNPJ etc.) */
+.footer-small{
+  font-size: 13px;  
+}
+
+/* Ícones sociais */
+.footer-social a{
+  font-size: 18px; 
+}
+
+
+  @media (max-width: 768px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+  }
+</style>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+
+      <!-- Coluna 1 -->
+      <div class="footer-col">
+        <h5>Explorar</h5>
+        <ul class="footer-links">
+          <li><a href="https://www.telix.inf.br/pacientes">Pacientes</a></li>
+          <li><a href="https://www.telix.inf.br/profissionaisdesaude">Profissionais de Saúde</a></li>
+          <li><a href="https://www.telix.inf.br/divulgacao-de-servicos-e-pesquisas-de-saude">Empresas</a></li>
+          <li><a href="https://www.telix.inf.br/blog">Blog</a></li>
+          <li><a href="https://www.telix.inf.br/quem-somos-telix-contexto-na-saude">Quem somos</a></li>
+        </ul>
+      </div>
+
+      <!-- Coluna 2 -->
+      <div class="footer-col">
+        <h5>Tratamentos</h5>
+        <ul class="footer-links">
+          <li><a href="http://cadastros.telix.inf.br/tratamentos/">Tratamentos</a></li>
+          <li><a href="https://www.telix.inf.br/in%C3%ADcio">Opinião de Especialistas</a></li>
+        </ul>
+
+        <div class="footer-social" aria-label="Redes sociais">
+          <a href="https://www.instagram.com/telix.inf.br/" target="_blank" rel="noopener" aria-label="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://www.facebook.com/people/Telix-contexto-na-sa%C3%BAde/100089318347896/" target="_blank" rel="noopener" aria-label="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="https://www.linkedin.com/company/telix-canais-de-not%C3%ADcias" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="https://www.youtube.com/@TelixSaude" target="_blank" rel="noopener" aria-label="YouTube">
+            <i class="fab fa-youtube"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Coluna 3 -->
+      <div class="footer-col">
+        <h5>Fale com a gente!</h5>
+        <div class="footer-small">
+          <div><a href="https://api.whatsapp.com/send/?phone=45999040371&text&type=phone_number&app_absent=0">(45) 99904-0371</a></div>
+          <div><a href="mailto:contato@telix.inf.br">contato@telix.inf.br</a></div>
+
+          <div style="margin-top: 10px;">Linca Telecomunicações Ltda</div>
+          <div>CNPJ: 03.376.788/0001-23</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

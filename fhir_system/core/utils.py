@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 def buscar_imagem_google(medicamento):
-    """ Busca a primeira imagem do Google Imagens para o medicamento. """
+    
     url = f"https://www.google.com/search?tbm=isch&q={medicamento.replace(' ', '+')}"
     headers = {"User-Agent": "Mozilla/5.0"}
 

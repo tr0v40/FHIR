@@ -46,9 +46,6 @@
       flex-wrap:wrap;
     }
 
-    /* =========================================================
-       HEADER (igual ao que você já tinha refatorado)
-       ========================================================= */
     .site-header{ width:100%; background:#fff; }
     .header-inner{
       max-width:1250px;
@@ -106,10 +103,10 @@ a.tratamento-card:focus {
 }
 
  /* =========================
-   FOOTER (ÚNICO e FINAL)
+   FOOTER 
    ========================= */
 
-/* Mantém a mesma largura do header (opcional, mas ajuda a “casar” o eixo) */
+
 .footer .container{
   max-width:1250px;
 }
@@ -158,7 +155,7 @@ a.tratamento-card:focus {
   font-size:1.5rem;
   color:#6c757d;
   text-decoration:none;
-  margin:0;              /* importante: NÃO usar margin-right */
+  margin:0;              
   transition:none;
 }
 .footer .social-btn:hover{
@@ -415,8 +412,6 @@ a.tratamento-card:focus {
                       {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
                     </p>
 
-                    <!-- Fontes “ocultas” (se você usa mudarExibicao via DOM, podem vir do backend também) -->
-                    <!-- Ex.: <span id="faixa-eficacia-{{ tratamento.id }}" class="d-none">...</span> -->
                   </div>
 
                 </div>
@@ -554,7 +549,7 @@ a.tratamento-card:focus {
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <!-- =========================================================
-       JS ÚNICO (sem duplicar listeners)
+       
        - Não quebra se não existir filtro/form na tela
        ========================================================= -->
   <script>

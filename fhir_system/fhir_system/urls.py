@@ -23,6 +23,7 @@ urlpatterns = [
     path("tratamentos/", views.tratamentos, name="tratamentos"),
     path('admin/core/condicaosaude/<int:pk>/change/', CondicaoSaudeDetailView.as_view(), name='condicao_saude_detail'),
     path('api/', include('api.urls')),
+    path("", include("core.public_urls")),
     path(
         "enxaqueca/<slug:slug>/",
         views.detalhes_tratamentos,
@@ -60,10 +61,6 @@ urlpatterns = [
         views.tratamentos_crise_enxaqueca,
         name="tratamentos_crise_enxaqueca",
     ),
-
-
-
-
     path(
         "tratamentos-crise-enxaqueca-com-filtros/",
         views.react_app,
@@ -71,10 +68,6 @@ urlpatterns = [
     ),
     re_path(r"^tratamentos-crise-enxaqueca/.*$", views.react_app),
 
-
-
-
- 
     
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

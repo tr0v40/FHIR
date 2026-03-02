@@ -195,7 +195,7 @@ class Contraindicacao(models.Model):
     descricao = models.TextField()
     imagem = models.ImageField(upload_to="contraindicacoes/", blank=True, null=True)
 
-    # 🔹 Novos campos vindos de ClinicalUseDefinition
+    
     contraindication_name = models.CharField(
         max_length=255,
         verbose_name="ClinicalUseDefinition.contraindication-name",
@@ -328,12 +328,29 @@ class CondicaoSaude(models.Model):
         max_length=255,
         verbose_name="Nome da Condição de Saúde"
     )
+    slug = models.SlugField(max_length=255, unique=True, blank=True, db_index=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base = slugify(self.nome) or "condicao"
+            slug = base
+            i = 2
+            while CondicaoSaude.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base}-{i}"
+                i += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
+
+    
+    
+    
     descricao = models.TextField(
         verbose_name="Descrição Relacionada à Condição de Saúde",
         blank=True, null=True
     )
 
-    # 🔹 Novos campos
+    
     condition = models.CharField(
         max_length=255,
         blank=True, null=True,
@@ -343,6 +360,8 @@ class CondicaoSaude(models.Model):
         blank=True, null=True,
         verbose_name="Condition.description"
     )
+
+
 
     class Meta:
         verbose_name = "Condição de Saúde"
@@ -409,13 +428,13 @@ class DetalhesTratamentoResumo(models.Model):
     avaliacao = models.IntegerField(null=True, blank=True) 
     eficacia_min = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     eficacia_max = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    prazo_efeito_min = models.IntegerField(blank=True, null=True)  # Para armazenar o tempo em minutos
+    prazo_efeito_min = models.IntegerField(blank=True, null=True)  
     prazo_efeito_max = models.IntegerField(blank=True, null=True)
     link_para_compra_de_tratamento = models.URLField(blank=True, null=True)
     especificacao_do_custo = models.CharField(max_length=200,blank=True)
     reacoes_adversas = models.ManyToManyField(
         ReacaoAdversa,
-        through='DetalhesTratamentoReacaoAdversa',  # modelo intermediário
+        through='DetalhesTratamentoReacaoAdversa',  
         related_name='tratamentos_com_reacao'
     )
     
@@ -436,9 +455,9 @@ class DetalhesTratamentoResumo(models.Model):
         }
         unidade = self.prazo_efeito_unidade
         if valor == 1:
-            # singular
+            
             return unidade
-        # plural com exceções
+        
         return excecoes.get(unidade, unidade + 's')
 
     # Método para formatar prazo mínimo
@@ -451,7 +470,7 @@ class DetalhesTratamentoResumo(models.Model):
     def prazo_efeito_max_formatado(self):
         return f"{self.prazo_efeito_max} {self.pluralizar_unidade(self.prazo_efeito_max)}"
 
-    # Opcional: método para exibir a faixa completa
+    # método para exibir a faixa completa
     @property
     def prazo_efeito_faixa_formatada(self):
         return f"{self.prazo_efeito_min_formatado} a {self.prazo_efeito_max_formatado}"
@@ -465,10 +484,8 @@ class DetalhesTratamentoResumo(models.Model):
     alerta = models.TextField(blank=True, null=True) 
     imagem = models.ImageField(upload_to="tratamentos/", blank=True, null=True)
     imagem_detalhes = models.ImageField(upload_to="tratamentos/detalhes/", blank=True, null=True)
-
     quando_usar = models.TextField(blank=True)    
     tipo_tratamento = models.ManyToManyField(TipoTratamento, blank=True)
-
     custo_medicamento = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
     links_externos = models.TextField(blank=True, null=True)
     alertas = models.TextField(blank=True, null=True)
@@ -693,13 +710,12 @@ COUNTRY_TRANSLATION = {
     'Zimbabwe': 'Zimbábue',
 }
 
-# Monta a lista de países com os nomes em inglês e português
 COUNTRIES = [
     (country.name, COUNTRY_TRANSLATION.get(country.name, country.name))
     for country in pycountry.countries
 ]
 
-# Adiciona os países da lista personalizada para os múltiplos continentes
+
 COUNTRIES += [
     
     ('Multiple countries in the Americas', 'Vários países da América'),
@@ -721,7 +737,7 @@ class DetalheTratamentoCondicaoSaude(models.Model):
     tratamento = models.ForeignKey('DetalhesTratamentoResumo', on_delete=models.CASCADE)
     condicao = models.ForeignKey('CondicaoSaude', on_delete=models.CASCADE)
 
-    # campo extra específico dessa relação
+    
     descricao_relacionada = models.TextField(blank=True, null=True)
 
     class Meta:
@@ -793,15 +809,9 @@ class EvidenciasClinicas(models.Model):
         verbose_name="Evidence.title"
     )
 
-
-
-
-
     participantes_com_beneficio = models.IntegerField(default=0)
     participantes_iniciaram_tratamento = models.IntegerField(default=0)
     percentual = models.CharField(max_length=100, blank=True, null=True) 
-
-    # Novo campo para reações adversas
     risco_reacao = models.CharField(max_length=100, blank=True, null=True)  # ex: "1% a 10% COMUM"
 
     class Meta:
@@ -812,10 +822,10 @@ class EvidenciasClinicas(models.Model):
         return f"{self.titulo} - {self.tratamento.nome}"
     @property
     def percentual_eficacia(self):
-        """Calcula o percentual de eficácia automaticamente"""
+
         if self.participantes_iniciaram_tratamento > 0:
             return (self.participantes_com_beneficio / self.participantes_iniciaram_tratamento) * 100
-        return 0.0  # Caso não haja participantes iniciados, retorna 0
+        return 0.0  
 
 
 
@@ -823,7 +833,7 @@ class EvidenciasClinicas(models.Model):
 class Tratamento(models.Model):
     nome = models.CharField(max_length=255)
     descricao = models.TextField()
-    # outros campos do tratamento
+    
 
 class Avaliacao(models.Model):
     tratamento = models.ForeignKey(DetalhesTratamentoResumo, on_delete=models.CASCADE, related_name='avaliacoes')
@@ -911,3 +921,51 @@ class EficaciaPorEvidencia(models.Model):
     
     def __str__(self):
         return f"{self.evidencia.titulo} - {self.tipo_eficacia.tipo_eficacia} - Eficácia: {self.percentual_eficacia_calculado}%"
+    
+
+from django.db import models
+from django.utils.text import slugify
+from django.core.exceptions import ValidationError
+
+
+class PaginaDetalheTratamento(models.Model):
+    condicao = models.ForeignKey(
+        "core.CondicaoSaude",
+        on_delete=models.CASCADE,
+        related_name="paginas_tratamento"
+    )
+
+    tratamento = models.ForeignKey(
+        "core.DetalhesTratamentoResumo",
+        on_delete=models.CASCADE,
+        related_name="paginas_publicas"
+    )
+
+    publicada = models.BooleanField(default=True)
+
+    # SEO
+    meta_title = models.CharField(max_length=255, blank=True)
+    meta_description = models.TextField(blank=True)
+
+    # Customização opcional
+    titulo_custom = models.CharField(max_length=255, blank=True)
+    descricao_custom = models.TextField(blank=True)
+
+    # CTA
+    cta_label = models.CharField(max_length=120, blank=True)
+    cta_url = models.URLField(blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("condicao", "tratamento")
+        verbose_name = "URL Detalhe"
+        verbose_name_plural = "URLs Detalhes"
+
+    def __str__(self):
+        return f"{self.condicao.nome} - {self.tratamento.nome}"
+
+    def clean(self):
+        # impede conflito com admin e api
+        if self.condicao.slug in ["admin", "api"]:
+            raise ValidationError("Slug da condição não pode ser 'admin' ou 'api'.")
