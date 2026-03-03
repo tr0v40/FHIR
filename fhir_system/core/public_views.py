@@ -98,6 +98,7 @@ def pagina_detalhe_tratamento(request, condicao_slug, tratamento_slug):
             "contraindicacoes",
             "condicoes_saude",
             "tipos_eficacia",
+            "reacoes_adversas_detalhes__reacao_adversa",
         )
         .get(pk=page.tratamento_id)
     )
@@ -107,13 +108,14 @@ def pagina_detalhe_tratamento(request, condicao_slug, tratamento_slug):
         tratamento.prazo_efeito_min,
         tratamento.prazo_efeito_max,
         tratamento.prazo_efeito_unidade,  
-    )
-
+        )
+    detalhes_reacoes_adversas = tratamento.reacoes_adversas_detalhes.all()
     context = {
         "page": page,
         "condicao": page.condicao,
         "tratamento": tratamento,
         "prazo_efeito": prazo_efeito,
+        "detalhes_reacoes_adversas": detalhes_reacoes_adversas,
     }
 
     return render(request, "core/pagina_detalhe_tratamento.html", context)
