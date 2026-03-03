@@ -357,6 +357,15 @@ const backToTopStyle = {
   zIndex: 9999,
 };
 
+const slugifyEF = (s) =>
+  String(s ?? '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+
 const detailsBtnStyle = { opacity: 0.7, marginBottom: 12 };
 
 // nome do componente trocado
@@ -740,7 +749,7 @@ function TratamentosCrise() {
                   <a
                     key={tratamento?.id ?? `${tratamento?._nomeKey ?? 't'}-${index}`}
                     // rota e tipo da URL (ajuste se seu backend usa outro valor)
-                    href={`${DJANGO_BASE}/enxaqueca/${tratamento.slug}/?tipo=${encodeURIComponent(TIPO_EFICACIA_OBRIGATORIO)}`}
+                    href={`${DJANGO_BASE}/enxaqueca/${tratamento.slug}/?ef=${encodeURIComponent(slugifyEF(TIPO_EFICACIA_OBRIGATORIO))}`}
                     className="tratamento-card"
                     style={{ textDecoration: 'none' }}
                   >

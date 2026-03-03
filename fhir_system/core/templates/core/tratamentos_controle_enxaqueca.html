@@ -446,6 +446,25 @@
 
 }
 
+.tratamento-card,
+.tratamento-card:hover,
+.tratamento-card:focus,
+.tratamento-card:active{
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.tratamento-card *{
+  color: inherit;
+  text-decoration: none;
+}
+
+/* se algum texto específico precisa ser azul, deixe ele com classe própria */
+.tratamento-card a{
+  color: inherit;
+}
+
+
 /* Centraliza os ícones abaixo de "Tratamentos" */
 .footer-social-center{
   display: flex;
@@ -681,6 +700,7 @@
   .eficacia-range{
     text-align: center !important;
   }
+
 }
 
     }
@@ -732,8 +752,8 @@
         <div class="tratamento-section all">
           {% for item in todos_os_tratamentos %}
             {% with tratamento=item.obj %}
-              <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}" class="text-decoration-none text-dark">
-                <div class="tratamento-card">
+              <a href="{% url 'pagina_detalhe_tratamento' condicao_slug='enxaqueca' tratamento_slug=tratamento.slug %}?ef=controle"class="tratamento-card"> 
+            
                   <div class="tratamento-content">
 
                     <!-- Imagem -->
@@ -829,7 +849,7 @@
                     </div>
 
                   </div>
-                </div>
+                
               </a>
             {% endwith %}
           {% endfor %}
@@ -840,7 +860,7 @@
         <div class="tratamento-section controle">
           {% for item in tratamentos_controle %}
             {% with tratamento=item.obj %}
-              <a href="{% url 'detalhes_tratamentos' slug=item.obj.slug %}?tipo={{ item.tipo|urlencode }}" class="tratamento-card text-decoration-none text-dark">
+              <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}?ef={{ item.tipo_key }}" class="tratamento-card">
                 <div class="tratamento-content">
 
                   {% if tratamento.imagem %}

@@ -354,7 +354,7 @@ a.tratamento-card:focus {
         <div class="tratamento-section all">
           {% for item in todos_os_tratamentos %}
             {% with tratamento=item.obj %}
-              <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}?tipo={{ item.tipo|urlencode }}" class="tratamento-card">
+              <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}?ef={{ item.tipo_key }}" class="tratamento-card">
                 <div class="tratamento-content">
 
                   {% if tratamento.imagem %}
@@ -426,7 +426,7 @@ a.tratamento-card:focus {
         <div class="tratamento-section reducao">
           {% for item in tratamentos_reducao %}
             {% with tratamento=item.obj %}
-              <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}" class="tratamento-card">
+              <a href="{% url 'detalhes_tratamentos' slug=tratamento.slug %}?ef={{ item.tipo_key }}" class="tratamento-card">
                 <div class="tratamento-content">
 
                   {% if tratamento.imagem %}

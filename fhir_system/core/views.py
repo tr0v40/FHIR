@@ -14,6 +14,7 @@ from .models import CondicaoSaude
 from math import isfinite
 from django.db.models import   When
 import unicodedata
+from django.utils.text import slugify
 from django.db.models import (
      Value, Q
 )
@@ -1120,6 +1121,7 @@ def tratamentos_controle_enxaqueca(request):
             tratamentos_unicos[t.id] = {
                 "obj": t,
                 "tipo": "Controle",
+                "tipo_key": slugify("Controle"),
                 "min": stats_controle["min"],
                 "max": stats_controle["max"],
                 "min_str": stats_controle["min_str"],
@@ -1418,6 +1420,7 @@ def tratamentos_crise_enxaqueca(request):
                         tratamentos_unicos[t.id] = {
                             "obj": t,
                             "tipo": "Redução de sintomas",  
+                            "tipo_key": slugify("Redução de sintomas"),
                             "min": stats_reducao["min"],
                             "max": stats_reducao["max"],
                             "min_str": stats_reducao["min_str"],

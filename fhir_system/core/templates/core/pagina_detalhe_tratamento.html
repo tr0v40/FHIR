@@ -1835,16 +1835,13 @@ img {
 
 {# título #}
 <p class="eficacia-titulo">
- 
-Eficácia no tratamento de {{ condicao.nome }}
+  Eficácia no tratamento de {{ condicao.nome }}
 </p>
 
 <div class="eficacia-section">
-
   {% for tipo_eficacia in eficacias_por_tipo %}
     <div class="eficacia-item">
 
-      <!-- Barra centralizada -->
       <div class="efficacy-bar-wrapper">
         <div class="efficacy-bar"
              style="background: linear-gradient(
@@ -1853,46 +1850,31 @@ Eficácia no tratamento de {{ condicao.nome }}
                #0094FF {{ tipo_eficacia.max }}%,
                rgba(0,148,255,0.3) {{ tipo_eficacia.max }}%,
                rgba(0,148,255,0.3) 100%
-             );">   
+             );">
         </div>
       </div>
 
-
-      
-      <!-- Range centralizado -->
-      <!-- <p class="eficacia-range">
-        <span>{{ tipo_eficacia.min_str }} a</span>
-        <span>{{ tipo_eficacia.max_str }}%</span>
-      </p> -->
-
-      <!-- Linha com ícone + descrição, também centralizada -->
-      <div class="eficacia-caption">
+        <div class="eficacia-caption">
         <span class="eficacia-caption-icon">
-          {% if tipo_eficacia.imagem %}
-            <img src="{{ tipo_eficacia.imagem.url }}" alt="{{ tipo_eficacia_label }}">
-          {% else %}
-            <img src="{% static 'img/default-icon.png' %}" alt="{{ tipo_eficacia_label }}">
-          {% endif %}
+            {% if tipo_eficacia.imagem_url %}
+            <img src="{{ tipo_eficacia.imagem_url }}" alt="{{ tipo_eficacia.label }}">
+            {% else %}
+            <img src="{% static 'img/default-icon.png' %}" alt="{{ tipo_eficacia.label }}">
+            {% endif %}
         </span>
 
         <span class="eficacia-caption-text">
-          <span class="eficacia-caption-text-strong">
-            {{ tipo_eficacia_label }}
-          </span>
-          <span class="eficacia-caption-range-min">
-            {{ tipo_eficacia.min_str }}
-          </span>
-          a
-          <span class="eficacia-caption-range-max">
-            {{ tipo_eficacia.max_str }}%
-          </span>
-
+            <span class="eficacia-caption-text-strong">{{ tipo_eficacia.label }}</span>
+            <span class="eficacia-caption-range-min">{{ tipo_eficacia.min_str }}</span>
+            a
+            <span class="eficacia-caption-range-max">{{ tipo_eficacia.max_str }}%</span>
         </span>
-      </div>
+        </div>
 
     </div>
+  {% empty %}
+    <p class="text-center text-muted">Sem dados de eficácia para este tratamento.</p>
   {% endfor %}
-
 </div>
 
 
