@@ -185,12 +185,14 @@
 
     <h1 class="titulo-tratamento">
       <!-- BACK dinâmico -->
-      <a class="back-link" href="{% url 'pagina_detalhe_tratamento' condicao.slug tratamento.slug %}">
+      <a
+  class="back-link"
+  href="{% url 'pagina_detalhe_tratamento' condicao.slug tratamento.slug %}{% if ef_filtro_slug %}?ef={{ ef_filtro_slug }}{% endif %}"
+>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <path d="M15 18l-6-6 6-6" />
         </svg>
       </a>
-
       <span>
         Pesquisas sobre eficácia do tratamento:
         <a href="#" style="color:#007bff; text-decoration:none;">

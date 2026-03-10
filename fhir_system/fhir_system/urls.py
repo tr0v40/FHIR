@@ -6,6 +6,8 @@ from django.conf.urls.static import static
 from core import views
 from django.contrib.auth.views import LoginView
 from core.views import CondicaoSaudeDetailView, tipo_eficacia_descricao_json
+from core.public_views_listas import pagina_lista_por_url
+
 
 
 
@@ -37,13 +39,16 @@ urlpatterns = [
 
 
 
-
+    path("listas/<slug:condicao_slug>/<slug:tipo_eficacia_slug>/", pagina_lista_por_url, name="pagina_lista"),
 
     path(
         "tratamentos-controle-enxaqueca/",
         views.tratamentos_controle_enxaqueca,
         name="tratamentos_controle_enxaqueca",
     ),
+
+
+
 
     path(
         "tratamentos-controle-enxaqueca-com-filtros/",

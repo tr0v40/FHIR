@@ -1,8 +1,12 @@
 from django.shortcuts import get_object_or_404, render
 from .models import PaginaDetalheTratamento
-from core.models import DetalhesTratamentoResumo
+from core.models import DetalhesTratamentoResumo,CondicaoSaude
 from django.conf import settings
 from django.utils.text import slugify
+# views.py (DETALHE)
+from django.db.models import F, FloatField, Min, Max
+from django.db.models.functions import Coalesce, NullIf
+from django.db.models.expressions import ExpressionWrapper
 
 def _format_unidade_pt(unidade_raw, valor_ref):
     """
@@ -34,6 +38,11 @@ def _format_unidade_pt(unidade_raw, valor_ref):
         "semana": "sem",
         "semanas": "sem",
 
+        "sessao": "sessao",
+        "sessão": "sessao",
+        "sessoes": "sessao",
+        "sessões": "sessao",
+
         "mes": "mes",
         "mês": "mes",
         "meses": "mes",
@@ -48,6 +57,7 @@ def _format_unidade_pt(unidade_raw, valor_ref):
         "h": ("hora", "horas"),
         "d": ("dia", "dias"),
         "sem": ("semana", "semanas"),
+        "sessao": ("sessão", "sessões"),
         "mes": ("mês", "meses"),
         "ano": ("ano", "anos"),
     }
@@ -83,63 +93,56 @@ def _format_prazo_efeito(min_v, max_v, unidade_raw):
 
     return None
 
-from django.conf import settings
-from django.shortcuts import get_object_or_404, render
-from django.db.models import F, FloatField, Min, Max
-from django.db.models.functions import Coalesce, NullIf
-from django.db.models.expressions import ExpressionWrapper
-
-from .models import PaginaDetalheTratamento
-from core.models import DetalhesTratamentoResumo
 
 
-# slug do parâmetro -> nome EXATO do tipo no banco
-EF_MAP = {
-    "reducao-de-sintomas": "Redução de sintomas",
-    "controle": "Controle",
-    # se tiver outros tipos no futuro, só adicionar aqui:
-    # "prevencao": "Prevenção",
-    # "remissao": "Remissão",
-}
 def pagina_detalhe_tratamento(request, condicao_slug, tratamento_slug):
-    page = get_object_or_404(
-        PaginaDetalheTratamento,
-        publicada=True,
-        condicao__slug=condicao_slug,
-        tratamento__slug=tratamento_slug,
-    )
-
-    tratamento = (
-        DetalhesTratamentoResumo.objects
-        .prefetch_related(
-            "tipo_tratamento",
-            "contraindicacoes",
-            "condicoes_saude",
-            "reacoes_adversas_detalhes__reacao_adversa",
-            "evidencias__eficacia_por_evidencias__tipo_eficacia",
+    page = (
+        PaginaDetalheTratamento.objects
+        .filter(
+            publicada=True,
+            condicao__slug=condicao_slug,
+            tratamento__slug=tratamento_slug,
         )
-        .get(pk=page.tratamento_id)
+        .select_related("condicao", "tratamento")
+        .first()
     )
 
-    # ---------------- EFICÁCIA (a partir das evidências) ----------------
+    if page:
+        condicao = page.condicao
+        tratamento = page.tratamento
+    else:
+        condicao = get_object_or_404(CondicaoSaude, slug=condicao_slug)
+
+        tratamento = get_object_or_404(
+            DetalhesTratamentoResumo.objects.prefetch_related(
+                "condicoes_saude",
+                "tipo_tratamento",
+                "contraindicacoes",
+                "reacoes_adversas_detalhes__reacao_adversa",
+                "evidencias__eficacia_por_evidencias__tipo_eficacia",
+            ),
+            slug=tratamento_slug,
+            condicoes_saude=condicao,
+        )
+
+
     pct_expr = ExpressionWrapper(
         100.0 * Coalesce(F("eficacia_por_evidencias__participantes_com_beneficio"), 0)
         / Coalesce(NullIf(F("eficacia_por_evidencias__participantes_iniciaram_tratamento"), 0), 1),
         output_field=FloatField(),
     )
 
-    ef_key = (request.GET.get("ef") or "").strip().lower()
-    ef_nome = EF_MAP.get(ef_key)  # ex: "Controle" ou "Redução de sintomas"
+    ef_slug = (request.GET.get("ef") or "").strip().lower()  # <-- DINÂMICO, sem lista fechada
 
     base = tratamento.evidencias.filter(condicao_saude=page.condicao)
 
-    # se veio do card da lista, filtra para mostrar só aquele tipo
-    if ef_nome:
-        base = base.filter(eficacia_por_evidencias__tipo_eficacia__tipo_eficacia=ef_nome)
+    # se veio ef=..., mostra SOMENTE aquela eficácia
+    if ef_slug:
+        base = base.filter(eficacia_por_evidencias__tipo_eficacia__slug=ef_slug)
 
     eficacia_qs = (
         base.values(
-            "eficacia_por_evidencias__tipo_eficacia_id",
+            "eficacia_por_evidencias__tipo_eficacia__slug",
             "eficacia_por_evidencias__tipo_eficacia__tipo_eficacia",
         )
         .annotate(
@@ -153,25 +156,22 @@ def pagina_detalhe_tratamento(request, condicao_slug, tratamento_slug):
     eficacias_por_tipo = []
     for row in eficacia_qs:
         label = row["eficacia_por_evidencias__tipo_eficacia__tipo_eficacia"] or ""
-
-        min_num = float(row["min_pct"] or 0)
-        max_num = float(row["max_pct"] or 0)
-        min_num = max(0, min(100, min_num))
-        max_num = max(0, min(100, max_num))
+        min_num = max(0, min(100, float(row["min_pct"] or 0)))
+        max_num = max(0, min(100, float(row["max_pct"] or 0)))
 
         imagem_path = row.get("img_path")
         imagem_url = f"{settings.MEDIA_URL}{imagem_path}" if imagem_path else None
 
         eficacias_por_tipo.append({
+            "slug": row["eficacia_por_evidencias__tipo_eficacia__slug"],
             "label": label,
             "imagem_url": imagem_url,
             "min": min_num,
             "max": max_num,
-            "min_str": f"{min_num:.0f}".replace(".", ","),
-            "max_str": f"{max_num:.0f}".replace(".", ","),
+            "min_str": f"{min_num:.2f}".replace(".", ","),
+            "max_str": f"{max_num:.2f}".replace(".", ","),
         })
 
-    # ---------------- PRAZO PARA EFEITO ----------------
     prazo_efeito = _format_prazo_efeito(
         tratamento.prazo_efeito_min,
         tratamento.prazo_efeito_max,
@@ -185,7 +185,6 @@ def pagina_detalhe_tratamento(request, condicao_slug, tratamento_slug):
         "prazo_efeito": prazo_efeito,
         "detalhes_reacoes_adversas": tratamento.reacoes_adversas_detalhes.all(),
         "eficacias_por_tipo": eficacias_por_tipo,
-        "ef_filtro_label": ef_nome,  # opcional (pra exibir no título se quiser)
+        "ef_filtro_slug": ef_slug,  # opcional
     }
-
     return render(request, "core/pagina_detalhe_tratamento.html", context)

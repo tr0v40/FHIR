@@ -1,6 +1,7 @@
   # ==================== IMPORTS SESSIONS ==================== #
 
 
+
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
@@ -556,6 +557,107 @@ class PaginaDetalheTratamentoAdmin(admin.ModelAdmin):
             url,
         )
     actions = ("publicar", "despublicar")
+
+    @admin.action(description="Publicar páginas selecionadas")
+    def publicar(self, request, queryset):
+        updated = queryset.update(publicada=True)
+        self.message_user(request, f"{updated} página(s) publicada(s).", level=messages.SUCCESS)
+
+    @admin.action(description="Despublicar páginas selecionadas")
+    def despublicar(self, request, queryset):
+        updated = queryset.update(publicada=False)
+        self.message_user(request, f"{updated} página(s) despublicada(s).", level=messages.WARNING)
+
+
+# core/admin.py
+from django.contrib import admin, messages
+from django.urls import reverse
+from django.utils.html import format_html
+
+from .models import PaginaListaTratamento
+
+
+@admin.register(PaginaListaTratamento)
+class PaginaListaTratamentoAdmin(admin.ModelAdmin):
+    change_form_template = "admin/core/paginalistatratamento/change_form.html"
+
+    list_display = (
+        "condicao_saude",
+        "tipo_eficacia",
+        "badge_publicacao",
+        "url_publica_link",
+        "preview",
+        "copiar_url",
+        "created_at",
+    )
+
+    list_filter = ("publicada", "condicao_saude", "tipo_eficacia")
+    search_fields = (
+        "titulo",
+        "condicao_saude__nome",
+        "condicao_saude__slug",
+        "tipo_eficacia__tipo_eficacia",
+        "tipo_eficacia__slug",
+    )
+    autocomplete_fields = ("condicao_saude", "tipo_eficacia")
+    list_select_related = ("condicao_saude", "tipo_eficacia")
+    ordering = ("-created_at",)
+    date_hierarchy = "created_at"
+
+    #  Esconde o template do formulário do admin
+    exclude = ("template",)
+
+    fieldsets = (
+        ("Publicação", {"fields": ("publicada", "condicao_saude", "tipo_eficacia")}),
+        ("SEO / Página", {"fields": ("titulo",)}),
+        ("Sistema", {"fields": ("created_at",), "classes": ("collapse",)}),
+    )
+    readonly_fields = ("created_at",)
+
+    actions = ("publicar", "despublicar")
+
+    def _public_url_path(self, obj):
+        return reverse(
+            "pagina_lista",
+            kwargs={
+                "condicao_slug": obj.condicao_saude.slug,
+                "tipo_eficacia_slug": obj.tipo_eficacia.slug,  # agora existe
+            },
+        )
+
+    @admin.display(description="Status")
+    def badge_publicacao(self, obj):
+        if obj.publicada:
+            return format_html(
+                '<span style="padding:2px 8px;border-radius:999px;background:#DCFCE7;color:#166534;font-weight:600;">Publicada</span>'
+            )
+        return format_html(
+            '<span style="padding:2px 8px;border-radius:999px;background:#FEF3C7;color:#92400E;font-weight:600;">Rascunho</span>'
+        )
+
+    @admin.display(description="URL")
+    def url_publica_link(self, obj):
+        url = self._public_url_path(obj)
+        return format_html('<a href="{}" target="_blank">{}</a>', url, url)
+
+    @admin.display(description="Preview")
+    def preview(self, obj):
+        url = self._public_url_path(obj)
+        return format_html('<a class="button" href="{}" target="_blank">Abrir</a>', url)
+
+    @admin.display(description="Copiar")
+    def copiar_url(self, obj):
+        url = self._public_url_path(obj)
+        return format_html(
+            "<button type='button' class='button' onclick=\"navigator.clipboard.writeText('{}')\">Copiar</button>",
+            url,
+        )
+
+    def save_model(self, request, obj, form, change):
+        # ✅ garante o template padrão mesmo escondido
+        if not obj.template:
+            obj.template = "core/lista_tratamentos.html"
+        super().save_model(request, obj, form, change)
 
     @admin.action(description="Publicar páginas selecionadas")
     def publicar(self, request, queryset):

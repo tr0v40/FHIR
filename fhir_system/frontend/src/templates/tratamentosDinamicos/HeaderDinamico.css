@@ -1,0 +1,141 @@
+.site-header-dinamico {
+  width: 100%;
+  background: #ffffff;
+}
+
+.header-inner-dinamico {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 26px 20px 18px 20px;
+  display: grid;
+  grid-template-columns: 1fr 240px;
+  grid-template-rows: auto auto;
+  column-gap: 40px;
+  align-items: start;
+}
+
+.brand-dinamico {
+  grid-column: 1;
+  grid-row: 1   ;
+  text-decoration: none;
+  display: inline-flex;
+}
+
+.logo-telix-dinamico {
+  height: 180px;
+  width: auto;
+  display: block;
+  margin-left: -25px;
+}
+
+.header-main-dinamico {
+  grid-column: 1;
+  grid-row: 2;
+  margin-top: -6px;
+}
+
+.page-title-dinamico {
+  margin: 0;
+  font-size: 35px;
+  font-weight: 400;
+  line-height: 1.15;
+  color: #111;
+}
+
+.page-subtitle-dinamico {
+  margin-top: 6px;
+  margin-bottom: 0;
+  font-size: 15px;
+  color: #000;
+}
+
+.resumo-filtros-dinamico {
+  margin-top: 4px;
+}
+
+.resumo-linha-dinamico {
+  font-size: 15px;
+  margin-top: 3px;
+  line-height: 1.3;
+}
+
+.resumo-label-dinamico {
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+.resumo-valor-dinamico {
+  font-weight: 400;
+}
+
+.resumo-contra-lista-dinamico {
+  margin: 4px 0 0 0;
+  padding-left: 18px;
+}
+
+.resumo-contra-item-dinamico {
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.header-warning-dinamico {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: flex-start;
+  justify-self: end;
+  background: #000;
+  color: #fff;
+  padding: 15px 16px;
+  border-radius: 6px;
+  font-size: 15px;
+  line-height: 1.70;
+  width: 250px;
+  text-align: center;
+  margin-top: 0px;
+}
+
+.header-warning-dinamico p {
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .header-inner-dinamico {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 0;
+    row-gap: 0;
+  }
+
+  .header-warning-dinamico {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .site-header-dinamico {
+    padding: 0;
+  }
+
+  .header-inner-dinamico {
+    padding: 10px 10px 14px 10px;
+  }
+
+  .logo-telix-dinamico {
+    height: 120px;
+    margin-left: -12px;
+  }
+
+  .header-main-dinamico {
+    margin-top: -10px;
+  }
+
+  .page-title-dinamico {
+    font-size: 20px;
+  }
+
+  .page-subtitle-dinamico,
+  .resumo-linha-dinamico,
+  .resumo-contra-item-dinamico {
+    font-size: 12px;
+  }
+}

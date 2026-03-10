@@ -1,0 +1,43 @@
+{# core/templates/admin/core/paginalistatratamento/change_form.html #}
+{% extends "admin/change_form.html" %}
+
+{% block content %}
+  {% if original and original.pk %}
+    <div style="margin-bottom:14px;padding:12px 14px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <strong>Página Pública</strong>
+
+        {% if original.publicada %}
+          <span style="padding:2px 8px;border-radius:999px;background:#DCFCE7;color:#166534;font-weight:600;">Publicada</span>
+        {% else %}
+          <span style="padding:2px 8px;border-radius:999px;background:#FEF3C7;color:#92400E;font-weight:600;">Rascunho</span>
+        {% endif %}
+
+        <span style="margin-left:12px;"><strong>URL:</strong>
+          <a href="{% url 'pagina_lista' condicao_slug=original.condicao_saude.slug tipo_eficacia_slug=original.tipo_eficacia.slug %}"
+             target="_blank">
+            {% url 'pagina_lista' condicao_slug=original.condicao_saude.slug tipo_eficacia_slug=original.tipo_eficacia.slug %}
+          </a>
+        </span>
+
+        <span style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;">
+          <a class="button" target="_blank"
+             href="{% url 'pagina_lista' condicao_slug=original.condicao_saude.slug tipo_eficacia_slug=original.tipo_eficacia.slug %}">
+            Abrir preview
+          </a>
+
+          <button type="button" class="button"
+            onclick="navigator.clipboard.writeText('{% url 'pagina_lista' condicao_slug=original.condicao_saude.slug tipo_eficacia_slug=original.tipo_eficacia.slug %}')">
+            Copiar path
+          </button>
+        </span>
+      </div>
+
+      <small style="display:block;margin-top:8px;color:#6b7280;">
+        Dica: após salvar, revise título.
+      </small>
+    </div>
+  {% endif %}
+
+  {{ block.super }}
+{% endblock %}

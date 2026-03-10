@@ -7,6 +7,8 @@ from django.db.models import Case, When, Value, FloatField, F, ExpressionWrapper
 from django.db.models.functions import Coalesce
 from django.db.models import Prefetch
 
+
+
 from core.models import (
     DetalhesTratamentoResumo,
     ReacaoAdversa,
@@ -24,9 +26,16 @@ from .serializers import (
     ContraindicacaoSerializer,
     EvidenciasClinicasSerializer,
     EficaciaPorEvidenciaSerializer,
+    EficaciaPorEvidenciaDinamicaSerializer,
     DetalhesTratamentoReacaoAdversaSerializer,
 )
 
+from .services.tratamentos_dinamicos import (
+    normalize_str,
+    get_bool_param,
+    get_detalhes_tratamentos_queryset,
+    get_eficacia_queryset,
+)
 
 class DetalhesTratamentoReacaoAdversaViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = (
@@ -123,6 +132,30 @@ class DetalhesTratamentoResumoViewSet(viewsets.ReadOnlyModelViewSet):
         return qs
 
 
+
+
+# ==========================================
+# NOVA VIEW DINÂMICA
+# ==========================================
+class DetalhesTratamentoDinamicoViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Exemplo:
+    /api/detalhes-tratamentos-dinamicos/?tela=filtros_dinamicos&condicao_slug=enxaqueca&somente_condicao=1
+    """
+    serializer_class = DetalhesTratamentoResumoTelaControleSerializer
+
+    def get_queryset(self):
+        tela = normalize_str(self.request.query_params.get("tela"))
+        condicao_slug = normalize_str(self.request.query_params.get("condicao_slug"))
+        somente_condicao = get_bool_param(self.request.query_params.get("somente_condicao"))
+
+        return get_detalhes_tratamentos_queryset(
+            tela=tela,
+            condicao_slug=condicao_slug,
+            somente_condicao=somente_condicao,
+        )
+
+
 class ReacaoAdversaViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ReacaoAdversa.objects.all()
     serializer_class = ReacaoAdversaSerializer
@@ -136,6 +169,8 @@ class ContraindicacaoViewSet(viewsets.ReadOnlyModelViewSet):
 class EvidenciasClinicasViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = EvidenciasClinicas.objects.select_related('condicao_saude')
     serializer_class = EvidenciasClinicasSerializer
+
+
 
 
 class EficaciaPorEvidenciaViewSet(viewsets.ReadOnlyModelViewSet):
@@ -156,3 +191,23 @@ class EficaciaPorEvidenciaViewSet(viewsets.ReadOnlyModelViewSet):
             tipo_eficacia__tipo_eficacia__in=["Controle", "Redução de sintomas"]
         )
 
+
+
+# ==========================================
+# NOVA VIEW DINÂMICA
+# ==========================================
+class EficaciaPorEvidenciaDinamicaViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Exemplo:
+    /api/eficacia-por-evidencia-dinamica/?condicao_slug=enxaqueca&tipo_eficacia_slug=reducao-de-sintomas
+    """
+    serializer_class = EficaciaPorEvidenciaDinamicaSerializer
+
+    def get_queryset(self):
+        condicao_slug = normalize_str(self.request.query_params.get("condicao_slug"))
+        tipo_eficacia_slug = normalize_str(self.request.query_params.get("tipo_eficacia_slug"))
+
+        return get_eficacia_queryset(
+            condicao_slug=condicao_slug,
+            tipo_eficacia_slug=tipo_eficacia_slug,
+        )

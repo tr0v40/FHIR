@@ -1630,4 +1630,3 @@ def react_app(request):
     except FileNotFoundError:
         return HttpResponseServerError(f"React build não encontrado em: {index_path}")
 
-

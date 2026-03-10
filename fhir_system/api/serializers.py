@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+
+
 from core.models import (
     DetalhesTratamentoResumo,
     CondicaoSaude,
@@ -144,4 +146,29 @@ class DetalhesTratamentoResumoTelaControleSerializer(serializers.ModelSerializer
             "indicado_lactantes",
             "indicado_gravidez",
             "condicoes_saude",
+        ]
+
+class TipoEficaciaDinamicoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TipoEficacia
+        fields = ['id', 'tipo_eficacia', 'descricao', 'imagem']
+
+
+class EficaciaPorEvidenciaDinamicaSerializer(serializers.ModelSerializer):
+    tipo_eficacia = TipoEficaciaDinamicoSerializer(read_only=True)
+    percentual_eficacia_calculado = serializers.ReadOnlyField()
+    nome_tratamento = serializers.CharField(source='evidencia.tratamento.nome', read_only=True)
+    tratamento_id = serializers.IntegerField(source='evidencia.tratamento.id', read_only=True)
+    tratamento_slug = serializers.CharField(source='evidencia.tratamento.slug', read_only=True)
+
+    class Meta:
+        model = EficaciaPorEvidencia
+        fields = [
+            'tipo_eficacia',
+            'participantes_com_beneficio',
+            'participantes_iniciaram_tratamento',
+            'percentual_eficacia_calculado',
+            'nome_tratamento',
+            'tratamento_id',
+            'tratamento_slug',
         ]

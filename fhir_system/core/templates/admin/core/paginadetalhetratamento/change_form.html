@@ -5,110 +5,21 @@
 {% block extrastyle %}
   {{ block.super }}
   <style>
-    .cms-bar {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      flex-wrap: wrap;
-      padding: 12px 14px;
-      margin: 12px 0 14px;
-      border: 1px solid var(--hairline-color, #e5e7eb);
-      border-radius: 10px;
-      background: var(--body-bg, #fff);
-      box-shadow: 0 1px 1px rgba(0,0,0,.03);
-    }
-    .cms-bar__title {
-      font-weight: 700;
-      margin-right: 6px;
-    }
-    .cms-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 3px 10px;
-      border-radius: 999px;
-      font-weight: 700;
-      font-size: 12px;
-      border: 1px solid transparent;
-      user-select: none;
-    }
-    .cms-pill--pub {
-      background: #DCFCE7;
-      color: #166534;
-      border-color: #bbf7d0;
-    }
-    .cms-pill--draft {
-      background: #FEF3C7;
-      color: #92400E;
-      border-color: #fde68a;
-    }
-    .cms-url {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex: 1 1 420px;
-      min-width: 260px;
-      padding: 8px 10px;
-      border-radius: 10px;
-      border: 1px dashed var(--hairline-color, #e5e7eb);
-      background: rgba(0,0,0,.02);
-    }
-    .cms-url code {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 12px;
-      word-break: break-all;
-      line-height: 1.3;
-    }
-    .cms-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .cms-actions .button {
-      margin: 0;
-    }
-    .cms-hint {
-      font-size: 12px;
-      color: var(--body-quiet-color, #6b7280);
-      margin-left: auto;
-    }
-    .cms-toast {
-      position: fixed;
-      right: 16px;
-      bottom: 16px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      background: #111827;
-      color: #fff;
-      font-size: 13px;
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity .18s ease, transform .18s ease;
-      z-index: 9999;
-      pointer-events: none;
-    }
-    .cms-toast--show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    /* ... seu CSS igual está hoje ... */
   </style>
 {% endblock %}
 
-{# coloca nossa barra logo acima do formulário #}
 {% block content %}
   {% if original %}
-    <div class="cms-bar" id="cms-bar"
-         data-path="{{ request.path|escapejs }}">
+    <div class="cms-bar" id="cms-bar">
       <span class="cms-bar__title">Página Pública</span>
 
-      {# Status: usa o campo "publicada" do objeto #}
       {% if original.publicada %}
         <span class="cms-pill cms-pill--pub">Publicada</span>
       {% else %}
         <span class="cms-pill cms-pill--draft">Rascunho</span>
       {% endif %}
 
-      {# URL calculada via reverse usando slugs do objeto #}
       {% url 'pagina_detalhe_tratamento' condicao_slug=original.condicao.slug tratamento_slug=original.tratamento.slug as public_path %}
       <div class="cms-url">
         <span style="font-weight:700;">URL:</span>
@@ -121,9 +32,7 @@
         <button type="button" class="button" id="btn-copy-path">Copiar apenas o path</button>
       </div>
 
-      <span class="cms-hint">
-        Dica: após salvar, revise SEO e CTA.
-      </span>
+      <span class="cms-hint">Dica: após salvar, revise SEO e CTA.</span>
     </div>
 
     <div class="cms-toast" id="cms-toast">Copiado ✅</div>
@@ -132,14 +41,7 @@
   {{ block.super }}
 {% endblock %}
 
-{% block extrahead %}
-  {{ block.super }}
-  <script>
-    // nada aqui (evita rodar cedo)
-  </script>
-{% endblock %}
-
-{% block footer %}
+{% block admin_change_form_document_ready %}
   {{ block.super }}
   <script>
     (function () {
@@ -148,7 +50,7 @@
       const btnAbs = document.getElementById("btn-copy-abs");
       const btnPath = document.getElementById("btn-copy-path");
 
-      if (!absEl || !btnAbs || !btnPath) return;
+      if (!absEl || !btnAbs || !btnPath || !toast) return;
 
       function showToast(text) {
         toast.textContent = text || "Copiado ✅";
@@ -164,7 +66,6 @@
           await navigator.clipboard.writeText(text);
           showToast("Copiado ✅");
         } catch (e) {
-          // fallback
           const ta = document.createElement("textarea");
           ta.value = text;
           document.body.appendChild(ta);
@@ -181,9 +82,14 @@
 
       btnPath.addEventListener("click", function () {
         const abs = absEl.textContent.trim();
-        // extrai apenas o path do final
-        const url = new URL(abs);
-        copy(url.pathname);
+        try {
+          const url = new URL(abs);
+          copy(url.pathname);
+        } catch (e) {
+          // fallback se der ruim com URL()
+          const idx = abs.indexOf("/", abs.indexOf("//") + 2);
+          copy(idx >= 0 ? abs.slice(idx) : abs);
+        }
       });
     })();
   </script>

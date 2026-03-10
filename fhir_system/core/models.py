@@ -869,7 +869,20 @@ class TratamentoCondicao(models.Model):
     
 
 class TipoEficacia(models.Model):
-    tipo_eficacia = models.CharField(max_length=255) 
+    tipo_eficacia = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=140, unique=True, blank=True, null=True, db_index=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            base = slugify(self.tipo_eficacia) or "tipo"
+            slug = base
+            i = 2
+            while TipoEficacia.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base}-{i}"
+                i += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
     descricao = models.TextField(blank=True, null=True)  
     imagem = models.ImageField(upload_to='icones_eficacia/', blank=True, null=True)  # Campo de imagem para o ícone
 
@@ -969,3 +982,38 @@ class PaginaDetalheTratamento(models.Model):
         # impede conflito com admin e api
         if self.condicao.slug in ["admin", "api"]:
             raise ValidationError("Slug da condição não pode ser 'admin' ou 'api'.")
+
+
+
+class PaginaListaTratamento(models.Model):
+    publicada = models.BooleanField(default=True)
+
+    condicao_saude = models.ForeignKey(
+        "core.CondicaoSaude",
+        on_delete=models.PROTECT,
+        related_name="paginas_listas",
+    )
+
+    tipo_eficacia = models.ForeignKey(
+        "core.TipoEficacia",
+        on_delete=models.PROTECT,
+        related_name="paginas_listas",
+    )
+
+    template = models.CharField(
+        max_length=200,
+        default="core/lista_tratamentos.html",  # <<< importante bater com o caminho real
+        help_text="Template django que renderiza a lista",
+    )
+
+    titulo = models.CharField(max_length=255, blank=True, default="")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("condicao_saude", "tipo_eficacia")
+        verbose_name = "URLs Listas"
+        verbose_name_plural = "URLs Listas"
+
+    def __str__(self):
+        return f"{self.condicao_saude} / {self.tipo_eficacia}"

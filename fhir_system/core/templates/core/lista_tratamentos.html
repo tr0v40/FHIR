@@ -1,0 +1,557 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{{ pagina.titulo|default:"Tratamentos" }}</title>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BS67486CWG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BS67486CWG');
+  </script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background-color: #fefefe;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    .content-area{
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      gap:30px;
+      padding:10px;
+      overflow:hidden;
+      flex-wrap:wrap;
+    }
+
+    .site-header{ width:100%; background:#fff; }
+    .header-inner{
+      max-width:1250px;
+      margin:0 auto;
+      padding:28px 20px;
+      display:grid;
+      grid-template-columns: 1fr 300px;
+      grid-template-rows:auto auto;
+      column-gap:48px;
+      align-items:start;
+    }
+    .brand{ grid-column:1; grid-row:1; text-decoration:none; display:inline-flex; }
+    .logo-telix{ height:180px; width:auto; display:block; margin-left:-20px; }
+    .header-main{ grid-column:1; grid-row:2; }
+    .page-title{ margin:0; font-size:35px; font-weight:450; line-height:1.15; }
+    .page-subtitle{ margin-top:6px; font-size:13px; color:#000; }
+
+    .btn-filtros{
+      margin-top:14px;
+      background-color:#f0f0f0;
+      color:#060606;
+      border:1px solid #e4e4e4;
+      border-radius:4px;
+      font-weight:400;
+      font-size:12px;
+      padding:6px 12px;
+      display:inline-block;
+      text-decoration:none;
+    }
+
+    .header-warning{
+      grid-column:2;
+      grid-row:2;
+      align-self:flex-start;
+      justify-self:end;
+      background:#000;
+      color:#fff;
+      padding:18px 22px;
+      border-radius:6px;
+      font-size:13px;
+      line-height:1.4;
+      width:260px;
+      text-align:center;
+      margin-top:4px;
+    }
+
+    a.tratamento-card,
+    a.tratamento-card:visited,
+    a.tratamento-card:hover,
+    a.tratamento-card:active,
+    a.tratamento-card:focus {
+      color: inherit !important;
+      text-decoration: none !important;
+      outline: none !important;
+    }
+
+    @media (max-width:768px){
+      .header-inner{ grid-template-columns:1fr; padding:10px 10px; gap:0; }
+      .logo-telix{ height:180px; margin-left:-25px; }
+      .page-title{ font-size:25px; margin-top:-25px; }
+      .page-subtitle{ font-size:15px; margin-top:25px; }
+      .header-warning{ display:none; }
+      .btn-filtros{ margin-top:25px; max-width:100%; }
+    }
+
+    .tratamento-card{
+      display:flex !important;
+      flex-direction:row !important;
+      align-items:center !important;
+      justify-content:space-between;
+      gap:24px;
+      width:100%;
+      max-width:1200px;
+      margin:20px auto;
+      padding:18px 28px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+      transition: transform .3s, box-shadow .2s ease;
+      text-decoration:none;
+      color:inherit;
+    }
+    .tratamento-card:hover{
+      transform:scale(1.02);
+      box-shadow:0 4px 12px rgba(0,0,0,0.15);
+      cursor:pointer;
+    }
+    .tratamento-content{
+      display:flex !important;
+      flex-direction:row !important;
+      align-items:center !important;
+      gap:24px;
+      width:100%;
+    }
+    .tratamento-card img{
+      width:120px !important;
+      height:120px !important;
+      border-radius:50%;
+      object-fit:cover;
+      flex:0 0 120px;
+      margin:0 !important;
+      display:block;
+    }
+    .tratamento-info{ flex: 1 1 auto; min-width:0; }
+    .tratamento-info h3{ font-size:25px; font-weight:bold; color:#050606; margin:0 0 6px 0; }
+
+    .eficacia-container{
+      flex: 0 0 260px;
+      width: 260px;
+      margin-left:auto;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-self:center;
+      align-items:flex-start;
+      text-align:left;
+    }
+    .eficacia-bar-container{
+      width:100%;
+      background-color:#e0e0e0;
+      height:20px;
+      border-radius:8px;
+      position:relative;
+      margin-bottom:5px;
+    }
+    .efficacy-filled{ height:100%; border-radius:8px; background-color:#0094FF; }
+    .efficacy-marker{
+      width:14px;height:14px;
+      background-color:#0094FF;
+      position:absolute;top:0;
+      transform:translateX(-50%);
+      border-radius:50%;
+    }
+
+    @media (max-width:768px){
+      .tratamento-card{
+        flex-direction:column !important;
+        align-items:center !important;
+        text-align:center;
+        padding:16px 18px;
+      }
+      .tratamento-content{
+        flex-direction:column !important;
+        align-items:center !important;
+      }
+      .eficacia-container{
+        width:100%;
+        align-items:center;
+        text-align:center;
+      }
+      .eficacia-container p{ text-align:center !important; }
+    }
+
+    .card-aviso-mobile{
+      display:none;
+      background-color:#000;
+      color:#fff;
+      padding:16px 24px;
+      border-radius:6px;
+      font-size:14px;
+      max-width:280px;
+      text-align:center;
+      line-height:1.4;
+      margin:30px auto;
+    }
+    @media (max-width:768px){
+      .card-aviso-mobile{ display:block; }
+    }
+
+    .footer .container{ max-width:1250px; }
+    .footer a{ color:#6c757d; text-decoration:none; }
+    .footer a:hover{ color:#6c757d; text-decoration:underline; }
+    .footer h5{ font-weight:bold; color:#000; }
+    .footer ul.list-unstyled{ display:inline-block; text-align:left; margin:0 auto; }
+    .footer .list-unstyled li{ padding:5px 0; }
+    .footer p{ color:#6c757d; font-size:14px; margin-bottom:5px; }
+
+    .footer-social{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:14px;
+      width:100%;
+    }
+    .footer .social-btn{
+      font-size:1.5rem;
+      color:#6c757d;
+      text-decoration:none;
+      margin:0;
+      transition:none;
+    }
+    .footer .social-btn:hover{
+      color:#6c757d;
+      text-decoration:none;
+    }
+
+    .site-header {
+  width: 100%;
+  background: #fff;
+}
+
+.header-inner {
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 28px 20px;
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  grid-template-rows: auto auto;
+  column-gap: 48px;
+  align-items: start;
+}
+
+.brand {
+  grid-column: 1;
+  grid-row: 1;
+  text-decoration: none;
+  display: inline-flex;
+}
+
+.logo-telix {
+  height: 180px;
+  width: auto;
+  display: block;
+  margin-left: -20px;
+}
+
+.header-main {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 35px;
+  font-weight: 450;
+  line-height: 1.15;
+  color: #111;
+  text-transform: none;
+}
+
+.page-subtitle {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #000;
+}
+
+.btn-filtros {
+  margin-top: 14px;
+  background-color: #f0f0f0;
+  color: #060606;
+  border: 1px solid #e4e4e4;
+  border-radius: 4px;
+  font-weight: 400;
+  font-size: 12px;
+  padding: 6px 12px;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn-filtros:hover {
+  color: #060606;
+  background-color: #e8e8e8;
+  text-decoration: none;
+}
+
+.header-warning {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: flex-start;
+  justify-self: end;
+  background: #000;
+  color: #fff;
+  padding: 18px 22px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.4;
+  width: 260px;
+  text-align: center;
+  margin-top: 4px;
+}
+
+.header-warning p {
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .header-inner {
+    grid-template-columns: 1fr;
+    padding: 10px 10px;
+    gap: 0;
+  }
+
+  .logo-telix {
+    height: 180px;
+    margin-left: -25px;
+  }
+
+  .page-title {
+    font-size: 25px;
+    margin-top: -25px;
+  }
+
+  .page-subtitle {
+    font-size: 15px;
+    margin-top: 10px;
+  }
+
+  .header-warning {
+    display: none;
+  }
+
+  .btn-filtros {
+    margin-top: 20px;
+    max-width: 100%;
+  }
+}
+  </style>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="https://www.telix.inf.br/">
+      <img class="logo-telix" src="{% static 'img/logo.png' %}" alt="Telix Logo">
+    </a>
+
+    <div class="header-main">
+      <h1 class="page-title">
+        Tratamentos para {{ tipo_eficacia.tipo_eficacia|lower }} de {{ condicao.nome|lower }}
+      </h1>
+
+      <p class="page-subtitle">
+        Tratamentos ordenados por:
+        <strong>{{ ordenacao_label|default:"Ordem decrescente de eficácia máxima" }}</strong>
+      </p>
+
+
+    <a
+      href="#"
+      class="btn-filtros"
+      onclick="
+        event.preventDefault();
+        const path = '/tratamentos/{{ condicao.slug }}/{{ tipo_eficacia.slug }}/com-filtros/';
+        const isDevDjango = (location.hostname === '127.0.0.1' || location.hostname === 'localhost') && location.port === '8000';
+        const target = isDevDjango ? ('http://localhost:3000' + path) : (location.origin + path);
+        window.location.href = target;
+      "
+    >
+      Outros filtros e ordenações
+    </a>
+
+</div>
+    <aside class="header-warning">
+      <p><strong>Não se automedique.</strong><br>Consulte um profissional de saúde.</p>
+    </aside>
+  </div>
+</header>
+  <div class="content-area">
+    <div class="tratamentos">
+      {% if items %}
+        <div class="tratamento-section all">
+          {% for item in items %}
+            {% with tratamento=item.obj %}
+              <a
+                href="{% url 'pagina_detalhe_tratamento' condicao_slug=condicao.slug tratamento_slug=tratamento.slug %}?ef={{ tipo_eficacia.slug }}"
+                class="tratamento-card"
+              >
+                <div class="tratamento-content">
+
+                  {% if tratamento.imagem %}
+                    <img src="{{ tratamento.imagem.url }}" alt="{{ tratamento.nome }}" class="img-fluid">
+                  {% else %}
+                    <img src="{% static 'default-image.jpg' %}" alt="Imagem não disponível">
+                  {% endif %}
+
+                  <div class="tratamento-info">
+                    <h3>{{ tratamento.nome }}</h3>
+
+                    <h3 style="color:#0094FF; font-size:12px;">
+                      {% for tipo in tratamento.tipo_tratamento.all %}
+                        {{ tipo.nome }}{% if not forloop.last %} • {% endif %}
+                      {% empty %}
+                        Nenhum tipo selecionado
+                      {% endfor %}
+                    </h3>
+
+                    <p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo|default:"ND" }}</p>
+                    <p><strong>Fabricante:</strong> {{ tratamento.fabricante|default:"ND" }}</p>
+
+                    <div
+                      class="btn mt-2"
+                      style="background-color:#e0e0e0; color:#000; border:none; font-weight:500; font-size:14px; padding:5px 35px; display:inline-flex; align-items:center; gap:5px;"
+                    >
+                      ver detalhes <span style="font-weight:bold;">&#8250;</span>
+                    </div>
+
+                    <p class="tratamento-descricao" style="margin-top:20px; margin-bottom:20px;">
+                      {{ tratamento.descricao }}
+                    </p>
+                  </div>
+
+                  <div class="eficacia-container">
+                    <p style="font-size:20px; font-weight:700; font-family:'Inter',sans-serif; color:rgb(163,162,162); margin:0 0 8px 0;">
+                      Eficácia:
+                      <span style="color:#000; font-weight:700; font-size:20px;">
+                        {{ item.tipo }}
+                      </span>
+                    </p>
+
+                    <div class="eficacia-bar-container">
+                      <div class="efficacy-filled" style="width: {{ item.max|floatformat:0 }}%;"></div>
+                      <div class="efficacy-marker" style="left: calc({{ item.max|floatformat:0 }}% - 7px);"></div>
+                    </div>
+
+                    <p class="eficacia-range" style="font-family:'Inter',sans-serif; font-weight:700; font-size:25px; margin:0 0 10px 0;">
+                    <span style="color:#888; font-weight:500;">{{ item.min|floatformat:2 }} a</span>
+                    <span style="color:#000; font-weight:bold;"> {{ item.max|floatformat:2 }}%</span>
+                  </p>
+
+                    <p style="margin:0; font-family:'Inter',sans-serif; font-weight:500; font-size:15px; color:#000;">
+                      Prazo para efeito
+                    </p>
+                    <p style="margin:4px 0 0 0; font-family:'Inter',sans-serif; font-size:16px; font-weight:bold; color:#000;">
+                      {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+                    </p>
+                  </div>
+
+                </div>
+              </a>
+            {% endwith %}
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="container" style="max-width:1200px; padding:30px 20px;">
+          <p style="margin:0;">
+            Nenhum tratamento encontrado para <strong>{{ condicao.nome }}</strong> com eficácia
+            <strong>{{ tipo_eficacia.tipo_eficacia }}</strong>.
+          </p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="card-aviso-mobile">
+    <p><strong>Não se automedique.</strong><br>Consulte um profissional de saúde.</p>
+  </div>
+
+  <footer class="footer mt-5 pt-4 border-top">
+    <div class="container text-center">
+
+      <div class="footer-social d-flex justify-content-center mb-4 d-md-none">
+        <a href="https://www.instagram.com/telix.inf.br/" target="_blank" class="social-btn mx-2"><i class="fab fa-instagram fa-lg"></i></a>
+        <a href="https://www.facebook.com/people/Telix-contexto-na-sa%C3%BAde/100089318347896/" class="social-btn mx-2"><i class="fab fa-facebook-f fa-lg"></i></a>
+        <a href="https://www.linkedin.com/company/telix-canais-de-not%C3%ADcias" class="social-btn mx-2"><i class="fab fa-linkedin-in fa-lg"></i></a>
+        <a href="https://www.youtube.com/@TelixSaude" class="social-btn mx-2"><i class="fab fa-youtube fa-lg"></i></a>
+      </div>
+
+      <div class="row justify-content-center text-center mt-4">
+
+        <div class="col-12 col-md-4 mb-4">
+          <h5>Explorar</h5>
+          <ul class="list-unstyled">
+            <li><a href="https://www.telix.inf.br/pacientes">Pacientes</a></li>
+            <li><a href="https://www.telix.inf.br/profissionaisdesaude">Profissionais de Saúde</a></li>
+            <li><a href="https://www.telix.inf.br/divulgacao-de-servicos-e-pesquisas-de-saude">Empresas</a></li>
+            <li><a href="https://www.telix.inf.br/blog">Blog</a></li>
+            <li><a href="https://www.telix.inf.br/quem-somos-telix-contexto-na-saude">Quem somos</a></li>
+          </ul>
+        </div>
+
+        <div class="col-12 col-md-4 mb-4">
+          <h5>Tratamentos</h5>
+          <ul class="list-unstyled">
+            <li><a href="http://cadastros.telix.inf.br/tratamentos/">Tratamentos</a></li>
+          </ul>
+
+          <div class="footer-social d-none d-md-flex" style="margin-top:14px;">
+            <a href="https://www.instagram.com/telix.inf.br/" class="social-btn"><i class="fab fa-instagram fa-lg"></i></a>
+            <a href="https://www.facebook.com/people/Telix-contexto-na-sa%C3%BAde/100089318347896/" class="social-btn"><i class="fab fa-facebook-f fa-lg"></i></a>
+            <a href="https://www.linkedin.com/company/telix-canais-de-not%C3%ADcias" class="social-btn"><i class="fab fa-linkedin-in fa-lg"></i></a>
+            <a href="https://www.youtube.com/@TelixSaude" class="social-btn"><i class="fab fa-youtube fa-lg"></i></a>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4 mb-4">
+          <h5>Fale com a gente!</h5>
+          <p><a href="https://api.whatsapp.com/send/?phone=45999040371&text&type=phone_number&app_absent=0">(45) 99904-0371</a></p>
+          <p><a href="mailto:contato@telix.inf.br">contato@telix.inf.br</a></p>
+          <p style="padding-top:20px;"><a>Linca Telecomunicações Ltda</a></p>
+          <p><a>CNPJ: 03.376.788/0001-23</a></p>
+        </div>
+
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    function substituirPontosPorVirgulas() {
+      const elementos = document.querySelectorAll('.eficacia-range');
+      elementos.forEach((el) => {
+        if (el.innerHTML) {
+          el.innerHTML = el.innerHTML.replace(/\d+\.\d+/g, (match) => {
+            const num = parseFloat(match);
+            return Number.isInteger(num) ? num.toString() : match.replace('.', ',');
+          });
+        }
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      substituirPontosPorVirgulas();
+    });
+  </script>
+
+</body>
+</html>
