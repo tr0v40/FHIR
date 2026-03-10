@@ -8,6 +8,10 @@ from django.contrib.auth.views import LoginView
 from core.views import CondicaoSaudeDetailView, tipo_eficacia_descricao_json
 from core.public_views_listas import pagina_lista_por_url
 
+from django.views.generic import TemplateView
+from django.urls import re_path
+
+
 
 
 
@@ -72,7 +76,11 @@ urlpatterns = [
         name="tratamentos_crise_enxaqueca-com-filtros",
     ),
     re_path(r"^tratamentos-crise-enxaqueca/.*$", views.react_app),
-
+    re_path(
+        r'^tratamentos/(?P<condicao_slug>[-\w]+)/(?P<tipo_eficacia_slug>[-\w]+)/com-filtros/$',
+        TemplateView.as_view(template_name='index.html'),
+        name='tratamentos_dinamicos_com_filtros',
+    ),
     
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
