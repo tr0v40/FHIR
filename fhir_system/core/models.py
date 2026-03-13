@@ -486,7 +486,7 @@ class DetalhesTratamentoResumo(models.Model):
     imagem_detalhes = models.ImageField(upload_to="tratamentos/detalhes/", blank=True, null=True)
     quando_usar = models.TextField(blank=True)    
     tipo_tratamento = models.ManyToManyField(TipoTratamento, blank=True)
-    custo_medicamento = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    custo_medicamento = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     links_externos = models.TextField(blank=True, null=True)
     alertas = models.TextField(blank=True, null=True)
     grupo = models.CharField(max_length=20, choices=GRUPO_CHOICES, default="adultos")
@@ -1017,3 +1017,235 @@ class PaginaListaTratamento(models.Model):
 
     def __str__(self):
         return f"{self.condicao_saude} / {self.tipo_eficacia}"
+    
+class TreatmentsUSAReacaoAdversaTeste(models.Model):
+    treatment_usa = models.ForeignKey(
+        'TreatmentsUSA',
+        on_delete=models.CASCADE,
+        related_name='reacoes_adversas_teste_detalhes'
+    )
+    reacao_adversa = models.ForeignKey(
+        ReacaoAdversa,
+        on_delete=models.CASCADE,
+        related_name='usa_test_treatments'
+    )
+    grau_comunalidade = models.CharField(max_length=100, blank=True, null=True)
+    reacao_min = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+    reacao_max = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
+
+    class Meta:
+        verbose_name = "USA Treatment Adverse Reaction Test Detail"
+        verbose_name_plural = "USA Treatment Adverse Reaction Test Details"
+
+    def __str__(self):
+        return f"{self.treatment_usa} - {self.reacao_adversa}"
+
+from django.db import models
+from django.utils.text import slugify
+
+# ... seus imports já existentes ...
+
+
+class TreatmentsUSA(models.Model):
+    tratamento_br = models.ForeignKey(
+        "DetalhesTratamentoResumo",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="tratamentos_usa",
+        verbose_name="Brazil treatment"
+    )
+
+    tipos_eficacia = models.ManyToManyField(
+        'EficaciaPorEvidencia',
+        blank=True,
+        verbose_name="Efficacy types"
+    )
+
+    reacoes_adversas_teste = models.ManyToManyField(
+        ReacaoAdversa,
+        through='TreatmentsUSAReacaoAdversaTeste',
+        related_name='usa_treatments_with_test_reaction',
+        blank=True,
+        verbose_name="Adverse reactions test"
+)
+    GROUP_CHOICES = (
+        ("children", "Children under 12 years"),
+        ("teenagers", "Teenagers 12 to 17 years"),
+        ("elderly", "Elderly 65+"),
+        ("adults", "Adults"),
+        ("lactating", "Lactating"),
+        ("pregnancy", "Pregnancy"),
+    )
+
+    UNIT_CHOICES = [
+        ('minute', 'Minute'),
+        ('hour', 'Hour'),
+        ('day', 'Day'),
+        ('session', 'Session'),
+        ('second', 'Second'),
+        ('week', 'Weeks'),
+    ]
+
+    name = models.CharField(max_length=200, blank=True, verbose_name="Name")
+    description = models.TextField(blank=True, verbose_name="Description")
+
+    health_conditions = models.ManyToManyField(
+        "CondicaoSaude",
+        blank=True,
+        related_name="usa_treatments",
+        verbose_name="Health conditions"
+    )
+
+    comment = models.TextField(blank=True, null=True, verbose_name="Comment")
+    category = models.CharField(max_length=100, blank=True, null=True, verbose_name="Category")
+    clinical_evidence = models.TextField(blank=True, null=True, verbose_name="Clinical evidence")
+    active_ingredient = models.CharField(max_length=20000, blank=True, verbose_name="Active ingredient")
+
+    slug = models.SlugField(max_length=200, blank=True, null=True, unique=True)
+
+    manufacturer = models.CharField(max_length=200, blank=True, verbose_name="Manufacturer")
+    rating = models.IntegerField(null=True, blank=True, verbose_name="Rating")
+
+    efficacy_min = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, verbose_name="Min efficacy")
+    efficacy_max = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, verbose_name="Max efficacy")
+
+    effect_time_min = models.IntegerField(blank=True, null=True, verbose_name="Min effect time")
+    effect_time_max = models.IntegerField(blank=True, null=True, verbose_name="Max effect time")
+    effect_time_unit = models.CharField(
+        max_length=10,
+        choices=UNIT_CHOICES,
+        default='minute',
+        verbose_name="Effect time unit"
+    )
+
+    treatment_purchase_link = models.URLField(blank=True, null=True, verbose_name="Treatment purchase link")
+    cost_specification = models.CharField(max_length=200, blank=True, verbose_name="Cost specification")
+
+    adverse_reactions = models.ManyToManyField(
+        ReacaoAdversa,
+        blank=True,
+        related_name='usa_treatments_with_reaction',
+        verbose_name="Adverse reactions"
+    )
+
+    drug_interaction = models.URLField(blank=True, null=True, verbose_name="Drug interaction")
+    generic_similar = models.URLField(blank=True, null=True, verbose_name="Generic/similar")
+    electronic_prescription = models.URLField(blank=True, null=True, verbose_name="Electronic prescription")
+    specialist_opinion = models.URLField(blank=True, null=True, verbose_name="Specialist opinion")
+    professional_links = models.URLField(blank=True, null=True, verbose_name="Professional links")
+
+    alert = models.TextField(blank=True, null=True, verbose_name="Alert")
+    image = models.ImageField(upload_to="tratamentos_usa/", blank=True, null=True, verbose_name="Image")
+    detail_image = models.ImageField(upload_to="tratamentos_usa/detalhes/", blank=True, null=True, verbose_name="Detail image")
+    when_to_use = models.TextField(blank=True, verbose_name="When to use")
+    treatment_type = models.ManyToManyField(TipoTratamento, blank=True, verbose_name="Treatment type")
+    treatment_cost = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True, verbose_name="Treatment cost")
+    external_links = models.TextField(blank=True, null=True, verbose_name="External links")
+    alerts = models.TextField(blank=True, null=True, verbose_name="Alerts")
+
+    group = models.CharField(max_length=20, choices=GROUP_CHOICES, default="adults", verbose_name="Group")
+
+    indicated_children = models.CharField(
+        max_length=100,
+        choices=[('YES', 'Yes'), ('NO', 'No')],
+        default='NO',
+        verbose_name="Indicated for children"
+    )
+    reason_children = models.TextField(blank=True, null=True, verbose_name="Reason children")
+
+    indicated_teenagers = models.CharField(
+        max_length=100,
+        choices=[('YES', 'Yes'), ('NO', 'No')],
+        default='NO',
+        verbose_name="Indicated for teenagers"
+    )
+    reason_teenagers = models.TextField(blank=True, null=True, verbose_name="Reason teenagers")
+
+    indicated_elderly = models.CharField(
+        max_length=100,
+        choices=[('YES', 'Yes'), ('NO', 'No')],
+        default='NO',
+        verbose_name="Indicated for elderly"
+    )
+    reason_elderly = models.TextField(blank=True, null=True, verbose_name="Reason elderly")
+
+    indicated_adults = models.CharField(
+        max_length=100,
+        choices=[('YES', 'Yes'), ('NO', 'No')],
+        default='YES',
+        verbose_name="Indicated for adults"
+    )
+    reason_adults = models.TextField(blank=True, null=True, verbose_name="Reason adults")
+
+    indicated_lactating = models.CharField(
+        max_length=100,
+        choices=[('YES', 'Yes'), ('NO', 'No')],
+        default='YES',
+        verbose_name="Indicated for lactating"
+    )
+    reason_lactating = models.TextField(blank=True, null=True, verbose_name="Reason lactating")
+
+    indicated_pregnancy = models.CharField(
+        max_length=100,
+        choices=[('YES', 'Yes'), ('NO', 'No')],
+        default='YES',
+        verbose_name="Indicated for pregnancy"
+    )
+    reason_pregnancy = models.TextField(blank=True, null=True, verbose_name="Reason pregnancy")
+
+    contraindications = models.ManyToManyField(
+        Contraindicacao,
+        blank=True,
+        related_name="usa_treatments_with_contraindication",
+        verbose_name="Contraindications"
+    )
+
+    risk = models.FloatField(
+        default=0.0,
+        help_text="Risk percentage of side effects (0 to 100%)",
+        verbose_name="Risk"
+    )
+
+    def save(self, *args, **kwargs):
+        if not self.slug and self.name:
+            base_slug = slugify(self.name)
+            slug = base_slug
+            i = 2
+            while TreatmentsUSA.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{i}"
+                i += 1
+            self.slug = slug
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name or "Unnamed USA Treatment"
+
+    def pluralize_unit(self, value):
+        exceptions = {
+            'session': 'sessions',
+        }
+        unit = self.effect_time_unit
+        if value == 1:
+            return unit
+        return exceptions.get(unit, unit + 's')
+
+    @property
+    def effect_time_min_formatted(self):
+        if self.effect_time_min is None:
+            return ""
+        return f"{self.effect_time_min} {self.pluralize_unit(self.effect_time_min)}"
+
+    @property
+    def effect_time_max_formatted(self):
+        if self.effect_time_max is None:
+            return ""
+        return f"{self.effect_time_max} {self.pluralize_unit(self.effect_time_max)}"
+
+    @property
+    def effect_time_range_formatted(self):
+        return f"{self.effect_time_min_formatted} to {self.effect_time_max_formatted}"
+
+    class Meta:
+        verbose_name = "Treatment USA"
+        verbose_name_plural = "Treatments USA"

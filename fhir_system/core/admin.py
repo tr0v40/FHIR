@@ -668,3 +668,133 @@ class PaginaListaTratamentoAdmin(admin.ModelAdmin):
     def despublicar(self, request, queryset):
         updated = queryset.update(publicada=False)
         self.message_user(request, f"{updated} página(s) despublicada(s).", level=messages.WARNING)
+
+
+
+from django.contrib import admin
+from .models import (
+    TreatmentsUSA,
+    TreatmentsUSAReacaoAdversaTeste,
+)
+
+
+class TreatmentsUSAReacaoAdversaTesteInline(admin.TabularInline):
+    model = TreatmentsUSAReacaoAdversaTeste
+    extra = 1
+    verbose_name = "Adverse reaction test"
+    verbose_name_plural = "Adverse reactions test"
+
+
+@admin.register(TreatmentsUSA)
+class TreatmentsUSAAdmin(admin.ModelAdmin):
+    inlines = [
+        TreatmentsUSAReacaoAdversaTesteInline,
+    ]
+
+    list_display = (
+        "name",
+        "manufacturer",
+        "active_ingredient",
+        "group",
+        "efficacy_min",
+        "efficacy_max",
+        "treatment_cost",
+        "health_conditions_list",
+    )
+
+    filter_horizontal = (
+        "contraindications",
+        "adverse_reactions",
+        "treatment_type",
+        "health_conditions",
+    )
+
+    search_fields = (
+        "name",
+        "manufacturer",
+        "active_ingredient",
+        "group",
+    )
+
+    list_filter = (
+        "manufacturer",
+        "group",
+        "efficacy_min",
+        "efficacy_max",
+        "treatment_cost",
+        "health_conditions",
+    )
+
+    fieldsets = (
+        (
+            "General Information",
+            {
+                "fields": (
+                    "tratamento_br",
+                    "name",
+                    "manufacturer",
+                    "active_ingredient",
+                    "health_conditions",
+                    "description",
+                    "image",
+                    "detail_image",
+                )
+            },
+        ),
+        (
+            "Treatment Adherence",
+            {
+                "fields": (
+                    "when_to_use",
+                    "effect_time_min",
+                    "effect_time_max",
+                    "effect_time_unit",
+                    "treatment_type",
+                    "treatment_cost",
+                    "treatment_purchase_link",
+                    "cost_specification",
+                )
+            },
+        ),
+        (
+            "Links and Alerts",
+            {
+                "fields": (
+                    "drug_interaction",
+                    "generic_similar",
+                    "electronic_prescription",
+                    "specialist_opinion",
+                    "professional_links",
+                    "alerts",
+                )
+            },
+        ),
+        (
+            "Indication by Group",
+            {
+                "fields": (
+                    "indicated_children",
+                    "reason_children",
+                    "indicated_teenagers",
+                    "reason_teenagers",
+                    "indicated_elderly",
+                    "reason_elderly",
+                    "indicated_adults",
+                    "reason_adults",
+                    "indicated_lactating",
+                    "reason_lactating",
+                    "indicated_pregnancy",
+                    "reason_pregnancy",
+                )
+            },
+        ),
+        ("Contraindications", {"fields": ("contraindications",)}),
+    )
+
+    @admin.display(description="Health Conditions")
+    def health_conditions_list(self, obj):
+        return ", ".join(obj.health_conditions.values_list("nome", flat=True))
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.prefetch_related("health_conditions")
