@@ -730,7 +730,7 @@ class TreatmentsUSAAdmin(admin.ModelAdmin):
             "General Information",
             {
                 "fields": (
-                    "tratamento_br",
+                    
                     "name",
                     "manufacturer",
                     "active_ingredient",
