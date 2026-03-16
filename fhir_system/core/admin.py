@@ -1,14 +1,15 @@
   # ==================== IMPORTS SESSIONS ==================== #
 
-
-
-from django.contrib import admin
+# core/admin.py
+from django.contrib import admin, messages
 from django.urls import reverse
 from django.utils.html import format_html
+
+from .models import PaginaListaTratamento
 from .models import PaginaDetalheTratamento
 from .models import Avaliacao
 from django import forms
-from django.contrib import admin, messages
+
 from django.utils.safestring import mark_safe
 from .models import DetalhesTratamentoReacaoAdversaTeste
 from django.urls import path
@@ -50,12 +51,7 @@ class DetalhesTratamentoReacaoAdversaTesteForm(forms.ModelForm):
         choices=DetalhesTratamentoReacaoAdversaTeste._meta.get_field('grau_comunalidade').choices
     )
 
-class DetalhesTratamentoReacaoAdversaInline(admin.TabularInline):
-    model = DetalhesTratamentoReacaoAdversa
-    form = DetalhesTratamentoReacaoAdversaTesteForm
-    extra = 0
-    autocomplete_fields = ['reacao_adversa']
-    fields = ('reacao_adversa', 'grau_comunalidade', 'reacao_min', 'reacao_max')
+
 
 class DetalhesTratamentoReacaoAdversaTesteInline(admin.TabularInline):
     model = DetalhesTratamentoReacaoAdversaTeste
@@ -103,6 +99,7 @@ class DetalhesTratamentoReacaoAdversaInline(admin.TabularInline):
     extra = 0
     autocomplete_fields = ['reacao_adversa']
     fields = ('reacao_adversa', 'grau_comunalidade', 'reacao_min', 'reacao_max')
+
 
 
 class DetalhesTratamentoResumoResource(resources.ModelResource):
@@ -569,12 +566,6 @@ class PaginaDetalheTratamentoAdmin(admin.ModelAdmin):
         self.message_user(request, f"{updated} página(s) despublicada(s).", level=messages.WARNING)
 
 
-# core/admin.py
-from django.contrib import admin, messages
-from django.urls import reverse
-from django.utils.html import format_html
-
-from .models import PaginaListaTratamento
 
 
 @admin.register(PaginaListaTratamento)
@@ -654,7 +645,7 @@ class PaginaListaTratamentoAdmin(admin.ModelAdmin):
         )
 
     def save_model(self, request, obj, form, change):
-        # ✅ garante o template padrão mesmo escondido
+        #  garante o template padrão mesmo escondido
         if not obj.template:
             obj.template = "core/lista_tratamentos.html"
         super().save_model(request, obj, form, change)
@@ -680,7 +671,7 @@ from .models import (
 
 class TreatmentsUSAReacaoAdversaTesteInline(admin.TabularInline):
     model = TreatmentsUSAReacaoAdversaTeste
-    extra = 1
+    extra = 0
     verbose_name = "Adverse reaction test"
     verbose_name_plural = "Adverse reactions test"
 
