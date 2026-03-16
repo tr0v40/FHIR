@@ -245,6 +245,7 @@ class ReacaoAdversa(models.Model):
 
     
 
+
 class DetalhesTratamentoReacaoAdversa(models.Model):
     tratamento = models.ForeignKey(
         'DetalhesTratamentoResumo',
@@ -267,9 +268,21 @@ class DetalhesTratamentoReacaoAdversa(models.Model):
     reacao_min = models.DecimalField("Reação Mínima (%)", max_digits=5, decimal_places=2, default=0.0)
     reacao_max = models.DecimalField("Reação Máxima (%)", max_digits=5, decimal_places=2, default=0.0)
 
-    class Meta:
-        verbose_name = "Detalhe Reação Adversa"
-        verbose_name_plural = "Detalhes Reações Adversas"
+class Meta:
+    verbose_name = "Detalhe Reação Adversa"
+    verbose_name_plural = "Detalhes Reações Adversas"
+    constraints = [
+        models.UniqueConstraint(
+            fields=[
+                'tratamento',
+                'reacao_adversa',
+                'grau_comunalidade',
+                'reacao_min',
+                'reacao_max',
+            ],
+            name='unique_reacao_adversa_completa_por_tratamento'
+        )
+    ]
 
     def __str__(self):
         return f"{self.tratamento.nome} - {self.reacao_adversa.nome}"
