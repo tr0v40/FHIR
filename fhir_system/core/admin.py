@@ -1,26 +1,21 @@
   # ==================== IMPORTS SESSIONS ==================== #
-
-# core/admin.py
+import json
 from django.contrib import admin, messages
-from django.urls import reverse
-from django.utils.html import format_html
-
-from .models import PaginaListaTratamento
-from .models import PaginaDetalheTratamento
-from .models import Avaliacao
 from django import forms
-
-from django.utils.safestring import mark_safe
-from .models import DetalhesTratamentoReacaoAdversaTeste
-from django.urls import path
-from core.admin_urls_view import admin_urls_list
-from import_export import resources
-from django.contrib.admin import RelatedOnlyFieldListFilter
-from import_export.admin import ImportExportModelAdmin
 from django.http import JsonResponse
-from django.urls import path
+from django.urls import path, reverse
 from django.utils.html import format_html
+from django.utils.safestring import mark_safe
+
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
+
+from core.admin_urls_view import admin_urls_list
+
 from .models import (
+    PaginaListaTratamento,
+    PaginaDetalheTratamento,
+    Avaliacao,
     DetalhesTratamentoResumo,
     Contraindicacao,
     ReacaoAdversa,
@@ -31,7 +26,9 @@ from .models import (
     TipoEficacia,
     EficaciaPorEvidencia,
     TipoTratamento,
-    CondicaoSaude
+    CondicaoSaude,
+    TreatmentsUSA,
+    TreatmentsUSAReacaoAdversaTeste,
 )
 
 
@@ -77,6 +74,32 @@ class DetalhesTratamentoResumoForm(forms.ModelForm):
         if 'h' in prazo_max:
             return int(prazo_max.replace('h', '').strip()) * 60
         return int(prazo_max)
+    
+class DetalhesTratamentoResumoAdminForm(forms.ModelForm):
+    descricoes_condicoes_json = forms.CharField(
+        widget=forms.HiddenInput(),
+        required=False
+    )
+
+    class Meta:
+        model = DetalhesTratamentoResumo
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        data_inicial = {}
+
+        if self.instance.pk:
+            for item in TratamentoCondicao.objects.filter(
+                tratamento=self.instance
+            ).select_related("condicao"):
+                data_inicial[str(item.condicao_id)] = item.descricao or ""
+
+        self.fields["descricoes_condicoes_json"].initial = json.dumps(
+            data_inicial,
+            ensure_ascii=False
+        )
 
 class TratamentoCondicaoInlineForm(forms.ModelForm):
     class Meta:
@@ -114,13 +137,17 @@ class DetalhesTratamentoResumoResource(resources.ModelResource):
 @admin.register(DetalhesTratamentoResumo)
 class DetalhesTratamentoAdmin(ImportExportModelAdmin):
     resource_class = DetalhesTratamentoResumoResource
+    form = DetalhesTratamentoResumoAdminForm
 
     inlines = [
         DetalhesTratamentoReacaoAdversaInline,
     ]
 
     class Media:
-        js = ('js/autofill_condicao_descricao.js',)
+        js = (
+            'js/autofill_condicao_descricao.js',
+            'js/tratamento_condicoes_descricoes.js',
+        )
 
     list_display = (
         "nome",
@@ -130,13 +157,23 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
         "eficacia_min",
         "eficacia_max",
         "custo_medicamento",
-        "condicoes_saude_list",   
+        "condicoes_saude_list",
+        "contraindicacoes_list",
     )
 
-    filter_horizontal = ("contraindicacoes", "reacoes_adversas", "tipo_tratamento", "condicoes_saude")
+    filter_horizontal = (
+        "contraindicacoes",
+        "reacoes_adversas",
+        "tipo_tratamento",
+        "condicoes_saude",
+    )
 
-
-    search_fields = ("nome", "fabricante", "principio_ativo", "grupo")
+    search_fields = (
+        "nome",
+        "fabricante",
+        "principio_ativo",
+        "grupo",
+    )
 
     list_filter = (
         "fabricante",
@@ -145,6 +182,7 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
         "eficacia_max",
         "custo_medicamento",
         "condicoes_saude",
+        "contraindicacoes",
     )
 
     fieldsets = (
@@ -155,7 +193,8 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
                     "nome",
                     "fabricante",
                     "principio_ativo",
-                    "condicoes_saude",     
+                    "condicoes_saude",
+                    "descricoes_condicoes_json",
                     "descricao",
                     "imagem",
                     "imagem_detalhes",
@@ -172,7 +211,6 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
                 "custo_medicamento",
                 "link_para_compra_de_tratamento",
                 "especificacao_do_custo"
-
             )
         }),
         ("Links e Alertas", {
@@ -204,29 +242,29 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
         ("Contraindicações", {"fields": ("contraindicacoes",)}),
     )
 
-    # Renderiza o M2M na list view
     @admin.display(description='Condições de Saúde')
     def condicoes_saude_list(self, obj):
         return ", ".join(obj.condicoes_saude.values_list('nome', flat=True))
 
-    # evita N+1 na list view
+    @admin.display(description='Contraindicações')
+    def contraindicacoes_list(self, obj):
+        return ", ".join(obj.contraindicacoes.values_list('nome', flat=True))
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        return qs.prefetch_related('condicoes_saude')
-
+        return qs.prefetch_related('condicoes_saude', 'contraindicacoes')
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
         if 'descricao' in form.base_fields:
-            form.base_fields['descricao'].label = "Descrição relacionada a condição de saúde"
+            form.base_fields['descricao'].label = "Descrição geral do tratamento"
         return form
 
-    # endpoints auxiliares 
     def get_urls(self):
         urls = super().get_urls()
         custom = [
             path(
-                'condicao/<int:pk>/descricao/',   # << aqui sem &lt; &gt;
+                'condicao/<int:pk>/descricao/',
                 self.admin_site.admin_view(self._condicao_descricao_view),
                 name='dettrat-condicao-descricao'
             ),
@@ -237,7 +275,30 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
         desc = CondicaoSaude.objects.filter(pk=pk).values_list('descricao', flat=True).first() or ""
         return JsonResponse({'descricao': desc})
 
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
 
+        descricoes_json = form.cleaned_data.get("descricoes_condicoes_json") or "{}"
+
+        try:
+            descricoes = json.loads(descricoes_json)
+        except json.JSONDecodeError:
+            descricoes = {}
+
+        condicoes_ids = set(obj.condicoes_saude.values_list("id", flat=True))
+
+        TratamentoCondicao.objects.filter(tratamento=obj).exclude(
+            condicao_id__in=condicoes_ids
+        ).delete()
+
+        for condicao_id in condicoes_ids:
+            descricao = (descricoes.get(str(condicao_id)) or "").strip()
+
+            TratamentoCondicao.objects.update_or_create(
+                tratamento=obj,
+                condicao_id=condicao_id,
+                defaults={"descricao": descricao}
+            )
 
 @admin.register(ReacaoAdversa)
 class ReacaoAdversaAdmin(admin.ModelAdmin):
@@ -251,6 +312,8 @@ class CondicaoSaudeAdmin(admin.ModelAdmin):
     list_display = ('nome', 'descricao', 'condition') 
     search_fields = ('nome',)
     fields = ('nome', 'descricao', 'condition', 'condition_description')
+
+
 
 
 class EvidenciasClinicasForm(forms.ModelForm):
@@ -274,61 +337,127 @@ from .models import EficaciaPorEvidencia
 class EficaciaPorEvidenciaForm(forms.ModelForm):
     class Meta:
         model = EficaciaPorEvidencia
-        fields = ['evidencia', 'tipo_eficacia',  'participantes_iniciaram_tratamento','participantes_com_beneficio']
+        fields = [
+            'tipo_eficacia',
+            'participantes_iniciaram_tratamento',
+            'participantes_com_beneficio',
+            'feito_pesquisa_com_placebo',
+            'tipo_eficacia_placebo',
+            'participantes_receberam_placebo',
+            'participantes_placebo_com_beneficio',
+        ]
 
-    # Calcula a eficácia automaticamente e exibe no admin
-    def clean_percentual_eficacia_calculado(self):
-        participantes_com_beneficio = self.cleaned_data['participantes_com_beneficio']
-        participantes_iniciaram_tratamento = self.cleaned_data['participantes_iniciaram_tratamento']
-        if participantes_iniciaram_tratamento > 0:
-            return round((participantes_com_beneficio / participantes_iniciaram_tratamento) * 100, 2)
-        return 0.0
+    def clean(self):
+        cleaned_data = super().clean()
+
+        feito_pesquisa_com_placebo = cleaned_data.get('feito_pesquisa_com_placebo')
+        participantes_receberam_placebo = cleaned_data.get('participantes_receberam_placebo') or 0
+        participantes_placebo_com_beneficio = cleaned_data.get('participantes_placebo_com_beneficio') or 0
+
+        if participantes_placebo_com_beneficio > participantes_receberam_placebo:
+            raise forms.ValidationError(
+                "Participantes placebo com benefício não podem ser maiores que os participantes que receberam placebo."
+            )
+
+        if not feito_pesquisa_com_placebo:
+            cleaned_data['tipo_eficacia_placebo'] = None
+            cleaned_data['participantes_receberam_placebo'] = 0
+            cleaned_data['participantes_placebo_com_beneficio'] = 0
+
+        return cleaned_data
+
+
 
 
 class EficaciaPorEvidenciaInline(admin.TabularInline):
     model = EficaciaPorEvidencia
     form = EficaciaPorEvidenciaForm
     extra = 0
-    fields = ['evidencia', 'tipo_eficacia', 'participantes_iniciaram_tratamento', 'participantes_com_beneficio', 'percentual_eficacia_calculado']
-    autocomplete_fields = ['tipo_eficacia']
+    autocomplete_fields = ['tipo_eficacia', 'tipo_eficacia_placebo']
+    readonly_fields = ['percentual_eficacia_calculado_view', 'eficacia_placebo_calculada_view']
+    fields = [
+        'tipo_eficacia',
+        'participantes_iniciaram_tratamento',
+        'participantes_com_beneficio',
+        'percentual_eficacia_calculado_view',
+        'feito_pesquisa_com_placebo',
+        'tipo_eficacia_placebo',
+        'participantes_receberam_placebo',
+        'participantes_placebo_com_beneficio',
+        'eficacia_placebo_calculada_view',
+    ]
 
-    readonly_fields = ['percentual_eficacia_calculado']
+    def percentual_eficacia_calculado_view(self, obj):
+        if obj and obj.pk:
+            return f"{obj.percentual_eficacia_calculado:.2f}%"
+        return "0.00%"
+    percentual_eficacia_calculado_view.short_description = "Eficácia"
 
-    def percentual_eficacia_calculado(self, obj):
-        """Calcula a eficácia automaticamente no admin, limitando a 2 casas decimais"""
-        if obj.participantes_iniciaram_tratamento > 0:
-            return round((obj.participantes_com_beneficio / obj.participantes_iniciaram_tratamento) * 100, 2)
-        return 0.0
-
-    percentual_eficacia_calculado.short_description = 'Percentual de Eficácia'
+    def eficacia_placebo_calculada_view(self, obj):
+        if obj and obj.pk:
+            return f"{obj.eficacia_placebo_calculada:.2f}%"
+        return "0.00%"
+    eficacia_placebo_calculada_view.short_description = "Eficácia placebo"
 
 
+
+
+@admin.register(EficaciaPorEvidencia)
 class EficaciaPorEvidenciaAdmin(admin.ModelAdmin):
-  
-    list_display = ['tipo_eficacia',  'participantes_iniciaram_tratamento','participantes_com_beneficio', 'percentual_eficacia_calculado']
-  
-    def percentual_eficacia_calculado(self, obj):
-        """Calcula o percentual de eficácia e limita a duas casas decimais"""
-        if obj.participantes_iniciaram_tratamento > 0:
-            return round((obj.participantes_com_beneficio / obj.participantes_iniciaram_tratamento) * 100, 2)
-        return 0.0
+    form = EficaciaPorEvidenciaForm
 
-    percentual_eficacia_calculado.short_description = 'Percentual de Eficácia'
+    list_display = [
+        'evidencia',
+        'tipo_eficacia',
+        'participantes_iniciaram_tratamento',
+        'participantes_com_beneficio',
+        'percentual_eficacia_calculado_view',
+        'feito_pesquisa_com_placebo',
+        'tipo_eficacia_placebo',
+        'participantes_receberam_placebo',
+        'participantes_placebo_com_beneficio',
+        'eficacia_placebo_calculada_view',
+    ]
 
+    list_filter = [
+        'tipo_eficacia',
+        'feito_pesquisa_com_placebo',
+        'tipo_eficacia_placebo',
+    ]
 
-    readonly_fields = ['percentual_eficacia_calculado']
+    search_fields = [
+        'evidencia__titulo',
+        'tipo_eficacia__tipo_eficacia',
+        'tipo_eficacia_placebo__tipo_eficacia',
+    ]
 
-    # Renomeando os campos para exibição com os novos nomes
-    def participantes_com_beneficio(self, obj):
-        return obj.participantes_com_beneficio
-    participantes_com_beneficio.short_description = 'Quantidade de Participantes que obtiveram o benefício do tratamento'
+    autocomplete_fields = ['evidencia', 'tipo_eficacia', 'tipo_eficacia_placebo']
 
-    def participantes_iniciaram_tratamento(self, obj):
-        return obj.participantes_iniciaram_tratamento
-    participantes_iniciaram_tratamento.short_description = 'Quantidade de Participantes que iniciaram o tratamento'
+    readonly_fields = [
+        'percentual_eficacia_calculado_view',
+        'eficacia_placebo_calculada_view',
+    ]
 
-admin.site.register(EficaciaPorEvidencia, EficaciaPorEvidenciaAdmin)
+    fields = [
+        'evidencia',
+        'tipo_eficacia',
+        'participantes_iniciaram_tratamento',
+        'participantes_com_beneficio',
+        'percentual_eficacia_calculado_view',
+        'feito_pesquisa_com_placebo',
+        'tipo_eficacia_placebo',
+        'participantes_receberam_placebo',
+        'participantes_placebo_com_beneficio',
+        'eficacia_placebo_calculada_view',
+    ]
 
+    def percentual_eficacia_calculado_view(self, obj):
+        return f"{obj.percentual_eficacia_calculado:.2f}%"
+    percentual_eficacia_calculado_view.short_description = "Eficácia"
+
+    def eficacia_placebo_calculada_view(self, obj):
+        return f"{obj.eficacia_placebo_calculada:.2f}%"
+    eficacia_placebo_calculada_view.short_description = "Eficácia placebo"
 
 
 
@@ -336,7 +465,7 @@ admin.site.register(EficaciaPorEvidencia, EficaciaPorEvidenciaAdmin)
 @admin.register(TipoEficacia)
 class TipoEficaciaAdmin(admin.ModelAdmin):
     list_display = ('tipo_eficacia', 'descricao')
-    exclude = ('eficacia_por_tipo',)
+    exclude = ('eficacia_por_tipo','slug')
     search_fields = ('tipo_eficacia',)
 
 # --- Admin para Evidências Clínicas ---
@@ -661,8 +790,6 @@ class PaginaListaTratamentoAdmin(admin.ModelAdmin):
         self.message_user(request, f"{updated} página(s) despublicada(s).", level=messages.WARNING)
 
 
-
-from django.contrib import admin
 from .models import (
     TreatmentsUSA,
     TreatmentsUSAReacaoAdversaTeste,

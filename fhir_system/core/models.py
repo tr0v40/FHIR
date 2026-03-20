@@ -873,7 +873,6 @@ class TratamentoCondicao(models.Model):
     descricao = models.TextField(blank=True, null=True) 
     class Meta:
         unique_together = ('tratamento', 'condicao')
-    class Meta:
         verbose_name = "Tratamento Condição"
         verbose_name_plural = "Tratamentos Condições"
 
@@ -896,11 +895,9 @@ class TipoEficacia(models.Model):
             self.slug = slug
         super().save(*args, **kwargs)
 
-    descricao = models.TextField(blank=True, null=True)  
+    descricao = models.TextField(blank=True, null=True) 
+    outcome_type = models.TextField(blank=True, null=True) 
     imagem = models.ImageField(upload_to='icones_eficacia/', blank=True, null=True)  # Campo de imagem para o ícone
-
-
-
     eficacia_por_tipo = models.ManyToManyField('EficaciaPorTipo', related_name='tipos_de_eficacia', blank=True)
 
     def __str__(self):
@@ -930,24 +927,75 @@ class EficaciaPorTipo(models.Model):
 
 # models.py
 
+from django.db import models
+
+
 class EficaciaPorEvidencia(models.Model):
-    evidencia = models.ForeignKey(EvidenciasClinicas, on_delete=models.CASCADE, related_name="eficacia_por_evidencias")
+    evidencia = models.ForeignKey(
+        EvidenciasClinicas,
+        on_delete=models.CASCADE,
+        related_name="eficacia_por_evidencias"
+    )
     tipo_eficacia = models.ForeignKey(TipoEficacia, on_delete=models.CASCADE)
-    
-    # Campos de participantes
+
+    # Campos de participantes principais
     participantes_com_beneficio = models.IntegerField(default=0)
     participantes_iniciaram_tratamento = models.IntegerField(default=0)
-    
-    # Eficácia calculada
+
+    # Novo campo: pesquisa com placebo
+    feito_pesquisa_com_placebo = models.BooleanField(
+        default=False,
+        verbose_name="Feito pesquisa com placebo?"
+    )
+
+    # Campos do placebo
+    tipo_eficacia_placebo = models.ForeignKey(
+        TipoEficacia,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="eficacia_placebo_tipos",
+        verbose_name="Tipo eficácia usuários placebo"
+    )
+    participantes_receberam_placebo = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name="Participantes que receberam placebo"
+    )
+    participantes_placebo_com_beneficio = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name="Participantes placebo com benefício"
+    )
+
     @property
     def percentual_eficacia_calculado(self):
         if self.participantes_iniciaram_tratamento > 0:
-            return (self.participantes_com_beneficio / self.participantes_iniciaram_tratamento) * 100
+            return (
+                self.participantes_com_beneficio
+                / self.participantes_iniciaram_tratamento
+            ) * 100
         return 0.0
-    
+
+    @property
+    def eficacia_placebo_calculada(self):
+        if (
+            self.participantes_receberam_placebo
+            and self.participantes_receberam_placebo > 0
+            and self.participantes_placebo_com_beneficio is not None
+        ):
+            return (
+                self.participantes_placebo_com_beneficio
+                / self.participantes_receberam_placebo
+            ) * 100
+        return 0.0
+
     def __str__(self):
-        return f"{self.evidencia.titulo} - {self.tipo_eficacia.tipo_eficacia} - Eficácia: {self.percentual_eficacia_calculado}%"
-    
+        return (
+            f"{self.evidencia.titulo} - "
+            f"{self.tipo_eficacia.tipo_eficacia} - "
+            f"Eficácia: {self.percentual_eficacia_calculado:.2f}%"
+        )
 
 from django.db import models
 from django.utils.text import slugify
