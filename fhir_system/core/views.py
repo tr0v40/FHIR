@@ -1027,7 +1027,9 @@ def tratamentos_controle_enxaqueca(request):
     usar_eficacia_padrao = not tem_parametros
 
     # ---------- base ----------
-    tratamentos_qs = DetalhesTratamentoResumo.objects.all().distinct()
+    tratamentos_qs = DetalhesTratamentoResumo.objects.filter(
+    condicoes_saude__nome__iexact="Enxaqueca"
+).distinct()
 
     # Contraindicações para listar no template
     contraindications = Contraindicacao.objects.all()
