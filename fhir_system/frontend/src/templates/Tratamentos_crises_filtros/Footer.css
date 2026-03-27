@@ -1,189 +1,133 @@
-/* Área principal do rodapé */
-.footer {
-  background-color: #ffffff;  /* fundo branco */
-  border-top: 5px solid #e9e9e9;
-  font-size: 0.rem;
-  padding-top: 100px;
-  padding-bottom: 85px;
+.site-footer {
+  background: #ffffff;
+  border-top: 1px solid #dcdcdc;
+  margin-top: 60px;
 }
 
-/* Containers */
-.container {
-  max-width: 1250px;
+.site-footer-inner {
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0 25px;
+  padding: 42px 40px 34px;
 }
 
-/* Divisão em 3 colunas */
-.row {
-  margin-left: 280px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  column-gap: 200px;
+  row-gap: 10px;
+  align-items: start;
+  justify-items: start;
 }
 
-.col-12 {
+.footer-col {
+  min-width: 0;
   width: 100%;
+  text-align: left;
 }
 
-.col-md-4 {
-  width: 33.3333%; /* Ajuste de largura para 3 colunas */
+.footer-col h5 {
+  margin: 0 0 10px;
+  line-height: 1.35;
+  font-weight: 700;
+  color: #000000;
 }
 
-/* Estilo para os links do footer */
-.footer a {
+.footer-col h5 a,
+.footer-highlight,
+.footer-title-text {
+  font-size: 15px !important;
+  font-family: Arial, sans-serif !important;
+  font-weight: 700 !important;
+  color: #000000 !important;
   text-decoration: none;
-  color: #888a90ff;
-  font-size: 1.2rem;
+  line-height: 1.35;
 }
 
-.footer a:hover {
-  color: #0b66ff;
+.footer-col p {
+  margin: 0 0 6px;
+  font-size: 12px;
+  line-height: 1.45;
+  font-weight: 400;
+  color: #8a8a8a;
+  font-family: Arial, sans-serif;
+}
+
+.footer-col a {
+  color: #8a8a8a;
+  text-decoration: none;
+  font-size: 12px;
+  line-height: 1.45;
+  font-weight: 400;
+  font-family: Arial, sans-serif;
+  word-break: break-word;
+}
+
+.footer-col a:hover {
+  color: #2b71b7;
   text-decoration: underline;
 }
 
-.footer h5 {
-  font-size: 1.6rem;
-  font-weight: bold;
+.footer-company {
+  margin-top: 12px !important;
+}
+
+.footer-col h5 + p {
+  margin-bottom: 18px;
+}
+
+.footer-redirect-box {
+  margin-top: 28px;
+}
+
+.footer-redirect-label {
+  display: block;
   margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 400;
+  color: #8a8a8a;
+  font-family: Arial, sans-serif;
 }
 
-.footer p {
-  font-size: 1.2rem;
-  margin: 5px 0;
+.footer-redirect-select {
+  width: 100%;
+  max-width: 170px;
+  height: 38px;
+  border: 1px solid #1e97f3;
+  border-radius: 4px;
+  background-color: #1e97f3;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: Arial, sans-serif;
+  padding: 0 14px;
+  cursor: pointer;
+  outline: none;
 }
 
-/* Ajustes para os ícones das redes sociais */
-.footer-social {
-  display: flex;
-  gap: 30px;
-  justify-content: center;
+.footer-redirect-select option {
+  background: #ffffff;
+  color: #000000;
 }
 
-.social-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: #ffffffff;
-  color: #413f3fff;
-  font-size: 18px;
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
-  margin-right: 10px;
-  margin-top:10px;
+.footer-bottom-strip {
+  width: 100%;
+  height: 150px;
+  background: #f3f3f3;
+  border-top: 4px solid #dcdcdc;
 }
 
-.social-btn:hover {
-  
-  transform: translateY(-2px);
-  
-  box-shadow: 0 6px 16px rgba(11, 102, 255, 0.18);
-}
-
-/* Remove os bullets (pontinhos) das listas do footer */
-.footer ul {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
-}
-
-/* Garante que os <li> não recriem marcador */
-.footer li {
-  list-style: none;
-}
-
-
-.footer-links li {
-  margin-bottom: 10px; /* Ajuste o valor conforme necessário (ex.: 10px ou 12px) */
-}
-
-
-.footer ul li {
-  margin-bottom: 10px; /* Ajuste conforme necessário, ex.: 10px ou 12px */
-}
-
-
-
-.footer .col-md-4 p {
-  margin-bottom: 10px; /* Ajuste para 10px ou 12px se quiser mais espaço */
-}
-
-
-/*Mobile*/
-
-@media (max-width: 768px) {
-  .footer {
-    padding-top: 40px;
-    padding-bottom: 40px;
+@media (max-width: 640px) {
+  .site-footer-inner {
+    padding: 28px 16px 24px;
   }
 
-  .container {
-    padding: 0 18px;
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
   }
 
-  .row {
-    margin-left: 0 !important;       
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 28px;
+  .footer-bottom-strip {
+    height: 20px;
   }
-
-  .col-md-4 {
-    width: 100%;
-  }
-
-  /* remove bullets e recuos se tiver UL/LI */
-  .footer ul,
-  .footer ol {
-    list-style: none !important;
-    padding-left: 0 !important;
-    margin: 0 !important;
-  }
-  
-
-  .footer li {
-    list-style: none !important;
-    padding-left: 0 !important;
-    margin: 0 !important;
-  }
-
-  /* Títulos e links alinhados à esquerda */
-  .footer h5 {
-    font-size: 1.35rem;
-    margin-bottom: 10px;
-  }
-
-  .footer a,
-  .footer p {
-    font-size: 1.05rem;
-  }
-
-  /* Ícones no topo e alinhados à esquerda (como sua imagem) */
-  .footer-social {
-    justify-content: flex-start !important;
-    gap: 16px;
-    margin-bottom: 10px;
-  }
-
-  .social-btn {
-    margin-right: 0;                 
-    width: 44px;
-    height: 44px;
-  
-  /* Remove os bullets (pontinhos) das listas do footer */
-.footer ul {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
 }
-
-/* Garante que os <li> não recriem marcador */
-.footer li {
-  list-style: none;
-}
-}
-}
-

@@ -1,18 +1,13 @@
 from django.shortcuts import get_object_or_404, render
 from .models import PaginaDetalheTratamento
-from core.models import DetalhesTratamentoResumo,CondicaoSaude
+from core.models import DetalhesTratamentoResumo, CondicaoSaude, Avaliacao
 from django.conf import settings
-from django.utils.text import slugify
-# views.py (DETALHE)
 from django.db.models import F, FloatField, Min, Max
 from django.db.models.functions import Coalesce, NullIf
 from django.db.models.expressions import ExpressionWrapper
 
+
 def _format_unidade_pt(unidade_raw, valor_ref):
-    """
-    Retorna unidade em PT-BR no singular/plural.
-    Ex.: ('min', 1) -> 'minuto' | ('min', 2) -> 'minutos'
-    """
     if not unidade_raw:
         return ""
 
@@ -24,29 +19,23 @@ def _format_unidade_pt(unidade_raw, valor_ref):
         "mins": "min",
         "minuto": "min",
         "minutos": "min",
-
         "h": "h",
         "hr": "h",
         "hora": "h",
         "horas": "h",
-
         "d": "d",
         "dia": "d",
         "dias": "d",
-
         "sem": "sem",
         "semana": "sem",
         "semanas": "sem",
-
         "sessao": "sessao",
         "sessão": "sessao",
         "sessoes": "sessao",
         "sessões": "sessao",
-
         "mes": "mes",
         "mês": "mes",
         "meses": "mes",
-
         "ano": "ano",
         "anos": "ano",
     }
@@ -76,7 +65,6 @@ def _format_unidade_pt(unidade_raw, valor_ref):
 
 
 def _format_prazo_efeito(min_v, max_v, unidade_raw):
-    # valor de referência para pluralização
     ref = max_v if max_v is not None else min_v
     unidade = _format_unidade_pt(unidade_raw, ref)
 
@@ -92,7 +80,6 @@ def _format_prazo_efeito(min_v, max_v, unidade_raw):
         return f"até {max_v} {unidade}"
 
     return None
-
 
 
 def pagina_detalhe_tratamento(request, condicao_slug, tratamento_slug):
@@ -120,11 +107,11 @@ def pagina_detalhe_tratamento(request, condicao_slug, tratamento_slug):
                 "contraindicacoes",
                 "reacoes_adversas_detalhes__reacao_adversa",
                 "evidencias__eficacia_por_evidencias__tipo_eficacia",
+                "avaliacoes",
             ),
             slug=tratamento_slug,
             condicoes_saude=condicao,
         )
-
 
     pct_expr = ExpressionWrapper(
         100.0 * Coalesce(F("eficacia_por_evidencias__participantes_com_beneficio"), 0)
@@ -132,11 +119,10 @@ def pagina_detalhe_tratamento(request, condicao_slug, tratamento_slug):
         output_field=FloatField(),
     )
 
-    ef_slug = (request.GET.get("ef") or "").strip().lower()  # <-- DINÂMICO, sem lista fechada
+    ef_slug = (request.GET.get("ef") or "").strip().lower()
 
-    base = tratamento.evidencias.filter(condicao_saude=page.condicao)
+    base = tratamento.evidencias.filter(condicao_saude=condicao)
 
-    # se veio ef=..., mostra SOMENTE aquela eficácia
     if ef_slug:
         base = base.filter(eficacia_por_evidencias__tipo_eficacia__slug=ef_slug)
 
@@ -178,13 +164,16 @@ def pagina_detalhe_tratamento(request, condicao_slug, tratamento_slug):
         tratamento.prazo_efeito_unidade,
     )
 
+    avaliacoes = tratamento.avaliacoes.all().order_by("-data")
+
     context = {
         "page": page,
-        "condicao": page.condicao,
+        "condicao": condicao,
         "tratamento": tratamento,
         "prazo_efeito": prazo_efeito,
         "detalhes_reacoes_adversas": tratamento.reacoes_adversas_detalhes.all(),
         "eficacias_por_tipo": eficacias_por_tipo,
-        "ef_filtro_slug": ef_slug,  # opcional
+        "ef_filtro_slug": ef_slug,
+        "avaliacoes": avaliacoes,
     }
     return render(request, "core/pagina_detalhe_tratamento.html", context)

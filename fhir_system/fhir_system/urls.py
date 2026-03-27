@@ -23,7 +23,7 @@ urlpatterns = [
     path('sucesso/', views.sucesso_view, name='sucesso'),  
     path('enviar_avaliacao/', views.enviar_avaliacao, name='enviar_avaliacao'),
     path("register/", views.register, name="register"),
-    path('salvar-avaliacao/<int:tratamento_id>/', views.salvar_avaliacao, name='salvar_avaliacao'),
+    path("salvar-avaliacao/<int:tratamento_id>/", views.salvar_avaliacao, name="salvar_avaliacao"),
     path('admin/core/tipoeficacia/<int:pk>/descricao/', tipo_eficacia_descricao_json, name='tipoeficacia-descricao'),
    
     path("tratamentos/", views.tratamentos, name="tratamentos"),

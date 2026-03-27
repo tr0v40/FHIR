@@ -884,32 +884,29 @@ def listar_urls(request):
     return render(request, "core/listar_urls.html", {"urls": urls})
 
 
+from .models import DetalhesTratamentoResumo, Avaliacao
+
 def salvar_avaliacao(request, tratamento_id):
-    if request.method != "POST":
-        # Se não for POST, volta para a página do tratamento
+    if request.method == "POST":
         tratamento = get_object_or_404(DetalhesTratamentoResumo, id=tratamento_id)
-        return redirect('detalhes_tratamentos', slug=tratamento.slug)
 
-    tratamento = get_object_or_404(DetalhesTratamentoResumo, id=tratamento_id)
+        comentario = request.POST.get("comentario", "").strip()
+        usuario_nome = request.POST.get("usuario_nome", "").strip()
 
-    usuario_nome = (request.POST.get("usuario_nome") or "").strip()
-    comentario   = (request.POST.get("comentario") or "").strip()
+        if comentario:
+            Avaliacao.objects.create(
+                tratamento=tratamento,
+                comentario=comentario,
+                usuario_nome=usuario_nome if usuario_nome else "Usuário Anônimo"
+            )
 
-    # Só salva se tiver comentário; o nome você pode forçar ou não
-    if comentario:
-        if not usuario_nome:
-            usuario_nome = "Usuário Anônimo"
+        referer = request.META.get("HTTP_REFERER")
+        if referer:
+            return redirect(referer)
 
-        Avaliacao.objects.create(
-            tratamento=tratamento,
-            usuario_nome=usuario_nome,
-            comentario=comentario,
-        )
+        return redirect("detalhes_tratamentos", slug=tratamento.slug)
 
-    # Redireciona usando o nome da rota, sem precisar de reverse()
-    return redirect('detalhes_tratamentos', slug=tratamento.slug)
-
-
+    return redirect("home")
 
 
 
