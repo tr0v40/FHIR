@@ -197,26 +197,25 @@ function Footer() {
               <label htmlFor="footerRedirectSelect" className="footer-redirect-label">
                 Selecione a doença:
               </label>
-
-              <select
-                id="footerRedirectSelect"
-                className="footer-redirect-select"
-                defaultValue=""
-                onChange={(e) => {
-                  const destino = e.target.value;
-                  if (destino) {
-                    window.location.href = destino;
-                  }
-                }}
-              >
-                <option value="">Selecione</option>
-                <option value="http://127.0.0.1:8000/tratamentos-crise-enxaqueca/">
-                  Enxaqueca - Crise
-                </option>
-                <option value="http://127.0.0.1:8000/tratamentos-controle-enxaqueca/">
-                  Enxaqueca - Controle
-                </option>
-              </select>
+<select
+  id="footerRedirectSelect"
+  className="footer-redirect-select"
+  defaultValue=""
+  onChange={(e) => {
+    const destino = e.target.value;
+    if (destino) {
+      window.location.href = destino;
+    }
+  }}
+>
+  <option value="">Selecione</option>
+  <option value="/tratamentos-crise-enxaqueca/">
+    Enxaqueca - Crise
+  </option>
+  <option value="/tratamentos-controle-enxaqueca/">
+    Enxaqueca - Controle
+  </option>
+</select>
             </div>
             </div>
           </div>
