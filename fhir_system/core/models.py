@@ -871,10 +871,9 @@ class TratamentoCondicao(models.Model):
     tratamento = models.ForeignKey('DetalhesTratamentoResumo', on_delete=models.CASCADE, related_name='condicoes_relacionadas')
     condicao  = models.ForeignKey('CondicaoSaude', on_delete=models.CASCADE, related_name='tratamentos_relacionados')
     descricao = models.TextField(blank=True, default="") 
-    class Meta:
-        unique_together = ('tratamento', 'condicao')
-        verbose_name = "Tratamento Condição"
-        verbose_name_plural = "Tratamentos Condições"
+class Meta:
+    verbose_name = "Tratamento Condição"
+    verbose_name_plural = "Tratamentos Condições"
 
     def __str__(self):
         return f"{self.condicao.nome}"
