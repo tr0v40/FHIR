@@ -1,14 +1,21 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import EvidenciasClinicas
-from .models import DetalhesTratamentoResumo, CondicaoSaude
-from django import forms
-from .models import Avaliacao
+from django_select2.forms import Select2MultipleWidget
+
+from .models import (
+    Avaliacao,
+    CondicaoSaude,
+    DetalhesTratamentoResumo,
+    EvidenciasClinicas,
+    Pais,
+    TratamentoCondicao,
+)
 
 class UserRegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
     password_confirm = forms.CharField(
-        widget=forms.PasswordInput, label="Confirme sua senha"
+        widget=forms.PasswordInput,
+        label="Confirme sua senha"
     )
 
     class Meta:
@@ -31,14 +38,6 @@ class TratamentoSearchForm(forms.Form):
     categoria = forms.CharField(label="Categoria", max_length=100, required=False)
 
 
-class EvidenciasClinicasForm(forms.ModelForm):
-    class Meta:
-        model = EvidenciasClinicas
-        fields = "__all__"
-
-
-
-
 class DetalhesTratamentoResumoForm(forms.ModelForm):
     condicao_saude = forms.ModelMultipleChoiceField(
         queryset=CondicaoSaude.objects.all(),
@@ -49,31 +48,50 @@ class DetalhesTratamentoResumoForm(forms.ModelForm):
 
     class Meta:
         model = DetalhesTratamentoResumo
-        fields = ['nome', 'prazo_efeito_min', 'prazo_efeito_max', 'condicao_saude']
+        fields = ["nome", "prazo_efeito_min", "prazo_efeito_max", "condicao_saude"]
 
-
-        
 
 class ComentarioForm(forms.ModelForm):
+    usuario_nome = forms.CharField(
+        max_length=255,
+        required=True,
+        label="Nome Completo",
+        widget=forms.TextInput(attrs={"placeholder": "Digite seu nome"})
+    )
+    comentario = forms.CharField(
+        widget=forms.Textarea,
+        required=True,
+        label="Comentário"
+    )
+
     class Meta:
         model = Avaliacao
-        fields = ['usuario_nome', 'comentario']
+        fields = ["usuario_nome", "comentario"]
 
-    usuario_nome = forms.CharField(max_length=255, required=True, label='Nome Completo', widget=forms.TextInput(attrs={'placeholder': 'Digite seu nome'}))
-    comentario = forms.CharField(widget=forms.Textarea, required=True, label='Comentário')
-
-
-from django import forms
-from django_select2.forms import Select2MultipleWidget
-from .models import EvidenciasClinicas, Pais
 
 class EvidenciasClinicasForm(forms.ModelForm):
     pais = forms.ModelMultipleChoiceField(
-        queryset=Pais.objects.all(),  # Garante que estamos carregando os países do banco de dados
-        widget=Select2MultipleWidget(),  # Usando o widget Select2 para uma boa interface
-        required=False  
+        queryset=Pais.objects.all(),
+        widget=Select2MultipleWidget(),
+        required=False
     )
 
     class Meta:
         model = EvidenciasClinicas
-        fields = ['titulo', 'descricao', 'paises']  
+        fields = ["titulo", "descricao", "paises"]
+
+
+class TratamentoCondicaoInlineForm(forms.ModelForm):
+    class Meta:
+        model = TratamentoCondicao
+        fields = ("condicao", "descricao")
+
+    def clean(self):
+        cleaned_data = super().clean()
+        condicao = cleaned_data.get("condicao")
+        descricao = cleaned_data.get("descricao")
+
+        if condicao and not descricao:
+            self.add_error("descricao", "Preencha a descrição da condição.")
+
+        return cleaned_data

@@ -870,7 +870,7 @@ class Avaliacao(models.Model):
 class TratamentoCondicao(models.Model):
     tratamento = models.ForeignKey('DetalhesTratamentoResumo', on_delete=models.CASCADE, related_name='condicoes_relacionadas')
     condicao  = models.ForeignKey('CondicaoSaude', on_delete=models.CASCADE, related_name='tratamentos_relacionados')
-    descricao = models.TextField(blank=True, null=True) 
+    descricao = models.TextField(blank=True, default="") 
     class Meta:
         unique_together = ('tratamento', 'condicao')
         verbose_name = "Tratamento Condição"
@@ -1267,7 +1267,7 @@ class TreatmentsUSA(models.Model):
         help_text="Risk percentage of side effects (0 to 100%)",
         verbose_name="Risk"
     )
-
+    
     def save(self, *args, **kwargs):
         if not self.slug and self.name:
             base_slug = slugify(self.name)

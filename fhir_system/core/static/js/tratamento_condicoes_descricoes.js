@@ -1,7 +1,21 @@
 (function () {
+    function getSelectedBox() {
+        return (
+            document.getElementById("id_condicoes_saude_to") ||
+            document.getElementById("id_condicoes_saude") ||
+            document.querySelector("#id_condicoes_saude_to") ||
+            document.querySelector("#id_condicoes_saude") ||
+            document.querySelector(".selector-chosen select") ||
+            document.querySelector(".field-condicoes_saude select")
+        );
+    }
+
     function initCondicoesDescricoes() {
-        const selectedBox = document.getElementById("id_condicoes_saude_to");
+        const selectedBox = getSelectedBox();
         const hiddenInput = document.getElementById("id_descricoes_condicoes_json");
+
+        console.log("selectedBox:", selectedBox);
+        console.log("hiddenInput:", hiddenInput);
 
         if (!selectedBox || !hiddenInput) return false;
         if (document.getElementById("condicoes-descricoes-row")) return true;
@@ -12,17 +26,18 @@
         } catch (e) {
             descricoes = {};
         }
-
         const condicoesFieldRow =
-            document.querySelector(".field-condicoes_saude") ||
             selectedBox.closest(".form-row") ||
+            selectedBox.closest(".aligned") ||
+            document.querySelector(".form-row.field-condicoes_saude") ||
+            document.querySelector(".field-condicoes_saude") ||
             selectedBox.closest(".fieldBox");
 
-        if (!condicoesFieldRow) return false;
-
         const referenciaRow =
-            document.querySelector(".field-descricao") ||
             document.getElementById("id_descricao")?.closest(".form-row") ||
+            document.getElementById("id_descricao")?.closest(".aligned") ||
+            document.querySelector(".form-row.field-descricao") ||
+            document.querySelector(".field-descricao") ||
             document.getElementById("id_descricao")?.closest(".fieldBox");
 
         const referenciaInput = document.getElementById("id_descricao");
@@ -34,8 +49,7 @@
         if (referenciaRow && referenciaInput) {
             const rowRect = referenciaRow.getBoundingClientRect();
             const inputRect = referenciaInput.getBoundingClientRect();
-
-            larguraLabel = Math.round(inputRect.left - rowRect.left - gap);
+            larguraLabel = Math.max(180, Math.round(inputRect.left - rowRect.left - gap));
             larguraCampo = Math.round(inputRect.width);
         }
 
@@ -51,22 +65,17 @@
 
         const left = document.createElement("div");
         left.style.paddingTop = "8px";
-        left.style.width = `${larguraLabel}px`;
-        left.style.boxSizing = "border-box";
 
         const leftLabel = document.createElement("label");
         leftLabel.textContent = "Descrição por condição de saúde";
         leftLabel.style.fontWeight = "600";
         leftLabel.style.fontSize = "13px";
         leftLabel.style.color = "#111";
-        leftLabel.style.display = "inline-block";
         left.appendChild(leftLabel);
 
         const right = document.createElement("div");
         right.style.width = "100%";
         right.style.maxWidth = `${larguraCampo}px`;
-        right.style.justifySelf = "start";
-        right.style.boxSizing = "border-box";
 
         const subtitle = document.createElement("div");
         subtitle.textContent = "Preencha uma descrição específica para cada condição selecionada.";
@@ -86,13 +95,32 @@
         row.appendChild(left);
         row.appendChild(right);
 
+        if (referenciaRow) {
+        referenciaRow.insertAdjacentElement("beforebegin", row);
+    } else if (condicoesFieldRow) {
         condicoesFieldRow.insertAdjacentElement("afterend", row);
+    }
+
+        function getSelectedOptions() {
+            if (selectedBox.tagName === "SELECT") {
+                return Array.from(selectedBox.options);
+            }
+            return [];
+        }
+
+        function getSelectedIds() {
+            return getSelectedOptions().map(opt => String(opt.value));
+        }
 
         function syncDescricoes() {
-            const selectedIds = Array.from(selectedBox.options).map(opt => String(opt.value));
+            const selectedIds = getSelectedIds();
+
             Object.keys(descricoes).forEach(key => {
-                if (!selectedIds.includes(key)) delete descricoes[key];
+                if (!selectedIds.includes(key)) {
+                    delete descricoes[key];
+                }
             });
+
             hiddenInput.value = JSON.stringify(descricoes);
         }
 
@@ -108,7 +136,6 @@
             title.style.fontSize = "13px";
             title.style.fontWeight = "600";
             title.style.marginBottom = "4px";
-            title.style.color = "#111827";
 
             const helper = document.createElement("div");
             helper.textContent = "Descrição específica para esta condição de saúde";
@@ -120,15 +147,12 @@
             textarea.rows = 4;
             textarea.value = descricoes[condicaoId] || "";
             textarea.style.width = "100%";
-            textarea.style.maxWidth = "100%";
             textarea.style.minHeight = "110px";
             textarea.style.boxSizing = "border-box";
             textarea.style.padding = "10px 12px";
             textarea.style.border = "1px solid #cbd5e1";
             textarea.style.borderRadius = "6px";
             textarea.style.resize = "vertical";
-            textarea.style.fontSize = "13px";
-            textarea.style.lineHeight = "1.45";
 
             textarea.addEventListener("input", function () {
                 descricoes[condicaoId] = textarea.value;
@@ -145,7 +169,7 @@
         function renderCampos() {
             container.innerHTML = "";
 
-            const selectedOptions = Array.from(selectedBox.options);
+            const selectedOptions = getSelectedOptions();
 
             if (selectedOptions.length === 0) {
                 const empty = document.createElement("div");
@@ -154,8 +178,6 @@
                 empty.style.background = "#fff";
                 empty.style.border = "1px dashed #cbd5e1";
                 empty.style.borderRadius = "8px";
-                empty.style.fontSize = "13px";
-                empty.style.color = "#6b7280";
                 container.appendChild(empty);
                 syncDescricoes();
                 return;
@@ -171,9 +193,16 @@
         }
 
         const observer = new MutationObserver(renderCampos);
-        observer.observe(selectedBox, { childList: true });
+        observer.observe(selectedBox, { childList: true, subtree: true });
 
         selectedBox.addEventListener("change", renderCampos);
+
+        const form = selectedBox.closest("form");
+        if (form) {
+            form.addEventListener("submit", function () {
+                syncDescricoes();
+            });
+        }
 
         renderCampos();
         return true;
@@ -181,7 +210,7 @@
 
     function startWhenReady() {
         let tries = 0;
-        const maxTries = 40;
+        const maxTries = 60;
 
         const interval = setInterval(function () {
             tries += 1;
@@ -190,5 +219,5 @@
         }, 300);
     }
 
-    window.addEventListener("load", startWhenReady);
+    document.addEventListener("DOMContentLoaded", startWhenReady);
 })();

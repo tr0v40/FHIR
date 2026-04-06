@@ -1,16 +1,17 @@
   # ==================== IMPORTS SESSIONS ==================== #
-import json
+
+
 from django.contrib import admin, messages
 from django import forms
-from django.http import JsonResponse
+
 from django.urls import path, reverse
 from django.utils.html import format_html
-from django.utils.safestring import mark_safe
 
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
 from core.admin_urls_view import admin_urls_list
+from .forms import TratamentoCondicaoInlineForm
 
 from .models import (
     PaginaListaTratamento,
@@ -74,41 +75,8 @@ class DetalhesTratamentoResumoForm(forms.ModelForm):
         if 'h' in prazo_max:
             return int(prazo_max.replace('h', '').strip()) * 60
         return int(prazo_max)
-    
-class DetalhesTratamentoResumoAdminForm(forms.ModelForm):
-    descricoes_condicoes_json = forms.CharField(
-        widget=forms.HiddenInput(),
-        required=False
-    )
 
-    class Meta:
-        model = DetalhesTratamentoResumo
-        fields = "__all__"
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        data_inicial = {}
-
-        if self.instance.pk:
-            for item in TratamentoCondicao.objects.filter(
-                tratamento=self.instance
-            ).select_related("condicao"):
-                data_inicial[str(item.condicao_id)] = item.descricao or ""
-
-        self.fields["descricoes_condicoes_json"].initial = json.dumps(
-            data_inicial,
-            ensure_ascii=False
-        )
-
-class TratamentoCondicaoInlineForm(forms.ModelForm):
-    class Meta:
-        model = TratamentoCondicao
-        fields = ('condicao', 'descricao')
-
-    class Media:
-        # JS para autofill da descrição da condição escolhida
-        js = ('core/js/autofill_condicao_descricao.js',)
 
 class TratamentoCondicaoInline(admin.TabularInline):
     model = TratamentoCondicao
@@ -133,21 +101,14 @@ class DetalhesTratamentoResumoResource(resources.ModelResource):
         skip_unchanged = True
 
 
-
 @admin.register(DetalhesTratamentoResumo)
 class DetalhesTratamentoAdmin(ImportExportModelAdmin):
     resource_class = DetalhesTratamentoResumoResource
-    form = DetalhesTratamentoResumoAdminForm
 
     inlines = [
+        TratamentoCondicaoInline,
         DetalhesTratamentoReacaoAdversaInline,
     ]
-
-    class Media:
-        js = (
-            'js/autofill_condicao_descricao.js',
-            'js/tratamento_condicoes_descricoes.js',
-        )
 
     list_display = (
         "nome",
@@ -194,111 +155,81 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
                     "fabricante",
                     "principio_ativo",
                     "condicoes_saude",
-                    "descricoes_condicoes_json",
+                   
                     "descricao",
                     "imagem",
                     "imagem_detalhes",
                 )
             },
         ),
-        ("Adesão ao Tratamento", {
-            "fields": (
-                "quando_usar",
-                "prazo_efeito_min",
-                "prazo_efeito_max",
-                "prazo_efeito_unidade",
-                "tipo_tratamento",
-                "custo_medicamento",
-                "link_para_compra_de_tratamento",
-                "especificacao_do_custo"
-            )
-        }),
-        ("Links e Alertas", {
-            "fields": (
-                "interacao_medicamentosa",
-                "genericos_similares",
-                "prescricao_eletronica",
-                "opiniao_especialista",
-                "links_profissionais",
-                "alertas",
-            )
-        }),
-        ("Indicação por Grupo", {
-            "fields": (
-                "indicado_criancas",
-                "motivo_criancas",
-                "indicado_adolescentes",
-                "motivo_adolescentes",
-                "indicado_idosos",
-                "motivo_idosos",
-                "indicado_adultos",
-                "motivo_adultos",
-                "indicado_lactantes",
-                "motivo_lactantes",
-                "indicado_gravidez",
-                "motivo_gravidez",
-            )
-        }),
+        (
+            "Adesão ao Tratamento",
+            {
+                "fields": (
+                    "quando_usar",
+                    "prazo_efeito_min",
+                    "prazo_efeito_max",
+                    "prazo_efeito_unidade",
+                    "tipo_tratamento",
+                    "custo_medicamento",
+                    "link_para_compra_de_tratamento",
+                    "especificacao_do_custo",
+                )
+            },
+        ),
+        (
+            "Links e Alertas",
+            {
+                "fields": (
+                    "interacao_medicamentosa",
+                    "genericos_similares",
+                    "prescricao_eletronica",
+                    "opiniao_especialista",
+                    "links_profissionais",
+                    "alertas",
+                )
+            },
+        ),
+        (
+            "Indicação por Grupo",
+            {
+                "fields": (
+                    "indicado_criancas",
+                    "motivo_criancas",
+                    "indicado_adolescentes",
+                    "motivo_adolescentes",
+                    "indicado_idosos",
+                    "motivo_idosos",
+                    "indicado_adultos",
+                    "motivo_adultos",
+                    "indicado_lactantes",
+                    "motivo_lactantes",
+                    "indicado_gravidez",
+                    "motivo_gravidez",
+                )
+            },
+        ),
         ("Contraindicações", {"fields": ("contraindicacoes",)}),
     )
 
-    @admin.display(description='Condições de Saúde')
+    @admin.display(description="Condições de Saúde")
     def condicoes_saude_list(self, obj):
-        return ", ".join(obj.condicoes_saude.values_list('nome', flat=True))
+        return ", ".join(obj.condicoes_saude.values_list("nome", flat=True))
 
-    @admin.display(description='Contraindicações')
+    @admin.display(description="Contraindicações")
     def contraindicacoes_list(self, obj):
-        return ", ".join(obj.contraindicacoes.values_list('nome', flat=True))
+        return ", ".join(obj.contraindicacoes.values_list("nome", flat=True))
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        return qs.prefetch_related('condicoes_saude', 'contraindicacoes')
+        return qs.prefetch_related("condicoes_saude", "contraindicacoes")
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
-        if 'descricao' in form.base_fields:
-            form.base_fields['descricao'].label = "Descrição geral do tratamento"
+        if "descricao" in form.base_fields:
+            form.base_fields["descricao"].label = "Descrição geral do tratamento"
         return form
 
-    def get_urls(self):
-        urls = super().get_urls()
-        custom = [
-            path(
-                'condicao/<int:pk>/descricao/',
-                self.admin_site.admin_view(self._condicao_descricao_view),
-                name='dettrat-condicao-descricao'
-            ),
-        ]
-        return custom + urls
-
-    def _condicao_descricao_view(self, request, pk):
-        desc = CondicaoSaude.objects.filter(pk=pk).values_list('descricao', flat=True).first() or ""
-        return JsonResponse({'descricao': desc})
-
-    def save_model(self, request, obj, form, change):
-        super().save_model(request, obj, form, change)
-
-        descricoes_json = form.cleaned_data.get("descricoes_condicoes_json") or "{}"
-
-        try:
-            descricoes = json.loads(descricoes_json)
-        except json.JSONDecodeError:
-            descricoes = {}
-
-        condicoes_ids = set(obj.condicoes_saude.values_list("id", flat=True))
-
-        TratamentoCondicao.objects.filter(tratamento=obj).exclude(
-            condicao_id__in=condicoes_ids
-        ).delete()
-
-        for condicao_id in condicoes_ids:
-            descricao = (descricoes.get(str(condicao_id)) or "").strip()
-
-            TratamentoCondicao.objects.update_or_create(
-                tratamento=obj,
-                condicao_id=condicao_id,
-                defaults={"descricao": descricao}
-            )
 
 @admin.register(ReacaoAdversa)
 class ReacaoAdversaAdmin(admin.ModelAdmin):
@@ -309,9 +240,10 @@ class ReacaoAdversaAdmin(admin.ModelAdmin):
 
 @admin.register(CondicaoSaude)
 class CondicaoSaudeAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'descricao', 'condition') 
-    search_fields = ('nome',)
-    fields = ('nome', 'descricao', 'condition', 'condition_description')
+    list_display = ("nome", "descricao", "condition")
+    search_fields = ("nome",)
+    fields = ("nome", "descricao", "condition", "condition_description")
+    ordering = ("nome",)
 
 
 
@@ -327,9 +259,6 @@ class EvidenciasClinicasForm(forms.ModelForm):
     class Meta:
         model = EvidenciasClinicas
         fields = ['tratamento', 'titulo', 'descricao', 'condicao_saude', 'rigor_da_pesquisa', 'tipos_eficacia', 'eficacia_min', 'eficacia_max', 'numero_participantes']
-
-from django.contrib import admin
-from .models import EficaciaPorEvidencia
 
 
 
