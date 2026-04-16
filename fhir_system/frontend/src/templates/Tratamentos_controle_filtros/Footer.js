@@ -1,7 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import './Footer.css';
 
+const API_BASE = '/api';
+
 function Footer() {
+  const [footerListas, setFooterListas] = useState([]);
+
+  useEffect(() => {
+    let ativo = true;
+
+    axios
+      .get(`${API_BASE}/footer-listas-publicadas/`)
+      .then((resp) => {
+        if (!ativo) return;
+        setFooterListas(Array.isArray(resp.data) ? resp.data : []);
+      })
+      .catch(() => {
+        if (!ativo) return;
+        setFooterListas([]);
+      });
+
+    return () => {
+      ativo = false;
+    };
+  }, []);
+
   return (
     <>
       <footer className="site-footer">
@@ -193,30 +217,30 @@ function Footer() {
                 </a>
               </p>
 
-            <div className="footer-redirect-box">
-              <label htmlFor="footerRedirectSelect" className="footer-redirect-label">
-                Selecione a doença:
-              </label>
-<select
-  id="footerRedirectSelect"
-  className="footer-redirect-select"
-  defaultValue=""
-  onChange={(e) => {
-    const destino = e.target.value;
-    if (destino) {
-      window.location.href = destino;
-    }
-  }}
->
-  <option value="">Selecione</option>
-  <option value="/tratamentos-crise-enxaqueca/">
-    Enxaqueca - Crise
-  </option>
-  <option value="/tratamentos-controle-enxaqueca/">
-    Enxaqueca - Controle
-  </option>
-</select>
-            </div>
+              <div className="footer-redirect-box">
+                <label htmlFor="footerRedirectSelect" className="footer-redirect-label">
+                  Selecione a doença:
+                </label>
+
+                <select
+                  id="footerRedirectSelect"
+                  className="footer-redirect-select"
+                  defaultValue=""
+                  onChange={(e) => {
+                    const destino = e.target.value;
+                    if (destino) {
+                      window.location.href = destino;
+                    }
+                  }}
+                >
+                  <option value="">Selecione</option>
+                  {footerListas.map((item) => (
+                    <option key={item.url} value={item.url}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
         </div>

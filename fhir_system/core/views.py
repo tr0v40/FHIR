@@ -10,6 +10,7 @@ from .models import Contraindicacao, EvidenciasClinicas, DetalhesTratamentoResum
 from django.utils.functional import lazy
 from django.http import JsonResponse
 from django.views.generic import View
+from core.models import PaginaListaTratamento
 from .models import CondicaoSaude
 from math import isfinite
 from django.db.models import   When
@@ -995,9 +996,29 @@ def server_error_500(request, template_name="500.html"):
 
 from django.db.models import Prefetch, Q
 
+def get_footer_listas():
+    listas = (
+        PaginaListaTratamento.objects
+        .filter(publicada=True)
+        .select_related("condicao_saude", "tipo_eficacia")
+        .order_by("condicao_saude__nome", "tipo_eficacia__tipo_eficacia")
+    )
+
+    footer_listas = []
+    for item in listas:
+        footer_listas.append({
+            "label": f"{item.condicao_saude.nome} {item.tipo_eficacia.tipo_eficacia}".strip(),
+            "url": f"/listas/{item.condicao_saude.slug}/{item.tipo_eficacia.slug}/",
+        })
+
+    return footer_listas
+
 
 def tratamentos_controle_enxaqueca(request):
+    
+
     # ---------- parâmetros ----------
+    
     ordenacao       = (request.GET.get('ordenacao') or '').strip().lower()
     ordenacao_opcao = (
         request.GET.get('ordenacao_opcao')
@@ -1285,11 +1306,9 @@ def tratamentos_controle_enxaqueca(request):
         'contraindicacoes_selecionadas': contraindicacoes_selecionadas,
         'exibir': exibir,
         'tratamentos_controle': tratamentos_controle,
-   
-      
+        'footer_listas': get_footer_listas(),
     }
     return render(request, "core/tratamentos_controle_enxaqueca.html", context)
-
 
 
 def tratamentos_crise_enxaqueca(request):
@@ -1583,6 +1602,7 @@ def tratamentos_crise_enxaqueca(request):
         'publico': publico,
         'contraindicacoes_selecionadas': contraindicacoes_selecionadas,
         'exibir': exibir,
+        'footer_listas': get_footer_listas(),
        
     }
     return render(request, "core/tratamentos_crises.html", context)
