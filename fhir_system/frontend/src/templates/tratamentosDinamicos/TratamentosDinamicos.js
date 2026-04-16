@@ -704,7 +704,7 @@ if (cached?.tratamentosBaseRaw && cached?.eficaciaArr && cached?.riscoArr) {
                           ver detalhes <span style={{ fontWeight: 'bold' }}>&#8250;</span>
                         </div>
 
-                        <p>{tratamento.descricao}</p>
+                        <p>{tratamento.descricao_lista || tratamento.descricao}</p>
                       </div>
 
                       <div className="eficacia-container">

@@ -337,14 +337,17 @@ class DetalhesTratamentoReacaoAdversaTeste(models.Model):
 
     
 class CondicaoSaude(models.Model):
-    nome = models.CharField(
-        max_length=255,
-        verbose_name="Nome da Condição de Saúde"
-    )
-    slug = models.SlugField(max_length=255, unique=True, blank=True, db_index=True)
+    nome = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=140, unique=True, blank=True, null=True, db_index=True)
+
+    descricao = models.TextField(blank=True, null=True)
+
+    condition = models.CharField(max_length=255, blank=True, default="")
+    condition_description = models.TextField(blank=True, default="")
+    condition_slug = models.SlugField(max_length=140, unique=True, blank=True, null=True, db_index=True)
 
     def save(self, *args, **kwargs):
-        if not self.slug:
+        if self.nome:
             base = slugify(self.nome) or "condicao"
             slug = base
             i = 2
@@ -352,9 +355,22 @@ class CondicaoSaude(models.Model):
                 slug = f"{base}-{i}"
                 i += 1
             self.slug = slug
+
+        if self.condition:
+            base = slugify(self.condition) or "condition"
+            slug = base
+            i = 2
+            while CondicaoSaude.objects.filter(condition_slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base}-{i}"
+                i += 1
+            self.condition_slug = slug
+        else:
+            self.condition_slug = None
+
         super().save(*args, **kwargs)
 
-
+    def __str__(self):
+        return self.nome
     
     
     
@@ -883,8 +899,19 @@ class TipoEficacia(models.Model):
     tipo_eficacia = models.CharField(max_length=255)
     slug = models.SlugField(max_length=140, unique=True, blank=True, null=True, db_index=True)
 
+    descricao = models.TextField(blank=True, null=True)
+    outcome_type = models.CharField(max_length=255, blank=True, default="")
+    outcome_slug = models.SlugField(max_length=140, unique=True, blank=True, null=True, db_index=True)
+
+    imagem = models.ImageField(upload_to="icones_eficacia/", blank=True, null=True)
+    eficacia_por_tipo = models.ManyToManyField(
+        "EficaciaPorTipo",
+        related_name="tipos_de_eficacia",
+        blank=True,
+    )
+
     def save(self, *args, **kwargs):
-        if not self.slug:
+        if self.tipo_eficacia:
             base = slugify(self.tipo_eficacia) or "tipo"
             slug = base
             i = 2
@@ -892,16 +919,22 @@ class TipoEficacia(models.Model):
                 slug = f"{base}-{i}"
                 i += 1
             self.slug = slug
+
+        if self.outcome_type:
+            base = slugify(self.outcome_type) or "outcome"
+            slug = base
+            i = 2
+            while TipoEficacia.objects.filter(outcome_slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base}-{i}"
+                i += 1
+            self.outcome_slug = slug
+        else:
+            self.outcome_slug = None
+
         super().save(*args, **kwargs)
 
-    descricao = models.TextField(blank=True, null=True) 
-    outcome_type = models.TextField(blank=True, null=True) 
-    imagem = models.ImageField(upload_to='icones_eficacia/', blank=True, null=True)  # Campo de imagem para o ícone
-    eficacia_por_tipo = models.ManyToManyField('EficaciaPorTipo', related_name='tipos_de_eficacia', blank=True)
-
     def __str__(self):
-        return self.tipo_eficacia  
-
+        return self.tipo_eficacia
 
 
 
@@ -1309,3 +1342,82 @@ class TreatmentsUSA(models.Model):
     class Meta:
         verbose_name = "Treatment USA"
         verbose_name_plural = "Treatments USA"
+
+
+class TreatmentUrlEnglish(models.Model):
+    condition = models.ForeignKey(
+        "core.CondicaoSaude",
+        on_delete=models.CASCADE,
+        related_name="english_treatment_pages",
+    )
+    treatment = models.ForeignKey(
+        "core.TreatmentsUSA",
+        on_delete=models.CASCADE,
+        related_name="english_pages",
+    )
+
+    published = models.BooleanField(default=True)
+
+    meta_title = models.CharField(max_length=255, blank=True)
+    meta_description = models.TextField(blank=True)
+
+    custom_title = models.CharField(max_length=255, blank=True)
+    custom_description = models.TextField(blank=True)
+
+    cta_label = models.CharField(max_length=120, blank=True)
+    cta_url = models.URLField(blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("condition", "treatment")
+
+        # 👇 NOME QUE VAI APARECER NO ADMIN
+        verbose_name = "URL Treatment"
+        verbose_name_plural = "URLs Treatments"
+
+    def __str__(self):
+        return f"{self.condition.nome} - {self.treatment.name}"
+    
+class TreatmentListUrlEnglish(models.Model):
+    published = models.BooleanField(default=True)
+
+    health_condition = models.ForeignKey(
+        "core.CondicaoSaude",
+        on_delete=models.PROTECT,
+        related_name="english_list_pages",
+    )
+
+    efficacy_type = models.ForeignKey(
+        "core.TipoEficacia",
+        on_delete=models.PROTECT,
+        related_name="english_list_pages",
+        null=True,
+        blank=True,
+    )
+
+    template = models.CharField(
+        max_length=200,
+        default="core/en/treatment_list.html",
+    )
+
+    title = models.CharField(max_length=255, blank=True, default="")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["health_condition", "efficacy_type"],
+                name="unique_english_list_per_condition_and_efficacy",
+            )
+        ]
+
+        # 👇 NOME QUE VAI APARECER NO ADMIN
+        verbose_name = "URL List in English"
+        verbose_name_plural = "URLs Lists in English"
+
+    def __str__(self):
+        if self.efficacy_type:
+            return f"{self.health_condition} / {self.efficacy_type}"
+        return f"{self.health_condition} / all"

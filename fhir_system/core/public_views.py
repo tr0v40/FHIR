@@ -96,7 +96,19 @@ def pagina_detalhe_tratamento(request, condicao_slug, tratamento_slug):
 
     if page:
         condicao = page.condicao
-        tratamento = page.tratamento
+        tratamento = (
+            DetalhesTratamentoResumo.objects
+            .prefetch_related(
+                "condicoes_saude",
+                "tipo_tratamento",
+                "contraindicacoes",
+                "reacoes_adversas_detalhes__reacao_adversa",
+                "evidencias__eficacia_por_evidencias__tipo_eficacia",
+                "avaliacoes",
+                "condicoes_relacionadas",
+            )
+            .get(pk=page.tratamento.pk)
+        )
     else:
         condicao = get_object_or_404(CondicaoSaude, slug=condicao_slug)
 
@@ -108,10 +120,36 @@ def pagina_detalhe_tratamento(request, condicao_slug, tratamento_slug):
                 "reacoes_adversas_detalhes__reacao_adversa",
                 "evidencias__eficacia_por_evidencias__tipo_eficacia",
                 "avaliacoes",
+                "condicoes_relacionadas",
             ),
             slug=tratamento_slug,
             condicoes_saude=condicao,
         )
+
+    descricao_condicao = (
+        tratamento.condicoes_relacionadas
+        .filter(condicao__nome=condicao.nome)
+        .values_list("descricao", flat=True)
+        .first()
+    )
+
+    if not descricao_condicao:
+        descricao_condicao = (
+            tratamento.condicoes_relacionadas
+            .filter(condicao__slug=condicao.slug)
+            .values_list("descricao", flat=True)
+            .first()
+        )
+
+    if not descricao_condicao and getattr(condicao, "condition", None):
+        descricao_condicao = (
+            tratamento.condicoes_relacionadas
+            .filter(condicao__condition=condicao.condition)
+            .values_list("descricao", flat=True)
+            .first()
+        )
+
+    descricao_detalhe = descricao_condicao or tratamento.descricao
 
     pct_expr = ExpressionWrapper(
         100.0 * Coalesce(F("eficacia_por_evidencias__participantes_com_beneficio"), 0)
@@ -170,6 +208,7 @@ def pagina_detalhe_tratamento(request, condicao_slug, tratamento_slug):
         "page": page,
         "condicao": condicao,
         "tratamento": tratamento,
+        "descricao_detalhe": descricao_detalhe,
         "prazo_efeito": prazo_efeito,
         "detalhes_reacoes_adversas": tratamento.reacoes_adversas_detalhes.all(),
         "eficacias_por_tipo": eficacias_por_tipo,

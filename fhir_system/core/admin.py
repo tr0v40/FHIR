@@ -3,6 +3,7 @@
 
 from django.contrib import admin, messages
 from django import forms
+from .forms import TreatmentUrlEnglishForm, TreatmentListUrlEnglishForm, TreatmentsUSAForm
 
 from django.urls import path, reverse
 from django.utils.html import format_html
@@ -30,6 +31,8 @@ from .models import (
     CondicaoSaude,
     TreatmentsUSA,
     TreatmentsUSAReacaoAdversaTeste,
+    TreatmentUrlEnglish,
+    TreatmentListUrlEnglish,
 )
 
 
@@ -83,7 +86,7 @@ class TratamentoCondicaoInline(admin.TabularInline):
     form = TratamentoCondicaoInlineForm
     extra = 0
     autocomplete_fields = ('condicao',)
-    fields = ('condicao', 'descricao')
+    fields = ('condicao','' 'descricao')
 
 class DetalhesTratamentoReacaoAdversaInline(admin.TabularInline):
     model = DetalhesTratamentoReacaoAdversa
@@ -393,10 +396,9 @@ class EficaciaPorEvidenciaAdmin(admin.ModelAdmin):
 # --- Admin para Tipo de Eficácia ---
 @admin.register(TipoEficacia)
 class TipoEficaciaAdmin(admin.ModelAdmin):
-    list_display = ('tipo_eficacia', 'descricao')
-    exclude = ('eficacia_por_tipo','slug')
-    search_fields = ('tipo_eficacia',)
-
+    list_display = ('tipo_eficacia', 'outcome_type', 'descricao')
+    exclude = ('eficacia_por_tipo','slug','outcome_slug')
+    search_fields = ('tipo_eficacia', 'outcome_type')
 # --- Admin para Evidências Clínicas ---
 @admin.register(EvidenciasClinicas)
 class EvidenciasClinicasAdmin(admin.ModelAdmin):
@@ -734,6 +736,7 @@ class TreatmentsUSAReacaoAdversaTesteInline(admin.TabularInline):
 
 @admin.register(TreatmentsUSA)
 class TreatmentsUSAAdmin(admin.ModelAdmin):
+    form = TreatmentsUSAForm
     inlines = [
         TreatmentsUSAReacaoAdversaTesteInline,
     ]
@@ -845,3 +848,206 @@ class TreatmentsUSAAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         return qs.prefetch_related("health_conditions")
+    
+
+
+@admin.register(TreatmentUrlEnglish)
+class TreatmentUrlEnglishAdmin(admin.ModelAdmin):
+    form = TreatmentUrlEnglishForm
+    list_display = (
+        "condition_en",
+        "treatment",
+        "badge_publication",
+        "public_url_link",
+        "preview",
+        "copy_url",
+        "created_at",
+    )
+    list_filter = ("published", "condition")
+    search_fields = (
+        "condition__nome",
+        "condition__condition",
+        "condition__slug",
+        "condition__condition_slug",
+        "treatment__name",
+        "treatment__slug",
+    )
+    list_select_related = ("condition", "treatment")
+    ordering = ("-created_at",)
+    date_hierarchy = "created_at"
+
+    fieldsets = (
+        ("Publication", {"fields": ("published", "condition", "treatment")}),
+        ("SEO", {"fields": ("meta_title", "meta_description")}),
+        ("Optional content", {"fields": ("custom_title", "custom_description")}),
+        ("CTA", {"fields": ("cta_label", "cta_url")}),
+        ("System", {"fields": ("created_at",), "classes": ("collapse",)}),
+    )
+    readonly_fields = ("created_at",)
+
+    actions = ("publish_pages", "unpublish_pages")
+
+    @admin.display(description="Health condition")
+    def condition_en(self, obj):
+        return obj.condition.condition or obj.condition.nome
+
+    def _public_url_path(self, obj):
+        condition_slug = obj.condition.condition_slug or obj.condition.slug
+        return reverse(
+            "english_treatment_detail",
+            kwargs={
+                "condition_slug": condition_slug,
+                "treatment_slug": obj.treatment.slug,
+            },
+        )
+
+    @admin.display(description="Status")
+    def badge_publication(self, obj):
+        if obj.published:
+            return format_html(
+                '<span style="padding:2px 8px;border-radius:999px;background:#DCFCE7;color:#166534;font-weight:600;">Published</span>'
+            )
+        return format_html(
+            '<span style="padding:2px 8px;border-radius:999px;background:#FEF3C7;color:#92400E;font-weight:600;">Draft</span>'
+        )
+
+    @admin.display(description="URL")
+    def public_url_link(self, obj):
+        url = self._public_url_path(obj)
+        return format_html('<a href="{}" target="_blank">{}</a>', url, url)
+
+    @admin.display(description="Preview")
+    def preview(self, obj):
+        url = self._public_url_path(obj)
+        return format_html('<a class="button" href="{}" target="_blank">Open</a>', url)
+
+    @admin.display(description="Copy")
+    def copy_url(self, obj):
+        url = self._public_url_path(obj)
+        return format_html(
+            "<button type='button' class='button' onclick=\"navigator.clipboard.writeText('{}')\">Copy</button>",
+            url,
+        )
+
+    @admin.action(description="Publish selected pages")
+    def publish_pages(self, request, queryset):
+        updated = queryset.update(published=True)
+        self.message_user(request, f"{updated} page(s) published.", level=messages.SUCCESS)
+
+    @admin.action(description="Unpublish selected pages")
+    def unpublish_pages(self, request, queryset):
+        updated = queryset.update(published=False)
+        self.message_user(request, f"{updated} page(s) unpublished.", level=messages.WARNING)
+
+@admin.register(TreatmentListUrlEnglish)
+class TreatmentListUrlEnglishAdmin(admin.ModelAdmin):
+    form = TreatmentListUrlEnglishForm
+
+    list_display = (
+        "health_condition_en",
+        "efficacy_type_en",
+        "badge_publication",
+        "public_url_link",
+        "preview",
+        "copy_url",
+        "created_at",
+    )
+
+    list_filter = ("published", "health_condition", "efficacy_type")
+    search_fields = (
+        "title",
+        "health_condition__nome",
+        "health_condition__condition",
+        "health_condition__slug",
+        "efficacy_type__tipo_eficacia",
+        "efficacy_type__outcome_type",
+        "efficacy_type__slug",
+    )
+    autocomplete_fields = ("health_condition", "efficacy_type")
+    list_select_related = ("health_condition", "efficacy_type")
+    ordering = ("-created_at",)
+    date_hierarchy = "created_at"
+
+    exclude = ("template",)
+
+    fieldsets = (
+        ("Publication", {"fields": ("published", "health_condition", "efficacy_type")}),
+        ("Page", {"fields": ("title",)}),
+        ("System", {"fields": ("created_at",), "classes": ("collapse",)}),
+    )
+    readonly_fields = ("created_at",)
+
+    actions = ("publish_pages", "unpublish_pages")
+
+    @admin.display(description="Health condition")
+    def health_condition_en(self, obj):
+        return obj.health_condition.condition or obj.health_condition.nome
+
+    @admin.display(description="Efficacy type")
+    def efficacy_type_en(self, obj):
+        if not obj.efficacy_type:
+            return "-"
+        return obj.efficacy_type.outcome_type or obj.efficacy_type.tipo_eficacia
+
+    def _public_url_path(self, obj):
+        condition_slug = obj.health_condition.condition_slug or obj.health_condition.slug
+
+        if obj.efficacy_type:
+            efficacy_slug = obj.efficacy_type.outcome_slug or obj.efficacy_type.slug
+            return reverse(
+                "english_treatment_list_filtered",
+                kwargs={
+                    "condition_slug": condition_slug,
+                    "efficacy_slug": efficacy_slug,
+                },
+            )
+
+        return reverse(
+            "english_treatment_list",
+            kwargs={
+                "condition_slug": condition_slug,
+            },
+        )
+
+    @admin.display(description="Status")
+    def badge_publication(self, obj):
+        if obj.published:
+            return format_html(
+                '<span style="padding:2px 8px;border-radius:999px;background:#DCFCE7;color:#166534;font-weight:600;">Published</span>'
+            )
+        return format_html(
+            '<span style="padding:2px 8px;border-radius:999px;background:#FEF3C7;color:#92400E;font-weight:600;">Draft</span>'
+        )
+
+    @admin.display(description="URL")
+    def public_url_link(self, obj):
+        url = self._public_url_path(obj)
+        return format_html('<a href="{}" target="_blank">{}</a>', url, url)
+
+    @admin.display(description="Preview")
+    def preview(self, obj):
+        url = self._public_url_path(obj)
+        return format_html('<a class="button" href="{}" target="_blank">Open</a>', url)
+
+    @admin.display(description="Copy")
+    def copy_url(self, obj):
+        url = self._public_url_path(obj)
+        return format_html(
+            "<button type='button' class='button' onclick=\"navigator.clipboard.writeText('{}')\">Copy</button>",
+            url,
+        )
+
+    def save_model(self, request, obj, form, change):
+        if not obj.template:
+            obj.template = "core/en/treatment_list.html"
+        super().save_model(request, obj, form, change)
+
+    @admin.action(description="Publish selected pages")
+    def publish_pages(self, request, queryset):
+        updated = queryset.update(published=True)
+        self.message_user(request, f"{updated} page(s) published.", level=messages.SUCCESS)
+
+    @admin.action(description="Unpublish selected pages")
+    def unpublish_pages(self, request, queryset):
+        updated = queryset.update(published=False)
+        self.message_user(request, f"{updated} page(s) unpublished.", level=messages.WARNING)

@@ -1,0 +1,437 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compare health treatments</title>
+
+  <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      color: #111;
+    }
+
+    .topbar {
+      width: 100%;
+      padding: 28px 28px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .logo-wrap img {
+      height: 170px;
+      display: block;
+    }
+
+    .menu-icon {
+      color: #0094FF;
+      font-size: 30px;
+      text-decoration: none;
+      line-height: 1;
+      margin-top: 6px;
+    }
+
+    .hero {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px 50px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      margin: 10px 0 60px;
+      font-size: 52px;
+      font-weight: 700;
+      color: #111;
+    }
+
+    .features {
+      display: flex;
+      justify-content: center;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+
+    .feature-card {
+      width: 255px;
+      min-height: 280px;
+      background: #ffffff;
+      border: 1px solid #bfbfbf;
+      border-radius: 14px;
+      padding: 26px 18px 22px;
+      text-align: center;
+    }
+
+.feature-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+  height: 42px;
+}
+
+.feature-icon img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  display: block;
+}
+
+    .feature-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #111;
+    }
+
+    .feature-text {
+      font-size: 19px;
+      line-height: 1.65;
+      color: #333;
+      text-align: justify;
+    }
+
+    .condition-section {
+      background: #0094FF;
+      padding: 90px 20px;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .condition-section h2 {
+      margin: 0 0 28px;
+      color: #fff;
+      font-size: 30px;
+      font-weight: 400;
+    }
+
+    .condition-form {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .condition-select-wrap {
+      position: relative;
+    }
+
+    .condition-select {
+      width: 100%;
+      height: 56px;
+      border: none;
+      border-radius: 4px;
+      padding: 0 48px 0 16px;
+      font-size: 15px;
+      color: #666;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .condition-arrow {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #0094FF;
+      pointer-events: none;
+      font-size: 16px;
+    }
+
+    .footer {
+      background: #f7f7f7;
+      border-top: 1px solid #ddd;
+      padding: 42px 20px 36px;
+    }
+
+    .footer-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 34px;
+    }
+
+    .footer-col h4 {
+      margin: 0 0 16px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #111;
+    }
+
+    .footer-col a,
+    .footer-col p,
+    .footer-col span {
+      display: block;
+      color: #7a7a7a;
+      text-decoration: none;
+      font-size: 13px;
+      line-height: 1.8;
+      margin: 0 0 3px;
+    }
+
+    .footer-col a:hover {
+      color: #0094FF;
+      text-decoration: underline;
+    }
+
+    .footer-select {
+      width: 100%;
+      max-width: 150px;
+      height: 34px;
+      border: none;
+      border-radius: 4px;
+      background: #0094FF;
+      color: #fff;
+      padding: 0 34px 0 12px;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .footer-select-wrap {
+      position: relative;
+      width: fit-content;
+      margin-top: 6px;
+    }
+
+    .footer-select-arrow {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #fff;
+      pointer-events: none;
+      font-size: 12px;
+    }
+
+    @media (max-width: 1100px) {
+      .hero h1 {
+        font-size: 42px;
+      }
+
+      .feature-card {
+        width: 230px;
+      }
+
+      .feature-title {
+        font-size: 24px;
+      }
+
+      .feature-text {
+        font-size: 17px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .topbar {
+        padding: 20px 18px 8px;
+      }
+
+      .logo-wrap img {
+        height: 56px;
+      }
+
+      .hero {
+        padding: 30px 16px 30px;
+      }
+
+      .hero h1 {
+        font-size: 32px;
+        margin-bottom: 34px;
+      }
+
+      .features {
+        gap: 16px;
+      }
+
+      .feature-card {
+        width: 100%;
+        min-height: auto;
+      }
+
+      .condition-section {
+        padding: 60px 16px;
+      }
+
+      .condition-section h2 {
+        font-size: 24px;
+      }
+
+      .footer-wrap {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="logo-wrap">
+      <a href="{% url 'english_treatments_home' %}">
+        <img src="{% static 'img/logo.png' %}" alt="Telix">
+      </a>
+    </div>
+
+    <a href="#" class="menu-icon" aria-label="Menu">
+      <i class="fas fa-bars"></i>
+    </a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Compare health treatments</h1>
+
+<div class="features">
+  <div class="feature-card">
+    <div class="feature-icon">
+      <img src="{% static 'img/en/efficacy.png' %}" alt="Efficacy icon">
+    </div>
+    <div class="feature-title">Efficacy</div>
+    <div class="feature-text">
+      Compare the efficacy of treatments: the percentage of people who achieved a specific result with the treatment presented.
+    </div>
+  </div>
+
+  <div class="feature-card">
+    <div class="feature-icon">
+      <img src="{% static 'img/en/risks.png' %}" alt="Risks icon">
+    </div>
+    <div class="feature-title">Risks</div>
+    <div class="feature-text">
+      Easily view and compare the risks of adverse reactions and side effects of each treatment.
+    </div>
+  </div>
+
+  <div class="feature-card">
+    <div class="feature-icon">
+      <img src="{% static 'img/en/onset of action.png' %}" alt="Onset of action icon">
+    </div>
+    <div class="feature-title">Onset of action</div>
+    <div class="feature-text">
+      Review the onset of action of each treatment and how long it takes for therapeutic benefits to become noticeable after treatment initiation.
+    </div>
+  </div>
+
+  <div class="feature-card">
+    <div class="feature-icon">
+      <img src="{% static 'img/en/evidence.png' %}" alt="Evidence icon">
+    </div>
+    <div class="feature-title">Evidence</div>
+    <div class="feature-text">
+      Data based on scientific evidence, with verifiable sources, number of participants, and the reliability of the study design of the research.
+    </div>
+  </div>
+</div>
+    </section>
+
+    <section class="condition-section">
+      <h2>Select the disease or health condition</h2>
+
+      <form method="get" class="condition-form" id="conditionForm">
+        <div class="condition-select-wrap">
+          <select class="condition-select" id="conditionSelect" required>
+            <option value="" selected disabled>Select an option</option>
+            {% for condition in conditions %}
+              <option value="{% url 'english_treatment_list' condition.condition_slug|default:condition.slug %}">
+                {{ condition.condition|default:condition.nome }}
+              </option>
+            {% endfor %}
+          </select>
+          <span class="condition-arrow">
+            <i class="fas fa-chevron-down"></i>
+          </span>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-wrap">
+      <div class="footer-col">
+        <h4>Treatment pages</h4>
+        <a href="#">Efficacy — how we calculate it</a>
+
+        <h4 style="margin-top:18px;">Scientific article pages</h4>
+        <a href="#">Research reliability — criteria</a>
+
+        <h4 style="margin-top:18px;">Create a FHIR resource</h4>
+        <span>Linca Telecomunicações Ltda -</span>
+        <span>CNPJ: 03.376.788-0001/23</span>
+      </div>
+
+      <div class="footer-col">
+        <h4>Documents</h4>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+
+        <h4 style="margin-top:18px;">E-mail</h4>
+        <a href="mailto:contact@telix.health">contact@telix.health</a>
+
+        <h4 style="margin-top:18px;">Do not self-medicate</h4>
+        <span>Seek guidance from a healthcare professional</span>
+      </div>
+
+      <div class="footer-col">
+        <h4>Questions and answers</h4>
+        <a href="#">For businesses</a>
+        <a href="#">About us</a>
+      </div>
+
+      <div class="footer-col">
+        <span style="margin-bottom:8px; color:#7a7a7a;">Select the disease</span>
+        <div class="footer-select-wrap">
+          <select class="footer-select" id="footerConditionSelect">
+            <option value="" selected>Select</option>
+            {% for condition in conditions %}
+              <option value="{% url 'english_treatment_list' condition.condition_slug|default:condition.slug %}">
+                {{ condition.condition|default:condition.nome }}
+              </option>
+            {% endfor %}
+          </select>
+          <span class="footer-select-arrow">
+            <i class="fas fa-chevron-down"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const select = document.getElementById('conditionSelect');
+    const footerSelect = document.getElementById('footerConditionSelect');
+
+    if (select) {
+      select.addEventListener('change', function () {
+        if (this.value) {
+          window.location.href = this.value;
+        }
+      });
+    }
+
+    if (footerSelect) {
+      footerSelect.addEventListener('change', function () {
+        if (this.value) {
+          window.location.href = this.value;
+        }
+      });
+    }
+  </script>
+</body>
+</html>

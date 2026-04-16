@@ -10,6 +10,7 @@ from core.public_views_listas import pagina_lista_por_url
 
 from django.views.generic import TemplateView
 from django.urls import re_path
+from core import public_views_en
 
 
 
@@ -25,11 +26,13 @@ urlpatterns = [
     path("register/", views.register, name="register"),
     path("salvar-avaliacao/<int:tratamento_id>/", views.salvar_avaliacao, name="salvar_avaliacao"),
     path('admin/core/tipoeficacia/<int:pk>/descricao/', tipo_eficacia_descricao_json, name='tipoeficacia-descricao'),
+    path("home", public_views_en.english_treatments_home, name="english_home"),
    
     path("tratamentos/", views.tratamentos, name="tratamentos"),
     path('admin/core/condicaosaude/<int:pk>/change/', CondicaoSaudeDetailView.as_view(), name='condicao_saude_detail'),
     path('api/', include('api.urls')),
     path("", include("core.public_urls")),
+    path("", include("core.public_urls_en")),
     path(
         "enxaqueca/<slug:slug>/",
         views.detalhes_tratamentos,
@@ -82,6 +85,8 @@ urlpatterns = [
         name='tratamentos_dinamicos_com_filtros',
     ),
     
+
+
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

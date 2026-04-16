@@ -1,0 +1,390 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studies and Evidence - {{ treatment.name }}</title>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BS67486CWG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BS67486CWG');
+  </script>
+
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+
+      clarity('set', 'page_url', window.location.href);
+
+      window.addEventListener('popstate', function() {
+        clarity('set', 'page_url', window.location.href);
+      });
+
+      window.addEventListener('hashchange', function() {
+        clarity('set', 'page_url', window.location.href);
+      });
+    })(window, document, "clarity", "script", "ubap1t6puk");
+  </script>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+
+  <style>
+    body { background-color:#fff; font-family: Arial, sans-serif; }
+    .topo-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    .tooltip-container { position: relative; cursor: default; }
+    .tooltip-paises {
+      visibility: hidden;
+      opacity: 0;
+      position: absolute;
+      bottom: 125%;
+      left: 0;
+      z-index: 10;
+      background-color: #ffffff;
+      color: #000000;
+      border: 1px solid #000000;
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-size: .9rem;
+      line-height: 1.4;
+      white-space: nowrap;
+      box-shadow: 0 4px 10px rgba(0,0,0,.12);
+      transition: opacity .2s ease;
+    }
+    .tooltip-paises::after {
+      content:"";
+      position:absolute;
+      top:100%;
+      left:12px;
+      border-width:6px;
+      border-style:solid;
+      border-color:#000000 transparent transparent transparent;
+    }
+    .tooltip-container:hover .tooltip-paises {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .back-link {
+      color:#007bff;
+      text-decoration:none;
+      display:flex;
+      align-items:center;
+      cursor:pointer;
+      transition: color .3s ease;
+    }
+
+    .back-link svg {
+      width:40px;
+      height:28px;
+      stroke: currentColor;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transform-origin:center;
+      transition: transform .3s ease;
+    }
+
+    .back-link:hover { color:#9abfe8; }
+    .back-link:hover svg { transform: translateX(-8px); }
+
+    h1.titulo-tratamento {
+      font-weight:700;
+      font-size:28px;
+      color:#111;
+      text-align:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      margin-top:40px;
+    }
+
+    .evidencias-container {
+      max-width:1100px;
+      background:white;
+      box-shadow:0 0 25px rgb(0 0 0 / 0.2);
+      border-radius:10px;
+      padding:40px 36px;
+      font-family:Arial, sans-serif;
+      color:#222;
+      margin:30px auto;
+      font-size:1.05rem;
+    }
+
+    .evidencia-item {
+      display:flex;
+      gap:30px;
+      padding-bottom:40px;
+      margin-bottom:40px;
+      align-items:flex-start;
+      border-bottom:5px solid #eeeeee;
+    }
+
+    .imagem-estudo {
+      flex:0 0 160px;
+      min-height:140px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .imagem-estudo img {
+      max-width:100%;
+      max-height:140px;
+      height:auto;
+      width:auto;
+      object-fit:contain;
+      border-radius:6px;
+      display:block;
+    }
+
+    .eficacias-label {
+      font-weight:700;
+      color:#757474;
+      margin-right:4px;
+      display:inline-block;
+      margin-bottom:0;
+    }
+
+    .eficacia-principal {
+      font-weight:700;
+      font-size:1.1rem;
+      color:#000;
+      margin-top:10px;
+      padding:0;
+    }
+
+    .eficacia-secundaria {
+      font-weight:400;
+      font-size:.95rem;
+      color:#000;
+      padding-left:82px;
+      margin-top:2px;
+    }
+
+    .rigor-boxes {
+      display:inline-flex;
+      gap:6px;
+      margin-left:8px;
+      vertical-align:middle;
+      flex-wrap:wrap;
+    }
+
+    .rigor-item-on,
+    .rigor-item-off {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:24px;
+      height:24px;
+      font-size:.85rem;
+      font-weight:600;
+      border-radius:4px;
+      border:1px solid #007bff;
+    }
+
+    .rigor-item-on {
+      color:white;
+      background-color:#007bff;
+    }
+
+    .rigor-item-off {
+      color:#007bff;
+      background-color:transparent;
+    }
+
+    @media (max-width: 768px) {
+      .evidencias-container {
+        max-width:100% !important;
+        padding:20px 16px !important;
+      }
+
+      .evidencia-item {
+        display:flex;
+        flex-direction:column;
+        gap:15px;
+        padding-bottom:40px;
+        margin-bottom:40px;
+        align-items:flex-start;
+        border-bottom:5px solid #eee;
+      }
+
+      .conteudo > div:last-child {
+        position:static !important;
+        width:100% !important;
+        height:auto !important;
+        padding:0 !important;
+        margin-top:20px;
+      }
+
+      .titulo-tratamento {
+        font-weight:700;
+        font-size:24px;
+        color:#111;
+        text-align:center;
+        margin-top:40px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topo-container">
+    <a href="https://www.telix.inf.br/">
+      <img src="{% static 'img/logo.png' %}" alt="Telix Logo" style="height: 210px;">
+    </a>
+
+    <h1 class="titulo-tratamento">
+      <a class="back-link" href="{% url 'english_treatment_detail' condition.condition_slug|default:condition.slug treatment.slug %}">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </a>
+      <span>
+        Studies on treatment efficacy:
+        <a href="#" style="color:#007bff; text-decoration:none;">
+          {{ treatment.name }}
+        </a>
+      </span>
+    </h1>
+
+    <p style="color:#999999; font-weight:400; font-size:30px; margin-top:10px; text-align:center;">
+      for: <strong>{{ condition.condition|default:condition.nome }}</strong>
+    </p>
+
+    {% if evidence_cards %}
+      <div class="evidencias-container">
+        {% for evidence in evidence_cards %}
+          <div class="evidencia-item">
+            <div class="imagem-estudo">
+              {% if evidence.image %}
+                <img src="{{ evidence.image.url }}" alt="{{ evidence.title }}">
+              {% else %}
+                <p>Image not available</p>
+              {% endif %}
+            </div>
+
+            <div class="conteudo" style="flex:1; position:relative;">
+
+              {% if evidence.efficacy_items %}
+                <p class="eficacia-head">
+                  <span class="eficacias-label">Efficacy:</span>
+                  <span class="eficacia-principal">
+                    <strong>
+                      {{ evidence.efficacy_items.0.label }} – {{ evidence.efficacy_items.0.value|floatformat:2 }}%
+                    </strong>
+                  </span>
+                </p>
+
+                {% for ef in evidence.efficacy_items|slice:"1:" %}
+                  <p class="eficacia-secundaria">
+                    {{ ef.label }} – {{ ef.value|floatformat:2 }}%
+                  </p>
+                {% endfor %}
+              {% endif %}
+
+              {% if evidence.rigor %}
+                <p style="margin:0 0 14px; font-size:1rem;">
+                  <span class="eficacias-label">Research rigor:</span>
+                  <span class="rigor-boxes">
+                    {% for i in "1234567" %}
+                      {% if i|add:"0" <= evidence.rigor %}
+                        <span class="rigor-item-on">{{ i }}</span>
+                      {% else %}
+                        <span class="rigor-item-off">{{ i }}</span>
+                      {% endif %}
+                    {% endfor %}
+                  </span>
+                </p>
+              {% endif %}
+
+              {% if evidence.participants %}
+                <p style="margin:0 0 14px; font-size:1rem;">
+                  <span class="eficacias-label">Participants:</span>
+                  <strong>{{ evidence.participants }}</strong>
+                </p>
+              {% endif %}
+
+              {% if evidence.publication_date %}
+                <p style="margin:0 0 20px; font-size:1rem;">
+                  <span class="eficacias-label">Date:</span>
+                  <strong>{{ evidence.publication_date|date:"m/Y" }}</strong>
+                </p>
+              {% endif %}
+
+              <p style="margin:0 0 22px; font-size:1rem;">
+                <span class="eficacias-label">Country(ies):</span>
+                {% if evidence.countries %}
+                  <strong class="paises-box tooltip-container">
+                    {% for p in evidence.countries|slice:":3" %}
+                      {{ p.get_nome_display|default:p.nome }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                    {% if evidence.countries|length > 3 %}
+                      … (+{{ evidence.countries|length|add:"-3" }})
+                    {% endif %}
+
+                    <span class="tooltip-paises">
+                      {% for p in evidence.countries %}
+                        {{ p.get_nome_display|default:p.nome }}{% if not forloop.last %}, {% endif %}
+                        {% if forloop.counter|divisibleby:7 and not forloop.last %}<br>{% endif %}
+                      {% endfor %}
+                    </span>
+                  </strong>
+                {% else %}
+                  —
+                {% endif %}
+              </p>
+
+              {% if evidence.authors %}
+                <p style="font-style:italic; font-size:1rem; margin:0 0 18px; width:100%;">
+                  {{ evidence.authors }}
+                </p>
+              {% endif %}
+
+              {% if evidence.reference %}
+                <p style="font-size:.95rem; margin:0 0 18px; color:#555; width:100%;">
+                  {{ evidence.reference }}
+                </p>
+              {% endif %}
+
+              <p style="font-size:1.1rem; margin:0 0 14px;">
+                {{ evidence.title }}
+              </p>
+
+              {% if evidence.study_link %}
+                <a href="{{ evidence.study_link }}" target="_blank"
+                   style="font-size:1rem; color:#007bff; text-decoration:underline; display:inline-block; margin-bottom:12px; word-break: break-all; max-width:100%;">
+                  {{ evidence.study_link }}
+                </a>
+              {% endif %}
+
+              {% if evidence.description %}
+                <div style="position:absolute; top:50px; right:0; width:400px; min-height:150px; padding:12px 16px; box-sizing:border-box; font-size:1rem; line-height:1.4; color:#222; white-space:normal;">
+                  {{ evidence.description|truncatechars:200|linebreaksbr }}
+                </div>
+              {% endif %}
+
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div style="max-width:1100px; margin: 30px auto; padding: 20px; border-radius: 10px; background: #fafafa; border: 1px solid #eee;">
+        <strong>No evidence registered</strong> for <strong>{{ treatment.name }}</strong> in <strong>{{ condition.condition|default:condition.nome }}</strong>.
+      </div>
+    {% endif %}
+  </div>
+
+  {% include 'core/includes/footer_telix_en.html' %}
+</body>
+</html>

@@ -7,7 +7,9 @@ from django.db.models import Case, When, Value, FloatField, F, ExpressionWrapper
 from django.db.models.functions import Coalesce
 from django.db.models import Prefetch
 
-
+from core.models import PaginaListaTratamento
+from .serializers import PaginaListaTratamentoFooterSerializer
+from rest_framework.views import APIView
 
 from core.models import (
     DetalhesTratamentoResumo,
@@ -211,3 +213,47 @@ class EficaciaPorEvidenciaDinamicaViewSet(viewsets.ReadOnlyModelViewSet):
             condicao_slug=condicao_slug,
             tipo_eficacia_slug=tipo_eficacia_slug,
         )
+    
+
+
+
+class FooterListasPublicadasAPIView(APIView):
+    def get(self, request):
+        listas = (
+            PaginaListaTratamento.objects
+            .filter(publicada=True)
+            .select_related("condicao_saude", "tipo_eficacia")
+            .order_by("condicao_saude__nome", "tipo_eficacia__tipo_eficacia")
+        )
+
+        data = [
+            {
+                "label": f"{item.condicao_saude.nome} - {item.tipo_eficacia.tipo_eficacia}",
+                "url": f"/listas/{item.condicao_saude.slug}/{item.tipo_eficacia.slug}/",
+            }
+            for item in listas
+        ]
+
+        serializer = PaginaListaTratamentoFooterSerializer(data, many=True)
+        return Response(serializer.data)
+    
+
+class FooterListasPublicadasAPIView(APIView):
+    def get(self, request):
+        listas = (
+            PaginaListaTratamento.objects
+            .filter(publicada=True)
+            .select_related("condicao_saude", "tipo_eficacia")
+            .order_by("condicao_saude__nome", "tipo_eficacia__tipo_eficacia")
+        )
+
+        data = [
+            {
+                "label": f"{item.condicao_saude.nome} - {item.tipo_eficacia.tipo_eficacia}",
+                "url": f"/listas/{item.condicao_saude.slug}/{item.tipo_eficacia.slug}/",
+            }
+            for item in listas
+        ]
+
+        serializer = PaginaListaTratamentoFooterSerializer(data, many=True)
+        return Response(serializer.data)

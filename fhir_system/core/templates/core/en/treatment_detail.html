@@ -1,0 +1,675 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.meta_title|default:treatment.name }}</title>
+    <meta name="description" content="{{ page.meta_description }}">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BS67486CWG"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BS67486CWG');
+    </script>
+
+    <script>
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+
+          clarity('set', 'page_url', window.location.href);
+
+          window.addEventListener('popstate', function() {
+              clarity('set', 'page_url', window.location.href);
+          });
+
+          window.addEventListener('hashchange', function() {
+              clarity('set', 'page_url', window.location.href);
+          });
+      })(window, document, "clarity", "script", "ubap1t6puk");
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            color: #333;
+        }
+
+        .topo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .tratamento-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .tratamento-info {
+            max-width: 50%;
+        }
+
+        .tratamento-info h2 {
+            color: #007bff;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .tratamento-info h3 {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .tratamento-info p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .table-container {
+            margin-top: 30px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding-top: 40px;
+        }
+
+        .table {
+            width: 95%;
+            max-width: 1300px;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .table th {
+            background: #ffffff;
+            color: #0c0101;
+            text-align: center;
+            padding: 12px;
+            font-size: 16px;
+            text-transform: uppercase;
+            font-weight: bold;
+            border: 6px solid #f1f1f1;
+        }
+
+        .table td {
+            text-align: center;
+            padding: 12px;
+            font-size: 15px;
+            border: 6px solid #f1f1f1;
+        }
+
+        .yes {
+            background-color: #007bff;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            min-width: 50px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        }
+
+        .no {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            min-width: 50px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        }
+
+        .eficacia-titulo {
+            font-weight: 700;
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .eficacia-section {
+            max-width: 720px;
+            margin: 20px auto 0;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .eficacia-item {
+            margin-bottom: 24px;
+        }
+
+        .efficacy-bar-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .efficacy-bar {
+            width: 320px;
+            height: 52px;
+            background-color: #b8d8ef;
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .efficacy-bar-fill {
+            height: 100%;
+            background-color: #1793ee;
+            display: block;
+        }
+
+        .eficacia-caption {
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 15px;
+            color: #444;
+        }
+
+        .eficacia-caption-icon img {
+            width: 52px;
+            height: 36px;
+            object-fit: contain;
+        }
+
+        .eficacia-caption-text-strong {
+            color: #6a6a6a;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .eficacia-caption-range-min {
+            font-size: 20px;
+            color: #cbcbcb;
+        }
+
+        .eficacia-caption-range-max {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .quando-usar-texto {
+            max-width: 420px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 16px;
+            color: #000;
+        }
+
+        .preco-link {
+            color: #000;
+            font-weight: 700;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .preco-desc {
+            color: #000;
+            font-size: 0.95rem;
+        }
+
+        .contraindications-section {
+            margin-top: 80px;
+            padding-top: 60px;
+        }
+
+        .reacao-card {
+            background: #fff;
+            border: 1px solid #d9d9d9;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .reacao-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+
+        .reacao-card-img {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .reacao-card-body {
+            padding: 14px 14px 16px;
+        }
+
+        .reacao-frequencia {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .reacao-grau {
+            color: #0d6efd;
+            font-weight: 500;
+            text-transform: uppercase;
+            margin-left: 4px;
+        }
+
+        .reacao-titulo {
+            font-size: 18px;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 10px;
+        }
+
+        .reacao-descricao {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #9a9a9a;
+            margin: 0;
+        }
+
+        @media (max-width: 992px) {
+            .tratamento-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .tratamento-info,
+            .col-md-5 {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .table {
+                width: 100%;
+            }
+
+            .table th,
+            .table td {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .no,
+            .yes {
+                padding: 6px 10px;
+                font-size: 14px;
+            }
+
+            .adhesion-clock {
+                display: none !important;
+            }
+
+            .reacao-card-img {
+                height: 180px;
+            }
+
+            img {
+                border: none !important;
+                margin: 0 !important;
+                display: block !important;
+                border-radius: 0 !important;
+            }
+
+            .col-md-5,
+            .shadow-sm {
+                border: none !important;
+                outline: none !important;
+                box-shadow: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                border-radius: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="topo-container">
+        <a href="https://www.telix.health/">
+            <img src="{% static 'img/logo.png' %}" alt="Telix Logo" style="height: 210px;">
+        </a>
+
+        <div class="container">
+            <div class="tratamento-container" style="margin-bottom: 10px;">
+                <div class="tratamento-info">
+                    <h3 style="font-family: Arial, sans-serif; font-weight: bold; font-size: 40px; line-height: 1.2; color: #000;">
+                        <strong>{{ treatment.name }}</strong>
+                    </h3>
+
+                    <h2 style="color: #0094FF; display: flex; align-items: center; gap: 8px;">
+                        <span>
+                            {% for tipo in treatment.treatment_type.all %}
+                                {{ tipo.nome }}{% if not forloop.last %}, {% endif %}
+                            {% empty %}
+                                No treatment type selected
+                            {% endfor %}
+                        </span>
+                    </h2>
+
+                    <p>
+                        <strong style="font-weight: normal; color: #000;">Manufacturer:</strong>
+                        <span style="color: #B0B0B0;">{{ treatment.manufacturer }}</span>
+                    </p>
+                    <p>
+                        <strong style="color: #B0B0B0;">Active ingredient:</strong>
+                        <span style="font-weight: bold; color: #000;">{{ treatment.active_ingredient }}</span>
+                    </p>
+
+                    <p>{{ treatment.description }}</p>
+                </div>
+
+                {% if treatment.detail_image %}
+                <div class="col-md-5 ms-md-3 mt-4 mt-md-0 p-0">
+                    <img src="{{ treatment.detail_image.url }}" alt="Treatment detail image" class="img-fluid" style="width: 600px; height: 180px; object-fit: cover; object-position: top; border: none; margin: 0; border-radius: 0;">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% if treatment.effect_time_range_formatted %}
+    <div class="prerequisite-section" style="display:flex;align-items:center;justify-content:center;margin-bottom:20px;margin-top:150px;">
+      <i class="fas fa-clock" style="font-size:30px;color:#0094FF;margin-right:10px;"></i>
+      <span style="font-size:18px;color:#808080;text-align:center;">
+        Time to effect: <strong>{{ treatment.effect_time_range_formatted }}</strong>
+      </span>
+    </div>
+    {% endif %}
+
+    <p class="eficacia-titulo">
+      Efficacy for treating {{ condition.condition|default:condition.nome }}
+    </p>
+
+    <div class="eficacia-section">
+      {% for item in efficacy_items %}
+        <div class="eficacia-item">
+          <div class="efficacy-bar-wrapper">
+            <div class="efficacy-bar">
+              <span class="efficacy-bar-fill" style="width: {{ item.max|floatformat:0 }}%;"></span>
+            </div>
+          </div>
+
+          <div class="eficacia-caption">
+            <span class="eficacia-caption-icon">
+              {% if item.image_url %}
+                <img src="{{ item.image_url }}" alt="{{ item.label }}">
+              {% else %}
+                <img src="{% static 'img/default-icon.png' %}" alt="{{ item.label }}">
+              {% endif %}
+            </span>
+
+            <span class="eficacia-caption-text">
+              <span class="eficacia-caption-text-strong">{{ item.label }}</span>
+              <span class="eficacia-caption-range-min">{{ item.min_str }}</span>
+              to
+              <span class="eficacia-caption-range-max">{{ item.max_str }}%</span>
+            </span>
+          </div>
+        </div>
+      {% empty %}
+        <p class="text-center text-muted">No efficacy data available for this treatment.</p>
+      {% endfor %}
+    </div>
+
+    <div style="display: flex; justify-content: center; margin-top: 5px;">
+      <a href="{% url 'english_treatment_evidence' condition.condition_slug|default:condition.slug treatment.slug %}"
+         style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 20px; font-size: 16px; color: #0094FF; border: 2px solid #0094FF; border-radius: 5px; text-decoration: none; width: auto;">
+          View research
+          <span style="margin-left: 10px;">›</span>
+      </a>
+    </div>
+
+    <div class="adhesion-section mt-5">
+      <div class="d-flex justify-content-center align-items-center flex-wrap">
+        <div style="padding-right: 20px; margin-top: 10px;">
+          <h2 style="color: #0094FF; font-size: 20px; margin-bottom: 2px; font-weight: 600; text-align: center;">
+            When to use
+          </h2>
+          <p class="quando-usar-texto">
+            {{ treatment.when_to_use }}
+          </p>
+        </div>
+
+        <div>
+          <img src="{% static 'img/relogio.png' %}"
+               alt="Clock"
+               class="adhesion-clock"
+               style="width: 270px; height: auto;">
+        </div>
+      </div>
+    </div>
+
+    <div class="table-container">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>GROUP</th>
+                    <th>INDICATED FOR</th>
+                    <th>REASON</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Children under 12 years</td>
+                    <td><span class="{% if treatment.indicated_children == 'YES' %}yes{% else %}no{% endif %}">{{ treatment.indicated_children }}</span></td>
+                    <td>{{ treatment.reason_children|default:"-" }}</td>
+                </tr>
+                <tr>
+                    <td>Teenagers 12 to 17 years</td>
+                    <td><span class="{% if treatment.indicated_teenagers == 'YES' %}yes{% else %}no{% endif %}">{{ treatment.indicated_teenagers }}</span></td>
+                    <td>{{ treatment.reason_teenagers|default:"-" }}</td>
+                </tr>
+                <tr>
+                    <td>Elderly 65+</td>
+                    <td><span class="{% if treatment.indicated_elderly == 'YES' %}yes{% else %}no{% endif %}">{{ treatment.indicated_elderly }}</span></td>
+                    <td>{{ treatment.reason_elderly|default:"-" }}</td>
+                </tr>
+                <tr>
+                    <td>Adults</td>
+                    <td><span class="{% if treatment.indicated_adults == 'YES' %}yes{% else %}no{% endif %}">{{ treatment.indicated_adults }}</span></td>
+                    <td>{{ treatment.reason_adults|default:"-" }}</td>
+                </tr>
+                <tr>
+                    <td>Lactating</td>
+                    <td><span class="{% if treatment.indicated_lactating == 'YES' %}yes{% else %}no{% endif %}">{{ treatment.indicated_lactating }}</span></td>
+                    <td>{{ treatment.reason_lactating|default:"-" }}</td>
+                </tr>
+                <tr>
+                    <td>Pregnancy</td>
+                    <td><span class="{% if treatment.indicated_pregnancy == 'YES' %}yes{% else %}no{% endif %}">{{ treatment.indicated_pregnancy }}</span></td>
+                    <td>{{ treatment.reason_pregnancy|default:"-" }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="contraindications-section container mt-5">
+        <h2 class="contraindicado-title" style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 30px;">Contraindicated for</span>
+            <img src="{% static 'img/icone.png' %}" alt="Contraindication icon" style="width: 80px; height: auto;">
+        </h2>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+          {% for contraindication in treatment.contraindications.all %}
+            <div class="col-12 col-sm-6 col-md-4 mb-4 d-flex">
+              <div class="card shadow-sm w-100 h-100 d-flex flex-column">
+                {% if contraindication.imagem %}
+                  <img src="{{ contraindication.imagem.url }}" alt="{{ contraindication.descricao }}" class="card-img-top" style="height: 180px; object-fit: cover;">
+                {% else %}
+                  <img src="{% static 'img/default-medicamento.png' %}" alt="Image not available" class="card-img-top" style="height: 180px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body d-flex flex-column justify-content-between text-start">
+                    <h6 class="card-title fw-bold" style="font-size: 1.1rem;">{{ contraindication.contraindication_name|default:contraindication.nome }}</h6>
+                    <p class="mb-0" style="color: #B0B0B0;">{{ contraindication.contraindication_description|default:contraindication.descricao }}</p>
+                </div>
+              </div>
+            </div>
+          {% empty %}
+            <p class="text-center">There are no contraindications.</p>
+          {% endfor %}
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="d-flex flex-wrap justify-content-center gap-5">
+            <div class="col-md-5 pe-md-4">
+                <h5 class="fw-bold mb-3" style="color: #000;">Details</h5>
+                <ul class="list-unstyled mb-0">
+                    <li class="d-flex align-items-start mb-3">
+                        <img src="{% static 'img/cifrao.png' %}" alt="Cost icon" style="width: 26px; height: 30px; align-self: start; margin-top: 2px;" class="me-2">
+                        <div>
+                            <div>
+                                <span style="color:#999;">Treatment cost: </span>
+                                {% if treatment.treatment_purchase_link %}
+                                    <a href="{{ treatment.treatment_purchase_link }}" target="_blank" rel="noopener noreferrer" class="preco-link">
+                                        ${{ treatment.treatment_cost|floatformat:2 }}
+                                    </a>
+                                {% else %}
+                                    <span class="preco-link" style="text-decoration:none;">
+                                        ${{ treatment.treatment_cost|floatformat:2 }}
+                                    </span>
+                                {% endif %}
+                            </div>
+
+                            {% if treatment.cost_specification %}
+                                <div class="preco-desc fw-bold">
+                                    ({{ treatment.cost_specification }})
+                                </div>
+                            {% endif %}
+                        </div>
+                    </li>
+
+                    {% if treatment.alerts %}
+                    <li class="d-flex align-items-start">
+                        <img src="{% static 'img/alerta.png' %}" alt="Alert icon" style="width: 26px; height: 26px; align-self: start; margin-top: 2px;" class="me-2">
+                        <div>
+                            <span style="color: #999;">Alert:</span>
+                            <span class="text-dark ms-1">{{ treatment.alerts }}</span>
+                        </div>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class="col-md-5 ps-md-4">
+                <h5 class="fw-bold mb-3 text-dark">Links</h5>
+                <ul class="list-unstyled mb-0">
+                    {% if treatment.specialist_opinion %}
+                    <li class="fw-bold text-dark mb-2">
+                        <a href="{{ treatment.specialist_opinion }}" class="text-decoration-none text-dark">Specialist opinion</a>
+                    </li>
+                    {% endif %}
+
+                    {% if treatment.drug_interaction %}
+                    <li class="text-secondary fw-semibold mb-1">
+                        <a href="{{ treatment.drug_interaction }}" class="text-decoration-none text-secondary fw-semibold">Drug interactions</a>
+                    </li>
+                    {% endif %}
+
+                    {% if treatment.generic_similar %}
+                    <li class="text-secondary fw-semibold mb-1">
+                        <a href="{{ treatment.generic_similar }}" class="text-decoration-none text-secondary fw-semibold">Generics and similar</a>
+                    </li>
+                    {% endif %}
+
+                    {% if treatment.electronic_prescription %}
+                    <li class="text-secondary fw-semibold">
+                        <a href="{{ treatment.electronic_prescription }}" class="text-decoration-none text-secondary fw-semibold">Electronic prescription</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+   <div class="contraindications-section container mt-5">
+    <h2 class="contra-indicado-title">Adverse Reactions</h2>
+</div>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        {% for detail in adverse_details %}
+        <div class="col-12 col-sm-6 col-lg-4 mb-4 d-flex">
+            <div class="reacao-card w-100">
+                {% if detail.reacao_adversa.imagem %}
+                    <img 
+                        src="{{ detail.reacao_adversa.imagem.url }}" 
+                        alt="{{ detail.reacao_adversa.nome }}"
+                        class="reacao-card-img"
+                    >
+                {% else %}
+                    <img 
+                        src="{% static 'img/default-reacao.png' %}" 
+                        alt="Image not available"
+                        class="reacao-card-img"
+                    >
+                {% endif %}
+
+                <div class="reacao-card-body">
+                    <p class="reacao-frequencia">
+                        {% if detail.reacao_min and detail.reacao_max %}
+                            {{ detail.reacao_min }}% to {{ detail.reacao_max }}%
+                        {% else %}
+                            &lt; 0.01%
+                        {% endif %}
+
+                        {% if detail.grau_comunalidade %}
+                            <span class="reacao-grau">
+                                {{ detail.get_grau_comunalidade_display }}
+                            </span>
+                        {% endif %}
+                    </p>
+
+                    <h6 class="reacao-titulo">{{ detail.reacao_adversa.undesirable_effect_name|default:detail.reacao_adversa.nome }}</h6>
+
+                    <p class="reacao-descricao">
+                        {{ detail.reacao_adversa.undesirable_effect_description|default:detail.reacao_adversa.descricao }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">No adverse reactions found.</p>
+        {% endfor %}
+    </div>
+</div>
+
+    <div style="width: 100%; display: flex; justify-content: center; margin: 40px 0 20px 0;">
+        <a href="https://www.telix.health/"
+           style="display: block; width: 100%; max-width: 600px; padding: 12px 20px; background-color: #0094FF; color: #ffffff; text-align: center; text-decoration: none; font-size: 18px; font-weight: 700; border-radius: 4px; border: none; cursor: pointer;">
+            Schedule your appointment
+        </a>
+    </div>
+
+    {% include 'core/includes/footer_telix_en.html' %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

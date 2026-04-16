@@ -11,6 +11,7 @@ from .views import (
     DetalhesTratamentoReacaoAdversaViewSet,
     DetalhesTratamentoDinamicoViewSet,
     EficaciaPorEvidenciaDinamicaViewSet,
+    FooterListasPublicadasAPIView
 )
 
 router = DefaultRouter()
@@ -23,6 +24,8 @@ router.register(r'eficacia-por-evidencia', EficaciaPorEvidenciaViewSet)
 router.register(r'eficacia-por-evidencia-dinamica', EficaciaPorEvidenciaDinamicaViewSet, basename='eficacia-por-evidencia-dinamica')
 router.register(r'tratamento-reacoes-adversas', DetalhesTratamentoReacaoAdversaViewSet, basename='tratamento-reacoes-adversas')
 
+
 urlpatterns = [
     path('', include(router.urls)),
+    path('footer-listas-publicadas/', FooterListasPublicadasAPIView.as_view(), name='footer_listas_publicadas'),
 ]

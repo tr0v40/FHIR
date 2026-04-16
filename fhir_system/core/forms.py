@@ -1,6 +1,9 @@
 from django import forms
 from django.contrib.auth.models import User
 from django_select2.forms import Select2MultipleWidget
+from django import forms
+from .models import TreatmentListUrlEnglish, TipoEficacia, TreatmentsUSA
+
 
 from .models import (
     Avaliacao,
@@ -95,3 +98,81 @@ class TratamentoCondicaoInlineForm(forms.ModelForm):
             self.add_error("descricao", "Preencha a descrição da condição.")
 
         return cleaned_data
+
+from django import forms
+from .models import TreatmentListUrlEnglish, TipoEficacia, CondicaoSaude
+
+class TreatmentListUrlEnglishForm(forms.ModelForm):
+    health_condition = forms.ModelChoiceField(
+        queryset=CondicaoSaude.objects.all().order_by("nome"),
+        required=True,
+        label="Health condition"
+    )
+
+    efficacy_type = forms.ModelChoiceField(
+        queryset=TipoEficacia.objects.all().order_by("tipo_eficacia"),
+        required=False,
+        label="Efficacy type"
+    )
+
+    class Meta:
+        model = TreatmentListUrlEnglish
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["health_condition"].label_from_instance = (
+            lambda obj: obj.condition if getattr(obj, "condition", "") else obj.nome
+        )
+
+        self.fields["efficacy_type"].label_from_instance = (
+            lambda obj: obj.outcome_type if obj.outcome_type else obj.tipo_eficacia
+        )
+
+class TreatmentsUSAForm(forms.ModelForm):
+    health_conditions = forms.ModelMultipleChoiceField(
+        queryset=CondicaoSaude.objects.all().order_by("nome"),
+        required=False,
+        label="Health conditions"
+    )
+
+    class Meta:
+        model = TreatmentsUSA
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["health_conditions"].label_from_instance = (
+            lambda obj: obj.condition or obj.nome
+        )
+
+from .models import TreatmentUrlEnglish, CondicaoSaude, TreatmentsUSA
+
+class TreatmentUrlEnglishForm(forms.ModelForm):
+    condition = forms.ModelChoiceField(
+        queryset=CondicaoSaude.objects.all().order_by("condition", "nome"),
+        required=True,
+        label="Condition"
+    )
+
+    treatment = forms.ModelChoiceField(
+        queryset=TreatmentsUSA.objects.all().order_by("name"),
+        required=True,
+        label="Treatment"
+    )
+
+    class Meta:
+        model = TreatmentUrlEnglish
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["condition"].label_from_instance = (
+            lambda obj: obj.condition if getattr(obj, "condition", "") else obj.nome
+        )
+
+        self.fields["treatment"].label_from_instance = (
+            lambda obj: obj.name if getattr(obj, "name", "") else str(obj)
+        )

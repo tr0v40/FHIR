@@ -122,13 +122,14 @@ class DetalhesTratamentoResumoTelaControleSerializer(serializers.ModelSerializer
 
     prazo_efeito_min_formatado = serializers.ReadOnlyField()
     prazo_efeito_max_formatado = serializers.ReadOnlyField()
-
     prazo_medio_minutos = serializers.ReadOnlyField()
+
+    descricao_lista = serializers.SerializerMethodField()
 
     class Meta:
         model = DetalhesTratamentoResumo
         fields = [
-            "id", "slug", "imagem", "nome", "descricao",
+            "id", "slug", "imagem", "nome", "descricao", "descricao_lista",
             "principio_ativo", "fabricante",
             "tipo_tratamento",
             "custo_medicamento",
@@ -147,6 +148,48 @@ class DetalhesTratamentoResumoTelaControleSerializer(serializers.ModelSerializer
             "indicado_gravidez",
             "condicoes_saude",
         ]
+
+    def get_descricao_lista(self, obj):
+        request = self.context.get("request")
+        condicao_slug = None
+
+        if request:
+            condicao_slug = (request.query_params.get("condicao_slug") or "").strip()
+
+        descricao_condicao = None
+
+        if condicao_slug:
+            descricao_condicao = (
+                obj.condicoes_relacionadas
+                .filter(condicao__slug=condicao_slug)
+                .values_list("descricao", flat=True)
+                .first()
+            )
+
+        if not descricao_condicao and condicao_slug:
+            descricao_condicao = (
+                obj.condicoes_relacionadas
+                .filter(condicao__condition_slug=condicao_slug)
+                .values_list("descricao", flat=True)
+                .first()
+            )
+
+        if not descricao_condicao and request:
+            nome_condicao = (
+                obj.condicoes_saude
+                .filter(slug=condicao_slug)
+                .values_list("nome", flat=True)
+                .first()
+            )
+            if nome_condicao:
+                descricao_condicao = (
+                    obj.condicoes_relacionadas
+                    .filter(condicao__nome=nome_condicao)
+                    .values_list("descricao", flat=True)
+                    .first()
+                )
+
+        return descricao_condicao or obj.descricao
 
 class TipoEficaciaDinamicoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -172,3 +215,7 @@ class EficaciaPorEvidenciaDinamicaSerializer(serializers.ModelSerializer):
             'tratamento_id',
             'tratamento_slug',
         ]
+
+class PaginaListaTratamentoFooterSerializer(serializers.Serializer):
+    label = serializers.CharField()
+    url = serializers.CharField()
