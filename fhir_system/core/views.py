@@ -776,6 +776,8 @@ def detalhes_tratamentos(request, slug):
         'estrelas_preenchidas': estrelas_preenchidas,
         'estrelas_vazias': estrelas_vazias,
         'detalhes_reacoes_adversas': detalhes_reacoes_ordenadas,
+        'footer_listas': get_footer_listas(),
+
     })
 
 
@@ -868,6 +870,7 @@ def evidencias_clinicas(request, slug):
         "tratamento": tratamento,
         "tratamentos": tratamentos,
         "evidencias": evidencias,
+        'footer_listas': get_footer_listas(),
     })
 
 

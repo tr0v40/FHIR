@@ -3,7 +3,25 @@ from django.db.models.functions import Lower, Replace
 from django.db.models import F
 
 from core.models import CondicaoSaude, DetalhesTratamentoResumo
-from core.models import EvidenciasClinicas, PaginaDetalheTratamento
+from core.models import EvidenciasClinicas, PaginaDetalheTratamento, PaginaListaTratamento
+
+
+def get_footer_listas():
+    listas = (
+        PaginaListaTratamento.objects
+        .filter(publicada=True)
+        .select_related("condicao_saude", "tipo_eficacia")
+        .order_by("condicao_saude__nome", "tipo_eficacia__tipo_eficacia")
+    )
+
+    footer_listas = []
+    for item in listas:
+        footer_listas.append({
+            "label": f"{item.condicao_saude.nome} - {item.tipo_eficacia.tipo_eficacia}",
+            "url": f"/listas/{item.condicao_saude.slug}/{item.tipo_eficacia.slug}/",
+        })
+
+    return footer_listas
 
 
 def pesquisas_tratamento(request, condicao_slug, tratamento_slug):
@@ -49,6 +67,7 @@ def pesquisas_tratamento(request, condicao_slug, tratamento_slug):
         "tratamento": tratamento,
         "evidencias": evidencias,
         "ef_filtro_slug": ef_slug,
+         "footer_listas": get_footer_listas(),
     }
 
     return render(request, "core/pesquisas_tratamento.html", context)
