@@ -265,7 +265,15 @@ def tratamentos(request):
     usar_eficacia_padrao = not tem_parametros
 
     # ---------- base ----------
-    tratamentos_qs = DetalhesTratamentoResumo.objects.all().distinct()
+    tratamentos_qs = (
+    DetalhesTratamentoResumo.objects
+    .filter(
+        Q(condicoes_saude__nome__iexact='Enxaqueca') |
+        Q(condicoes_saude__condition__iexact='Migraine') |
+        Q(condicoes_saude__condition_slug__iexact='migraine')
+    )
+    .distinct()
+)
 
     # Contraindicações para listar no template
     contraindications = Contraindicacao.objects.all()
