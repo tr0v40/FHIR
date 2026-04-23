@@ -4,6 +4,7 @@
 from django.contrib import admin, messages
 from django import forms
 from .forms import TreatmentUrlEnglishForm, TreatmentListUrlEnglishForm, TreatmentsUSAForm
+from django.db import models
 
 from django.urls import path, reverse
 from django.utils.html import format_html
@@ -80,13 +81,14 @@ class DetalhesTratamentoResumoForm(forms.ModelForm):
         return int(prazo_max)
 
 
-
 class TratamentoCondicaoInline(admin.TabularInline):
     model = TratamentoCondicao
     form = TratamentoCondicaoInlineForm
-    extra = 0
-    autocomplete_fields = ('condicao',)
-    fields = ('condicao','' 'descricao')
+    extra = 1
+    autocomplete_fields = ("condicao",)
+    fields = ("condicao", "descricao", "aparecer_na_lista")
+    verbose_name = "Relação com condição de saúde"
+    verbose_name_plural = "Relações com condições de saúde"
 
 class DetalhesTratamentoReacaoAdversaInline(admin.TabularInline):
     model = DetalhesTratamentoReacaoAdversa
@@ -129,7 +131,6 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
         "contraindicacoes",
         "reacoes_adversas",
         "tipo_tratamento",
-        "condicoes_saude",
     )
 
     search_fields = (
@@ -137,6 +138,7 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
         "fabricante",
         "principio_ativo",
         "grupo",
+        "condicoes_relacionadas__condicao__nome",
     )
 
     list_filter = (
@@ -145,7 +147,7 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
         "eficacia_min",
         "eficacia_max",
         "custo_medicamento",
-        "condicoes_saude",
+        "condicoes_relacionadas__condicao",
         "contraindicacoes",
     )
 
@@ -157,8 +159,6 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
                     "nome",
                     "fabricante",
                     "principio_ativo",
-                    "condicoes_saude",
-                   
                     "descricao",
                     "imagem",
                     "imagem_detalhes",
@@ -217,7 +217,11 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
 
     @admin.display(description="Condições de Saúde")
     def condicoes_saude_list(self, obj):
-        return ", ".join(obj.condicoes_saude.values_list("nome", flat=True))
+        return ", ".join(
+            obj.condicoes_relacionadas
+            .select_related("condicao")
+            .values_list("condicao__nome", flat=True)
+        )
 
     @admin.display(description="Contraindicações")
     def contraindicacoes_list(self, obj):
@@ -225,14 +229,16 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        return qs.prefetch_related("condicoes_saude", "contraindicacoes")
+        return qs.prefetch_related(
+            "contraindicacoes",
+            "condicoes_relacionadas__condicao",
+        )
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
         if "descricao" in form.base_fields:
             form.base_fields["descricao"].label = "Descrição geral do tratamento"
         return form
-
 
 @admin.register(ReacaoAdversa)
 class ReacaoAdversaAdmin(admin.ModelAdmin):
@@ -625,9 +631,6 @@ class PaginaDetalheTratamentoAdmin(admin.ModelAdmin):
         updated = queryset.update(publicada=False)
         self.message_user(request, f"{updated} página(s) despublicada(s).", level=messages.WARNING)
 
-
-
-
 @admin.register(PaginaListaTratamento)
 class PaginaListaTratamentoAdmin(admin.ModelAdmin):
     change_form_template = "admin/core/paginalistatratamento/change_form.html"
@@ -655,7 +658,6 @@ class PaginaListaTratamentoAdmin(admin.ModelAdmin):
     ordering = ("-created_at",)
     date_hierarchy = "created_at"
 
-    #  Esconde o template do formulário do admin
     exclude = ("template",)
 
     fieldsets = (
@@ -672,7 +674,7 @@ class PaginaListaTratamentoAdmin(admin.ModelAdmin):
             "pagina_lista",
             kwargs={
                 "condicao_slug": obj.condicao_saude.slug,
-                "tipo_eficacia_slug": obj.tipo_eficacia.slug,  # agora existe
+                "tipo_eficacia_slug": obj.tipo_eficacia.slug,
             },
         )
 
@@ -704,8 +706,108 @@ class PaginaListaTratamentoAdmin(admin.ModelAdmin):
             url,
         )
 
+    def get_tratamentos_elegiveis(self, obj):
+        if not obj or not obj.condicao_saude_id or not obj.tipo_eficacia_id:
+            return []
+
+        eficacias_base = (
+            EficaciaPorEvidencia.objects
+            .filter(
+                tipo_eficacia=obj.tipo_eficacia,
+                evidencia__condicao_saude=obj.condicao_saude,
+            )
+            .select_related("evidencia", "tipo_eficacia")
+        )
+
+        tratamento_ids = list(
+            eficacias_base
+            .values_list("evidencia__tratamento_id", flat=True)
+            .distinct()
+        )
+
+        tratamentos = (
+            DetalhesTratamentoResumo.objects
+            .filter(id__in=tratamento_ids)
+            .prefetch_related("condicoes_relacionadas", "condicoes_saude")
+            .distinct()
+        )
+
+        tratamentos_by_id = {t.id: t for t in tratamentos}
+
+        detalhes_publicados_ids = set(
+            PaginaDetalheTratamento.objects
+            .filter(
+                publicada=True,
+                tratamento_id__in=tratamento_ids,
+            )
+            .filter(
+                models.Q(condicao__pk=obj.condicao_saude.pk) |
+                models.Q(condicao__slug=obj.condicao_saude.slug) |
+                models.Q(condicao__nome=obj.condicao_saude.nome)
+            )
+            .values_list("tratamento_id", flat=True)
+        )
+
+        items = []
+        for tid in tratamento_ids:
+            t = tratamentos_by_id.get(tid)
+            if not t:
+                continue
+
+            if tid not in detalhes_publicados_ids:
+                continue
+
+            relacao_condicao = (
+                t.condicoes_relacionadas
+                .filter(aparecer_na_lista=True)
+                .filter(
+                    models.Q(condicao__pk=obj.condicao_saude.pk) |
+                    models.Q(condicao__slug=obj.condicao_saude.slug) |
+                    models.Q(condicao__nome=obj.condicao_saude.nome) |
+                    models.Q(condicao__condition=getattr(obj.condicao_saude, "condition", None))
+                )
+                .first()
+            )
+
+            if not relacao_condicao:
+                continue
+
+            qs = eficacias_base.filter(evidencia__tratamento_id=tid)
+            percents = [float(e.percentual_eficacia_calculado or 0) for e in qs]
+            if not percents:
+                continue
+
+            items.append({
+                "id": t.id,
+                "nome": t.nome,
+                "min": min(percents),
+                "max": max(percents),
+            })
+
+        items.sort(key=lambda x: -x["max"])
+        return items
+
+    def changeform_view(self, request, object_id=None, form_url="", extra_context=None):
+        extra_context = extra_context or {}
+
+        obj = None
+        tratamentos_elegiveis = []
+
+        if object_id:
+            obj = self.get_object(request, object_id)
+            if obj:
+                tratamentos_elegiveis = self.get_tratamentos_elegiveis(obj)
+
+        extra_context["tratamentos_elegiveis"] = tratamentos_elegiveis
+
+        return super().changeform_view(
+            request,
+            object_id,
+            form_url,
+            extra_context=extra_context,
+        )
+
     def save_model(self, request, obj, form, change):
-        #  garante o template padrão mesmo escondido
         if not obj.template:
             obj.template = "core/lista_tratamentos.html"
         super().save_model(request, obj, form, change)
@@ -713,13 +815,20 @@ class PaginaListaTratamentoAdmin(admin.ModelAdmin):
     @admin.action(description="Publicar páginas selecionadas")
     def publicar(self, request, queryset):
         updated = queryset.update(publicada=True)
-        self.message_user(request, f"{updated} página(s) publicada(s).", level=messages.SUCCESS)
+        self.message_user(
+            request,
+            f"{updated} página(s) publicada(s).",
+            level=messages.SUCCESS
+        )
 
     @admin.action(description="Despublicar páginas selecionadas")
     def despublicar(self, request, queryset):
         updated = queryset.update(publicada=False)
-        self.message_user(request, f"{updated} página(s) despublicada(s).", level=messages.WARNING)
-
+        self.message_user(
+            request,
+            f"{updated} página(s) despublicada(s).",
+            level=messages.WARNING
+        )
 
 from .models import (
     TreatmentsUSA,

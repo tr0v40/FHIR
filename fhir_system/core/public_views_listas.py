@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404
-from django.urls import reverse
+from django.db import models
 
 from core.models import (
     PaginaListaTratamento,
+    PaginaDetalheTratamento,
     EficaciaPorEvidencia,
     DetalhesTratamentoResumo,
 )
@@ -24,12 +25,11 @@ def get_footer_listas():
         })
 
     return footer_listas
-   
 
 
 def pagina_lista_por_url(request, condicao_slug, tipo_eficacia_slug):
     pagina = get_object_or_404(
-        PaginaListaTratamento,
+        PaginaListaTratamento.objects.select_related("condicao_saude", "tipo_eficacia"),
         condicao_saude__slug=condicao_slug,
         tipo_eficacia__slug=tipo_eficacia_slug,
         publicada=True,
@@ -55,19 +55,46 @@ def pagina_lista_por_url(request, condicao_slug, tipo_eficacia_slug):
 
     tratamentos = (
         DetalhesTratamentoResumo.objects
-        .filter(
-            id__in=tratamento_ids,
-            condicoes_saude__slug=condicao_slug,
-        )
-        .prefetch_related("condicoes_relacionadas")
+        .filter(id__in=tratamento_ids)
+        .prefetch_related("condicoes_relacionadas", "condicoes_saude")
         .distinct()
     )
     tratamentos_by_id = {t.id: t for t in tratamentos}
+
+    # URLs de detalhe publicadas para a condição da lista
+    detalhes_publicados_ids = set(
+        PaginaDetalheTratamento.objects
+        .filter(
+            publicada=True,
+            condicao=condicao,
+            tratamento_id__in=tratamento_ids,
+        )
+        .values_list("tratamento_id", flat=True)
+    )
 
     items = []
     for tid in tratamento_ids:
         t = tratamentos_by_id.get(tid)
         if not t:
+            continue
+
+        # nova regra: precisa existir URL de detalhe publicada
+        if tid not in detalhes_publicados_ids:
+            continue
+
+        relacao_condicao = (
+            t.condicoes_relacionadas
+            .filter(aparecer_na_lista=True)
+            .filter(
+                models.Q(condicao__pk=condicao.pk) |
+                models.Q(condicao__slug=condicao.slug) |
+                models.Q(condicao__nome=condicao.nome) |
+                models.Q(condicao__condition=getattr(condicao, "condition", None))
+            )
+            .first()
+        )
+
+        if not relacao_condicao:
             continue
 
         qs = eficacias_base.filter(evidencia__tratamento_id=tid)
@@ -79,28 +106,7 @@ def pagina_lista_por_url(request, condicao_slug, tipo_eficacia_slug):
         min_v = min(percents)
         max_v = max(percents)
 
-        descricao_condicao = (
-            t.condicoes_relacionadas
-            .filter(condicao__nome=condicao.nome)
-            .values_list("descricao", flat=True)
-            .first()
-        )
-
-        if not descricao_condicao:
-            descricao_condicao = (
-                t.condicoes_relacionadas
-                .filter(condicao__slug=condicao.slug)
-                .values_list("descricao", flat=True)
-                .first()
-            )
-
-        if not descricao_condicao and getattr(condicao, "condition", None):
-            descricao_condicao = (
-                t.condicoes_relacionadas
-                .filter(condicao__condition=condicao.condition)
-                .values_list("descricao", flat=True)
-                .first()
-            )
+        descricao_condicao = relacao_condicao.descricao or t.descricao
 
         items.append({
             "obj": t,
@@ -110,7 +116,7 @@ def pagina_lista_por_url(request, condicao_slug, tipo_eficacia_slug):
             "max": max_v,
             "min_str": f"{min_v:.2f}".replace(".", ","),
             "max_str": f"{max_v:.2f}".replace(".", ","),
-            "descricao_lista": descricao_condicao or t.descricao,
+            "descricao_lista": descricao_condicao,
         })
 
     items.sort(key=lambda x: -x["max"])

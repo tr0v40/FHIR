@@ -884,15 +884,30 @@ class Avaliacao(models.Model):
 
 # pré-requisito nos models (resumo)
 class TratamentoCondicao(models.Model):
-    tratamento = models.ForeignKey('DetalhesTratamentoResumo', on_delete=models.CASCADE, related_name='condicoes_relacionadas')
-    condicao  = models.ForeignKey('CondicaoSaude', on_delete=models.CASCADE, related_name='tratamentos_relacionados')
-    descricao = models.TextField(blank=True, default="") 
-class Meta:
-    verbose_name = "Tratamento Condição"
-    verbose_name_plural = "Tratamentos Condições"
+    tratamento = models.ForeignKey(
+        "DetalhesTratamentoResumo",
+        on_delete=models.CASCADE,
+        related_name="condicoes_relacionadas"
+    )
+
+    condicao = models.ForeignKey(
+        "CondicaoSaude",
+        on_delete=models.CASCADE,
+        related_name="tratamentos_relacionados"
+    )
+
+    descricao = models.TextField(blank=True)
+
+    aparecer_na_lista = models.BooleanField(
+        default=True,
+        verbose_name="Aparecer na lista da doença"
+    )
+
+    class Meta:
+        unique_together = ("tratamento", "condicao")
 
     def __str__(self):
-        return f"{self.condicao.nome}"
+        return f"{self.tratamento} - {self.condicao}"
     
 
 class TipoEficacia(models.Model):
@@ -1079,6 +1094,14 @@ class PaginaDetalheTratamento(models.Model):
 
 
 class PaginaListaTratamento(models.Model):
+
+    tratamentos_ocultos = models.ManyToManyField(
+    "DetalhesTratamentoResumo",
+    blank=True,
+    related_name="listas_em_que_foi_ocultado",
+    verbose_name="Tratamentos ocultos desta lista",
+)
+    
     publicada = models.BooleanField(default=True)
 
     condicao_saude = models.ForeignKey(
