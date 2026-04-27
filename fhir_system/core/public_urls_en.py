@@ -18,10 +18,9 @@ urlpatterns = [
         name="english_home",
     ),
 
-    # mantém essa rota só para o template não quebrar
     path(
         "treatments/",
-        public_views_en.english_treatments_home,
+        redirect_home,
         name="english_treatments_home",
     ),
 
