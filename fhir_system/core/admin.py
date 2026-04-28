@@ -42,7 +42,7 @@ from .models import (
 admin.site.register([TipoTratamento])
 
 
-
+EN_SITE_URL = "https://www.telix.health"
 
 class DetalhesTratamentoReacaoAdversaTesteForm(forms.ModelForm):
     class Meta:
@@ -1088,6 +1088,8 @@ class TreatmentListUrlEnglishAdmin(admin.ModelAdmin):
 
     actions = ("publish_pages", "unpublish_pages")
 
+    
+
     @admin.display(description="Health condition")
     def health_condition_en(self, obj):
         return obj.health_condition.condition or obj.health_condition.nome
@@ -1104,7 +1106,7 @@ class TreatmentListUrlEnglishAdmin(admin.ModelAdmin):
         if obj.efficacy_type:
             efficacy_slug = obj.efficacy_type.outcome_slug or obj.efficacy_type.slug
             return reverse(
-                "english_treatment_list_filtered",
+                "english_treatment_list_filtered_clean",
                 kwargs={
                     "condition_slug": condition_slug,
                     "efficacy_slug": efficacy_slug,
@@ -1117,6 +1119,8 @@ class TreatmentListUrlEnglishAdmin(admin.ModelAdmin):
                 "condition_slug": condition_slug,
             },
         )
+    def _public_url_full(self, obj):
+        return f"{EN_SITE_URL}{self._public_url_path(obj)}"
 
     @admin.display(description="Status")
     def badge_publication(self, obj):
@@ -1130,22 +1134,21 @@ class TreatmentListUrlEnglishAdmin(admin.ModelAdmin):
 
     @admin.display(description="URL")
     def public_url_link(self, obj):
-        url = self._public_url_path(obj)
+        url = self._public_url_full(obj)
         return format_html('<a href="{}" target="_blank">{}</a>', url, url)
 
     @admin.display(description="Preview")
     def preview(self, obj):
-        url = self._public_url_path(obj)
+        url = self._public_url_full(obj)
         return format_html('<a class="button" href="{}" target="_blank">Open</a>', url)
 
     @admin.display(description="Copy")
     def copy_url(self, obj):
-        url = self._public_url_path(obj)
+        url = self._public_url_full(obj)
         return format_html(
             "<button type='button' class='button' onclick=\"navigator.clipboard.writeText('{}')\">Copy</button>",
             url,
         )
-
     def save_model(self, request, obj, form, change):
         if not obj.template:
             obj.template = "core/en/treatment_list.html"
