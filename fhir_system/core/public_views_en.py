@@ -97,11 +97,11 @@ def english_treatment_list_filtered(request, condition_slug, efficacy_slug):
         condition=condition,
         published=True,
     ).values_list("treatment_id", flat=True)
-
     treatments = (
         TreatmentsUSA.objects.filter(
             id__in=published_treatment_ids,
             health_conditions=condition,
+            tipos_eficacia__tipo_eficacia_id=efficacy_type.id,
         )
         .prefetch_related(
             "treatment_type",
