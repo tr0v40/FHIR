@@ -56,8 +56,16 @@ def english_treatment_list(request, condition_slug):
         published=True,
     )
 
+    published_treatment_ids = TreatmentUrlEnglish.objects.filter(
+        condition=condition,
+        published=True,
+    ).values_list("treatment_id", flat=True)
+
     treatments = (
-        TreatmentsUSA.objects.filter(health_conditions=condition)
+        TreatmentsUSA.objects.filter(
+            id__in=published_treatment_ids,
+            health_conditions=condition,
+        )
         .prefetch_related("treatment_type", "health_conditions")
         .distinct()
         .order_by("name")
@@ -85,9 +93,14 @@ def english_treatment_list_filtered(request, condition_slug, efficacy_slug):
         efficacy_type=efficacy_type,
         published=True,
     )
+    published_treatment_ids = TreatmentUrlEnglish.objects.filter(
+        condition=condition,
+        published=True,
+    ).values_list("treatment_id", flat=True)
 
     treatments = (
         TreatmentsUSA.objects.filter(
+            id__in=published_treatment_ids,
             health_conditions=condition,
         )
         .prefetch_related(
@@ -128,12 +141,22 @@ def english_treatment_detail(request, condition_slug, treatment_slug):
         health_conditions=condition,
     )
 
-    page = get_object_or_404(
-        TreatmentUrlEnglish,
+    condition = get_object_or_404(
+        CondicaoSaude,
+        condition_slug__iexact=condition_slug,
+    )
+
+    treatment = get_object_or_404(
+        TreatmentsUSA,
+        slug__iexact=treatment_slug,
+        health_conditions=condition,
+    )
+
+    page = TreatmentUrlEnglish.objects.filter(
         condition=condition,
         treatment=treatment,
         published=True,
-    )
+    ).first()
 
     adverse_details = treatment.reacoes_adversas_teste_detalhes.select_related(
         "reacao_adversa"

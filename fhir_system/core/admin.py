@@ -1002,11 +1002,12 @@ class TreatmentUrlEnglishAdmin(admin.ModelAdmin):
 
     def _public_url_path(self, obj):
         condition_slug = obj.condition.condition_slug or obj.condition.slug
+
         return reverse(
-            "english_treatment_detail",
+            "english_treatment_dispatch",
             kwargs={
                 "condition_slug": condition_slug,
-                "treatment_slug": obj.treatment.slug,
+                "item_slug": obj.treatment.slug,
             },
         )
 
