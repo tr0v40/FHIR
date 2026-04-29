@@ -286,3 +286,20 @@ def english_treatments_home(request):
             "conditions": conditions,
         },
     )
+
+from core.models import TipoEficacia
+
+
+def english_treatment_dispatch(request, condition_slug, item_slug):
+    if TipoEficacia.objects.filter(outcome_slug__iexact=item_slug).exists():
+        return english_treatment_list_filtered(
+            request,
+            condition_slug=condition_slug,
+            efficacy_slug=item_slug,
+        )
+
+    return english_treatment_detail(
+        request,
+        condition_slug=condition_slug,
+        treatment_slug=item_slug,
+    )

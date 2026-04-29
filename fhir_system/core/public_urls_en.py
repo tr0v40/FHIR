@@ -9,7 +9,6 @@ def redirect_home(request):
 
 urlpatterns = [
     path("", redirect_home),
-
     path("home", redirect_home),
 
     path(
@@ -36,23 +35,18 @@ urlpatterns = [
         name="english_treatment_list_filtered",
     ),
 
-    # URL limpa para lista filtrada:
-    # /treatments/migraine/control/
-    path(
-        "treatments/<slug:condition_slug>/<slug:efficacy_slug>/",
-        public_views_en.english_treatment_list_filtered,
-        name="english_treatment_list_filtered_clean",
-    ),
-
     path(
         "treatments/<slug:condition_slug>/<slug:treatment_slug>/evidence/",
         public_views_en.english_treatment_evidence,
         name="english_treatment_evidence",
     ),
 
+    # ROTA INTELIGENTE:
+    # Se o segundo slug for eficácia -> lista filtrada
+    # Se for tratamento -> detalhe
     path(
-        "treatments/<slug:condition_slug>/<slug:treatment_slug>/",
-        public_views_en.english_treatment_detail,
-        name="english_treatment_detail",
+        "treatments/<slug:condition_slug>/<slug:item_slug>/",
+        public_views_en.english_treatment_dispatch,
+        name="english_treatment_dispatch",
     ),
 ]

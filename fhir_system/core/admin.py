@@ -1106,10 +1106,10 @@ class TreatmentListUrlEnglishAdmin(admin.ModelAdmin):
         if obj.efficacy_type:
             efficacy_slug = obj.efficacy_type.outcome_slug or obj.efficacy_type.slug
             return reverse(
-                "english_treatment_list_filtered_clean",
+                "english_treatment_dispatch",
                 kwargs={
                     "condition_slug": condition_slug,
-                    "efficacy_slug": efficacy_slug,
+                    "item_slug": efficacy_slug,
                 },
             )
 
