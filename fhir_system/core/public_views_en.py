@@ -10,6 +10,7 @@ from .models import (
     TreatmentUrlEnglish,
     TreatmentListUrlEnglish,
     EvidenciasClinicas,
+    EficaciaPorEvidencia,
 )
 
 
@@ -30,8 +31,15 @@ def _get_condition_by_slug(condition_slug: str):
     return condition
 
 
+
+
 def _get_efficacy_by_slug(efficacy_slug: str):
-    return get_object_or_404(TipoEficacia, outcome_slug=efficacy_slug)
+    return get_object_or_404(
+        TipoEficacia,
+        Q(outcome_slug__iexact=efficacy_slug) |
+        Q(slug__iexact=efficacy_slug) |
+        Q(tipo_eficacia__iexact=efficacy_slug)  # fallback extra
+    )
 
 
 def english_treatments_home(request):
@@ -46,43 +54,6 @@ def english_treatments_home(request):
     )
 
 
-def english_treatment_list(request, condition_slug):
-    condition = _get_condition_by_slug(condition_slug)
-
-    page = get_object_or_404(
-        TreatmentListUrlEnglish,
-        health_condition=condition,
-        efficacy_type__isnull=True,
-        published=True,
-    )
-
-    published_treatment_ids = TreatmentUrlEnglish.objects.filter(
-        condition=condition,
-        published=True,
-    ).values_list("treatment_id", flat=True)
-
-    treatments = (
-        TreatmentsUSA.objects.filter(
-            id__in=published_treatment_ids,
-            health_conditions=condition,
-        )
-        .prefetch_related("treatment_type", "health_conditions")
-        .distinct()
-        .order_by("name")
-    )
-
-    return render(
-        request,
-        "core/en/treatment_list.html",
-        {
-            "page": page,
-            "condition": condition,
-            "treatments": treatments,
-            "is_filtered": False,
-        },
-    )
-
-
 def english_treatment_list_filtered(request, condition_slug, efficacy_slug):
     condition = _get_condition_by_slug(condition_slug)
     efficacy_type = _get_efficacy_by_slug(efficacy_slug)
@@ -93,24 +64,62 @@ def english_treatment_list_filtered(request, condition_slug, efficacy_slug):
         efficacy_type=efficacy_type,
         published=True,
     )
+
     published_treatment_ids = TreatmentUrlEnglish.objects.filter(
         condition=condition,
         published=True,
     ).values_list("treatment_id", flat=True)
-    treatments = (
+
+    treatments_base = (
         TreatmentsUSA.objects.filter(
             id__in=published_treatment_ids,
-            health_conditions=condition,
-            tipos_eficacia__tipo_eficacia_id=efficacy_type.id,
+            condition_relations__condition=condition,
+            condition_relations__appear_on_list=True,
         )
         .prefetch_related(
             "treatment_type",
-            "health_conditions",
-            "tipos_eficacia",
+            "condition_relations",
+            "condition_relations__condition",
         )
         .distinct()
-        .order_by("name")
     )
+
+    items = []
+
+    for treatment in treatments_base:
+        relation = treatment.condition_relations.filter(
+            condition=condition,
+            appear_on_list=True,
+        ).first()
+
+        eficacias = EficaciaPorEvidencia.objects.filter(
+            evidencia__tratamento__nome__iexact=treatment.name,
+            evidencia__condicao_saude=condition,
+            tipo_eficacia=efficacy_type,
+        )
+
+        percents = [
+            float(e.percentual_eficacia_calculado or 0)
+            for e in eficacias
+        ]
+
+        if not percents:
+            continue
+
+        treatment.description_for_list = (
+            relation.description
+            if relation and relation.description
+            else treatment.description
+        )
+
+        treatment.min_efficacy_for_list = min(percents)
+        treatment.max_efficacy_for_list = max(percents)
+        treatment.min_efficacy_str = f"{min(percents):.2f}"
+        treatment.max_efficacy_str = f"{max(percents):.2f}"
+
+        items.append(treatment)
+
+    items.sort(key=lambda t: -t.max_efficacy_for_list)
 
     return render(
         request,
@@ -119,11 +128,10 @@ def english_treatment_list_filtered(request, condition_slug, efficacy_slug):
             "page": page,
             "condition": condition,
             "efficacy_type": efficacy_type,
-            "treatments": treatments,
+            "treatments": items,
             "is_filtered": True,
         },
     )
-
 
 def english_treatment_detail(request, condition_slug, treatment_slug):
     condition = _get_condition_by_slug(condition_slug)

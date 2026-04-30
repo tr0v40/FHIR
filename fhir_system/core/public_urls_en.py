@@ -26,10 +26,8 @@ urlpatterns = [
 
     path(
         "treatments/<slug:condition_slug>/",
-        public_views_en.english_treatment_list,
-        name="english_treatment_list",
+        public_views_en.english_treatment_dispatch,
     ),
-
     path(
         "treatments/<slug:condition_slug>/filter/<slug:efficacy_slug>/",
         public_views_en.english_treatment_list_filtered,

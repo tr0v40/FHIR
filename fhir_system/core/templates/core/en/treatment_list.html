@@ -214,7 +214,7 @@
       height:14px;
       background-color:#0094FF;
       position:absolute;
-      top:0;
+      top:3px;
       transform:translateX(-50%);
       border-radius:50%;
     }
@@ -303,6 +303,7 @@
     }
   </style>
 </head>
+
 <body>
 
 <header class="site-header">
@@ -371,7 +372,7 @@
                 </div>
 
                 <p class="tratamento-descricao" style="margin-top:20px; margin-bottom:20px;">
-                  {{ treatment.description|default:"No description available." }}
+                  {{ treatment.description_for_list|default:"No description available." }}
                 </p>
               </div>
 
@@ -379,23 +380,28 @@
                 <p style="font-size:20px; font-weight:700; font-family:'Inter',sans-serif; color:rgb(163,162,162); margin:0 0 8px 0;">
                   Efficacy:
                   <span style="color:#000; font-weight:700; font-size:20px;">
-                    {{ efficacy_type.outcome_type|default:efficacy_type.tipo_eficacia }}
+                    {{ efficacy_type.outcome_type|default:efficacy_type.tipo_eficacia|lower }}
                   </span>
                 </p>
 
                 <div class="eficacia-bar-container">
-                  <div class="efficacy-filled" style="width: {{ treatment.efficacy_max|default:0|floatformat:0 }}%;"></div>
-                  <div class="efficacy-marker" style="left: calc({{ treatment.efficacy_max|default:0|floatformat:0 }}% - 7px);"></div>
+                  <div class="efficacy-filled" style="width: {{ treatment.max_efficacy_for_list|default:0|floatformat:0 }}%;"></div>
+                  <div class="efficacy-marker" style="left: calc({{ treatment.max_efficacy_for_list|default:0|floatformat:0 }}% - 7px);"></div>
                 </div>
 
                 <p class="eficacia-range" style="font-family:'Inter',sans-serif; font-weight:700; font-size:25px; margin:0 0 10px 0;">
-                  <span style="color:#888; font-weight:500;">{{ treatment.efficacy_min|default:0|floatformat:2 }} to</span>
-                  <span style="color:#000; font-weight:bold;"> {{ treatment.efficacy_max|default:0|floatformat:2 }}%</span>
+                  <span style="color:#888; font-weight:500;">
+                    {{ treatment.min_efficacy_for_list|default:0|floatformat:2 }} to
+                  </span>
+                  <span style="color:#000; font-weight:bold;">
+                    {{ treatment.max_efficacy_for_list|default:0|floatformat:2 }}%
+                  </span>
                 </p>
 
                 <p style="margin:0; font-family:'Inter',sans-serif; font-weight:500; font-size:15px; color:#000;">
                   Time to effect
                 </p>
+
                 <p style="margin:4px 0 0 0; font-family:'Inter',sans-serif; font-size:16px; font-weight:bold; color:#000;">
                   {{ treatment.effect_time_min|default:"ND" }} to {{ treatment.effect_time_max|default:"ND" }}
                 </p>

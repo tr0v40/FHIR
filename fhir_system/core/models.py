@@ -1159,7 +1159,26 @@ class TreatmentsUSAReacaoAdversaTeste(models.Model):
 from django.db import models
 from django.utils.text import slugify
 
-# ... seus imports já existentes ...
+
+class TreatmentsUSACondition(models.Model):
+    treatment = models.ForeignKey(
+        "TreatmentsUSA",
+        on_delete=models.CASCADE,
+        related_name="condition_relations"
+    )
+    condition = models.ForeignKey(
+        "CondicaoSaude",
+        on_delete=models.CASCADE,
+        related_name="usa_treatment_relations"
+    )
+    description = models.TextField(blank=True)
+    appear_on_list = models.BooleanField(default=True)
+
+    class Meta:
+        unique_together = ("treatment", "condition")
+
+    def __str__(self):
+        return f"{self.treatment} - {self.condition}"
 
 
 class TreatmentsUSA(models.Model):

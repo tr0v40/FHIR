@@ -31,6 +31,7 @@ from .models import (
     TipoTratamento,
     CondicaoSaude,
     TreatmentsUSA,
+    TreatmentsUSACondition,
     TreatmentsUSAReacaoAdversaTeste,
     TreatmentUrlEnglish,
     TreatmentListUrlEnglish,
@@ -257,6 +258,7 @@ class CondicaoSaudeAdmin(admin.ModelAdmin):
 
 
 
+
 class EvidenciasClinicasForm(forms.ModelForm):
     tipos_eficacia = forms.ModelMultipleChoiceField(
         queryset=TipoEficacia.objects.all(),
@@ -423,8 +425,16 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
     search_fields = ("titulo", "tratamento__nome", "referencia_bibliografica")
     list_filter = ("rigor_da_pesquisa", "data_publicacao")
     readonly_fields = ("imagem_preview", "visualizar_pdf")
+    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        formfield = super().formfield_for_foreignkey(db_field, request, **kwargs)
 
-    autocomplete_fields = ("condicao_saude",)
+        if db_field.name == "condicao_saude":
+            formfield.label_from_instance = (
+                lambda obj: f"{obj.id} - {obj.nome} / {obj.condition}" if obj.condition else f"{obj.id} - {obj.nome}"
+            )
+
+        return formfield
 
     fieldsets = (
         (
@@ -830,6 +840,23 @@ class PaginaListaTratamentoAdmin(admin.ModelAdmin):
             level=messages.WARNING
         )
 
+class TreatmentsUSAConditionInline(admin.TabularInline):
+    model = TreatmentsUSACondition
+    extra = 1
+    fields = ("condition", "description", "appear_on_list")
+    verbose_name = "Relation with health condition"
+    verbose_name_plural = "Relations with health conditions"
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        formfield = super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+        if db_field.name == "condition":
+            formfield.label_from_instance = (
+                lambda obj: f"{obj.nome} / {obj.condition}" if obj.condition else obj.nome
+            )
+
+        return formfield
+
 from .models import (
     TreatmentsUSA,
     TreatmentsUSAReacaoAdversaTeste,
@@ -847,6 +874,7 @@ class TreatmentsUSAReacaoAdversaTesteInline(admin.TabularInline):
 class TreatmentsUSAAdmin(admin.ModelAdmin):
     form = TreatmentsUSAForm
     inlines = [
+        TreatmentsUSAConditionInline,
         TreatmentsUSAReacaoAdversaTesteInline,
     ]
 
@@ -865,7 +893,6 @@ class TreatmentsUSAAdmin(admin.ModelAdmin):
         "contraindications",
         "adverse_reactions",
         "treatment_type",
-        "health_conditions",
     )
 
     search_fields = (
@@ -893,7 +920,7 @@ class TreatmentsUSAAdmin(admin.ModelAdmin):
                     "name",
                     "manufacturer",
                     "active_ingredient",
-                    "health_conditions",
+                   
                     "description",
                     "image",
                     "detail_image",
