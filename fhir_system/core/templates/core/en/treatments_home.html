@@ -157,13 +157,15 @@
       padding: 42px 20px 36px;
     }
 
-    .footer-wrap {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 34px;
-    }
+.footer-wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.2fr 1.1fr 1fr;
+  gap: 70px;
+  justify-content: center;
+  transform: translateX(-40px);
+}
 
     .footer-col h4 {
       margin: 0 0 16px;
@@ -349,7 +351,7 @@
           <select class="condition-select" id="conditionSelect" required>
             <option value="" selected disabled>Select an option</option>
             {% for condition in conditions %}
-              <option value="{% url 'english_treatment_list' condition.condition_slug|default:condition.slug %}">
+              <option value="{% url 'english_treatment_dispatch' condition.condition_slug|default:condition.slug 'overview' %}">
                 {{ condition.condition|default:condition.nome }}
               </option>
             {% endfor %}
@@ -388,28 +390,28 @@
         <span>Seek guidance from a healthcare professional</span>
       </div>
 
-      <div class="footer-col">
-        <h4>Questions and answers</h4>
-        <a href="#">For businesses</a>
-        <a href="#">About us</a>
-      </div>
+<div class="footer-col">
+  <h4>Questions and answers</h4>
+  <a href="#">For businesses</a>
+  <a href="#">About us</a>
 
-      <div class="footer-col">
-        <span style="margin-bottom:8px; color:#7a7a7a;">Select the disease</span>
-        <div class="footer-select-wrap">
-          <select class="footer-select" id="footerConditionSelect">
-            <option value="" selected>Select</option>
-            {% for condition in conditions %}
-              <option value="{% url 'english_treatment_list' condition.condition_slug|default:condition.slug %}">
-                {{ condition.condition|default:condition.nome }}
-              </option>
-            {% endfor %}
-          </select>
-          <span class="footer-select-arrow">
-            <i class="fas fa-chevron-down"></i>
-          </span>
-        </div>
-      </div>
+  <span style="margin-top:18px; margin-bottom:8px; color:#7a7a7a;">Select the disease</span>
+  <div class="footer-select-wrap">
+    <select class="footer-select" id="footerConditionSelect">
+      <option value="" selected>Select</option>
+      {% for condition in conditions %}
+        <option value="{% url 'english_treatment_list' condition.condition_slug|default:condition.slug %}">
+          {{ condition.condition|default:condition.nome }}
+        </option>
+      {% endfor %}
+    </select>
+    <span class="footer-select-arrow">
+      <i class="fas fa-chevron-down"></i>
+    </span>
+  </div>
+</div>
+
+
     </div>
   </footer>
 

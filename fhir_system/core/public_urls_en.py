@@ -4,18 +4,28 @@ from . import public_views_en
 
 
 def redirect_home(request):
-    return redirect("/home/")
+    return redirect("https://www.telix.health")
+
+
 
 
 urlpatterns = [
-    path("", redirect_home),
+    # HOME principal (sem /)
+    path(
+        "",
+        public_views_en.english_treatments_home,
+        name="english_home",
+    ),
 
-    path("home", redirect_home),
+    # qualquer acesso a /home redireciona para raiz
+    path(
+        "home",
+        redirect_home,
+    ),
 
     path(
         "home/",
-        public_views_en.english_treatments_home,
-        name="english_home",
+        redirect_home,
     ),
 
     path(
@@ -25,8 +35,9 @@ urlpatterns = [
     ),
 
     path(
-        "treatments/<slug:condition_slug>/",
+        "treatments/<slug:condition_slug>",
         public_views_en.english_treatment_dispatch,
+        name="english_treatment_list",
     ),
     path(
         "treatments/<slug:condition_slug>/filter/<slug:efficacy_slug>/",

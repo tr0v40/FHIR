@@ -17,7 +17,11 @@ from core import public_views_en
 
 
 urlpatterns = [
-    path("", LoginView.as_view(), name="home"),
+    # remover/comentar no servidor inglês
+# path("", LoginView.as_view(), name="home"),
+
+# usar no servidor inglês
+    path("", public_views_en.english_treatments_home, name="english_home"),
     path("admin/", admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
     path('comentarios/', views.comentario_view, name='comentarios'),
