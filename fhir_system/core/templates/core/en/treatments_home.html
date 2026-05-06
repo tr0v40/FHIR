@@ -151,76 +151,107 @@
       font-size: 16px;
     }
 
-    .footer {
-      background: #f7f7f7;
-      border-top: 1px solid #ddd;
-      padding: 42px 20px 36px;
-    }
-
-.footer-wrap {
-  max-width: 1000px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1.2fr 1.1fr 1fr;
-  gap: 70px;
-  justify-content: center;
-  transform: translateX(-40px);
+.footer {
+  background: #ffffff;
+  border-top: 1px solid #ddd;
+  border-bottom: 3px solid #d2d2d2;
+  padding: 42px 20px 84px;
+  position: relative;
 }
 
-    .footer-col h4 {
-      margin: 0 0 16px;
-      font-size: 16px;
-      font-weight: 700;
-      color: #111;
-    }
+.footer::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -84px;
+  height: 84px;
+  background: #ffffff;
+  border-top: 3px solid #E0E0E1;
+}
 
-    .footer-col a,
-    .footer-col p,
-    .footer-col span {
-      display: block;
-      color: #7a7a7a;
-      text-decoration: none;
-      font-size: 13px;
-      line-height: 1.8;
-      margin: 0 0 3px;
-    }
+.footer-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr 1fr;
+  gap: 68px;
+}
 
-    .footer-col a:hover {
-      color: #0094FF;
-      text-decoration: underline;
-    }
+.footer-col h4,
+.footer-col h4 a {
+  margin: 0 0 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: #000000;
+  text-decoration: none;
+}
 
-    .footer-select {
-      width: 100%;
-      max-width: 150px;
-      height: 34px;
-      border: none;
-      border-radius: 4px;
-      background: #0094FF;
-      color: #fff;
-      padding: 0 34px 0 12px;
-      appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      cursor: pointer;
-      font-size: 13px;
-    }
+.footer-col a,
+.footer-col span,
+.footer-col p {
+  display: block;
+  margin: 0 0 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0;
+  color: #8F8F93;
+  text-decoration: none;
+}
 
-    .footer-select-wrap {
-      position: relative;
-      width: fit-content;
-      margin-top: 6px;
-    }
+.footer-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: #8F8F93;
+}
+.footer-col a:hover {
+  color: #0094FF;
+  text-decoration: underline;
+}
 
-    .footer-select-arrow {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #fff;
-      pointer-events: none;
-      font-size: 12px;
-    }
+
+.footer-select-wrap {
+  position: relative;
+  width: 155px;
+  margin-top: 8px;
+}
+
+.footer-select {
+  width: 155px;
+  height: 41px;
+  border: none;
+  border-radius: 4px;
+  background: #0094FF;
+  color: #fff;
+  padding: 0 36px 0 16px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.footer-select-arrow {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ffffff;
+  pointer-events: none;
+  font-size: 12px;
+}
+
+.footer-col .footer-disease-label {
+  margin-top: 72px;
+  margin-bottom: 8px;
+}
 
     @media (max-width: 1100px) {
       .hero h1 {
@@ -287,7 +318,7 @@
   <header class="topbar">
     <div class="logo-wrap">
     <a href="{% url 'english_home' %}">
-        <img src="{% static 'img/logo.png' %}" alt="Telix">
+        <img src="{% static 'img/en/logo_ingles.png' %}" alt="Telix">
       </a>
     </div>
 
@@ -348,14 +379,15 @@
 
       <form method="get" class="condition-form" id="conditionForm">
         <div class="condition-select-wrap">
-          <select class="condition-select" id="conditionSelect" required>
-            <option value="" selected disabled>Select an option</option>
-            {% for condition in conditions %}
-              <option value="{% url 'english_treatment_dispatch' condition.condition_slug|default:condition.slug 'overview' %}">
-                {{ condition.condition|default:condition.nome }}
-              </option>
-            {% endfor %}
-          </select>
+      <select class="condition-select" onchange="if(this.value) window.location.href=this.value;">
+        <option value="">Select an option</option>
+
+        {% for item in treatment_lists %}
+          <option value="{% url 'english_treatment_list_filtered' item.health_condition.condition_slug item.efficacy_type.outcome_slug %}">
+            {{ item.health_condition.condition }} - {{ item.efficacy_type.outcome_type }}
+          </option>
+        {% endfor %}
+      </select>
           <span class="condition-arrow">
             <i class="fas fa-chevron-down"></i>
           </span>
@@ -364,56 +396,89 @@
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="footer-wrap">
-      <div class="footer-col">
-        <h4>Treatment pages</h4>
-        <a href="#">Efficacy — how we calculate it</a>
+ <footer class="footer">
+  <div class="footer-wrap">
+    <div class="footer-col">
+      <h4>
+        <a href="https://treatments.telix.health/treatment-specifications">Treatments Page</a>
+      </h4>
+      <a href="https://treatments.telix.health/how-we-calculate-the-efficacy-of-health-treatments">
+        Efficacy How we calculate it
+      </a>
 
-        <h4 style="margin-top:18px;">Scientific article pages</h4>
-        <a href="#">Research reliability — criteria</a>
+      <h4 style="margin-top:18px;">
+        <a href="https://treatments.telix.health/clinical-evidence-from-research-on-health-treatments">
+          Scientific Articles Page
+        </a>
+      </h4>
+      <a href="https://treatments.telix.health/criteria-for-research-rigor-in-health-treatments">
+        Research rigor – criteria
+      </a>
 
-        <h4 style="margin-top:18px;">Create a FHIR resource</h4>
-        <span>Linca Telecomunicações Ltda -</span>
-        <span>CNPJ: 03.376.788-0001/23</span>
-      </div>
+      <h4 style="margin-top:18px;">
+        <a href="https://treatments.telix.health/create-fhir-resource-json-evidence">
+          Create a FHIR resource
+        </a>
+      </h4>
+      <a href="https://treatments.telix.health/implementationguide/home">
+        Implementation Guide
+      </a>
 
-      <div class="footer-col">
-        <h4>Documents</h4>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Use</a>
-
-        <h4 style="margin-top:18px;">E-mail</h4>
-        <a href="mailto:contact@telix.health">contact@telix.health</a>
-
-        <h4 style="margin-top:18px;">Do not self-medicate</h4>
-        <span>Seek guidance from a healthcare professional</span>
-      </div>
-
-<div class="footer-col">
-  <h4>Questions and answers</h4>
-  <a href="#">For businesses</a>
-  <a href="#">About us</a>
-
-  <span style="margin-top:18px; margin-bottom:8px; color:#7a7a7a;">Select the disease</span>
-  <div class="footer-select-wrap">
-    <select class="footer-select" id="footerConditionSelect">
-      <option value="" selected>Select</option>
-      {% for condition in conditions %}
-        <option value="{% url 'english_treatment_list' condition.condition_slug|default:condition.slug %}">
-          {{ condition.condition|default:condition.nome }}
-        </option>
-      {% endfor %}
-    </select>
-    <span class="footer-select-arrow">
-      <i class="fas fa-chevron-down"></i>
-    </span>
-  </div>
-</div>
-
-
+      <span style="margin-top:18px;">Linca Telecomunicações Ltda -</span>
+      <span>CNPJ: 03.376.788-0001/23</span>
     </div>
-  </footer>
+
+    <div class="footer-col">
+      <h4>
+        <a href="https://treatments.telix.health/documents">Documents</a>
+      </h4>
+      <a href="https://treatments.telix.health/documents/privacy-policy">Privacy Policy</a>
+      <a href="https://treatments.telix.health/documents/terms-of-service">Terms of Use</a>
+
+      <h4 style="margin-top:18px;">
+        <a href="https://outlook.live.com/mail/0/deeplink/compose?mailtouri=mailto%3Acontact%40telix.health">
+          E-mail
+        </a>
+      </h4>
+      <a href="mailto:contact@telix.health">contact@telix.health</a>
+
+      <h4 style="margin-top:18px;">
+        <a href="https://www.telix.inf.br/marcar-consulta-com-medico">
+          Do not self-medicate
+        </a>
+      </h4>
+      <span>Seek guidance from a healthcare professional</span>
+    </div>
+
+    <div class="footer-col">
+      <h4>
+        <a href="https://treatments.telix.health/questions-and-answers">
+          Questions and answers
+        </a>
+      </h4>
+      <a href="https://treatments.telix.health/companies">For businesses</a>
+      <a href="https://treatments.telix.health/who-we-are">About us</a>
+
+
+<span class="footer-text footer-disease-label">Select the disease</span>
+
+      <div class="footer-select-wrap">
+      <select class="footer-select" onchange="if(this.value) window.location.href=this.value;">
+        <option value="">Select an option</option>
+
+        {% for item in treatment_lists %}
+          <option value="{% url 'english_treatment_list_filtered' item.health_condition.condition_slug item.efficacy_type.outcome_slug %}">
+            {{ item.health_condition.condition }} - {{ item.efficacy_type.outcome_type }}
+          </option>
+        {% endfor %}
+      </select>
+        <span class="footer-select-arrow">
+          <i class="fas fa-chevron-down"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</footer>
 
   <script>
     const select = document.getElementById('conditionSelect');
