@@ -1,262 +1,199 @@
 <style>
-  .site-footer {
-    background: #ffffff;
-    border-top: 1px solid #dcdcdc;
-    margin-top: 60px;
+.footer {
+  background: #ffffff;
+  border-top: 1px solid #ddd;
+  border-bottom: 3px solid #d2d2d2;
+  padding: 42px 20px 84px;
+  position: relative;
+}
+
+.footer::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -84px;
+  height: 84px;
+  background: #ffffff;
+  border-top: 3px solid #E0E0E1;
+}
+
+.footer-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr 1fr;
+  gap: 68px;
+}
+
+.footer-col h4,
+.footer-col h4 a {
+  margin: 0 0 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: #000000;
+  text-decoration: none;
+}
+
+.footer-col a,
+.footer-col span,
+.footer-col p {
+  display: block;
+  margin: 0 0 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0;
+  color: #8F8F93;
+  text-decoration: none;
+}
+
+.footer-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: #8F8F93;
+}
+
+.footer-col a:hover {
+  color: #0094FF;
+  text-decoration: underline;
+}
+
+.footer-select-wrap {
+  position: relative;
+  width: 155px;
+  margin-top: 8px;
+}
+
+.footer-select {
+  width: 155px;
+  height: 41px;
+  border: none;
+  border-radius: 4px;
+  background: #0094FF;
+  color: #fff;
+  padding: 0 36px 0 16px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.footer-select option {
+  background: #ffffff;
+  color: #000000;
+}
+
+.footer-select-arrow {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ffffff;
+  pointer-events: none;
+  font-size: 12px;
+}
+
+.footer-col .footer-disease-label {
+  margin-top: 72px;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 768px) {
+  .footer-wrap {
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
-
-  .site-footer-inner {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 42px 40px 34px;
-  }
-
-  .footer-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(220px, 1fr));
-    column-gap: 200px;
-    row-gap: 10px;
-    align-items: start;
-    justify-items: start;
-  }
-
-  .footer-col {
-    min-width: 0;
-    width: 100%;
-    text-align: left;
-  }
-
-  .footer-col h5 {
-    margin: 0 0 10px;
-    line-height: 1.35;
-    font-weight: 700;
-    color: #000000;
-  }
-
-  .footer-col h5 a,
-  .footer-highlight,
-  .footer-title-text {
-    font-size: 15px !important;
-    font-family: Arial, sans-serif !important;
-    font-weight: 700 !important;
-    color: #000000 !important;
-    text-decoration: none;
-    line-height: 1.35;
-  }
-
-  .footer-col p {
-    margin: 0 0 6px;
-    font-size: 12px;
-    line-height: 1.45;
-    font-weight: 400;
-    color: #8a8a8a;
-    font-family: Arial, sans-serif;
-  }
-
-  .footer-col a {
-    color: #8a8a8a;
-    text-decoration: none;
-    font-size: 12px;
-    line-height: 1.45;
-    font-weight: 400;
-    font-family: Arial, sans-serif;
-    word-break: break-word;
-  }
-
-  .footer-col a:hover {
-    color: #0094FF;
-    text-decoration: underline;
-  }
-
-  .footer-company {
-    margin-top: 12px !important;
-  }
-
-  .footer-col h5 + p {
-    margin-bottom: 18px;
-  }
-
-  .footer-redirect-box {
-    margin-top: 28px;
-  }
-
-  .footer-redirect-label {
-    display: block;
-    margin-bottom: 10px;
-    font-size: 14px;
-    line-height: 1.45;
-    font-weight: 400;
-    color: #8a8a8a;
-    font-family: Arial, sans-serif;
-  }
-
-  .footer-redirect-select {
-    width: 100%;
-    max-width: 170px;
-    height: 38px;
-    border: 1px solid #0094FF;
-    border-radius: 4px;
-    background-color: #0094FF;
-    color: #ffffff;
-    font-size: 12px;
-    font-weight: 600;
-    font-family: Arial, sans-serif;
-    padding: 0 14px;
-    cursor: pointer;
-    outline: none;
-  }
-
-  .footer-redirect-select option {
-    background: #ffffff;
-    color: #000000;
-  }
-
-  .footer-bottom-strip {
-    height: 80px;
-    background: #f3f3f3;
-    border-top: 2px solid #dcdcdc;
-    width: 100%;
-  }
-
-  @media (max-width: 640px) {
-    .site-footer-inner {
-      padding: 28px 16px 24px;
-    }
-
-    .footer-grid {
-      grid-template-columns: 1fr;
-      gap: 22px;
-    }
-
-    .footer-bottom-strip {
-      height: 20px;
-    }
-  }
+}
 </style>
 
-<footer class="site-footer">
-  <div class="site-footer-inner">
-    <div class="footer-grid">
+<footer class="footer">
+  <div class="footer-wrap">
+    <div class="footer-col">
+      <h4>
+        <a href="https://treatments.telix.health/treatment-specifications">Treatments Page</a>
+      </h4>
+      <a href="https://treatments.telix.health/how-we-calculate-the-efficacy-of-health-treatments">
+        Efficacy How we calculate it
+      </a>
 
-      <div class="footer-col">
-        <h5>
-          <a href="https://www.telix.health/" class="footer-highlight">
-            <span class="footer-title-text">Treatment pages</span>
-          </a>
-        </h5>
-        <p>
-          <a href="https://www.telix.health/">
-            Efficacy — how we calculate it
-          </a>
-        </p>
+      <h4 style="margin-top:18px;">
+        <a href="https://treatments.telix.health/clinical-evidence-from-research-on-health-treatments">
+          Scientific Articles Page
+        </a>
+      </h4>
+      <a href="https://treatments.telix.health/criteria-for-research-rigor-in-health-treatments">
+        Research rigor – criteria
+      </a>
 
-        <h5 style="margin-top: 24px;">
-          <a href="https://www.telix.health/" class="footer-highlight">
-            <span class="footer-title-text">Scientific article pages</span>
-          </a>
-        </h5>
-        <p>
-          <a href="https://www.telix.health/">
-            Research rigor — criteria
-          </a>
-        </p>
+      <h4 style="margin-top:18px;">
+        <a href="https://treatments.telix.health/create-fhir-resource-json-evidence">
+          Create a FHIR resource
+        </a>
+      </h4>
+      <a href="https://treatments.telix.health/implementationguide/home">
+        Implementation Guide
+      </a>
 
-        <h5 style="margin-top: 24px;">
-          <a href="https://www.telix.health/" class="footer-highlight">
-            <span class="footer-title-text">Specialist opinions</span>
-          </a>
-        </h5>
+      <span style="margin-top:18px;">Linca Telecomunicações Ltda -</span>
+      <span>CNPJ: 03.376.788-0001/23</span>
+    </div>
 
-        <h5 style="margin-top: 24px;">
-          <a href="https://www.telix.health/" class="footer-highlight">
-            <span class="footer-title-text">Medicines by active ingredient</span>
-          </a>
-        </h5>
+    <div class="footer-col">
+      <h4>
+        <a href="https://treatments.telix.health/documents">Documents</a>
+      </h4>
+      <a href="https://treatments.telix.health/documents/privacy-policy">Privacy Policy</a>
+      <a href="https://treatments.telix.health/documents/terms-of-service">Terms of Use</a>
 
-        <p class="footer-company">
-          Linca Telecomunicações Ltda -<br>
-          CNPJ: 03.376.788-0001/23
-        </p>
+      <h4 style="margin-top:18px;">
+        <a href="https://outlook.live.com/mail/0/deeplink/compose?mailtouri=mailto%3Acontact%40telix.health">
+          E-mail
+        </a>
+      </h4>
+      <a href="mailto:contact@telix.health">contact@telix.health</a>
+
+      <h4 style="margin-top:18px;">
+        <a href="https://www.telix.inf.br/marcar-consulta-com-medico">
+          Do not self-medicate
+        </a>
+      </h4>
+      <span>Seek guidance from a healthcare professional</span>
+    </div>
+
+    <div class="footer-col">
+      <h4>
+        <a href="https://treatments.telix.health/questions-and-answers">
+          Questions and answers
+        </a>
+      </h4>
+      <a href="https://treatments.telix.health/companies">For businesses</a>
+      <a href="https://treatments.telix.health/who-we-are">About us</a>
+
+      <span class="footer-text footer-disease-label">Select the disease</span>
+
+      <div class="footer-select-wrap">
+        <select class="footer-select" onchange="if(this.value) window.location.href=this.value;">
+          <option value="">Select an option</option>
+
+          {% for item in treatment_lists %}
+            <option value="{% url 'english_treatment_list_filtered' item.health_condition.condition_slug item.efficacy_type.outcome_slug %}">
+              {{ item.health_condition.condition }} - {{ item.efficacy_type.outcome_type }}
+            </option>
+          {% endfor %}
+        </select>
+
+        <span class="footer-select-arrow">
+          <i class="fas fa-chevron-down"></i>
+        </span>
       </div>
-
-      <div class="footer-col">
-        <h5>
-          <a href="https://www.telix.health/" class="footer-highlight">
-            <span class="footer-title-text">Documents</span>
-          </a>
-        </h5>
-        <p style="margin-bottom: 2px;">
-          <a href="https://www.telix.health/">
-            Privacy Policy
-          </a>
-        </p>
-        <p style="margin-bottom: 0;">
-          <a href="https://www.telix.health/">
-            Terms of Use
-          </a>
-        </p>
-
-        <h5 style="margin-top: 24px;" class="footer-highlight">
-          <span class="footer-title-text">Talk to us</span>
-        </h5>
-        <p style="margin-bottom: 2px;">
-          <a href="https://api.whatsapp.com/send/?phone=45999040371&text&type=phone_number&app_absent=0">
-            +55 45 99904-0371
-          </a>
-        </p>
-        <p style="margin-bottom: 0;">
-          <a href="mailto:contato@telix.inf.br">contato@telix.inf.br</a>
-        </p>
-
-        <h5 style="margin-top: 24px;">
-          <a href="https://www.telix.health/" class="footer-highlight">
-            <span class="footer-title-text">Do not self-medicate</span>
-          </a>
-        </h5>
-        <p>
-          <a href="https://www.telix.health/">
-            Consult a healthcare professional
-          </a>
-        </p>
-      </div>
-
-      <div class="footer-col">
-        <h5>
-          <span class="footer-title-text">Presentations</span>
-        </h5>
-        <p><a href="https://www.telix.health/">Companies</a></p>
-        <p><a href="https://www.telix.health/">Questions and answers</a></p>
-        <p><a href="https://www.telix.health/">Blog</a></p>
-        <p><a href="https://www.telix.health/">About us</a></p>
-        <p><a href="https://www.telix.health/">Testimonials</a></p>
-
-        <div class="footer-redirect-box">
-          <label for="footerRedirectSelect" class="footer-redirect-label">Select condition:</label>
-          <select id="footerRedirectSelect" class="footer-redirect-select">
-            <option value="">Select</option>
-            {% for item in footer_listas_en %}
-              <option value="{{ item.url }}">{{ item.label }}</option>
-            {% endfor %}
-          </select>
-        </div>
-      </div>
-
     </div>
   </div>
 </footer>
-
-<script>
-  (function () {
-    const footerRedirectSelect = document.getElementById('footerRedirectSelect');
-    if (footerRedirectSelect) {
-      footerRedirectSelect.addEventListener('change', function () {
-        const destino = this.value;
-        if (destino) {
-          window.location.href = destino;
-        }
-      });
-    }
-  })();
-</script>
-
-<div class="footer-bottom-strip"></div>

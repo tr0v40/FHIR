@@ -70,7 +70,22 @@ def english_treatments_home(request):
             "treatment_lists": treatment_lists,
         },
     )
-
+def get_treatment_lists():
+    return (
+        TreatmentListUrlEnglish.objects
+        .filter(
+            published=True,
+            health_condition__isnull=False,
+            efficacy_type__isnull=False,
+        )
+        .exclude(health_condition__condition__isnull=True)
+        .exclude(health_condition__condition="")
+        .select_related("health_condition", "efficacy_type")
+        .order_by(
+            "health_condition__condition",
+            "efficacy_type__outcome_type"
+        )
+    )
 
 def english_treatment_list_filtered(request, condition_slug, efficacy_slug):
     condition = _get_condition_by_slug(condition_slug)
@@ -148,6 +163,7 @@ def english_treatment_list_filtered(request, condition_slug, efficacy_slug):
             "efficacy_type": efficacy_type,
             "treatments": items,
             "is_filtered": True,
+            "treatment_lists": get_treatment_lists(),
         },
     )
 
@@ -214,6 +230,7 @@ def english_treatment_detail(request, condition_slug, treatment_slug):
             "treatment": treatment,
             "adverse_details": adverse_details,
             "efficacy_items": efficacy_items,
+            "treatment_lists": get_treatment_lists(),
         },
     )
 
@@ -321,6 +338,7 @@ def english_treatment_evidence(request, condition_slug, treatment_slug):
             "condition": condition,
             "treatment": treatment,
             "evidence_cards": evidence_cards,
+            "treatment_lists": get_treatment_lists(),
         },
     )
 

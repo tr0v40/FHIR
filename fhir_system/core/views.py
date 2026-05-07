@@ -1056,9 +1056,14 @@ def tratamentos_controle_enxaqueca(request):
     usar_eficacia_padrao = not tem_parametros
 
     # ---------- base ----------
-    tratamentos_qs = DetalhesTratamentoResumo.objects.filter(
-    condicoes_saude__nome__iexact="Enxaqueca"
-).distinct()
+    tratamentos_qs = (
+        DetalhesTratamentoResumo.objects
+        .filter(
+            condicoes_relacionadas__aparecer_na_lista=True,
+            condicoes_relacionadas__condicao__nome__iexact="Enxaqueca",
+        )
+        .distinct()
+)
 
     # Contraindicações para listar no template
     contraindications = Contraindicacao.objects.all()
@@ -1144,11 +1149,18 @@ def tratamentos_controle_enxaqueca(request):
 
 
     for t in tratamentos_list:
-      
         if "Controle" in t.eficacias_por_tipo:
             stats_controle = t.eficacias_por_tipo["Controle"]
-            
-          
+
+            relacao_condicao = (
+                t.condicoes_relacionadas
+                .filter(
+                    aparecer_na_lista=True,
+                    condicao__nome__iexact="Enxaqueca"
+                )
+                .first()
+            )
+
             tratamentos_unicos[t.id] = {
                 "obj": t,
                 "tipo": "Controle",
@@ -1158,8 +1170,8 @@ def tratamentos_controle_enxaqueca(request):
                 "min_str": stats_controle["min_str"],
                 "max_str": stats_controle["max_str"],
                 "count": stats_controle["count"],
-            
-                    }
+                "descricao_lista": relacao_condicao.descricao if relacao_condicao and relacao_condicao.descricao else t.descricao,
+            }
                 
 
     # ---------- listas por seção (sempre inicializadas) ----------
@@ -1351,7 +1363,14 @@ def tratamentos_crise_enxaqueca(request):
     usar_eficacia_padrao = not tem_parametros
 
 
-    tratamentos_qs = DetalhesTratamentoResumo.objects.all().distinct()
+    tratamentos_qs = (
+        DetalhesTratamentoResumo.objects
+        .filter(
+            condicoes_relacionadas__aparecer_na_lista=True,
+            condicoes_relacionadas__condicao__nome__iexact="Enxaqueca",
+        )
+        .distinct()
+    )
 
    
     contraindications = Contraindicacao.objects.all()
@@ -1442,20 +1461,26 @@ def tratamentos_crise_enxaqueca(request):
         if "Redução de sintomas" in t.eficacias_por_tipo:
             stats_reducao = t.eficacias_por_tipo["Redução de sintomas"]
 
-            # Corrige a forma de acessar os nomes do relacionamento ManyToMany
-            if t.condicoes_saude:
-                for condicao in t.condicoes_saude.all():  # Iterando sobre os objetos relacionados
-                    if condicao.nome.strip().lower() == "enxaqueca":
-                        tratamentos_unicos[t.id] = {
-                            "obj": t,
-                            "tipo": "Redução de sintomas",  
-                            "tipo_key": slugify("Redução de sintomas"),
-                            "min": stats_reducao["min"],
-                            "max": stats_reducao["max"],
-                            "min_str": stats_reducao["min_str"],
-                            "max_str": stats_reducao["max_str"],
-                            "count": stats_reducao["count"],
-                        }
+            relacao_condicao = (
+                t.condicoes_relacionadas
+                .filter(
+                    aparecer_na_lista=True,
+                    condicao__nome__iexact="Enxaqueca"
+                )
+                .first()
+            )
+
+            tratamentos_unicos[t.id] = {
+                "obj": t,
+                "tipo": "Redução de sintomas",
+                "tipo_key": slugify("Redução de sintomas"),
+                "min": stats_reducao["min"],
+                "max": stats_reducao["max"],
+                "min_str": stats_reducao["min_str"],
+                "max_str": stats_reducao["max_str"],
+                "count": stats_reducao["count"],
+                "descricao_lista": relacao_condicao.descricao if relacao_condicao and relacao_condicao.descricao else t.descricao,
+            }
 
 
 
