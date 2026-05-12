@@ -378,7 +378,18 @@ from core.models import TipoEficacia
 
 
 def english_treatment_dispatch(request, condition_slug, item_slug):
-    if TipoEficacia.objects.filter(outcome_slug__iexact=item_slug).exists():
+    condition = _get_condition_by_slug(condition_slug)
+
+    lista_publicada = TreatmentListUrlEnglish.objects.filter(
+        published=True,
+        health_condition=condition,
+    ).filter(
+        Q(efficacy_type__outcome_slug__iexact=item_slug) |
+        Q(efficacy_type__slug__iexact=item_slug) |
+        Q(efficacy_type__tipo_eficacia__iexact=item_slug)
+    ).exists()
+
+    if lista_publicada:
         return english_treatment_list_filtered(
             request,
             condition_slug=condition_slug,
