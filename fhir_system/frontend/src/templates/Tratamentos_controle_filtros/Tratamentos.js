@@ -1,5 +1,3 @@
-
-
 import React, {
   useState,
   useEffect,
@@ -21,21 +19,19 @@ const DJANGO_BASE =
 
 const API_BASE = '/api';
 
-
 const ENXAQUECA_LABEL = 'Enxaqueca';
-
 const TIPO_EFICACIA_OBRIGATORIO = 'Controle';
+const TIPO_EFICACIA_SLUG = 'controle';
 
-// ====== PERF / CACHE ======
-const CACHE_KEY = 'tratamentos_enxaqueca_controle_v1';
-const CACHE_TTL_MS = 10 * 60 * 1000; // 10 min
+const CACHE_KEY = 'tratamentos_enxaqueca_controle_v2';
+const CACHE_TTL_MS = 10 * 60 * 1000;
 const PAGE_SIZE = 24;
 
 let MEMORY_CACHE = {
   ts: 0,
-  tratamentosBaseRaw: null, // array de detalhes já filtrados por enxaqueca + tem eficácia Controle
-  eficaciaArr: null, // Array<[nomeNormalizado, {min,max}]>
-  riscoArr: null, // Array<[tratamentoId, riscoMax]>
+  tratamentosBaseRaw: null,
+  eficaciaArr: null,
+  riscoArr: null,
 };
 
 const api = axios.create({
@@ -44,7 +40,6 @@ const api = axios.create({
   headers: { Accept: 'application/json' },
 });
 
-// ===== Helpers =====
 const normalizeKey = (v) =>
   String(v ?? '')
     .normalize('NFD')
@@ -68,7 +63,6 @@ const isSim = (v) => {
   return n === 'sim' || n === 's' || n === 'yes' || n === 'true' || n === '1';
 };
 
-// PERFIL: usa indicado_<perfil> = "SIM" / "NÃO"
 const isIndicadoParaPublico = (tratamento, publico) => {
   if (!publico || publico === 'todos') return true;
   const campo = `indicado_${publico}`;
@@ -118,114 +112,22 @@ const formatPercentBR = (n) => {
   return `${n.toFixed(0).replace('.', ',')}%`;
 };
 
-// fallback (caso prazo_medio_minutos não venha do backend)
-const prazoMedioEmMinutosFront = (t) => {
-  const unit = normalizeKey(t?.prazo_efeito_unidade);
-  const mult =
-    unit === 'segundo'
-      ? 1 / 60
-      : unit === 'minuto'
-      ? 1
-      : unit === 'hora'
-      ? 60
-      : unit === 'dia'
-      ? 1440
-      : unit === 'sessao'
-      ? 10080
-      : unit === 'semana'
-      ? 10080
-      : 1;
+const slugifyEF = (s) =>
+  String(s ?? '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
 
-  const min = Number(t?.prazo_efeito_min);
-  const max = Number(t?.prazo_efeito_max);
-  const minV = Number.isFinite(min) ? min : 0;
-  const maxV = Number.isFinite(max) ? max : 0;
-
-  return ((minV + maxV) / 2) * mult;
-};
-
-const ENXAQUECA_KEY = 'enxaqueca';
-
-function getCondicaoKeysFromTratamento(tratamento) {
-  const keys = [];
-
-  // 1) condicoes_saude pode vir como:
-  // - [5, 7]
-  // - [{id:5, nome:"Enxaqueca"}]
-  // - ["Enxaqueca", "Outra"]
-  const cs = tratamento?.condicoes_saude;
-  if (Array.isArray(cs)) {
-    for (const item of cs) {
-      if (typeof item === 'string') keys.push(normalizeKey(item));
-      else if (item && typeof item === 'object') {
-        keys.push(normalizeKey(item?.nome ?? item?.label ?? item?.titulo ?? ''));
-      }
-      // se for número (id), não dá pra confiar; ignora aqui
-    }
-  } else if (typeof cs === 'string') {
-    keys.push(normalizeKey(cs));
-  }
-
-  // 2) alguns backends expõem listas prontas
-  const extras =
-    tratamento?.condicoes_saude_labels ??
-    tratamento?.condicoes_saude_nomes ??
-    tratamento?.condicoes_saude_nome;
-
-  if (Array.isArray(extras)) {
-    for (const s of extras) keys.push(normalizeKey(s));
-  } else if (typeof extras === 'string') {
-    // pode vir "Enxaqueca, Outra"
-    extras
-      .split(',')
-      .map((s) => normalizeKey(s))
-      .forEach((k) => keys.push(k));
-  }
-
-  // 3) fallback: evidências
-  const evids = tratamento?.evidencias;
-  if (Array.isArray(evids)) {
-    for (const e of evids) {
-      const c = e?.condicao_saude;
-      if (typeof c === 'string') keys.push(normalizeKey(c));
-      else if (c && typeof c === 'object') {
-        keys.push(normalizeKey(c?.nome ?? c?.label ?? c?.condicao_saude ?? ''));
-      }
-    }
-  }
-
-  return keys.filter(Boolean);
-}
-
-// SOMENTE Enxaqueca (por label/nome)
-const isSomenteEnxaqueca = (tratamento) => {
-  const keys = getCondicaoKeysFromTratamento(tratamento);
-
-  // se não temos nenhuma label/nome, não dá pra validar -> reprova (mais seguro)
-  if (!keys.length) return false;
-
-  // "somente enxaqueca": todas as condições precisam ser enxaqueca
-  return keys.every((k) => k === ENXAQUECA_KEY);
-};
-
-  const slugifyEF = (s) =>
-    String(s ?? '')
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
-//  filtros obrigatórios (travados)
 const DEFAULT_FILTROS = {
-  
   condicaoSaudeLabel: ENXAQUECA_LABEL,
   tipoEficacia: TIPO_EFICACIA_OBRIGATORIO,
-
   publico: 'todos',
   contraindicacoes: [],
-  ordenarCaracteristica: 'eficacia', // eficacia | risco | prazo | custo | nenhuma
-  ordemCaracteristica: 'desc', // asc | desc
+  ordenarCaracteristica: 'eficacia',
+  ordemCaracteristica: 'desc',
 };
 
 const labelPublico = {
@@ -249,20 +151,18 @@ const labelOrdenacao = {
 function enforceMandatoryFilters(f) {
   return {
     ...f,
-   
     condicaoSaudeLabel: ENXAQUECA_LABEL,
     tipoEficacia: TIPO_EFICACIA_OBRIGATORIO,
   };
 }
 
 function readCache() {
-  //  aceita cache mesmo com array vazio ([])
-  //  não trava se eficaciaArr/riscoArr estiverem ausentes
   if (
     MEMORY_CACHE &&
     typeof MEMORY_CACHE.ts === 'number' &&
     Date.now() - MEMORY_CACHE.ts <= CACHE_TTL_MS &&
-    Array.isArray(MEMORY_CACHE.tratamentosBaseRaw)
+    Array.isArray(MEMORY_CACHE.tratamentosBaseRaw) &&
+    MEMORY_CACHE.tratamentosBaseRaw.length > 0
   ) {
     return MEMORY_CACHE;
   }
@@ -277,12 +177,12 @@ function readCache() {
       !parsed ||
       typeof parsed.ts !== 'number' ||
       Date.now() - parsed.ts > CACHE_TTL_MS ||
-      !Array.isArray(parsed.tratamentosBaseRaw)
+      !Array.isArray(parsed.tratamentosBaseRaw) ||
+      parsed.tratamentosBaseRaw.length === 0
     ) {
       return null;
     }
 
-    // normaliza pra não quebrar quando for usar
     parsed.eficaciaArr = Array.isArray(parsed.eficaciaArr) ? parsed.eficaciaArr : [];
     parsed.riscoArr = Array.isArray(parsed.riscoArr) ? parsed.riscoArr : [];
 
@@ -309,12 +209,11 @@ function writeCache(payload) {
   } catch {}
 }
 
-// ===== Risco max (batch) =====
 async function buildRiscoMaxMap(tratamentosList, signal) {
   try {
     const ids = (tratamentosList || [])
       .map((t) => t?.id)
-      .filter((id) => Number.isFinite(id) || /^\d+$/.test(String(id)));
+      .filter((id) => Number.isFinite(Number(id)));
 
     if (!ids.length) return new Map();
 
@@ -324,20 +223,21 @@ async function buildRiscoMaxMap(tratamentosList, signal) {
     for (let i = 0; i < ids.length; i += CHUNK) {
       const slice = ids.slice(i, i + CHUNK);
 
-      const resp = await api.get(
-        `/tratamento-reacoes-adversas/max-por-tratamento/`,
-        {
-          signal,
-          params: { ids: slice.join(',') },
-        }
-      );
+      const resp = await api.get('/tratamento-reacoes-adversas/max-por-tratamento/', {
+        signal,
+        params: { ids: slice.join(',') },
+      });
 
       const rows = Array.isArray(resp.data) ? resp.data : [];
+
       for (let j = 0; j < rows.length; j++) {
         const row = rows[j];
-        const tid = row?.tratamento_id;
+        const tid = Number(row?.tratamento_id);
         const mx = toNumber(row?.reacao_max);
-        if (tid != null && mx != null) map.set(Number(tid), mx);
+
+        if (Number.isFinite(tid) && mx !== null) {
+          map.set(tid, mx);
+        }
       }
     }
 
@@ -373,11 +273,8 @@ function TratamentosControle() {
   const [filtrosAplicados, setFiltrosAplicados] = useState(DEFAULT_FILTROS);
   const [destacarOrdenacao, setDestacarOrdenacao] = useState(false);
 
-// nome_normalizado -> {min,max} para "Controle"
-const [controleStatsByNomeKey, setControleStatsByNomeKey] = useState(null);
-
-// id_tratamento -> riscoMax
-const [riscoMaxById, setRiscoMaxById] = useState(null);
+  const [controleStatsByTratamentoId, setControleStatsByTratamentoId] = useState(null);
+  const [riscoMaxById, setRiscoMaxById] = useState(null);
 
   const [isPending, startTransition] = useTransition();
   const filtrosAplicadosDeferred = useDeferredValue(filtrosAplicados);
@@ -388,6 +285,7 @@ const [riscoMaxById, setRiscoMaxById] = useState(null);
   const sidebarWrapperRef = useRef(null);
 
   const [showBackToTop, setShowBackToTop] = useState(false);
+
   useEffect(() => {
     const onScroll = () => setShowBackToTop(window.scrollY > 350);
     onScroll();
@@ -405,7 +303,6 @@ const [riscoMaxById, setRiscoMaxById] = useState(null);
     setVisibleCount(PAGE_SIZE);
   }, [filtrosAplicadosDeferred]);
 
-  // Header resumo (inclui condição/eficácia travadas)
   const resumo = useMemo(() => {
     const grupo = labelPublico[filtrosAplicados.publico] ?? 'Todos';
     const ord = filtrosAplicados.ordenarCaracteristica ?? 'nenhuma';
@@ -430,7 +327,6 @@ const [riscoMaxById, setRiscoMaxById] = useState(null);
     };
   }, [filtrosAplicados]);
 
-
   useEffect(() => {
     const controller = new AbortController();
 
@@ -438,25 +334,38 @@ const [riscoMaxById, setRiscoMaxById] = useState(null);
       setBootError(null);
       setLoading(true);
 
-      // tenta cache primeiro
       const cached = readCache();
-      if (cached?.tratamentosBaseRaw && cached?.eficaciaArr && cached?.riscoArr) {
-        setTratamentosBaseRaw(cached.tratamentosBaseRaw);
-        setControleStatsByNomeKey(new Map(cached.eficaciaArr));
-        setRiscoMaxById(new Map(cached.riscoArr));
 
+      if (
+        cached?.tratamentosBaseRaw?.length > 0 &&
+        Array.isArray(cached?.eficaciaArr) &&
+        Array.isArray(cached?.riscoArr)
+      ) {
+        setTratamentosBaseRaw(cached.tratamentosBaseRaw);
+        setControleStatsByTratamentoId(new Map(cached.eficaciaArr));
+        setRiscoMaxById(new Map(cached.riscoArr));
         setLoading(false);
         setIsBootstrapping(false);
         return;
       }
 
       try {
-        // endpoints em paralelo
-        const [detalhesResp, eficaciaResp] = await Promise.all([ 
-          
-          api.get('/detalhes-tratamentos/', {params: { tela: 'controle' ,somente_enxaqueca: 1 },}),
+        const [detalhesResp, eficaciaResp] = await Promise.all([
+          api.get('/detalhes-tratamentos/', {
+            params: {
+              tela: 'controle',
+              somente_enxaqueca: 1,
+            },
+            signal: controller.signal,
+          }),
 
-          api.get(`/eficacia-por-evidencia/`, {params: { tipoEficacia: 'Controle'}, signal: controller.signal }),
+          api.get('/eficacia-por-evidencia-dinamica/', {
+            params: {
+              condicao_slug: 'enxaqueca',
+              tipo_eficacia_slug: TIPO_EFICACIA_SLUG,
+            },
+            signal: controller.signal,
+          }),
         ]);
 
         const asList = (data) =>
@@ -465,42 +374,42 @@ const [riscoMaxById, setRiscoMaxById] = useState(null);
         const detalhes = asList(detalhesResp.data);
         const eficacia = asList(eficaciaResp.data);
 
-        // nomeKey -> {min,max} para tipo=Controle
         const statsMap = new Map();
-        const alvo = normalizeKey(TIPO_EFICACIA_OBRIGATORIO);
 
         for (let i = 0; i < eficacia.length; i++) {
           const row = eficacia[i];
 
-          const tipo = normalizeKey(row?.tipo_eficacia?.tipo_eficacia);
-          if (tipo !== alvo) continue;
-
-          const nomeKey = normalizeKey(row?.nome_tratamento);
-          if (!nomeKey) continue;
+          const tratamentoId = Number(row?.tratamento_id);
+          if (!Number.isFinite(tratamentoId)) continue;
 
           const val = toNumber(row?.percentual_eficacia_calculado);
           if (val === null) continue;
 
-          const cur = statsMap.get(nomeKey);
-          if (!cur) statsMap.set(nomeKey, { min: val, max: val });
-          else statsMap.set(nomeKey, { min: Math.min(cur.min, val), max: Math.max(cur.max, val) });
+          const cur = statsMap.get(tratamentoId);
+
+          if (!cur) {
+            statsMap.set(tratamentoId, { min: val, max: val });
+          } else {
+            statsMap.set(tratamentoId, {
+              min: Math.min(cur.min, val),
+              max: Math.max(cur.max, val),
+            });
+          }
         }
 
-        // filtra base: somente enxaqueca + precisa ter eficácia Controle
         const baseFiltrada = [];
+
         for (let i = 0; i < detalhes.length; i++) {
           const t = detalhes[i];
-        
 
-          const nomeKey = normalizeKey(t?.nome);
-          if (!nomeKey) continue;
+          const tratamentoId = Number(t?.id);
+          if (!Number.isFinite(tratamentoId)) continue;
 
-          if (!statsMap.has(nomeKey)) continue;
+          if (!statsMap.has(tratamentoId)) continue;
 
           baseFiltrada.push(t);
         }
 
-        // risco máximo (só para os filtrados)
         const riscoMap = await buildRiscoMaxMap(baseFiltrada, controller.signal);
 
         writeCache({
@@ -510,7 +419,7 @@ const [riscoMaxById, setRiscoMaxById] = useState(null);
         });
 
         setTratamentosBaseRaw(baseFiltrada);
-        setControleStatsByNomeKey(statsMap);
+        setControleStatsByTratamentoId(statsMap);
         setRiscoMaxById(riscoMap);
       } catch (e) {
         if (e?.name === 'CanceledError' || e?.code === 'ERR_CANCELED') return;
@@ -523,10 +432,10 @@ const [riscoMaxById, setRiscoMaxById] = useState(null);
     };
 
     load();
+
     return () => controller.abort();
   }, []);
 
-  // ===== Pré-cálculo por item (evita recomputar no render) =====
   const tratamentosBase = useMemo(() => {
     if (!tratamentosBaseRaw?.length) return [];
 
@@ -535,9 +444,8 @@ const [riscoMaxById, setRiscoMaxById] = useState(null);
     for (let i = 0; i < tratamentosBaseRaw.length; i++) {
       const t = tratamentosBaseRaw[i];
 
-      const nomeKey = normalizeKey(t?.nome);
-     const stats = controleStatsByNomeKey?.get?.(nomeKey) ?? null;
-
+      const tratamentoId = Number(t?.id);
+      const stats = controleStatsByTratamentoId?.get?.(tratamentoId) ?? null;
 
       const contraNames = extractContraNames(t);
       const contraKeys = contraNames.map(normalizeKey).filter(Boolean);
@@ -549,16 +457,15 @@ const [riscoMaxById, setRiscoMaxById] = useState(null);
           ? precoNumero.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
           : 'ND';
 
-      const riscoNumero = riscoMaxById.get(Number(t?.id)) ?? null;
+      const riscoNumero = riscoMaxById?.get?.(tratamentoId) ?? null;
       const riscoFormatado = formatPercentBR(toNumber(riscoNumero));
 
       const prazoMedioMin = toNumber(t?.prazo_medio_minutos);
 
-
       out[i] = {
         ...t,
-        _nomeKey: nomeKey,
-        _statsControle: stats, // {min,max} ou null
+        _tratamentoId: tratamentoId,
+        _statsControle: stats,
         _contraNames: contraNames,
         _contraSet: contraSet,
         _precoNumero: precoNumero,
@@ -570,24 +477,25 @@ const [riscoMaxById, setRiscoMaxById] = useState(null);
     }
 
     return out;
-  }, [tratamentosBaseRaw, controleStatsByNomeKey, riscoMaxById]);
+  }, [tratamentosBaseRaw, controleStatsByTratamentoId, riscoMaxById]);
 
-  // opções de contraindicações (dinâmico)
   const contraOpcoes = useMemo(() => {
     const map = new Map();
+
     for (let i = 0; i < tratamentosBase.length; i++) {
       const t = tratamentosBase[i];
       const names = t?._contraNames || [];
+
       for (let j = 0; j < names.length; j++) {
         const c = names[j];
         const key = normalizeKey(c);
         if (key && !map.has(key)) map.set(key, c);
       }
     }
+
     return Array.from(map.values()).sort((a, b) => a.localeCompare(b, 'pt-BR'));
   }, [tratamentosBase]);
 
-  //  aplicar filtros (local + transition)
   const aplicarFiltros = useCallback(
     (f = filtros, opts = {}) => {
       const safe = enforceMandatoryFilters(f);
@@ -609,7 +517,6 @@ const [riscoMaxById, setRiscoMaxById] = useState(null);
     aplicarFiltros(safe, { reset: true });
   }, [aplicarFiltros]);
 
-  //  filtros locais (enxaqueca/controle já garantidos no boot)
   const tratamentosFiltrados = useMemo(() => {
     const f = enforceMandatoryFilters(filtrosAplicadosDeferred);
 
@@ -617,18 +524,14 @@ const [riscoMaxById, setRiscoMaxById] = useState(null);
     const publico = f.publico;
 
     return (tratamentosBase || []).filter((t) => {
-      if (!t?._nomeKey) return false;
-
-      // obrigatório: precisa ter stats de Controle
+      if (!t?._tratamentoId) return false;
       if (!t?._statsControle) return false;
 
-
-      // público
       if (!isIndicadoParaPublico(t, publico)) return false;
 
-      // contraindicações
       if (selecionadas.length > 0) {
         const set = t._contraSet;
+
         for (let i = 0; i < selecionadas.length; i++) {
           if (set.has(selecionadas[i])) return false;
         }
@@ -642,7 +545,6 @@ const [riscoMaxById, setRiscoMaxById] = useState(null);
     filtrosAplicadosDeferred.contraindicacoes,
   ]);
 
-  //  ordenação local
   const tratamentosOrdenados = useMemo(() => {
     const f = enforceMandatoryFilters(filtrosAplicadosDeferred);
     const arr = [...tratamentosFiltrados];
@@ -655,8 +557,9 @@ const [riscoMaxById, setRiscoMaxById] = useState(null);
 
     const getVal = (t) => {
       if (criterio === 'eficacia') return t._statsControle?.max ?? -Infinity;
-      if (criterio === 'prazo')
+      if (criterio === 'prazo') {
         return Number.isFinite(t._prazoMedioMin) ? t._prazoMedioMin : Infinity;
+      }
       if (criterio === 'custo') return t._precoNumero !== null ? t._precoNumero : Infinity;
       if (criterio === 'risco') return t._riscoNumero !== null ? t._riscoNumero : Infinity;
       return 0;
@@ -674,22 +577,16 @@ const [riscoMaxById, setRiscoMaxById] = useState(null);
     return tratamentosOrdenados.slice(0, visibleCount);
   }, [tratamentosOrdenados, visibleCount]);
 
-  
+  const pageReady =
+    !bootError &&
+    !isBootstrapping &&
+    !loading &&
+    !isPending &&
+    Array.isArray(tratamentosBaseRaw) &&
+    controleStatsByTratamentoId instanceof Map &&
+    controleStatsByTratamentoId.size > 0 &&
+    riscoMaxById instanceof Map;
 
-const pageReady =
-  !bootError &&
-  !isBootstrapping &&
-  !loading &&
-  !isPending &&
-  Array.isArray(tratamentosBaseRaw) &&
-  controleStatsByNomeKey instanceof Map &&
-  controleStatsByNomeKey.size > 0 &&     // <- importante
-  riscoMaxById instanceof Map;           // risco pode ser 0, mas Map tem que existir
-
-
-  
-
-  // ===== RENDER GATES =====
   if (bootError) {
     return (
       <div className="tratamentos-error-container">
@@ -707,9 +604,6 @@ const pageReady =
     );
   }
 
-
-  
-  //  Enquanto prepara a página, mostra SÓ o spinner (nada de Header/Filtros/Footer)
   if (!pageReady) {
     return (
       <div className="tratamentos-loader-container">
@@ -719,12 +613,12 @@ const pageReady =
     );
   }
 
-  // Campo variável do card (mantido)
   const criterioVisual = filtros.ordenarCaracteristica;
 
   return (
     <div className="tratamentos-page">
       <div id="topo" />
+
       <Header resumo={resumo} />
 
       <main className="tratamentos-layout" ref={layoutRef}>
@@ -739,160 +633,160 @@ const pageReady =
           />
         </aside>
 
-<section className="conteudo">
-  <div className="tratamentos-list">
-    {tratamentosOrdenados.length === 0 ? (
-      <p></p>
-    ) : (
-      tratamentosParaRenderizar.map((tratamento, index) => {
-        const stats = tratamento._statsControle; // {min,max}
-        const eficaciaMinima = stats ? stats.min : null;
-        const eficaciaMaxima = stats ? stats.max : null;
+        <section className="conteudo">
+          <div className="tratamentos-list">
+            {tratamentosOrdenados.length === 0 ? (
+              <p></p>
+            ) : (
+              tratamentosParaRenderizar.map((tratamento, index) => {
+                const stats = tratamento._statsControle;
+                const eficaciaMinima = stats ? stats.min : null;
+                const eficaciaMaxima = stats ? stats.max : null;
 
-        const widthBar =
-          eficaciaMaxima !== null
-            ? Math.max(0, Math.min(100, eficaciaMaxima))
-            : 0;
+                const widthBar =
+                  eficaciaMaxima !== null
+                    ? Math.max(0, Math.min(100, eficaciaMaxima))
+                    : 0;
 
-                  return (
-                    <a
-                      key={tratamento?.id ?? `${tratamento?._nomeKey ?? 't'}-${index}`}
-                      href={`${DJANGO_BASE}/enxaqueca/${tratamento.slug}/?ef=${encodeURIComponent(slugifyEF(TIPO_EFICACIA_OBRIGATORIO))}`}
-                      className="tratamento-card"
-                      style={{ textDecoration: 'none' }}
-                    >
-                      <div className="tratamento-content">
-                        <div className="tratamento-imagem">
-                          <img
-                            src={tratamento.imagem || '/default-image.jpg'}
-                            alt={tratamento.nome || 'Imagem não disponível'}
-                            className="img-fluid"
-                            loading="lazy"
-                            decoding="async"
-                            fetchPriority={index < 2 ? 'high' : 'auto'}
+                return (
+                  <a
+                    key={tratamento?.id ?? `${tratamento?._tratamentoId ?? 't'}-${index}`}
+                    href={`${DJANGO_BASE}/enxaqueca/${tratamento.slug}/?ef=${encodeURIComponent(
+                      slugifyEF(TIPO_EFICACIA_OBRIGATORIO)
+                    )}`}
+                    className="tratamento-card"
+                    style={{ textDecoration: 'none' }}
+                  >
+                    <div className="tratamento-content">
+                      <div className="tratamento-imagem">
+                        <img
+                          src={tratamento.imagem || '/default-image.jpg'}
+                          alt={tratamento.nome || 'Imagem não disponível'}
+                          className="img-fluid"
+                          loading="lazy"
+                          decoding="async"
+                          fetchPriority={index < 2 ? 'high' : 'auto'}
+                        />
+                      </div>
+
+                      <div className="tratamento-info">
+                        <h3>{tratamento.nome}</h3>
+
+                        {Array.isArray(tratamento.tipo_tratamento) &&
+                          tratamento.tipo_tratamento.length > 0 && (
+                            <p className="tipo-tratamento">
+                              {tratamento.tipo_tratamento.map((t) => t.nome).join(' • ')}
+                            </p>
+                          )}
+
+                        <p>
+                          <strong>Princípio ativo:</strong>{' '}
+                          {tratamento.principio_ativo || 'ND'}
+                        </p>
+
+                        <p>
+                          <strong>Fabricante:</strong> {tratamento.fabricante || 'ND'}
+                        </p>
+
+                        <div className="btn mt-2" style={detailsBtnStyle}>
+                          ver detalhes <span style={{ fontWeight: 'bold' }}>&#8250;</span>
+                        </div>
+
+                        <p>{tratamento.descricao_lista || tratamento.descricao}</p>
+                      </div>
+
+                      <div className="eficacia-container">
+                        <p className="eficacia-title">
+                          Eficácia:{' '}
+                          <span className="eficacia-sub">{TIPO_EFICACIA_OBRIGATORIO}</span>
+                        </p>
+
+                        <div className="eficacia-bar-container">
+                          <div className="efficacy-filled" style={{ width: `${widthBar}%` }} />
+                          <div
+                            className="efficacy-marker"
+                            style={{ left: `calc(${widthBar}% - 7px)` }}
                           />
                         </div>
 
-                        <div className="tratamento-info">
-                          <h3>{tratamento.nome}</h3>
+                        <p className="eficacia-range">
+                          <span className="eficacia-min">
+                            {eficaciaMinima !== null
+                              ? `${String(eficaciaMinima.toFixed(2)).replace('.', ',')} a`
+                              : 'ND a'}
+                          </span>
+                          <span className="eficacia-max">
+                            {' '}
+                            {eficaciaMaxima !== null
+                              ? `${String(eficaciaMaxima.toFixed(2)).replace('.', ',')}%`
+                              : 'ND%'}
+                          </span>
+                        </p>
 
-                          {Array.isArray(tratamento.tipo_tratamento) &&
-                            tratamento.tipo_tratamento.length > 0 && (
-                              <p className="tipo-tratamento">
-                                {tratamento.tipo_tratamento
-                                  .map((t) => t.nome)
-                                  .join(' • ')}
+                        <div
+                          className={`campo-variavel ${
+                            criterioVisual === 'custo'
+                              ? 'campo-variavel--inline'
+                              : 'campo-variavel--stack'
+                          } ${destacarOrdenacao ? 'campo-variavel--highlight' : ''}`}
+                        >
+                          {criterioVisual === 'custo' ? (
+                            <div className="prazo-container">
+                              <p className="prazo-title">Preço:</p>
+                              <p className="prazo-value">{tratamento._precoFormatado}</p>
+                            </div>
+                          ) : criterioVisual === 'risco' ? (
+                            <>
+                              <p className="prazo-title">Risco de reação adversa:</p>
+                              <p className="prazo-value">{tratamento._riscoFormatado}</p>
+                            </>
+                          ) : (
+                            <>
+                              <p className="prazo-title">Prazo para efeito:</p>
+                              <p className="prazo-value">
+                                {tratamento.prazo_efeito_min_formatado} a{' '}
+                                {tratamento.prazo_efeito_max_formatado}
                               </p>
-                            )}
-
-                          <p>
-                            <strong>Princípio ativo:</strong>{' '}
-                            {tratamento.principio_ativo || 'ND'}
-                          </p>
-                          <p>
-                            <strong>Fabricante:</strong> {tratamento.fabricante || 'ND'}
-                          </p>
-
-                          <div className="btn mt-2" style={detailsBtnStyle}>
-                            ver detalhes <span style={{ fontWeight: 'bold' }}>&#8250;</span>
-                          </div>
-
-                          <p>{tratamento.descricao}</p>
-                        </div>
-
-                        <div className="eficacia-container">
-                          <p className="eficacia-title">
-                            Eficácia:{' '}
-                            <span className="eficacia-sub">{TIPO_EFICACIA_OBRIGATORIO}</span>
-                          </p>
-
-                          <div className="eficacia-bar-container">
-                            <div className="efficacy-filled" style={{ width: `${widthBar}%` }} />
-                            <div
-                              className="efficacy-marker"
-                              style={{ left: `calc(${widthBar}% - 7px)` }}
-                            />
-                          </div>
-
-                          <p className="eficacia-range">
-                            <span className="eficacia-min">
-                              {eficaciaMinima !== null
-                                ? `${String(eficaciaMinima.toFixed(2)).replace('.', ',')} a`
-                                : 'ND a'}
-                            </span>
-                            <span className="eficacia-max">
-                              {' '}
-                              {eficaciaMaxima !== null
-                                ? `${String(eficaciaMaxima.toFixed(2)).replace('.', ',')}%`
-                                : 'ND%'}
-                            </span>
-                          </p>
-
-                          <div
-                            className={`campo-variavel ${
-                              criterioVisual === 'custo'
-                                ? 'campo-variavel--inline'
-                                : 'campo-variavel--stack'
-                            } ${destacarOrdenacao ? 'campo-variavel--highlight' : ''}`}
-                          >
-                            {criterioVisual === 'custo' ? (
-                              <div className="prazo-container">
-                                <p className="prazo-title">Preço:</p>
-                                <p className="prazo-value">{tratamento._precoFormatado}</p>
-                              </div>
-                            ) : criterioVisual === 'risco' ? (
-                              <>
-                                <p className="prazo-title">Risco de reação adversa:</p>
-                                <p className="prazo-value">{tratamento._riscoFormatado}</p>
-                              </>
-                            ) : (
-                              <>
-                                <p className="prazo-title">Prazo para efeito:</p>
-                                <p className="prazo-value">
-                                  {tratamento.prazo_efeito_min_formatado} a{' '}
-                                  {tratamento.prazo_efeito_max_formatado}
-                                </p>
-                              </>
-                            )}
-                          </div>
+                            </>
+                          )}
                         </div>
                       </div>
-                    </a>
-                  );
-                })
-              )}
+                    </div>
+                  </a>
+                );
+              })
+            )}
 
-              {tratamentosOrdenados.length > visibleCount && (
-                <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}>
-                  <button
-                    type="button"
-                    onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
-                    style={{
-                      borderRadius: 10,
-                      padding: '10px 14px',
-                      border: '1px solid #e4e4e4',
-                      background: '#f0f0f0',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    Carregar mais
-                  </button>
-                </div>
-              )}
-
-              {showBackToTop && (
+            {tratamentosOrdenados.length > visibleCount && (
+              <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}>
                 <button
                   type="button"
-                  onClick={scrollToTop}
-                  style={backToTopStyle}
-                  aria-label="Voltar ao topo"
-                  title="Voltar ao topo"
+                  onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
+                  style={{
+                    borderRadius: 10,
+                    padding: '10px 14px',
+                    border: '1px solid #e4e4e4',
+                    background: '#f0f0f0',
+                    cursor: 'pointer',
+                  }}
                 >
-                  ↑
+                  Carregar mais
                 </button>
-              )}
-            </div>
-          
+              </div>
+            )}
+
+            {showBackToTop && (
+              <button
+                type="button"
+                onClick={scrollToTop}
+                style={backToTopStyle}
+                aria-label="Voltar ao topo"
+                title="Voltar ao topo"
+              >
+                ↑
+              </button>
+            )}
+          </div>
         </section>
       </main>
 

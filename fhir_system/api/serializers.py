@@ -13,6 +13,7 @@ from core.models import (
     EficaciaPorEvidencia,
     TipoEficacia,
     DetalhesTratamentoReacaoAdversa,
+    TreatmentsUSA,
 )
 
 # -------------------------
@@ -219,3 +220,115 @@ class EficaciaPorEvidenciaDinamicaSerializer(serializers.ModelSerializer):
 class PaginaListaTratamentoFooterSerializer(serializers.Serializer):
     label = serializers.CharField()
     url = serializers.CharField()
+
+
+
+class TreatmentsUSADynamicSerializer(serializers.ModelSerializer):
+    treatment_type = TipoTratamentoLeanSerializer(many=True, read_only=True)
+    contraindications = ContraindicacaoLeanSerializer(many=True, read_only=True)
+    description_for_list = serializers.SerializerMethodField()
+
+    class Meta:
+        model = TreatmentsUSA
+        fields = [
+            "id",
+            "name",
+            "slug",
+            "description",
+            "description_for_list",
+            "category",
+            "active_ingredient",
+            "manufacturer",
+            "image",
+            "treatment_cost",
+            "effect_time_min",
+            "effect_time_max",
+            "effect_time_unit",
+            "risk",
+            "group",
+            "indicated_children",
+            "indicated_teenagers",
+            "indicated_adults",
+            "indicated_elderly",
+            "indicated_lactating",
+            "indicated_pregnancy",
+            "treatment_type",
+            "contraindications",
+        ]
+
+    def get_description_for_list(self, obj):
+        request = self.context.get("request")
+        condition_slug = ""
+
+        if request:
+            condition_slug = (request.query_params.get("condition_slug") or "").strip()
+
+        if condition_slug:
+            description = (
+                obj.condition_relations
+                .filter(
+                    condition__condition_slug=condition_slug,
+                    appear_on_list=True,
+                )
+                .values_list("description", flat=True)
+                .first()
+            )
+
+            if description:
+                return description
+
+        return obj.description
+
+
+class EnglishEfficacyDynamicSerializer(serializers.ModelSerializer):
+    treatment_id = serializers.SerializerMethodField()
+    treatment_slug = serializers.SerializerMethodField()
+    treatment_name = serializers.SerializerMethodField()
+    efficacy_type = TipoEficaciaDinamicoSerializer(source="tipo_eficacia", read_only=True)
+    efficacy_value = serializers.ReadOnlyField(source="percentual_eficacia_calculado")
+
+    class Meta:
+        model = EficaciaPorEvidencia
+        fields = [
+            "efficacy_type",
+            "participantes_com_beneficio",
+            "participantes_iniciaram_tratamento",
+            "efficacy_value",
+            "percentual_eficacia_calculado",
+            "treatment_id",
+            "treatment_slug",
+            "treatment_name",
+        ]
+
+    def _get_english_treatment(self, obj):
+        tratamento_br = getattr(obj.evidencia, "tratamento", None)
+
+        if not tratamento_br:
+            return None
+
+        treatment = (
+            TreatmentsUSA.objects
+            .filter(tratamento_br=tratamento_br)
+            .first()
+        )
+
+        if treatment:
+            return treatment
+
+        return (
+            TreatmentsUSA.objects
+            .filter(name__iexact=tratamento_br.nome)
+            .first()
+        )
+
+    def get_treatment_id(self, obj):
+        treatment = self._get_english_treatment(obj)
+        return treatment.id if treatment else None
+
+    def get_treatment_slug(self, obj):
+        treatment = self._get_english_treatment(obj)
+        return treatment.slug if treatment else ""
+
+    def get_treatment_name(self, obj):
+        treatment = self._get_english_treatment(obj)
+        return treatment.name if treatment else ""

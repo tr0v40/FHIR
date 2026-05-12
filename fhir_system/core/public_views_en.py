@@ -204,21 +204,51 @@ def english_treatment_detail(request, condition_slug, treatment_slug):
         "reacao_adversa"
     ).all()
 
+    ef_slug = request.GET.get("ef")
+
+    efficacy_qs = EficaciaPorEvidencia.objects.filter(
+        evidencia__condicao_saude=condition,
+    )
+
+    if treatment.tratamento_br_id:
+        efficacy_qs = efficacy_qs.filter(
+            evidencia__tratamento_id=treatment.tratamento_br_id
+        )
+    else:
+        efficacy_qs = efficacy_qs.filter(
+            evidencia__tratamento__nome__iexact=treatment.name
+        )
+
+    if ef_slug:
+        efficacy_qs = efficacy_qs.filter(
+            Q(tipo_eficacia__outcome_slug__iexact=ef_slug) |
+            Q(tipo_eficacia__slug__iexact=ef_slug)
+        )
+
     efficacy_items = []
-    for item in treatment.tipos_eficacia.all():
-        tipo = getattr(item, "tipo_eficacia", None)
-        if not tipo:
+
+    for tipo in TipoEficacia.objects.filter(
+        id__in=efficacy_qs.values_list("tipo_eficacia_id", flat=True).distinct()
+    ):
+        valores = []
+
+        for ef in efficacy_qs.filter(tipo_eficacia=tipo):
+            percentual = getattr(ef, "percentual_eficacia_calculado", 0) or 0
+            valores.append(float(percentual))
+
+        if not valores:
             continue
 
-        percentual = getattr(item, "percentual_eficacia_calculado", 0) or 0
+        min_v = min(valores)
+        max_v = max(valores)
 
         efficacy_items.append({
             "label": getattr(tipo, "outcome_type", "") or getattr(tipo, "tipo_eficacia", ""),
-            "min": percentual,
-            "max": percentual,
-            "min_str": f"{percentual:.2f}",
-            "max_str": f"{percentual:.2f}",
-            "image_url": "",
+            "min": min_v,
+            "max": max_v,
+            "min_str": f"{min_v:.2f}".replace(".", ","),
+            "max_str": f"{max_v:.2f}".replace(".", ","),
+            "image_url": tipo.imagem.url if tipo.imagem else "",
         })
 
     return render(
@@ -359,4 +389,33 @@ def english_treatment_dispatch(request, condition_slug, item_slug):
         request,
         condition_slug=condition_slug,
         treatment_slug=item_slug,
+    )
+
+
+def english_treatment_list_with_filters(
+    request,
+    condition_slug,
+    efficacy_slug,
+):
+    condition = _get_condition_by_slug(condition_slug)
+    efficacy_type = _get_efficacy_by_slug(efficacy_slug)
+
+    page = get_object_or_404(
+        TreatmentListUrlEnglish,
+        health_condition=condition,
+        efficacy_type=efficacy_type,
+        published=True,
+    )
+
+    return render(
+        request,
+        "core/en/treatment_filters_app.html",
+        {
+            "page": page,
+            "condition": condition,
+            "efficacy_type": efficacy_type,
+            "condition_slug": condition.condition_slug,
+            "efficacy_slug": efficacy_type.outcome_slug,
+            "treatment_lists": get_treatment_lists(),
+        },
     )

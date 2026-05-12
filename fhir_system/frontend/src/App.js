@@ -1,12 +1,10 @@
-
-
-
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Tratamentos from "./templates/Tratamentos_crises_filtros/Tratamentos";
 import TratamentosCrise from "./templates/Tratamentos_crises_filtros/Tratamentos";
 import TratamentosControle from "./templates/Tratamentos_controle_filtros/Tratamentos";
 import TratamentosDinamicos from "./templates/tratamentosDinamicos/TratamentosDinamicos";
+import TreatmentsEnFilters from "./templates/Treatments_en_filters/TreatmentsEnFilters";
 
 // Inter
 import "@fontsource/inter/400.css";
@@ -18,11 +16,26 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Tratamentos />} />
-      <Route path="/tratamentos-crise-enxaqueca-com-filtros/*" element={<TratamentosCrise />} />
-      <Route path="/tratamentos-controle-enxaqueca-com-filtros/*" element={<TratamentosControle />} />
-      <Route path="/tratamentos/:condicaoSlug/:eficaciaSlug/com-filtros/"element={<TratamentosDinamicos />}
-        />
 
+      <Route
+        path="/tratamentos-crise-enxaqueca-com-filtros/*"
+        element={<TratamentosCrise />}
+      />
+
+      <Route
+        path="/tratamentos-controle-enxaqueca-com-filtros/*"
+        element={<TratamentosControle />}
+      />
+
+      <Route
+        path="/tratamentos/:condicaoSlug/:eficaciaSlug/com-filtros/"
+        element={<TratamentosDinamicos />}
+      />
+
+      <Route
+        path="/treatments/:conditionSlug/filter/:efficacySlug/with-filters/"
+        element={<TreatmentsEnFilters />}
+      />
     </Routes>
   );
 }

@@ -12,6 +12,7 @@ from django.views.generic import TemplateView
 from django.urls import re_path
 from core import public_views_en
 
+from core.public_views_en import english_treatment_list_with_filters
 
 
 
@@ -48,7 +49,11 @@ urlpatterns = [
         name="evidencias_clinicas",
     ),
 
-
+    path(
+        "treatments/<slug:condition_slug>/filter/<slug:efficacy_slug>/with-filters/",
+        english_treatment_list_with_filters,
+        name="english_treatment_list_with_filters",
+    ),
 
     path("listas/<slug:condicao_slug>/<slug:tipo_eficacia_slug>/", pagina_lista_por_url, name="pagina_lista"),
 

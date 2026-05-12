@@ -1,0 +1,89 @@
+.treatments-header {
+  max-width: 1180px;
+  margin: 70px auto 40px auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.treatments-header-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.treatments-logo {
+  width: 145px;
+  height: auto;
+  margin-bottom: 62px;
+  margin-left: -55px;
+}
+
+.treatments-title-block h1 {
+  margin: 0 0 8px 0;
+  font-size: 32px;
+  font-weight: 600;
+  color: #000;
+  line-height: 1.4;
+}
+
+.treatments-title-block p {
+  margin: 3px 0;
+  font-size: 16px;
+  color: #000;
+  line-height: 1.35;
+}
+
+.treatments-subtitle {
+  margin-bottom: 5px !important;
+}
+
+.treatments-header {
+  max-width: 1350px;
+  margin: 70px auto 40px auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.treatments-logo {
+  width: 205px;
+  height: auto;
+  margin-bottom: 62px;
+  margin-left: -25px;
+}
+
+.treatments-warning-box {
+  background: #000;
+  color: #fff;
+  width: 255px;
+  padding: 24px 20px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.4;
+  margin-top: 260px;
+  margin-right: -50px;
+}
+
+@media (max-width: 768px) {
+  .treatments-header {
+    flex-direction: column;
+    margin-top: 40px;
+    gap: 28px;
+  }
+
+  .treatments-logo {
+    margin-bottom: 34px;
+  }
+
+  .treatments-warning-box {
+    margin-top: 0;
+    width: 100%;
+  }
+
+  .treatments-title-block h1 {
+    font-size: 26px;
+  }
+}

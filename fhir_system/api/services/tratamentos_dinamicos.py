@@ -1,5 +1,5 @@
 from django.core.cache import cache
-from django.db.models import Count, Case, When, Value, FloatField, F, ExpressionWrapper, Prefetch
+from django.db.models import Count, Case, When, Value, FloatField, F, ExpressionWrapper, Prefetch, Q
 from django.db.models.functions import Coalesce
 
 from core.models import (
@@ -43,16 +43,19 @@ def get_detalhes_tratamentos_queryset(tela="", condicao_slug="", somente_condica
 
     qs = (
         DetalhesTratamentoResumo.objects
-        .prefetch_related("condicoes_saude", pref_tipo, pref_contra)
+        .prefetch_related("condicoes_saude", "condicoes_relacionadas", pref_tipo, pref_contra)
         .distinct()
     )
 
     if condicao_slug:
-        qs = qs.filter(condicoes_saude__slug=condicao_slug)
+        qs = qs.filter(
+            Q(condicoes_saude__slug=condicao_slug) |
+            Q(condicoes_relacionadas__condicao__slug=condicao_slug)
+        ).distinct()
 
     if somente_condicao and condicao_slug:
         qs = qs.annotate(
-            qtd_condicoes=Count("condicoes_saude", distinct=True)
+            qtd_condicoes=Count("condicoes_relacionadas__condicao", distinct=True)
         ).filter(qtd_condicoes=1)
 
     multiplicadores = Case(

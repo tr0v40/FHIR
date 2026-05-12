@@ -6,11 +6,21 @@ from rest_framework.response import Response
 from django.db.models import Case, When, Value, FloatField, F, ExpressionWrapper
 from django.db.models.functions import Coalesce
 from django.db.models import Prefetch
+from django.db.models import Q
 
 from core.models import PaginaListaTratamento
 from .serializers import PaginaListaTratamentoFooterSerializer
 from rest_framework.views import APIView
 
+from .services.treatments_en_dynamic import (
+    get_english_treatments_queryset,
+    get_english_efficacy_queryset,
+)
+
+from .serializers import (
+    TreatmentsUSADynamicSerializer,
+    EnglishEfficacyDynamicSerializer,
+)
 from core.models import (
     DetalhesTratamentoResumo,
     ReacaoAdversa,
@@ -19,6 +29,7 @@ from core.models import (
     EficaciaPorEvidencia,
     DetalhesTratamentoReacaoAdversa,
     TipoTratamento,
+    TreatmentListUrlEnglish
 )
 
 from .serializers import (
@@ -70,6 +81,7 @@ class DetalhesTratamentoResumoViewSet(viewsets.ReadOnlyModelViewSet):
     /api/detalhes-tratamentos/           -> completo (por padrão)
     /api/detalhes-tratamentos/?tela=controle -> lean (só campos da tela Controle)
     """
+
     def get_serializer_class(self):
         tela = (self.request.query_params.get("tela") or "").lower().strip()
         if tela in ("controle", "crise", "crises"):
@@ -78,17 +90,19 @@ class DetalhesTratamentoResumoViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         tela = (self.request.query_params.get("tela") or "").lower().strip()
-        cache_key = f"detalhes_tratamento_resumo:{tela or 'full'}"
+        somente = self.request.query_params.get("somente_enxaqueca")
+
+        cache_key = f"detalhes_tratamento_resumo:{tela or 'full'}:enxaqueca:{somente or '0'}"
 
         cached = cache.get(cache_key)
         if cached is not None:
             return cached
 
-        # Prefetch "enxuto" pros relacionamentos usados na tela
         pref_tipo = Prefetch(
             "tipo_tratamento",
             queryset=TipoTratamento.objects.only("id", "nome"),
         )
+
         pref_contra = Prefetch(
             "contraindicacoes",
             queryset=Contraindicacao.objects.only("id", "nome"),
@@ -96,43 +110,62 @@ class DetalhesTratamentoResumoViewSet(viewsets.ReadOnlyModelViewSet):
 
         qs = (
             DetalhesTratamentoResumo.objects
-            .prefetch_related("condicoes_saude", pref_tipo, pref_contra)
-            .filter(condicoes_saude__nome="Enxaqueca")
+            .prefetch_related(
+                "condicoes_saude",
+                "condicoes_relacionadas",
+                pref_tipo,
+                pref_contra,
+            )
+            .filter(
+                Q(condicoes_saude__slug="enxaqueca") |
+                Q(condicoes_relacionadas__condicao__slug="enxaqueca")
+            )
             .distinct()
         )
 
-        # "SOMENTE Enxaqueca" (e não Enxaqueca + outras):
-        somente = self.request.query_params.get("somente_enxaqueca")
         if str(somente).lower() in ("1", "true", "sim", "yes"):
             qs = (
-                qs.annotate(qtd_condicoes=Count("condicoes_saude", distinct=True))
-                  .filter(qtd_condicoes=1)
+                qs.annotate(
+                    qtd_condicoes_relacionadas=Count(
+                        "condicoes_relacionadas__condicao",
+                        distinct=True,
+                    ),
+                    qtd_condicoes_saude=Count(
+                        "condicoes_saude",
+                        distinct=True,
+                    ),
+                )
+                .filter(
+                    Q(qtd_condicoes_relacionadas=1) |
+                    Q(qtd_condicoes_saude=1)
+                )
             )
 
         multiplicadores = Case(
-            When(prazo_efeito_unidade='segundo', then=Value(1/60.0)),
-            When(prazo_efeito_unidade='minuto', then=Value(1.0)),
-            When(prazo_efeito_unidade='hora',   then=Value(60.0)),
-            When(prazo_efeito_unidade='dia',    then=Value(1440.0)),
-            When(prazo_efeito_unidade='sessao', then=Value(10080.0)),
-            When(prazo_efeito_unidade='semana', then=Value(10080.0)),
+            When(prazo_efeito_unidade="segundo", then=Value(1 / 60.0)),
+            When(prazo_efeito_unidade="minuto", then=Value(1.0)),
+            When(prazo_efeito_unidade="hora", then=Value(60.0)),
+            When(prazo_efeito_unidade="dia", then=Value(1440.0)),
+            When(prazo_efeito_unidade="sessao", then=Value(10080.0)),
+            When(prazo_efeito_unidade="semana", then=Value(10080.0)),
             default=Value(1.0),
             output_field=FloatField(),
         )
 
         prazo_medio_minutos = ExpressionWrapper(
-            ((Coalesce(F('prazo_efeito_min'), 0.0) + Coalesce(F('prazo_efeito_max'), 0.0)) / 2.0)
-            * multiplicadores,
+            (
+                (
+                    Coalesce(F("prazo_efeito_min"), 0.0) +
+                    Coalesce(F("prazo_efeito_max"), 0.0)
+                ) / 2.0
+            ) * multiplicadores,
             output_field=FloatField(),
         )
 
         qs = qs.annotate(prazo_medio_minutos=prazo_medio_minutos)
 
-        # cachear QuerySet é ok em memória local, mas em Redis às vezes é ruim.
-        # se você usa Redis/memcached: prefira cachear lista de IDs.
         cache.set(cache_key, qs, timeout=600)
         return qs
-
 
 
 
@@ -257,3 +290,65 @@ class FooterListasPublicadasAPIView(APIView):
 
         serializer = PaginaListaTratamentoFooterSerializer(data, many=True)
         return Response(serializer.data)
+    
+
+
+
+class EnglishTreatmentsDynamicViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = TreatmentsUSADynamicSerializer
+
+    def get_queryset(self):
+        condition_slug = normalize_str(self.request.query_params.get("condition_slug"))
+        efficacy_slug = normalize_str(self.request.query_params.get("efficacy_slug"))
+
+        return get_english_treatments_queryset(
+            condition_slug=condition_slug,
+            efficacy_slug=efficacy_slug,
+        )
+
+
+class EnglishEfficacyDynamicViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = EnglishEfficacyDynamicSerializer
+
+    def get_queryset(self):
+        condition_slug = normalize_str(self.request.query_params.get("condition_slug"))
+        efficacy_slug = normalize_str(self.request.query_params.get("efficacy_slug"))
+
+        return get_english_efficacy_queryset(
+            condition_slug=condition_slug,
+            efficacy_slug=efficacy_slug,
+        )
+    
+
+
+class FooterEnglishTreatmentListsAPIView(APIView):
+    def get(self, request):
+        listas = (
+            TreatmentListUrlEnglish.objects
+            .filter(
+                published=True,
+                health_condition__isnull=False,
+                efficacy_type__isnull=False,
+            )
+            .exclude(health_condition__condition_slug__isnull=True)
+            .exclude(health_condition__condition_slug="")
+            .exclude(efficacy_type__outcome_slug__isnull=True)
+            .exclude(efficacy_type__outcome_slug="")
+            .select_related("health_condition", "efficacy_type")
+            .order_by(
+                "health_condition__condition",
+                "efficacy_type__outcome_type",
+            )
+        )
+
+        data = [
+            {
+                "label": f"{item.health_condition.condition} - {item.efficacy_type.outcome_type}",
+                "condition_slug": item.health_condition.condition_slug,
+                "efficacy_slug": item.efficacy_type.outcome_slug,
+                "url": f"/treatments/{item.health_condition.condition_slug}/filter/{item.efficacy_type.outcome_slug}/",
+            }
+            for item in listas
+        ]
+
+        return Response(data)

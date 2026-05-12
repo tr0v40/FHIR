@@ -310,9 +310,7 @@
   <div class="header-inner">
     <a class="brand" href="https://www.telix.health/">
       <img class="logo-telix" src="{% static 'img/en/logo_ingles.png' %}" alt="Telix Logo">
-    </a>
-
-    <div class="header-main">
+    </a>    <div class="header-main">
       <h1 class="page-title">
         Treatments for {{ efficacy_type.outcome_type|default:efficacy_type.tipo_eficacia|lower }} of {{ condition.condition|default:condition.nome|lower }}
       </h1>
@@ -321,10 +319,19 @@
         Treatments sorted by:
         <strong>{{ order_label|default:"Descending order of maximum efficacy" }}</strong>
       </p>
-
-      <a href="#" class="btn-filtros">
-        Other filters and sorting options
-      </a>
+    <a
+      href="#"
+      class="btn-filtros"
+      onclick="
+        event.preventDefault();
+        const path = '/treatments/{{ condition.condition_slug|default:condition.slug }}/filter/{{ efficacy_type.outcome_slug|default:efficacy_type.slug }}/with-filters/';
+        const isDevDjango = (location.hostname === '127.0.0.1' || location.hostname === 'localhost') && location.port === '8000';
+        const target = isDevDjango ? ('http://localhost:3000' + path) : (location.origin + path);
+        window.location.href = target;
+      "
+    >
+      Other filters and sorting options
+    </a>
     </div>
 
     <aside class="header-warning">

@@ -20,21 +20,18 @@ const DJANGO_BASE =
 const API_BASE = '/api';
 
 const ENXAQUECA_LABEL = 'Enxaqueca';
-
-// trocado
 const TIPO_EFICACIA_OBRIGATORIO = 'Redução de sintomas';
+const TIPO_EFICACIA_SLUG = 'reducao-de-sintomas';
 
-// ====== PERF / CACHE ======
-// trocado
-const CACHE_KEY = 'tratamentos_enxaqueca_crise_reducao_v1';
-const CACHE_TTL_MS = 10 * 60 * 1000; // 10 min
+const CACHE_KEY = 'tratamentos_enxaqueca_crise_reducao_v2';
+const CACHE_TTL_MS = 10 * 60 * 1000;
 const PAGE_SIZE = 24;
 
 let MEMORY_CACHE = {
   ts: 0,
-  tratamentosBaseRaw: null, // array de detalhes já filtrados por enxaqueca + tem eficácia alvo
-  eficaciaArr: null, // Array<[nomeNormalizado, {min,max}]>
-  riscoArr: null, // Array<[tratamentoId, riscoMax]>
+  tratamentosBaseRaw: null,
+  eficaciaArr: null,
+  riscoArr: null,
 };
 
 const api = axios.create({
@@ -43,20 +40,12 @@ const api = axios.create({
   headers: { Accept: 'application/json' },
 });
 
-// ===== Helpers =====
 const normalizeKey = (v) =>
   String(v ?? '')
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
     .trim();
-
-// "loose" pra casar "Magnésio - Magnésio" com "Magnésio"
-const normalizeNomeLoose = (v) => {
-  const n = normalizeKey(v);
-  if (!n) return n;
-  return n.split(' - ')[0].trim();
-};
 
 const toNumber = (v) => {
   if (v === null || v === undefined) return null;
@@ -74,7 +63,6 @@ const isSim = (v) => {
   return n === 'sim' || n === 's' || n === 'yes' || n === 'true' || n === '1';
 };
 
-// PERFIL: usa indicado_<perfil> = "SIM" / "NÃO"
 const isIndicadoParaPublico = (tratamento, publico) => {
   if (!publico || publico === 'todos') return true;
   const campo = `indicado_${publico}`;
@@ -124,9 +112,9 @@ const formatPercentBR = (n) => {
   return `${n.toFixed(0).replace('.', ',')}%`;
 };
 
-// fallback (caso prazo_medio_minutos não venha do backend)
 const prazoMultEmMinutos = (t) => {
   const unit = normalizeKey(t?.prazo_efeito_unidade);
+
   return unit === 'segundo'
     ? 1 / 60
     : unit === 'minuto'
@@ -144,88 +132,40 @@ const prazoMultEmMinutos = (t) => {
 
 const prazoMinEmMinutos = (t) => {
   const mult = prazoMultEmMinutos(t);
-
-  // tenta pegar min numérico do backend
   const min = toNumber(t?.prazo_efeito_min);
+
   if (min !== null) return min * mult;
 
-  // fallback: se só existir o médio, usa ele
   const medio = toNumber(t?.prazo_medio_minutos);
   return medio !== null ? medio : null;
 };
 
 const prazoMaxEmMinutos = (t) => {
   const mult = prazoMultEmMinutos(t);
-
-  // tenta pegar max numérico do backend
   const max = toNumber(t?.prazo_efeito_max);
+
   if (max !== null) return max * mult;
 
-  // fallback: se só existir o médio, usa ele
   const medio = toNumber(t?.prazo_medio_minutos);
   return medio !== null ? medio : null;
 };
 
-const ENXAQUECA_KEY = 'enxaqueca';
+const slugifyEF = (s) =>
+  String(s ?? '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
 
-function getCondicaoKeysFromTratamento(tratamento) {
-  const keys = [];
-
-  const cs = tratamento?.condicoes_saude;
-  if (Array.isArray(cs)) {
-    for (const item of cs) {
-      if (typeof item === 'string') keys.push(normalizeKey(item));
-      else if (item && typeof item === 'object') {
-        keys.push(normalizeKey(item?.nome ?? item?.label ?? item?.titulo ?? ''));
-      }
-    }
-  } else if (typeof cs === 'string') {
-    keys.push(normalizeKey(cs));
-  }
-
-  const extras =
-    tratamento?.condicoes_saude_labels ??
-    tratamento?.condicoes_saude_nomes ??
-    tratamento?.condicoes_saude_nome;
-
-  if (Array.isArray(extras)) {
-    for (const s of extras) keys.push(normalizeKey(s));
-  } else if (typeof extras === 'string') {
-    extras
-      .split(',')
-      .map((s) => normalizeKey(s))
-      .forEach((k) => keys.push(k));
-  }
-
-  const evids = tratamento?.evidencias;
-  if (Array.isArray(evids)) {
-    for (const e of evids) {
-      const c = e?.condicao_saude;
-      if (typeof c === 'string') keys.push(normalizeKey(c));
-      else if (c && typeof c === 'object') {
-        keys.push(normalizeKey(c?.nome ?? c?.label ?? c?.condicao_saude ?? ''));
-      }
-    }
-  }
-
-  return keys.filter(Boolean);
-}
-
-const isSomenteEnxaqueca = (tratamento) => {
-  const keys = getCondicaoKeysFromTratamento(tratamento);
-  if (!keys.length) return false;
-  return keys.every((k) => k === ENXAQUECA_KEY);
-};
-
-// filtros obrigatórios (travados)
 const DEFAULT_FILTROS = {
   condicaoSaudeLabel: ENXAQUECA_LABEL,
   tipoEficacia: TIPO_EFICACIA_OBRIGATORIO,
-
   publico: 'todos',
   contraindicacoes: [],
-  ordenarCaracteristica: 'eficacia', // eficacia | risco | prazo | custo | nenhuma
-  ordemCaracteristica: 'desc', // asc | desc
+  ordenarCaracteristica: 'eficacia',
+  ordemCaracteristica: 'desc',
 };
 
 const labelPublico = {
@@ -259,7 +199,8 @@ function readCache() {
     MEMORY_CACHE &&
     typeof MEMORY_CACHE.ts === 'number' &&
     Date.now() - MEMORY_CACHE.ts <= CACHE_TTL_MS &&
-    Array.isArray(MEMORY_CACHE.tratamentosBaseRaw)
+    Array.isArray(MEMORY_CACHE.tratamentosBaseRaw) &&
+    MEMORY_CACHE.tratamentosBaseRaw.length > 0
   ) {
     return MEMORY_CACHE;
   }
@@ -274,7 +215,8 @@ function readCache() {
       !parsed ||
       typeof parsed.ts !== 'number' ||
       Date.now() - parsed.ts > CACHE_TTL_MS ||
-      !Array.isArray(parsed.tratamentosBaseRaw)
+      !Array.isArray(parsed.tratamentosBaseRaw) ||
+      parsed.tratamentosBaseRaw.length === 0
     ) {
       return null;
     }
@@ -305,12 +247,11 @@ function writeCache(payload) {
   } catch {}
 }
 
-// ===== Risco max (batch) =====
 async function buildRiscoMaxMap(tratamentosList, signal) {
   try {
     const ids = (tratamentosList || [])
       .map((t) => t?.id)
-      .filter((id) => Number.isFinite(id) || /^\d+$/.test(String(id)));
+      .filter((id) => Number.isFinite(Number(id)));
 
     if (!ids.length) return new Map();
 
@@ -320,20 +261,21 @@ async function buildRiscoMaxMap(tratamentosList, signal) {
     for (let i = 0; i < ids.length; i += CHUNK) {
       const slice = ids.slice(i, i + CHUNK);
 
-      const resp = await api.get(
-        `/tratamento-reacoes-adversas/max-por-tratamento/`,
-        {
-          signal,
-          params: { ids: slice.join(',') },
-        }
-      );
+      const resp = await api.get('/tratamento-reacoes-adversas/max-por-tratamento/', {
+        signal,
+        params: { ids: slice.join(',') },
+      });
 
       const rows = Array.isArray(resp.data) ? resp.data : [];
+
       for (let j = 0; j < rows.length; j++) {
         const row = rows[j];
-        const tid = row?.tratamento_id;
+        const tid = Number(row?.tratamento_id);
         const mx = toNumber(row?.reacao_max);
-        if (tid != null && mx != null) map.set(Number(tid), mx);
+
+        if (Number.isFinite(tid) && mx !== null) {
+          map.set(tid, mx);
+        }
       }
     }
 
@@ -357,18 +299,8 @@ const backToTopStyle = {
   zIndex: 9999,
 };
 
-const slugifyEF = (s) =>
-  String(s ?? '')
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
-
 const detailsBtnStyle = { opacity: 0.7, marginBottom: 12 };
 
-// nome do componente trocado
 function TratamentosCrise() {
   const [tratamentosBaseRaw, setTratamentosBaseRaw] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -379,10 +311,7 @@ function TratamentosCrise() {
   const [filtrosAplicados, setFiltrosAplicados] = useState(DEFAULT_FILTROS);
   const [destacarOrdenacao, setDestacarOrdenacao] = useState(false);
 
-  // nome_normalizado -> {min,max} para "Redução de sintomas"
-  const [criseStatsByNomeKey, setCriseStatsByNomeKey] = useState(null);
-
-  // id_tratamento -> riscoMax
+  const [criseStatsByTratamentoId, setCriseStatsByTratamentoId] = useState(null);
   const [riscoMaxById, setRiscoMaxById] = useState(null);
 
   const [isPending, startTransition] = useTransition();
@@ -394,6 +323,7 @@ function TratamentosCrise() {
   const sidebarWrapperRef = useRef(null);
 
   const [showBackToTop, setShowBackToTop] = useState(false);
+
   useEffect(() => {
     const onScroll = () => setShowBackToTop(window.scrollY > 350);
     onScroll();
@@ -443,11 +373,15 @@ function TratamentosCrise() {
       setLoading(true);
 
       const cached = readCache();
-      if (cached?.tratamentosBaseRaw && cached?.eficaciaArr && cached?.riscoArr) {
-        setTratamentosBaseRaw(cached.tratamentosBaseRaw);
-        setCriseStatsByNomeKey(new Map(cached.eficaciaArr));
-        setRiscoMaxById(new Map(cached.riscoArr));
 
+      if (
+        cached?.tratamentosBaseRaw?.length > 0 &&
+        Array.isArray(cached?.eficaciaArr) &&
+        Array.isArray(cached?.riscoArr)
+      ) {
+        setTratamentosBaseRaw(cached.tratamentosBaseRaw);
+        setCriseStatsByTratamentoId(new Map(cached.eficaciaArr));
+        setRiscoMaxById(new Map(cached.riscoArr));
         setLoading(false);
         setIsBootstrapping(false);
         return;
@@ -455,14 +389,19 @@ function TratamentosCrise() {
 
       try {
         const [detalhesResp, eficaciaResp] = await Promise.all([
-          // tela trocada (ajuste se seu backend usa outro valor: 'crise', 'crises', etc.)
           api.get('/detalhes-tratamentos/', {
-            params: { tela: 'crise', somente_enxaqueca: 1 },
+            params: {
+              tela: 'crise',
+              somente_enxaqueca: 1,
+            },
+            signal: controller.signal,
           }),
 
-          // tipoEficacia trocado
-          api.get(`/eficacia-por-evidencia/`, {
-            params: { tipoEficacia: 'Redução de sintomas'},
+          api.get('/eficacia-por-evidencia-dinamica/', {
+            params: {
+              condicao_slug: 'enxaqueca',
+              tipo_eficacia_slug: TIPO_EFICACIA_SLUG,
+            },
             signal: controller.signal,
           }),
         ]);
@@ -474,38 +413,37 @@ function TratamentosCrise() {
         const eficacia = asList(eficaciaResp.data);
 
         const statsMap = new Map();
-        const alvo = normalizeKey('Redução de sintomas'); // "reducao de sintomas"
 
         for (let i = 0; i < eficacia.length; i++) {
           const row = eficacia[i];
 
-        const tipo = normalizeKey(row?.tipo_eficacia?.tipo_eficacia);
-        if (tipo !== alvo) continue;
-
-          // chave loose pra não quebrar com "X - X"
-          const nomeKey = normalizeNomeLoose(row?.nome_tratamento);
-          if (!nomeKey) continue;
+          const tratamentoId = Number(row?.tratamento_id);
+          if (!Number.isFinite(tratamentoId)) continue;
 
           const val = toNumber(row?.percentual_eficacia_calculado);
           if (val === null) continue;
 
-          const cur = statsMap.get(nomeKey);
-          if (!cur) statsMap.set(nomeKey, { min: val, max: val });
-          else
-            statsMap.set(nomeKey, {
+          const cur = statsMap.get(tratamentoId);
+
+          if (!cur) {
+            statsMap.set(tratamentoId, { min: val, max: val });
+          } else {
+            statsMap.set(tratamentoId, {
               min: Math.min(cur.min, val),
               max: Math.max(cur.max, val),
             });
+          }
         }
 
         const baseFiltrada = [];
+
         for (let i = 0; i < detalhes.length; i++) {
           const t = detalhes[i];
 
-          const nomeKey = normalizeNomeLoose(t?.nome);
-          if (!nomeKey) continue;
+          const tratamentoId = Number(t?.id);
+          if (!Number.isFinite(tratamentoId)) continue;
 
-          if (!statsMap.has(nomeKey)) continue;
+          if (!statsMap.has(tratamentoId)) continue;
 
           baseFiltrada.push(t);
         }
@@ -519,7 +457,7 @@ function TratamentosCrise() {
         });
 
         setTratamentosBaseRaw(baseFiltrada);
-        setCriseStatsByNomeKey(statsMap);
+        setCriseStatsByTratamentoId(statsMap);
         setRiscoMaxById(riscoMap);
       } catch (e) {
         if (e?.name === 'CanceledError' || e?.code === 'ERR_CANCELED') return;
@@ -532,6 +470,7 @@ function TratamentosCrise() {
     };
 
     load();
+
     return () => controller.abort();
   }, []);
 
@@ -543,8 +482,8 @@ function TratamentosCrise() {
     for (let i = 0; i < tratamentosBaseRaw.length; i++) {
       const t = tratamentosBaseRaw[i];
 
-      const nomeKey = normalizeNomeLoose(t?.nome);
-      const stats = criseStatsByNomeKey?.get?.(nomeKey) ?? null;
+      const tratamentoId = Number(t?.id);
+      const stats = criseStatsByTratamentoId?.get?.(tratamentoId) ?? null;
 
       const contraNames = extractContraNames(t);
       const contraKeys = contraNames.map(normalizeKey).filter(Boolean);
@@ -556,7 +495,7 @@ function TratamentosCrise() {
           ? precoNumero.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
           : 'ND';
 
-      const riscoNumero = riscoMaxById?.get?.(Number(t?.id)) ?? null;
+      const riscoNumero = riscoMaxById?.get?.(tratamentoId) ?? null;
       const riscoFormatado = formatPercentBR(toNumber(riscoNumero));
 
       const prazoMinMin = prazoMinEmMinutos(t);
@@ -564,8 +503,8 @@ function TratamentosCrise() {
 
       out[i] = {
         ...t,
-        _nomeKey: nomeKey,
-        _statsCrise: stats, // {min,max} ou null
+        _tratamentoId: tratamentoId,
+        _statsCrise: stats,
         _contraNames: contraNames,
         _contraSet: contraSet,
         _precoNumero: precoNumero,
@@ -578,19 +517,22 @@ function TratamentosCrise() {
     }
 
     return out;
-  }, [tratamentosBaseRaw, criseStatsByNomeKey, riscoMaxById]);
+  }, [tratamentosBaseRaw, criseStatsByTratamentoId, riscoMaxById]);
 
   const contraOpcoes = useMemo(() => {
     const map = new Map();
+
     for (let i = 0; i < tratamentosBase.length; i++) {
       const t = tratamentosBase[i];
       const names = t?._contraNames || [];
+
       for (let j = 0; j < names.length; j++) {
         const c = names[j];
         const key = normalizeKey(c);
         if (key && !map.has(key)) map.set(key, c);
       }
     }
+
     return Array.from(map.values()).sort((a, b) => a.localeCompare(b, 'pt-BR'));
   }, [tratamentosBase]);
 
@@ -622,15 +564,14 @@ function TratamentosCrise() {
     const publico = f.publico;
 
     return (tratamentosBase || []).filter((t) => {
-      if (!t?._nomeKey) return false;
-
-      // obrigatório: precisa ter stats do alvo
+      if (!t?._tratamentoId) return false;
       if (!t?._statsCrise) return false;
 
       if (!isIndicadoParaPublico(t, publico)) return false;
 
       if (selecionadas.length > 0) {
         const set = t._contraSet;
+
         for (let i = 0; i < selecionadas.length; i++) {
           if (set.has(selecionadas[i])) return false;
         }
@@ -656,8 +597,9 @@ function TratamentosCrise() {
 
     const getVal = (t) => {
       if (criterio === 'eficacia') return t._statsCrise?.max ?? -Infinity;
-      if (criterio === 'prazo')
+      if (criterio === 'prazo') {
         return Number.isFinite(t._prazoMaxMin) ? t._prazoMaxMin : Infinity;
+      }
       if (criterio === 'custo') return t._precoNumero !== null ? t._precoNumero : Infinity;
       if (criterio === 'risco') return t._riscoNumero !== null ? t._riscoNumero : Infinity;
       return 0;
@@ -681,8 +623,8 @@ function TratamentosCrise() {
     !loading &&
     !isPending &&
     Array.isArray(tratamentosBaseRaw) &&
-    criseStatsByNomeKey instanceof Map &&
-    criseStatsByNomeKey.size > 0 &&
+    criseStatsByTratamentoId instanceof Map &&
+    criseStatsByTratamentoId.size > 0 &&
     riscoMaxById instanceof Map;
 
   if (bootError) {
@@ -716,6 +658,7 @@ function TratamentosCrise() {
   return (
     <div className="tratamentos-page">
       <div id="topo" />
+
       <Header resumo={resumo} />
 
       <main className="tratamentos-layout" ref={layoutRef}>
@@ -736,7 +679,7 @@ function TratamentosCrise() {
               <p></p>
             ) : (
               tratamentosParaRenderizar.map((tratamento, index) => {
-                const stats = tratamento._statsCrise; // {min,max}
+                const stats = tratamento._statsCrise;
                 const eficaciaMinima = stats ? stats.min : null;
                 const eficaciaMaxima = stats ? stats.max : null;
 
@@ -747,9 +690,10 @@ function TratamentosCrise() {
 
                 return (
                   <a
-                    key={tratamento?.id ?? `${tratamento?._nomeKey ?? 't'}-${index}`}
-                    // rota e tipo da URL (ajuste se seu backend usa outro valor)
-                    href={`${DJANGO_BASE}/enxaqueca/${tratamento.slug}/?ef=${encodeURIComponent(slugifyEF(TIPO_EFICACIA_OBRIGATORIO))}`}
+                    key={tratamento?.id ?? `${tratamento?._tratamentoId ?? 't'}-${index}`}
+                    href={`${DJANGO_BASE}/enxaqueca/${tratamento.slug}/?ef=${encodeURIComponent(
+                      slugifyEF(TIPO_EFICACIA_OBRIGATORIO)
+                    )}`}
                     className="tratamento-card"
                     style={{ textDecoration: 'none' }}
                   >
@@ -779,6 +723,7 @@ function TratamentosCrise() {
                           <strong>Princípio ativo:</strong>{' '}
                           {tratamento.principio_ativo || 'ND'}
                         </p>
+
                         <p>
                           <strong>Fabricante:</strong> {tratamento.fabricante || 'ND'}
                         </p>
@@ -787,7 +732,7 @@ function TratamentosCrise() {
                           ver detalhes <span style={{ fontWeight: 'bold' }}>&#8250;</span>
                         </div>
 
-                        <p>{tratamento.descricao}</p>
+                        <p>{tratamento.descricao_lista || tratamento.descricao}</p>
                       </div>
 
                       <div className="eficacia-container">

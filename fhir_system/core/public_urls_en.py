@@ -64,3 +64,4 @@ urlpatterns = [
         name="english_treatment_detail",
     ),
 ]
+

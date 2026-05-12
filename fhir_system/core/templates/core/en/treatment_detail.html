@@ -168,20 +168,58 @@
             margin-bottom: 12px;
         }
 
-        .efficacy-bar {
-            width: 320px;
-            height: 52px;
-            background-color: #b8d8ef;
-            border-radius: 2px;
-            overflow: hidden;
-            position: relative;
-        }
+.efficacy-bar {
+    width: 350px;
+    height: 58px;
+    background: #cfeeff;
+    border-radius: 6px;
+    overflow: visible;
+    position: relative;
+}
 
-        .efficacy-bar-fill {
-            height: 100%;
-            background-color: #1793ee;
-            display: block;
-        }
+.efficacy-bar::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 3px;
+    background-image: repeating-linear-gradient(
+        90deg,
+        transparent 0,
+        transparent 22px,
+        rgba(255,255,255,0.75) 22px,
+        rgba(255,255,255,0.75) 24px,
+        transparent 24px,
+        transparent 34px
+    );
+    background-size: auto 34px;
+    background-position: 0 12px;
+    background-repeat: repeat-x;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.efficacy-bar-fill {
+    height: 100%;
+    background: #0094FF;
+    display: block;
+    border-radius: 6px 0 0 6px;
+    position: relative;
+    z-index: 1;
+}
+
+.efficacy-bar-fill::after {
+    content: "";
+    position: absolute;
+    right: -12px;
+    bottom: -10px;
+    width: 0;
+    height: 0;
+    border-left: 13px solid transparent;
+    border-right: 13px solid transparent;
+    border-bottom: 22px solid #8F8F93;
+    z-index: 4;
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.18));
+}
 
         .eficacia-caption {
             margin-top: 6px;
