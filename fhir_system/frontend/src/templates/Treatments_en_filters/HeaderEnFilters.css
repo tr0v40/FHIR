@@ -1,89 +1,170 @@
-.treatments-header {
-  max-width: 1180px;
-  margin: 70px auto 40px auto;
-  padding: 0 24px;
-  display: flex;
-  justify-content: space-between;
+.site-header-en {
+  background-color: #ffffff;
+  padding: 0px 0 20px;
+}
+
+.header-inner-en {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 0 58px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 500px;
+  column-gap: 60px;
+  align-items: start;
+  margin-bottom: 48px;
+}
+
+.brand-en {
+  grid-column: 1;
+  grid-row: 1;
+  display: inline-flex;
+  text-decoration: none;
   align-items: flex-start;
+  padding-top: 120px;
+  padding-bottom: 20px;
 }
 
-.treatments-header-left {
-  display: flex;
-  flex-direction: column;
+.logo-telix-en {
+  height: 180px;
+  width: auto;
+  max-width: 180px;
+  display: block;
+  object-fit: contain;
+  image-rendering: auto;
 }
 
-.treatments-logo {
-  width: 145px;
-  height: auto;
-  margin-bottom: 62px;
-  margin-left: -55px;
+.header-main-en {
+  grid-column: 1;
+  grid-row: 2;
+  text-align: left;
+  padding-left: 10px;
 }
 
-.treatments-title-block h1 {
+.page-title-en {
+  font-size: 40px;
+  font-weight: 400;
+  color: #000000;
   margin: 0 0 8px 0;
-  font-size: 32px;
-  font-weight: 600;
-  color: #000;
-  line-height: 1.4;
+  font-family: inherit;
+  line-height: 1.25;
 }
 
-.treatments-title-block p {
-  margin: 3px 0;
+.page-subtitle-en {
+  color: #010009;
+  font-weight: 400;
+  font-family: inherit;
   font-size: 16px;
+  margin: 0 0 6px 0;
+}
+
+.summary-filters-en {
+  margin-top: 15px;
+  font-size: 18px;
   color: #000;
-  line-height: 1.35;
-}
-
-.treatments-subtitle {
-  margin-bottom: 5px !important;
-}
-
-.treatments-header {
-  max-width: 1350px;
-  margin: 70px auto 40px auto;
-  padding: 0 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.treatments-logo {
-  width: 205px;
-  height: auto;
-  margin-bottom: 62px;
-  margin-left: -25px;
-}
-
-.treatments-warning-box {
-  background: #000;
-  color: #fff;
-  width: 255px;
-  padding: 24px 20px;
-  border-radius: 4px;
-  text-align: center;
-  font-size: 13px;
   line-height: 1.4;
-  margin-top: 260px;
-  margin-right: -50px;
+}
+
+.summary-line-en {
+  margin: 2px 0;
+}
+
+.summary-label-en {
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.summary-value-en {
+  font-weight: 400;
+  font-size: 14px;
+  margin: 5px;
+}
+
+.summary-contra-list-en {
+  margin: 6px 0 0 0;
+  padding-left: 18px;
+}
+
+.summary-contra-item-en {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.header-warning-en {
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: end;
+  align-self: flex-start;
+  background-color: #000;
+  color: #fff;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100%;
+  max-width: 270px;
+  text-align: center;
+  line-height: 1.2;
+  padding: 18px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-warning-en p {
+  margin: 0;
 }
 
 @media (max-width: 768px) {
-  .treatments-header {
-    flex-direction: column;
-    margin-top: 40px;
-    gap: 28px;
+  .site-header-en {
+    padding: 0;
   }
 
-  .treatments-logo {
-    margin-bottom: 34px;
+  .header-inner-en {
+    grid-template-columns: 1fr;
+    padding: 14px 16px 10px !important;
+    row-gap: 6px !important;
+    justify-items: start;
+    margin-bottom: 20px;
   }
 
-  .treatments-warning-box {
-    margin-top: 0;
+  .brand-en {
+    justify-self: start;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .logo-telix-en {
+    height: 100px !important;
+    width: auto !important;
+    margin-left: -10px !important;
+    display: block;
+  }
+
+  .header-main-en {
     width: 100%;
+    padding-left: 0;
   }
 
-  .treatments-title-block h1 {
-    font-size: 26px;
+  .page-title-en {
+    font-size: 24px !important;
+    line-height: 1.15 !important;
+    margin: 8px 0 20px 0 !important;
+  }
+
+  .page-subtitle-en {
+    font-size: 14px !important;
+    line-height: 1.45 !important;
+    margin: 0 0 14px 0 !important;
+  }
+
+  .summary-filters-en,
+  .summary-label-en,
+  .summary-value-en,
+  .summary-contra-item-en {
+    font-size: 14px !important;
+  }
+
+  .header-warning-en {
+    display: none !important;
   }
 }
