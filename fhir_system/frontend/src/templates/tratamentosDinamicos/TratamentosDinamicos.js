@@ -384,6 +384,7 @@ if (cached?.tratamentosBaseRaw && cached?.eficaciaArr && cached?.riscoArr) {
         params: {
         tela: 'filtros_dinamicos',
         condicao_slug: condicaoSlug,
+        tipo_eficacia_slug: eficaciaSlug,
         },
         signal: controller.signal,
     }),

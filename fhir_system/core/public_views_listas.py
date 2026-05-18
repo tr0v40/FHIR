@@ -27,6 +27,50 @@ def get_footer_listas():
     return footer_listas
 
 
+def get_tratamentos_ids_validos_para_lista(condicao, tipo):
+    eficacias_base = (
+        EficaciaPorEvidencia.objects
+        .filter(
+            tipo_eficacia=tipo,
+            evidencia__condicao_saude=condicao,
+        )
+    )
+
+    tratamento_ids = list(
+        eficacias_base
+        .values_list("evidencia__tratamento_id", flat=True)
+        .distinct()
+    )
+
+    detalhes_publicados_ids = set(
+        PaginaDetalheTratamento.objects
+        .filter(
+            publicada=True,
+            condicao=condicao,
+            tratamento_id__in=tratamento_ids,
+        )
+        .values_list("tratamento_id", flat=True)
+    )
+
+    tratamentos_validos_ids = (
+        DetalhesTratamentoResumo.objects
+        .filter(
+            id__in=detalhes_publicados_ids,
+            condicoes_relacionadas__aparecer_na_lista=True,
+        )
+        .filter(
+            models.Q(condicoes_relacionadas__condicao__pk=condicao.pk) |
+            models.Q(condicoes_relacionadas__condicao__slug=condicao.slug) |
+            models.Q(condicoes_relacionadas__condicao__nome=condicao.nome) |
+            models.Q(condicoes_relacionadas__condicao__condition=getattr(condicao, "condition", None))
+        )
+        .values_list("id", flat=True)
+        .distinct()
+    )
+
+    return set(tratamentos_validos_ids)
+
+
 def pagina_lista_por_url(request, condicao_slug, tipo_eficacia_slug):
     pagina = get_object_or_404(
         PaginaListaTratamento.objects.select_related("condicao_saude", "tipo_eficacia"),

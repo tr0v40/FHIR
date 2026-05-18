@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from django.core.cache import cache
 from rest_framework import viewsets
 from django.db.models import Max, Count
@@ -8,7 +9,11 @@ from django.db.models.functions import Coalesce
 from django.db.models import Prefetch
 from django.db.models import Q
 
-from core.models import PaginaListaTratamento
+from core.models import (
+    PaginaListaTratamento,
+    PaginaDetalheTratamento,
+    TipoEficacia,
+)
 from .serializers import PaginaListaTratamentoFooterSerializer
 from rest_framework.views import APIView
 
@@ -49,6 +54,56 @@ from .services.tratamentos_dinamicos import (
     get_detalhes_tratamentos_queryset,
     get_eficacia_queryset,
 )
+
+def get_ids_validos_lista_pt(condicao_slug, tipo_eficacia_slug):
+    pagina = get_object_or_404(
+        PaginaListaTratamento.objects.select_related("condicao_saude", "tipo_eficacia"),
+        condicao_saude__slug=condicao_slug,
+        tipo_eficacia__slug=tipo_eficacia_slug,
+        publicada=True,
+    )
+
+    condicao = pagina.condicao_saude
+    tipo = pagina.tipo_eficacia
+
+    tratamento_ids = (
+        EficaciaPorEvidencia.objects
+        .filter(
+            tipo_eficacia=tipo,
+            evidencia__condicao_saude=condicao,
+        )
+        .values_list("evidencia__tratamento_id", flat=True)
+        .distinct()
+    )
+
+    ids_com_detalhe_publicado = (
+        PaginaDetalheTratamento.objects
+        .filter(
+            publicada=True,
+            condicao=condicao,
+            tratamento_id__in=tratamento_ids,
+        )
+        .values_list("tratamento_id", flat=True)
+        .distinct()
+    )
+
+    ids_validos = (
+        DetalhesTratamentoResumo.objects
+        .filter(
+            id__in=ids_com_detalhe_publicado,
+            condicoes_relacionadas__aparecer_na_lista=True,
+        )
+        .filter(
+            Q(condicoes_relacionadas__condicao__pk=condicao.pk) |
+            Q(condicoes_relacionadas__condicao__slug=condicao.slug) |
+            Q(condicoes_relacionadas__condicao__nome=condicao.nome) |
+            Q(condicoes_relacionadas__condicao__condition=getattr(condicao, "condition", None))
+        )
+        .values_list("id", flat=True)
+        .distinct()
+    )
+
+    return list(ids_validos)
 
 class DetalhesTratamentoReacaoAdversaViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = (
@@ -164,6 +219,14 @@ class DetalhesTratamentoResumoViewSet(viewsets.ReadOnlyModelViewSet):
 
         qs = qs.annotate(prazo_medio_minutos=prazo_medio_minutos)
 
+        if tela == "controle":
+            ids_validos = get_ids_validos_lista_pt("enxaqueca", "controle")
+            qs = qs.filter(id__in=ids_validos)
+
+        elif tela in ("crise", "crises"):
+            ids_validos = get_ids_validos_lista_pt("enxaqueca", "reducao-de-sintomas")
+            qs = qs.filter(id__in=ids_validos)
+
         cache.set(cache_key, qs, timeout=600)
         return qs
 
@@ -182,14 +245,20 @@ class DetalhesTratamentoDinamicoViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         tela = normalize_str(self.request.query_params.get("tela"))
         condicao_slug = normalize_str(self.request.query_params.get("condicao_slug"))
+        tipo_eficacia_slug = normalize_str(self.request.query_params.get("tipo_eficacia_slug"))
         somente_condicao = get_bool_param(self.request.query_params.get("somente_condicao"))
 
-        return get_detalhes_tratamentos_queryset(
+        qs = get_detalhes_tratamentos_queryset(
             tela=tela,
             condicao_slug=condicao_slug,
             somente_condicao=somente_condicao,
         )
 
+        if condicao_slug and tipo_eficacia_slug:
+            ids_validos = get_ids_validos_lista_pt(condicao_slug, tipo_eficacia_slug)
+            qs = qs.filter(id__in=ids_validos)
+
+        return qs
 
 class ReacaoAdversaViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ReacaoAdversa.objects.all()
@@ -242,11 +311,16 @@ class EficaciaPorEvidenciaDinamicaViewSet(viewsets.ReadOnlyModelViewSet):
         condicao_slug = normalize_str(self.request.query_params.get("condicao_slug"))
         tipo_eficacia_slug = normalize_str(self.request.query_params.get("tipo_eficacia_slug"))
 
-        return get_eficacia_queryset(
+        qs = get_eficacia_queryset(
             condicao_slug=condicao_slug,
             tipo_eficacia_slug=tipo_eficacia_slug,
         )
-    
+
+        if condicao_slug and tipo_eficacia_slug:
+            ids_validos = get_ids_validos_lista_pt(condicao_slug, tipo_eficacia_slug)
+            qs = qs.filter(evidencia__tratamento_id__in=ids_validos)
+
+        return qs
 
 
 
