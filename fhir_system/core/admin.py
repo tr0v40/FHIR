@@ -163,6 +163,9 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
                     "descricao",
                     "imagem",
                     "imagem_detalhes",
+                    "imagem_anv",
+                    "imagem_detalhes_anv"
+
                 )
             },
         ),

@@ -511,6 +511,8 @@ class DetalhesTratamentoResumo(models.Model):
     opiniao_especialista = models.URLField(blank=True, null=True)
     links_profissionais = models.URLField(blank=True, null=True)
     alerta = models.TextField(blank=True, null=True) 
+    imagem_anv = models.ImageField(upload_to="tratamentos/", blank=True, null=True)
+    imagem_detalhes_anv = models.ImageField(upload_to="tratamentos/detalhes/", blank=True, null=True)
     imagem = models.ImageField(upload_to="tratamentos/", blank=True, null=True)
     imagem_detalhes = models.ImageField(upload_to="tratamentos/detalhes/", blank=True, null=True)
     quando_usar = models.TextField(blank=True)    
