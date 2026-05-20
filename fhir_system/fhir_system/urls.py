@@ -11,7 +11,7 @@ from core.public_views_listas import pagina_lista_por_url
 from django.views.generic import TemplateView
 from django.urls import re_path
 from core import public_views_en
-
+from core.error_views import error_404_en
 from core.public_views_en import english_treatment_list_with_filters
 
 
@@ -115,3 +115,17 @@ else:
         re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
         re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     ]
+
+
+
+
+def custom_404(request, exception):
+
+    if request.path.startswith('/treatments/'):
+        return error_404_en(request, exception)
+
+    from django.views.defaults import page_not_found
+    return page_not_found(request, exception)
+
+
+handler404 = custom_404
