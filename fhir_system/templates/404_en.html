@@ -7,25 +7,100 @@
   <title>Page not found</title>
 
   <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #fff;
-      color: #333;
-      text-align: center;
-    }
+body {
+  font-family: 'Arial', sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  background-color: #fff;
+  color: #333;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* logo esquerda, menu direita */
+  padding: 20px 40px;
+  z-index: 1000;
+}
 
-    header {
-      position: absolute;
-      top: 40px;
-      left: 120px;
-      transform: translateX(-50%);
-    }
+.hamburger-menu {
+  position: relative;
+}
+
+.hamburger-btn {
+  font-size: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #0094FF; /* azul */
+  z-index: 1001;
+}
+
+/* Menu dropdown */
+.hamburger-links {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 40px; /* ajusta abaixo do ícone */
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0;
+  min-width: 200px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  z-index: 1002;
+}
+
+.hamburger-links li {
+  list-style: none;
+  border-bottom: 1px solid #eee;
+}
+
+.hamburger-links li:last-child {
+  border-bottom: none;
+}
+
+.hamburger-links li a {
+  display: flex;
+  justify-content: space-between; /* texto à esquerda, seta à direita */
+  align-items: center;
+  padding: 12px 16px;
+  color: #0094FF;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.hamburger-links li a:hover {
+  background: #f2f8ff;
+}
+
+/* seta direita */
+.hamburger-links li a::after {
+  content: "›";
+  color: #0094FF;
+  font-weight: bold;
+  margin-left: 8px;
+}
+
+/* mostrar ao clicar */
+.hamburger-menu.active .hamburger-links {
+  display: block;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 120px;
+  padding-bottom: 40px;
+}
+
 
     .logo-telix {
       height: 180px;
@@ -40,14 +115,16 @@
       margin-bottom: 0.3rem;
     }
 
-    .error-label {
-      font-size: 20px;
-      color: #bdbcbc;
-      font-weight: 600;
-      margin-top: -8px;
-      margin-bottom: 30px;
-    }
 
+.error-label {
+  font-size: 20px;
+  color: #bdbcbc;
+  font-weight: 700;
+  margin-top: -8px;
+  margin-left: 620px;
+  margin-bottom: 30px;
+  text-align: right;
+}
     p {
       font-size: 20px;
       color: #777;
@@ -67,6 +144,116 @@
       transition: 0.2s;
     }
 
+    
+.footer {
+  width: 100%;
+  background: #ffffff;
+  border-top: 1px solid #ddd;
+  border-bottom: 3px solid #d2d2d2;
+  padding: 42px 20px 84px;
+  box-sizing: border-box;
+  margin-top: auto; /* garante que o footer fique no final */
+  display: flex;
+  justify-content: center;
+}
+
+.footer-wrap {
+  max-width: 1000px;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr 1fr;
+  gap: 68px;
+  width: 100%;
+  justify-content: end;
+}
+.footer-col {
+  text-align: left; /* ou right, se quiser alinhar o texto */
+}
+.footer::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -84px;
+  height: 84px;
+  background: #ffffff;
+  border-top: 3px solid #E0E0E1;
+}
+
+.footer-col h4,
+.footer-col h4 a {
+  margin: 0 0 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: #000000;
+  text-decoration: none;
+}
+
+.footer-col a,
+.footer-col span,
+.footer-col p {
+  display: block;
+  margin: 0 0 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0;
+  color: #8F8F93;
+  text-decoration: none;
+}
+
+.footer-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: #8F8F93;
+}
+.footer-col a:hover {
+  color: #0094FF;
+  text-decoration: underline;
+}
+
+
+.footer-select-wrap {
+  position: relative;
+  width: 155px;
+  margin-top: 8px;
+}
+
+.footer-select {
+  width: 155px;
+  height: 41px;
+  border: none;
+  border-radius: 4px;
+  background: #0094FF;
+  color: #fff;
+  padding: 0 36px 0 16px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.footer-select-arrow {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ffffff;
+  pointer-events: none;
+  font-size: 12px;
+}
+
+.footer-col .footer-disease-label {
+  margin-top: 72px;
+  margin-bottom: 8px;
+}
+
     a.btn:hover {
       background-color: #007ad9;
     }
@@ -75,34 +262,146 @@
 
 <body>
 
-  <header>
-    <a class="brand" href="https://www.telix.health/">
-      <img
-        class="logo-telix"
-        src="{% static 'img/en/logo_ingles.png' %}"
-        alt="Telix Logo"
-      >
-    </a>
-  </header>
+<header>
+  <a class="brand" href="https://www.telix.health/">
+    <img
+      class="logo-telix"
+      src="{% static 'img/en/logo_ingles.png' %}"
+      alt="Telix Logo"
+    >
+  </a>
+
+  <!-- Menu Hambúrguer -->
+<nav class="hamburger-menu">
+  <button class="hamburger-btn">☰</button>
+  <ul class="hamburger-links">
+    <li><a href="https://treatments.telix.health/who-we-are">About us</a></li>
+    <li><a href="https://treatments.telix.health/questions-and-answers">Questions and Answers</a></li>
+    <li><a href="https://treatments.telix.health/companies">Companies</a></li>
+  </ul>
+</nav>
+</header>
 
   <main>
-    <h1>
-      Oops... The page<br>
-      address may have changed.
-    </h1>
-
-    <div class="error-label">
-      (error 404)
-    </div>
-
-    <p>
-      Click the button below to find the content you were looking for.
-    </p>
-
+  <h1>Oops... The page address<br>may have changed.</h1>
+  <div class="error-label">(error 404)</div>
+  <p>We suggest that you return to the homepage while we fix this issue.</p>
     <a href="/treatments/" class="btn">
-      Home page →
+      Return to home page →
     </a>
   </main>
+
+  
+ <footer class="footer">
+  <div class="footer-wrap">
+    <div class="footer-col">
+      <h4>
+        <a href="https://treatments.telix.health/treatment-specifications">Treatments Page</a>
+      </h4>
+      <a href="https://treatments.telix.health/how-we-calculate-the-efficacy-of-health-treatments">
+        Efficacy How we calculate it
+      </a>
+
+      <h4 style="margin-top:18px;">
+        <a href="https://treatments.telix.health/clinical-evidence-from-research-on-health-treatments">
+          Scientific Articles Page
+        </a>
+      </h4>
+      <a href="https://treatments.telix.health/criteria-for-research-rigor-in-health-treatments">
+        Research rigor – criteria
+      </a>
+
+      <h4 style="margin-top:18px;">
+        <a href="https://treatments.telix.health/create-fhir-resource-json-evidence">
+          Create a FHIR resource
+        </a>
+      </h4>
+      <a href="https://treatments.telix.health/implementationguide/home">
+        Implementation Guide
+      </a>
+
+      <span style="margin-top:18px;">Linca Telecomunicações Ltda -</span>
+      <span>CNPJ: 03.376.788-0001/23</span>
+    </div>
+
+    <div class="footer-col">
+      <h4>
+        <a href="https://treatments.telix.health/documents">Documents</a>
+      </h4>
+      <a href="https://treatments.telix.health/documents/privacy-policy">Privacy Policy</a>
+      <a href="https://treatments.telix.health/documents/terms-of-service">Terms of Use</a>
+
+      <h4 style="margin-top:18px;">
+        <a href="https://outlook.live.com/mail/0/deeplink/compose?mailtouri=mailto%3Acontact%40telix.health">
+          E-mail
+        </a>
+      </h4>
+      <a href="mailto:contact@telix.health">contact@telix.health</a>
+
+      <h4 style="margin-top:18px;">
+        <a href="https://www.telix.inf.br/marcar-consulta-com-medico">
+          Do not self-medicate
+        </a>
+      </h4>
+      <span>Seek guidance from a healthcare professional</span>
+    </div>
+
+    <div class="footer-col">
+      <h4>
+        <a href="https://treatments.telix.health/questions-and-answers">
+          Questions and answers
+        </a>
+      </h4>
+      <a href="https://treatments.telix.health/companies">For businesses</a>
+      <a href="https://treatments.telix.health/who-we-are">About us</a>
+
+
+<div class="footer-select-wrap">
+    <span class="footer-text footer-disease-label">Select the disease</span>
+    <select id="footerConditionSelect" class="footer-select">
+        <option value="">Select an option</option>
+        {% for tratamento in treatment_lists %}
+            <option value="{% url 'english_treatment_list_filtered' tratamento.health_condition.condition_slug tratamento.efficacy_type.outcome_slug %}">
+                {{ tratamento.health_condition.condition }} - {{ tratamento.efficacy_type.outcome_type }}
+            </option>
+        {% endfor %}
+    </select>
+    <span class="footer-select-arrow"><i class="fas fa-chevron-down"></i></span>
+</div>
+    </div>
+  </div>
+</footer>
+
+  <script>
+    const select = document.getElementById('conditionSelect');
+    const footerSelect = document.getElementById('footerConditionSelect');
+
+    if (select) {
+      select.addEventListener('change', function () {
+        if (this.value) {
+          window.location.href = this.value;
+        }
+      });
+    }
+
+    if (footerSelect) {
+      footerSelect.addEventListener('change', function () {
+        if (this.value) {
+          window.location.href = this.value;
+        }
+      });
+    }
+
+  </script>
+
+  <script>
+const hamburgerBtn = document.querySelector('.hamburger-btn');
+const hamburgerMenu = document.querySelector('.hamburger-menu');
+
+hamburgerBtn.addEventListener('click', () => {
+  hamburgerMenu.classList.toggle('active');
+});
+</script>
 
 </body>
 </html>
