@@ -100,7 +100,8 @@ urlpatterns = [
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Handlers precisam estar no URLconf raiz:
-handler404 = "core.views.page_not_found_404"
+
+handler404 = "core.error_views.custom_404"
 handler500 = "core.views.server_error_500"
 
 if settings.DEBUG:
@@ -119,13 +120,4 @@ else:
 
 
 
-def custom_404(request, exception):
 
-    if request.path.startswith('/treatments/'):
-        return error_404_en(request, exception)
-
-    from django.views.defaults import page_not_found
-    return page_not_found(request, exception)
-
-
-handler404 = custom_404
