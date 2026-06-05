@@ -197,25 +197,30 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
                 )
             },
         ),
-        (
-            "Indicação por Grupo",
-            {
-                "fields": (
-                    "indicado_criancas",
-                    "motivo_criancas",
-                    "indicado_adolescentes",
-                    "motivo_adolescentes",
-                    "indicado_idosos",
-                    "motivo_idosos",
-                    "indicado_adultos",
-                    "motivo_adultos",
-                    "indicado_lactantes",
-                    "motivo_lactantes",
-                    "indicado_gravidez",
-                    "motivo_gravidez",
-                )
-            },
-        ),
+            (
+                "Indicação por Grupo",
+                {
+                    "fields": (
+                        "indicado_adultos",
+                        "motivo_adultos",
+
+                        "indicado_idosos",
+                        "motivo_idosos",
+
+                        "indicado_lactantes",
+                        "motivo_lactantes",
+
+                        "indicado_criancas",
+                        "motivo_criancas",
+
+                        "indicado_adolescentes",
+                        "motivo_adolescentes",
+
+                        "indicado_gravidez",
+                        "motivo_gravidez",
+                    )
+                },
+            ),
         ("Contraindicações", {"fields": ("contraindicacoes",)}),
     )
 
@@ -240,8 +245,33 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
-        if "descricao" in form.base_fields:
-            form.base_fields["descricao"].label = "Descrição geral do tratamento"
+
+        labels = {
+            "descricao": "Descrição geral do tratamento",
+
+            "indicado_adultos": "Adultos",
+            "motivo_adultos": "Motivo - Adultos",
+
+            "indicado_idosos": "Idosos +65 anos",
+            "motivo_idosos": "Motivo - Idosos +65 anos",
+
+            "indicado_lactantes": "Crianças de até 2 anos (Lactantes)",
+            "motivo_lactantes": "Motivo - Crianças de até 2 anos (Lactantes)",
+
+            "indicado_criancas": "Crianças de 2 a 12 anos",
+            "motivo_criancas": "Motivo - Crianças de 2 a 12 anos",
+
+            "indicado_adolescentes": "Adolescentes 12 a 17 anos",
+            "motivo_adolescentes": "Motivo - Adolescentes 12 a 17 anos",
+
+            "indicado_gravidez": "Grávidas",
+            "motivo_gravidez": "Motivo - Grávidas",
+        }
+
+        for field_name, label in labels.items():
+            if field_name in form.base_fields:
+                form.base_fields[field_name].label = label
+
         return form
 
 @admin.register(ReacaoAdversa)

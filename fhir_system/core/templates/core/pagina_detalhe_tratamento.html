@@ -527,49 +527,78 @@
       </div>
     </div>
 
-    <div class="table-container">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>GRUPO</th>
-                    <th>SEGURO PARA USO</th>
-                    <th>MOTIVO</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Crianças menores de 12 anos</td>
-                    <td><span class="{% if tratamento.indicado_criancas == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_criancas }}</span></td>
-                    <td>{{ tratamento.motivo_criancas|default:"-" }}</td>
-                </tr>
-                <tr>
-                    <td>Adolescentes 12 a 17 anos</td>
-                    <td><span class="{% if tratamento.indicado_adolescentes == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_adolescentes }}</span></td>
-                    <td>{{ tratamento.motivo_adolescentes|default:"-" }}</td>
-                </tr>
-                <tr>
-                    <td>Idosos +65 anos</td>
-                    <td><span class="{% if tratamento.indicado_idosos == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_idosos }}</span></td>
-                    <td>{{ tratamento.motivo_idosos|default:"-" }}</td>
-                </tr>
-                <tr>
-                    <td>Adultos</td>
-                    <td><span class="{% if tratamento.indicado_adultos == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_adultos }}</span></td>
-                    <td>{{ tratamento.motivo_adultos|default:"-" }}</td>
-                </tr>
-                <tr>
-                    <td>Lactantes</td>
-                    <td><span class="{% if tratamento.indicado_lactantes == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_lactantes }}</span></td>
-                    <td>{{ tratamento.motivo_lactantes|default:"-" }}</td>
-                </tr>
-                <tr>
-                    <td>Gravidez</td>
-                    <td><span class="{% if tratamento.indicado_gravidez == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_gravidez }}</span></td>
-                    <td>{{ tratamento.motivo_gravidez|default:"-" }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+ <div class="table-container">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>GRUPO</th>
+                <th>SEGURO PARA USO</th>
+                <th>MOTIVO</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Adultos</td>
+                <td>
+                    <span class="{% if tratamento.indicado_adultos == 'SIM' %}yes{% else %}no{% endif %}">
+                        {{ tratamento.indicado_adultos }}
+                    </span>
+                </td>
+                <td>{{ tratamento.motivo_adultos|default:"-" }}</td>
+            </tr>
+
+            <tr>
+                <td>Idosos +65 anos</td>
+                <td>
+                    <span class="{% if tratamento.indicado_idosos == 'SIM' %}yes{% else %}no{% endif %}">
+                        {{ tratamento.indicado_idosos }}
+                    </span>
+                </td>
+                <td>{{ tratamento.motivo_idosos|default:"-" }}</td>
+            </tr>
+
+            <tr>
+                <td>Crianças de até 2 anos (Lactantes)</td>
+                <td>
+                    <span class="{% if tratamento.indicado_lactantes == 'SIM' %}yes{% else %}no{% endif %}">
+                        {{ tratamento.indicado_lactantes }}
+                    </span>
+                </td>
+                <td>{{ tratamento.motivo_lactantes|default:"-" }}</td>
+            </tr>
+
+            <tr>
+                <td>Crianças de 2 a 12 anos</td>
+                <td>
+                    <span class="{% if tratamento.indicado_criancas == 'SIM' %}yes{% else %}no{% endif %}">
+                        {{ tratamento.indicado_criancas }}
+                    </span>
+                </td>
+                <td>{{ tratamento.motivo_criancas|default:"-" }}</td>
+            </tr>
+
+            <tr>
+                <td>Adolescentes 12 a 17 anos</td>
+                <td>
+                    <span class="{% if tratamento.indicado_adolescentes == 'SIM' %}yes{% else %}no{% endif %}">
+                        {{ tratamento.indicado_adolescentes }}
+                    </span>
+                </td>
+                <td>{{ tratamento.motivo_adolescentes|default:"-" }}</td>
+            </tr>
+
+            <tr>
+                <td>Grávidas</td>
+                <td>
+                    <span class="{% if tratamento.indicado_gravidez == 'SIM' %}yes{% else %}no{% endif %}">
+                        {{ tratamento.indicado_gravidez }}
+                    </span>
+                </td>
+                <td>{{ tratamento.motivo_gravidez|default:"-" }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
     <div class="contraindications-section container mt-5">
         <h2 class="contraindicado-title" style="display: flex; justify-content: space-between; align-items: center;">
