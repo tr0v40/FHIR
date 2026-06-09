@@ -164,7 +164,9 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
                     "imagem",
                     "imagem_detalhes",
                     "imagem_anv",
-                    "imagem_detalhes_anv"
+                    "imagem_detalhes_anv",
+                    "especificacao_tecnica_para_pacientes",
+                    "especificacao_tecnica_para_medicos",
 
                 )
             },
@@ -180,7 +182,7 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
                     "tipo_tratamento",
                     "custo_medicamento",
                     "link_para_compra_de_tratamento",
-                    "especificacao_do_custo",
+                    "especificacao_do_custo"
                 )
             },
         ),

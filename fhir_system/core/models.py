@@ -515,6 +515,8 @@ class DetalhesTratamentoResumo(models.Model):
     imagem_detalhes_anv = models.ImageField(upload_to="tratamentos/detalhes/", blank=True, null=True)
     imagem = models.ImageField(upload_to="tratamentos/", blank=True, null=True)
     imagem_detalhes = models.ImageField(upload_to="tratamentos/detalhes/", blank=True, null=True)
+    especificacao_tecnica_para_pacientes = models.FileField(upload_to="pdf_especificacao_pacientes/", blank=True, null=True)
+    especificacao_tecnica_para_medicos = models.FileField(upload_to="pdf_especificacao_medicos/", blank=True, null=True)
     quando_usar = models.TextField(blank=True)    
     tipo_tratamento = models.ManyToManyField(TipoTratamento, blank=True)
     custo_medicamento = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
