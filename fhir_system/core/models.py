@@ -523,6 +523,31 @@ class DetalhesTratamentoResumo(models.Model):
     links_externos = models.TextField(blank=True, null=True)
     alertas = models.TextField(blank=True, null=True)
     grupo = models.CharField(max_length=20, choices=GRUPO_CHOICES, default="adultos")
+    links_externos = models.TextField(blank=True, null=True)
+
+    risco_morte = models.BooleanField(
+        default=False,
+        verbose_name="Risco de morte?"
+    )
+
+    circunstancias_risco_morte = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Circunstâncias de risco de morte"
+    )
+
+    risco_dano_irreversivel_saude = models.BooleanField(
+        default=False,
+        verbose_name="Risco de dano irreversível à saúde?"
+    )
+
+    circunstancias_risco_permanente_saude = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name="Circunstâncias de risco permanente à saúde"
+    )
+
+    grupo = models.CharField(max_length=20, choices=GRUPO_CHOICES, default="adultos")
     indicado_criancas = models.CharField(max_length=100, choices=[('SIM', 'Sim'), ('NÃO', 'Não')], default='NÃO')
     motivo_criancas = models.TextField(blank=True, null=True)
     indicado_adolescentes = models.CharField(max_length=100, choices=[('SIM', 'Sim'), ('NÃO', 'Não')], default='NÃO')

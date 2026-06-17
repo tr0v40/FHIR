@@ -5,7 +5,8 @@ from django.contrib import admin, messages
 from django import forms
 from .forms import TreatmentUrlEnglishForm, TreatmentListUrlEnglishForm, TreatmentsUSAForm
 from django.db import models
-
+from django.contrib.admin.models import LogEntry
+from django.utils.html import format_html
 from django.urls import path, reverse
 from django.utils.html import format_html
 
@@ -105,7 +106,124 @@ class DetalhesTratamentoResumoResource(resources.ModelResource):
         fields = ("id", "nome", "fabricante", "principio_ativo")
         import_id_fields = ("nome",)
         skip_unchanged = True
+@admin.register(LogEntry)
+class AtividadesUsuariosAdmin(admin.ModelAdmin):
+    list_display = (
+        "data_hora",
+        "usuario",
+        "acao_formatada",
+        "modelo",
+        "objeto",
+        "id_objeto",
+        "detalhes",
+    )
 
+    list_filter = (
+        "user",
+        "action_flag",
+        "content_type",
+        "action_time",
+    )
+
+    search_fields = (
+        "user__username",
+        "user__email",
+        "object_repr",
+        "object_id",
+        "change_message",
+    )
+
+    date_hierarchy = "action_time"
+    ordering = ("-action_time",)
+
+    list_per_page = 50
+
+    readonly_fields = (
+        "action_time",
+        "user",
+        "content_type",
+        "object_id",
+        "object_repr",
+        "action_flag",
+        "change_message",
+        "detalhes",
+    )
+
+    fields = (
+        "action_time",
+        "user",
+        "action_flag",
+        "content_type",
+        "object_id",
+        "object_repr",
+        "detalhes",
+    )
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    @admin.display(description="Data/Hora", ordering="action_time")
+    def data_hora(self, obj):
+        return obj.action_time.strftime("%d/%m/%Y %H:%M:%S")
+
+    @admin.display(description="Usuário", ordering="user")
+    def usuario(self, obj):
+        if obj.user:
+            return obj.user.username
+        return "-"
+
+    @admin.display(description="Ação", ordering="action_flag")
+    def acao_formatada(self, obj):
+        if obj.action_flag == 1:
+            return format_html(
+                '<span style="color:#166534;font-weight:600;">Adicionado</span>'
+            )
+
+        if obj.action_flag == 2:
+            return format_html(
+                '<span style="color:#1D4ED8;font-weight:600;">Alterado</span>'
+            )
+
+        if obj.action_flag == 3:
+            return format_html(
+                '<span style="color:#B91C1C;font-weight:600;">Excluído</span>'
+            )
+
+        return obj.action_flag
+
+    @admin.display(description="Modelo", ordering="content_type")
+    def modelo(self, obj):
+        if obj.content_type:
+            return f"{obj.content_type.app_label} | {obj.content_type.name}"
+        return "-"
+
+    @admin.display(description="Objeto", ordering="object_repr")
+    def objeto(self, obj):
+        return obj.object_repr or "-"
+
+    @admin.display(description="ID objeto", ordering="object_id")
+    def id_objeto(self, obj):
+        return obj.object_id or "-"
+
+    @admin.display(description="Detalhes")
+    def detalhes(self, obj):
+        try:
+            mensagem = obj.get_change_message()
+        except Exception:
+            mensagem = obj.change_message
+
+        return mensagem or "-"
+class AtividadeUsuario(LogEntry):
+    class Meta:
+        proxy = True
+        verbose_name = "Atividade do usuário"
+        verbose_name_plural = "Atividades dos usuários"
 
 @admin.register(DetalhesTratamentoResumo)
 class DetalhesTratamentoAdmin(ImportExportModelAdmin):
@@ -196,6 +314,10 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
                     "opiniao_especialista",
                     "links_profissionais",
                     "alertas",
+                    "risco_morte",
+                    "circunstancias_risco_morte",
+                    "risco_dano_irreversivel_saude",
+                    "circunstancias_risco_permanente_saude",
                 )
             },
         ),
@@ -295,16 +417,37 @@ class CondicaoSaudeAdmin(admin.ModelAdmin):
 
 
 class EvidenciasClinicasForm(forms.ModelForm):
+    data_publicacao = forms.DateField(
+        required=False,
+        label="Mês e ano da publicação",
+        input_formats=["%Y-%m"],
+        widget=forms.DateInput(
+            format="%Y-%m",
+            attrs={
+                "type": "month",
+                "placeholder": "AAAA-MM",
+            }
+        )
+    )
+
     tipos_eficacia = forms.ModelMultipleChoiceField(
         queryset=TipoEficacia.objects.all(),
-        widget=forms.CheckboxSelectMultiple, 
-        required=False, 
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
         label="Tipos de Eficácia"
     )
 
     class Meta:
         model = EvidenciasClinicas
-        fields = ['tratamento', 'titulo', 'descricao', 'condicao_saude', 'rigor_da_pesquisa', 'tipos_eficacia', 'eficacia_min', 'eficacia_max', 'numero_participantes']
+        fields = "__all__"
+
+    def clean_data_publicacao(self):
+        data = self.cleaned_data.get("data_publicacao")
+
+        if data:
+            return data.replace(day=1)
+
+        return data
 
 
 
@@ -452,7 +595,7 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
         "tratamento",
         "condicao_saude",  
         "rigor_da_pesquisa",
-        "data_publicacao",
+        "data_publicacao_mes_ano",
         "referencia_bibliografica",
         "numero_participantes",
         "visualizar_pdf",
@@ -460,6 +603,12 @@ class EvidenciasClinicasAdmin(admin.ModelAdmin):
     search_fields = ("titulo", "tratamento__nome", "referencia_bibliografica")
     list_filter = ("rigor_da_pesquisa", "data_publicacao")
     readonly_fields = ("imagem_preview", "visualizar_pdf")
+
+    @admin.display(description="Data publicação", ordering="data_publicacao")
+    def data_publicacao_mes_ano(self, obj):
+        if obj.data_publicacao:
+            return obj.data_publicacao.strftime("%m/%Y")
+        return "-"   
     
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         formfield = super().formfield_for_foreignkey(db_field, request, **kwargs)

@@ -8,13 +8,7 @@
     <title>{{ page.meta_title|default:tratamento.nome }}</title>
     <meta name="description" content="{{ page.meta_description }}">
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BS67486CWG"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-BS67486CWG');
-    </script>
+    {% include 'core/google_analytics.html' %}
 
     <script>
       (function(c,l,a,r,i,t,y){
