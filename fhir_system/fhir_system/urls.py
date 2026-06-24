@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path, include,re_path
+from django.urls import path, include, re_path
 from core.views import home
 from django.conf import settings
 from django.conf.urls.static import static
@@ -36,6 +36,8 @@ urlpatterns = [
     path("tratamentos/", views.tratamentos, name="tratamentos"),
     path('admin/core/condicaosaude/<int:pk>/change/', CondicaoSaudeDetailView.as_view(), name='condicao_saude_detail'),
     path('api/', include('api.urls')),
+    path("api/integracoes/", include("api.urls_integracoes")),
+    path("api-auth/", include("rest_framework.urls")),
     path("", include("core.public_urls")),
     path("", include("core.public_urls_en")),
     path(

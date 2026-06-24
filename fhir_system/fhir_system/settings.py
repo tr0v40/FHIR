@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     "core",  
     "django.contrib.sites",  
     "rest_framework",
+    "rest_framework.authtoken",
     "api", 
 ]
 

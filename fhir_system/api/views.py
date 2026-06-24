@@ -426,3 +426,5 @@ class FooterEnglishTreatmentListsAPIView(APIView):
         ]
 
         return Response(data)
+    
+
