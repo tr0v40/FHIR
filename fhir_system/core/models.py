@@ -432,6 +432,42 @@ class DetalhesTratamentoResumo(models.Model):
     comentario = models.TextField(blank=True, null=True)
     categoria = models.CharField(max_length=100, blank=True, null=True)
     evidencia_clinica = models.TextField(blank=True, null=True)
+    CATEGORIA_REGULATORIA_CHOICES = [
+        ("novo", "Novo"),
+        ("referencia", "Referência"),
+        ("similar", "Similar"),
+        ("generico", "Genérico"),
+        ("fitoterapico", "Fitoterápico"),
+        ("biologico", "Biológico"),
+        ("especifico", "Específico"),
+        ("dinamizado", "Dinamizado"),
+        ("radiofarmaco", "Radiofármaco"),
+        ("gases_medicinais", "Gases medicinais"),
+        ("nao_aplicavel", "Não aplicável"),
+    ]
+
+    TIPO_PRESCRICAO_CHOICES = [
+        ("isento_de_prescricao", "Isento de prescrição"),
+        ("tarja_vermelha", "Tarja vermelha"),
+        ("tarja_preta", "Tarja preta"),
+        ("nao_medicamentosos", "Não medicamentosos"),
+    ]
+
+    categoria_regulatoria = models.CharField(
+        "Categoria regulatória",
+        max_length=50,
+        choices=CATEGORIA_REGULATORIA_CHOICES,
+        blank=True,
+        null=True,
+    )
+
+    tipo_prescricao = models.CharField(
+        "Tipo de prescrição",
+        max_length=50,
+        choices=TIPO_PRESCRICAO_CHOICES,
+        blank=True,
+        null=True,
+    )
     principio_ativo = models.CharField(max_length=20000,blank=True)
     
     

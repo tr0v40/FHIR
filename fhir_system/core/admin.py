@@ -189,6 +189,7 @@ class AtividadesUsuariosAdmin(admin.ModelAdmin):
             return format_html(
                 '<span style="color:#1D4ED8;font-weight:600;">Alterado</span>'
             )
+        
 
         if obj.action_flag == 3:
             return format_html(
@@ -278,6 +279,8 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
                     "nome",
                     "fabricante",
                     "principio_ativo",
+                    "categoria_regulatoria",
+                    "tipo_prescricao",
                     "descricao",
                     "imagem",
                     "imagem_detalhes",
@@ -325,20 +328,20 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
                 "Indicação por Grupo",
                 {
                     "fields": (
-                        "indicado_adultos",
-                        "motivo_adultos",
-
-                        "indicado_idosos",
-                        "motivo_idosos",
-
-                        "indicado_lactantes",
-                        "motivo_lactantes",
-
                         "indicado_criancas",
                         "motivo_criancas",
 
                         "indicado_adolescentes",
                         "motivo_adolescentes",
+
+                        "indicado_idosos",
+                        "motivo_idosos",
+
+                        "indicado_adultos",
+                        "motivo_adultos",
+
+                        "indicado_lactantes",
+                        "motivo_lactantes",
 
                         "indicado_gravidez",
                         "motivo_gravidez",
@@ -373,23 +376,23 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
         labels = {
             "descricao": "Descrição geral do tratamento",
 
-            "indicado_adultos": "Adultos",
-            "motivo_adultos": "Motivo - Adultos",
-
-            "indicado_idosos": "Idosos +65 anos",
-            "motivo_idosos": "Motivo - Idosos +65 anos",
-
-            "indicado_lactantes": "Crianças de até 2 anos (Lactantes)",
-            "motivo_lactantes": "Motivo - Crianças de até 2 anos (Lactantes)",
-
-            "indicado_criancas": "Crianças de 2 a 12 anos",
-            "motivo_criancas": "Motivo - Crianças de 2 a 12 anos",
+            "indicado_criancas": "Crianças menores de 12 anos",
+            "motivo_criancas": "Motivo - Crianças menores de 12 anos",
 
             "indicado_adolescentes": "Adolescentes 12 a 17 anos",
             "motivo_adolescentes": "Motivo - Adolescentes 12 a 17 anos",
 
-            "indicado_gravidez": "Grávidas",
-            "motivo_gravidez": "Motivo - Grávidas",
+            "indicado_idosos": "Idosos +65 anos",
+            "motivo_idosos": "Motivo - Idosos +65 anos",
+
+            "indicado_adultos": "Adultos",
+            "motivo_adultos": "Motivo - Adultos",
+
+            "indicado_lactantes": "Lactantes",
+            "motivo_lactantes": "Motivo - Lactantes",
+
+            "indicado_gravidez": "Gravidez",
+            "motivo_gravidez": "Motivo - Gravidez",
         }
 
         for field_name, label in labels.items():
