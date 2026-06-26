@@ -1,4 +1,4 @@
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets, mixins, filters
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 
 from core.models import (
@@ -16,8 +16,10 @@ from core.models import (
 )
 
 from .permissions import IntegracaoReadCreateUpdatePermission
+from .pagination import IntegracaoTratamentosPagination
 
 from .serializers_integracoes import (
+    IntegracaoDetalhesTratamentoListSerializer,
     IntegracaoDetalhesTratamentoSerializer,
     IntegracaoCondicaoSaudeSerializer,
     IntegracaoReacaoAdversaSerializer,
@@ -37,7 +39,7 @@ class IntegracaoReadCreateUpdateBaseViewSet(
     mixins.RetrieveModelMixin,
     mixins.CreateModelMixin,
     mixins.UpdateModelMixin,
-    viewsets.GenericViewSet
+    viewsets.GenericViewSet,
 ):
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     permission_classes = [IntegracaoReadCreateUpdatePermission]
@@ -48,8 +50,59 @@ class IntegracaoReadCreateUpdateBaseViewSet(
 
 
 class IntegracaoDetalhesTratamentoViewSet(IntegracaoReadCreateUpdateBaseViewSet):
-    queryset = DetalhesTratamentoResumo.objects.all().order_by("id")
     serializer_class = IntegracaoDetalhesTratamentoSerializer
+    pagination_class = IntegracaoTratamentosPagination
+
+    filter_backends = [
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+
+    search_fields = [
+        "nome",
+        "fabricante",
+        "principio_ativo",
+        "categoria_regulatoria",
+        "tipo_prescricao",
+    ]
+
+    ordering_fields = [
+        "id",
+        "nome",
+        "fabricante",
+        "principio_ativo",
+    ]
+
+    ordering = ["id"]
+
+    def get_queryset(self):
+        queryset = DetalhesTratamentoResumo.objects.all().order_by("id")
+
+        if self.action == "list":
+            return queryset.only(
+                "id",
+                "nome",
+                "fabricante",
+                "principio_ativo",
+                "categoria_regulatoria",
+                "tipo_prescricao",
+                "descricao",
+                "quando_usar",
+                "custo_medicamento",
+                "alertas",
+            )
+
+        return queryset.prefetch_related(
+            "contraindicacoes",
+            "reacoes_adversas",
+            "tipo_tratamento",
+        )
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return IntegracaoDetalhesTratamentoListSerializer
+
+        return IntegracaoDetalhesTratamentoSerializer
 
 
 class IntegracaoCondicaoSaudeViewSet(IntegracaoReadCreateUpdateBaseViewSet):

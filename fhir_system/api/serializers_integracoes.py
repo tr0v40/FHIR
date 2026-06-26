@@ -15,7 +15,42 @@ from core.models import (
 )
 
 
+class IntegracaoDetalhesTratamentoListSerializer(serializers.ModelSerializer):
+    """
+    Serializer leve para listagem de tratamentos.
+
+    Usado apenas no GET /api/integracoes/tratamentos/
+    para evitar carregar todos os campos pesados da tabela.
+    """
+
+    class Meta:
+        model = DetalhesTratamentoResumo
+        fields = [
+            "id",
+            "nome",
+            "fabricante",
+            "principio_ativo",
+            "categoria_regulatoria",
+            "tipo_prescricao",
+            "descricao",
+            "quando_usar",
+            "custo_medicamento",
+            "alertas",
+        ]
+        read_only_fields = ["id"]
+
+
 class IntegracaoDetalhesTratamentoSerializer(serializers.ModelSerializer):
+    """
+    Serializer completo para detalhe, criação e edição de tratamentos.
+
+    Usado em:
+    GET /api/integracoes/tratamentos/<id>/
+    POST /api/integracoes/tratamentos/
+    PUT /api/integracoes/tratamentos/<id>/
+    PATCH /api/integracoes/tratamentos/<id>/
+    """
+
     class Meta:
         model = DetalhesTratamentoResumo
         fields = "__all__"
