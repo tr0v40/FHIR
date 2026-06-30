@@ -59,8 +59,10 @@ class IntegracaoDetalhesTratamentoViewSet(IntegracaoReadCreateUpdateBaseViewSet)
     ]
 
     search_fields = [
+        
         "nome",
         "fabricante",
+        "id_tratamento",
         "principio_ativo",
         "categoria_regulatoria",
         "tipo_prescricao",
@@ -70,6 +72,7 @@ class IntegracaoDetalhesTratamentoViewSet(IntegracaoReadCreateUpdateBaseViewSet)
         "id",
         "nome",
         "fabricante",
+        "id_tratamento",
         "principio_ativo",
     ]
 
@@ -83,6 +86,7 @@ class IntegracaoDetalhesTratamentoViewSet(IntegracaoReadCreateUpdateBaseViewSet)
                 "id",
                 "nome",
                 "fabricante",
+                "id_tratamento",
                 "principio_ativo",
                 "categoria_regulatoria",
                 "tipo_prescricao",

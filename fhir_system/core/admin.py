@@ -238,6 +238,7 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
     list_display = (
         "nome",
         "fabricante",
+        "id_tratamento",
         "principio_ativo",
         "grupo",
         "eficacia_min",
@@ -256,6 +257,7 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
     search_fields = (
         "nome",
         "fabricante",
+        "id_tratamento",
         "principio_ativo",
         "grupo",
         "condicoes_relacionadas__condicao__nome",
@@ -278,6 +280,7 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
                 "fields": (
                     "nome",
                     "fabricante",
+                    "id_tratamento",
                     "principio_ativo",
                     "categoria_regulatoria",
                     "tipo_prescricao",

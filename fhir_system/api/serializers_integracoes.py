@@ -29,6 +29,7 @@ class IntegracaoDetalhesTratamentoListSerializer(serializers.ModelSerializer):
             "id",
             "nome",
             "fabricante",
+            "id_tratamento",
             "principio_ativo",
             "categoria_regulatoria",
             "tipo_prescricao",
