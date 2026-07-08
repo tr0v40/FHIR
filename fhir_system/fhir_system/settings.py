@@ -10,7 +10,13 @@ SECRET_KEY = os.getenv(
     "DJANGO_SECRET_KEY", "chave-secreta"
 )  # Usa 'chave-secreta' se não houver .env
 DEBUG = False
-ALLOWED_HOSTS = ["*","127.0.0.1", "189.126.32.64", "cadastros.telix.inf.br"]
+ALLOWED_HOSTS = [
+    "cadastros.telix.inf.br",
+    "www.telix.health",
+    "telix.health",
+    "www.telix.inf.br",
+    "telix.inf.br",
+]
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 20000
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760
@@ -77,6 +83,7 @@ DECIMAL_SEPARATOR = ','
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "core.middleware.DomainRoutingMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware", 
     "django.contrib.sessions.middleware.SessionMiddleware",

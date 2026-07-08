@@ -13,6 +13,7 @@ from django.urls import re_path
 from core import public_views_en
 from core.error_views import error_404_en
 from core.public_views_en import english_treatment_list_with_filters
+from core.domain_views import domain_home
 
 
 
@@ -22,7 +23,7 @@ urlpatterns = [
 # path("", LoginView.as_view(), name="home"),
 
 # usar no servidor inglês
-    path("", public_views_en.english_treatments_home, name="english_home"),
+    path("", domain_home, name="domain_home"),
     path("admin/", admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
     path('comentarios/', views.comentario_view, name='comentarios'),
@@ -31,7 +32,7 @@ urlpatterns = [
     path("register/", views.register, name="register"),
     path("salvar-avaliacao/<int:tratamento_id>/", views.salvar_avaliacao, name="salvar_avaliacao"),
     path('admin/core/tipoeficacia/<int:pk>/descricao/', tipo_eficacia_descricao_json, name='tipoeficacia-descricao'),
-    path("home", public_views_en.english_treatments_home, name="english_home"),
+    path("home", domain_home, name="domain_home_alias"),
    
     path("tratamentos/", views.tratamentos, name="tratamentos"),
     path('admin/core/condicaosaude/<int:pk>/change/', CondicaoSaudeDetailView.as_view(), name='condicao_saude_detail'),
