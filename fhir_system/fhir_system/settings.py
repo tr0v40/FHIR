@@ -10,7 +10,12 @@ SECRET_KEY = os.getenv(
     "DJANGO_SECRET_KEY", "chave-secreta"
 )  # Usa 'chave-secreta' se não houver .env
 DEBUG = False
+DEBUG = True
+
 ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "0.0.0.0",
     "cadastros.telix.inf.br",
     "www.telix.health",
     "telix.health",
@@ -144,11 +149,15 @@ WSGI_APPLICATION = "fhir_system.wsgi.application"
 
 # Configuração do Jazzmin (Admin Customizado)
 JAZZMIN_SETTINGS = {
-    "site_title": "FHIR Admin",
-    "site_header": "FHIR Dashboard",
-    "site_brand": "FHIR System",
-    "welcome_sign": "Bem-vindo ao sistema FHIR",
-    "copyright": "FHIR System © 2025",
+    "site_title": "Sistema Telix",
+    "site_header": "Sistema Telix",
+    "site_brand": "Sistema Telix",
+    "welcome_sign": "Bem-vindo ao Sistema Telix",
+    "copyright": "Telix © 2026",
+    "site_logo": "img/logo.png",
+    "login_logo": "img/logo.png",
+    "site_icon": "img/favicon.png",
+
     "search_model": ["core.ResourceStudyReport"],
     "user_avatar": None,
     "show_sidebar": True,
