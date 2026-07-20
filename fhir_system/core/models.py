@@ -1536,3 +1536,374 @@ class TreatmentListUrlEnglish(models.Model):
         if self.efficacy_type:
             return f"{self.health_condition} / {self.efficacy_type}"
         return f"{self.health_condition} / all"
+    
+
+class SegurancaUso(models.Model):
+    GRUPO_CRIANCAS = "criancas"
+    GRUPO_ADOLESCENTES = "adolescentes"
+    GRUPO_IDOSOS = "idosos"
+    GRUPO_ADULTOS = "adultos"
+    GRUPO_LACTANTES = "lactantes"
+    GRUPO_GRAVIDEZ = "gravidez"
+
+    GRUPO_CHOICES = [
+        (GRUPO_CRIANCAS, "Crianças"),
+        (GRUPO_ADOLESCENTES, "Adolescentes"),
+        (GRUPO_IDOSOS, "Idosos"),
+        (GRUPO_ADULTOS, "Adultos"),
+        (GRUPO_LACTANTES, "Lactantes"),
+        (GRUPO_GRAVIDEZ, "Gravidez"),
+    ]
+
+    tratamento = models.ForeignKey(
+        "DetalhesTratamentoResumo",
+        on_delete=models.PROTECT,
+        related_name="segurancas_uso",
+        verbose_name="Tratamento",
+    )
+
+    grupo = models.CharField(
+        "Grupo",
+        max_length=30,
+        choices=GRUPO_CHOICES,
+    )
+
+    tem_seguranca_uso = models.BooleanField(
+        "Tem segurança de uso?",
+        default=False,
+    )
+
+    motivo = models.TextField(
+        "Motivo",
+        blank=True,
+        default="",
+    )
+
+    numero_participantes = models.PositiveIntegerField(
+        "Número de participantes",
+        null=True,
+        blank=True,
+    )
+
+    autores = models.TextField(
+        "Autores",
+        blank=True,
+        default="",
+    )
+
+    link_estudo = models.URLField(
+        "Link do estudo",
+        max_length=1000,
+        blank=True,
+        default="",
+    )
+
+    data_publicacao = models.DateField(
+        "Data de publicação",
+        null=True,
+        blank=True,
+    )
+
+    paises = models.CharField(
+        "Países",
+        max_length=500,
+        blank=True,
+        default="",
+    )
+
+    titulo = models.CharField(
+        "Título",
+        max_length=500,
+        blank=True,
+        default="",
+    )
+
+    fonte_local_publicacao = models.CharField(
+        "Fonte / local de publicação",
+        max_length=500,
+        blank=True,
+        default="",
+    )
+
+    imagem_local_publicacao = models.ImageField(
+        "Imagem do local de publicação",
+        upload_to="seguranca_uso/fontes/",
+        null=True,
+        blank=True,
+    )
+
+    descricao_pesquisa = models.TextField(
+        "Descrição da pesquisa",
+        blank=True,
+        default="",
+    )
+
+    criado_em = models.DateTimeField(
+        "Criado em",
+        auto_now_add=True,
+    )
+
+    atualizado_em = models.DateTimeField(
+        "Atualizado em",
+        auto_now=True,
+    )
+
+    class Meta:
+        verbose_name = "Segurança de uso"
+        verbose_name_plural = "Segurança de uso"
+        ordering = ["tratamento__nome", "grupo", "-data_publicacao"]
+
+    def __str__(self):
+        return f"{self.tratamento} — {self.get_grupo_display()}"
+    
+class FatorRisco(models.Model):
+    TIPO_GENETICO = "genetico"
+    TIPO_COMPORTAMENTAL = "comportamental"
+    TIPO_AMBIENTAL = "ambiental"
+    TIPO_CLINICO = "clinico"
+    TIPO_HORMONAL = "hormonal"
+    TIPO_ALIMENTAR = "alimentar"
+    TIPO_HISTORICO_FAMILIAR = "historico_familiar"
+    TIPO_OUTRO = "outro"
+
+    TIPO_FATOR_RISCO_CHOICES = [
+        (TIPO_GENETICO, "Genético"),
+        (TIPO_COMPORTAMENTAL, "Comportamental"),
+        (TIPO_AMBIENTAL, "Ambiental"),
+        (TIPO_CLINICO, "Clínico"),
+        (TIPO_HORMONAL, "Hormonal"),
+        (TIPO_ALIMENTAR, "Alimentar"),
+        (TIPO_HISTORICO_FAMILIAR, "Histórico familiar"),
+        (TIPO_OUTRO, "Outro"),
+    ]
+
+    condicao_saude = models.ForeignKey(
+        "CondicaoSaude",
+        on_delete=models.PROTECT,
+        related_name="fatores_risco",
+        verbose_name="Condição de saúde",
+    )
+
+    tipo_fator_risco = models.CharField(
+        "Tipo do fator de risco",
+        max_length=50,
+        choices=TIPO_FATOR_RISCO_CHOICES,
+    )
+
+    nome = models.CharField(
+        "Nome do fator de risco",
+        max_length=255,
+    )
+
+    descricao = models.TextField(
+        "Descrição do fator de risco",
+        blank=True,
+        default="",
+    )
+
+    criado_em = models.DateTimeField(
+        "Criado em",
+        auto_now_add=True,
+    )
+
+    atualizado_em = models.DateTimeField(
+        "Atualizado em",
+        auto_now=True,
+    )
+
+    class Meta:
+        verbose_name = "Fator de risco"
+        verbose_name_plural = "Fatores de risco"
+        ordering = ["condicao_saude__nome", "tipo_fator_risco", "nome"]
+
+    def __str__(self):
+        return f"{self.nome} — {self.condicao_saude}"
+    
+from django.core.validators import MinValueValidator, MaxValueValidator, FileExtensionValidator
+
+
+class EvidenciaFatorRisco(models.Model):
+    CORRELACAO = "correlacao"
+    CAUSA = "causa"
+
+    TIPO_RELACAO_CHOICES = [
+        (CORRELACAO, "Correlação"),
+        (CAUSA, "Causa"),
+    ]
+
+    GRUPO_CRIANCAS = "criancas"
+    GRUPO_ADOLESCENTES = "adolescentes"
+    GRUPO_IDOSOS = "idosos"
+    GRUPO_ADULTOS = "adultos"
+    GRUPO_LACTANTES = "lactantes"
+    GRUPO_GRAVIDEZ = "gravidez"
+
+    GRUPO_CHOICES = [
+        (GRUPO_CRIANCAS, "Crianças"),
+        (GRUPO_ADOLESCENTES, "Adolescentes"),
+        (GRUPO_IDOSOS, "Idosos"),
+        (GRUPO_ADULTOS, "Adultos"),
+        (GRUPO_LACTANTES, "Lactantes"),
+        (GRUPO_GRAVIDEZ, "Gravidez"),
+    ]
+
+    condicao_saude = models.ForeignKey(
+        "CondicaoSaude",
+        on_delete=models.PROTECT,
+        related_name="evidencias_fatores_risco",
+        verbose_name="Condição de saúde",
+    )
+
+    fator_risco = models.ForeignKey(
+        "FatorRisco",
+        on_delete=models.PROTECT,
+        related_name="evidencias_fatores_risco",
+        verbose_name="Fator de risco",
+    )
+
+    correlacao_ou_causa = models.CharField(
+        "Correlação ou causa",
+        max_length=20,
+        choices=TIPO_RELACAO_CHOICES,
+    )
+
+    grupo = models.CharField(
+        "Grupo",
+        max_length=30,
+        choices=GRUPO_CHOICES,
+    )
+
+    prevalencia = models.DecimalField(
+        "Prevalência (%)",
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(100),
+        ],
+        help_text="Informe o percentual entre 0 e 100.",
+    )
+
+    requer_exposicao = models.BooleanField(
+        "Requer exposição a algum agente/situação para ser fator de risco?",
+        default=False,
+    )
+
+    agentes_situacoes_necessarias = models.TextField(
+        "Agentes/situações necessárias para esse item ser um fator de risco",
+        blank=True,
+        default="",
+    )
+
+    ano_dados_coletados = models.PositiveSmallIntegerField(
+        "Data dos dados coletados (ano)",
+        null=True,
+        blank=True,
+    )
+
+    pais_dados_pesquisados = models.CharField(
+        "País dos dados pesquisados",
+        max_length=255,
+        blank=True,
+        default="",
+    )
+
+    rigor_pesquisa = models.CharField(
+        "Rigor da pesquisa",
+        max_length=255,
+        blank=True,
+        default="",
+        help_text="Ex.: alto, médio, baixo, revisão sistemática, estudo observacional, metanálise etc.",
+    )
+
+    quantidade_participantes = models.PositiveIntegerField(
+        "Quantidade de participantes",
+        null=True,
+        blank=True,
+    )
+
+    data_pesquisa = models.DateField(
+        "Data da pesquisa",
+        null=True,
+        blank=True,
+    )
+
+    pais_pesquisa = models.CharField(
+        "País da pesquisa",
+        max_length=255,
+        blank=True,
+        default="",
+    )
+
+    nomes_autores = models.TextField(
+        "Nomes dos autores",
+        blank=True,
+        default="",
+    )
+
+    titulo_pesquisa = models.CharField(
+        "Título da pesquisa",
+        max_length=500,
+    )
+
+    tipo_identificador_pesquisa = models.CharField(
+        "Tipo de identificador da pesquisa",
+        max_length=100,
+        blank=True,
+        default="",
+        help_text="Ex.: DOI, PMID, ClinicalTrials.gov, outro.",
+    )
+
+    identificador_pesquisa = models.CharField(
+        "Identificador DOI ou outro identificador da pesquisa",
+        max_length=255,
+        blank=True,
+        default="",
+    )
+
+    descricao_pesquisa = models.TextField(
+        "Descrição da pesquisa",
+        blank=True,
+        default="",
+    )
+
+    link_pesquisa = models.URLField(
+        "Link para a pesquisa",
+        max_length=1000,
+        blank=True,
+        default="",
+    )
+
+    arquivo_pdf_pesquisa = models.FileField(
+        "Subir pesquisa em PDF",
+        upload_to="evidencias_fatores_risco/pdfs/",
+        null=True,
+        blank=True,
+        validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
+    )
+
+    criado_em = models.DateTimeField(
+        "Criado em",
+        auto_now_add=True,
+    )
+
+    atualizado_em = models.DateTimeField(
+        "Atualizado em",
+        auto_now=True,
+    )
+
+    class Meta:
+        verbose_name = "Evidência fator de risco"
+        verbose_name_plural = "Evidências fatores de risco"
+        ordering = [
+            "condicao_saude__nome",
+            "fator_risco__nome",
+            "grupo",
+            "-data_pesquisa",
+        ]
+        db_table = "evidencias_fatores_risco"
+
+    def __str__(self):
+        return f"{self.condicao_saude} — {self.fator_risco} — {self.get_grupo_display()}"

@@ -9,9 +9,10 @@ from django.contrib.admin.models import LogEntry
 from django.utils.html import format_html
 from django.urls import path, reverse
 from django.utils.html import format_html
-
+from .models import SegurancaUso
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
+from .models import FatorRisco,EvidenciaFatorRisco
 
 from core.admin_urls_view import admin_urls_list
 from .forms import TratamentoCondicaoInlineForm
@@ -1381,3 +1382,258 @@ class TreatmentListUrlEnglishAdmin(admin.ModelAdmin):
     def unpublish_pages(self, request, queryset):
         updated = queryset.update(published=False)
         self.message_user(request, f"{updated} page(s) unpublished.", level=messages.WARNING)
+
+
+@admin.register(SegurancaUso)
+class SegurancaUsoAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "tratamento",
+        "grupo",
+        "tem_seguranca_uso",
+        "numero_participantes",
+        "data_publicacao",
+        "fonte_local_publicacao",
+        "atualizado_em",
+    )
+
+    list_filter = (
+        "grupo",
+        "tem_seguranca_uso",
+        "data_publicacao",
+        "fonte_local_publicacao",
+    )
+
+    search_fields = (
+        "tratamento__nome",
+        "titulo",
+        "autores",
+        "paises",
+        "fonte_local_publicacao",
+        "descricao_pesquisa",
+    )
+
+    autocomplete_fields = (
+        "tratamento",
+    )
+
+    readonly_fields = (
+        "criado_em",
+        "atualizado_em",
+    )
+
+    fieldsets = (
+        (
+            "Identificação",
+            {
+                "fields": (
+                    "tratamento",
+                    "grupo",
+                    "tem_seguranca_uso",
+                    "motivo",
+                )
+            },
+        ),
+        (
+            "Dados do estudo",
+            {
+                "fields": (
+                    "titulo",
+                    "autores",
+                    "numero_participantes",
+                    "data_publicacao",
+                    "paises",
+                    "link_estudo",
+                )
+            },
+        ),
+        (
+            "Fonte de publicação",
+            {
+                "fields": (
+                    "fonte_local_publicacao",
+                    "imagem_local_publicacao",
+                )
+            },
+        ),
+        (
+            "Descrição da pesquisa",
+            {
+                "fields": (
+                    "descricao_pesquisa",
+                )
+            },
+        ),
+        (
+            "Controle",
+            {
+                "fields": (
+                    "criado_em",
+                    "atualizado_em",
+                )
+            },
+        ),
+    )
+
+
+@admin.register(FatorRisco)
+class FatorRiscoAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "condicao_saude",
+        "tipo_fator_risco",
+        "nome",
+        "atualizado_em",
+    )
+
+    list_filter = (
+        "condicao_saude",
+        "tipo_fator_risco",
+    )
+
+    search_fields = (
+        "condicao_saude__nome",
+        "nome",
+        "descricao",
+    )
+
+    autocomplete_fields = (
+        "condicao_saude",
+    )
+
+    readonly_fields = (
+        "criado_em",
+        "atualizado_em",
+    )
+
+    fieldsets = (
+        (
+            "Informações do fator de risco",
+            {
+                "fields": (
+                    "condicao_saude",
+                    "tipo_fator_risco",
+                    "nome",
+                    "descricao",
+                )
+            },
+        ),
+        (
+            "Controle",
+            {
+                "fields": (
+                    "criado_em",
+                    "atualizado_em",
+                )
+            },
+        ),
+    )
+
+@admin.register(EvidenciaFatorRisco)
+class EvidenciaFatorRiscoAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "condicao_saude",
+        "fator_risco",
+        "grupo",
+        "prevalencia",
+        "correlacao_ou_causa",
+        "requer_exposicao",
+        "rigor_pesquisa",
+        "quantidade_participantes",
+        "data_pesquisa",
+        "pais_pesquisa",
+        "atualizado_em",
+    )
+
+    list_filter = (
+        "condicao_saude",
+        "fator_risco",
+        "grupo",
+        "correlacao_ou_causa",
+        "requer_exposicao",
+        "rigor_pesquisa",
+        "pais_pesquisa",
+        "data_pesquisa",
+    )
+
+    search_fields = (
+        "condicao_saude__nome",
+        "fator_risco__nome",
+        "titulo_pesquisa",
+        "nomes_autores",
+        "identificador_pesquisa",
+        "descricao_pesquisa",
+        "pais_pesquisa",
+        "pais_dados_pesquisados",
+    )
+
+    autocomplete_fields = (
+        "condicao_saude",
+        "fator_risco",
+    )
+
+    readonly_fields = (
+        "criado_em",
+        "atualizado_em",
+    )
+
+    fieldsets = (
+        (
+            "Classificação do risco",
+            {
+                "fields": (
+                    "condicao_saude",
+                    "fator_risco",
+                    "correlacao_ou_causa",
+                    "grupo",
+                    "prevalencia",
+                )
+            },
+        ),
+        (
+            "Exposição necessária",
+            {
+                "fields": (
+                    "requer_exposicao",
+                    "agentes_situacoes_necessarias",
+                )
+            },
+        ),
+        (
+            "Dados analisados",
+            {
+                "fields": (
+                    "ano_dados_coletados",
+                    "pais_dados_pesquisados",
+                    "rigor_pesquisa",
+                    "quantidade_participantes",
+                )
+            },
+        ),
+        (
+            "Dados da pesquisa",
+            {
+                "fields": (
+                    "data_pesquisa",
+                    "pais_pesquisa",
+                    "nomes_autores",
+                    "titulo_pesquisa",
+                    "tipo_identificador_pesquisa",
+                    "identificador_pesquisa",
+                    "descricao_pesquisa",
+                    "link_pesquisa",
+                    "arquivo_pdf_pesquisa",
+                )
+            },
+        ),
+        (
+            "Controle",
+            {
+                "fields": (
+                    "criado_em",
+                    "atualizado_em",
+                )
+            },
+        ),
+    )
