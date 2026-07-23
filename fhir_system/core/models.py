@@ -1806,12 +1806,14 @@ class EvidenciaFatorRisco(models.Model):
         blank=True,
     )
 
-    pais_dados_pesquisados = models.CharField(
-        "País dos dados pesquisados",
-        max_length=255,
+    pais_dados_pesquisados = models.ManyToManyField(
+        "Pais",
         blank=True,
-        default="",
+        verbose_name="País dos dados pesquisados",
+        related_name="evidencias_fatores_risco_dados_pesquisados",
     )
+
+    
 
     rigor_pesquisa = models.IntegerField(
         "Rigor da pesquisa",
@@ -1830,11 +1832,11 @@ class EvidenciaFatorRisco(models.Model):
         blank=True,
     )
 
-    pais_pesquisa = models.CharField(
-        "País da pesquisa",
-        max_length=255,
+    pais_pesquisa = models.ManyToManyField(
+        "Pais",
         blank=True,
-        default="",
+        verbose_name="País da pesquisa",
+        related_name="evidencias_fatores_risco_pesquisas",
     )
 
     nomes_autores = models.TextField(

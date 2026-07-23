@@ -1546,7 +1546,7 @@ class EvidenciaFatorRiscoAdmin(admin.ModelAdmin):
         "rigor_pesquisa",
         "quantidade_participantes",
         "data_pesquisa",
-        "pais_pesquisa",
+        "get_pais_pesquisa",
         "atualizado_em",
     )
 
@@ -1557,8 +1557,9 @@ class EvidenciaFatorRiscoAdmin(admin.ModelAdmin):
         "correlacao_ou_causa",
         "requer_exposicao",
         "rigor_pesquisa",
-        "pais_pesquisa",
         "data_pesquisa",
+        "pais_dados_pesquisados",
+        "pais_pesquisa",
     )
 
     search_fields = (
@@ -1568,8 +1569,8 @@ class EvidenciaFatorRiscoAdmin(admin.ModelAdmin):
         "nomes_autores",
         "identificador_pesquisa",
         "descricao_pesquisa",
-        "pais_pesquisa",
-        "pais_dados_pesquisados",
+        "pais_dados_pesquisados__nome",
+        "pais_pesquisa__nome",
     )
 
     autocomplete_fields = (
@@ -1641,3 +1642,8 @@ class EvidenciaFatorRiscoAdmin(admin.ModelAdmin):
             },
         ),
     )
+
+    def get_pais_pesquisa(self, obj):
+        return ", ".join([pais.get_nome_display() for pais in obj.pais_pesquisa.all()])
+
+    get_pais_pesquisa.short_description = "País da pesquisa"
