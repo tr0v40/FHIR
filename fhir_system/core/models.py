@@ -1584,6 +1584,10 @@ class SegurancaUso(models.Model):
         null=True,
         blank=True,
     )
+    rigor_da_pesquisa = models.IntegerField(
+        "Rigor da pesquisa",
+        default=0,
+    )
 
     autores = models.TextField(
         "Autores",
@@ -1604,11 +1608,10 @@ class SegurancaUso(models.Model):
         blank=True,
     )
 
-    paises = models.CharField(
-        "Países",
-        max_length=500,
+    paises = models.ManyToManyField(
+        "Pais",
         blank=True,
-        default="",
+        verbose_name="Países",
     )
 
     titulo = models.CharField(
@@ -1810,12 +1813,9 @@ class EvidenciaFatorRisco(models.Model):
         default="",
     )
 
-    rigor_pesquisa = models.CharField(
+    rigor_pesquisa = models.IntegerField(
         "Rigor da pesquisa",
-        max_length=255,
-        blank=True,
-        default="",
-        help_text="Ex.: alto, médio, baixo, revisão sistemática, estudo observacional, metanálise etc.",
+        default=0,   
     )
 
     quantidade_participantes = models.PositiveIntegerField(

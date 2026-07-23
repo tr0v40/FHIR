@@ -1383,7 +1383,6 @@ class TreatmentListUrlEnglishAdmin(admin.ModelAdmin):
         updated = queryset.update(published=False)
         self.message_user(request, f"{updated} page(s) unpublished.", level=messages.WARNING)
 
-
 @admin.register(SegurancaUso)
 class SegurancaUsoAdmin(admin.ModelAdmin):
     list_display = (
@@ -1392,6 +1391,7 @@ class SegurancaUsoAdmin(admin.ModelAdmin):
         "grupo",
         "tem_seguranca_uso",
         "numero_participantes",
+        "rigor_da_pesquisa",
         "data_publicacao",
         "fonte_local_publicacao",
         "atualizado_em",
@@ -1402,13 +1402,15 @@ class SegurancaUsoAdmin(admin.ModelAdmin):
         "tem_seguranca_uso",
         "data_publicacao",
         "fonte_local_publicacao",
+        "rigor_da_pesquisa",
+        "paises",
     )
 
     search_fields = (
         "tratamento__nome",
         "titulo",
         "autores",
-        "paises",
+        "paises__nome",
         "fonte_local_publicacao",
         "descricao_pesquisa",
     )
@@ -1416,6 +1418,8 @@ class SegurancaUsoAdmin(admin.ModelAdmin):
     autocomplete_fields = (
         "tratamento",
     )
+
+
 
     readonly_fields = (
         "criado_em",
@@ -1441,6 +1445,7 @@ class SegurancaUsoAdmin(admin.ModelAdmin):
                     "titulo",
                     "autores",
                     "numero_participantes",
+                    "rigor_da_pesquisa",
                     "data_publicacao",
                     "paises",
                     "link_estudo",
@@ -1474,7 +1479,6 @@ class SegurancaUsoAdmin(admin.ModelAdmin):
             },
         ),
     )
-
 
 @admin.register(FatorRisco)
 class FatorRiscoAdmin(admin.ModelAdmin):
