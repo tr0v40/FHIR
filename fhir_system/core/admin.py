@@ -13,7 +13,7 @@ from .models import SegurancaUso
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from .models import FatorRisco,EvidenciaFatorRisco
-
+from .models import AlertaTratamento
 from core.admin_urls_view import admin_urls_list
 from .forms import TratamentoCondicaoInlineForm
 
@@ -227,6 +227,23 @@ class AtividadeUsuario(LogEntry):
         verbose_name = "Atividade do usuário"
         verbose_name_plural = "Atividades dos usuários"
 
+
+class AlertaTratamentoInline(admin.TabularInline):
+    model = AlertaTratamento
+    extra = 1
+
+    fields = (
+        "titulo",
+        "descricao",
+        "ordem",
+        "ativo",
+    )
+
+    ordering = (
+        "ordem",
+        "id",
+    )
+
 @admin.register(DetalhesTratamentoResumo)
 class DetalhesTratamentoAdmin(ImportExportModelAdmin):
     resource_class = DetalhesTratamentoResumoResource
@@ -234,6 +251,7 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
     inlines = [
         TratamentoCondicaoInline,
         DetalhesTratamentoReacaoAdversaInline,
+        AlertaTratamentoInline,
     ]
 
     list_display = (

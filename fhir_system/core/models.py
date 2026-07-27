@@ -1909,3 +1909,54 @@ class EvidenciaFatorRisco(models.Model):
 
     def __str__(self):
         return f"{self.condicao_saude} — {self.fator_risco} — {self.get_grupo_display()}"
+    
+
+class AlertaTratamento(models.Model):
+    tratamento = models.ForeignKey(
+        "DetalhesTratamentoResumo",
+        on_delete=models.CASCADE,
+        related_name="alertas_tratamento",
+        verbose_name="Tratamento",
+    )
+
+    titulo = models.CharField(
+        "Título do alerta",
+        max_length=255,
+        blank=True,
+        default="",
+    )
+
+    descricao = models.TextField(
+        "Descrição do alerta",
+    )
+
+    ordem = models.PositiveIntegerField(
+        "Ordem",
+        default=0,
+        help_text="Use para controlar a ordem de exibição dos alertas.",
+    )
+
+    ativo = models.BooleanField(
+        "Ativo?",
+        default=True,
+    )
+
+    criado_em = models.DateTimeField(
+        "Criado em",
+        auto_now_add=True,
+    )
+
+    atualizado_em = models.DateTimeField(
+        "Atualizado em",
+        auto_now=True,
+    )
+
+    class Meta:
+        verbose_name = "Alerta do tratamento"
+        verbose_name_plural = "Alertas do tratamento"
+        ordering = ["ordem", "id"]
+
+    def __str__(self):
+        if self.titulo:
+            return f"{self.tratamento} — {self.titulo}"
+        return f"{self.tratamento} — Alerta {self.id}"
