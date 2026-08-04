@@ -1181,7 +1181,13 @@ class PaginaListaTratamentoV2Admin(admin.ModelAdmin):
         )
 
     def save_model(self, request, obj, form, change):
+        # Identifica o registro como uma página V2.
         obj.template = "core/lista_tratamentos_v2.html"
+
+        # A V2 usa exclusivamente o campo múltiplo tipos_eficacia.
+        # O campo antigo tipo_eficacia pertence à estrutura da V1
+        # e deve permanecer vazio na V2.
+        obj.tipo_eficacia_id = None
 
         super().save_model(
             request,
@@ -1190,28 +1196,16 @@ class PaginaListaTratamentoV2Admin(admin.ModelAdmin):
             change,
         )
 
+
     def save_related(self, request, form, formsets, change):
+        # Salva os campos ManyToMany da V2:
+        # tipos_eficacia e tratamentos_ocultos.
         super().save_related(
             request,
             form,
             formsets,
             change,
         )
-
-        obj = form.instance
-
-        # Compatibilidade com o campo antigo:
-        # salva a primeira eficácia selecionada em tipo_eficacia.
-        primeiro_tipo = obj.tipos_eficacia.first()
-
-        if primeiro_tipo and obj.tipo_eficacia_id != primeiro_tipo.id:
-            obj.tipo_eficacia = primeiro_tipo
-
-            obj.save(
-                update_fields=[
-                    "tipo_eficacia",
-                ]
-            )
 
     def _public_url_path(self, obj):
         """
