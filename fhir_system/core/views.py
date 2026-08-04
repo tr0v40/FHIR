@@ -580,27 +580,63 @@ def _fmt_pct(val):
         return "0,00"
 
 def detalhes_tratamentos(request, slug):
-    tipo_req = (request.GET.get("tipo") or request.GET.get("tipo_eficacia") or "").strip()
-    eficacias_por_tipo = TipoEficacia.objects.all()
+    ef_filtro_slug = (
+        request.GET.get("ef")
+        or ""
+    ).strip()
+
+    tipo_req = (
+        request.GET.get("tipo")
+        or request.GET.get("tipo_eficacia")
+        or ef_filtro_slug
+        or ""
+    ).strip()
+
+    # Recupera o slug da condição da URL atual:
+    # /enxaqueca/topamax/ -> enxaqueca
+    resolver_kwargs = (
+        request.resolver_match.kwargs
+        if request.resolver_match
+        else {}
+    )
+
+    condicao_slug = resolver_kwargs.get("condicao_slug", "")
+
+    if not condicao_slug:
+        partes_url = [
+            parte
+            for parte in request.path.split("/")
+            if parte
+        ]
+
+        if len(partes_url) >= 2:
+            condicao_slug = partes_url[-2]
+
+    condicao = get_object_or_404(
+        CondicaoSaude,
+        slug=condicao_slug,
+    )
 
     tratamento = get_object_or_404(
         DetalhesTratamentoResumo.objects.prefetch_related(
-            'reacoes_adversas_detalhes',
-            'reacoes_adversas_detalhes__reacao_adversa',
+            "reacoes_adversas_detalhes",
+            "reacoes_adversas_detalhes__reacao_adversa",
             Prefetch(
-                'evidencias',
+                "evidencias",
                 queryset=EvidenciasClinicas.objects.prefetch_related(
-                    'eficacia_por_evidencias__tipo_eficacia'
-                )
+                    "eficacia_por_evidencias__tipo_eficacia"
+                ),
             ),
         ),
-        slug=slug
+        slug=slug,
     )
 
     # --------- EFICÁCIA POR TIPO ----------
 
     por_tipo = {}
-    for ev in getattr(tratamento, 'evidencias', []).all():
+    for ev in tratamento.evidencias.filter(
+    condicao_saude=condicao
+):
         mgr = getattr(ev, 'eficacia_por_evidencias', None)
         if not mgr:
             continue
@@ -624,20 +660,44 @@ def detalhes_tratamentos(request, slug):
                 por_tipo.setdefault(tipo_nome, []).append(val)
 
     eficacias_por_tipo = []
+
     for tipo, vals in por_tipo.items():
-        vmin, vmax = min(vals), max(vals)
-        te = TipoEficacia.objects.get(tipo_eficacia=tipo)
+        vmin = min(vals)
+        vmax = max(vals)
+
+        te = (
+            TipoEficacia.objects
+            .filter(tipo_eficacia__iexact=tipo)
+            .first()
+        )
+
+        descricao_tipo = te.descricao if te else ""
+        imagem_tipo = te.imagem if te else None
+
+        imagem_url = None
+
+        if imagem_tipo:
+            try:
+                imagem_url = imagem_tipo.url
+            except ValueError:
+                imagem_url = None
+
         eficacias_por_tipo.append({
+            # Campos usados pela lógica da view:
             "tipo": tipo,
-            "descricao": te.descricao,
-            "imagem": te.imagem,
+            "descricao": descricao_tipo,
+            "imagem": imagem_tipo,
+
+            # Campos esperados pelo template antigo:
+            "label": tipo,
+            "imagem_url": imagem_url,
+
             "min": vmin,
             "max": vmax,
             "min_str": _fmt_pct(vmin),
             "max_str": _fmt_pct(vmax),
             "count": len(vals),
         })
-
 
     prazo_efeito = "Não disponível"
     try:
@@ -768,13 +828,19 @@ def detalhes_tratamentos(request, slug):
 
     return render(request, 'core/detalhes_tratamentos.html', {
         'tratamento': tratamento,
+
+        'condicao': condicao,
+        'condicao_slug': condicao_slug,
+        'ef_filtro_slug': ef_filtro_slug,
+
         'eficacias_por_tipo': eficacias_por_tipo,
         'avaliacoes': avaliacoes,
+
         'comentario': tratamento.comentario,
         'media_estrelas': round(media_estrelas, 1),
         'total_avaliacoes': total_avaliacoes,
         'tipo_eficacia': tipo_eficacia,
-        'tipo_eficacia_label': tipo_eficacia_label,   
+        'tipo_eficacia_label': tipo_eficacia_label,
         'eficacia_min': eficacia_min,
         'eficacia_max': eficacia_max,
         'eficacia_max_css': eficacia_max_css,
@@ -785,7 +851,6 @@ def detalhes_tratamentos(request, slug):
         'estrelas_vazias': estrelas_vazias,
         'detalhes_reacoes_adversas': detalhes_reacoes_ordenadas,
         'footer_listas': get_footer_listas(),
-
     })
 
 

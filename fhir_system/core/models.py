@@ -1169,12 +1169,12 @@ class PaginaDetalheTratamento(models.Model):
 class PaginaListaTratamento(models.Model):
 
     tratamentos_ocultos = models.ManyToManyField(
-    "DetalhesTratamentoResumo",
-    blank=True,
-    related_name="listas_em_que_foi_ocultado",
-    verbose_name="Tratamentos ocultos desta lista",
-)
-    
+        "DetalhesTratamentoResumo",
+        blank=True,
+        related_name="listas_em_que_foi_ocultado",
+        verbose_name="Tratamentos ocultos desta lista",
+    )
+
     publicada = models.BooleanField(default=True)
 
     condicao_saude = models.ForeignKey(
@@ -1183,19 +1183,40 @@ class PaginaListaTratamento(models.Model):
         related_name="paginas_listas",
     )
 
+    # CAMPO ANTIGO - mantido para não quebrar o histórico
     tipo_eficacia = models.ForeignKey(
         "core.TipoEficacia",
         on_delete=models.PROTECT,
-        related_name="paginas_listas",
+        related_name="paginas_listas_legacy",
+        null=True,
+        blank=True,
+        verbose_name="Tipo de eficácia antigo",
+        help_text="Campo antigo mantido temporariamente para compatibilidade.",
+    )
+
+    # CAMPO NOVO - permite vários tipos de eficácia na mesma página
+    tipos_eficacia = models.ManyToManyField(
+        "core.TipoEficacia",
+        related_name="paginas_listas_segmentadas",
+        blank=True,
+        verbose_name="Tipos de eficácia",
+        help_text=(
+            "Selecione todos os tipos de eficácia que deverão aparecer "
+            "como filtros na mesma página."
+        ),
     )
 
     template = models.CharField(
         max_length=200,
-        default="core/lista_tratamentos.html",  # <<< importante bater com o caminho real
-        help_text="Template django que renderiza a lista",
+        default="core/lista_tratamentos.html",
+        help_text="Template Django que renderiza a lista",
     )
 
-    titulo = models.CharField(max_length=255, blank=True, default="")
+    titulo = models.CharField(
+        max_length=255,
+        blank=True,
+        default="",
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -1205,7 +1226,22 @@ class PaginaListaTratamento(models.Model):
         verbose_name_plural = "URLs Listas"
 
     def __str__(self):
-        return f"{self.condicao_saude} / {self.tipo_eficacia}"
+        if self.tipo_eficacia:
+            return f"{self.condicao_saude} / {self.tipo_eficacia}"
+
+        tipos = self.tipos_eficacia.all()
+        if tipos.exists():
+            nomes = ", ".join(t.tipo_eficacia for t in tipos[:3])
+            return f"{self.condicao_saude} / {nomes}"
+
+        return f"{self.condicao_saude}"
+
+class PaginaListaTratamentoV2(PaginaListaTratamento):
+    class Meta:
+        proxy = True
+        verbose_name = "URLs Listas V2"
+        verbose_name_plural = "URLs Listas V2"
+
     
 class TreatmentsUSAReacaoAdversaTeste(models.Model):
     treatment_usa = models.ForeignKey(

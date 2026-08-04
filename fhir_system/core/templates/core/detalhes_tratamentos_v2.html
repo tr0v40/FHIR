@@ -169,6 +169,13 @@
             height: 50px;
             border-radius: 3px;
             overflow: hidden;
+            background: rgba(0, 148, 255, 0.3);
+        }
+
+        .efficacy-bar-fill {
+            height: 100%;
+            background: #0094FF;
+            border-radius: 3px 0 0 3px;
         }
 
         .eficacia-caption {
@@ -449,49 +456,49 @@
     </div>
     {% endif %}
 
-    <p class="eficacia-titulo">
-      Eficácia no tratamento de {{ condicao.nome }}
-    </p>
+<p class="eficacia-titulo">
+  Eficácia no tratamento de {{ condicao.nome }}
+</p>
 
-    <div class="eficacia-section">
-      {% for tipo_eficacia in eficacias_por_tipo %}
-        <div class="eficacia-item">
-        <div class="efficacy-bar-wrapper">
-        <div
-            class="efficacy-bar"
-            style="
-            background: linear-gradient(
-                to right,
-                #0094FF 0%,
-                #0094FF {{ tipo_eficacia.max|unlocalize }}%,
-                rgba(0, 148, 255, 0.3) {{ tipo_eficacia.max|unlocalize }}%,
-                rgba(0, 148, 255, 0.3) 100%
-            );
-            "
-        ></div>
-        </div>
+<div class="eficacia-section">
+  <div class="eficacia-item">
 
-          <div class="eficacia-caption">
-            <span class="eficacia-caption-icon">
-              {% if tipo_eficacia.imagem_url %}
-                <img src="{{ tipo_eficacia.imagem_url }}" alt="{{ tipo_eficacia.label }}">
-              {% else %}
-                <img src="{% static 'img/default-icon.png' %}" alt="{{ tipo_eficacia.label }}">
-              {% endif %}
-            </span>
+<div class="efficacy-bar-wrapper">
+  <div class="efficacy-bar">
+    <div
+      class="efficacy-bar-fill"
+      style="width: {{ eficacia_v2.max|unlocalize }}%;"
+    ></div>
+  </div>
+</div>
 
-            <span class="eficacia-caption-text">
-              <span class="eficacia-caption-text-strong">{{ tipo_eficacia.label }}</span>
-              <span class="eficacia-caption-range-min">{{ tipo_eficacia.min_str }}</span>
-              a
-              <span class="eficacia-caption-range-max">{{ tipo_eficacia.max_str }}%</span>
-            </span>
-          </div>
-        </div>
-      {% empty %}
-        <p class="text-center text-muted">Sem dados de eficácia para este tratamento.</p>
-      {% endfor %}
+    <div class="eficacia-caption">
+      <span class="eficacia-caption-icon">
+        <img
+          src="{% static eficacia_v2.icone %}"
+          alt="{{ eficacia_v2.nome }}"
+        >
+      </span>
+
+      <span class="eficacia-caption-text">
+        <span class="eficacia-caption-text-strong">
+          {{ eficacia_v2.nome }}
+        </span>
+
+        <span class="eficacia-caption-range-min">
+          {{ eficacia_v2.min_str }}
+        </span>
+
+        a
+
+        <span class="eficacia-caption-range-max">
+          {{ eficacia_v2.max_str }}%
+        </span>
+      </span>
     </div>
+
+  </div>
+</div>
 
     <div style="display: flex; justify-content: center; margin-top: 5px;">
      <a href="{% url 'pesquisas_tratamento' condicao_slug=condicao_slug tratamento_slug=tratamento.slug %}{% if ef_filtro_slug %}?ef={{ ef_filtro_slug|urlencode }}{% endif %}"

@@ -3,6 +3,7 @@
 
 from django.contrib import admin, messages
 from django import forms
+from django.urls import reverse
 from .forms import TreatmentUrlEnglishForm, TreatmentListUrlEnglishForm, TreatmentsUSAForm
 from django.db import models
 from django.contrib.admin.models import LogEntry
@@ -19,6 +20,7 @@ from .forms import TratamentoCondicaoInlineForm
 
 from .models import (
     PaginaListaTratamento,
+    PaginaListaTratamentoV2,
     PaginaDetalheTratamento,
     Avaliacao,
     DetalhesTratamentoResumo,
@@ -850,6 +852,28 @@ class PaginaDetalheTratamentoAdmin(admin.ModelAdmin):
         updated = queryset.update(publicada=False)
         self.message_user(request, f"{updated} página(s) despublicada(s).", level=messages.WARNING)
 
+class PaginaListaTratamentoForm(forms.ModelForm):
+    class Meta:
+        model = PaginaListaTratamento
+        fields = "__all__"
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        condicao_saude = cleaned_data.get("condicao_saude")
+        tipo_eficacia = cleaned_data.get("tipo_eficacia")
+        tipos_eficacia = cleaned_data.get("tipos_eficacia")
+
+        if not condicao_saude:
+            return cleaned_data
+
+        if not tipo_eficacia and not tipos_eficacia:
+            raise forms.ValidationError(
+                "Selecione pelo menos um tipo de eficácia."
+            )
+
+        return cleaned_data        
+
 @admin.register(PaginaListaTratamento)
 class PaginaListaTratamentoAdmin(admin.ModelAdmin):
     change_form_template = "admin/core/paginalistatratamento/change_form.html"
@@ -1031,6 +1055,8 @@ class PaginaListaTratamentoAdmin(admin.ModelAdmin):
             obj.template = "core/lista_tratamentos.html"
         super().save_model(request, obj, form, change)
 
+
+
     @admin.action(description="Publicar páginas selecionadas")
     def publicar(self, request, queryset):
         updated = queryset.update(publicada=True)
@@ -1047,6 +1073,299 @@ class PaginaListaTratamentoAdmin(admin.ModelAdmin):
             request,
             f"{updated} página(s) despublicada(s).",
             level=messages.WARNING
+        )
+
+@admin.register(PaginaListaTratamentoV2)
+class PaginaListaTratamentoV2Admin(admin.ModelAdmin):
+    change_form_template = (
+        "admin/core/paginalistatratamento/change_form.html"
+    )
+
+    list_display = (
+        "condicao_saude",
+        "get_tipos_eficacia",
+        "badge_publicacao",
+        "url_publica_link",
+        "preview",
+        "copiar_url",
+        "created_at",
+    )
+
+    list_filter = (
+        "publicada",
+        "condicao_saude",
+        "tipos_eficacia",
+    )
+
+    search_fields = (
+        "titulo",
+        "condicao_saude__nome",
+        "condicao_saude__slug",
+        "tipos_eficacia__tipo_eficacia",
+        "tipos_eficacia__slug",
+    )
+
+    autocomplete_fields = (
+        "condicao_saude",
+    )
+
+    filter_horizontal = (
+        "tipos_eficacia",
+        "tratamentos_ocultos",
+    )
+
+    ordering = ("-created_at",)
+    date_hierarchy = "created_at"
+
+    exclude = (
+        "template",
+        "tipo_eficacia",
+    )
+
+    readonly_fields = (
+        "created_at",
+    )
+
+    fieldsets = (
+        (
+            "Publicação",
+            {
+                "fields": (
+                    "publicada",
+                    "condicao_saude",
+                    "tipos_eficacia",
+                )
+            },
+        ),
+        (
+            "SEO / Página",
+            {
+                "fields": (
+                    "titulo",
+                )
+            },
+        ),
+        (
+            "Sistema",
+            {
+                "fields": (
+                    "tratamentos_ocultos",
+                    "created_at",
+                ),
+                "classes": ("collapse",),
+            },
+        ),
+    )
+
+    actions = (
+        "publicar",
+        "despublicar",
+    )
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+
+        return (
+            queryset
+            .filter(
+                template="core/lista_tratamentos_v2.html",
+            )
+            .prefetch_related(
+                "tipos_eficacia",
+            )
+            .select_related(
+                "condicao_saude",
+                "tipo_eficacia",
+            )
+            .distinct()
+        )
+
+    def save_model(self, request, obj, form, change):
+        obj.template = "core/lista_tratamentos_v2.html"
+
+        super().save_model(
+            request,
+            obj,
+            form,
+            change,
+        )
+
+    def save_related(self, request, form, formsets, change):
+        super().save_related(
+            request,
+            form,
+            formsets,
+            change,
+        )
+
+        obj = form.instance
+
+        # Compatibilidade com o campo antigo:
+        # salva a primeira eficácia selecionada em tipo_eficacia.
+        primeiro_tipo = obj.tipos_eficacia.first()
+
+        if primeiro_tipo and obj.tipo_eficacia_id != primeiro_tipo.id:
+            obj.tipo_eficacia = primeiro_tipo
+
+            obj.save(
+                update_fields=[
+                    "tipo_eficacia",
+                ]
+            )
+
+    def _public_url_path(self, obj):
+        """
+        Gera a nova URL pública da lista.
+
+        Exemplo:
+        /enxaqueca/
+        """
+        return reverse(
+            "pagina_lista_v2",
+            kwargs={
+                "condicao_slug": obj.condicao_saude.slug,
+            },
+        )
+
+    @admin.display(description="Tipos de eficácia")
+    def get_tipos_eficacia(self, obj):
+        tipos = list(
+            obj.tipos_eficacia.all()
+        )
+
+        if tipos:
+            return ", ".join(
+                tipo.tipo_eficacia
+                for tipo in tipos
+            )
+
+        if obj.tipo_eficacia:
+            return obj.tipo_eficacia.tipo_eficacia
+
+        return "-"
+
+    @admin.display(description="Status")
+    def badge_publicacao(self, obj):
+        if obj.publicada:
+            return format_html(
+                (
+                    '<span style="'
+                    "padding: 2px 8px;"
+                    "border-radius: 999px;"
+                    "background: #DCFCE7;"
+                    "color: #166534;"
+                    "font-weight: 600;"
+                    '">'
+                    "Publicada"
+                    "</span>"
+                )
+            )
+
+        return format_html(
+            (
+                '<span style="'
+                "padding: 2px 8px;"
+                "border-radius: 999px;"
+                "background: #FEF3C7;"
+                "color: #92400E;"
+                "font-weight: 600;"
+                '">'
+                "Rascunho"
+                "</span>"
+            )
+        )
+
+    @admin.display(description="URL")
+    def url_publica_link(self, obj):
+        url = self._public_url_path(obj)
+
+        return format_html(
+            (
+                '<a href="{}" '
+                'target="_blank" '
+                'rel="noopener noreferrer">'
+                "{}"
+                "</a>"
+            ),
+            url,
+            url,
+        )
+
+    @admin.display(description="Preview")
+    def preview(self, obj):
+        url = self._public_url_path(obj)
+
+        return format_html(
+            (
+                '<a class="button" '
+                'href="{}" '
+                'target="_blank" '
+                'rel="noopener noreferrer">'
+                "Abrir"
+                "</a>"
+            ),
+            url,
+        )
+
+    @admin.display(description="Copiar")
+    def copiar_url(self, obj):
+        url = self._public_url_path(obj)
+
+        return format_html(
+            """
+            <button
+                type="button"
+                class="button"
+                data-url="{}"
+                onclick="
+                    const urlCompleta =
+                        window.location.origin + this.dataset.url;
+
+                    navigator.clipboard
+                        .writeText(urlCompleta)
+                        .then(() => {{
+                            const textoOriginal = this.innerText;
+
+                            this.innerText = 'Copiado!';
+
+                            setTimeout(() => {{
+                                this.innerText = textoOriginal;
+                            }}, 1500);
+                        }});
+                "
+            >
+                Copiar
+            </button>
+            """,
+            url,
+        )
+
+    @admin.action(
+        description="Publicar páginas selecionadas"
+    )
+    def publicar(self, request, queryset):
+        updated = queryset.update(
+            publicada=True,
+        )
+
+        self.message_user(
+            request,
+            f"{updated} página(s) publicada(s).",
+            level=messages.SUCCESS,
+        )
+
+    @admin.action(
+        description="Despublicar páginas selecionadas"
+    )
+    def despublicar(self, request, queryset):
+        updated = queryset.update(
+            publicada=False,
+        )
+
+        self.message_user(
+            request,
+            f"{updated} página(s) despublicada(s).",
+            level=messages.WARNING,
         )
 
 class TreatmentsUSAConditionInline(admin.TabularInline):
