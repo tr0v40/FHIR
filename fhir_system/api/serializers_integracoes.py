@@ -30,6 +30,7 @@ class IntegracaoDetalhesTratamentoListSerializer(serializers.ModelSerializer):
             "nome",
             "fabricante",
             "id_tratamento",
+            "codigo_anvisa",
             "principio_ativo",
             "categoria_regulatoria",
             "tipo_prescricao",

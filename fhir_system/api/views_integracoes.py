@@ -1,35 +1,37 @@
-from rest_framework import viewsets, mixins, filters
-from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+from rest_framework import filters, mixins, viewsets
+from rest_framework.authentication import (
+    SessionAuthentication,
+    TokenAuthentication,
+)
 
 from core.models import (
-    DetalhesTratamentoResumo,
-    CondicaoSaude,
-    ReacaoAdversa,
-    Contraindicacao,
-    TipoTratamento,
-    EvidenciasClinicas,
     Avaliacao,
-    EficaciaPorEvidencia,
-    TipoEficacia,
+    CondicaoSaude,
+    Contraindicacao,
     DetalhesTratamentoReacaoAdversa,
+    DetalhesTratamentoResumo,
+    EficaciaPorEvidencia,
+    EvidenciasClinicas,
+    ReacaoAdversa,
+    TipoEficacia,
+    TipoTratamento,
     TreatmentsUSA,
 )
 
-from .permissions import IntegracaoReadCreateUpdatePermission
 from .pagination import IntegracaoTratamentosPagination
-
+from .permissions import IntegracaoReadCreateUpdatePermission
 from .serializers_integracoes import (
-    IntegracaoDetalhesTratamentoListSerializer,
-    IntegracaoDetalhesTratamentoSerializer,
-    IntegracaoCondicaoSaudeSerializer,
-    IntegracaoReacaoAdversaSerializer,
-    IntegracaoContraindicacaoSerializer,
-    IntegracaoTipoTratamentoSerializer,
-    IntegracaoEvidenciasClinicasSerializer,
     IntegracaoAvaliacaoSerializer,
-    IntegracaoEficaciaPorEvidenciaSerializer,
-    IntegracaoTipoEficaciaSerializer,
+    IntegracaoCondicaoSaudeSerializer,
+    IntegracaoContraindicacaoSerializer,
+    IntegracaoDetalhesTratamentoListSerializer,
     IntegracaoDetalhesTratamentoReacaoAdversaSerializer,
+    IntegracaoDetalhesTratamentoSerializer,
+    IntegracaoEficaciaPorEvidenciaSerializer,
+    IntegracaoEvidenciasClinicasSerializer,
+    IntegracaoReacaoAdversaSerializer,
+    IntegracaoTipoEficaciaSerializer,
+    IntegracaoTipoTratamentoSerializer,
     IntegracaoTreatmentsUSASerializer,
 )
 
@@ -41,15 +43,30 @@ class IntegracaoReadCreateUpdateBaseViewSet(
     mixins.UpdateModelMixin,
     viewsets.GenericViewSet,
 ):
-    authentication_classes = [TokenAuthentication, SessionAuthentication]
-    permission_classes = [IntegracaoReadCreateUpdatePermission]
+    authentication_classes = [
+        TokenAuthentication,
+        SessionAuthentication,
+    ]
+
+    permission_classes = [
+        IntegracaoReadCreateUpdatePermission,
+    ]
 
     # Permitidos: consultar, criar e editar.
-    # Bloqueado: delete.
-    http_method_names = ["get", "post", "put", "patch", "head", "options"]
+    # Bloqueado: excluir.
+    http_method_names = [
+        "get",
+        "post",
+        "put",
+        "patch",
+        "head",
+        "options",
+    ]
 
 
-class IntegracaoDetalhesTratamentoViewSet(IntegracaoReadCreateUpdateBaseViewSet):
+class IntegracaoDetalhesTratamentoViewSet(
+    IntegracaoReadCreateUpdateBaseViewSet
+):
     serializer_class = IntegracaoDetalhesTratamentoSerializer
     pagination_class = IntegracaoTratamentosPagination
 
@@ -59,10 +76,10 @@ class IntegracaoDetalhesTratamentoViewSet(IntegracaoReadCreateUpdateBaseViewSet)
     ]
 
     search_fields = [
-        
         "nome",
         "fabricante",
         "id_tratamento",
+        "codigo_anvisa",
         "principio_ativo",
         "categoria_regulatoria",
         "tipo_prescricao",
@@ -73,13 +90,18 @@ class IntegracaoDetalhesTratamentoViewSet(IntegracaoReadCreateUpdateBaseViewSet)
         "nome",
         "fabricante",
         "id_tratamento",
+        "codigo_anvisa",
         "principio_ativo",
     ]
 
     ordering = ["id"]
 
     def get_queryset(self):
-        queryset = DetalhesTratamentoResumo.objects.all().order_by("id")
+        queryset = (
+            DetalhesTratamentoResumo.objects
+            .all()
+            .order_by("id")
+        )
 
         if self.action == "list":
             return queryset.only(
@@ -87,6 +109,7 @@ class IntegracaoDetalhesTratamentoViewSet(IntegracaoReadCreateUpdateBaseViewSet)
                 "nome",
                 "fabricante",
                 "id_tratamento",
+                "codigo_anvisa",
                 "principio_ativo",
                 "categoria_regulatoria",
                 "tipo_prescricao",
@@ -109,51 +132,78 @@ class IntegracaoDetalhesTratamentoViewSet(IntegracaoReadCreateUpdateBaseViewSet)
         return IntegracaoDetalhesTratamentoSerializer
 
 
-class IntegracaoCondicaoSaudeViewSet(IntegracaoReadCreateUpdateBaseViewSet):
+class IntegracaoCondicaoSaudeViewSet(
+    IntegracaoReadCreateUpdateBaseViewSet
+):
     queryset = CondicaoSaude.objects.all().order_by("id")
     serializer_class = IntegracaoCondicaoSaudeSerializer
 
 
-class IntegracaoReacaoAdversaViewSet(IntegracaoReadCreateUpdateBaseViewSet):
+class IntegracaoReacaoAdversaViewSet(
+    IntegracaoReadCreateUpdateBaseViewSet
+):
     queryset = ReacaoAdversa.objects.all().order_by("id")
     serializer_class = IntegracaoReacaoAdversaSerializer
 
 
-class IntegracaoContraindicacaoViewSet(IntegracaoReadCreateUpdateBaseViewSet):
+class IntegracaoContraindicacaoViewSet(
+    IntegracaoReadCreateUpdateBaseViewSet
+):
     queryset = Contraindicacao.objects.all().order_by("id")
     serializer_class = IntegracaoContraindicacaoSerializer
 
 
-class IntegracaoTipoTratamentoViewSet(IntegracaoReadCreateUpdateBaseViewSet):
+class IntegracaoTipoTratamentoViewSet(
+    IntegracaoReadCreateUpdateBaseViewSet
+):
     queryset = TipoTratamento.objects.all().order_by("id")
     serializer_class = IntegracaoTipoTratamentoSerializer
 
 
-class IntegracaoEvidenciasClinicasViewSet(IntegracaoReadCreateUpdateBaseViewSet):
+class IntegracaoEvidenciasClinicasViewSet(
+    IntegracaoReadCreateUpdateBaseViewSet
+):
     queryset = EvidenciasClinicas.objects.all().order_by("id")
     serializer_class = IntegracaoEvidenciasClinicasSerializer
 
 
-class IntegracaoAvaliacaoViewSet(IntegracaoReadCreateUpdateBaseViewSet):
+class IntegracaoAvaliacaoViewSet(
+    IntegracaoReadCreateUpdateBaseViewSet
+):
     queryset = Avaliacao.objects.all().order_by("id")
     serializer_class = IntegracaoAvaliacaoSerializer
 
 
-class IntegracaoEficaciaPorEvidenciaViewSet(IntegracaoReadCreateUpdateBaseViewSet):
+class IntegracaoEficaciaPorEvidenciaViewSet(
+    IntegracaoReadCreateUpdateBaseViewSet
+):
     queryset = EficaciaPorEvidencia.objects.all().order_by("id")
     serializer_class = IntegracaoEficaciaPorEvidenciaSerializer
 
 
-class IntegracaoTipoEficaciaViewSet(IntegracaoReadCreateUpdateBaseViewSet):
+class IntegracaoTipoEficaciaViewSet(
+    IntegracaoReadCreateUpdateBaseViewSet
+):
     queryset = TipoEficacia.objects.all().order_by("id")
     serializer_class = IntegracaoTipoEficaciaSerializer
 
 
-class IntegracaoDetalhesTratamentoReacaoAdversaViewSet(IntegracaoReadCreateUpdateBaseViewSet):
-    queryset = DetalhesTratamentoReacaoAdversa.objects.all().order_by("id")
-    serializer_class = IntegracaoDetalhesTratamentoReacaoAdversaSerializer
+class IntegracaoDetalhesTratamentoReacaoAdversaViewSet(
+    IntegracaoReadCreateUpdateBaseViewSet
+):
+    queryset = (
+        DetalhesTratamentoReacaoAdversa.objects
+        .all()
+        .order_by("id")
+    )
+
+    serializer_class = (
+        IntegracaoDetalhesTratamentoReacaoAdversaSerializer
+    )
 
 
-class IntegracaoTreatmentsUSAViewSet(IntegracaoReadCreateUpdateBaseViewSet):
+class IntegracaoTreatmentsUSAViewSet(
+    IntegracaoReadCreateUpdateBaseViewSet
+):
     queryset = TreatmentsUSA.objects.all().order_by("id")
     serializer_class = IntegracaoTreatmentsUSASerializer

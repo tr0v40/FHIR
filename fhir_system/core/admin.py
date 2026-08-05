@@ -235,7 +235,7 @@ class AlertaTratamentoInline(admin.TabularInline):
     extra = 1
 
     fields = (
-        "titulo",
+        
         "descricao",
         "ordem",
         "ativo",
@@ -260,6 +260,7 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
         "nome",
         "fabricante",
         "id_tratamento",
+        "codigo_anvisa",
         "principio_ativo",
         "grupo",
         "eficacia_min",
@@ -279,6 +280,7 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
         "nome",
         "fabricante",
         "id_tratamento",
+        "codigo_anvisa",
         "principio_ativo",
         "grupo",
         "condicoes_relacionadas__condicao__nome",
@@ -302,6 +304,7 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
                     "nome",
                     "fabricante",
                     "id_tratamento",
+                    "codigo_anvisa",
                     "principio_ativo",
                     "categoria_regulatoria",
                     "tipo_prescricao",

@@ -497,6 +497,19 @@ class DetalhesTratamentoResumo(models.Model):
     db_index=True,
     help_text="Informe o código EAN ou códigos de referência do medicamento. Para múltiplos códigos, separe por vírgula.",
 )
+
+    codigo_anvisa = models.CharField(
+        "Código ANVISA",
+        max_length=255,
+        blank=True,
+        default="",
+        db_index=True,
+        help_text=(
+            "Informe o número de registro do produto na ANVISA. "
+            "Para múltiplos códigos, separe por vírgula."
+        ),
+    )
+    
     comentario = models.TextField(null=True, blank=True)
     avaliacao = models.IntegerField(null=True, blank=True) 
     eficacia_min = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
