@@ -1073,19 +1073,78 @@ def server_error_500(request, template_name="500.html"):
 from django.db.models import Prefetch, Q
 
 def get_footer_listas():
+    """
+    Retorna somente listas V1 publicadas.
+
+    A V2 compartilha a mesma tabela, mas utiliza
+    tipos_eficacia e mantém tipo_eficacia vazio.
+    """
+
     listas = (
         PaginaListaTratamento.objects
-        .filter(publicada=True)
-        .select_related("condicao_saude", "tipo_eficacia")
-        .order_by("condicao_saude__nome", "tipo_eficacia__tipo_eficacia")
+        .filter(
+            publicada=True,
+            condicao_saude__isnull=False,
+            tipo_eficacia__isnull=False,
+        )
+        .filter(
+            Q(template="core/lista_tratamentos.html")
+            | Q(template__isnull=True)
+            | Q(template="")
+        )
+        .select_related(
+            "condicao_saude",
+            "tipo_eficacia",
+        )
+        .order_by(
+            "condicao_saude__nome",
+            "tipo_eficacia__tipo_eficacia",
+        )
     )
 
     footer_listas = []
+
     for item in listas:
-        footer_listas.append({
-            "label": f"{item.condicao_saude.nome} {item.tipo_eficacia.tipo_eficacia}".strip(),
-            "url": f"/listas/{item.condicao_saude.slug}/{item.tipo_eficacia.slug}/",
-        })
+        if not item.condicao_saude_id:
+            continue
+
+        if not item.tipo_eficacia_id:
+            continue
+
+        condicao = item.condicao_saude
+        tipo_eficacia = item.tipo_eficacia
+
+        if not condicao or not tipo_eficacia:
+            continue
+
+        condicao_slug = getattr(
+            condicao,
+            "slug",
+            None,
+        )
+
+        tipo_eficacia_slug = getattr(
+            tipo_eficacia,
+            "slug",
+            None,
+        )
+
+        if not condicao_slug or not tipo_eficacia_slug:
+            continue
+
+        footer_listas.append(
+            {
+                "label": (
+                    f"{condicao.nome} "
+                    f"{tipo_eficacia.tipo_eficacia}"
+                ).strip(),
+                "url": (
+                    f"/listas/"
+                    f"{condicao_slug}/"
+                    f"{tipo_eficacia_slug}/"
+                ),
+            }
+        )
 
     return footer_listas
 
