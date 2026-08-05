@@ -873,10 +873,13 @@ class PaginaListaTratamentoForm(forms.ModelForm):
             )
 
         return cleaned_data        
-
 @admin.register(PaginaListaTratamento)
 class PaginaListaTratamentoAdmin(admin.ModelAdmin):
-    change_form_template = "admin/core/paginalistatratamento/change_form.html"
+    change_form_template = (
+        "admin/core/paginalistatratamento/change_form.html"
+    )
+
+    form = PaginaListaTratamentoForm
 
     list_display = (
         "condicao_saude",
@@ -888,7 +891,12 @@ class PaginaListaTratamentoAdmin(admin.ModelAdmin):
         "created_at",
     )
 
-    list_filter = ("publicada", "condicao_saude", "tipo_eficacia")
+    list_filter = (
+        "publicada",
+        "condicao_saude",
+        "tipo_eficacia",
+    )
+
     search_fields = (
         "titulo",
         "condicao_saude__nome",
@@ -896,28 +904,133 @@ class PaginaListaTratamentoAdmin(admin.ModelAdmin):
         "tipo_eficacia__tipo_eficacia",
         "tipo_eficacia__slug",
     )
-    autocomplete_fields = ("condicao_saude", "tipo_eficacia")
-    list_select_related = ("condicao_saude", "tipo_eficacia")
-    ordering = ("-created_at",)
+
+    autocomplete_fields = (
+        "condicao_saude",
+        "tipo_eficacia",
+    )
+
+    list_select_related = (
+        "condicao_saude",
+        "tipo_eficacia",
+    )
+
+    ordering = (
+        "-created_at",
+    )
+
     date_hierarchy = "created_at"
 
-    exclude = ("template",)
+    exclude = (
+        "template",
+    )
 
     fieldsets = (
-        ("Publicação", {"fields": ("publicada", "condicao_saude", "tipo_eficacia")}),
-        ("SEO / Página", {"fields": ("titulo",)}),
-        ("Sistema", {"fields": ("created_at",), "classes": ("collapse",)}),
+        (
+            "Publicação",
+            {
+                "fields": (
+                    "publicada",
+                    "condicao_saude",
+                    "tipo_eficacia",
+                )
+            },
+        ),
+        (
+            "SEO / Página",
+            {
+                "fields": (
+                    "titulo",
+                )
+            },
+        ),
+        (
+            "Sistema",
+            {
+                "fields": (
+                    "created_at",
+                ),
+                "classes": (
+                    "collapse",
+                ),
+            },
+        ),
     )
-    readonly_fields = ("created_at",)
 
-    actions = ("publicar", "despublicar")
+    readonly_fields = (
+        "created_at",
+    )
+
+    actions = (
+        "publicar",
+        "despublicar",
+    )
+
+    def get_queryset(self, request):
+        """
+        Exibe neste admin somente as páginas da V1.
+
+        Registros da V2 utilizam:
+        core/lista_tratamentos_v2.html
+        """
+        queryset = super().get_queryset(request)
+
+        return (
+            queryset
+            .filter(
+                models.Q(
+                    template="core/lista_tratamentos.html",
+                )
+                | models.Q(
+                    template__isnull=True,
+                )
+                | models.Q(
+                    template="",
+                )
+            )
+            .select_related(
+                "condicao_saude",
+                "tipo_eficacia",
+            )
+            .distinct()
+        )
 
     def _public_url_path(self, obj):
+        """
+        Gera a URL pública da lista V1.
+
+        Retorna None caso o registro esteja incompleto,
+        evitando erro na tela de listagem do admin.
+        """
+        if not obj:
+            return None
+
+        if not obj.condicao_saude_id:
+            return None
+
+        if not obj.tipo_eficacia_id:
+            return None
+
+        condicao_slug = getattr(
+            obj.condicao_saude,
+            "slug",
+            None,
+        )
+
+        tipo_eficacia_slug = getattr(
+            obj.tipo_eficacia,
+            "slug",
+            None,
+        )
+
+        if not condicao_slug or not tipo_eficacia_slug:
+            return None
+
         return reverse(
             "pagina_lista",
             kwargs={
-                "condicao_slug": obj.condicao_saude.slug,
-                "tipo_eficacia_slug": obj.tipo_eficacia.slug,
+                "condicao_slug": condicao_slug,
+                "tipo_eficacia_slug": tipo_eficacia_slug,
             },
         )
 
@@ -925,32 +1038,110 @@ class PaginaListaTratamentoAdmin(admin.ModelAdmin):
     def badge_publicacao(self, obj):
         if obj.publicada:
             return format_html(
-                '<span style="padding:2px 8px;border-radius:999px;background:#DCFCE7;color:#166534;font-weight:600;">Publicada</span>'
+                (
+                    '<span style="'
+                    "padding:2px 8px;"
+                    "border-radius:999px;"
+                    "background:#DCFCE7;"
+                    "color:#166534;"
+                    "font-weight:600;"
+                    '">'
+                    "Publicada"
+                    "</span>"
+                )
             )
+
         return format_html(
-            '<span style="padding:2px 8px;border-radius:999px;background:#FEF3C7;color:#92400E;font-weight:600;">Rascunho</span>'
+            (
+                '<span style="'
+                "padding:2px 8px;"
+                "border-radius:999px;"
+                "background:#FEF3C7;"
+                "color:#92400E;"
+                "font-weight:600;"
+                '">'
+                "Rascunho"
+                "</span>"
+            )
         )
 
     @admin.display(description="URL")
     def url_publica_link(self, obj):
         url = self._public_url_path(obj)
-        return format_html('<a href="{}" target="_blank">{}</a>', url, url)
+
+        if not url:
+            return "-"
+
+        return format_html(
+            (
+                '<a href="{}" '
+                'target="_blank" '
+                'rel="noopener noreferrer">'
+                "{}"
+                "</a>"
+            ),
+            url,
+            url,
+        )
 
     @admin.display(description="Preview")
     def preview(self, obj):
         url = self._public_url_path(obj)
-        return format_html('<a class="button" href="{}" target="_blank">Abrir</a>', url)
+
+        if not url:
+            return "-"
+
+        return format_html(
+            (
+                '<a class="button" '
+                'href="{}" '
+                'target="_blank" '
+                'rel="noopener noreferrer">'
+                "Abrir"
+                "</a>"
+            ),
+            url,
+        )
 
     @admin.display(description="Copiar")
     def copiar_url(self, obj):
         url = self._public_url_path(obj)
+
+        if not url:
+            return "-"
+
         return format_html(
-            "<button type='button' class='button' onclick=\"navigator.clipboard.writeText('{}')\">Copiar</button>",
+            """
+            <button
+                type="button"
+                class="button"
+                data-url="{}"
+                onclick="
+                    navigator.clipboard
+                        .writeText(this.dataset.url)
+                        .then(() => {{
+                            const textoOriginal = this.innerText;
+
+                            this.innerText = 'Copiado!';
+
+                            setTimeout(() => {{
+                                this.innerText = textoOriginal;
+                            }}, 1500);
+                        }});
+                "
+            >
+                Copiar
+            </button>
+            """,
             url,
         )
 
     def get_tratamentos_elegiveis(self, obj):
-        if not obj or not obj.condicao_saude_id or not obj.tipo_eficacia_id:
+        if (
+            not obj
+            or not obj.condicao_saude_id
+            or not obj.tipo_eficacia_id
+        ):
             return []
 
         eficacias_base = (
@@ -959,23 +1150,37 @@ class PaginaListaTratamentoAdmin(admin.ModelAdmin):
                 tipo_eficacia=obj.tipo_eficacia,
                 evidencia__condicao_saude=obj.condicao_saude,
             )
-            .select_related("evidencia", "tipo_eficacia")
+            .select_related(
+                "evidencia",
+                "tipo_eficacia",
+            )
         )
 
         tratamento_ids = list(
             eficacias_base
-            .values_list("evidencia__tratamento_id", flat=True)
+            .values_list(
+                "evidencia__tratamento_id",
+                flat=True,
+            )
             .distinct()
         )
 
         tratamentos = (
             DetalhesTratamentoResumo.objects
-            .filter(id__in=tratamento_ids)
-            .prefetch_related("condicoes_relacionadas", "condicoes_saude")
+            .filter(
+                id__in=tratamento_ids,
+            )
+            .prefetch_related(
+                "condicoes_relacionadas",
+                "condicoes_saude",
+            )
             .distinct()
         )
 
-        tratamentos_by_id = {t.id: t for t in tratamentos}
+        tratamentos_by_id = {
+            tratamento.id: tratamento
+            for tratamento in tratamentos
+        }
 
         detalhes_publicados_ids = set(
             PaginaDetalheTratamento.objects
@@ -984,30 +1189,66 @@ class PaginaListaTratamentoAdmin(admin.ModelAdmin):
                 tratamento_id__in=tratamento_ids,
             )
             .filter(
-                models.Q(condicao__pk=obj.condicao_saude.pk) |
-                models.Q(condicao__slug=obj.condicao_saude.slug) |
-                models.Q(condicao__nome=obj.condicao_saude.nome)
+                models.Q(
+                    condicao__pk=obj.condicao_saude.pk,
+                )
+                | models.Q(
+                    condicao__slug=obj.condicao_saude.slug,
+                )
+                | models.Q(
+                    condicao__nome=obj.condicao_saude.nome,
+                )
             )
-            .values_list("tratamento_id", flat=True)
+            .values_list(
+                "tratamento_id",
+                flat=True,
+            )
         )
 
         items = []
-        for tid in tratamento_ids:
-            t = tratamentos_by_id.get(tid)
-            if not t:
+
+        for tratamento_id in tratamento_ids:
+            tratamento = tratamentos_by_id.get(
+                tratamento_id
+            )
+
+            if not tratamento:
                 continue
 
-            if tid not in detalhes_publicados_ids:
+            if tratamento_id not in detalhes_publicados_ids:
                 continue
+
+            filtro_condicao = (
+                models.Q(
+                    condicao__pk=obj.condicao_saude.pk,
+                )
+                | models.Q(
+                    condicao__slug=obj.condicao_saude.slug,
+                )
+                | models.Q(
+                    condicao__nome=obj.condicao_saude.nome,
+                )
+            )
+
+            condition = getattr(
+                obj.condicao_saude,
+                "condition",
+                None,
+            )
+
+            if condition:
+                filtro_condicao |= models.Q(
+                    condicao__condition=condition,
+                )
 
             relacao_condicao = (
-                t.condicoes_relacionadas
-                .filter(aparecer_na_lista=True)
+                tratamento
+                .condicoes_relacionadas
                 .filter(
-                    models.Q(condicao__pk=obj.condicao_saude.pk) |
-                    models.Q(condicao__slug=obj.condicao_saude.slug) |
-                    models.Q(condicao__nome=obj.condicao_saude.nome) |
-                    models.Q(condicao__condition=getattr(obj.condicao_saude, "condition", None))
+                    aparecer_na_lista=True,
+                )
+                .filter(
+                    filtro_condicao
                 )
                 .first()
             )
@@ -1015,33 +1256,64 @@ class PaginaListaTratamentoAdmin(admin.ModelAdmin):
             if not relacao_condicao:
                 continue
 
-            qs = eficacias_base.filter(evidencia__tratamento_id=tid)
-            percents = [float(e.percentual_eficacia_calculado or 0) for e in qs]
-            if not percents:
+            eficacias_tratamento = (
+                eficacias_base
+                .filter(
+                    evidencia__tratamento_id=tratamento_id,
+                )
+            )
+
+            percentuais = [
+                float(
+                    eficacia.percentual_eficacia_calculado
+                    or 0
+                )
+                for eficacia in eficacias_tratamento
+            ]
+
+            if not percentuais:
                 continue
 
-            items.append({
-                "id": t.id,
-                "nome": t.nome,
-                "min": min(percents),
-                "max": max(percents),
-            })
+            items.append(
+                {
+                    "id": tratamento.id,
+                    "nome": tratamento.nome,
+                    "min": min(percentuais),
+                    "max": max(percentuais),
+                }
+            )
 
-        items.sort(key=lambda x: -x["max"])
+        items.sort(
+            key=lambda item: -item["max"]
+        )
+
         return items
 
-    def changeform_view(self, request, object_id=None, form_url="", extra_context=None):
+    def changeform_view(
+        self,
+        request,
+        object_id=None,
+        form_url="",
+        extra_context=None,
+    ):
         extra_context = extra_context or {}
 
-        obj = None
         tratamentos_elegiveis = []
 
         if object_id:
-            obj = self.get_object(request, object_id)
-            if obj:
-                tratamentos_elegiveis = self.get_tratamentos_elegiveis(obj)
+            obj = self.get_object(
+                request,
+                object_id,
+            )
 
-        extra_context["tratamentos_elegiveis"] = tratamentos_elegiveis
+            if obj:
+                tratamentos_elegiveis = (
+                    self.get_tratamentos_elegiveis(obj)
+                )
+
+        extra_context[
+            "tratamentos_elegiveis"
+        ] = tratamentos_elegiveis
 
         return super().changeform_view(
             request,
@@ -1050,29 +1322,49 @@ class PaginaListaTratamentoAdmin(admin.ModelAdmin):
             extra_context=extra_context,
         )
 
-    def save_model(self, request, obj, form, change):
-        if not obj.template:
-            obj.template = "core/lista_tratamentos.html"
-        super().save_model(request, obj, form, change)
+    def save_model(
+        self,
+        request,
+        obj,
+        form,
+        change,
+    ):
+        # Todo registro criado neste admin pertence à V1.
+        obj.template = "core/lista_tratamentos.html"
 
+        super().save_model(
+            request,
+            obj,
+            form,
+            change,
+        )
 
-
-    @admin.action(description="Publicar páginas selecionadas")
+    @admin.action(
+        description="Publicar páginas selecionadas"
+    )
     def publicar(self, request, queryset):
-        updated = queryset.update(publicada=True)
+        updated = queryset.update(
+            publicada=True,
+        )
+
         self.message_user(
             request,
             f"{updated} página(s) publicada(s).",
-            level=messages.SUCCESS
+            level=messages.SUCCESS,
         )
 
-    @admin.action(description="Despublicar páginas selecionadas")
+    @admin.action(
+        description="Despublicar páginas selecionadas"
+    )
     def despublicar(self, request, queryset):
-        updated = queryset.update(publicada=False)
+        updated = queryset.update(
+            publicada=False,
+        )
+
         self.message_user(
             request,
             f"{updated} página(s) despublicada(s).",
-            level=messages.WARNING
+            level=messages.WARNING,
         )
 
 @admin.register(PaginaListaTratamentoV2)
@@ -1548,6 +1840,25 @@ class TreatmentUrlEnglishAdmin(admin.ModelAdmin):
     @admin.display(description="Health condition")
     def condition_en(self, obj):
         return obj.condition.condition or obj.condition.nome
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+
+        return (
+            queryset
+            .filter(
+                models.Q(
+                    template="core/lista_tratamentos.html"
+                )
+                | models.Q(template__isnull=True)
+                | models.Q(template="")
+            )
+            .select_related(
+                "condicao_saude",
+                "tipo_eficacia",
+            )
+            .distinct()
+        )
 
     def _public_url_path(self, obj):
         condition_slug = obj.condition.condition_slug or obj.condition.slug
