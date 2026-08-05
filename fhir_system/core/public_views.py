@@ -1,10 +1,29 @@
 from django.shortcuts import get_object_or_404, render
-from .models import PaginaDetalheTratamento, PaginaListaTratamento
-from core.models import DetalhesTratamentoResumo, CondicaoSaude, Avaliacao
 from django.conf import settings
-from django.db.models import F, FloatField, Min, Max
+from django.urls import reverse
+from django.db.models import (
+    F,
+    FloatField,
+    Min,
+    Max,
+    Q,
+)
 from django.db.models.functions import Coalesce, NullIf
 from django.db.models.expressions import ExpressionWrapper
+
+from .models import (
+    PaginaDetalheTratamento,
+    PaginaListaTratamento,
+)
+
+from core.models import (
+    DetalhesTratamentoResumo,
+    CondicaoSaude,
+    Avaliacao,
+)
+
+
+TEMPLATE_LISTA_V1 = "core/lista_tratamentos.html"
 
 
 def _format_unidade_pt(unidade_raw, valor_ref):
@@ -39,6 +58,7 @@ def _format_unidade_pt(unidade_raw, valor_ref):
         "ano": "ano",
         "anos": "ano",
     }
+
     u = aliases.get(u, u)
 
     forms = {
@@ -51,10 +71,17 @@ def _format_unidade_pt(unidade_raw, valor_ref):
         "ano": ("ano", "anos"),
     }
 
-    singular, plural = forms.get(u, (u, u))
+    singular, plural = forms.get(
+        u,
+        (u, u),
+    )
 
     try:
-        n = float(valor_ref) if valor_ref is not None else None
+        n = (
+            float(valor_ref)
+            if valor_ref is not None
+            else None
+        )
     except (TypeError, ValueError):
         n = None
 
@@ -64,13 +91,29 @@ def _format_unidade_pt(unidade_raw, valor_ref):
     return singular if n == 1 else plural
 
 
-def _format_prazo_efeito(min_v, max_v, unidade_raw):
-    ref = max_v if max_v is not None else min_v
-    unidade = _format_unidade_pt(unidade_raw, ref)
+def _format_prazo_efeito(
+    min_v,
+    max_v,
+    unidade_raw,
+):
+    ref = (
+        max_v
+        if max_v is not None
+        else min_v
+    )
 
-    if min_v is not None and max_v is not None:
+    unidade = _format_unidade_pt(
+        unidade_raw,
+        ref,
+    )
+
+    if (
+        min_v is not None
+        and max_v is not None
+    ):
         if min_v == max_v:
             return f"{min_v} {unidade}"
+
         return f"{min_v}–{max_v} {unidade}"
 
     if min_v is not None:
@@ -83,23 +126,103 @@ def _format_prazo_efeito(min_v, max_v, unidade_raw):
 
 
 def get_footer_listas():
+    """
+    Retorna somente as listas publicadas da V1.
+
+    A V1 utiliza:
+    - template core/lista_tratamentos.html;
+    - campo tipo_eficacia preenchido;
+    - URLs no formato /listas/condicao/eficacia/.
+
+    A V2 compartilha a mesma tabela, mas possui
+    tipo_eficacia vazio e utiliza tipos_eficacia.
+    """
+
     listas = (
         PaginaListaTratamento.objects
-        .filter(publicada=True)
-        .select_related("condicao_saude", "tipo_eficacia")
-        .order_by("condicao_saude__nome", "tipo_eficacia__tipo_eficacia")
+        .filter(
+            publicada=True,
+            condicao_saude__isnull=False,
+            tipo_eficacia__isnull=False,
+        )
+        .filter(
+            Q(
+                template=TEMPLATE_LISTA_V1,
+            )
+            | Q(
+                template__isnull=True,
+            )
+            | Q(
+                template="",
+            )
+        )
+        .select_related(
+            "condicao_saude",
+            "tipo_eficacia",
+        )
+        .order_by(
+            "condicao_saude__nome",
+            "tipo_eficacia__tipo_eficacia",
+        )
     )
 
     footer_listas = []
+
     for item in listas:
-        footer_listas.append({
-            "label": f"{item.condicao_saude.nome} - {item.tipo_eficacia.tipo_eficacia}",
-            "url": f"/listas/{item.condicao_saude.slug}/{item.tipo_eficacia.slug}/",
-        })
+        if not item.condicao_saude_id:
+            continue
+
+        if not item.tipo_eficacia_id:
+            continue
+
+        condicao = item.condicao_saude
+        tipo_eficacia = item.tipo_eficacia
+
+        if not condicao or not tipo_eficacia:
+            continue
+
+        condicao_slug = getattr(
+            condicao,
+            "slug",
+            None,
+        )
+
+        tipo_eficacia_slug = getattr(
+            tipo_eficacia,
+            "slug",
+            None,
+        )
+
+        if not condicao_slug:
+            continue
+
+        if not tipo_eficacia_slug:
+            continue
+
+        footer_listas.append(
+            {
+                "label": (
+                    f"{condicao.nome} - "
+                    f"{tipo_eficacia.tipo_eficacia}"
+                ),
+                "url": reverse(
+                    "pagina_lista",
+                    kwargs={
+                        "condicao_slug": condicao_slug,
+                        "tipo_eficacia_slug": tipo_eficacia_slug,
+                    },
+                ),
+            }
+        )
 
     return footer_listas
 
-def pagina_detalhe_tratamento(request, condicao_slug, tratamento_slug):
+
+def pagina_detalhe_tratamento(
+    request,
+    condicao_slug,
+    tratamento_slug,
+):
     page = (
         PaginaDetalheTratamento.objects
         .filter(
@@ -107,12 +230,16 @@ def pagina_detalhe_tratamento(request, condicao_slug, tratamento_slug):
             condicao__slug=condicao_slug,
             tratamento__slug=tratamento_slug,
         )
-        .select_related("condicao", "tratamento")
+        .select_related(
+            "condicao",
+            "tratamento",
+        )
         .first()
     )
 
     if page:
         condicao = page.condicao
+
         tratamento = (
             DetalhesTratamentoResumo.objects
             .prefetch_related(
@@ -124,13 +251,20 @@ def pagina_detalhe_tratamento(request, condicao_slug, tratamento_slug):
                 "avaliacoes",
                 "condicoes_relacionadas",
             )
-            .get(pk=page.tratamento.pk)
+            .get(
+                pk=page.tratamento.pk,
+            )
         )
+
     else:
-        condicao = get_object_or_404(CondicaoSaude, slug=condicao_slug)
+        condicao = get_object_or_404(
+            CondicaoSaude,
+            slug=condicao_slug,
+        )
 
         tratamento = get_object_or_404(
-            DetalhesTratamentoResumo.objects.prefetch_related(
+            DetalhesTratamentoResumo.objects
+            .prefetch_related(
                 "condicoes_saude",
                 "tipo_tratamento",
                 "contraindicacoes",
@@ -144,74 +278,204 @@ def pagina_detalhe_tratamento(request, condicao_slug, tratamento_slug):
         )
 
     descricao_condicao = (
-        tratamento.condicoes_relacionadas
-        .filter(condicao__nome=condicao.nome)
-        .values_list("descricao", flat=True)
+        tratamento
+        .condicoes_relacionadas
+        .filter(
+            condicao__nome=condicao.nome,
+        )
+        .values_list(
+            "descricao",
+            flat=True,
+        )
         .first()
     )
 
     if not descricao_condicao:
         descricao_condicao = (
-            tratamento.condicoes_relacionadas
-            .filter(condicao__slug=condicao.slug)
-            .values_list("descricao", flat=True)
+            tratamento
+            .condicoes_relacionadas
+            .filter(
+                condicao__slug=condicao.slug,
+            )
+            .values_list(
+                "descricao",
+                flat=True,
+            )
             .first()
         )
 
-    if not descricao_condicao and getattr(condicao, "condition", None):
+    condition = getattr(
+        condicao,
+        "condition",
+        None,
+    )
+
+    if not descricao_condicao and condition:
         descricao_condicao = (
-            tratamento.condicoes_relacionadas
-            .filter(condicao__condition=condicao.condition)
-            .values_list("descricao", flat=True)
+            tratamento
+            .condicoes_relacionadas
+            .filter(
+                condicao__condition=condition,
+            )
+            .values_list(
+                "descricao",
+                flat=True,
+            )
             .first()
         )
 
-    descricao_detalhe = descricao_condicao or tratamento.descricao
+    descricao_detalhe = (
+        descricao_condicao
+        or tratamento.descricao
+    )
 
     pct_expr = ExpressionWrapper(
-        100.0 * Coalesce(F("eficacia_por_evidencias__participantes_com_beneficio"), 0)
-        / Coalesce(NullIf(F("eficacia_por_evidencias__participantes_iniciaram_tratamento"), 0), 1),
+        (
+            100.0
+            * Coalesce(
+                F(
+                    "eficacia_por_evidencias"
+                    "__participantes_com_beneficio"
+                ),
+                0,
+            )
+            / Coalesce(
+                NullIf(
+                    F(
+                        "eficacia_por_evidencias"
+                        "__participantes_iniciaram_tratamento"
+                    ),
+                    0,
+                ),
+                1,
+            )
+        ),
         output_field=FloatField(),
     )
 
-    ef_slug = (request.GET.get("ef") or "").strip().lower()
+    ef_slug = (
+        request.GET.get("ef")
+        or ""
+    ).strip().lower()
 
-    base = tratamento.evidencias.filter(condicao_saude=condicao)
+    base = tratamento.evidencias.filter(
+        condicao_saude=condicao,
+    )
+
+    ef_slug = (
+        request.GET.get("ef") or ""
+    ).strip().lower()
+
+    base = tratamento.evidencias.filter(
+        condicao_saude=condicao,
+    )
 
     if ef_slug:
-        base = base.filter(eficacia_por_evidencias__tipo_eficacia__slug=ef_slug)
+        base = base.filter(
+            eficacia_por_evidencias__tipo_eficacia__slug=ef_slug,
+        )
 
     eficacia_qs = (
-        base.values(
-            "eficacia_por_evidencias__tipo_eficacia__slug",
-            "eficacia_por_evidencias__tipo_eficacia__tipo_eficacia",
+        base
+        .values(
+            (
+                "eficacia_por_evidencias"
+                "__tipo_eficacia__slug"
+            ),
+            (
+                "eficacia_por_evidencias"
+                "__tipo_eficacia__tipo_eficacia"
+            ),
         )
         .annotate(
-            min_pct=Min(pct_expr),
-            max_pct=Max(pct_expr),
-            img_path=Max("eficacia_por_evidencias__tipo_eficacia__imagem"),
+            min_pct=Min(
+                pct_expr,
+            ),
+            max_pct=Max(
+                pct_expr,
+            ),
+            img_path=Max(
+                (
+                    "eficacia_por_evidencias"
+                    "__tipo_eficacia__imagem"
+                )
+            ),
         )
-        .order_by("eficacia_por_evidencias__tipo_eficacia__tipo_eficacia")
+        .order_by(
+            (
+                "eficacia_por_evidencias"
+                "__tipo_eficacia__tipo_eficacia"
+            )
+        )
     )
 
     eficacias_por_tipo = []
+
     for row in eficacia_qs:
-        label = row["eficacia_por_evidencias__tipo_eficacia__tipo_eficacia"] or ""
-        min_num = max(0, min(100, float(row["min_pct"] or 0)))
-        max_num = max(0, min(100, float(row["max_pct"] or 0)))
+        label = (
+            row[
+                (
+                    "eficacia_por_evidencias"
+                    "__tipo_eficacia__tipo_eficacia"
+                )
+            ]
+            or ""
+        )
 
-        imagem_path = row.get("img_path")
-        imagem_url = f"{settings.MEDIA_URL}{imagem_path}" if imagem_path else None
+        min_num = max(
+            0,
+            min(
+                100,
+                float(
+                    row["min_pct"]
+                    or 0
+                ),
+            ),
+        )
 
-        eficacias_por_tipo.append({
-            "slug": row["eficacia_por_evidencias__tipo_eficacia__slug"],
-            "label": label,
-            "imagem_url": imagem_url,
-            "min": min_num,
-            "max": max_num,
-            "min_str": f"{min_num:.2f}".replace(".", ","),
-            "max_str": f"{max_num:.2f}".replace(".", ","),
-        })
+        max_num = max(
+            0,
+            min(
+                100,
+                float(
+                    row["max_pct"]
+                    or 0
+                ),
+            ),
+        )
+
+        imagem_path = row.get(
+            "img_path"
+        )
+
+        imagem_url = (
+            f"{settings.MEDIA_URL}{imagem_path}"
+            if imagem_path
+            else None
+        )
+
+        eficacias_por_tipo.append(
+            {
+                "slug": row[
+                    (
+                        "eficacia_por_evidencias"
+                        "__tipo_eficacia__slug"
+                    )
+                ],
+                "label": label,
+                "imagem_url": imagem_url,
+                "min": min_num,
+                "max": max_num,
+                "min_str": (
+                    f"{min_num:.2f}"
+                    .replace(".", ",")
+                ),
+                "max_str": (
+                    f"{max_num:.2f}"
+                    .replace(".", ",")
+                ),
+            }
+        )
 
     prazo_efeito = _format_prazo_efeito(
         tratamento.prazo_efeito_min,
@@ -219,7 +483,14 @@ def pagina_detalhe_tratamento(request, condicao_slug, tratamento_slug):
         tratamento.prazo_efeito_unidade,
     )
 
-    avaliacoes = tratamento.avaliacoes.all().order_by("-data")
+    avaliacoes = (
+        tratamento
+        .avaliacoes
+        .all()
+        .order_by(
+            "-data",
+        )
+    )
 
     context = {
         "page": page,
@@ -227,10 +498,19 @@ def pagina_detalhe_tratamento(request, condicao_slug, tratamento_slug):
         "tratamento": tratamento,
         "descricao_detalhe": descricao_detalhe,
         "prazo_efeito": prazo_efeito,
-        "detalhes_reacoes_adversas": tratamento.reacoes_adversas_detalhes.all(),
+        "detalhes_reacoes_adversas": (
+            tratamento
+            .reacoes_adversas_detalhes
+            .all()
+        ),
         "eficacias_por_tipo": eficacias_por_tipo,
         "ef_filtro_slug": ef_slug,
         "avaliacoes": avaliacoes,
         "footer_listas": get_footer_listas(),
     }
-    return render(request, "core/pagina_detalhe_tratamento.html", context)
+
+    return render(
+        request,
+        "core/pagina_detalhe_tratamento.html",
+        context,
+    )
