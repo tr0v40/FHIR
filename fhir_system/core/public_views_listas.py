@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.db import models
+from django.urls import reverse
 
 from core.models import (
     PaginaListaTratamento,
@@ -9,25 +10,133 @@ from core.models import (
 )
 
 
+TEMPLATE_LISTA_V1 = "core/lista_tratamentos.html"
+
+
+def filtro_template_lista_v1():
+    """
+    Identifica somente os registros pertencentes à lista V1.
+
+    Registros antigos podem ter o campo template vazio ou nulo,
+    por isso eles continuam sendo considerados como V1.
+    """
+    return (
+        models.Q(template=TEMPLATE_LISTA_V1)
+        | models.Q(template__isnull=True)
+        | models.Q(template="")
+    )
+
+
+def filtro_relacao_condicao(prefixo, condicao):
+    """
+    Monta o filtro de relacionamento com uma condição de saúde.
+
+    O campo condition somente é incluído quando possuir valor,
+    evitando consultas com condition=None.
+    """
+    filtro = (
+        models.Q(**{f"{prefixo}__pk": condicao.pk})
+        | models.Q(**{f"{prefixo}__slug": condicao.slug})
+        | models.Q(**{f"{prefixo}__nome": condicao.nome})
+    )
+
+    condition = getattr(
+        condicao,
+        "condition",
+        None,
+    )
+
+    if condition:
+        filtro |= models.Q(
+            **{
+                f"{prefixo}__condition": condition,
+            }
+        )
+
+    return filtro
+
+
 def get_footer_listas():
+    """
+    Retorna somente as listas publicadas da V1 para o rodapé.
+
+    As listas V2 não possuem tipo_eficacia no campo legado,
+    portanto são excluídas explicitamente deste queryset.
+    """
     listas = (
         PaginaListaTratamento.objects
-        .filter(publicada=True)
-        .select_related("condicao_saude", "tipo_eficacia")
-        .order_by("condicao_saude__nome", "tipo_eficacia__tipo_eficacia")
+        .filter(
+            publicada=True,
+            condicao_saude__isnull=False,
+            tipo_eficacia__isnull=False,
+        )
+        .filter(
+            filtro_template_lista_v1()
+        )
+        .select_related(
+            "condicao_saude",
+            "tipo_eficacia",
+        )
+        .order_by(
+            "condicao_saude__nome",
+            "tipo_eficacia__tipo_eficacia",
+        )
     )
 
     footer_listas = []
+
     for item in listas:
-        footer_listas.append({
-            "label": f"{item.condicao_saude.nome} - {item.tipo_eficacia.tipo_eficacia}",
-            "url": f"/listas/{item.condicao_saude.slug}/{item.tipo_eficacia.slug}/",
-        })
+        if not item.condicao_saude_id:
+            continue
+
+        if not item.tipo_eficacia_id:
+            continue
+
+        condicao_slug = getattr(
+            item.condicao_saude,
+            "slug",
+            None,
+        )
+
+        tipo_eficacia_slug = getattr(
+            item.tipo_eficacia,
+            "slug",
+            None,
+        )
+
+        if not condicao_slug or not tipo_eficacia_slug:
+            continue
+
+        footer_listas.append(
+            {
+                "label": (
+                    f"{item.condicao_saude.nome} - "
+                    f"{item.tipo_eficacia.tipo_eficacia}"
+                ),
+                "url": reverse(
+                    "pagina_lista",
+                    kwargs={
+                        "condicao_slug": condicao_slug,
+                        "tipo_eficacia_slug": tipo_eficacia_slug,
+                    },
+                ),
+            }
+        )
 
     return footer_listas
 
 
-def get_tratamentos_ids_validos_para_lista(condicao, tipo):
+def get_tratamentos_ids_validos_para_lista(
+    condicao,
+    tipo,
+):
+    """
+    Retorna os IDs dos tratamentos que podem aparecer
+    em uma determinada lista V1.
+    """
+    if not condicao or not tipo:
+        return set()
+
     eficacias_base = (
         EficaciaPorEvidencia.objects
         .filter(
@@ -38,9 +147,15 @@ def get_tratamentos_ids_validos_para_lista(condicao, tipo):
 
     tratamento_ids = list(
         eficacias_base
-        .values_list("evidencia__tratamento_id", flat=True)
+        .values_list(
+            "evidencia__tratamento_id",
+            flat=True,
+        )
         .distinct()
     )
+
+    if not tratamento_ids:
+        return set()
 
     detalhes_publicados_ids = set(
         PaginaDetalheTratamento.objects
@@ -49,8 +164,14 @@ def get_tratamentos_ids_validos_para_lista(condicao, tipo):
             condicao=condicao,
             tratamento_id__in=tratamento_ids,
         )
-        .values_list("tratamento_id", flat=True)
+        .values_list(
+            "tratamento_id",
+            flat=True,
+        )
     )
+
+    if not detalhes_publicados_ids:
+        return set()
 
     tratamentos_validos_ids = (
         DetalhesTratamentoResumo.objects
@@ -59,28 +180,62 @@ def get_tratamentos_ids_validos_para_lista(condicao, tipo):
             condicoes_relacionadas__aparecer_na_lista=True,
         )
         .filter(
-            models.Q(condicoes_relacionadas__condicao__pk=condicao.pk) |
-            models.Q(condicoes_relacionadas__condicao__slug=condicao.slug) |
-            models.Q(condicoes_relacionadas__condicao__nome=condicao.nome) |
-            models.Q(condicoes_relacionadas__condicao__condition=getattr(condicao, "condition", None))
+            filtro_relacao_condicao(
+                "condicoes_relacionadas__condicao",
+                condicao,
+            )
         )
-        .values_list("id", flat=True)
+        .values_list(
+            "id",
+            flat=True,
+        )
         .distinct()
     )
 
-    return set(tratamentos_validos_ids)
+    return set(
+        tratamentos_validos_ids
+    )
 
 
-def pagina_lista_por_url(request, condicao_slug, tipo_eficacia_slug):
+def pagina_lista_por_url(
+    request,
+    condicao_slug,
+    tipo_eficacia_slug,
+):
+    """
+    Renderiza uma lista pública da V1.
+
+    Exemplo:
+    /listas/enxaqueca/controle/
+    """
+    paginas_v1 = (
+        PaginaListaTratamento.objects
+        .filter(
+            filtro_template_lista_v1()
+        )
+        .select_related(
+            "condicao_saude",
+            "tipo_eficacia",
+        )
+    )
+
     pagina = get_object_or_404(
-        PaginaListaTratamento.objects.select_related("condicao_saude", "tipo_eficacia"),
+        paginas_v1,
         condicao_saude__slug=condicao_slug,
         tipo_eficacia__slug=tipo_eficacia_slug,
+        tipo_eficacia__isnull=False,
         publicada=True,
     )
 
     tipo = pagina.tipo_eficacia
     condicao = pagina.condicao_saude
+
+    if not tipo or not condicao:
+        # Proteção adicional para registros incompletos.
+        # Normalmente esse cenário já é bloqueado pelo queryset.
+        return get_object_or_404(
+            PaginaListaTratamento.objects.none()
+        )
 
     eficacias_base = (
         EficaciaPorEvidencia.objects
@@ -88,24 +243,40 @@ def pagina_lista_por_url(request, condicao_slug, tipo_eficacia_slug):
             tipo_eficacia=tipo,
             evidencia__condicao_saude=condicao,
         )
-        .select_related("evidencia", "tipo_eficacia")
+        .select_related(
+            "evidencia",
+            "tipo_eficacia",
+        )
     )
 
     tratamento_ids = list(
         eficacias_base
-        .values_list("evidencia__tratamento_id", flat=True)
+        .values_list(
+            "evidencia__tratamento_id",
+            flat=True,
+        )
         .distinct()
     )
 
     tratamentos = (
         DetalhesTratamentoResumo.objects
-        .filter(id__in=tratamento_ids)
-        .prefetch_related("condicoes_relacionadas", "condicoes_saude")
+        .filter(
+            id__in=tratamento_ids,
+        )
+        .prefetch_related(
+            "condicoes_relacionadas",
+            "condicoes_saude",
+        )
         .distinct()
     )
-    tratamentos_by_id = {t.id: t for t in tratamentos}
 
-    # URLs de detalhe publicadas para a condição da lista
+    tratamentos_by_id = {
+        tratamento.id: tratamento
+        for tratamento in tratamentos
+    }
+
+    # IDs que possuem página de detalhe publicada
+    # para a condição atual.
     detalhes_publicados_ids = set(
         PaginaDetalheTratamento.objects
         .filter(
@@ -113,27 +284,37 @@ def pagina_lista_por_url(request, condicao_slug, tipo_eficacia_slug):
             condicao=condicao,
             tratamento_id__in=tratamento_ids,
         )
-        .values_list("tratamento_id", flat=True)
+        .values_list(
+            "tratamento_id",
+            flat=True,
+        )
     )
 
     items = []
-    for tid in tratamento_ids:
-        t = tratamentos_by_id.get(tid)
-        if not t:
+
+    for tratamento_id in tratamento_ids:
+        tratamento = tratamentos_by_id.get(
+            tratamento_id
+        )
+
+        if not tratamento:
             continue
 
-        # nova regra: precisa existir URL de detalhe publicada
-        if tid not in detalhes_publicados_ids:
+        # O tratamento precisa ter uma página de detalhe publicada.
+        if tratamento_id not in detalhes_publicados_ids:
             continue
 
         relacao_condicao = (
-            t.condicoes_relacionadas
-            .filter(aparecer_na_lista=True)
+            tratamento
+            .condicoes_relacionadas
             .filter(
-                models.Q(condicao__pk=condicao.pk) |
-                models.Q(condicao__slug=condicao.slug) |
-                models.Q(condicao__nome=condicao.nome) |
-                models.Q(condicao__condition=getattr(condicao, "condition", None))
+                aparecer_na_lista=True,
+            )
+            .filter(
+                filtro_relacao_condicao(
+                    "condicao",
+                    condicao,
+                )
             )
             .first()
         )
@@ -141,29 +322,59 @@ def pagina_lista_por_url(request, condicao_slug, tipo_eficacia_slug):
         if not relacao_condicao:
             continue
 
-        qs = eficacias_base.filter(evidencia__tratamento_id=tid)
+        eficacias_tratamento = (
+            eficacias_base
+            .filter(
+                evidencia__tratamento_id=tratamento_id,
+            )
+        )
 
-        percents = [float(e.percentual_eficacia_calculado or 0) for e in qs]
-        if not percents:
+        percentuais = [
+            float(
+                eficacia.percentual_eficacia_calculado
+                or 0
+            )
+            for eficacia in eficacias_tratamento
+        ]
+
+        if not percentuais:
             continue
 
-        min_v = min(percents)
-        max_v = max(percents)
+        valor_minimo = min(
+            percentuais
+        )
 
-        descricao_condicao = relacao_condicao.descricao or t.descricao
+        valor_maximo = max(
+            percentuais
+        )
 
-        items.append({
-            "obj": t,
-            "tipo": tipo.tipo_eficacia,
-            "tipo_key": tipo.slug,
-            "min": min_v,
-            "max": max_v,
-            "min_str": f"{min_v:.2f}".replace(".", ","),
-            "max_str": f"{max_v:.2f}".replace(".", ","),
-            "descricao_lista": descricao_condicao,
-        })
+        descricao_condicao = (
+            relacao_condicao.descricao
+            or tratamento.descricao
+        )
 
-    items.sort(key=lambda x: -x["max"])
+        items.append(
+            {
+                "obj": tratamento,
+                "tipo": tipo.tipo_eficacia,
+                "tipo_key": tipo.slug,
+                "min": valor_minimo,
+                "max": valor_maximo,
+                "min_str": (
+                    f"{valor_minimo:.2f}"
+                    .replace(".", ",")
+                ),
+                "max_str": (
+                    f"{valor_maximo:.2f}"
+                    .replace(".", ",")
+                ),
+                "descricao_lista": descricao_condicao,
+            }
+        )
+
+    items.sort(
+        key=lambda item: -item["max"]
+    )
 
     context = {
         "pagina": pagina,
@@ -174,4 +385,13 @@ def pagina_lista_por_url(request, condicao_slug, tipo_eficacia_slug):
         "footer_listas": get_footer_listas(),
     }
 
-    return render(request, pagina.template, context)
+    template = (
+        pagina.template
+        or TEMPLATE_LISTA_V1
+    )
+
+    return render(
+        request,
+        template,
+        context,
+    )
