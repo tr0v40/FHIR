@@ -9,1448 +9,14 @@
   <title>Tratamentos para {{ condicao.nome }}</title>
 
   {% include 'core/google_analytics.html' %}
-
+<link rel="stylesheet" href="{% static 'css/lista_tratamentos_v2.css' %}">
   <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
 
-    :root {
-      --telix-blue: #0094FF;
-      --text-dark: #212529;
-      --text-black: #000000;
-      --text-muted: #8F8F93;
-      --gray-line: #E0E0E0;
-    }
-
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      background: #ffffff;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      background: #ffffff Helvetica, sans-serif;
-      color: #111111;
-      overflow-x: hidden;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .top-bar {
-      width: 100%;
-      height: 34px;
-      background: var(--telix-blue);
-      color: #FFFFFF;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Inter', Arial, sans-serif;
-      font-weight: 600;
-      font-size: 15px;
-      line-height: 27px;
-      text-align: center;
-    }
-
-    .page-wrapper {
-      width: 100%;
-      max-width: 952px;
-      margin: 0 auto;
-      padding: 34px 16px 70px;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 78px;
-    }
-
-    .logo {
-      width: 192px;
-      height: 192px;
-      display: block;
-      margin-left: -43px;
-      object-fit: contain;
-    }
-
-    .login-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      color: #010009;
-      font-family: 'Inter', Arial, sans-serif;
-      font-weight: 700;
-      font-size: 15px;
-      line-height: 27px;
-      text-decoration: none;
-      margin-top: 78px;
-    }
-
-    .login-icon {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: var(--telix-blue);
-      color: #ffffff;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-    }
-
-    .intro {
-      margin-bottom: 28px;
-    }
-
-    .page-title {
-      margin: 0 0 5px;
-      margin-left: -20px;
-      font-family: Arial, Helvetica, sans-serif;
-      font-weight: 400;
-      font-size: 34.9px;
-      line-height: 40px;
-      color: var(--text-dark);
-    }
-
-    .page-description {
-      margin: 0;
-      margin-left: -20px;
-      font-family: Arial, Helvetica, sans-serif;
-      font-weight: 400;
-      font-size: 13px;
-      line-height: 20px;
-      color: #000000;
-    }
-
-    /* =========================================================
-       CARDS DE BENEFÍCIO
-       ========================================================= */
-
-    .beneficios-grid {
-      width: 100%;
-      max-width: 952px;
-      margin: 0 auto 30px;
-      display: grid;
-      grid-template-columns: repeat(5, 180px);
-      gap: 13px;
-      justify-content: center;
-      align-items: stretch;
-      border: 0;
-    }
-
-    .beneficio-card {
-      box-sizing: border-box;
-      width: 180px;
-      height: 296px;
-      min-height: 296px;
-      background: #FFFFFF;
-      border: 1.85419px solid var(--telix-blue);
-      border-radius: 9.27096px;
-      color: var(--telix-blue);
-      padding: 21px 14px 18px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      text-decoration: none;
-      cursor: pointer;
-      position: relative;
-      z-index: 1;
-      transition:
-        background-color 0.18s ease,
-        border-color 0.18s ease,
-        color 0.18s ease,
-        transform 0.18s ease;
-    }
-
-    .beneficio-card:hover,
-    .beneficio-card.ativo {
-      background: var(--telix-blue);
-      border-color: #FFFFFF;
-      color: #FFFFFF;
-    }
-
-    .beneficio-card:hover {
-      transform: translateY(-1px);
-    }
-
-    .beneficio-card-top {
-      width: 100%;
-      height: 118px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      pointer-events: none;
-    }
-
-    .beneficio-icon {
-      width: 54px;
-      height: 49px;
-      margin: 0 auto 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-    }
-
-    .beneficio-icon-img {
-      object-fit: contain;
-      display: block;
-      transition: filter 0.18s ease;
-      pointer-events: none;
-    }
-
-    .beneficio-card[data-segmento-btn="reducao-temporaria-dos-sintomas"] .beneficio-icon-img {
-      width: 45px;
-      height: 42px;
-    }
-
-    .beneficio-card[data-segmento-btn="eliminacao-temporaria-dos-sintomas"] .beneficio-icon-img {
-      width: 50px;
-      height: 41px;
-    }
-
-    .beneficio-card[data-segmento-btn="reducao-persistente-dos-sintomas"] .beneficio-icon-img {
-      width: 43px;
-      height: 43px;
-    }
-
-    .beneficio-card[data-segmento-btn="eliminacao-persistente-dos-sintomas"] .beneficio-icon-img {
-      width: 43px;
-      height: 43px;
-    }
-
-    .beneficio-card[data-segmento-btn="cura"] .beneficio-icon-img {
-      width: 54px;
-      height: 49px;
-    }
-
-    .beneficio-card:hover .beneficio-icon-img,
-    .beneficio-card.ativo .beneficio-icon-img {
-      filter: brightness(0) invert(1);
-    }
-
-    .beneficio-nome {
-      width: 102px;
-      height: 44px;
-      margin: 0 auto;
-      font-family: 'Inter', Arial, sans-serif;
-      font-weight: 600;
-      font-size: 15px;
-      line-height: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: var(--telix-blue);
-      transition: color 0.18s ease;
-      pointer-events: none;
-    }
-
-    .beneficio-card:hover .beneficio-nome,
-    .beneficio-card.ativo .beneficio-nome {
-      color: #FFFFFF;
-    }
-
-    .beneficio-line {
-      width: 111px;
-      height: 0;
-      margin: 9px auto 25px;
-      border-top: 1px solid var(--telix-blue);
-      background: transparent;
-      opacity: 1;
-      transition: border-color 0.18s ease;
-      pointer-events: none;
-    }
-
-    .beneficio-card:hover .beneficio-line,
-    .beneficio-card.ativo .beneficio-line {
-      border-top-color: #FFFFFF;
-    }
-
-    .beneficio-card-bottom {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      pointer-events: none;
-    }
-
-    .beneficio-percentual {
-      width: 112px;
-      height: auto;
-      margin: 0 auto;
-      font-family: 'Inter', Arial, sans-serif;
-      font-weight: 500;
-      font-size: 14px;
-      line-height: 17px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      color: #8F8F93;
-      transition: color 0.18s ease;
-      pointer-events: none;
-    }
-
-    .beneficio-card:hover .beneficio-percentual,
-    .beneficio-card.ativo .beneficio-percentual {
-      color: rgba(255, 255, 255, 0.7);
-    }
-
-    .beneficio-percentual strong {
-      display: block;
-      width: auto;
-      margin-top: 2px;
-      font-family: 'Inter', Arial, sans-serif;
-      font-weight: 500;
-      font-size: 25px;
-      line-height: 30px;
-      color: var(--telix-blue);
-      transition: color 0.18s ease;
-      pointer-events: none;
-    }
-
-    .beneficio-card:hover .beneficio-percentual strong,
-    .beneficio-card.ativo .beneficio-percentual strong {
-      color: #FFFFFF;
-    }
-
-    .beneficio-participantes {
-      width: 117px;
-      height: auto;
-      margin: 22px auto 0;
-      font-family: 'Inter', Arial, sans-serif;
-      font-weight: 500;
-      font-size: 14px;
-      line-height: 17px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: #8F8F93;
-      transition: color 0.18s ease;
-      pointer-events: none;
-    }
-
-    .beneficio-card:hover .beneficio-participantes,
-    .beneficio-card.ativo .beneficio-participantes {
-      color: rgba(255, 255, 255, 0.7);
-    }
-
-    /* =========================================================
-       LISTA SEGMENTADA
-       ========================================================= */
-
-    .segmento-lista {
-      display: none;
-    }
-
-    .segmento-lista.ativo {
-      display: block;
-    }
-
-    .lista-shell {
-      width: 100%;
-      max-width: 952px;
-      margin: 0 auto 44px;
-      background: #ffffff;
-      border: 1.85419px solid var(--telix-blue);
-      border-top: 0;
-      border-radius: 18px 18px 5px 5px;
-      overflow: hidden;
-      box-shadow: none;
-      outline: none;
-    }
-
-    .beneficio-header {
-      width: 100%;
-      min-height: 140px;
-      background: var(--telix-blue);
-      color: #ffffff;
-      border: 0;
-      outline: none;
-      box-shadow: none;
-      border-radius: 18px 18px 0 0;
-      padding: 20px 25px 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-
-    .beneficio-header-row {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .beneficio-header-title {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      min-width: 0;
-    }
-
-    .beneficio-header-label {
-      font-family: 'Inter', Arial, sans-serif;
-      font-weight: 500;
-      font-size: 20px;
-      line-height: 30px;
-      color: rgba(255, 255, 255, 0.8);
-      white-space: nowrap;
-    }
-
-    .beneficio-header-icon-img {
-      width: 31px;
-      height: 31px;
-      object-fit: contain;
-      display: block;
-      filter: brightness(0) invert(1);
-    }
-
-    .beneficio-header-name {
-      font-family: 'Inter', Arial, sans-serif;
-      font-weight: 600;
-      font-size: 20px;
-      line-height: 30px;
-      color: #FFFFFF;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .beneficio-header-count {
-      flex: 0 0 auto;
-      font-family: 'Inter', Arial, sans-serif;
-      font-weight: 500;
-      font-size: 20px;
-      line-height: 30px;
-      color: rgba(255, 255, 255, 0.8);
-      white-space: nowrap;
-    }
-
-    .beneficio-header-text {
-      width: 100%;
-      max-width: 901px;
-      margin: 0;
-      font-family: 'Inter', Arial, sans-serif;
-      font-weight: 500;
-      font-size: 15px;
-      line-height: 21px;
-      color: rgba(255, 255, 255, 0.8);
-    }
-
-    .lista-box {
-      width: 100%;
-      margin: 0;
-      background: #ffffff;
-      border: 0;
-      border-radius: 0;
-      overflow: hidden;
-    }
-
-    .tratamento-card {
-      display: grid;
-      grid-template-columns: 120px 1fr 270px;
-      gap: 24px;
-      padding: 58px 28px 44px;
-      border-bottom: 1px solid #e6e6e6;
-      background: #ffffff;
-      color: #111111;
-      text-decoration: none;
-      min-height: 390px;
-      transition: background-color 0.18s ease;
-    }
-
-    .tratamento-card:last-child {
-      border-bottom: 0;
-    }
-
-    .tratamento-card:hover {
-      background: #fbfdff;
-    }
-
-    .tratamento-img-wrap {
-      width: 120px;
-      height: 120px;
-      display: flex;
-      align-items: flex-start;
-      justify-content: flex-start;
-      padding-top: 0;
-      flex: 0 0 120px;
-    }
-
-    .tratamento-img {
-      width: 120px;
-      height: 120px;
-      object-fit: contain;
-      object-position: left top;
-      display: block;
-    }
-
-    .tratamento-main {
-      min-width: 0;
-    }
-
-    .tratamento-nome {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      font-weight: 700;
-      font-size: 25px;
-      line-height: 30px;
-      color: #050606;
-    }
-
-    .tratamento-tipo {
-      margin: 0 0 8px;
-      font-family: Arial, Helvetica, sans-serif;
-      font-weight: 700;
-      font-size: 12px;
-      line-height: 14px;
-      color: var(--telix-blue);
-    }
-
-    .tratamento-info {
-      margin: 0 0 8px;
-      font-family: Arial, Helvetica, sans-serif;
-      font-weight: 400;
-      font-size: 16px;
-      line-height: 24px;
-      color: #212529;
-    }
-
-    .tratamento-info strong {
-      font-weight: 700;
-      color: #212529;
-    }
-
-    .btn-detalhes {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin: 10px 0 28px;
-      height: 31px;
-      min-width: 138px;
-      background: #E0E0E0;
-      color: #111111;
-      border-radius: 4px;
-      padding: 0 28px;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      line-height: 1;
-    }
-
-    .tratamento-descricao {
-      max-width: 520px;
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      font-weight: 400;
-      font-size: 16px;
-      line-height: 24px;
-      color: #212529;
-    }
-
-    .eficacia-box {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      justify-content: center;
-      text-align: right;
-      padding-top: 4px;
-    }
-
-    .bar-bg {
-      width: 243px;
-      height: 20px;
-      border-radius: 8px;
-      background: #E0E0E0;
-      overflow: hidden;
-      margin-bottom: 14px;
-      position: relative;
-    }
-
-    .bar-range {
-      position: absolute;
-      top: 0;
-      height: 100%;
-      background: var(--telix-blue);
-      border-radius: 7px;
-      min-width: 15px;
-    }
-
-    .bar-marker {
-      position: absolute;
-      top: 0;
-      width: 15px;
-      height: 20px;
-      background: var(--telix-blue);
-      border-radius: 7px;
-      transform: translateX(-50%);
-      z-index: 2;
-    }
-
-    .eficacia-numero {
-      margin-bottom: 0;
-      font-family: 'Inter', Arial, sans-serif;
-      font-weight: 500;
-      font-size: 25px;
-      line-height: 38px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      text-align: right;
-      color: #888888;
-    }
-
-    .eficacia-numero strong {
-      color: #010009;
-      font-weight: 700;
-    }
-
-    .eficacia-label {
-      margin-bottom: 28px;
-      font-family: 'Inter', Arial, sans-serif;
-      font-weight: 200;
-      font-size: 13px;
-      line-height: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 6px;
-      text-align: right;
-      color: #000000;
-    }
-
-    .benefit-mini-icon {
-      width: 24px;
-      height: 24px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex: 0 0 24px;
-    }
-
-    .benefit-mini-icon-img {
-      width: 24px;
-      height: 24px;
-      object-fit: contain;
-      display: block;
-    }
-
-    .prazo-label {
-      margin-bottom: 2px;
-      font-family: 'Inter', Arial, sans-serif;
-      font-weight: 500;
-      font-size: 15px;
-      line-height: 22px;
-      display: flex;
-      align-items: center;
-      text-align: right;
-      color: #000000;
-    }
-
-    .prazo-valor {
-      font-family: 'Inter', Arial, sans-serif;
-      font-weight: 700;
-      font-size: 16px;
-      line-height: 24px;
-      display: flex;
-      align-items: center;
-      text-align: right;
-      color: #000000;
-    }
-
-    .lista-footer-note {
-      width: 100%;
-      max-width: 952px;
-      margin: 20px auto 28px;
-      background: var(--telix-blue);
-      color: #ffffff;
-      border-radius: 0;
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      font-family: 'Inter', Arial, sans-serif;
-      font-size: 13px;
-      line-height: 18px;
-    }
-
-    .lista-footer-note .note-button {
-      background: #ffffff;
-      color: var(--telix-blue);
-      border-radius: 3px;
-      padding: 5px 14px;
-      font-size: 11px;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .banner-placeholder {
-      width: 100%;
-      max-width: 952px;
-      height: 142px;
-      margin: 0 auto 34px;
-      background: #222222;
-      border-radius: 2px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #ffffff;
-      font-family: 'Inter', Arial, sans-serif;
-      font-size: 18px;
-      font-weight: 700;
-      text-align: center;
-      padding: 20px;
-    }
-
-    .whatsapp-strip {
-      width: 100vw;
-      margin-left: calc(50% - 50vw);
-      background: var(--telix-blue);
-      color: #ffffff;
-      padding: 28px 16px;
-      text-align: center;
-      font-family: 'Inter', Arial, sans-serif;
-    }
-
-    .whatsapp-strip-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-
-    .whatsapp-strip-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: #ffffff;
-      color: var(--telix-blue);
-      border-radius: 4px;
-      padding: 7px 18px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .page-footer {
-      width: 100%;
-      max-width: 952px;
-      margin: 42px auto 0;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
-      font-family: 'Inter', Arial, sans-serif;
-      font-size: 12px;
-      color: #111111;
-    }
-
-    .page-footer h4 {
-      margin: 0 0 12px;
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .page-footer p,
-    .page-footer a {
-      display: block;
-      margin: 0 0 8px;
-      color: #111111;
-      font-size: 12px;
-      line-height: 1.35;
-    }
-
-    .empty-state {
-      padding: 34px 28px;
-      font-size: 14px;
-      color: #111111;
-    }
-
-    @media (max-width: 980px) {
-      .page-wrapper {
-        max-width: 100%;
-        padding-left: 18px;
-        padding-right: 18px;
-      }
-
-      .beneficios-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 180px));
-        gap: 13px;
-        justify-content: center;
-      }
-
-      .beneficio-card {
-        width: 180px;
-        height: 296px;
-        min-height: 296px;
-      }
-
-      .lista-shell,
-      .lista-footer-note,
-      .banner-placeholder,
-      .page-footer {
-        max-width: 100%;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .top-bar {
-        height: auto;
-        padding: 8px 12px;
-        font-size: 12px;
-        line-height: 18px;
-      }
-
-      .page-wrapper {
-        padding: 24px 14px 44px;
-      }
-
-      .header {
-        margin-bottom: 49px;
-      }
-
-      .logo {
-        width: 192px;
-        height: 100px;
-      }
-
-      .login-link {
-        font-size: 12px;
-        line-height: 20px;
-      }
-
-      .page-title {
-        font-size: 26px;
-        line-height: 32px;
-      }
-
-      .page-description {
-        font-size: 12px;
-        line-height: 18px;
-      }
-
-      .beneficios-grid {
-        grid-template-columns: repeat(2, 180px);
-        gap: 13px;
-        justify-content: center;
-      }
-
-      .beneficio-card {
-        width: 180px;
-        height: 296px;
-        min-height: 296px;
-        padding: 21px 14px 18px;
-      }
-
-      .lista-shell {
-        border-radius: 12px;
-      }
-
-      .beneficio-header {
-        min-height: auto;
-        padding: 18px 16px;
-        border-radius: 12px 12px 0 0;
-      }
-
-      .beneficio-header-row {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .beneficio-header-name,
-      .beneficio-header-count,
-      .beneficio-header-label {
-        font-size: 17px;
-        line-height: 24px;
-        white-space: normal;
-      }
-
-      .beneficio-header-text {
-        font-size: 13px;
-        line-height: 19px;
-      }
-      .lista-footer-bar {
-        width: 952px;
-        height: 62px;
-        margin: 0 auto;
-        background: #0094FF;
-        border-radius: 0 0 5px 5px;
-
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        padding: 0 27px;
-        box-sizing: border-box;
-        }
-
-        .lista-footer-texto {
-        width: 742px;
-        margin: 0;
-
-        font-family: 'Inter', Arial, sans-serif;
-        font-style: normal;
-        font-weight: 500;
-        font-size: 13px;
-        line-height: 20px;
-        display: flex;
-        align-items: center;
-
-        color: #FFFFFF;
-        }
-
-        .lista-footer-botao {
-        box-sizing: border-box;
-        width: 158px;
-        height: 30px;
-        background: #FFFFFF;
-        border: 1px solid #0094FF;
-        border-radius: 5px;
-
-        font-family: 'Inter', Arial, sans-serif;
-        font-style: normal;
-        font-weight: 600;
-        font-size: 13px;
-        line-height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-decoration: none;
-
-        color: #0094FF;
-        flex-shrink: 0;
-        }
-
-        .lista-footer-botao:hover {
-        background: #f5faff;
-        }
-
-      .tratamento-card {
-        grid-template-columns: 1fr;
-        gap: 18px;
-        text-align: center;
-        padding: 30px 18px;
-      }
-
-      .tratamento-img-wrap {
-        width: 120px;
-        height: 120px;
-        padding-top: 0;
-        margin: 0 auto;
-        justify-content: center;
-      }
-
-      .tratamento-img {
-        width: 120px;
-        height: 120px;
-        object-position: center center;
-      }
-
-      .tratamento-descricao {
-        max-width: 100%;
-        font-size: 14px;
-        line-height: 21px;
-      }
-
-      .eficacia-box {
-        align-items: center;
-        text-align: center;
-        padding-top: 0;
-      }
-
-      .eficacia-numero,
-      .eficacia-label,
-      .prazo-label,
-      .prazo-valor {
-        text-align: center;
-        justify-content: center;
-      }
-
-      .bar-bg {
-        width: 240px;
-      }
-
-      .lista-footer-note {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-      }
-
-      .banner-placeholder {
-        height: auto;
-        min-height: 120px;
-      }
-
-      .page-footer {
-        grid-template-columns: 1fr;
-        text-align: center;
-      }
-    }
-
-    @media (max-width: 420px) {
-      .beneficios-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .beneficio-card {
-        width: 180px;
-        height: 296px;
-        min-height: 296px;
-        margin: 0 auto;
-      }
-
-      .header {
-        flex-direction: column;
-        gap: 14px;
-      }
-
-      .login-link {
-        margin-top: 0;
-      }
-    }
-
-    /* =========================================================
-       FORÇA HOVER DOS CARDS - PRECISA SER O ÚLTIMO BLOCO DO CSS
-       ========================================================= */
-
-    a.beneficio-card:hover,
-    a.beneficio-card.ativo {
-      background-color: #0094FF !important;
-      border-color: #FFFFFF !important;
-      color: #FFFFFF !important;
-    }
-
-    a.beneficio-card:hover .beneficio-nome,
-    a.beneficio-card.ativo .beneficio-nome {
-      color: #FFFFFF !important;
-    }
-
-    a.beneficio-card:hover .beneficio-line,
-    a.beneficio-card.ativo .beneficio-line {
-      border-top-color: #FFFFFF !important;
-      background: transparent !important;
-    }
-
-    a.beneficio-card:hover .beneficio-percentual,
-    a.beneficio-card.ativo .beneficio-percentual {
-      color: rgba(255, 255, 255, 0.7) !important;
-    }
-
-    a.beneficio-card:hover .beneficio-percentual strong,
-    a.beneficio-card.ativo .beneficio-percentual strong {
-      color: #FFFFFF !important;
-    }
-
-    a.beneficio-card:hover .beneficio-participantes,
-    a.beneficio-card.ativo .beneficio-participantes {
-      color: rgba(255, 255, 255, 0.7) !important;
-    }
-
-    a.beneficio-card:hover .beneficio-icon-img,
-    a.beneficio-card.ativo .beneficio-icon-img {
-      filter: brightness(0) invert(1) !important;
-    }
-
-/* =========================================================
-   FINAL DA LISTA — FIGMA
-========================================================= */
-
-/* Faixa inferior da lista */
-.lista-action-bar {
-  width: 100%;
-  min-height: 62px;
-  padding: 10px 27px;
-  background: var(--telix-blue);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 25px;
-  color: #ffffff;
-  font-family: "Inter", Arial, sans-serif;
-}
-
-.lista-action-text {
-  flex: 1;
-  max-width: 742px;
-  margin: 0;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 20px;
-}
-
-.lista-action-button {
-  width: 158px;
-  min-height: 32px;
-  padding: 5px 14px;
-  flex: 0 0 158px;
-  background: #ffffff;
-  border: 1px solid var(--telix-blue);
-  border-radius: 5px;
-  color: var(--telix-blue);
-  font-family: "Inter", Arial, sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 20px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
-}
-
-.lista-action-button:hover {
-  background: #f0f8ff;
-}
-
-/* Banner de compartilhamento */
-.share-banner {
-  position: relative;
-  width: 100%;
-  max-width: 954px;
-  height: 300px;
-  margin: 0 auto;
-  overflow: hidden;
-  background-color: #163f39;
-  background-image:
-    linear-gradient(
-      90deg,
-      rgba(5, 28, 27, 0.9) 0%,
-      rgba(5, 28, 27, 0.53) 42%,
-      rgba(5, 28, 27, 0.04) 72%
-    ),
-    url("{% static 'img/banner-compartilhe-tratamentos.png' %}");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.share-banner-title {
-  position: absolute;
-  top: 31px;
-  left: 25px;
-  width: 358px;
-  max-width: calc(100% - 50px);
-  margin: 0;
-  color: #ffffff;
-  font-family: "Inter", Arial, sans-serif;
-  font-size: 30px;
-  font-weight: 700;
-  line-height: 1.5;
-}
-.share-banner-button {
-  position: absolute;
-  width: 167px;
-  height: 34px;
-  right: 25px;
-  bottom: 31px;
-
-  padding: 0;
-  margin: 0;
-  border: 0;
-  border-radius: 5px;
-  background: #ffffff;
-
-  display: block;
-  color: #0094FF;
-  font-family: "Inter", Arial, sans-serif;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.share-banner-button i {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  left: 24px;
-  top: 7px;
-
-  color: #4AC94D;
-  font-size: 20px;
-  line-height: 20px;
-  text-align: center;
-}
-
-.share-banner-button span {
-  position: absolute;
-  width: 92px;
-  height: 18px;
-  left: 52px;
-  top: 8px;
-
-  font-family: "Inter", Arial, sans-serif;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 15px;
-  line-height: 18px;
-  text-align: center;
-  color: #0094FF;
-}
-
-.share-banner-button:hover {
-  background: #f5fbff;
-}
-
-.share-banner-button:hover {
-  background: #f5fbff;
-}
-
-/* Faixa de cadastro de e-mail */
-.newsletter-strip {
-  width: 100%;
-  min-height: 238px;
-  padding: 32px 20px 33px;
-  background: var(--telix-blue);
-  color: #ffffff;
-  font-family: "Inter", Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.newsletter-icon {
-  margin-bottom: 8px;
-  color: #ffffff;
-  font-size: 40px;
-  line-height: 1;
-}
-
-.newsletter-title {
-  max-width: 647px;
-  margin: 0 0 20px;
-  color: #ffffff;
-  font-family: "Inter", Arial, sans-serif;
-  font-size: 25px;
-  font-weight: 700;
-  line-height: 34px;
-  text-align: center;
-}
-
-.newsletter-button {
-  width: 166px;
-  min-height: 41px;
-  padding: 10px 18px;
-  background: #ffffff;
-  border-radius: 5px;
-  color: var(--telix-blue);
-  font-family: "Inter", Arial, sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.newsletter-button:hover {
-  background: #f0f8ff;
-}
-
-/* Rodapé */
-.site-footer {
-  width: 100%;
-  background: #ffffff;
-  color: #010009;
-  font-family: "Inter", Arial, sans-serif;
-}
-
-.site-footer-content {
-  width: 100%;
-  max-width: 982px;
-  min-height: 390px;
-  margin: 0 auto;
-  padding: 61px 0 45px;
-  display: grid;
-  grid-template-columns: 1fr 0.88fr 0.92fr;
-  gap: 78px;
-}
-
-.footer-column {
-  min-width: 0;
-}
-
-.footer-group + .footer-group {
-  margin-top: 55px;
-}
-
-.footer-title {
-  margin: 0 0 12px;
-  color: #010009;
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 21px;
-}
-
-.site-footer a,
-.site-footer p {
-  display: block;
-  width: fit-content;
-  margin: 0 0 7px;
-  color: #8f8f93;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 16px;
-  letter-spacing: 0.005em;
-}
-
-.site-footer a:hover {
-  color: var(--telix-blue);
-}
-
-.footer-access-button {
-  width: 235px !important;
-  min-height: 63px;
-  margin-top: 34px !important;
-  padding: 15px 25px;
-  background: var(--telix-blue);
-  border-radius: 5px;
-  color: #ffffff !important;
-  font-size: 15px !important;
-  font-weight: 800 !important;
-  line-height: 19px !important;
-  text-align: center;
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-}
-
-.footer-access-button:hover {
-  background: #007fdc;
-}
-
-.site-footer-legal {
-  width: 100%;
-  min-height: 65px;
-  padding: 20px;
-  background: #fafafa;
-  border: 3px solid #e3e3e3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.site-footer-legal p {
-  width: auto;
-  margin: 0;
-  color: #8f8f93;
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 16px;
-  text-align: center;
-}
-
-/* Responsividade */
-@media (max-width: 1020px) {
-  .site-footer-content {
-    max-width: calc(100% - 36px);
-    gap: 40px;
-  }
-}
-
-@media (max-width: 768px) {
-  .lista-action-bar {
-    padding: 16px;
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .lista-action-button {
-    width: 100%;
-    max-width: 220px;
-    flex-basis: auto;
-  }
-
-  .share-banner {
-    height: 300px;
-    background-position: 60% center;
-  }
-
-  .share-banner-title {
-    top: 25px;
-    left: 20px;
-    width: 280px;
-    font-size: 25px;
-    line-height: 1.35;
-  }
-
-  .share-banner-button {
-    right: auto;
-    bottom: 25px;
-    left: 20px;
-  }
-
-  .newsletter-strip {
-    min-height: 215px;
-  }
-
-  .newsletter-title {
-    font-size: 22px;
-    line-height: 30px;
-  }
-
-  .site-footer-content {
-    min-height: auto;
-    padding: 45px 0;
-    grid-template-columns: 1fr;
-    gap: 42px;
-    text-align: center;
-  }
-
-  .footer-column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .footer-group + .footer-group {
-    margin-top: 34px;
-  }
-
-  .footer-access-button {
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .share-banner {
-    height: 280px;
-  }
-
-  .share-banner-title {
-    width: calc(100% - 40px);
-    font-size: 22px;
-  }
-
-  .share-banner-button {
-    width: 160px;
-  }
-
-  .newsletter-title {
-    font-size: 20px;
-    line-height: 28px;
-  }
-}
-
-  </style>
 </head>
 
 <body>
@@ -1466,12 +32,26 @@
         <img class="logo" src="{% static 'img/logo.png' %}" alt="Telix">
       </a>
 
-      <a href="#" class="login-link">
-        <span class="login-icon">
-          <i class="fa-solid fa-user"></i>
-        </span>
+<a href="#" class="login-link">
+
+    <!-- SACOLA AZUL EM PNG -->
+    <span class="login-lock-icon" aria-hidden="true">
+        <img
+            src="{% static 'img/saloca_login.png' %}"
+            alt=""
+        >
+    </span>
+
+    <!-- USUÁRIO BRANCO NO CÍRCULO AZUL -->
+    <span class="login-icon" aria-hidden="true">
+        <i class="fa-solid fa-user"></i>
+    </span>
+
+    <span class="login-text">
         Cadastre-se/Login
-      </a>
+    </span>
+
+</a>
     </header>
 
     <section class="intro">
@@ -1484,43 +64,73 @@
       </p>
     </section>
 
-    <section class="beneficios-grid">
-      {% for card in beneficios_cards %}
-        <a
-          href="#{{ card.slug }}"
-          class="beneficio-card {% if card.ativo %}ativo{% endif %}"
-          data-segmento-btn="{{ card.slug }}"
-        >
-          <div class="beneficio-card-top">
-            <div class="beneficio-icon">
-              <img
-                src="{% static card.icone %}?v=20260804-2"
-                alt="{{ card.nome }}"
-                class="beneficio-icon-img"
-              >
-            </div>
+    <!-- =========================================================
+     MENU DE BENEFÍCIOS
+     ========================================================= -->
 
-            <div class="beneficio-nome">
-              {{ card.nome }}
-            </div>
+<section class="beneficios-menu">
+
+  <div class="beneficios-grid" id="beneficiosGrid">
+
+    {% for card in beneficios_cards %}
+      <a
+        href="#{{ card.slug }}"
+        class="beneficio-card {% if card.ativo %}ativo{% endif %}"
+        data-segmento-btn="{{ card.slug }}"
+      >
+
+        <div class="beneficio-card-top">
+
+          <div class="beneficio-icon">
+            <img
+              src="{% static card.icone %}?v=20260731-3"
+              alt="{{ card.nome }}"
+              class="beneficio-icon-img"
+            >
           </div>
 
-          <div class="beneficio-line"></div>
-
-          <div class="beneficio-card-bottom">
-            <div class="beneficio-percentual">
-              de {{ card.min_str }}% a
-              <strong>{{ card.max_str }}%</strong>
-            </div>
-
-            <div class="beneficio-participantes">
-              dos participantes<br>
-              das pesquisas.
-            </div>
+          <div class="beneficio-nome">
+            {{ card.nome }}
           </div>
-        </a>
-      {% endfor %}
-    </section>
+
+        </div>
+
+        <div class="beneficio-line"></div>
+
+        <div class="beneficio-card-bottom">
+
+          <div class="beneficio-percentual">
+            de {{ card.min_str }}% a
+
+            <strong>
+              {{ card.max_str }}%
+            </strong>
+          </div>
+
+          <div class="beneficio-participantes">
+            dos participantes<br>
+            das pesquisas.
+          </div>
+
+        </div>
+
+      </a>
+    {% endfor %}
+
+  </div>
+
+
+  <!-- barra visual do scroll -->
+  <div class="beneficios-scroll-track">
+
+    <div
+      class="beneficios-scroll-thumb"
+      id="beneficiosScrollThumb"
+    ></div>
+
+  </div>
+
+</section>
 
     {% for segmento in segmentos %}
       <section
@@ -1652,51 +262,152 @@
               risco de reações adversas, ou filtre por segurança de uso para
               grupos específicos, e filtre por contraindicações.
             </p>
+            {% if segmento.filtro_react_path %}
 
-            <button type="button" class="lista-action-button">
-              Filtrar e ordenar
-            </button>
+                <a
+                    href="#"
+                    class="lista-action-button js-filtro-react"
+                    data-react-path="{{ segmento.filtro_react_path }}"
+                >
+                    Filtrar e ordenar
+                </a>
+
+            {% else %}
+
+          <button
+            type="button"
+            class="lista-action-button"
+            {% if segmento.url_filtro_react %}
+              data-filtro-path="{{ segmento.url_filtro_react }}"
+            {% endif %}
+          >
+            Filtrar e ordenar
+          </button>
+
+            {% endif %}
           </section>
 
         </section>
       </section>
     {% endfor %}
 
-     <section class="share-banner">
-      <h2 class="share-banner-title">
-        Você conhece alguém que precisa desse conteúdo?
-      </h2>
+<section class="next-benefits-mobile" aria-label="Ir para o próximo benefício" hidden>
+    <h2 class="next-benefits-mobile-title">
+        Ir para o próximo benefício:
+    </h2>
+
+    <div class="next-benefits-mobile-grid">
+        {% for card in beneficios_cards %}
+            <a
+                href="#{{ card.slug }}"
+                class="next-benefit-mobile-card"
+                data-segmento-btn="{{ card.slug }}"
+            >
+                <span class="next-benefit-mobile-icon">
+                    <img
+                        src="{% static card.icone %}?v=20260731-3"
+                        alt="{{ card.nome }}"
+                        class="next-benefit-mobile-icon-img"
+                    >
+                </span>
+    <span class="next-benefit-mobile-text">
+
+        {% if card.slug == "reducao-temporaria-dos-sintomas" %}
+            <span class="next-benefit-label-main">
+                Redução<br>temporária
+            </span>
+            <span class="next-benefit-label-muted">
+                dos sintomas
+            </span>
+
+        {% elif card.slug == "eliminacao-temporaria-dos-sintomas" %}
+            <span class="next-benefit-label-main">
+                Eliminação<br>temporária
+            </span>
+            <span class="next-benefit-label-muted">
+                dos sintomas
+            </span>
+
+        {% elif card.slug == "reducao-persistente-dos-sintomas" %}
+            <span class="next-benefit-label-main">
+                Redução<br>persistente
+            </span>
+            <span class="next-benefit-label-muted">
+                dos sintomas
+            </span>
+
+        {% elif card.slug == "eliminacao-persistente-dos-sintomas" %}
+            <span class="next-benefit-label-main">
+                Eliminação<br>persistente
+            </span>
+            <span class="next-benefit-label-muted">
+                dos sintomas
+            </span>
+
+        {% else %}
+            <span class="next-benefit-label-main">
+                {{ card.nome }}
+            </span>
+        {% endif %}
+
+    </span>
+            </a>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="share-banner">
+
+    <picture class="share-banner-picture">
+
+        <!-- MOBILE -->
+        <source
+            media="(max-width: 768px)"
+            srcset="{% static 'img/banner mobile.png' %}"
+        >
+
+        <!-- DESKTOP -->
+        <img
+            class="share-banner-img"
+            src="{% static 'img/banner familia.png' %}"
+            alt="Você conhece alguém que precisa desse conteúdo?"
+        >
+
+    </picture>
 
     <a
-    href="https://api.whatsapp.com/send/?text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.%0A%0Ahttps%3A%2F%2Fwww.telix.inf.br%2F&type=custom_url&app_absent=0"
-    class="share-banner-button"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Compartilhar este site pelo WhatsApp"
-    >
-    <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
-    <span>Compartilhe</span>
-    </a>
-    </section>
+        href="https://api.whatsapp.com/send/?text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.%0A%0Ahttps%3A%2F%2Fwww.telix.inf.br%2F"
+        class="share-whatsapp-link"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Compartilhar este site pelo WhatsApp"
+    ></a>
 
-  </main>
+</section>
 
-  <section class="newsletter-strip">
-    <div class="newsletter-icon" aria-hidden="true">
-      <i class="fa-regular fa-comments"></i>
-    </div>
+
+<section class="newsletter-strip">
+
+<div class="newsletter-icon" aria-hidden="true">
+    <i class="fa-regular fa-envelope"></i>
+</div>
 
     <h2 class="newsletter-title">
-      Mantenha-se atualizado sobre tratamentos de saúde
+        Mantenha-se atualizado sobre<br>
+        tratamentos de saúde
     </h2>
 
     <a
-    href="https://www.telix.inf.br/mantenha-se-atualizado"
-    class="newsletter-button"
+        href="https://www.telix.inf.br/mantenha-se-atualizado"
+        class="newsletter-button"
     >
-    Cadastrar e-mail
+        Cadastrar e-mail
     </a>
-  </section>
+
+</section>
+
+</main>
+
 
 <footer class="site-footer">
   <div class="site-footer-content">
@@ -1728,15 +439,15 @@
         </a>
       </div>
 
-      <div class="footer-group">
+      <div class="footer-group footer-hide-mobile">
         <a href="https://www.telix.inf.br/medicamentos-genericos-e-similares">
           <h3 class="footer-title">
-            Remédios por princípio ativo
+            
           </h3>
         </a>
 
         <a href="https://www.telix.inf.br/medicamentos-genericos-e-similares">
-          Genéricos e similares
+          
         </a>
       </div>
 
@@ -1779,7 +490,7 @@
         </a>
       </div>
 
-      <div class="footer-group">
+      <div class="footer-group footer-hide-mobile">
         <a href="https://www.telix.inf.br/marcar-consulta-com-medico">
           <h3 class="footer-title">
             Não se automedique
@@ -1801,10 +512,13 @@
           Apresentações
         </h3>
 
-        <a href="https://www.telix.inf.br/servicos-de-ti-para-empresas-de-saude-software-computacionalizacao-inovacao">
-          Empresas
+        <a
+            href="https://www.telix.inf.br/servicos-de-ti-para-empresas-de-saude-software-computacionalizacao-inovacao"
+            class="footer-hide-mobile"
+        >
+            
         </a>
-
+               
         <a href="https://www.telix.inf.br/perguntas-e-respostas">
           Perguntas e respostas
         </a>
@@ -1829,6 +543,16 @@
           </h3>
         </a>
       </div>
+    <div class="footer-group footer-contract">
+        <h3 class="footer-title">
+            
+        </h3>
+
+        <span class="footer-contract-text">
+            
+        </span>
+    </div>
+
 
       <a
         href="https://www.telix.inf.br/condicoes-de-saude"
@@ -1849,66 +573,701 @@
 </footer>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const botoes = document.querySelectorAll("[data-segmento-btn]");
-      const segmentos = document.querySelectorAll("[data-segmento-conteudo]");
+ document.addEventListener("DOMContentLoaded", function () {
 
-      function ativarSegmento(slug) {
+    const botoes =
+        document.querySelectorAll("[data-segmento-btn]");
+
+    const segmentos =
+        document.querySelectorAll("[data-segmento-conteudo]");
+
+
+    /* =========================================================
+       ATIVA O BENEFÍCIO SELECIONADO
+       ========================================================= */
+
+    function ativarSegmento(slug) {
+
         let encontrou = false;
 
+
+        /* BOTÕES */
         botoes.forEach(function (botao) {
-          const ativo = botao.getAttribute("data-segmento-btn") === slug;
-          botao.classList.toggle("ativo", ativo);
 
-          if (ativo) {
-            encontrou = true;
-          }
+            const ativo =
+                botao.getAttribute("data-segmento-btn") === slug;
+
+            botao.classList.toggle("ativo", ativo);
+
+            if (ativo) {
+                encontrou = true;
+            }
+
         });
 
+
+        /* LISTAS */
         segmentos.forEach(function (segmento) {
-          const ativo = segmento.getAttribute("data-segmento-conteudo") === slug;
-          segmento.classList.toggle("ativo", ativo);
+
+            const ativo =
+                segmento.getAttribute("data-segmento-conteudo") === slug;
+
+            segmento.classList.toggle("ativo", ativo);
+
         });
+
 
         return encontrou;
-      }
+    }
 
-      botoes.forEach(function (botao) {
+
+
+    /* =========================================================
+       LEVA PARA O TOPO DA LISTA SELECIONADA
+       ========================================================= */
+
+    function irParaTopoDaLista(slug) {
+
+        /*
+         * Localiza especificamente o segmento que
+         * acabou de ser ativado.
+         */
+        const segmentoDestino =
+            document.querySelector(
+                '[data-segmento-conteudo="' + slug + '"]'
+            );
+
+        if (!segmentoDestino) {
+            return;
+        }
+
+
+        /*
+         * Aguarda a troca display:none -> display:block
+         * acontecer e o navegador recalcular a altura da página.
+         */
+        setTimeout(function () {
+
+            const lista =
+                segmentoDestino.querySelector(".lista-shell");
+
+            if (!lista) {
+                return;
+            }
+
+
+            /*
+             * Calcula a posição REAL da lista na página.
+             */
+            const topo =
+                lista.getBoundingClientRect().top +
+                window.pageYOffset;
+
+
+            /*
+             * Vai para o início do bloco azul
+             * Benefício / Tratamentos.
+             */
+            window.scrollTo({
+                top: Math.max(0, topo - 8),
+                left: 0,
+                behavior: "smooth"
+            });
+
+        }, 80);
+
+    }
+
+
+
+    /* =========================================================
+       CLIQUE NOS BOTÕES DE BENEFÍCIO
+       ========================================================= */
+
+    botoes.forEach(function (botao) {
+
         botao.addEventListener("click", function (event) {
-          event.preventDefault();
 
-          const slug = botao.getAttribute("data-segmento-btn");
+            event.preventDefault();
 
-          if (ativarSegmento(slug)) {
-            history.replaceState(null, "", "#" + slug);
-          }
+            const slug =
+                botao.getAttribute("data-segmento-btn");
 
-    const shareWhatsapp = document.getElementById("share-whatsapp");
+
+            const existe =
+                ativarSegmento(slug);
+
+
+            if (!existe) {
+                return;
+            }
+
+
+            /*
+             * Atualiza a URL sem provocar scroll automático
+             * do navegador pelo hash.
+             */
+            history.replaceState(
+                null,
+                "",
+                "#" + slug
+            );
+
+
+            /*
+             * IMPORTANTE:
+             * Só os cards que ficam no FINAL da lista
+             * fazem o scroll.
+             *
+             * O menu superior continua funcionando normalmente.
+             */
+            if (
+                botao.classList.contains(
+                    "next-benefit-mobile-card"
+                )
+            ) {
+
+                irParaTopoDaLista(slug);
+
+            }
+
+        });
+
+    });
+
+
+
+    /* =========================================================
+       WHATSAPP
+       ========================================================= */
+
+    const shareWhatsapp =
+        document.getElementById("share-whatsapp");
 
     if (shareWhatsapp) {
-    const textoCompartilhamento =
-        "Você conhece alguém que precisa dessas informações sobre tratamentos? " +
-        window.location.href;
 
-    shareWhatsapp.href =
-        "https://wa.me/?text=" + encodeURIComponent(textoCompartilhamento);
+        const textoCompartilhamento =
+            "Você conhece alguém que precisa dessas informações sobre tratamentos? " +
+            window.location.href;
+
+        shareWhatsapp.href =
+            "https://wa.me/?text=" +
+            encodeURIComponent(textoCompartilhamento);
+
     }
-        });
-      });
 
-      const hashInicial = window.location.hash.replace("#", "");
 
-      if (hashInicial) {
-        const existe = ativarSegmento(hashInicial);
+
+    /* =========================================================
+       BENEFÍCIO INICIAL — HASH
+       ========================================================= */
+
+    const hashInicial =
+        window.location.hash.replace("#", "");
+
+
+    if (hashInicial) {
+
+        const existe =
+            ativarSegmento(hashInicial);
 
         if (!existe && botoes.length > 0) {
-          ativarSegmento(botoes[0].getAttribute("data-segmento-btn"));
+
+            ativarSegmento(
+                botoes[0].getAttribute(
+                    "data-segmento-btn"
+                )
+            );
+
         }
-      } else if (botoes.length > 0) {
-        ativarSegmento(botoes[0].getAttribute("data-segmento-btn"));
-      }
-    });
+
+    } else if (botoes.length > 0) {
+
+        ativarSegmento(
+            botoes[0].getAttribute(
+                "data-segmento-btn"
+            )
+        );
+
+    }
+
+});
+
+const beneficiosGrid =
+  document.getElementById("beneficiosGrid");
+
+const beneficiosScrollThumb =
+  document.getElementById("beneficiosScrollThumb");
+
+const beneficiosScrollTrack =
+  document.querySelector(".beneficios-scroll-track");
+
+
+/* =========================================================
+   ATUALIZA A BARRA QUANDO OS CARDS SE MOVEM
+   ========================================================= */
+
+function atualizarBarraBeneficios() {
+
+  if (
+    !beneficiosGrid ||
+    !beneficiosScrollThumb ||
+    !beneficiosScrollTrack
+  ) {
+    return;
+  }
+
+  const maxScroll =
+    beneficiosGrid.scrollWidth -
+    beneficiosGrid.clientWidth;
+
+  const larguraTrack =
+    beneficiosScrollTrack.clientWidth;
+
+  const larguraThumb =
+    beneficiosScrollThumb.offsetWidth;
+
+  const movimentoMaximo =
+    larguraTrack - larguraThumb;
+
+
+  if (maxScroll <= 0 || movimentoMaximo <= 0) {
+
+    beneficiosScrollThumb.style.transform =
+      "translate3d(0, 0, 0)";
+
+    return;
+  }
+
+
+  const progresso =
+    beneficiosGrid.scrollLeft / maxScroll;
+
+  const posicao =
+    progresso * movimentoMaximo;
+
+
+  beneficiosScrollThumb.style.transform =
+    `translate3d(${posicao}px, 0, 0)`;
+}
+
+
+/* =========================================================
+   SE O USUÁRIO ARRASTAR OS CARDS,
+   A BARRA TAMBÉM ACOMPANHA
+   ========================================================= */
+
+if (beneficiosGrid) {
+
+  beneficiosGrid.addEventListener(
+    "scroll",
+    atualizarBarraBeneficios,
+    { passive: true }
+  );
+
+}
+
+
+/* =========================================================
+   SCROLLBAR CUSTOMIZADA
+   ========================================================= */
+
+if (
+  beneficiosGrid &&
+  beneficiosScrollThumb &&
+  beneficiosScrollTrack
+) {
+
+  let arrastando = false;
+
+  /*
+   * Distância entre o ponto clicado
+   * e o início da barra azul.
+   */
+  let offsetDoPointer = 0;
+
+
+  /* =======================================================
+     MÉTRICAS
+     ======================================================= */
+
+  function obterMetricas() {
+
+    const trackRect =
+      beneficiosScrollTrack.getBoundingClientRect();
+
+    const larguraTrack =
+      beneficiosScrollTrack.clientWidth;
+
+    const larguraThumb =
+      beneficiosScrollThumb.offsetWidth;
+
+    const movimentoMaximo =
+      Math.max(
+        0,
+        larguraTrack - larguraThumb
+      );
+
+    const maxScroll =
+      Math.max(
+        0,
+        beneficiosGrid.scrollWidth -
+        beneficiosGrid.clientWidth
+      );
+
+    return {
+      trackRect,
+      larguraTrack,
+      larguraThumb,
+      movimentoMaximo,
+      maxScroll
+    };
+  }
+
+
+  /* =======================================================
+     POSIÇÃO ATUAL DO THUMB
+     ======================================================= */
+
+  function posicaoAtualThumb() {
+
+    const {
+      movimentoMaximo,
+      maxScroll
+    } = obterMetricas();
+
+    if (
+      maxScroll <= 0 ||
+      movimentoMaximo <= 0
+    ) {
+      return 0;
+    }
+
+    const progresso =
+      beneficiosGrid.scrollLeft / maxScroll;
+
+    return progresso * movimentoMaximo;
+  }
+
+
+  /* =======================================================
+     MOVE THUMB + CARDS
+     ======================================================= */
+
+  function moverPara(posicao) {
+
+    const {
+      movimentoMaximo,
+      maxScroll
+    } = obterMetricas();
+
+
+    const novaPosicao =
+      Math.max(
+        0,
+        Math.min(
+          posicao,
+          movimentoMaximo
+        )
+      );
+
+
+    const progresso =
+      movimentoMaximo > 0
+        ? novaPosicao / movimentoMaximo
+        : 0;
+
+
+    /*
+     * Movimento dos cards.
+     */
+    beneficiosGrid.scrollLeft =
+      progresso * maxScroll;
+
+
+    /*
+     * Movimento visual imediato da barra.
+     */
+    beneficiosScrollThumb.style.transform =
+      `translate3d(${novaPosicao}px, 0, 0)`;
+  }
+
+
+  /* =======================================================
+     POINTER DOWN
+     ======================================================= */
+
+  function iniciarArraste(event) {
+
+    /*
+     * Aceita somente botão esquerdo do mouse.
+     * Touch/Pen não possuem button = 0 em todos os casos,
+     * por isso a condição só vale para mouse.
+     */
+    if (
+      event.pointerType === "mouse" &&
+      event.button !== 0
+    ) {
+      return;
+    }
+
+
+    const {
+      trackRect,
+      larguraThumb
+    } = obterMetricas();
+
+
+    const atual =
+      posicaoAtualThumb();
+
+
+    /*
+     * Onde começa e termina visualmente
+     * a barra azul.
+     */
+    const inicioThumb =
+      trackRect.left + atual;
+
+    const fimThumb =
+      inicioThumb + larguraThumb;
+
+
+    const clicouNoThumb =
+      event.clientX >= inicioThumb &&
+      event.clientX <= fimThumb;
+
+
+    if (clicouNoThumb) {
+
+      /*
+       * Segurou diretamente a barra azul:
+       * preserva exatamente o ponto agarrado.
+       */
+      offsetDoPointer =
+        event.clientX -
+        inicioThumb;
+
+    } else {
+
+      /*
+       * Tocou/clicou no trilho cinza.
+       *
+       * Centralizamos a barra azul naquele ponto
+       * e já iniciamos o arraste.
+       */
+      offsetDoPointer =
+        larguraThumb / 2;
+
+
+      moverPara(
+        event.clientX -
+        trackRect.left -
+        offsetDoPointer
+      );
+    }
+
+
+    arrastando = true;
+
+
+    beneficiosScrollThumb.classList.add(
+      "arrastando"
+    );
+
+
+    beneficiosScrollTrack.setPointerCapture(
+      event.pointerId
+    );
+
+
+    event.preventDefault();
+  }
+
+
+  /* =======================================================
+     POINTER MOVE
+     ======================================================= */
+
+  function moverArraste(event) {
+
+    if (!arrastando) {
+      return;
+    }
+
+
+    const {
+      trackRect
+    } = obterMetricas();
+
+
+    const novaPosicao =
+      event.clientX -
+      trackRect.left -
+      offsetDoPointer;
+
+
+    moverPara(
+      novaPosicao
+    );
+
+
+    event.preventDefault();
+  }
+
+
+  /* =======================================================
+     POINTER UP / CANCEL
+     ======================================================= */
+
+  function terminarArraste(event) {
+
+    if (!arrastando) {
+      return;
+    }
+
+
+    arrastando = false;
+
+
+    beneficiosScrollThumb.classList.remove(
+      "arrastando"
+    );
+
+
+    if (
+      beneficiosScrollTrack.hasPointerCapture(
+        event.pointerId
+      )
+    ) {
+
+      beneficiosScrollTrack.releasePointerCapture(
+        event.pointerId
+      );
+
+    }
+  }
+
+
+  /* =======================================================
+     EVENTOS NA BARRA INTEIRA
+     ======================================================= */
+
+  beneficiosScrollTrack.addEventListener(
+    "pointerdown",
+    iniciarArraste
+  );
+
+
+  beneficiosScrollTrack.addEventListener(
+    "pointermove",
+    moverArraste
+  );
+
+
+  beneficiosScrollTrack.addEventListener(
+    "pointerup",
+    terminarArraste
+  );
+
+
+  beneficiosScrollTrack.addEventListener(
+    "pointercancel",
+    terminarArraste
+  );
+
+
+  /*
+   * Posição inicial correta.
+   */
+  atualizarBarraBeneficios();
+
+
+  /*
+   * Recalcula se a viewport mudar.
+   */
+  window.addEventListener(
+    "resize",
+    atualizarBarraBeneficios
+  );
+
+}
+
+
   </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const botoesFiltro = document.querySelectorAll(
+        ".lista-action-button[data-filtro-path]"
+    );
+
+    botoesFiltro.forEach(function (botao) {
+
+        botao.addEventListener("click", function (event) {
+
+            event.preventDefault();
+
+            const path =
+                botao.getAttribute(
+                    "data-filtro-path"
+                );
+
+            if (!path) {
+                return;
+            }
+
+            /*
+             * DESENVOLVIMENTO
+             *
+             * Django:
+             * 127.0.0.1:8000
+             *
+             * React:
+             * localhost:3000
+             */
+            const estaNoDjangoLocal =
+                (
+                    window.location.hostname === "127.0.0.1"
+                    ||
+                    window.location.hostname === "localhost"
+                )
+                &&
+                window.location.port === "8000";
+
+
+            let destino;
+
+
+            if (estaNoDjangoLocal) {
+
+                destino =
+                    "http://localhost:3000"
+                    +
+                    path;
+
+            } else {
+
+                /*
+                 * PRODUÇÃO:
+                 * React e Django ficam no mesmo domínio.
+                 */
+                destino =
+                    window.location.origin
+                    +
+                    path;
+            }
+
+
+            window.location.href =
+                destino;
+        });
+
+    });
+
+});
+</script>
 
 </body>
 </html>

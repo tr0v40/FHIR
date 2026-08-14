@@ -1,0 +1,3891 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Tratamentos para {{ condicao.nome }}</title>
+
+  {% include 'core/google_analytics.html' %}
+
+  <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  >
+
+  <style>
+
+    /* =========================================================
+       RESET / VARIÁVEIS
+       ========================================================= */
+
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --telix-blue: #0094FF;
+      --text-dark: #212529;
+      --text-black: #000000;
+      --text-muted: #8F8F93;
+      --gray-line: #E0E0E0;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      background: #FFFFFF;
+      color: #111111;
+      font-family: Arial, Helvetica, sans-serif;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+
+    /* =========================================================
+       BARRA SUPERIOR
+       ========================================================= */
+
+    .top-bar {
+      width: 100%;
+      height: 34px;
+
+      background: var(--telix-blue);
+      color: #FFFFFF;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-family: 'Inter', Arial, sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      line-height: 27px;
+
+      text-align: center;
+    }
+
+
+    /* =========================================================
+       CONTAINER PRINCIPAL
+       ========================================================= */
+
+    .page-wrapper {
+      width: 100%;
+      max-width: 952px;
+
+      margin: 0 auto;
+      padding: 34px 16px 70px;
+    }
+
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+
+      margin-bottom: 78px;
+    }
+
+    .logo {
+      width: 192px;
+      height: 192px;
+
+      display: block;
+
+      margin-left: -43px;
+
+      object-fit: contain;
+    }
+
+    .login-link {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 5px;
+
+      margin-top: 78px;
+
+      color: #010009;
+
+      font-family: 'Inter', Arial, sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      line-height: 27px;
+
+      text-decoration: none;
+    }
+
+    .login-icon {
+      width: 26px;
+      height: 26px;
+
+      border-radius: 50%;
+
+      background: var(--telix-blue);
+      color: #FFFFFF;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 10px;
+
+      flex: 0 0 26px;
+    }
+
+
+    /* =========================================================
+       INTRODUÇÃO
+       ========================================================= */
+
+    .intro {
+      margin-bottom: 28px;
+    }
+
+    .page-title {
+      margin: 0 0 5px -20px;
+
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 400;
+      font-size: 34.9px;
+      line-height: 40px;
+
+      color: var(--text-dark);
+    }
+
+    .page-description {
+      margin: 0 0 0 -20px;
+
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 20px;
+
+      color: #000000;
+    }
+
+
+    /* =========================================================
+       MENU / CARDS DE BENEFÍCIO
+       ========================================================= */
+
+    .beneficios-grid {
+      width: 100%;
+      max-width: 952px;
+
+      margin: 0 auto 30px;
+
+      display: grid;
+      grid-template-columns: repeat(5, 180px);
+
+      gap: 13px;
+
+      justify-content: center;
+      align-items: stretch;
+
+      border: 0;
+    }
+
+
+    /* =========================================================
+       CARD DE BENEFÍCIO
+       ========================================================= */
+
+    .beneficio-card {
+      box-sizing: border-box;
+
+      width: 180px;
+      height: 296px;
+      min-height: 296px;
+
+      background: #FFFFFF;
+
+      border: 1.85419px solid var(--telix-blue);
+      border-radius: 9.27096px;
+
+      color: var(--telix-blue);
+
+      padding: 21px 14px 18px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      position: relative;
+
+      text-align: center;
+      text-decoration: none;
+
+      cursor: pointer;
+
+      z-index: 1;
+
+      transition:
+        background-color 0.18s ease,
+        border-color 0.18s ease,
+        color 0.18s ease,
+        transform 0.18s ease;
+    }
+
+
+    /* =========================================================
+       HOVER / CARD ATIVO
+       ========================================================= */
+
+    .beneficio-card:hover,
+    .beneficio-card.ativo {
+      background: var(--telix-blue);
+      border-color: #FFFFFF;
+      color: #FFFFFF;
+    }
+
+    .beneficio-card:hover {
+      transform: translateY(-1px);
+    }
+
+
+    /* =========================================================
+       PARTE SUPERIOR DO CARD
+       ========================================================= */
+
+    .beneficio-card-top {
+      width: 100%;
+      height: 118px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      pointer-events: none;
+    }
+
+
+    /* =========================================================
+       ÍCONE DO CARD
+       ========================================================= */
+
+    .beneficio-icon {
+      width: 54px;
+      height: 49px;
+
+      margin: 0 auto 14px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      pointer-events: none;
+    }
+
+    .beneficio-icon-img {
+      display: block;
+
+      object-fit: contain;
+
+      transition: filter 0.18s ease;
+
+      pointer-events: none;
+    }
+
+
+    /* Redução temporária */
+
+    .beneficio-card[
+      data-segmento-btn="reducao-temporaria-dos-sintomas"
+    ] .beneficio-icon-img {
+      width: 45px;
+      height: 42px;
+    }
+
+
+    /* Eliminação temporária */
+
+    .beneficio-card[
+      data-segmento-btn="eliminacao-temporaria-dos-sintomas"
+    ] .beneficio-icon-img {
+      width: 50px;
+      height: 41px;
+    }
+
+
+    /* Redução persistente */
+
+    .beneficio-card[
+      data-segmento-btn="reducao-persistente-dos-sintomas"
+    ] .beneficio-icon-img {
+      width: 43px;
+      height: 43px;
+    }
+
+
+    /* Eliminação persistente */
+
+    .beneficio-card[
+      data-segmento-btn="eliminacao-persistente-dos-sintomas"
+    ] .beneficio-icon-img {
+      width: 43px;
+      height: 43px;
+    }
+
+
+    /* Cura */
+
+    .beneficio-card[
+      data-segmento-btn="cura"
+    ] .beneficio-icon-img {
+      width: 54px;
+      height: 49px;
+    }
+
+
+    /* Ícone branco no hover/ativo */
+
+    .beneficio-card:hover .beneficio-icon-img,
+    .beneficio-card.ativo .beneficio-icon-img {
+      filter: brightness(0) invert(1);
+    }
+
+
+    /* =========================================================
+       NOME DO BENEFÍCIO
+       ========================================================= */
+
+    .beneficio-nome {
+      width: 102px;
+      height: 44px;
+
+      margin: 0 auto;
+
+      font-family: 'Inter', Arial, sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      line-height: 18px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+
+      color: var(--telix-blue);
+
+      transition: color 0.18s ease;
+
+      pointer-events: none;
+    }
+
+    .beneficio-card:hover .beneficio-nome,
+    .beneficio-card.ativo .beneficio-nome {
+      color: #FFFFFF;
+    }
+
+
+    /* =========================================================
+       LINHA INTERNA DO CARD
+       ========================================================= */
+
+    .beneficio-line {
+      width: 111px;
+      height: 0;
+
+      margin: 9px auto 25px;
+
+      border-top: 1px solid var(--telix-blue);
+
+      background: transparent;
+
+      opacity: 1;
+
+      transition: border-color 0.18s ease;
+
+      pointer-events: none;
+    }
+
+    .beneficio-card:hover .beneficio-line,
+    .beneficio-card.ativo .beneficio-line {
+      border-top-color: #FFFFFF;
+    }
+
+
+    /* =========================================================
+       PARTE INFERIOR DO CARD
+       ========================================================= */
+
+    .beneficio-card-bottom {
+      width: 100%;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      pointer-events: none;
+    }
+
+
+    /* =========================================================
+       FAIXA DE PERCENTUAL
+       ========================================================= */
+
+    .beneficio-percentual {
+      width: 112px;
+      height: auto;
+
+      margin: 0 auto;
+
+      font-family: 'Inter', Arial, sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 17px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      text-align: center;
+
+      color: #8F8F93;
+
+      transition: color 0.18s ease;
+
+      pointer-events: none;
+    }
+
+    .beneficio-card:hover .beneficio-percentual,
+    .beneficio-card.ativo .beneficio-percentual {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+
+    /* Percentual maior */
+
+    .beneficio-percentual strong {
+      display: block;
+
+      width: auto;
+
+      margin-top: 2px;
+
+      font-family: 'Inter', Arial, sans-serif;
+      font-weight: 500;
+      font-size: 25px;
+      line-height: 30px;
+
+      color: var(--telix-blue);
+
+      transition: color 0.18s ease;
+
+      pointer-events: none;
+    }
+
+    .beneficio-card:hover .beneficio-percentual strong,
+    .beneficio-card.ativo .beneficio-percentual strong {
+      color: #FFFFFF;
+    }
+
+
+    /* =========================================================
+       PARTICIPANTES
+       ========================================================= */
+
+    .beneficio-participantes {
+      width: 117px;
+      height: auto;
+
+      margin: 22px auto 0;
+
+      font-family: 'Inter', Arial, sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 17px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
+
+      color: #8F8F93;
+
+      transition: color 0.18s ease;
+
+      pointer-events: none;
+    }
+
+    .beneficio-card:hover .beneficio-participantes,
+    .beneficio-card.ativo .beneficio-participantes {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+
+    /* =========================================================
+       LISTAS DOS SEGMENTOS
+       ========================================================= */
+
+    .segmento-lista {
+      display: none;
+    }
+
+    .segmento-lista.ativo {
+      display: block;
+    }
+
+
+    /* =========================================================
+       CONTAINER DA LISTA
+       ========================================================= */
+
+    .lista-shell {
+      width: 100%;
+      max-width: 952px;
+
+      margin: 0 auto 44px;
+
+      background: #FFFFFF;
+
+      border: 1.85419px solid var(--telix-blue);
+      border-top: 0;
+
+      border-radius: 18px 18px 5px 5px;
+
+      overflow: hidden;
+
+      box-shadow: none;
+      outline: none;
+    }
+
+
+    /* =========================================================
+       HEADER AZUL DA LISTA
+       ========================================================= */
+
+    .beneficio-header {
+      width: 100%;
+      min-height: 140px;
+
+      background: var(--telix-blue);
+      color: #FFFFFF;
+
+      border: 0;
+      outline: none;
+      box-shadow: none;
+
+      border-radius: 18px 18px 0 0;
+
+      padding: 20px 25px 18px;
+
+      display: flex;
+      flex-direction: column;
+
+      gap: 18px;
+    }
+
+    .beneficio-header-row {
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+    .beneficio-header-title {
+      display: flex;
+      align-items: center;
+
+      gap: 9px;
+
+      min-width: 0;
+    }
+
+    .beneficio-header-label {
+      font-family: 'Inter', Arial, sans-serif;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 30px;
+
+      color: rgba(255, 255, 255, 0.8);
+
+      white-space: nowrap;
+    }
+
+    .beneficio-header-icon-img {
+      width: 31px;
+      height: 31px;
+
+      object-fit: contain;
+
+      display: block;
+
+      filter: brightness(0) invert(1);
+
+      flex: 0 0 31px;
+    }
+
+    .beneficio-header-name {
+      font-family: 'Inter', Arial, sans-serif;
+      font-weight: 600;
+      font-size: 20px;
+      line-height: 30px;
+
+      color: #FFFFFF;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .beneficio-header-count {
+      flex: 0 0 auto;
+
+      font-family: 'Inter', Arial, sans-serif;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 30px;
+
+      color: rgba(255, 255, 255, 0.8);
+
+      white-space: nowrap;
+    }
+
+    .beneficio-header-text {
+      width: 100%;
+      max-width: 901px;
+
+      margin: 0;
+
+      font-family: 'Inter', Arial, sans-serif;
+      font-weight: 500;
+      font-size: 15px;
+      line-height: 21px;
+
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+
+    /* =========================================================
+       CONTAINER DOS TRATAMENTOS
+       ========================================================= */
+
+    .lista-box {
+      width: 100%;
+
+      margin: 0;
+
+      background: #FFFFFF;
+
+      border: 0;
+      border-radius: 0;
+
+      overflow: hidden;
+    }
+
+
+    /* =========================================================
+       CARD DO TRATAMENTO - DESKTOP
+       ========================================================= */
+
+    .tratamento-card {
+      display: grid;
+
+      grid-template-columns:
+        120px
+        minmax(0, 1fr)
+        270px;
+
+      gap: 24px;
+
+      min-height: 390px;
+
+      padding: 58px 28px 44px;
+
+      border-bottom: 1px solid #E6E6E6;
+
+      background: #FFFFFF;
+
+      color: #111111;
+
+      text-decoration: none;
+
+      transition: background-color 0.18s ease;
+    }
+
+    .tratamento-card:last-child {
+      border-bottom: 0;
+    }
+
+    .tratamento-card:hover {
+      background: #FBFDFF;
+    }
+
+
+    /* =========================================================
+       IMAGEM DO TRATAMENTO
+       ========================================================= */
+
+    .tratamento-img-wrap {
+      width: 120px;
+      height: 120px;
+
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+
+      padding-top: 0;
+
+      flex: 0 0 120px;
+    }
+
+    .tratamento-img {
+      width: 120px;
+      height: 120px;
+
+      display: block;
+
+      object-fit: contain;
+      object-position: left top;
+    }
+
+
+    /* =========================================================
+       CONTEÚDO PRINCIPAL DO TRATAMENTO
+       ========================================================= */
+
+    .tratamento-main {
+      min-width: 0;
+    }
+
+    .tratamento-nome {
+      margin: 0;
+
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 700;
+      font-size: 25px;
+      line-height: 30px;
+
+      color: #050606;
+    }
+
+    .tratamento-tipo {
+      margin: 0 0 8px;
+
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      line-height: 14px;
+
+      color: var(--telix-blue);
+    }
+
+    .tratamento-info {
+      margin: 0 0 8px;
+
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+
+      color: #212529;
+    }
+
+    .tratamento-info strong {
+      font-weight: 700;
+      color: #212529;
+    }
+
+
+    /* =========================================================
+       BOTÃO VER DETALHES
+       ========================================================= */
+
+    .btn-detalhes {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      min-width: 138px;
+      height: 31px;
+
+      margin: 10px 0 28px;
+
+      padding: 0 28px;
+
+      background: #E0E0E0;
+
+      color: #111111;
+
+      border-radius: 4px;
+
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+
+    /* =========================================================
+       DESCRIÇÃO
+       ========================================================= */
+
+    .tratamento-descricao {
+      max-width: 520px;
+
+      margin: 0;
+
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+
+      color: #212529;
+    }
+
+
+    /* =========================================================
+       BLOCO DE EFICÁCIA
+       ========================================================= */
+
+    .eficacia-box {
+      display: flex;
+      flex-direction: column;
+
+      align-items: flex-end;
+      justify-content: center;
+
+      text-align: right;
+
+      padding-top: 4px;
+    }
+
+
+    /* =========================================================
+       BARRA DE EFICÁCIA
+       ========================================================= */
+
+    .bar-bg {
+      width: 243px;
+      height: 20px;
+
+      position: relative;
+
+      margin-bottom: 14px;
+
+      border-radius: 8px;
+
+      background: #E0E0E0;
+
+      overflow: hidden;
+    }
+
+    .bar-range {
+      position: absolute;
+
+      top: 0;
+
+      height: 100%;
+
+      min-width: 15px;
+
+      background: var(--telix-blue);
+
+      border-radius: 7px;
+    }
+
+    .bar-marker {
+      position: absolute;
+
+      top: 0;
+
+      width: 15px;
+      height: 20px;
+
+      background: var(--telix-blue);
+
+      border-radius: 7px;
+
+      transform: translateX(-50%);
+
+      z-index: 2;
+    }
+
+
+    /* =========================================================
+       LINHA DO PERCENTUAL
+       
+       IMPORTANTE:
+       o ícone agora pertence à própria linha do percentual.
+       Isso elimina o posicionamento artificial usado antes.
+       ========================================================= */
+
+    .eficacia-numero {
+      margin: 0;
+
+      font-family: 'Inter', Arial, sans-serif;
+      font-weight: 500;
+      font-size: 25px;
+      line-height: 38px;
+
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      gap: 5px;
+
+      text-align: right;
+
+      color: #888888;
+    }
+
+    .eficacia-min {
+      color: #888888;
+      font-weight: 500;
+    }
+
+    .eficacia-numero strong {
+      color: #010009;
+
+      font-weight: 700;
+    }
+
+
+    /* =========================================================
+       ÍCONE DA EFICÁCIA
+       ========================================================= */
+
+    .benefit-mini-icon {
+      width: 31px;
+      height: 31px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      flex: 0 0 31px;
+
+      position: relative;
+
+      margin-right: 1px;
+    }
+
+    .benefit-mini-icon-img {
+      width: 31px;
+      height: 31px;
+
+      display: block;
+
+      object-fit: contain;
+    }
+
+
+    /* =========================================================
+       TEXTO ABAIXO DO PERCENTUAL
+       ========================================================= */
+
+    .eficacia-label {
+      margin: 0 0 28px;
+
+      font-family: 'Inter', Arial, sans-serif;
+      font-weight: 200;
+      font-size: 13px;
+      line-height: 20px;
+
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      text-align: right;
+
+      color: #000000;
+    }
+
+
+    /* =========================================================
+       PRAZO PARA EFEITO
+       ========================================================= */
+
+    .prazo-label {
+      margin-bottom: 2px;
+
+      font-family: 'Inter', Arial, sans-serif;
+      font-weight: 500;
+      font-size: 15px;
+      line-height: 22px;
+
+      display: flex;
+      align-items: center;
+
+      text-align: right;
+
+      color: #000000;
+    }
+
+    .prazo-valor {
+      font-family: 'Inter', Arial, sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 24px;
+
+      display: flex;
+      align-items: center;
+
+      text-align: right;
+
+      color: #000000;
+    }
+
+
+    /* =========================================================
+       RODAPÉ DA LISTA
+       ========================================================= */
+
+    .lista-footer-note {
+      width: 100%;
+      max-width: 952px;
+
+      margin: 20px auto 28px;
+
+      padding: 10px 16px;
+
+      background: var(--telix-blue);
+
+      color: #FFFFFF;
+
+      border-radius: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 16px;
+
+      font-family: 'Inter', Arial, sans-serif;
+      font-size: 13px;
+      line-height: 18px;
+    }
+
+    .lista-footer-note .note-button {
+      padding: 5px 14px;
+
+      background: #FFFFFF;
+
+      color: var(--telix-blue);
+
+      border-radius: 3px;
+
+      font-size: 11px;
+      font-weight: 700;
+
+      white-space: nowrap;
+    }
+
+
+    /* =========================================================
+       BANNER
+       ========================================================= */
+
+    .banner-placeholder {
+      width: 100%;
+      max-width: 952px;
+      height: 142px;
+
+      margin: 0 auto 34px;
+
+      padding: 20px;
+
+      background: #222222;
+
+      border-radius: 2px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      color: #FFFFFF;
+
+      font-family: 'Inter', Arial, sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+
+      text-align: center;
+    }
+
+
+    /* =========================================================
+       WHATSAPP
+       ========================================================= */
+
+    .whatsapp-strip {
+      width: 100vw;
+
+      margin-left: calc(50% - 50vw);
+
+      padding: 28px 16px;
+
+      background: var(--telix-blue);
+
+      color: #FFFFFF;
+
+      text-align: center;
+
+      font-family: 'Inter', Arial, sans-serif;
+    }
+
+    .whatsapp-strip-title {
+      margin-bottom: 12px;
+
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .whatsapp-strip-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 7px 18px;
+
+      background: #FFFFFF;
+
+      color: var(--telix-blue);
+
+      border-radius: 4px;
+
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    .page-footer {
+      width: 100%;
+      max-width: 952px;
+
+      margin: 42px auto 0;
+
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+
+      gap: 30px;
+
+      font-family: 'Inter', Arial, sans-serif;
+      font-size: 12px;
+
+      color: #111111;
+    }
+
+    .page-footer h4 {
+      margin: 0 0 12px;
+
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .page-footer p,
+    .page-footer a {
+      display: block;
+
+      margin: 0 0 8px;
+
+      color: #111111;
+
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+
+    /* =========================================================
+       ESTADO VAZIO
+       ========================================================= */
+
+    .empty-state {
+      padding: 34px 28px;
+
+      font-size: 14px;
+
+      color: #111111;
+    }
+
+
+    /* =========================================================
+       TABLET / DESKTOP MENOR
+       ========================================================= */
+
+    @media (max-width: 980px) {
+
+      .page-wrapper {
+        max-width: 100%;
+
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .beneficios-grid {
+        grid-template-columns:
+          repeat(
+            auto-fit,
+            minmax(150px, 180px)
+          );
+
+        gap: 13px;
+
+        justify-content: center;
+      }
+
+      .beneficio-card {
+        width: 180px;
+        height: 296px;
+        min-height: 296px;
+      }
+
+      .lista-shell,
+      .lista-footer-note,
+      .banner-placeholder,
+      .page-footer {
+        max-width: 100%;
+      }
+    }
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @media (max-width: 768px) {
+
+      /* =======================================================
+         ESTRUTURA GERAL
+         ======================================================= */
+
+      html,
+      body {
+        width: 100%;
+        max-width: 100%;
+
+        margin: 0;
+        padding: 0;
+
+        overflow-x: hidden;
+      }
+
+      body {
+        background: #FFFFFF;
+      }
+
+
+      /* =======================================================
+         BARRA SUPERIOR
+         ======================================================= */
+
+      .top-bar {
+        width: calc(100% - 16px);
+        height: 31px;
+
+        margin: 9px 8px 0;
+
+        padding: 0 8px;
+
+        font-family: 'Inter', Arial, sans-serif;
+        font-size: 7px;
+        font-weight: 500;
+        line-height: 10px;
+
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        text-align: left;
+      }
+
+
+      /* =======================================================
+         CONTAINER PRINCIPAL
+         ======================================================= */
+
+      .page-wrapper {
+        width: 100%;
+        max-width: 100%;
+
+        margin: 0;
+
+        padding:
+          0
+          18px
+          35px;
+      }
+
+
+      /* =======================================================
+         HEADER MOBILE
+         ======================================================= */
+
+      .header {
+        width: 100%;
+
+        min-height: 74px;
+
+        margin: 0 0 31px;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 12px;
+      }
+
+      .header > a:first-child {
+        display: flex;
+        align-items: center;
+
+        flex: 0 0 auto;
+      }
+
+      .logo {
+        width: 87px;
+        height: auto;
+
+        margin: 0;
+
+        object-fit: contain;
+
+        display: block;
+      }
+
+      .login-link {
+        margin: 0;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        gap: 4px;
+
+        font-family: 'Inter', Arial, sans-serif;
+        font-weight: 700;
+        font-size: 8px;
+        line-height: 12px;
+
+        color: #010009;
+
+        white-space: nowrap;
+
+        flex: 0 0 auto;
+      }
+
+      .login-icon {
+        width: 17px;
+        height: 17px;
+
+        flex: 0 0 17px;
+
+        font-size: 7px;
+      }
+
+
+      /* =======================================================
+         INTRO MOBILE
+         ======================================================= */
+
+      .intro {
+        width: 100%;
+
+        margin: 0 0 18px;
+      }
+
+      .page-title {
+        width: 100%;
+
+        margin: 0 0 6px;
+
+        font-family: 'Inter', Arial, sans-serif;
+        font-weight: 700;
+        font-size: 15px;
+        line-height: 19px;
+
+        color: #050606;
+      }
+
+      .page-description {
+        width: 100%;
+
+        margin: 0;
+
+        font-family: 'Inter', Arial, sans-serif;
+        font-weight: 400;
+        font-size: 8px;
+        line-height: 12px;
+
+        color: #000000;
+      }
+
+
+      /* =======================================================
+         MENU HORIZONTAL DOS BENEFÍCIOS
+         ======================================================= */
+
+      .beneficios-grid {
+        width: calc(100% + 18px);
+        max-width: none;
+
+        margin:
+          0
+          -18px
+          13px
+          0;
+
+        padding:
+          0
+          0
+          8px
+          0;
+
+        display: flex;
+
+        flex-wrap: nowrap;
+
+        justify-content: flex-start;
+        align-items: stretch;
+
+        gap: 14px;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        scroll-behavior: smooth;
+
+        -webkit-overflow-scrolling: touch;
+
+        scrollbar-width: auto;
+        scrollbar-color:
+          var(--telix-blue)
+          #D9D9D9;
+
+        overscroll-behavior-x: contain;
+
+        touch-action: pan-x;
+
+        cursor: grab;
+      }
+
+      .beneficios-grid:active {
+        cursor: grabbing;
+      }
+
+
+      /* Chrome / Edge / Safari */
+
+      .beneficios-grid::-webkit-scrollbar {
+        height: 8px;
+      }
+
+      .beneficios-grid::-webkit-scrollbar-track {
+        background: #D9D9D9;
+
+        border-radius: 10px;
+      }
+
+      .beneficios-grid::-webkit-scrollbar-thumb {
+        background: var(--telix-blue);
+
+        border-radius: 10px;
+
+        min-width: 45px;
+      }
+
+      .beneficios-grid::-webkit-scrollbar-thumb:hover {
+        background: var(--telix-blue);
+      }
+
+
+      /* =======================================================
+         CARDS DO MENU MOBILE
+         ======================================================= */
+
+      .beneficio-card {
+        width: 110px;
+        min-width: 110px;
+        max-width: 110px;
+
+        height: 118px;
+        min-height: 118px;
+
+        flex:
+          0
+          0
+          110px;
+
+        padding:
+          10px
+          8px
+          7px;
+
+        border:
+          1px
+          solid
+          var(--telix-blue);
+
+        border-radius: 9px;
+
+        transform: none !important;
+      }
+
+      .beneficio-card:hover {
+        transform: none;
+      }
+
+
+      /* =======================================================
+         TOPO DOS CARDS DO MENU
+         ======================================================= */
+
+      .beneficio-card-top {
+        width: 100%;
+        height: 61px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+      }
+
+
+      /* =======================================================
+         ÍCONES DOS CARDS MOBILE
+         ======================================================= */
+
+      .beneficio-icon {
+        width: 27px;
+        height: 27px;
+
+        margin:
+          0
+          auto
+          4px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .beneficio-card[
+        data-segmento-btn="reducao-temporaria-dos-sintomas"
+      ] .beneficio-icon-img {
+        width: 24px;
+        height: 23px;
+      }
+
+      .beneficio-card[
+        data-segmento-btn="eliminacao-temporaria-dos-sintomas"
+      ] .beneficio-icon-img {
+        width: 26px;
+        height: 22px;
+      }
+
+      .beneficio-card[
+        data-segmento-btn="reducao-persistente-dos-sintomas"
+      ] .beneficio-icon-img {
+        width: 24px;
+        height: 24px;
+      }
+
+      .beneficio-card[
+        data-segmento-btn="eliminacao-persistente-dos-sintomas"
+      ] .beneficio-icon-img {
+        width: 24px;
+        height: 24px;
+      }
+
+      .beneficio-card[
+        data-segmento-btn="cura"
+      ] .beneficio-icon-img {
+        width: 28px;
+        height: 25px;
+      }
+
+
+      /* =======================================================
+         NOME DO BENEFÍCIO MOBILE
+         ======================================================= */
+
+      .beneficio-nome {
+        width: 92px;
+        height: 30px;
+
+        margin: 0 auto;
+
+        font-family: 'Inter', Arial, sans-serif;
+        font-weight: 600;
+        font-size: 10px;
+        line-height: 11px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        text-align: center;
+      }
+
+
+      /* =======================================================
+         LINHA DOS CARDS MOBILE
+         ======================================================= */
+
+      .beneficio-line {
+        width: 76px;
+
+        margin:
+          2px
+          auto
+          5px;
+
+        border-top-width: 1px;
+      }
+
+
+      /* =======================================================
+         PERCENTUAL DOS CARDS MOBILE
+         ======================================================= */
+
+      .beneficio-card-bottom {
+        width: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .beneficio-percentual {
+        width: 94px;
+
+        margin: 0;
+
+        font-family: 'Inter', Arial, sans-serif;
+        font-weight: 500;
+        font-size: 8px;
+        line-height: 10px;
+      }
+
+      .beneficio-percentual strong {
+        margin-top: 0;
+
+        font-size: 16px;
+        line-height: 18px;
+      }
+
+      .beneficio-participantes {
+        display: none;
+      }
+
+
+      /* =======================================================
+         LISTA
+         ======================================================= */
+
+      .segmento-lista {
+        width: 100%;
+      }
+
+      .lista-shell {
+        width: 100%;
+        max-width: 100%;
+
+        margin:
+          0
+          auto
+          22px;
+
+        border:
+          1px
+          solid
+          var(--telix-blue);
+
+        border-radius: 0;
+
+        overflow: hidden;
+      }
+
+
+      /* =======================================================
+         HEADER AZUL MOBILE
+         ======================================================= */
+
+      .beneficio-header {
+        width: 100%;
+        min-height: 102px;
+
+        padding:
+          11px
+          16px
+          13px;
+
+        border-radius: 0;
+
+        gap: 8px;
+      }
+
+      .beneficio-header-row {
+        width: 100%;
+
+        display: grid;
+
+        grid-template-columns:
+          minmax(0, 1fr)
+          auto;
+
+        gap: 12px;
+
+        align-items: flex-start;
+      }
+
+      .beneficio-header-title {
+        min-width: 0;
+
+        display: grid;
+
+        grid-template-columns:
+          auto
+          22px
+          minmax(0, 1fr);
+
+        align-items: flex-start;
+
+        gap: 4px;
+      }
+
+      .beneficio-header-label {
+        font-size: 8px;
+        line-height: 12px;
+
+        color:
+          rgba(
+            255,
+            255,
+            255,
+            0.8
+          );
+      }
+
+      .beneficio-header-icon-img {
+        width: 18px;
+        height: 18px;
+
+        flex: 0 0 18px;
+
+        margin-top: 1px;
+      }
+
+      .beneficio-header-name {
+        font-size: 8px;
+        line-height: 10px;
+
+        white-space: normal;
+
+        overflow: visible;
+
+        text-overflow: initial;
+      }
+
+      .beneficio-header-count {
+        font-size: 8px;
+        line-height: 12px;
+
+        color:
+          rgba(
+            255,
+            255,
+            255,
+            0.8
+          );
+      }
+
+      .beneficio-header-text {
+        width: 100%;
+        max-width: none;
+
+        margin: 0;
+
+        font-size: 8px;
+        line-height: 12px;
+
+        color:
+          rgba(
+            255,
+            255,
+            255,
+            0.85
+          );
+      }
+
+
+      /* =======================================================
+         CARD DO TRATAMENTO
+         
+         Layout mobile:
+         
+         ┌─────────────────────────────┐
+         │ imagem │ nome               │
+         │        │ tipo               │
+         │        │ princípio ativo    │
+         │        │ fabricante         │
+         │                             │
+         │ ícone  85,00 a 98,75%       │
+         │ ───── barra ──────────────  │
+         │ participantes...            │
+         │ prazo:       valor          │
+         │                             │
+         │       ver detalhes          │
+         └─────────────────────────────┘
+         ======================================================= */
+
+      .tratamento-card {
+        width: 100%;
+        min-height: 391px;
+
+        position: relative;
+
+        display: grid;
+
+        grid-template-columns:
+          104px
+          minmax(0, 1fr);
+
+        grid-template-rows:
+          auto
+          auto;
+
+        column-gap: 8px;
+        row-gap: 0;
+
+        padding:
+          24px
+          16px
+          20px;
+
+        background: #FFFFFF;
+
+        border-bottom:
+          1px
+          solid
+          #E0E0E0;
+
+        text-align: left;
+      }
+
+
+      /* =======================================================
+         IMAGEM
+         ======================================================= */
+
+      .tratamento-img-wrap {
+        grid-column: 1;
+        grid-row: 1;
+
+        width: 104px;
+        height: 104px;
+
+        margin: 0;
+
+        padding: 0;
+
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+
+        flex: none;
+      }
+
+      .tratamento-img {
+        width: 104px;
+        height: 104px;
+
+        display: block;
+
+        object-fit: contain;
+        object-position: center;
+      }
+
+
+      /* =======================================================
+         INFORMAÇÕES DO TRATAMENTO
+         ======================================================= */
+
+      .tratamento-main {
+        grid-column: 2;
+        grid-row: 1;
+
+        min-width: 0;
+
+        padding:
+          0
+          0
+          0
+          0;
+      }
+
+      .tratamento-nome {
+        margin:
+          -5px
+          0
+          0;
+
+        font-family: 'Inter', Arial, sans-serif;
+        font-weight: 700;
+        font-size: 15px;
+        line-height: 30px;
+
+        color: #050606;
+      }
+
+      .tratamento-tipo {
+        margin:
+          -4px
+          0
+          7px;
+
+        font-family: 'Inter', Arial, sans-serif;
+        font-weight: 700;
+        font-size: 10px;
+        line-height: 14px;
+
+        color: var(--telix-blue);
+      }
+
+      .tratamento-info {
+        margin:
+          0
+          0
+          7px;
+
+        font-family: 'Inter', Arial, sans-serif;
+        font-weight: 400;
+        font-size: 10px;
+        line-height: 15px;
+
+        color: #212529;
+      }
+
+      .tratamento-info strong {
+        font-weight: 700;
+      }
+
+
+      /* =======================================================
+         DESCRIÇÃO
+         
+         No layout do Figma essa descrição não aparece
+         dentro do card mobile.
+         ======================================================= */
+
+      .tratamento-descricao {
+        display: none;
+      }
+
+
+      /* =======================================================
+         BOTÃO
+         
+         No mobile ele será reposicionado no final do card.
+         ======================================================= */
+
+      .btn-detalhes {
+        position: absolute;
+
+        left: 50%;
+        bottom: 20px;
+
+        transform:
+          translateX(-50%);
+
+        width: 121px;
+        min-width: 121px;
+        height: 26px;
+
+        margin: 0;
+
+        padding: 0;
+
+        border-radius: 4px;
+
+        background: #E0E0E0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: 400;
+        font-size: 10px;
+        line-height: 21px;
+
+        color: #000000;
+      }
+
+
+      /* =======================================================
+         EFICÁCIA MOBILE
+         ======================================================= */
+
+      .eficacia-box {
+        grid-column:
+          1
+          /
+          -1;
+
+        grid-row: 2;
+
+        width: 100%;
+
+        margin-top: 30px;
+
+        padding: 0;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        text-align: center;
+      }
+
+
+      /* =======================================================
+         PERCENTUAL + ÍCONE
+         
+         Esta é a correção principal.
+         
+         O ícone NÃO usa:
+         top negativo;
+         position absolute;
+         transform manual.
+         
+         Ele faz parte da mesma linha da porcentagem.
+         ======================================================= */
+
+      .eficacia-numero {
+        width: auto;
+
+        margin:
+          0
+          auto
+          7px;
+
+        padding: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 4px;
+
+        font-family: 'Inter', Arial, sans-serif;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 38px;
+
+        text-align: center;
+
+        color: #888888;
+
+        white-space: nowrap;
+      }
+
+      .eficacia-min {
+        display: inline-block;
+
+        color: #888888;
+
+        font-weight: 500;
+      }
+
+      .eficacia-numero strong {
+        display: inline-block;
+
+        color: #010009;
+
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 38px;
+      }
+
+
+      /* =======================================================
+         ÍCONE AO LADO ESQUERDO DA PORCENTAGEM
+         ======================================================= */
+
+      .benefit-mini-icon {
+        width: 31px;
+        height: 29px;
+
+        flex:
+          0
+          0
+          31px;
+
+        margin:
+          0
+          1px
+          0
+          0;
+
+        padding: 0;
+
+        position: static;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        transform: none;
+      }
+
+      .benefit-mini-icon-img {
+        width: 31px;
+        height: 29px;
+
+        display: block;
+
+        object-fit: contain;
+
+        position: static;
+
+        transform: none;
+      }
+
+
+      /* =======================================================
+         BARRA
+         
+         A porcentagem fica ACIMA da barra.
+         ======================================================= */
+
+      .bar-bg {
+        order: 2;
+
+        width: 182px;
+        height: 14px;
+
+        margin:
+          0
+          auto
+          11px;
+
+        position: relative;
+
+        border-radius: 5.6px;
+
+        background: #E0E0E0;
+
+        overflow: hidden;
+      }
+
+      .bar-range {
+        height: 14px;
+
+        min-width: 10px;
+
+        border-radius: 5.6px;
+
+        background: var(--telix-blue);
+      }
+
+      .bar-marker {
+        width: 10px;
+        height: 14px;
+
+        border-radius: 4.9px;
+
+        background: var(--telix-blue);
+      }
+
+
+      /*
+       * A ordem original do HTML é:
+       *
+       * .bar-bg
+       * .eficacia-numero
+       * .eficacia-label
+       * .prazo-label
+       * .prazo-valor
+       *
+       * No mobile precisamos mostrar:
+       *
+       * percentual
+       * barra
+       * participantes
+       * prazo
+       *
+       * Por isso usamos flex-order.
+       */
+
+      .eficacia-numero {
+        order: 1;
+      }
+
+      .bar-bg {
+        order: 2;
+      }
+
+      .eficacia-label {
+        order: 3;
+      }
+
+      .prazo-label {
+        order: 4;
+      }
+
+      .prazo-valor {
+        order: 5;
+      }
+
+
+      /* =======================================================
+         TEXTO PARTICIPANTES
+         ======================================================= */
+
+      .eficacia-label {
+        width: 100%;
+
+        margin:
+          0
+          auto
+          19px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-family: 'Inter', Arial, sans-serif;
+        font-weight: 200;
+        font-size: 12px;
+        line-height: 15px;
+
+        text-align: center;
+
+        color: #000000;
+      }
+
+
+      /* =======================================================
+         PRAZO PARA EFEITO
+         
+         O label e o valor ficam na mesma linha visual.
+         ======================================================= */
+
+      .prazo-label {
+        width: 206px;
+
+        margin:
+          0
+          auto;
+
+        padding-right: 122px;
+
+        position: relative;
+
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        font-family: 'Inter', Arial, sans-serif;
+        font-weight: 500;
+        font-size: 10px;
+        line-height: 20px;
+
+        color: #000000;
+
+        white-space: nowrap;
+      }
+
+      .prazo-valor {
+        width: 206px;
+
+        margin:
+          -20px
+          auto
+          0;
+
+        padding-left: 86px;
+
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        font-family: 'Inter', Arial, sans-serif;
+        font-weight: 700;
+        font-size: 10px;
+        line-height: 20px;
+
+        color: #000000;
+
+        white-space: nowrap;
+      }
+
+
+      /* =======================================================
+         NOTA ABAIXO DA LISTA
+         ======================================================= */
+
+      .lista-footer-note {
+        width: 100%;
+
+        margin:
+          15px
+          auto
+          20px;
+
+        padding:
+          10px
+          12px;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        gap: 8px;
+
+        text-align: center;
+
+        font-size: 9px;
+        line-height: 13px;
+      }
+
+      .lista-footer-note .note-button {
+        font-size: 9px;
+      }
+
+
+      /* =======================================================
+         BANNER MOBILE
+         ======================================================= */
+
+      .banner-placeholder {
+        width: 100%;
+        height: auto;
+        min-height: 90px;
+
+        margin:
+          0
+          auto
+          20px;
+
+        padding: 15px;
+
+        font-size: 13px;
+      }
+
+
+      /* =======================================================
+         WHATSAPP
+         ======================================================= */
+
+      .whatsapp-strip {
+        padding:
+          20px
+          16px;
+      }
+
+      .whatsapp-strip-title {
+        margin-bottom: 10px;
+
+        font-size: 14px;
+      }
+
+      .whatsapp-strip-button {
+        padding:
+          6px
+          14px;
+
+        font-size: 10px;
+      }
+
+
+      /* =======================================================
+         FOOTER MOBILE
+         ======================================================= */
+
+      .page-footer {
+        width: 100%;
+
+        margin:
+          30px
+          auto
+          0;
+
+        padding:
+          0
+          18px
+          30px;
+
+        grid-template-columns: 1fr;
+
+        gap: 20px;
+
+        text-align: center;
+      }
+    }
+
+
+    /* =========================================================
+       CELULARES MUITO ESTREITOS
+       ========================================================= */
+
+    @media (max-width: 360px) {
+
+      .page-wrapper {
+        padding-left: 13px;
+        padding-right: 13px;
+      }
+
+      .beneficios-grid {
+        width: calc(100% + 13px);
+
+        margin-right: -13px;
+      }
+
+      .header {
+        gap: 7px;
+      }
+
+      .logo {
+        width: 82px;
+      }
+
+      .login-link {
+        font-size: 7px;
+      }
+
+      .tratamento-card {
+        grid-template-columns:
+          96px
+          minmax(0, 1fr);
+
+        padding-left: 12px;
+        padding-right: 12px;
+
+        column-gap: 8px;
+      }
+
+      .tratamento-img-wrap {
+        width: 96px;
+        height: 104px;
+      }
+
+      .tratamento-img {
+        width: 96px;
+        height: 104px;
+      }
+
+      .eficacia-numero,
+      .eficacia-numero strong {
+        font-size: 19px;
+      }
+
+      .bar-bg {
+        width: 182px;
+      }
+    }
+
+
+    /* =========================================================
+       HOVER / ATIVO
+       MANTER NO FINAL DO CSS
+       ========================================================= */
+
+    a.beneficio-card:hover,
+    a.beneficio-card.ativo {
+      background-color: #0094FF !important;
+      border-color: #FFFFFF !important;
+      color: #FFFFFF !important;
+    }
+
+    a.beneficio-card:hover .beneficio-nome,
+    a.beneficio-card.ativo .beneficio-nome {
+      color: #FFFFFF !important;
+    }
+
+    a.beneficio-card:hover .beneficio-line,
+    a.beneficio-card.ativo .beneficio-line {
+      border-top-color: #FFFFFF !important;
+      background: transparent !important;
+    }
+
+    a.beneficio-card:hover .beneficio-percentual,
+    a.beneficio-card.ativo .beneficio-percentual {
+      color:
+        rgba(
+          255,
+          255,
+          255,
+          0.7
+        ) !important;
+    }
+
+    a.beneficio-card:hover .beneficio-percentual strong,
+    a.beneficio-card.ativo .beneficio-percentual strong {
+      color: #FFFFFF !important;
+    }
+
+    a.beneficio-card:hover .beneficio-participantes,
+    a.beneficio-card.ativo .beneficio-participantes {
+      color:
+        rgba(
+          255,
+          255,
+          255,
+          0.7
+        ) !important;
+    }
+
+    a.beneficio-card:hover .beneficio-icon-img,
+    a.beneficio-card.ativo .beneficio-icon-img {
+      filter:
+        brightness(0)
+        invert(1) !important;
+    }
+/* =========================================================
+   AJUSTES FINAIS DE INTERAÇÃO
+   ========================================================= */
+
+.beneficios-grid {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.beneficios-grid img {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+}
+
+.beneficios-grid.arrastando {
+  cursor: grabbing !important;
+  scroll-behavior: auto !important;
+}
+
+.beneficios-grid.arrastando .beneficio-card {
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   MOBILE — SCROLL DOS BENEFÍCIOS
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  .beneficios-grid {
+    position: relative;
+
+    display: flex;
+    flex-wrap: nowrap;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    scroll-behavior: smooth;
+
+    -webkit-overflow-scrolling: touch;
+
+    touch-action: pan-x;
+
+    scrollbar-width: auto;
+    scrollbar-color: #0094FF #E0E0E0;
+  }
+
+
+  /* Chrome / Edge / Safari */
+
+  .beneficios-grid::-webkit-scrollbar {
+    height: 7px;
+  }
+
+  .beneficios-grid::-webkit-scrollbar-track {
+    background: #E0E0E0;
+    border-radius: 10px;
+  }
+
+  .beneficios-grid::-webkit-scrollbar-thumb {
+    background: #0094FF;
+    border-radius: 10px;
+  }
+
+
+  /* Cards não podem encolher */
+
+  .beneficio-card {
+    flex-shrink: 0;
+  }
+
+
+  /* =======================================================
+     GARANTE QUE O ÍCONE DA EFICÁCIA FIQUE NA LINHA
+     DO PERCENTUAL
+     ======================================================= */
+
+  .eficacia-numero {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    width: 100%;
+
+    margin: 0 auto 7px;
+
+    white-space: nowrap;
+  }
+
+  .benefit-mini-icon {
+    position: static !important;
+
+    width: 31px;
+    height: 29px;
+
+    min-width: 31px;
+    flex: 0 0 31px;
+
+    margin: 0 2px 0 0 !important;
+
+    padding: 0;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    transform: none !important;
+  }
+
+  .benefit-mini-icon-img {
+    position: static !important;
+
+    width: 31px;
+    height: 29px;
+
+    max-width: 31px;
+
+    object-fit: contain;
+
+    margin: 0;
+
+    transform: none !important;
+  }
+
+  .eficacia-min {
+    display: inline-block;
+
+    margin: 0;
+    padding: 0;
+
+    color: #888888;
+
+    font-family: 'Inter', Arial, sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 38px;
+  }
+
+  .eficacia-numero strong {
+    display: inline-block;
+
+    margin: 0;
+    padding: 0;
+
+    color: #010009;
+
+    font-family: 'Inter', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 38px;
+  }
+
+
+  /* =======================================================
+     ORDEM DA ÁREA DE EFICÁCIA
+
+     1. percentual
+     2. barra
+     3. participantes
+     4. prazo
+     ======================================================= */
+
+  .eficacia-numero {
+    order: 1;
+  }
+
+  .bar-bg {
+    order: 2;
+  }
+
+  .eficacia-label {
+    order: 3;
+  }
+
+  .prazo-label {
+    order: 4;
+  }
+
+  .prazo-valor {
+    order: 5;
+  }
+}
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================================================
+       BARRA SUPERIOR
+       ========================================================= -->
+  <div class="top-bar">
+    A plataforma do paciente bem informado
+  </div>
+
+
+  <!-- =========================================================
+       CONTEÚDO PRINCIPAL
+       ========================================================= -->
+  <main class="page-wrapper">
+
+    <!-- =======================================================
+         HEADER
+         ======================================================= -->
+    <header class="header">
+
+      <a href="https://www.telix.inf.br/">
+        <img
+          class="logo"
+          src="{% static 'img/logo.png' %}"
+          alt="Telix"
+        >
+      </a>
+
+      <a href="#" class="login-link">
+        <span class="login-icon">
+          <i class="fa-solid fa-user"></i>
+        </span>
+
+        Cadastre-se/Login
+      </a>
+
+    </header>
+
+
+    <!-- =======================================================
+         INTRODUÇÃO
+         ======================================================= -->
+    <section class="intro">
+
+      <h1 class="page-title">
+        Tratamentos para {{ condicao.nome|lower }}
+      </h1>
+
+      <p class="page-description">
+        Classificados por tipo de benefício obtido pelos pacientes
+        com o uso dos tratamentos, com base em pesquisas científicas.
+      </p>
+
+    </section>
+
+
+    <!-- =======================================================
+         MENU DOS 5 BENEFÍCIOS
+         ======================================================= -->
+    <section
+      class="beneficios-grid"
+      id="beneficios-scroll"
+    >
+
+      {% for card in beneficios_cards %}
+
+        <a
+          href="#{{ card.slug }}"
+          class="beneficio-card {% if card.ativo %}ativo{% endif %}"
+          data-segmento-btn="{{ card.slug }}"
+        >
+
+          <!-- TOPO -->
+          <div class="beneficio-card-top">
+
+            <div class="beneficio-icon">
+
+              <img
+                src="{% static card.icone %}?v=20260810-1"
+                alt="{{ card.nome }}"
+                class="beneficio-icon-img"
+                draggable="false"
+              >
+
+            </div>
+
+            <div class="beneficio-nome">
+              {{ card.nome }}
+            </div>
+
+          </div>
+
+
+          <!-- LINHA -->
+          <div class="beneficio-line"></div>
+
+
+          <!-- PERCENTUAL -->
+          <div class="beneficio-card-bottom">
+
+            <div class="beneficio-percentual">
+
+              de {{ card.min_str }}% a
+
+              <strong>
+                {{ card.max_str }}%
+              </strong>
+
+            </div>
+
+            <div class="beneficio-participantes">
+              dos participantes<br>
+              das pesquisas.
+            </div>
+
+          </div>
+
+        </a>
+
+      {% endfor %}
+
+    </section>
+
+
+    <!-- =======================================================
+         LISTAGENS
+         ======================================================= -->
+
+    {% for segmento in segmentos %}
+
+      <section
+        class="segmento-lista {% if segmento.ativo %}ativo{% endif %}"
+        data-segmento-conteudo="{{ segmento.slug }}"
+      >
+
+        <section class="lista-shell">
+
+
+          <!-- =================================================
+               HEADER AZUL DO BENEFÍCIO
+               ================================================= -->
+          <section class="beneficio-header">
+
+            <div class="beneficio-header-row">
+
+              <div class="beneficio-header-title">
+
+                <span class="beneficio-header-label">
+                  Benefício:
+                </span>
+
+                <img
+                  src="{% static segmento.icone %}?v=20260810-1"
+                  alt="{{ segmento.nome }}"
+                  class="beneficio-header-icon-img"
+                >
+
+                <span class="beneficio-header-name">
+                  {{ segmento.nome }}
+                </span>
+
+              </div>
+
+
+              <div class="beneficio-header-count">
+
+                Tratamentos:
+                {{ segmento.qtd_tratamentos }}
+
+              </div>
+
+            </div>
+
+
+            <p class="beneficio-header-text">
+
+              Conforme as pesquisas, apenas uma parte das pessoas que
+              recebeu o tratamento obteve o benefício acima.
+
+              Na lista abaixo, os tratamentos estão em ordem decrescente
+              de porcentagem de pessoas que tiveram esse benefício com
+              o tratamento.
+
+            </p>
+
+          </section>
+
+
+          <!-- =================================================
+               LISTA DE TRATAMENTOS
+               ================================================= -->
+          <section class="lista-box">
+
+            {% for item in segmento.itens %}
+
+              {% with tratamento=item.obj %}
+
+                <a
+                  href="{% url 'pagina_detalhe_tratamento' condicao_slug=condicao.slug tratamento_slug=tratamento.slug %}?ef={{ segmento.slug }}"
+                  class="tratamento-card"
+                >
+
+
+                  <!-- =========================================
+                       IMAGEM
+                       ========================================= -->
+                  <div class="tratamento-img-wrap">
+
+                    {% if tratamento.imagem %}
+
+                      <img
+                        src="{{ tratamento.imagem.url }}"
+                        alt="{{ tratamento.nome }}"
+                        class="tratamento-img"
+                      >
+
+                    {% else %}
+
+                      <img
+                        src="{% static 'default-image.jpg' %}"
+                        alt="Imagem não disponível"
+                        class="tratamento-img"
+                      >
+
+                    {% endif %}
+
+                  </div>
+
+
+                  <!-- =========================================
+                       INFORMAÇÕES
+                       ========================================= -->
+                  <div class="tratamento-main">
+
+                    <h2 class="tratamento-nome">
+                      {{ tratamento.nome }}
+                    </h2>
+
+
+                    <div class="tratamento-tipo">
+
+                      {% for tipo in tratamento.tipo_tratamento.all %}
+
+                        {{ tipo.nome }}
+
+                        {% if not forloop.last %}
+                          •
+                        {% endif %}
+
+                      {% empty %}
+
+                        Nenhum tipo selecionado
+
+                      {% endfor %}
+
+                    </div>
+
+
+                    <p class="tratamento-info">
+
+                      <strong>
+                        Princípio ativo:
+                      </strong>
+
+                      {{ tratamento.principio_ativo|default:"ND" }}
+
+                    </p>
+
+
+                    <p class="tratamento-info">
+
+                      <strong>
+                        Fabricante:
+                      </strong>
+
+                      {{ tratamento.fabricante|default:"ND" }}
+
+                    </p>
+
+
+                    <!-- BOTÃO -->
+                    <span class="btn-detalhes">
+                      ver detalhes ›
+                    </span>
+
+
+                    <!-- DESCRIÇÃO -->
+                    <p class="tratamento-descricao">
+                      {{ item.descricao_lista }}
+                    </p>
+
+                  </div>
+
+
+                  <!-- =========================================
+                       EFICÁCIA
+                       ========================================= -->
+                  <div class="eficacia-box">
+
+
+                    <!-- =======================================
+                         PERCENTUAL + ÍCONE
+
+                         IMPORTANTE:
+                         O ÍCONE AGORA ESTÁ AQUI.
+
+                         Isso permite posicionar:
+
+                         [ícone] 89,80 a 94,80%
+
+                         como no Figma.
+                         ======================================= -->
+                    <div class="eficacia-numero">
+
+
+                      <!-- ÍCONE -->
+                      <span class="benefit-mini-icon">
+
+                        <img
+                          src="{% static segmento.icone %}?v=20260810-1"
+                          alt=""
+                          aria-hidden="true"
+                          class="benefit-mini-icon-img"
+                        >
+
+                      </span>
+
+
+                      <!-- MÍNIMO -->
+                      <span class="eficacia-min">
+                        {{ item.min_str }} a
+                      </span>
+
+
+                      <!-- MÁXIMO -->
+                      <strong>
+                        {{ item.max_str }}%
+                      </strong>
+
+
+                    </div>
+
+
+                    <!-- =======================================
+                         BARRA DE EFICÁCIA
+                         ======================================= -->
+                    <div class="bar-bg">
+
+                      <div
+                        class="bar-range"
+                        style="
+                          left: {{ item.min_css }}%;
+                          width: {{ item.range_css }}%;
+                        "
+                      ></div>
+
+
+                      <div
+                        class="bar-marker"
+                        style="
+                          left: {{ item.max_css }}%;
+                        "
+                      ></div>
+
+                    </div>
+
+
+                    <!-- =======================================
+                         TEXTO ABAIXO DA BARRA
+                         ======================================= -->
+                    <div class="eficacia-label">
+
+                      <span>
+                        dos participantes tiveram o benefício
+                      </span>
+
+                    </div>
+
+
+                    <!-- =======================================
+                         PRAZO
+                         ======================================= -->
+                    <div class="prazo-label">
+                      Prazo para efeito:
+                    </div>
+
+
+                    <div class="prazo-valor">
+
+                      {{ tratamento.prazo_efeito_min_formatado }}
+
+                      a
+
+                      {{ tratamento.prazo_efeito_max_formatado }}
+
+                    </div>
+
+
+                  </div>
+
+                </a>
+
+              {% endwith %}
+
+
+            {% empty %}
+
+              <div class="empty-state">
+
+                Nenhum tratamento encontrado para este tipo
+                de eficácia.
+
+              </div>
+
+            {% endfor %}
+
+          </section>
+
+        </section>
+
+      </section>
+
+    {% endfor %}
+
+
+    <!-- =======================================================
+         NOTA
+         ======================================================= -->
+    <section class="lista-footer-note">
+
+      <span>
+
+        Esta lista é baseada em informações cadastradas na
+        plataforma e pode ser atualizada conforme novas evidências
+        forem adicionadas.
+
+      </span>
+
+
+      <a
+        href="#"
+        class="note-button"
+      >
+        Ver detalhes
+      </a>
+
+    </section>
+
+
+    <!-- =======================================================
+         BANNER
+         ======================================================= -->
+    <section class="banner-placeholder">
+
+      Você conhece alguém que precisa desse conteúdo?
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================================================
+       WHATSAPP
+       ========================================================= -->
+  <section class="whatsapp-strip">
+
+    <div class="whatsapp-strip-title">
+
+      Receba os alertas sobre tratamentos e saúde
+
+    </div>
+
+
+    <a
+      href="#"
+      class="whatsapp-strip-button"
+    >
+      Quero receber
+    </a>
+
+  </section>
+
+
+  <!-- =========================================================
+       FOOTER
+       ========================================================= -->
+  <footer class="page-footer">
+
+    <div>
+
+      <h4>
+        Mapa do site
+      </h4>
+
+      <a href="https://www.telix.inf.br/">
+        Início
+      </a>
+
+      <a href="#">
+        Tratamentos
+      </a>
+
+      <a href="#">
+        Condições de saúde
+      </a>
+
+    </div>
+
+
+    <div>
+
+      <h4>
+        Telix
+      </h4>
+
+      <a href="#">
+        Sobre
+      </a>
+
+      <a href="#">
+        Contato
+      </a>
+
+      <a href="#">
+        Política de privacidade
+      </a>
+
+    </div>
+
+
+    <div>
+
+      <h4>
+        Importante
+      </h4>
+
+      <p>
+        Não se automedique.
+      </p>
+
+      <p>
+        Consulte sempre um profissional de saúde.
+      </p>
+
+    </div>
+
+  </footer>
+
+
+  <!-- =========================================================
+       JAVASCRIPT
+       ========================================================= -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  /* =========================================================
+     ELEMENTOS
+     ========================================================= */
+
+  const beneficiosScroll =
+    document.getElementById("beneficios-scroll");
+
+  const botoes =
+    Array.from(
+      document.querySelectorAll("[data-segmento-btn]")
+    );
+
+  const segmentos =
+    Array.from(
+      document.querySelectorAll("[data-segmento-conteudo]")
+    );
+
+
+  if (!botoes.length) {
+    return;
+  }
+
+
+  /* =========================================================
+     CONFIGURAÇÕES
+     ========================================================= */
+
+  const MOBILE_BREAKPOINT = 768;
+
+  let arrastando = false;
+  let houveMovimento = false;
+
+  let inicioX = 0;
+  let scrollInicial = 0;
+
+
+  /* =========================================================
+     VERIFICA SE ESTÁ NO MOBILE
+     ========================================================= */
+
+  function estaNoMobile() {
+
+    return window.innerWidth <= MOBILE_BREAKPOINT;
+
+  }
+
+
+  /* =========================================================
+     PROCURA O BOTÃO PELO SLUG
+     ========================================================= */
+
+  function encontrarBotao(slug) {
+
+    return botoes.find(function (botao) {
+
+      return (
+        botao.dataset.segmentoBtn === slug
+      );
+
+    });
+
+  }
+
+
+  /* =========================================================
+     PROCURA O CONTEÚDO PELO SLUG
+     ========================================================= */
+
+  function encontrarSegmento(slug) {
+
+    return segmentos.find(function (segmento) {
+
+      return (
+        segmento.dataset.segmentoConteudo === slug
+      );
+
+    });
+
+  }
+
+
+  /* =========================================================
+     CENTRALIZA CARD ATIVO NO MENU MOBILE
+
+     Não usamos scrollIntoView porque ele pode movimentar
+     verticalmente a página inteira.
+
+     Aqui movimentamos somente o scroll horizontal.
+     ========================================================= */
+
+  function centralizarCard(botao, suave = true) {
+
+    if (
+      !beneficiosScroll ||
+      !botao ||
+      !estaNoMobile()
+    ) {
+      return;
+    }
+
+
+    const larguraContainer =
+      beneficiosScroll.clientWidth;
+
+
+    const larguraCard =
+      botao.offsetWidth;
+
+
+    const esquerdaCard =
+      botao.offsetLeft;
+
+
+    const destino =
+      esquerdaCard -
+      (larguraContainer / 2) +
+      (larguraCard / 2);
+
+
+    const maxScroll =
+      beneficiosScroll.scrollWidth -
+      beneficiosScroll.clientWidth;
+
+
+    const destinoLimitado =
+      Math.max(
+        0,
+        Math.min(destino, maxScroll)
+      );
+
+
+    beneficiosScroll.scrollTo({
+      left: destinoLimitado,
+      behavior: suave ? "smooth" : "auto"
+    });
+
+  }
+
+
+  /* =========================================================
+     ATIVA UMA CATEGORIA
+     ========================================================= */
+
+  function ativarSegmento(
+    slug,
+    atualizarURL = true,
+    centralizar = true
+  ) {
+
+    const botaoSelecionado =
+      encontrarBotao(slug);
+
+
+    const segmentoSelecionado =
+      encontrarSegmento(slug);
+
+
+    if (
+      !botaoSelecionado ||
+      !segmentoSelecionado
+    ) {
+
+      return false;
+
+    }
+
+
+    /* ---------------------------------------------------------
+       REMOVE ATIVO DOS OUTROS CARDS
+       --------------------------------------------------------- */
+
+    botoes.forEach(function (botao) {
+
+      const ativo =
+        botao === botaoSelecionado;
+
+
+      botao.classList.toggle(
+        "ativo",
+        ativo
+      );
+
+
+      botao.setAttribute(
+        "aria-selected",
+        ativo ? "true" : "false"
+      );
+
+    });
+
+
+    /* ---------------------------------------------------------
+       MOSTRA SOMENTE A LISTA CORRESPONDENTE
+       --------------------------------------------------------- */
+
+    segmentos.forEach(function (segmento) {
+
+      segmento.classList.toggle(
+        "ativo",
+        segmento === segmentoSelecionado
+      );
+
+    });
+
+
+    /* ---------------------------------------------------------
+       ATUALIZA HASH
+       --------------------------------------------------------- */
+
+    if (atualizarURL) {
+
+      history.replaceState(
+        null,
+        "",
+        "#" + slug
+      );
+
+    }
+
+
+    /* ---------------------------------------------------------
+       CENTRALIZA NO MOBILE
+       --------------------------------------------------------- */
+
+    if (centralizar) {
+
+      requestAnimationFrame(function () {
+
+        centralizarCard(
+          botaoSelecionado,
+          true
+        );
+
+      });
+
+    }
+
+
+    return true;
+
+  }
+
+
+  /* =========================================================
+     CLIQUE NOS CARDS
+     ========================================================= */
+
+  botoes.forEach(function (botao) {
+
+    botao.addEventListener(
+      "click",
+      function (event) {
+
+        event.preventDefault();
+
+
+        /*
+         * Se o usuário acabou de arrastar,
+         * não tratamos isso como clique.
+         */
+
+        if (houveMovimento) {
+
+          houveMovimento = false;
+
+          return;
+
+        }
+
+
+        const slug =
+          botao.dataset.segmentoBtn;
+
+
+        ativarSegmento(
+          slug,
+          true,
+          true
+        );
+
+      }
+    );
+
+  });
+
+
+  /* =========================================================
+     ESTADO INICIAL
+     ========================================================= */
+
+  const hashInicial =
+    window.location.hash
+      .replace("#", "")
+      .trim();
+
+
+  let slugInicial = "";
+
+
+  if (
+    hashInicial &&
+    encontrarBotao(hashInicial) &&
+    encontrarSegmento(hashInicial)
+  ) {
+
+    slugInicial =
+      hashInicial;
+
+  } else {
+
+    slugInicial =
+      botoes[0].dataset.segmentoBtn;
+
+  }
+
+
+  ativarSegmento(
+    slugInicial,
+    false,
+    false
+  );
+
+
+  /*
+   * Aguarda o navegador terminar o layout antes
+   * de posicionar o scroll.
+   */
+
+  setTimeout(function () {
+
+    const botaoInicial =
+      encontrarBotao(slugInicial);
+
+
+    centralizarCard(
+      botaoInicial,
+      false
+    );
+
+  }, 50);
+
+
+  /* =========================================================
+     ARRASTAR MENU COM MOUSE
+     ========================================================= */
+
+  if (beneficiosScroll) {
+
+    beneficiosScroll.addEventListener(
+      "mousedown",
+      function (event) {
+
+        /*
+         * Botão esquerdo apenas.
+         */
+
+        if (event.button !== 0) {
+          return;
+        }
+
+
+        arrastando = true;
+        houveMovimento = false;
+
+
+        inicioX =
+          event.clientX;
+
+
+        scrollInicial =
+          beneficiosScroll.scrollLeft;
+
+
+        beneficiosScroll.classList.add(
+          "arrastando"
+        );
+
+      }
+    );
+
+
+    /* ---------------------------------------------------------
+       MOVIMENTO
+       --------------------------------------------------------- */
+
+    window.addEventListener(
+      "mousemove",
+      function (event) {
+
+        if (!arrastando) {
+          return;
+        }
+
+
+        const distancia =
+          event.clientX - inicioX;
+
+
+        /*
+         * Só considera drag depois de alguns pixels.
+         */
+
+        if (
+          Math.abs(distancia) >= 4
+        ) {
+
+          houveMovimento = true;
+
+        }
+
+
+        beneficiosScroll.scrollLeft =
+          scrollInicial - distancia;
+
+      }
+    );
+
+
+    /* ---------------------------------------------------------
+       FINALIZA DRAG
+       --------------------------------------------------------- */
+
+    function finalizarArraste() {
+
+      if (!arrastando) {
+        return;
+      }
+
+
+      arrastando = false;
+
+
+      beneficiosScroll.classList.remove(
+        "arrastando"
+      );
+
+
+      /*
+       * Mantemos houveMovimento por alguns milissegundos
+       * porque o navegador dispara click depois do mouseup.
+       */
+
+      if (houveMovimento) {
+
+        setTimeout(function () {
+
+          houveMovimento = false;
+
+        }, 80);
+
+      }
+
+    }
+
+
+    window.addEventListener(
+      "mouseup",
+      finalizarArraste
+    );
+
+
+    window.addEventListener(
+      "blur",
+      finalizarArraste
+    );
+
+
+    /* =========================================================
+       BLOQUEIA DRAG NATIVO DAS IMAGENS
+       ========================================================= */
+
+    beneficiosScroll
+      .querySelectorAll("img")
+      .forEach(function (imagem) {
+
+        imagem.setAttribute(
+          "draggable",
+          "false"
+        );
+
+
+        imagem.addEventListener(
+          "dragstart",
+          function (event) {
+
+            event.preventDefault();
+
+          }
+        );
+
+      });
+
+  }
+
+
+  /* =========================================================
+     HASH ALTERADO MANUALMENTE
+     ========================================================= */
+
+  window.addEventListener(
+    "hashchange",
+    function () {
+
+      const slug =
+        window.location.hash
+          .replace("#", "")
+          .trim();
+
+
+      if (
+        encontrarBotao(slug) &&
+        encontrarSegmento(slug)
+      ) {
+
+        ativarSegmento(
+          slug,
+          false,
+          true
+        );
+
+      }
+
+    }
+  );
+
+
+  /* =========================================================
+     REDIMENSIONAMENTO
+
+     Se mudar desktop → mobile, reposicionamos o card ativo.
+     ========================================================= */
+
+  let resizeTimer;
+
+
+  window.addEventListener(
+    "resize",
+    function () {
+
+      clearTimeout(
+        resizeTimer
+      );
+
+
+      resizeTimer =
+        setTimeout(function () {
+
+          if (!estaNoMobile()) {
+            return;
+          }
+
+
+          const botaoAtivo =
+            document.querySelector(
+              "[data-segmento-btn].ativo"
+            );
+
+
+          if (botaoAtivo) {
+
+            centralizarCard(
+              botaoAtivo,
+              false
+            );
+
+          }
+
+        }, 120);
+
+    }
+  );
+
+});
+</script>
+
+</body>
+</html>

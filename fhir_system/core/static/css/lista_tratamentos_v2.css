@@ -1,0 +1,8008 @@
+/* ==========================================================
+   LISTA DE TRATAMENTOS V2 — CSS REFATORADO
+   ========================================================== */
+
+/*
+  Estrutura:
+  01. Base / Desktop
+  02. Tablet até 1020px
+  03. Tablet até 980px
+  04. Mobile até 768px
+  05. Mobile pequeno até 420px
+
+  Refatoração segura:
+  - remove <style> do template;
+  - corrige o reset html/body duplicado;
+  - elimina duplicatas idênticas;
+  - achata @media aninhados acidentalmente;
+  - mantém os seletores e a ordem interna dos overrides para não quebrar HTML/JS.
+*/
+
+/* ==========================================================
+   01. BASE / DESKTOP
+   ========================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --telix-blue: #0094FF;
+  --text-dark: #212529;
+  --text-black: #000000;
+  --text-muted: #8F8F93;
+  --gray-line: #E0E0E0;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #FFFFFF;
+  color: #111111;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.top-bar {
+  width: 100%;
+  height: 34px;
+  background: var(--telix-blue);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 27px;
+  text-align: center;
+}
+
+.page-wrapper {
+  width: 100%;
+  max-width: 952px;
+  margin: 0 auto;
+  padding: 34px 16px 70px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 78px;
+}
+
+.logo {
+  width: 192px;
+  height: 192px;
+  display: block;
+  margin-left: -43px;
+  object-fit: contain;
+}
+
+.login-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #010009;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 27px;
+  text-decoration: none;
+  margin-top: 78px;
+}
+
+.login-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--telix-blue);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+.intro {
+  margin-bottom: 28px;
+}
+
+.page-title {
+    margin: 0;
+    padding: 0;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 34.9px;
+    line-height: 40px;
+
+    letter-spacing: 0;
+    color: #212529;
+}
+
+.page-description {
+    margin: 0;
+    padding: 0;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 20px;
+
+    letter-spacing: 0;
+    color: #000000;
+}
+
+.beneficios-grid {
+  width: 100%;
+  max-width: 952px;
+  margin: 0 auto 30px;
+  display: grid;
+  grid-template-columns: repeat(5, 180px);
+  gap: 13px;
+  justify-content: center;
+  align-items: stretch;
+  border: 0;
+}
+
+.beneficio-card {
+  box-sizing: border-box;
+  width: 180px;
+  height: 296px;
+  min-height: 296px;
+  background: #FFFFFF;
+  border: 1.85419px solid var(--telix-blue);
+  border-radius: 9.27096px;
+  color: var(--telix-blue);
+  padding: 21px 14px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  transition: background-color 0.18s ease,
+        border-color 0.18s ease,
+        color 0.18s ease,
+        transform 0.18s ease;
+}
+
+.beneficio-card:hover, .beneficio-card.ativo {
+  background: var(--telix-blue);
+  border-color: #FFFFFF;
+  color: #FFFFFF;
+}
+
+.beneficio-card:hover {
+  transform: translateY(-1px);
+}
+
+.beneficio-card-top {
+  width: 100%;
+  height: 118px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.beneficio-icon {
+  width: 54px;
+  height: 49px;
+  margin: 0 auto 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.beneficio-icon-img {
+  object-fit: contain;
+  display: block;
+  transition: filter 0.18s ease;
+  pointer-events: none;
+}
+
+.beneficio-card[data-segmento-btn="reducao-temporaria-dos-sintomas"] .beneficio-icon-img {
+  width: 45px;
+  height: 42px;
+}
+
+.beneficio-card[data-segmento-btn="eliminacao-temporaria-dos-sintomas"] .beneficio-icon-img {
+  width: 50px;
+  height: 41px;
+}
+
+.beneficio-card[data-segmento-btn="reducao-persistente-dos-sintomas"] .beneficio-icon-img {
+  width: 43px;
+  height: 43px;
+}
+
+.beneficio-card[data-segmento-btn="eliminacao-persistente-dos-sintomas"] .beneficio-icon-img {
+  width: 43px;
+  height: 43px;
+}
+
+.beneficio-card[data-segmento-btn="cura"] .beneficio-icon-img {
+  width: 54px;
+  height: 49px;
+}
+
+.beneficio-card:hover .beneficio-icon-img, .beneficio-card.ativo .beneficio-icon-img {
+  filter: brightness(0) invert(1);
+}
+
+.beneficio-nome {
+  width: 102px;
+  height: 44px;
+  margin: 0 auto;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--telix-blue);
+  transition: color 0.18s ease;
+  pointer-events: none;
+}
+
+.beneficio-card:hover .beneficio-nome, .beneficio-card.ativo .beneficio-nome {
+  color: #FFFFFF;
+}
+
+.beneficio-line {
+  width: 111px;
+  height: 0;
+  margin: 9px auto 25px;
+  border-top: 1px solid var(--telix-blue);
+  background: transparent;
+  opacity: 1;
+  transition: border-color 0.18s ease;
+  pointer-events: none;
+}
+
+.beneficio-card:hover .beneficio-line, .beneficio-card.ativo .beneficio-line {
+  border-top-color: #FFFFFF;
+}
+
+.beneficio-card-bottom {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.beneficio-percentual {
+  width: 112px;
+  height: auto;
+  margin: 0 auto;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: #8F8F93;
+  transition: color 0.18s ease;
+  pointer-events: none;
+}
+
+.beneficio-card:hover .beneficio-percentual, .beneficio-card.ativo .beneficio-percentual {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.beneficio-percentual strong {
+  display: block;
+  width: auto;
+  margin-top: 2px;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 500;
+  font-size: 25px;
+  line-height: 30px;
+  color: var(--telix-blue);
+  transition: color 0.18s ease;
+  pointer-events: none;
+}
+
+.beneficio-card:hover .beneficio-percentual strong, .beneficio-card.ativo .beneficio-percentual strong {
+  color: #FFFFFF;
+}
+
+.beneficio-participantes {
+  width: 117px;
+  height: auto;
+  margin: 22px auto 0;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #8F8F93;
+  transition: color 0.18s ease;
+  pointer-events: none;
+}
+
+.beneficio-card:hover .beneficio-participantes, .beneficio-card.ativo .beneficio-participantes {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.segmento-lista {
+  display: none;
+}
+
+.segmento-lista.ativo {
+  display: block;
+}
+
+.lista-shell {
+  width: 100%;
+  max-width: 952px;
+  margin: 0 auto 44px;
+  background: #ffffff;
+  border: 1.85419px solid var(--telix-blue);
+  border-top: 0;
+  border-radius: 18px 18px 5px 5px;
+  overflow: hidden;
+  box-shadow: none;
+  outline: none;
+}
+
+.beneficio-header {
+  width: 100%;
+  min-height: 140px;
+  background: var(--telix-blue);
+  color: #ffffff;
+  border: 0;
+  outline: none;
+  box-shadow: none;
+  border-radius: 18px 18px 0 0;
+  padding: 20px 25px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.beneficio-header-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.beneficio-header-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.beneficio-header-label {
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  color: rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+}
+
+.beneficio-header-icon-img {
+  width: 31px;
+  height: 31px;
+  object-fit: contain;
+  display: block;
+  filter: brightness(0) invert(1);
+}
+
+.beneficio-header-name {
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 30px;
+  color: #FFFFFF;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.beneficio-header-count {
+  flex: 0 0 auto;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  color: rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+}
+
+.beneficio-header-text {
+  width: 100%;
+  max-width: 901px;
+  margin: 0;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 21px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.lista-box {
+  width: 100%;
+  margin: 0;
+  background: #ffffff;
+  border: 0;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.tratamento-card {
+  display: grid;
+  grid-template-columns: 120px 1fr 270px;
+  gap: 24px;
+  padding: 58px 28px 44px;
+  border-bottom: 1px solid #e6e6e6;
+  background: #ffffff;
+  color: #111111;
+  text-decoration: none;
+  min-height: 390px;
+  transition: background-color 0.18s ease;
+}
+
+.tratamento-card:last-child {
+  border-bottom: 0;
+}
+
+.tratamento-card:hover {
+  background: #fbfdff;
+}
+
+.tratamento-img-wrap {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-top: 0;
+  flex: 0 0 120px;
+}
+
+.tratamento-img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  object-position: left top;
+  display: block;
+}
+
+.tratamento-main {
+  min-width: 0;
+}
+
+.tratamento-nome {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  font-size: 25px;
+  line-height: 30px;
+  color: #050606;
+}
+
+.tratamento-tipo {
+  margin: 0 0 8px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 14px;
+  color: var(--telix-blue);
+}
+
+.tratamento-info {
+  margin: 0 0 8px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #212529;
+}
+
+.tratamento-info strong {
+  font-weight: 700;
+  color: #212529;
+}
+
+.btn-detalhes {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0 28px;
+  height: 31px;
+  min-width: 138px;
+  background: #E0E0E0;
+  color: #111111;
+  border-radius: 4px;
+  padding: 0 28px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.tratamento-descricao {
+  max-width: 520px;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #212529;
+}
+
+.eficacia-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  text-align: right;
+  padding-top: 4px;
+}
+
+.bar-bg {
+  width: 243px;
+  height: 20px;
+  border-radius: 8px;
+  background: #E0E0E0;
+  overflow: hidden;
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.bar-range {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: var(--telix-blue);
+  border-radius: 7px;
+  min-width: 15px;
+}
+
+.bar-marker {
+  position: absolute;
+  top: 0;
+  width: 15px;
+  height: 20px;
+  background: var(--telix-blue);
+  border-radius: 7px;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.eficacia-numero {
+  margin-bottom: 0;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 500;
+  font-size: 25px;
+  line-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: right;
+  color: #888888;
+}
+
+.eficacia-numero strong {
+  color: #010009;
+  font-weight: 700;
+}
+
+.eficacia-label {
+  margin-bottom: 28px;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 200;
+  font-size: 13px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  text-align: right;
+  color: #000000;
+}
+
+.benefit-mini-icon {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 24px;
+}
+
+.benefit-mini-icon-img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  display: block;
+}
+
+.prazo-label {
+  margin-bottom: 2px;
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  color: #000000;
+}
+
+.prazo-valor {
+  font-family: "Inter", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  color: #000000;
+}
+
+.lista-footer-note {
+  width: 100%;
+  max-width: 952px;
+  margin: 20px auto 28px;
+  background: var(--telix-blue);
+  color: #ffffff;
+  border-radius: 0;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.lista-footer-note .note-button {
+  background: #ffffff;
+  color: var(--telix-blue);
+  border-radius: 3px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.banner-placeholder {
+  width: 100%;
+  max-width: 952px;
+  height: 142px;
+  margin: 0 auto 34px;
+  background: #222222;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  padding: 20px;
+}
+
+.whatsapp-strip {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  background: var(--telix-blue);
+  color: #ffffff;
+  padding: 28px 16px;
+  text-align: center;
+  font-family: "Inter", Arial, sans-serif;
+}
+
+.whatsapp-strip-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.whatsapp-strip-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  color: var(--telix-blue);
+  border-radius: 4px;
+  padding: 7px 18px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.page-footer {
+  width: 100%;
+  max-width: 952px;
+  margin: 42px auto 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 12px;
+  color: #111111;
+}
+
+.page-footer h4 {
+  margin: 0 0 12px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.page-footer p, .page-footer a {
+  display: block;
+  margin: 0 0 8px;
+  color: #111111;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.empty-state {
+  padding: 34px 28px;
+  font-size: 14px;
+  color: #111111;
+}
+
+a.beneficio-card:hover, a.beneficio-card.ativo {
+  background-color: #0094FF !important;
+  border-color: #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+
+a.beneficio-card:hover .beneficio-nome, a.beneficio-card.ativo .beneficio-nome {
+  color: #FFFFFF !important;
+}
+
+a.beneficio-card:hover .beneficio-line, a.beneficio-card.ativo .beneficio-line {
+  border-top-color: #FFFFFF !important;
+  background: transparent !important;
+}
+
+a.beneficio-card:hover .beneficio-percentual, a.beneficio-card.ativo .beneficio-percentual {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+a.beneficio-card:hover .beneficio-percentual strong, a.beneficio-card.ativo .beneficio-percentual strong {
+  color: #FFFFFF !important;
+}
+
+a.beneficio-card:hover .beneficio-participantes, a.beneficio-card.ativo .beneficio-participantes {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+a.beneficio-card:hover .beneficio-icon-img, a.beneficio-card.ativo .beneficio-icon-img {
+  filter: brightness(0) invert(1) !important;
+}
+
+.lista-action-bar {
+  width: 100%;
+  min-height: 62px;
+  padding: 10px 27px;
+  background: var(--telix-blue);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  color: #ffffff;
+  font-family: "Inter", Arial, sans-serif;
+}
+
+.lista-action-text {
+  flex: 1;
+  max-width: 742px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.lista-action-button {
+  width: 158px;
+  min-height: 32px;
+  padding: 5px 14px;
+  flex: 0 0 158px;
+  background: #ffffff;
+  border: 1px solid var(--telix-blue);
+  border-radius: 5px;
+  color: var(--telix-blue);
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease,
+    color 0.2s ease;
+}
+
+.lista-action-button:hover {
+  background: #f0f8ff;
+}
+
+.newsletter-strip {
+  width: 100%;
+  min-height: 238px;
+  padding: 32px 20px 33px;
+  background: var(--telix-blue);
+  color: #ffffff;
+  font-family: "Inter", Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.newsletter-icon {
+  margin-bottom: 8px;
+  color: #ffffff;
+  font-size: 40px;
+  line-height: 1;
+}
+
+.newsletter-title {
+  max-width: 647px;
+  margin: 0 0 20px;
+  color: #ffffff;
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 34px;
+  text-align: center;
+}
+
+.newsletter-button {
+  width: 166px;
+  min-height: 41px;
+  padding: 10px 18px;
+  background: #ffffff;
+  border-radius: 5px;
+  color: var(--telix-blue);
+  font-family: "Inter", Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.newsletter-button:hover {
+  background: #f0f8ff;
+}
+
+.site-footer {
+  width: 100%;
+  background: #ffffff;
+  color: #010009;
+  font-family: "Inter", Arial, sans-serif;
+}
+
+.site-footer-content {
+  width: 100%;
+  max-width: 982px;
+  min-height: 390px;
+  margin: 0 auto;
+  padding: 61px 0 45px;
+  display: grid;
+  grid-template-columns: 1fr 0.88fr 0.92fr;
+  gap: 78px;
+}
+
+.footer-column {
+  min-width: 0;
+}
+
+.footer-group + .footer-group {
+  margin-top: 55px;
+}
+
+.footer-title {
+  margin: 0 0 12px;
+  color: #010009;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 21px;
+}
+
+.site-footer a, .site-footer p {
+  display: block;
+  width: fit-content;
+  margin: 0 0 7px;
+  color: #8f8f93;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.005em;
+}
+
+.site-footer a:hover {
+  color: var(--telix-blue);
+}
+
+.footer-access-button {
+  width: 235px !important;
+  min-height: 63px;
+  margin-top: 34px !important;
+  padding: 15px 25px;
+  background: var(--telix-blue);
+  border-radius: 5px;
+  color: #ffffff !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  line-height: 19px !important;
+  text-align: center;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-access-button:hover {
+  background: #007fdc;
+}
+
+.site-footer-legal {
+  width: 100%;
+  min-height: 65px;
+  padding: 20px;
+  background: #fafafa;
+  border: 3px solid #e3e3e3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.site-footer-legal p {
+  width: auto;
+  margin: 0;
+  color: #8f8f93;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: center;
+}
+
+/* ==========================================================
+   02. TABLET — ATÉ 1020px
+   ========================================================== */
+
+@media (max-width: 1020px) {
+
+  .site-footer-content {
+    max-width: calc(100% - 36px);
+    gap: 40px;
+  }
+
+}
+
+/* ==========================================================
+   03. TABLET — ATÉ 980px
+   ========================================================== */
+
+@media (max-width: 980px) {
+
+  .page-wrapper {
+    max-width: 100%;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .beneficios-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 180px));
+    gap: 13px;
+    justify-content: center;
+  }
+
+  .beneficio-card {
+    width: 180px;
+    height: 296px;
+    min-height: 296px;
+  }
+
+  .lista-shell, .lista-footer-note, .banner-placeholder, .page-footer {
+    max-width: 100%;
+  }
+
+}
+
+/* ==========================================================
+   04. MOBILE — ATÉ 768px
+   ========================================================== */
+
+@media (max-width: 768px) {
+
+  .top-bar {
+    height: auto;
+    padding: 8px 12px;
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .page-wrapper {
+    padding: 24px 14px 44px;
+  }
+
+  .header {
+    margin-bottom: 49px;
+  }
+
+  .logo {
+    width: 192px;
+    height: 100px;
+  }
+
+  .login-link {
+    font-size: 12px;
+    line-height: 20px;
+  }
+
+  .page-title {
+    font-size: 26px;
+    line-height: 32px;
+  }
+
+  .page-description {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .beneficios-grid {
+    grid-template-columns: repeat(2, 180px);
+    gap: 13px;
+    justify-content: center;
+  }
+
+  .beneficio-card {
+    width: 180px;
+    height: 296px;
+    min-height: 296px;
+    padding: 21px 14px 18px;
+  }
+
+  .lista-shell {
+    border-radius: 12px;
+  }
+
+  .beneficio-header {
+    min-height: auto;
+    padding: 18px 16px;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .beneficio-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .beneficio-header-name, .beneficio-header-count, .beneficio-header-label {
+    font-size: 17px;
+    line-height: 24px;
+    white-space: normal;
+  }
+
+  .beneficio-header-text {
+    font-size: 13px;
+    line-height: 19px;
+  }
+
+  .lista-footer-bar {
+    width: 952px;
+    height: 62px;
+    margin: 0 auto;
+    background: #0094FF;
+    border-radius: 0 0 5px 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 27px;
+    box-sizing: border-box;
+  }
+
+  .lista-footer-texto {
+    width: 742px;
+    margin: 0;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    color: #FFFFFF;
+  }
+
+  .lista-footer-botao {
+    box-sizing: border-box;
+    width: 158px;
+    height: 30px;
+    background: #FFFFFF;
+    border: 1px solid #0094FF;
+    border-radius: 5px;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #0094FF;
+    flex-shrink: 0;
+  }
+
+  .lista-footer-botao:hover {
+    background: #f5faff;
+  }
+
+  .tratamento-card {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    text-align: center;
+    padding: 30px 18px;
+  }
+
+  .tratamento-img-wrap {
+    width: 120px;
+    height: 120px;
+    padding-top: 0;
+    margin: 0 auto;
+    justify-content: center;
+  }
+
+  .tratamento-img {
+    width: 120px;
+    height: 120px;
+    object-position: center center;
+  }
+
+  .tratamento-descricao {
+    max-width: 100%;
+    font-size: 14px;
+    line-height: 21px;
+  }
+
+  .eficacia-box {
+    align-items: center;
+    text-align: center;
+    padding-top: 0;
+  }
+
+  .eficacia-numero, .eficacia-label, .prazo-label, .prazo-valor {
+    text-align: center;
+    justify-content: center;
+  }
+
+  .bar-bg {
+    width: 240px;
+  }
+
+  .lista-footer-note {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .banner-placeholder {
+    height: auto;
+    min-height: 120px;
+  }
+
+  .page-footer {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .lista-action-bar {
+    padding: 16px;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .lista-action-button {
+    width: 100%;
+    max-width: 220px;
+    flex-basis: auto;
+  }
+
+  .newsletter-strip {
+    min-height: 215px;
+  }
+
+  .newsletter-title {
+    font-size: 22px;
+    line-height: 30px;
+  }
+
+/* ==========================================================
+   FOOTER MOBILE — FRAME FIGMA 320 x 887
+   ========================================================== */
+
+.site-footer {
+    position: relative !important;
+
+    width: 320px !important;
+    max-width: 320px !important;
+    height: 887px !important;
+    min-height: 887px !important;
+
+    margin: 0 auto !important;
+    padding: 0 !important;
+
+    background: #FFFFFF !important;
+    color: #010009 !important;
+
+    overflow: hidden !important;
+}
+
+
+/* CONTEÚDO DO FOOTER */
+
+.site-footer-content {
+    box-sizing: border-box !important;
+
+    position: absolute !important;
+    width: 320px !important;
+    max-width: 320px !important;
+
+    height: 822px !important;
+    min-height: 822px !important;
+
+    left: 0 !important;
+    top: 0 !important;
+
+    margin: 0 !important;
+
+    /* espaçamento interno da referência */
+    padding: 43px 20px 25px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+
+    gap: 0 !important;
+
+    text-align: left !important;
+
+    background: #FFFFFF !important;
+}
+
+
+/* COLUNAS VIRAM UMA SEQUÊNCIA VERTICAL */
+
+.footer-column {
+    width: 100% !important;
+    min-width: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: block !important;
+
+    text-align: left !important;
+}
+
+
+/* GRUPOS */
+
+.footer-group {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.footer-group + .footer-group {
+    margin-top: 32px !important;
+}
+
+
+/* TÍTULOS */
+
+.footer-title {
+    margin: 0 0 7px !important;
+
+    font-family: "Inter", Arial, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    line-height: 16px !important;
+
+    color: #010009 !important;
+}
+
+
+/* LINKS E TEXTOS */
+
+.site-footer a,
+.site-footer p {
+    display: block !important;
+
+    width: fit-content !important;
+
+    margin: 0 0 4px !important;
+
+    font-family: "Inter", Arial, sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    line-height: 14px !important;
+
+    color: #8F8F93 !important;
+
+    text-align: left !important;
+}
+
+
+/* BOTÃO BANCO DE DADOS */
+
+.footer-access-button {
+    box-sizing: border-box !important;
+
+    width: 235px !important;
+    height: 63px !important;
+    min-height: 63px !important;
+
+    margin: 25px 0 0 !important;
+    padding: 0 25px !important;
+
+    background: #0094FF !important;
+    border-radius: 5px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    line-height: 17px !important;
+
+    text-align: center !important;
+    color: #FFFFFF !important;
+}
+
+
+/* FAIXA LEGAL INFERIOR */
+
+.site-footer-legal {
+    box-sizing: border-box !important;
+
+    position: absolute !important;
+
+    width: 320px !important;
+    height: 65px !important;
+    min-height: 65px !important;
+
+    left: 0 !important;
+    bottom: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 20px !important;
+
+    background: #FAFAFA !important;
+
+    border: 0 !important;
+    border-top: 1px solid #E3E3E3 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.site-footer-legal p {
+    margin: 0 !important;
+
+    font-size: 10px !important;
+    line-height: 13px !important;
+
+    color: #8F8F93 !important;
+
+    text-align: center !important;
+}
+  .beneficios-menu {
+    width: 276px;
+    height: 174px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .beneficios-grid {
+    position: absolute;
+    top: 24px;
+    left: 1px;
+    width: 274px;
+    max-width: none;
+    height: 110px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 15px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    border: 0;
+  }
+
+  .beneficios-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .beneficio-card {
+    flex: 0
+      0
+      110px;
+    width: 110px;
+    min-width: 110px;
+    height: 110px;
+    min-height: 110px;
+    margin: 0;
+    padding: 0;
+    border: 1.85419px
+      solid
+      #0094FF;
+    border-radius: 9.27096px;
+    position: relative;
+    overflow: hidden;
+    transform: none;
+  }
+
+  .beneficio-card:hover {
+    transform: none;
+  }
+
+  .beneficio-card-top {
+    width: 100%;
+    height: 61px;
+    position: relative;
+    display: block;
+  }
+
+  .beneficio-icon {
+    position: absolute;
+    width: 25px;
+    height: 23px;
+    left: 8px;
+    top: 18px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .beneficio-card[ data-segmento-btn="reducao-temporaria-dos-sintomas" ] .beneficio-icon-img, .beneficio-card[ data-segmento-btn="eliminacao-temporaria-dos-sintomas" ] .beneficio-icon-img, .beneficio-card[ data-segmento-btn="reducao-persistente-dos-sintomas" ] .beneficio-icon-img, .beneficio-card[ data-segmento-btn="eliminacao-persistente-dos-sintomas" ] .beneficio-icon-img {
+    width: 23px;
+    height: 23px;
+    object-fit: contain;
+  }
+
+  .beneficio-card[ data-segmento-btn="cura" ] .beneficio-icon-img {
+    width: 30px;
+    height: 27px;
+    object-fit: contain;
+  }
+
+  .beneficio-nome {
+    position: absolute;
+    top: 13px;
+    left: 39px;
+    width: 65px;
+    height: 44px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    font-family: "Inter",
+      Arial,
+      sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 12px;
+    color: #0094FF;
+  }
+
+  .beneficio-card[ data-segmento-btn="cura" ] .beneficio-nome {
+    top: 21px;
+    left: 53px;
+    width: 45px;
+    height: 27px;
+  }
+
+  .beneficio-line {
+    position: absolute;
+    width: 70px;
+    height: 0;
+    left: 50%;
+    top: 61px;
+    transform: translateX(-50%);
+    margin: 0;
+    border-top: 1px
+      solid
+      #0094FF;
+  }
+
+  .beneficio-card-bottom {
+    position: absolute;
+    width: 100%;
+    height: 44px;
+    left: 0;
+    top: 66px;
+    display: block;
+  }
+
+  .beneficio-percentual {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    height: auto;
+    margin: 0;
+    display: block;
+    font-family: "Inter",
+      Arial,
+      sans-serif;
+    font-weight: 500;
+    font-size: 8.5px;
+    line-height: 10px;
+    text-align: center;
+    color: #8F8F93;
+  }
+
+  .beneficio-percentual strong {
+    width: 100%;
+    margin: 1px 0 0;
+    display: block;
+    font-family: "Inter",
+      Arial,
+      sans-serif;
+    font-weight: 500;
+    font-size: 15.8px;
+    line-height: 19px;
+    text-align: center;
+    color: #0094FF;
+  }
+
+  .beneficio-participantes {
+    display: none !important;
+  }
+
+  a.beneficio-card.ativo {
+    background: #0094FF !important;
+    border-color: #0094FF !important;
+    color: #FFFFFF !important;
+  }
+
+  a.beneficio-card.ativo .beneficio-nome {
+    color: #FFFFFF !important;
+  }
+
+  a.beneficio-card.ativo .beneficio-line {
+    border-top-color: #FFFFFF !important;
+  }
+
+  a.beneficio-card.ativo .beneficio-percentual {
+    color: rgba(
+        255,
+        255,
+        255,
+        0.8
+      ) !important;
+  }
+
+  a.beneficio-card.ativo .beneficio-percentual strong {
+    color: #FFFFFF !important;
+  }
+
+  a.beneficio-card.ativo .beneficio-icon-img {
+    filter: brightness(0)
+      invert(1) !important;
+  }
+
+  a.beneficio-card:not(.ativo):hover {
+    background: #FFFFFF !important;
+    border-color: #0094FF !important;
+    color: #0094FF !important;
+  }
+
+  a.beneficio-card:not(.ativo):hover .beneficio-nome {
+    color: #0094FF !important;
+  }
+
+  a.beneficio-card:not(.ativo):hover .beneficio-line {
+    border-top-color: #0094FF !important;
+  }
+
+  a.beneficio-card:not(.ativo):hover .beneficio-percentual {
+    color: #8F8F93 !important;
+  }
+
+  a.beneficio-card:not(.ativo):hover .beneficio-percentual strong {
+    color: #0094FF !important;
+  }
+
+  a.beneficio-card:not(.ativo):hover .beneficio-icon-img {
+    filter: none !important;
+  }
+
+  .beneficios-scroll-track {
+    position: absolute;
+    width: 262px;
+    height: 32px;
+    left: 7px;
+    top: 134px;
+    background: transparent;
+    border-radius: 100px;
+    overflow: visible;
+    touch-action: none;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .beneficios-scroll-track::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 100%;
+    height: 9px;
+    background: #D9D9D9;
+    border-radius: 100px;
+    pointer-events: none;
+  }
+
+  .beneficios-scroll-thumb {
+    position: absolute;
+    width: 48px;
+    height: 32px;
+    left: 0;
+    top: 0;
+    background: transparent;
+    border-radius: 100px;
+    transition: none;
+    touch-action: none;
+    cursor: grab;
+    z-index: 2;
+    will-change: transform;
+  }
+
+  .beneficios-scroll-thumb::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 100%;
+    height: 9px;
+    background: #0094FF;
+    border-radius: 100px;
+    pointer-events: none;
+  }
+
+  .beneficios-scroll-thumb.arrastando {
+    cursor: grabbing;
+  }
+
+  .lista-shell {
+    width: 100%;
+    max-width: 290px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .lista-box {
+    width: 100%;
+    max-width: 290px;
+    margin: 0 auto;
+    background: #FFFFFF;
+  }
+
+  .tratamento-card {
+    position: relative;
+    display: block;
+    width: 290px;
+    max-width: 100%;
+    height: 391px;
+    min-height: 391px;
+    margin: 0;
+    padding: 0;
+    background: #FFFFFF;
+    border: 0;
+    border-bottom: 1px solid #E0E0E0;
+    color: #111111;
+    text-align: left;
+    overflow: hidden;
+  }
+
+  .tratamento-card:last-child {
+    border-bottom: 0;
+  }
+
+  .tratamento-img-wrap {
+    position: absolute;
+    width: 104px;
+    height: 104px;
+    left: 16px;
+    top: 24px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .tratamento-img {
+    width: 104px;
+    height: 104px;
+    max-width: 104px;
+    max-height: 104px;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+  }
+
+  .tratamento-main {
+    position: static;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .tratamento-nome {
+    position: absolute;
+    left: 128px;
+    right: 8px;
+    top: 6px;
+    height: 30px;
+    margin: 0;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    color: #050606;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .tratamento-tipo {
+    position: absolute;
+    left: 128px;
+    right: 8px;
+    top: 29px;
+    min-height: 15px;
+    margin: 0;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 14px;
+    display: flex;
+    align-items: center;
+    color: #0094FF;
+    text-align: left;
+  }
+
+  .tratamento-info {
+    position: absolute;
+    left: 128px;
+    right: 8px;
+    margin: 0;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 15px;
+    color: #212529;
+    text-align: left;
+  }
+
+  .tratamento-info:nth-of-type(1) {
+    top: 52px;
+  }
+
+  .tratamento-info:nth-of-type(2) {
+    top: 103px;
+  }
+
+  .btn-detalhes {
+    position: absolute;
+    width: 121px;
+    min-width: 121px;
+    height: 26px;
+    left: 50%;
+    top: 151px;
+    transform: translateX(-50%);
+    margin: 0;
+    padding: 0;
+    background: #E0E0E0;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 21px;
+    color: #000000;
+    text-align: center;
+  }
+
+  .eficacia-box {
+    position: absolute;
+    width: 290px;
+    height: 190px;
+    left: 0;
+    top: 198px;
+    padding: 0;
+    margin: 0;
+    display: block;
+    text-align: center;
+  }
+
+  .bar-bg {
+    position: absolute;
+    width: 182px;
+    height: 14px;
+    left: 50%;
+    top: 46px;
+    transform: translateX(-50%);
+    margin: 0;
+    background: #E0E0E0;
+    border-radius: 5.6px;
+    overflow: hidden;
+  }
+
+  .bar-range {
+    position: absolute;
+    top: 0;
+    height: 14px;
+    background: #0094FF;
+    border-radius: 5.6px;
+    min-width: 10px;
+  }
+
+  .bar-marker {
+    position: absolute;
+    top: 0;
+    width: 10px;
+    height: 14px;
+    background: #0094FF;
+    border-radius: 4.9px;
+    transform: translateX(-50%);
+    z-index: 2;
+  }
+
+  .eficacia-numero {
+    position: absolute;
+    width: 206px;
+    height: 38px;
+    left: 50%;
+    top: 61px;
+    transform: translateX(-50%);
+    margin: 0;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #888888;
+    white-space: nowrap;
+  }
+
+  .eficacia-label {
+    position: absolute;
+    width: 206px;
+    height: 29px;
+    left: 50%;
+    top: 93px;
+    transform: translateX(-50%);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 200;
+    font-size: 12px;
+    line-height: 15px;
+    text-align: center;
+    color: #000000;
+    white-space: nowrap;
+  }
+
+  .benefit-mini-icon {
+    width: 31px;
+    height: 29px;
+    flex: 0 0 31px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .benefit-mini-icon-img {
+    width: 31px;
+    height: 29px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .prazo-label {
+    position: absolute;
+    left: 41px;
+    top: 121px;
+    height: 20px;
+    margin: 0;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    color: #000000;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .prazo-valor {
+    position: absolute;
+    left: 127px;
+    right: 10px;
+    top: 121px;
+    height: 20px;
+    margin: 0;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    color: #000000;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .lista-shell, .lista-box {
+    width: 290px;
+    max-width: 290px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .lista-box {
+    background: #FFFFFF;
+  }
+
+  .tratamento-card {
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    width: 290px;
+    max-width: 290px;
+    height: 362px;
+    min-height: 362px;
+    margin: 0;
+    padding: 0;
+    background: #FFFFFF;
+    border: 0;
+    border-bottom: 1px solid #E0E0E0;
+    color: #111111;
+    text-align: left;
+    overflow: hidden;
+  }
+
+  .tratamento-card:hover {
+    background: #FFFFFF;
+  }
+
+  .tratamento-main {
+    position: static;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+  }
+
+  .tratamento-img-wrap {
+    position: absolute;
+    width: 104px;
+    height: 104px;
+    left: 16px;
+    top: 17px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .tratamento-img {
+    display: block;
+    width: 104px;
+    height: 104px;
+    max-width: 104px;
+    max-height: 104px;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .tratamento-nome {
+    position: absolute;
+    left: 128px;
+    right: 8px;
+    top: 16px;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    color: #050606;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .tratamento-tipo {
+    position: absolute;
+    left: 128px;
+    right: 8px;
+    top: 42px;
+    height: 15px;
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 14px;
+    display: flex;
+    align-items: center;
+    color: #0094FF;
+    text-align: left;
+  }
+
+  .tratamento-info {
+    position: absolute;
+    left: 128px;
+    right: 8px;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 15px;
+    color: #212529;
+    text-align: left;
+  }
+
+  .tratamento-info strong {
+    font-family: "Inter", Arial, sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 15px;
+    color: #212529;
+  }
+
+  .tratamento-info:nth-of-type(1) {
+    top: 68px;
+  }
+
+  .tratamento-info:nth-of-type(2) {
+    top: 118px;
+  }
+
+  .tratamento-descricao {
+    display: none !important;
+  }
+
+  .eficacia-box {
+    position: absolute;
+    width: 290px;
+    height: 182px;
+    left: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+    display: block;
+    text-align: center;
+  }
+
+  .eficacia-numero {
+    position: absolute;
+    height: 38px;
+    left: 92px;
+    right: 46px;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    transform: none;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    color: #888888;
+    white-space: nowrap;
+  }
+
+  .eficacia-numero strong {
+    font-family: "Inter", Arial, sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 38px;
+    color: #010009;
+  }
+
+  .benefit-mini-icon {
+    position: absolute;
+    width: 31.44px;
+    height: 29.13px;
+    left: 51.56px;
+    top: 3px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(0.36deg);
+  }
+
+  .benefit-mini-icon-img {
+    display: block;
+    width: 31.44px;
+    height: 29.13px;
+    object-fit: contain;
+  }
+
+  .bar-bg {
+    position: absolute;
+    width: 182px;
+    height: 14px;
+    left: 50%;
+    top: 44px;
+    transform: translateX(-50%);
+    margin: 0;
+    padding: 0;
+    background: #E0E0E0;
+    border-radius: 5.6px;
+    overflow: hidden;
+  }
+
+  .bar-range {
+    position: absolute;
+    top: 0;
+    height: 14px;
+    background: #0094FF;
+    border-radius: 5.6px;
+    min-width: 0;
+  }
+
+  .bar-marker {
+    position: absolute;
+    top: 0;
+    width: 0;
+    height: 14px;
+    background: transparent;
+    transform: none;
+    z-index: 2;
+  }
+
+  .eficacia-label {
+    position: absolute;
+    height: 15px;
+    left: 42px;
+    right: 42px;
+    top: 78px;
+    margin: 0;
+    padding: 0;
+    transform: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 200;
+    font-size: 12px;
+    line-height: 15px;
+    text-align: center;
+    color: #000000;
+    white-space: nowrap;
+  }
+
+  .eficacia-label .benefit-mini-icon {
+    position: fixed;
+  }
+
+  .prazo-label {
+    position: absolute;
+    height: 20px;
+    left: 64px;
+    top: 98px;
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    color: #000000;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .prazo-label::after {
+    content: ":";
+  }
+
+  .prazo-valor {
+    position: absolute;
+    height: 20px;
+    left: 150px;
+    right: 20px;
+    top: 98px;
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    color: #000000;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .btn-detalhes {
+    position: absolute;
+    width: 121px;
+    min-width: 121px;
+    height: 26px;
+    left: 50%;
+    top: 323px;
+    transform: translateX(-50%);
+    margin: 0;
+    padding: 0;
+    background: #E0E0E0;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 21px;
+    color: #000000;
+    text-align: center;
+    z-index: 5;
+  }
+
+  .tratamento-card .eficacia-box {
+    position: absolute;
+    width: 290px;
+    height: 182px;
+    left: 0;
+    top: 180px;
+    display: block;
+    padding: 0;
+    margin: 0;
+    text-align: initial;
+  }
+
+  .tratamento-card .eficacia-numero {
+    position: absolute;
+    height: 38px;
+    left: 92px;
+    right: 20px;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 38px;
+    color: #888888;
+    white-space: nowrap;
+    z-index: 2;
+  }
+
+  .tratamento-card .eficacia-numero strong {
+    color: #010009;
+    font-weight: 700;
+  }
+
+  .tratamento-card .eficacia-label {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  .tratamento-card .benefit-mini-icon {
+    position: absolute !important;
+    width: 31.44px !important;
+    height: 29.13px !important;
+    left: 50px !important;
+    top: 4px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    transform: none !important;
+    z-index: 5;
+  }
+
+  .tratamento-card .bar-marker {
+    position: absolute;
+    top: 0;
+    width: 10px;
+    height: 14px;
+    background: #0094FF;
+    border-radius: 4.9px;
+    transform: translateX(-50%);
+    z-index: 2;
+  }
+
+  .tratamento-card .benefit-mini-icon-img {
+    display: block;
+    width: 31.44px !important;
+    height: 29.13px !important;
+    object-fit: contain;
+  }
+
+  .tratamento-card .eficacia-label > span:first-child {
+    position: absolute;
+    width: 206px;
+    height: 15px;
+    left: 42px;
+    top: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 200;
+    font-size: 12px;
+    line-height: 15px;
+    text-align: center;
+    color: #000000;
+  }
+
+  .tratamento-card .bar-bg {
+    position: absolute;
+    width: 182px;
+    height: 14px;
+    left: 50%;
+    top: 44px;
+    transform: translateX(-50%);
+    margin: 0;
+    background: #E0E0E0;
+    border-radius: 5.6px;
+    overflow: hidden;
+  }
+
+  .tratamento-card .bar-range {
+    position: absolute;
+    top: 0;
+    height: 14px;
+    background: #0094FF;
+    border-radius: 5.6px;
+  }
+
+  .tratamento-card .prazo-label {
+    position: absolute;
+    height: 20px;
+    left: 64px;
+    top: 98px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: "Inter", Arial, sans-serif;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 20px;
+    color: #000000;
+    white-space: nowrap;
+  }
+
+  .tratamento-card .prazo-label::after {
+    content: ":";
+  }
+
+  .tratamento-card .prazo-valor {
+    position: absolute;
+    height: 20px;
+    left: 150px;
+    right: 20px;
+    top: 98px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: "Inter", Arial, sans-serif;
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 20px;
+    color: #000000;
+    white-space: nowrap;
+  }
+
+  .tratamento-card .btn-detalhes {
+    position: absolute;
+    width: 121px;
+    min-width: 121px;
+    height: 26px;
+    left: 50%;
+    top: 323px;
+    transform: translateX(-50%);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #E0E0E0;
+    border-radius: 4px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 21px;
+    color: #000000;
+    z-index: 10;
+  }
+
+  .lista-shell {
+    width: 290px;
+    max-width: 290px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #0094FF;
+    border-top: 0;
+    border-radius: 15px 15px 0 0;
+    overflow: hidden;
+  }
+
+  .beneficio-header {
+    position: relative;
+    width: 290px;
+    height: 109px;
+    min-height: 109px;
+    margin: 0;
+    padding: 0;
+    background: #0094FF;
+    border: 0;
+    border-radius: 15px 15px 0 0;
+    display: block;
+    overflow: hidden;
+  }
+
+  .beneficio-header-row {
+    position: static;
+    width: 100%;
+    height: 100%;
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+
+  .beneficio-header-title {
+    position: static;
+    width: auto;
+    height: auto;
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+
+  .beneficio-header-label {
+    position: absolute;
+    width: 72px;
+    height: 16px;
+    left: 25px;
+    top: 16px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 30px;
+    color: rgba(255, 255, 255, 0.8);
+    white-space: nowrap;
+  }
+
+  .beneficio-header-icon-img {
+    position: absolute;
+    width: 22.58px;
+    height: 20.92px;
+    left: 25px;
+    top: 42px;
+    margin: 0;
+    padding: 0;
+    object-fit: contain;
+    display: block;
+    filter: brightness(0) invert(1);
+    transform: rotate(0.36deg);
+  }
+
+  .beneficio-header-name {
+    position: absolute;
+    width: 85px;
+    height: 48px;
+    left: 51.99px;
+    top: 39px;
+    margin: 0;
+    padding: 0;
+    display: block;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 16px;
+    color: #FFFFFF;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: initial;
+    text-align: left;
+  }
+
+  .beneficio-header-count {
+    position: absolute;
+    width: 100px;
+    height: 50px;
+    left: 168px;
+    top: 11px;
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 25px;
+    display: block;
+    color: rgba(255, 255, 255, 0.8);
+    white-space: normal;
+  }
+
+  .beneficio-header-count {
+    max-width: 100px;
+  }
+
+  .beneficio-header-text {
+    display: none !important;
+  }
+
+  .sort-box {
+    box-sizing: border-box;
+    position: relative;
+    width: 290px;
+    height: 206px;
+    margin: 0 auto;
+    padding: 0;
+    background: #0094FF;
+    border-radius: 0 0 5px 5px;
+    display: block;
+  }
+
+  .sort-box p {
+    position: absolute;
+    width: 224px;
+    height: 120px;
+    left: 50%;
+    top: 18px;
+    transform: translateX(-50%);
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    text-align: justify;
+    color: #FFFFFF;
+  }
+
+  .sort-box .btn-sort {
+    box-sizing: border-box;
+    position: absolute;
+    width: 158px;
+    height: 30px;
+    left: 50%;
+    top: 156px;
+    transform: translateX(-50%);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    border: 1px solid #0094FF;
+    border-radius: 5px;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 30px;
+    color: #0094FF;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+
+  .newsletter-title {
+    position: absolute;
+    width: 239px;
+    height: 61px;
+    left: 50%;
+    top: 88px;
+    transform: translateX(-50%);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 25px;
+    text-align: center;
+    color: #FFFFFF;
+  }
+
+  .newsletter-button {
+    position: absolute;
+    width: 166px;
+    height: 41px;
+    left: 50%;
+    top: 163px;
+    transform: translateX(-50%);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    border: 0;
+    border-radius: 5px;
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 18px;
+    color: #0094FF;
+    text-decoration: none;
+  }
+
+  .share-banner {
+    position: relative;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    line-height: 0;
+  }
+
+  .share-banner {
+    width: 320px;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .share-banner {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    background: transparent;
+    overflow: hidden;
+  }
+
+  .share-banner-picture {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+  }
+
+  .share-banner-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    object-fit: contain;
+  }
+
+  .share-whatsapp-link {
+    position: absolute;
+    right: 2%;
+    bottom: 5%;
+    width: 18%;
+    height: 14%;
+    display: block;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  .share-banner {
+    width: 320px;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .share-banner-picture {
+    width: 100%;
+    height: auto;
+  }
+
+  .share-banner-img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .share-whatsapp-link {
+    width: 153.14px;
+    height: 31.18px;
+    left: 50%;
+    right: auto;
+    bottom: 18px;
+    transform: translateX(-50%);
+  }
+
+  .share-whatsapp-mobile {
+    position: absolute;
+    width: 153.14px;
+    height: 31.18px;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    display: block;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    z-index: 20;
+  }
+
+  .lista-action-bar {
+    box-sizing: border-box;
+    width: 290px;
+    height: 206px;
+    min-height: 206px;
+    margin: 0 auto;
+    padding: 0;
+    background: #0094FF;
+    border-radius: 0 0 5px 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .lista-action-text {
+    position: absolute;
+    width: 224px;
+    height: 120px;
+    left: 50%;
+    top: 18px;
+    transform: translateX(-50%);
+    margin: 0;
+    font-family: "Inter", Arial, sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    text-align: justify;
+    color: #FFFFFF;
+  }
+
+  .lista-action-button {
+    box-sizing: border-box;
+    position: absolute;
+    width: 158px;
+    height: 30px;
+    min-height: 30px;
+    left: 50%;
+    top: 151px;
+    transform: translateX(-50%);
+    padding: 0;
+    background: #FFFFFF;
+    border: 0px solid #0094FF;
+    border-radius: 15px;
+    color: #0094FF;
+    font-family: "Inter", Arial, sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+
+@media (max-width: 420px) {
+
+    .lista-shell {
+        box-sizing: border-box !important;
+
+        width: 290px !important;
+        max-width: 290px !important;
+
+        margin: 0 auto !important;
+        padding: 0 !important;
+
+        background: #FFFFFF !important;
+
+        /* sem borda em cima */
+        border: 0 !important;
+        border-left: 1px solid #0094FF !important;
+        border-right: 1px solid #0094FF !important;
+        border-bottom: 1px solid #0094FF !important;
+
+        /* MESMO RAIO DO HEADER */
+        border-radius: 15px 15px 0 0 !important;
+
+        overflow: hidden !important;
+
+        box-shadow: none !important;
+        outline: none !important;
+    }
+
+
+    .beneficio-header {
+        width: 100% !important;
+
+        border: 0 !important;
+        outline: 0 !important;
+        box-shadow: none !important;
+
+        border-radius: 15px 15px 0 0 !important;
+
+        background: #0094FF !important;
+    }
+
+}
+
+  .tratamento-card {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    margin: 0 !important;
+    border-left: 0 !important;
+    border-right: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  .tratamento-card:not(:last-of-type) {
+    border-bottom: 1px solid #E0E0E0 !important;
+  }
+
+  .tratamento-card:last-of-type {
+    border-bottom: 0 !important;
+  }
+
+  .lista-action-bar {
+    box-sizing: border-box !important;
+    position: relative !important;
+    width: 100% !important;
+    height: 206px !important;
+    min-height: 206px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #0094FF !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    outline: none !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+  }
+
+  .lista-action-text {
+    position: absolute !important;
+    width: 224px !important;
+    height: 120px !important;
+    left: 50% !important;
+    top: 18px !important;
+    transform: translateX(-50%) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: "Inter", Arial, sans-serif !important;
+    font-weight: 500 !important;
+    font-size: 13px !important;
+    line-height: 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    text-align: justify !important;
+    color: #FFFFFF !important;
+  }
+
+  .lista-action-button {
+    box-sizing: border-box !important;
+    position: absolute !important;
+    width: 158px !important;
+    height: 30px !important;
+    left: 50% !important;
+    top: 151px !important;
+    transform: translateX(-50%) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #FFFFFF !important;
+    border: 0 !important;
+    border-radius: 5px !important;
+    font-family: "Inter", Arial, sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    line-height: 30px !important;
+    color: #0094FF !important;
+  }
+
+  .share-banner {
+    margin-top: 28px !important;
+  }
+
+  .lista-action-bar {
+    box-sizing: border-box !important;
+    position: relative !important;
+    width: 100% !important;
+    height: 206px !important;
+    min-height: 206px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #0094FF !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .lista-action-text {
+    position: absolute !important;
+    width: 224px !important;
+    height: 120px !important;
+    left: 50% !important;
+    top: 18px !important;
+    transform: translateX(-50%) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: "Inter", Arial, sans-serif !important;
+    font-style: normal !important;
+    font-weight: 350 !important;
+    font-size: 13px !important;
+    line-height: 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    text-align: justify !important;
+    color: #FFFFFF !important;
+    letter-spacing: normal !important;
+    word-spacing: normal !important;
+  }
+
+  .lista-action-button {
+    box-sizing: border-box !important;
+    position: absolute !important;
+    width: 158px !important;
+    height: 30px !important;
+    left: 50% !important;
+    top: 156px !important;
+    transform: translateX(-50%) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #FFFFFF !important;
+    border: 0 !important;
+    border-radius: 5px !important;
+    font-family: "Inter", Arial, sans-serif !important;
+    font-style: normal !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    line-height: 30px !important;
+    color: #0094FF !important;
+    text-align: center !important;
+  }
+
+  .share-banner {
+    width: 320px !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    display: block !important;
+    line-height: 0 !important;
+  }
+
+  .share-banner-picture, .share-banner-img {
+    display: block !important;
+    width: 320px !important;
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+.newsletter-strip {
+    box-sizing: border-box !important;
+    position: relative !important;
+    display: block !important;
+
+    width: 320px !important;
+    max-width: 100% !important;
+
+    height: 238px !important;
+    min-height: 238px !important;
+
+    /* IMPORTANTE: cola newsletter no banner */
+margin: 0 auto !important;
+    padding: 0 !important;
+
+    background: #0094FF !important;
+}
+
+
+/* ÍCONE */
+.newsletter-icon {
+    position: absolute !important;
+
+    width: 47px !important;
+    height: 40px !important;
+
+    left: 50% !important;
+    top: 36px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    transform: translateX(-50%) !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    color: #FFFFFF !important;
+}
+
+
+/* Se o ícone for IMG */
+.newsletter-icon img {
+    display: block !important;
+    width: 47px !important;
+    height: 40px !important;
+    object-fit: contain !important;
+}
+
+
+/* TÍTULO */
+.newsletter-title {
+    position: absolute !important;
+
+    width: 239px !important;
+    height: 61px !important;
+
+    left: 50% !important;
+    top: 89px !important;
+
+    transform: translateX(-50%) !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    font-family: "Inter", Arial, sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    line-height: 25px !important;
+
+    text-align: center !important;
+    color: #FFFFFF !important;
+}
+
+
+/* BOTÃO */
+.newsletter-button {
+    position: absolute !important;
+
+    width: 166px !important;
+    height: 41px !important;
+
+    left: 50% !important;
+    top: 173px !important;
+
+    transform: translateX(-50%) !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    background: #FFFFFF !important;
+    border-radius: 5px !important;
+
+    font-family: "Inter", Arial, sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    line-height: 18px !important;
+
+    color: #0094FF !important;
+    text-decoration: none !important;
+}
+
+/* ==========================================================
+   05. MOBILE PEQUENO — ATÉ 420px
+   ========================================================== */
+
+@media (max-width: 420px) {
+
+  .beneficios-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .beneficio-card {
+    width: 180px;
+    height: 296px;
+    min-height: 296px;
+    margin: 0 auto;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .login-link {
+    margin-top: 0;
+  }
+
+  /* =========================================
+   BANNER + NEWSLETTER — MOBILE
+   ========================================= */
+
+.share-banner {
+    position: relative !important;
+    display: block !important;
+
+    width: 320px !important;
+    max-width: 100% !important;
+
+    margin: 28px auto 0 !important;
+    padding: 0 !important;
+
+    line-height: 0 !important;
+    overflow: hidden !important;
+}
+
+.share-banner-picture {
+    display: block !important;
+
+    width: 100% !important;
+    height: auto !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    line-height: 0 !important;
+}
+
+.share-banner-img {
+    display: block !important;
+
+    width: 100% !important;
+    height: auto !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    vertical-align: bottom !important;
+}
+
+
+/* NEWSLETTER ENCOSTADA NO BANNER */
+
+.newsletter-strip {
+    box-sizing: border-box !important;
+    position: relative !important;
+
+    display: block !important;
+
+    width: 320px !important;
+    max-width: 100% !important;
+
+    height: 238px !important;
+    min-height: 238px !important;
+
+    margin: 0 auto !important;
+    padding: 0 !important;
+
+    background: #0094FF !important;
+}
+
+}
+/* ==========================================================
+   AJUSTE FINAL FOOTER MOBILE — FIGMA 320x887
+   ========================================================== */
+
+@media (max-width: 768px) {
+
+    /* Itens que existem no desktop mas não no Figma mobile */
+    .footer-hide-mobile {
+        display: none !important;
+    }
+
+
+    /* FRAME */
+    .site-footer {
+        position: relative !important;
+
+        width: 320px !important;
+        max-width: 320px !important;
+
+        height: 887px !important;
+        min-height: 887px !important;
+
+        margin: 0 auto !important;
+        padding: 0 !important;
+
+        background: #ffffff !important;
+        overflow: hidden !important;
+    }
+
+
+    /* ÁREA PRINCIPAL */
+    .site-footer-content {
+        box-sizing: border-box !important;
+
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+
+        width: 320px !important;
+        max-width: 320px !important;
+
+        height: 822px !important;
+        min-height: 822px !important;
+
+        margin: 0 !important;
+        padding: 43px 20px 25px !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+
+        gap: 0 !important;
+
+        background: #ffffff !important;
+        text-align: left !important;
+    }
+
+
+    /* COLUNAS DO DESKTOP VIRAM BLOCOS VERTICAIS */
+    .footer-column {
+        width: 100% !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: block !important;
+        text-align: left !important;
+    }
+
+    /* Espaço também entre uma coluna e outra */
+    .footer-column + .footer-column {
+        margin-top: 32px !important;
+    }
+
+
+    /* GRUPOS */
+    .footer-group {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .footer-group + .footer-group {
+        margin-top: 32px !important;
+    }
+
+
+    /* TÍTULOS */
+    .footer-title {
+        margin: 0 0 7px !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        line-height: 16px !important;
+
+        color: #010009 !important;
+    }
+
+
+    /* LINKS */
+    .site-footer a,
+    .site-footer p {
+        display: block !important;
+
+        width: fit-content !important;
+        margin: 0 0 4px !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 11px !important;
+        font-weight: 500 !important;
+        line-height: 14px !important;
+
+        color: #8f8f93 !important;
+        text-align: left !important;
+    }
+
+
+    /* CONTRATAR */
+    .footer-contract {
+        margin-top: 22px !important;
+    }
+
+    .footer-contract .footer-title {
+        margin-bottom: 5px !important;
+    }
+
+    .footer-contract-text {
+        display: block !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 11px !important;
+        font-weight: 500 !important;
+        line-height: 14px !important;
+
+        color: #8f8f93 !important;
+    }
+
+
+    /* BOTÃO */
+    .footer-access-button {
+        box-sizing: border-box !important;
+
+        width: 235px !important;
+        height: 63px !important;
+        min-height: 63px !important;
+
+        margin: 25px 0 0 !important;
+        padding: 0 25px !important;
+
+        background: #0094ff !important;
+        border-radius: 5px !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 800 !important;
+        line-height: 17px !important;
+
+        color: #ffffff !important;
+        text-align: center !important;
+    }
+
+
+    /* CNPJ */
+    .site-footer-legal {
+        box-sizing: border-box !important;
+
+        position: absolute !important;
+        left: 0 !important;
+        bottom: 0 !important;
+
+        width: 320px !important;
+        height: 65px !important;
+        min-height: 65px !important;
+
+        margin: 0 !important;
+        padding: 0 20px !important;
+
+        background: #fafafa !important;
+
+        border: 3px solid #e3e3e3 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .site-footer-legal p {
+        width: auto !important;
+        margin: 0 !important;
+
+        font-size: 10px !important;
+        font-weight: 400 !important;
+        line-height: 13px !important;
+
+        color: #8f8f93 !important;
+        text-align: center !important;
+    }
+}
+
+.footer-contract {
+    margin-top: 22px !important;
+}
+
+.footer-contract .footer-title {
+    margin-bottom: 5px !important;
+}
+
+.footer-contract-text {
+    display: block !important;
+
+    font-family: "Inter", Arial, sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    line-height: 14px !important;
+
+    color: #8F8F93 !important;
+}
+
+
+/* espaço entre "Paciente bem informado" e o botão */
+.footer-contract + .footer-access-button {
+    margin-top: 42px !important;
+}
+
+
+/* botão banco de dados */
+.footer-access-button {
+    box-sizing: border-box !important;
+
+    width: 235px !important;
+    height: 63px !important;
+    min-height: 63px !important;
+
+    margin-left: 10px !important;
+    padding: 0 25px !important;
+
+    background: #0094FF !important;
+    border-radius: 5px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    font-family: "Inter", Arial, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    line-height: 17px !important;
+
+    text-align: center !important;
+    color: #FFFFFF !important;
+}
+
+
+/* impede a regra genérica dos links do footer
+   de deixar o texto do botão cinza */
+.site-footer a.footer-access-button {
+    color: #FFFFFF !important;
+}
+
+
+/* se houver qualquer elemento interno no botão */
+.footer-access-button,
+.footer-access-button span,
+.footer-access-button strong {
+    color: #FFFFFF !important;
+}
+.footer-contract {
+    margin-top: 22px !important;
+}
+
+.footer-contract .footer-title {
+    margin-bottom: 5px !important;
+}
+
+.footer-contract-text {
+    display: block !important;
+
+    font-family: "Inter", Arial, sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    line-height: 14px !important;
+
+    color: #8F8F93 !important;
+}
+
+
+/* espaço entre "Paciente bem informado" e o botão */
+.footer-contract + .footer-access-button {
+    margin-top: 42px !important;
+}
+
+
+/* botão banco de dados */
+.footer-access-button {
+    box-sizing: border-box !important;
+
+    width: 235px !important;
+    height: 63px !important;
+    min-height: 63px !important;
+
+    margin-left: 10px !important;
+    padding: 0 25px !important;
+
+    background: #0094FF !important;
+    border-radius: 5px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    font-family: "Inter", Arial, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    line-height: 17px !important;
+
+    text-align: center !important;
+    color: #FFFFFF !important;
+}
+
+
+/* impede a regra genérica dos links do footer
+   de deixar o texto do botão cinza */
+.site-footer a.footer-access-button {
+    color: #FFFFFF !important;
+}
+
+
+/* se houver qualquer elemento interno no botão */
+.footer-access-button,
+.footer-access-button span,
+.footer-access-button strong {
+    color: #FFFFFF !important;
+}
+
+@media (max-width: 768px) {
+
+    .site-footer a.footer-access-button {
+        box-sizing: border-box !important;
+
+        width: 232px !important;
+        min-width: 232px !important;
+        max-width: 232px !important;
+
+        height: 65px !important;
+        min-height: 65px !important;
+
+        margin-top: 42px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        margin-bottom: 0 !important;
+
+        /* 232 - 28 - 28 = 176px de área para o texto,
+           exatamente como no Figma */
+        padding: 0 28px !important;
+
+        background: #0094FF !important;
+        border-radius: 5px !important;
+
+        /* ESSA É A CORREÇÃO PRINCIPAL */
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 700 !important;
+        font-size: 15px !important;
+        line-height: 18px !important;
+
+        color: #FFFFFF !important;
+        text-align: center !important;
+
+        white-space: normal !important;
+        text-decoration: none !important;
+    }
+}
+
+/* ==========================================================
+   HEADER MOBILE — AJUSTE FIGMA
+   ========================================================== */
+
+@media (max-width: 420px) {
+
+    /* =========================
+       BARRA SUPERIOR
+       ========================= */
+
+    .top-bar {
+        box-sizing: border-box !important;
+
+        width: 100% !important;
+        height: 54px !important;
+
+        margin: 0 !important;
+        padding: 0 20px !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #0094FF !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 14px !important;
+        font-weight: 400 !important;
+        line-height: 18px !important;
+
+        color: #FFFFFF !important;
+        text-align: center !important;
+    }
+
+
+    /* =========================
+       CONTAINER PRINCIPAL
+       ========================= */
+
+    .page-wrapper {
+        box-sizing: border-box !important;
+
+        width: 320px !important;
+        max-width: 100% !important;
+
+        margin: 0 auto !important;
+        padding: 16px 20px 44px !important;
+    }
+
+
+    /* =========================
+       LOGO + LOGIN
+       ========================= */
+
+    .header {
+        width: 100% !important;
+
+        margin: 0 0 38px !important;
+        padding: 0 !important;
+
+        display: flex !important;
+
+        /* IMPORTANTE:
+           desfaz o flex-direction: column atual */
+        flex-direction: row !important;
+
+        align-items: center !important;
+        justify-content: space-between !important;
+
+        gap: 0 !important;
+    }
+
+
+    /* LOGO */
+
+    .header > a:first-child {
+        display: block !important;
+        flex: 0 0 auto !important;
+        line-height: 0 !important;
+    }
+
+    .logo {
+        display: block !important;
+
+        width: 76px !important;
+        height: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        object-fit: contain !important;
+    }
+
+
+    /* LOGIN */
+
+    .login-link {
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: inline-flex !important;
+        align-items: center !important;
+
+        gap: 7px !important;
+
+        flex: 0 0 auto !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 12px !important;
+        font-weight: 700 !important;
+        line-height: 16px !important;
+
+        color: #010009 !important;
+        white-space: nowrap !important;
+    }
+
+
+    .login-icon {
+        width: 21px !important;
+        height: 21px !important;
+
+        flex: 0 0 21px !important;
+
+        font-size: 9px !important;
+    }
+
+
+    /* =========================
+       INTRO
+       ========================= */
+
+    .intro {
+        width: 100% !important;
+        margin: 0 0 46px !important;
+        padding: 0 !important;
+    }
+
+
+    .page-title {
+        width: 100% !important;
+
+        margin: 0 0 8px !important;
+        padding: 0 !important;
+
+        font-family: Arial, Helvetica, sans-serif !important;
+        font-size: 21px !important;
+        font-weight: 700 !important;
+        line-height: 26px !important;
+
+        color: #212529 !important;
+    }
+
+
+    .page-description {
+        width: 100% !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        font-family: Arial, Helvetica, sans-serif !important;
+        font-size: 12px !important;
+        font-weight: 400 !important;
+        line-height: 18px !important;
+
+        color: #000000 !important;
+    }
+}
+
+/* ==========================================================
+   MENU DE BENEFÍCIOS MOBILE — FIGMA 320px
+   COLOCAR NO FINAL ABSOLUTO DO CSS
+   ========================================================== */
+
+@media (max-width: 420px) {
+
+    /* ======================================================
+       FRAME EXTERNO DO FIGMA
+       320 x 130
+       ====================================================== */
+
+    .beneficios-menu {
+        position: relative !important;
+
+        width: 320px !important;
+        max-width: none !important;
+        height: 130px !important;
+
+        /*
+          .page-wrapper mobile tem 20px de padding.
+          Isso faz o componente voltar até a borda
+          do frame de 320px.
+        */
+        margin: 0 0 0 -20px !important;
+        padding: 0 !important;
+
+        overflow: hidden !important;
+    }
+
+
+    /* ======================================================
+       FRAME 262
+       Figma:
+       width: 274px
+       height: 81px
+       left centralizado
+       top real = -14 + 24 = 10px
+       ====================================================== */
+
+    .beneficios-grid {
+        box-sizing: border-box !important;
+
+        position: absolute !important;
+
+        width: 274px !important;
+        max-width: none !important;
+        height: 81px !important;
+
+        left: 50% !important;
+        top: 10px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+
+        /*
+          primeiro card começa em x = 4px no Figma
+        */
+        padding: 0 0 0 4px !important;
+
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+
+        /*
+          posições aproximadas do Figma:
+          1 = 4
+          2 = 90
+          3 = 175
+          4 = 260
+        */
+        gap: 20px !important;
+
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+
+        scroll-behavior: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+
+        scrollbar-width: none !important;
+
+        border: 0 !important;
+    }
+
+    .beneficios-grid::-webkit-scrollbar {
+        display: none !important;
+    }
+
+
+    /* ======================================================
+       CARDS
+       Figma: 65 x 81
+       ====================================================== */
+
+    .beneficio-card {
+        box-sizing: border-box !important;
+
+        position: relative !important;
+
+        flex: 0 0 65px !important;
+
+        width: 65px !important;
+        min-width: 65px !important;
+        max-width: 65px !important;
+
+        height: 81px !important;
+        min-height: 81px !important;
+        max-height: 81px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        background: transparent !important;
+
+        /* Figma não possui contorno visível */
+        border: 0 !important;
+
+        border-radius: 9.27096px !important;
+
+        display: block !important;
+
+        overflow: hidden !important;
+
+        transform: none !important;
+
+        color: #0094FF !important;
+    }
+
+
+    /* primeiro item = 66px no Figma */
+
+    .beneficio-card:first-child {
+        flex-basis: 66px !important;
+
+        width: 66px !important;
+        min-width: 66px !important;
+        max-width: 66px !important;
+    }
+
+
+    /* ======================================================
+       REMOVE O ESTADO DE CARD AZUL
+       ====================================================== */
+
+    a.beneficio-card.ativo,
+    a.beneficio-card:hover,
+    a.beneficio-card:not(.ativo):hover {
+        background: transparent !important;
+        border: 0 !important;
+        color: #0094FF !important;
+
+        transform: none !important;
+    }
+
+
+    /* ======================================================
+       TOPO DO ITEM
+       ====================================================== */
+
+    .beneficio-card-top {
+        position: relative !important;
+
+        width: 100% !important;
+        height: 81px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: block !important;
+    }
+
+
+    /* ======================================================
+       ÍCONE — POSIÇÃO BASE
+       top: 10px
+       ====================================================== */
+
+    .beneficio-icon {
+        position: absolute !important;
+
+        left: 50% !important;
+        top: 10px !important;
+
+        width: auto !important;
+        height: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        transform: translateX(-50%) !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+
+    /* REDUÇÃO TEMPORÁRIA */
+
+    .beneficio-card[data-segmento-btn="reducao-temporaria-dos-sintomas"]
+    .beneficio-icon-img {
+        width: 22.55px !important;
+        height: 20.89px !important;
+    }
+
+
+    /* ELIMINAÇÃO TEMPORÁRIA */
+
+    .beneficio-card[data-segmento-btn="eliminacao-temporaria-dos-sintomas"]
+    .beneficio-icon-img {
+        width: 25.61px !important;
+        height: 20.89px !important;
+    }
+
+
+    /* REDUÇÃO PERSISTENTE */
+
+    .beneficio-card[data-segmento-btn="reducao-persistente-dos-sintomas"]
+    .beneficio-icon-img {
+        width: 22.5px !important;
+        height: 22.5px !important;
+    }
+
+
+    /* ELIMINAÇÃO PERSISTENTE */
+
+    .beneficio-card[data-segmento-btn="eliminacao-persistente-dos-sintomas"]
+    .beneficio-icon-img {
+        width: 22.5px !important;
+        height: 22.5px !important;
+    }
+
+
+    /* CURA */
+
+    .beneficio-card[data-segmento-btn="cura"]
+    .beneficio-icon-img {
+        width: 25px !important;
+        height: 27px !important;
+    }
+
+
+    /* NÃO DEIXA O ATIVO FICAR BRANCO */
+
+    a.beneficio-card.ativo .beneficio-icon-img,
+    a.beneficio-card:hover .beneficio-icon-img {
+        filter: none !important;
+    }
+
+
+    /* ======================================================
+       NOME DO BENEFÍCIO
+       Figma:
+       width: 65px
+       height: 31px
+       top: 38px
+       ====================================================== */
+
+    .beneficio-nome,
+    a.beneficio-card.ativo .beneficio-nome,
+    a.beneficio-card:hover .beneficio-nome,
+    a.beneficio-card:not(.ativo):hover .beneficio-nome {
+        box-sizing: border-box !important;
+
+        position: absolute !important;
+
+        width: 65px !important;
+        height: 31px !important;
+
+        left: 50% !important;
+        top: 38px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 600 !important;
+        font-size: 10px !important;
+        line-height: 12px !important;
+
+        text-align: center !important;
+
+        color: #0094FF !important;
+
+        white-space: normal !important;
+    }
+
+
+    /* primeiro item tem 66px */
+
+    .beneficio-card:first-child .beneficio-nome {
+        width: 66px !important;
+    }
+
+
+    /* CURA fica mais baixo no Figma */
+
+    .beneficio-card[data-segmento-btn="cura"]
+    .beneficio-nome {
+        top: 50px !important;
+        height: 12px !important;
+    }
+
+
+    /* ======================================================
+       NO FIGMA MOBILE NÃO EXISTEM:
+       - linha divisória
+       - percentual
+       - participantes
+       ====================================================== */
+
+    .beneficio-line,
+    .beneficio-card-bottom,
+    .beneficio-percentual,
+    .beneficio-participantes {
+        display: none !important;
+    }
+
+
+    /* ======================================================
+       SCROLL
+       Figma final:
+       width 262
+       altura 4
+       left centralizado
+       top real = -14 + 114 = 100
+       ====================================================== */
+
+    .beneficios-scroll-track {
+        position: absolute !important;
+
+        width: 262px !important;
+        height: 4px !important;
+
+        left: 50% !important;
+        top: 100px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        background: #D9D9D9 !important;
+        border-radius: 100px !important;
+
+        overflow: hidden !important;
+
+        touch-action: none !important;
+        cursor: pointer !important;
+    }
+
+
+    /* remove a barra artificial antiga de 9px */
+
+    .beneficios-scroll-track::before {
+        display: none !important;
+        content: none !important;
+    }
+
+
+    /* ======================================================
+       THUMB AZUL
+       Figma: 48 x 4
+       ====================================================== */
+
+    .beneficios-scroll-thumb {
+        position: absolute !important;
+
+        width: 48px !important;
+        height: 4px !important;
+
+        left: 0 !important;
+        top: 0 !important;
+
+        background: #0094FF !important;
+        border-radius: 100px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        transition: none !important;
+
+        cursor: grab !important;
+        will-change: transform !important;
+    }
+
+
+    .beneficios-scroll-thumb::before {
+        display: none !important;
+        content: none !important;
+    }
+
+
+    .beneficios-scroll-thumb.arrastando {
+        cursor: grabbing !important;
+    }
+}
+
+/* ==========================================================
+   LABELS MENU MOBILE — FIGMA
+   ========================================================== */
+
+@media (max-width: 420px) {
+
+    /* título azul: duas primeiras linhas */
+    .beneficio-nome,
+    a.beneficio-card.ativo .beneficio-nome,
+    a.beneficio-card:hover .beneficio-nome,
+    a.beneficio-card:not(.ativo):hover .beneficio-nome {
+
+        position: absolute !important;
+
+        top: 38px !important;
+        left: 50% !important;
+
+        width: 65px !important;
+        height: 24px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: block !important;
+
+        overflow: hidden !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 600 !important;
+
+        font-size: 10px !important;
+        line-height: 12px !important;
+
+        text-align: center !important;
+
+        color: #0094FF !important;
+
+        white-space: normal !important;
+    }
+
+
+    /* terceira linha cinza */
+    .beneficio-card:not(
+        [data-segmento-btn="cura"]
+    )::after {
+
+        content: "dos sintomas";
+
+        position: absolute !important;
+
+        top: 62px !important;
+        left: 50% !important;
+
+        width: 65px !important;
+        height: 12px !important;
+
+        transform: translateX(-50%) !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+
+        font-size: 10px !important;
+        line-height: 12px !important;
+
+        text-align: center !important;
+
+        color: #8F8F93 !important;
+
+        pointer-events: none !important;
+    }
+
+
+    /* primeiro item tem 66px no Figma */
+    .beneficio-card:first-child .beneficio-nome,
+    .beneficio-card:first-child::after {
+        width: 66px !important;
+    }
+
+
+    /* CURA não tem "dos sintomas" */
+    .beneficio-card[data-segmento-btn="cura"]
+    .beneficio-nome {
+
+        top: 50px !important;
+
+        width: 65px !important;
+        height: 12px !important;
+
+        overflow: visible !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-weight: 600 !important;
+
+        font-size: 10px !important;
+        line-height: 12px !important;
+
+        color: #0094FF !important;
+
+        text-align: center !important;
+    }
+
+
+    /* nenhum estado ativo muda a cor da label */
+a.beneficio-card.ativo .beneficio-nome,
+a.beneficio-card:hover .beneficio-nome {
+    color: #0094FF !important;
+}
+
+
+/* FECHA O @media DAS LABELS MOBILE */
+}
+
+
+/* ==========================================================
+   HEADER MOBILE — ÍCONES LOGIN
+   ========================================================== */
+
+@media (max-width: 420px) {
+
+    .login-link {
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: inline-flex !important;
+        align-items: center !important;
+
+        /* controlamos os espaços individualmente */
+        gap: 0 !important;
+
+        flex: 0 0 auto !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 12px !important;
+        font-weight: 700 !important;
+        line-height: 16px !important;
+
+        color: #010009 !important;
+        white-space: nowrap !important;
+    }
+
+
+    /* CADEADO */
+
+    .login-lock-icon {
+        width: 15px !important;
+        height: 15px !important;
+
+        margin-right: 4px !important;
+
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        flex: 0 0 15px !important;
+
+        color: #0094FF !important;
+
+        font-size: 11px !important;
+        line-height: 1 !important;
+    }
+
+
+    /* CÍRCULO AZUL DO USUÁRIO */
+
+    .login-icon {
+        width: 21.45px !important;
+        height: 21.45px !important;
+
+        margin-right: 11px !important;
+
+        flex: 0 0 21.45px !important;
+
+        border-radius: 50% !important;
+
+        background: #0094FF !important;
+        color: #FFFFFF !important;
+
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        font-size: 9px !important;
+        line-height: 1 !important;
+    }
+
+
+    /* TEXTO */
+
+    .login-text {
+        display: inline-flex !important;
+        align-items: center !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 12px !important;
+        font-weight: 700 !important;
+        line-height: 22px !important;
+
+        color: #010009 !important;
+
+        white-space: nowrap !important;
+    }
+
+}
+
+
+/* ==========================================================
+   IR PARA O PRÓXIMO BENEFÍCIO — MOBILE
+   ========================================================== */
+
+.next-benefits-mobile {
+    display: none;
+}
+
+@media (max-width: 420px) {
+
+    .next-benefits-mobile {
+        display: block !important;
+        box-sizing: border-box !important;
+        width: 310px !important;
+        max-width: 310px !important;
+        margin: 26px auto 22px !important;
+        padding: 0 !important;
+    }
+
+    .next-benefits-mobile-title {
+        width: 100% !important;
+        margin: 0 0 28px !important;
+        padding: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 600 !important;
+        font-size: 20px !important;
+        line-height: 24px !important;
+        color: #000000 !important;
+    }
+
+    .next-benefits-mobile-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 135px) !important;
+        column-gap: 21px !important;
+        row-gap: 10px !important;
+        justify-content: center !important;
+        align-items: start !important;
+    }
+
+    .next-benefit-mobile-card {
+        box-sizing: border-box !important;
+        width: 135px !important;
+        min-width: 135px !important;
+        height: 60px !important;
+        padding: 6px 8px !important;
+
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+
+        background: #FFFFFF !important;
+        border: 1.85419px solid #0094FF !important;
+        border-radius: 9.27096px !important;
+
+        text-decoration: none !important;
+    }
+
+    .next-benefit-mobile-card:nth-child(5) {
+        grid-column: 1 / -1 !important;
+        justify-self: center !important;
+        width: 135px !important;
+        height: 50px !important;
+    }
+
+    .next-benefit-mobile-icon {
+        width: 24px !important;
+        min-width: 24px !important;
+        height: 24px !important;
+
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .next-benefit-mobile-icon-img {
+        max-width: 24px !important;
+        max-height: 24px !important;
+        width: auto !important;
+        height: auto !important;
+        object-fit: contain !important;
+        display: block !important;
+    }
+
+    .next-benefit-mobile-text {
+        display: flex !important;
+        align-items: center !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 600 !important;
+        font-size: 13px !important;
+        line-height: 16px !important;
+        color: #0094FF !important;
+    }
+
+    .next-benefit-mobile-card:hover,
+    .next-benefit-mobile-card:focus,
+    .next-benefit-mobile-card:active {
+        background: #FFFFFF !important;
+        color: inherit !important;
+        outline: none !important;
+    }
+}
+
+/* ==========================================================
+   PRÓXIMO BENEFÍCIO — COR DAS LABELS MOBILE
+   ========================================================== */
+
+@media (max-width: 420px) {
+
+    .next-benefit-mobile-text {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        justify-content: center !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 13px !important;
+        line-height: 16px !important;
+        font-weight: 600 !important;
+    }
+
+    .next-benefit-label-main {
+        color: #0094FF !important;
+        font-weight: 600 !important;
+    }
+
+    .next-benefit-label-muted {
+        color: #8F8F93 !important;
+        font-weight: 400 !important;
+    }
+
+}
+
+@media (max-width: 420px) {
+
+    .segmento-lista {
+        scroll-margin-top: 10px;
+    }
+
+    .lista-shell {
+        scroll-margin-top: 10px;
+    }
+
+}
+
+
+/* ==========================================================
+   DESKTOP FINAL — FIGMA
+   BANNER + NEWSLETTER + FOOTER
+   ========================================================== */
+
+@media (min-width: 1021px) {
+
+    /* ======================================================
+       BANNER — MESMA LARGURA DA LISTA
+       ====================================================== */
+
+    .share-banner {
+        box-sizing: border-box !important;
+
+        position: relative !important;
+        display: block !important;
+
+        width: 952px !important;
+        min-width: 952px !important;
+        max-width: 952px !important;
+
+        height: 300px !important;
+        min-height: 300px !important;
+        max-height: 300px !important;
+
+        /* espaço entre final da lista e banner */
+        margin: 50px auto 0 !important;
+
+        padding: 0 !important;
+
+        background: #FFFFFF !important;
+
+        overflow: hidden !important;
+        line-height: 0 !important;
+    }
+
+
+    .share-banner-picture {
+        display: block !important;
+
+        width: 952px !important;
+        height: 300px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+
+    .share-banner-img {
+        display: block !important;
+
+        width: 952px !important;
+        height: 300px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        object-fit: cover !important;
+        object-position: center !important;
+    }
+
+
+    /* botão invisível sobre o botão do próprio banner */
+
+    .share-whatsapp-link {
+        position: absolute !important;
+
+        width: 167px !important;
+        height: 34px !important;
+
+        right: 25px !important;
+        bottom: 31px !important;
+
+        left: auto !important;
+        top: auto !important;
+
+        transform: none !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        z-index: 10 !important;
+    }
+
+
+    /* ======================================================
+       NEWSLETTER — FAIXA AZUL FULL WIDTH
+       ====================================================== */
+
+    .newsletter-strip {
+        box-sizing: border-box !important;
+
+        position: relative !important;
+
+        width: 100vw !important;
+        max-width: none !important;
+
+        height: 238px !important;
+        min-height: 238px !important;
+        max-height: 238px !important;
+
+        /*
+         * Figma:
+         * banner termina
+         * 50px
+         * faixa azul começa
+         */
+        margin-top: 50px !important;
+        margin-right: 0 !important;
+        margin-bottom: 0 !important;
+
+        /*
+         * quebra os limites de .page-wrapper
+         */
+        margin-left: calc(50% - 50vw) !important;
+
+        padding: 0 !important;
+
+        background: #0094FF !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        color: #FFFFFF !important;
+    }
+
+
+    .newsletter-icon {
+        position: static !important;
+
+        width: 47px !important;
+        height: 40px !important;
+
+        margin: 0 0 8px !important;
+
+        transform: none !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        color: #FFFFFF !important;
+        font-size: 40px !important;
+        line-height: 40px !important;
+    }
+
+
+    .newsletter-title {
+        position: static !important;
+
+        width: 647px !important;
+        max-width: 647px !important;
+        height: auto !important;
+
+        margin: 0 0 20px !important;
+        padding: 0 !important;
+
+        transform: none !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-weight: 700 !important;
+        font-size: 25px !important;
+        line-height: 50px !important;
+
+        text-align: center !important;
+        color: #FFFFFF !important;
+    }
+
+
+    .newsletter-title br {
+        display: none !important;
+    }
+
+
+    .newsletter-button {
+        box-sizing: border-box !important;
+
+        position: static !important;
+
+        width: 193px !important;
+        min-width: 193px !important;
+        max-width: 193px !important;
+
+        height: 34px !important;
+        min-height: 34px !important;
+        max-height: 34px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        transform: none !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #FFFFFF !important;
+
+        border: 0 !important;
+        border-radius: 5px !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        line-height: 18px !important;
+
+        color: #0094FF !important;
+    }
+
+}
+
+    /* ======================================================
+       ÁREA CLICÁVEL "COMPARTILHE"
+       FIGMA:
+       left 762
+       top 235
+       167 x 34
+       ====================================================== */
+
+    .share-whatsapp-link {
+        position: absolute !important;
+
+        width: 167px !important;
+        height: 34px !important;
+
+        left: 762px !important;
+        top: 235px !important;
+
+        right: auto !important;
+        bottom: auto !important;
+
+        transform: none !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: block !important;
+
+        background: transparent !important;
+        border: 0 !important;
+
+        z-index: 20 !important;
+    }
+
+
+    /* ======================================================
+       NEWSLETTER
+       FIGMA: 1920 x 238
+
+       Como a página pode ter viewport diferente de 1920,
+       usamos 100vw para representar os 1920px do frame.
+       ====================================================== */
+
+    .newsletter-strip {
+        box-sizing: border-box !important;
+
+        position: relative !important;
+
+        width: 100vw !important;
+        max-width: none !important;
+
+        height: 238px !important;
+        min-height: 238px !important;
+        max-height: 238px !important;
+
+        /*
+         * 50px entre banner e faixa azul,
+         * igual ao auto-layout do Figma.
+         */
+        margin-top: 50px !important;
+        margin-right: 0 !important;
+        margin-bottom: 0 !important;
+
+        /*
+         * Retira o elemento de dentro dos 952px
+         * do page-wrapper e centraliza na viewport.
+         */
+        margin-left: calc(50% - 50vw) !important;
+
+        padding: 0 !important;
+
+        display: block !important;
+
+        background: #0094FF !important;
+        color: #FFFFFF !important;
+
+        overflow: hidden !important;
+    }
+
+
+    /* ======================================================
+       ÍCONE NEWSLETTER
+       FIGMA: 47 x 40
+       top: 36px
+       ====================================================== */
+
+    .newsletter-icon {
+        position: absolute !important;
+
+        width: 47px !important;
+        height: 40px !important;
+
+        left: 50% !important;
+        top: 36px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        color: #FFFFFF !important;
+
+        font-size: 40px !important;
+        line-height: 40px !important;
+    }
+
+
+    /* ======================================================
+       TÍTULO NEWSLETTER
+       FIGMA:
+       647 x 68
+       top: 89px
+       ====================================================== */
+
+    .newsletter-title {
+        position: absolute !important;
+
+        width: 647px !important;
+        max-width: 647px !important;
+
+        height: 68px !important;
+
+        left: 50% !important;
+        top: 89px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 700 !important;
+        font-size: 25px !important;
+        line-height: 50px !important;
+
+        color: #FFFFFF !important;
+        text-align: center !important;
+
+        white-space: nowrap !important;
+    }
+
+
+    /*
+     * No desktop do Figma a frase cabe inteira.
+     * O <br> do HTML fica somente para o mobile.
+     */
+    .newsletter-title br {
+        display: none !important;
+    }
+
+
+    /* ======================================================
+       BOTÃO CADASTRAR EMAIL
+       FIGMA:
+       193 x 34
+       top: 163px
+       ====================================================== */
+
+    .newsletter-button {
+        box-sizing: border-box !important;
+
+        position: absolute !important;
+
+        width: 193px !important;
+        min-width: 193px !important;
+        max-width: 193px !important;
+
+        height: 34px !important;
+        min-height: 34px !important;
+        max-height: 34px !important;
+
+        left: 50% !important;
+        top: 163px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #FFFFFF !important;
+
+        border: 0 !important;
+        border-radius: 5px !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        line-height: 18px !important;
+
+        color: #0094FF !important;
+        text-decoration: none !important;
+    }
+
+
+    /* ======================================================
+       FOOTER
+       FIGMA: viewport x 465
+       ====================================================== */
+
+    .site-footer {
+        box-sizing: border-box !important;
+
+        position: relative !important;
+
+        width: 100% !important;
+        max-width: none !important;
+
+        height: 465px !important;
+        min-height: 465px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        background: #FFFFFF !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+
+        overflow: hidden !important;
+    }
+
+
+    /* ======================================================
+       CONTEÚDO DO FOOTER
+       FIGMA: 982 x 286
+       top: 55
+       ====================================================== */
+
+    .site-footer-content {
+        box-sizing: border-box !important;
+
+        position: absolute !important;
+
+        width: 982px !important;
+        max-width: 982px !important;
+
+        height: 286px !important;
+        min-height: 286px !important;
+
+        left: 50% !important;
+        top: 55px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        /*
+         * Não usamos o grid antigo aqui.
+         * Posicionamos conforme o Figma.
+         */
+        display: block !important;
+    }
+
+
+    /*
+     * Os footer-column deixam de ser containers
+     * posicionados. Assim cada footer-group usa
+     * site-footer-content como referência.
+     */
+
+    .footer-column {
+        position: static !important;
+
+        width: auto !important;
+        min-width: 0 !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+
+    .footer-group {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+
+    .footer-group + .footer-group {
+        margin-top: 0 !important;
+    }
+
+
+    /* ======================================================
+       ITENS QUE NÃO APARECEM NO FRAME DESKTOP
+       ====================================================== */
+
+    .site-footer .footer-hide-mobile {
+        display: none !important;
+    }
+
+
+    /* ======================================================
+       COLUNA 1
+       ====================================================== */
+
+    .footer-column:nth-child(1) .footer-group:nth-child(1) {
+        position: absolute !important;
+
+        left: 0 !important;
+        top: 1px !important;
+
+        width: 218px !important;
+    }
+
+
+    .footer-column:nth-child(1) .footer-group:nth-child(2) {
+        position: absolute !important;
+
+        left: 1px !important;
+        top: 115px !important;
+
+        width: 218px !important;
+    }
+
+
+    /* ======================================================
+       COLUNA 2
+       ====================================================== */
+
+    .footer-column:nth-child(2) .footer-group:nth-child(1) {
+        position: absolute !important;
+
+        left: 403px !important;
+        top: 0 !important;
+
+        width: 180px !important;
+    }
+
+
+    .footer-column:nth-child(2) .footer-group:nth-child(2) {
+        position: absolute !important;
+
+        left: 403px !important;
+        top: 111px !important;
+
+        width: 180px !important;
+    }
+
+
+    /* ======================================================
+       COLUNA 3 — APRESENTAÇÕES
+       ====================================================== */
+
+    .footer-column:nth-child(3) .footer-group:nth-child(1) {
+        position: absolute !important;
+
+        left: 746px !important;
+        top: 0 !important;
+
+        width: 220px !important;
+    }
+
+
+    /* OPINIÕES DE ESPECIALISTAS */
+
+    .footer-column:nth-child(3) .footer-group:nth-child(2) {
+        position: absolute !important;
+
+        left: 748px !important;
+        top: 155px !important;
+
+        width: 220px !important;
+    }
+
+
+    /* ======================================================
+       CONTRATAR
+
+       Apesar de estar dentro da terceira coluna no HTML,
+       visualmente fica na coluna central do Figma.
+       ====================================================== */
+
+    .footer-column:nth-child(3) .footer-contract {
+        position: absolute !important;
+
+        left: 404px !important;
+        top: 215px !important;
+
+        width: 190px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+
+    .footer-contract .footer-title {
+        margin: 0 0 9px !important;
+
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        line-height: 18px !important;
+
+        color: #010009 !important;
+    }
+
+
+    .footer-contract-text {
+        display: block !important;
+
+        margin: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        line-height: 16px !important;
+
+        color: #8F8F93 !important;
+    }
+
+
+    /* ======================================================
+       BOTÃO BANCO DE DADOS
+       FIGMA:
+       x = 747
+       y = 213
+       235 x 73
+       ====================================================== */
+
+    .site-footer a.footer-access-button {
+        box-sizing: border-box !important;
+
+        position: absolute !important;
+
+        width: 235px !important;
+        min-width: 235px !important;
+        max-width: 235px !important;
+
+        height: 73px !important;
+        min-height: 73px !important;
+        max-height: 73px !important;
+
+        left: 747px !important;
+        top: 213px !important;
+
+        margin: 0 !important;
+        padding: 0 30px !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #0094FF !important;
+
+        border: 0 !important;
+        border-radius: 5px !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 15px !important;
+        font-weight: 800 !important;
+        line-height: 18px !important;
+
+        color: #FFFFFF !important;
+        text-align: center !important;
+        text-decoration: none !important;
+    }
+
+
+    /* ======================================================
+       TIPOGRAFIA FOOTER
+       ====================================================== */
+
+    .site-footer .footer-title {
+        margin-top: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        line-height: 21px !important;
+
+        color: #010009 !important;
+    }
+
+
+    .site-footer-content a:not(.footer-access-button),
+    .site-footer-content p,
+    .site-footer-content span:not(.footer-contract-text) {
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        line-height: 16px !important;
+
+        color: #8F8F93 !important;
+    }
+
+
+    /* ======================================================
+       FAIXA CNPJ
+       FIGMA: viewport x 65
+       ====================================================== */
+
+    .site-footer-legal {
+        box-sizing: border-box !important;
+
+        position: absolute !important;
+
+        width: 100% !important;
+        max-width: none !important;
+
+        height: 65px !important;
+        min-height: 65px !important;
+
+        left: 0 !important;
+        bottom: 0 !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #FAFAFA !important;
+
+        border: 3px solid #E3E3E3 !important;
+    }
+
+
+    .site-footer-legal p {
+        width: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 400 !important;
+        line-height: 16px !important;
+
+        color: #8F8F93 !important;
+        text-align: center !important;
+    }
+
+}
+/* ==========================================================
+   IR PARA O PRÓXIMO BENEFÍCIO
+   SOMENTE MOBILE REAL
+   ========================================================== */
+
+/* escondido por padrão, inclusive no próprio HTML */
+main.page-wrapper > section.next-benefits-mobile[hidden] {
+    display: none !important;
+}
+
+/* só aparece no mobile */
+@media (max-width: 420px) {
+    main.page-wrapper > section.next-benefits-mobile[hidden] {
+        display: block !important;
+    }
+}
+
+/* ==========================================================
+   DESKTOP — BANNER + FAIXA AZUL
+   ========================================================== */
+
+@media (min-width: 769px) {
+
+    /* ------------------------------------------------------
+       BANNER
+       mesma largura da caixa dos tratamentos
+       ------------------------------------------------------ */
+    .share-banner {
+        box-sizing: border-box !important;
+        position: relative !important;
+
+        width: 100% !important;
+        max-width: 952px !important;
+        height: 300px !important;
+
+        margin: 28px auto 0 !important;
+        padding: 0 !important;
+
+        display: block !important;
+        overflow: hidden !important;
+        background: #FFFFFF !important;
+        line-height: 0 !important;
+    }
+
+    .share-banner-picture {
+        display: block !important;
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .share-banner-img {
+        display: block !important;
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+
+        object-fit: cover !important;
+        object-position: center center !important;
+    }
+
+    .share-whatsapp-link {
+        position: absolute !important;
+        width: 167px !important;
+        height: 34px !important;
+
+        right: 20px !important;
+        bottom: 22px !important;
+        left: auto !important;
+        top: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+
+        background: transparent !important;
+        border: 0 !important;
+        z-index: 10 !important;
+    }
+
+
+    /* ------------------------------------------------------
+       FAIXA AZUL
+       com espaço entre banner e faixa
+       ------------------------------------------------------ */
+    .newsletter-strip {
+        box-sizing: border-box !important;
+        position: relative !important;
+
+        width: 100vw !important;
+        max-width: none !important;
+        height: 238px !important;
+        min-height: 238px !important;
+
+        margin-top: 50px !important;
+        margin-right: 0 !important;
+        margin-bottom: 0 !important;
+        margin-left: calc(50% - 50vw) !important;
+
+        padding: 0 !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #0094FF !important;
+        color: #FFFFFF !important;
+        overflow: hidden !important;
+    }
+
+    .newsletter-icon {
+        position: static !important;
+        width: 47px !important;
+        height: 40px !important;
+
+        margin: 0 0 12px !important;
+        transform: none !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        font-size: 40px !important;
+        line-height: 40px !important;
+        color: #FFFFFF !important;
+    }
+
+    .newsletter-title {
+        position: static !important;
+        width: 647px !important;
+        max-width: 647px !important;
+        height: auto !important;
+
+        margin: 0 0 18px !important;
+        padding: 0 !important;
+        transform: none !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 700 !important;
+        font-size: 25px !important;
+        line-height: 50px !important;
+        text-align: center !important;
+        color: #FFFFFF !important;
+    }
+
+    .newsletter-title br {
+        display: none !important;
+    }
+
+    .newsletter-button {
+        box-sizing: border-box !important;
+        position: static !important;
+
+        width: 193px !important;
+        height: 34px !important;
+        min-height: 34px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+        transform: none !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #FFFFFF !important;
+        border: 0 !important;
+        border-radius: 5px !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-weight: 700 !important;
+        font-size: 15px !important;
+        line-height: 18px !important;
+        color: #0094FF !important;
+        text-decoration: none !important;
+    }
+  }
+
+
+  /* ==========================================================
+   RESTAURAÇÃO MOBILE — BANNER / NEWSLETTER / FOOTER
+   NÃO ALTERAR DESKTOP
+   ========================================================== */
+
+@media screen and (max-width: 420px) {
+
+    /* ======================================================
+       NEWSLETTER MOBILE
+       ====================================================== */
+
+    .newsletter-strip {
+        box-sizing: border-box !important;
+        position: relative !important;
+
+        display: block !important;
+
+        width: 320px !important;
+        max-width: 320px !important;
+
+        height: 238px !important;
+        min-height: 238px !important;
+        max-height: 238px !important;
+
+        margin: 0 auto !important;
+        padding: 0 !important;
+
+        background: #0094FF !important;
+
+        overflow: hidden !important;
+    }
+
+
+    /* ÍCONE */
+
+    .newsletter-icon {
+        position: absolute !important;
+
+        width: 47px !important;
+        height: 40px !important;
+
+        left: 50% !important;
+        top: 36px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        color: #FFFFFF !important;
+
+        font-size: 40px !important;
+        line-height: 40px !important;
+    }
+
+
+    /* TÍTULO */
+
+    .newsletter-title {
+        position: absolute !important;
+
+        width: 239px !important;
+        max-width: 239px !important;
+
+        height: 61px !important;
+
+        left: 50% !important;
+        top: 89px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 700 !important;
+
+        font-size: 15px !important;
+        line-height: 25px !important;
+
+        text-align: center !important;
+
+        color: #FFFFFF !important;
+
+        white-space: normal !important;
+        overflow: visible !important;
+    }
+
+
+    /* DEVOLVE A QUEBRA DE LINHA DO MOBILE */
+
+    .newsletter-title br {
+        display: block !important;
+    }
+
+
+    /* BOTÃO */
+
+    .newsletter-button {
+        box-sizing: border-box !important;
+
+        position: absolute !important;
+
+        width: 166px !important;
+        min-width: 166px !important;
+        max-width: 166px !important;
+
+        height: 41px !important;
+        min-height: 41px !important;
+        max-height: 41px !important;
+
+        left: 50% !important;
+        top: 173px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #FFFFFF !important;
+
+        border: 0 !important;
+        border-radius: 5px !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        line-height: 18px !important;
+
+        color: #0094FF !important;
+        text-decoration: none !important;
+    }
+
+
+    /* ======================================================
+       FOOTER MOBILE
+       ====================================================== */
+
+    .site-footer {
+        box-sizing: border-box !important;
+
+        position: relative !important;
+
+        width: 320px !important;
+        max-width: 320px !important;
+
+        height: 887px !important;
+        min-height: 887px !important;
+
+        margin: 0 auto !important;
+        padding: 0 !important;
+
+        background: #FFFFFF !important;
+
+        overflow: hidden !important;
+    }
+
+
+    .site-footer-content {
+        box-sizing: border-box !important;
+
+        position: absolute !important;
+
+        width: 320px !important;
+        max-width: 320px !important;
+
+        height: 822px !important;
+        min-height: 822px !important;
+
+        left: 0 !important;
+        top: 0 !important;
+
+        transform: none !important;
+
+        margin: 0 !important;
+        padding: 43px 20px 25px !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+
+        gap: 0 !important;
+
+        background: #FFFFFF !important;
+        text-align: left !important;
+    }
+
+
+    /* COLUNAS EM SEQUÊNCIA */
+
+    .footer-column {
+        position: static !important;
+
+        width: 100% !important;
+        min-width: 100% !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: block !important;
+
+        text-align: left !important;
+    }
+
+
+    .footer-column + .footer-column {
+        margin-top: 32px !important;
+    }
+
+
+    .footer-group {
+        position: static !important;
+
+        width: 100% !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+
+    .footer-group + .footer-group {
+        margin-top: 32px !important;
+    }
+
+
+    /* ELEMENTOS QUE NÃO APARECEM NO MOBILE */
+
+    .footer-hide-mobile {
+        display: none !important;
+    }
+
+
+    /* CONTRATAR */
+
+    .footer-contract {
+        position: static !important;
+
+        width: 100% !important;
+
+        margin-top: 22px !important;
+        padding: 0 !important;
+    }
+
+
+    .footer-contract .footer-title {
+        margin-bottom: 5px !important;
+    }
+
+
+    /* BOTÃO BANCO DE DADOS */
+
+    .site-footer a.footer-access-button {
+        box-sizing: border-box !important;
+
+        position: static !important;
+
+        width: 232px !important;
+        min-width: 232px !important;
+        max-width: 232px !important;
+
+        height: 65px !important;
+        min-height: 65px !important;
+
+        margin: 42px auto 0 !important;
+        padding: 0 28px !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #0094FF !important;
+
+        border-radius: 5px !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        line-height: 18px !important;
+
+        text-align: center !important;
+        color: #FFFFFF !important;
+    }
+
+
+    /* FAIXA CNPJ */
+
+    .site-footer-legal {
+        box-sizing: border-box !important;
+
+        position: absolute !important;
+
+        width: 320px !important;
+        height: 65px !important;
+        min-height: 65px !important;
+
+        left: 0 !important;
+        bottom: 0 !important;
+
+        margin: 0 !important;
+        padding: 0 20px !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #FAFAFA !important;
+
+        border: 0 !important;
+        border-top: 1px solid #E3E3E3 !important;
+    }
+
+
+    .site-footer-legal p {
+        margin: 0 !important;
+        padding: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 10px !important;
+        font-weight: 400 !important;
+        line-height: 13px !important;
+
+        text-align: center !important;
+
+        color: #8F8F93 !important;
+    }
+
+/* ==========================================================
+   CORREÇÃO DEFINITIVA FOOTER MOBILE
+   ========================================================== */
+
+@media (max-width: 420px) {
+
+    /* FRAME */
+    .site-footer {
+        position: relative !important;
+
+        width: 320px !important;
+        max-width: 320px !important;
+
+        height: 887px !important;
+        min-height: 887px !important;
+
+        margin: 0 auto !important;
+        padding: 0 !important;
+
+        background: #FFFFFF !important;
+        overflow: hidden !important;
+    }
+
+
+    /* ÁREA INTERNA */
+    .site-footer .site-footer-content {
+        box-sizing: border-box !important;
+
+        position: absolute !important;
+
+        top: 0 !important;
+        left: 0 !important;
+        right: auto !important;
+        bottom: auto !important;
+
+        width: 320px !important;
+        max-width: 320px !important;
+
+        height: 822px !important;
+        min-height: 822px !important;
+
+        transform: none !important;
+
+        margin: 0 !important;
+        padding: 43px 20px 25px !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+
+        gap: 0 !important;
+
+        background: #FFFFFF !important;
+        text-align: left !important;
+    }
+
+
+    /* ======================================================
+       REMOVE TODO POSITION ABSOLUTE HERDADO DO DESKTOP
+       ====================================================== */
+
+    .site-footer .footer-column,
+    .site-footer .footer-group,
+    .site-footer .footer-contract,
+
+    .site-footer
+    .footer-column:nth-child(1)
+    .footer-group:nth-child(1),
+
+    .site-footer
+    .footer-column:nth-child(1)
+    .footer-group:nth-child(2),
+
+    .site-footer
+    .footer-column:nth-child(2)
+    .footer-group:nth-child(1),
+
+    .site-footer
+    .footer-column:nth-child(2)
+    .footer-group:nth-child(2),
+
+    .site-footer
+    .footer-column:nth-child(3)
+    .footer-group:nth-child(1),
+
+    .site-footer
+    .footer-column:nth-child(3)
+    .footer-group:nth-child(2),
+
+    .site-footer
+    .footer-column:nth-child(3)
+    .footer-contract {
+
+        position: static !important;
+
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+
+        transform: none !important;
+    }
+
+
+    /* COLUNAS */
+    .site-footer .footer-column {
+        width: 100% !important;
+        min-width: 0 !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: block !important;
+
+        text-align: left !important;
+    }
+
+
+    .site-footer .footer-column + .footer-column {
+        margin-top: 32px !important;
+    }
+
+
+    /* GRUPOS */
+    .site-footer .footer-group {
+        width: 100% !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+
+    .site-footer .footer-group + .footer-group {
+        margin-top: 32px !important;
+    }
+
+
+    /* itens ocultos no mobile */
+    .site-footer .footer-hide-mobile {
+        display: none !important;
+    }
+
+
+    /* TÍTULOS */
+    .site-footer .footer-title {
+        margin: 0 0 7px !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        line-height: 16px !important;
+
+        color: #010009 !important;
+    }
+
+
+    /* LINKS */
+    .site-footer .site-footer-content a:not(.footer-access-button),
+    .site-footer .site-footer-content p {
+        position: static !important;
+
+        display: block !important;
+
+        width: fit-content !important;
+
+        margin: 0 0 4px !important;
+        padding: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 11px !important;
+        font-weight: 500 !important;
+        line-height: 14px !important;
+
+        color: #8F8F93 !important;
+
+        text-align: left !important;
+    }
+
+
+    /* CONTRATAR */
+    .site-footer .footer-contract {
+        width: 100% !important;
+
+        margin: 22px 0 0 !important;
+        padding: 0 !important;
+    }
+
+
+    .site-footer .footer-contract .footer-title {
+        margin-bottom: 5px !important;
+    }
+
+
+    .site-footer .footer-contract-text {
+        position: static !important;
+
+        display: block !important;
+
+        margin: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 11px !important;
+        font-weight: 500 !important;
+        line-height: 14px !important;
+
+        color: #8F8F93 !important;
+    }
+
+
+    /* ======================================================
+       BOTÃO BANCO DE DADOS
+       ESSA É A CORREÇÃO PRINCIPAL
+       ====================================================== */
+
+    .site-footer a.footer-access-button {
+        box-sizing: border-box !important;
+
+        position: static !important;
+
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+
+        transform: none !important;
+
+        width: 232px !important;
+        min-width: 232px !important;
+        max-width: 232px !important;
+
+        height: 65px !important;
+        min-height: 65px !important;
+        max-height: 65px !important;
+
+        margin: 42px auto 0 !important;
+        padding: 0 28px !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #0094FF !important;
+
+        border: 0 !important;
+        border-radius: 5px !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        line-height: 18px !important;
+
+        color: #FFFFFF !important;
+        text-align: center !important;
+        text-decoration: none !important;
+
+        white-space: normal !important;
+    }
+
+
+    /* CNPJ */
+    .site-footer .site-footer-legal {
+        box-sizing: border-box !important;
+
+        position: absolute !important;
+
+        left: 0 !important;
+        bottom: 0 !important;
+
+        width: 320px !important;
+        height: 65px !important;
+        min-height: 65px !important;
+
+        margin: 0 !important;
+        padding: 0 20px !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #FAFAFA !important;
+
+        border: 0 !important;
+        border-top: 1px solid #E3E3E3 !important;
+    }
+
+
+    .site-footer .site-footer-legal p {
+        position: static !important;
+
+        width: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 10px !important;
+        font-weight: 400 !important;
+        line-height: 13px !important;
+
+        color: #8F8F93 !important;
+        text-align: center !important;
+    }
+
+}
+
+/* ==========================================================
+   MOBILE — NEWSLETTER COM A MESMA LARGURA DO BANNER
+   ========================================================== */
+
+@media (max-width: 420px) {
+
+    .share-banner,
+    .newsletter-strip {
+        width: 320px !important;
+        max-width: 320px !important;
+        min-width: 320px !important;
+
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    .share-banner {
+        margin-top: 28px !important;
+        margin-bottom: 0 !important;
+    }
+
+    .newsletter-strip {
+        box-sizing: border-box !important;
+
+        position: relative !important;
+
+        /* cancela qualquer full width herdado */
+        left: auto !important;
+        right: auto !important;
+        transform: none !important;
+
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+
+        padding: 0 !important;
+
+        width: 320px !important;
+        max-width: 320px !important;
+        min-width: 320px !important;
+
+        height: 238px !important;
+        min-height: 238px !important;
+        max-height: 238px !important;
+    }
+
+}
+
+
+
+/* ==========================================================
+   MOBILE — CENTRALIZAR BANNER + FAIXA AZUL
+   ========================================================== */
+
+@media (max-width: 420px) {
+
+    main.page-wrapper > section.share-banner,
+    main.page-wrapper > section.newsletter-strip {
+        box-sizing: border-box !important;
+
+        width: 320px !important;
+        min-width: 320px !important;
+        max-width: 320px !important;
+
+        display: block !important;
+
+        /* remove qualquer deslocamento herdado */
+        position: relative !important;
+        left: auto !important;
+        right: auto !important;
+        transform: none !important;
+
+        /* centraliza */
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    main.page-wrapper > section.share-banner {
+        margin-top: 28px !important;
+        margin-bottom: 0 !important;
+    }
+
+    main.page-wrapper > section.newsletter-strip {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+}
+
+/* ==========================================================
+   MOBILE — ALINHA BANNER E NEWSLETTER AO FRAME DE 320px
+   ========================================================== */
+
+@media (max-width: 420px) {
+
+    main.page-wrapper > section.share-banner,
+    main.page-wrapper > section.newsletter-strip {
+        box-sizing: border-box !important;
+
+        width: 320px !important;
+        min-width: 320px !important;
+        max-width: 320px !important;
+
+        position: relative !important;
+
+        /*
+         * O page-wrapper tem padding-left: 20px.
+         * Compensamos exatamente esses 20px.
+         */
+        margin-left: -20px !important;
+        margin-right: 0 !important;
+
+        left: auto !important;
+        right: auto !important;
+
+        transform: none !important;
+    }
+
+
+    /* BANNER */
+
+    main.page-wrapper > section.share-banner {
+        margin-top: 28px !important;
+        margin-bottom: 0 !important;
+    }
+
+
+    /* NEWSLETTER */
+
+    main.page-wrapper > section.newsletter-strip {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+}
+
+
+/* ==========================================================
+   HEADER DESKTOP — FIGMA
+   ========================================================== */
+
+@media (min-width: 769px) {
+
+    /* ======================================================
+       ESTRUTURA PRINCIPAL
+
+       Permite:
+       - header interno de 980px
+       - listas internas de 952px
+       - newsletter full width
+       ====================================================== */
+
+    .page-wrapper {
+        box-sizing: border-box !important;
+
+        width: 100% !important;
+        max-width: none !important;
+
+        margin: 0 !important;
+        padding: 0 0 70px !important;
+    }
+
+
+    /* ======================================================
+       FAIXA SUPERIOR
+       FIGMA: 1920 x 50
+       ====================================================== */
+
+    .top-bar {
+        box-sizing: border-box !important;
+
+        width: 100% !important;
+        height: 50px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #0094FF !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 600 !important;
+        font-size: 15px !important;
+        line-height: 27px !important;
+
+        color: #FFFFFF !important;
+        text-align: center !important;
+    }
+
+
+    /* pequeno deslocamento do Figma: -7px */
+    .top-bar {
+        text-indent: -14px !important;
+    }
+
+
+    /* ======================================================
+       HEADER BRANCO
+       980 x 142
+       começa imediatamente depois da faixa azul
+       ====================================================== */
+
+    .header {
+        box-sizing: border-box !important;
+
+        position: relative !important;
+
+        width: 980px !important;
+        max-width: 980px !important;
+
+        height: 142px !important;
+        min-height: 142px !important;
+
+        margin: 0 auto 25px !important;
+        padding: 0 !important;
+
+        display: block !important;
+
+        background: #FFFFFF !important;
+    }
+
+
+    /* ======================================================
+       LOGO
+       
+       Figma global:
+       x = 427
+       y = 59
+
+       Como o container começa em x = 470 e y = 50:
+       left = -43
+       top  = 9
+       ====================================================== */
+
+    .header > a:first-child {
+        position: absolute !important;
+
+        left: -43px !important;
+        top: 9px !important;
+
+        width: 192px !important;
+        height: 100px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: block !important;
+        line-height: 0 !important;
+    }
+
+
+    .header .logo {
+        display: block !important;
+
+        width: 192px !important;
+        height: 100px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        object-fit: contain !important;
+        object-position: center !important;
+    }
+
+
+    /* ======================================================
+       LOGIN
+       Figma: 260 x 40
+       right: 25
+       global top: 61
+       
+       header começa em y=50
+       => top interno = 11px
+       ====================================================== */
+
+    .header .login-link {
+        box-sizing: border-box !important;
+
+        position: absolute !important;
+
+        width: 260px !important;
+        height: 40px !important;
+
+        right: 25px !important;
+        top: 11px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: block !important;
+
+        color: #010009 !important;
+
+        white-space: nowrap !important;
+        text-decoration: none !important;
+    }
+
+
+    /* ======================================================
+       CADEADO
+       Figma:
+       28 x 28
+       left 36
+       top 4
+       ====================================================== */
+
+    .header .login-lock-icon {
+        position: absolute !important;
+
+        width: 28px !important;
+        height: 28px !important;
+
+        left: 36px !important;
+        top: 4px !important;
+
+        margin: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        color: #0094FF !important;
+
+        font-size: 14px !important;
+        line-height: 1 !important;
+    }
+
+
+    /* ======================================================
+       USUÁRIO
+       Figma: 26 x 26
+       left 75
+       ====================================================== */
+
+    .header .login-icon {
+        position: absolute !important;
+
+        width: 26px !important;
+        height: 26px !important;
+
+        left: 75px !important;
+        top: 7px !important;
+
+        margin: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        border-radius: 100px !important;
+
+        background: #0094FF !important;
+        color: #FFFFFF !important;
+
+        font-size: 10px !important;
+        line-height: 1 !important;
+    }
+
+
+    /* ======================================================
+       TEXTO LOGIN
+       ====================================================== */
+
+    .header .login-text {
+        position: absolute !important;
+
+        width: 145.36px !important;
+        height: 27px !important;
+
+        left: 115px !important;
+        top: 7px !important;
+
+        display: flex !important;
+        align-items: center !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 700 !important;
+        font-size: 15px !important;
+        line-height: 27px !important;
+
+        color: #010009 !important;
+    }
+
+
+    /* ======================================================
+       BLOCO TÍTULO
+       
+       Header termina em y = 192
+       Intro começa em y = 217
+       diferença = 25px
+       ====================================================== */
+
+    .intro {
+        box-sizing: border-box !important;
+
+        position: relative !important;
+
+        width: 980px !important;
+        max-width: 980px !important;
+
+        height: 144px !important;
+
+        margin: 0 auto !important;
+        padding: 0 !important;
+
+        background: #FFFFFF !important;
+    }
+
+
+    /* ======================================================
+       H1
+       top global 254
+       intro começa 217
+       => top 37
+       ====================================================== */
+
+    .intro .page-title {
+        position: absolute !important;
+
+        width: auto !important;
+        height: 40.25px !important;
+
+        left: 0 !important;
+        top: 37px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        font-family: Arial, Helvetica, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 700 !important;
+        font-size: 34.9px !important;
+        line-height: 40px !important;
+
+        display: flex !important;
+        align-items: center !important;
+
+        color: #212529 !important;
+    }
+
+
+    /* ======================================================
+       DESCRIÇÃO
+       top = 82.25px dentro do bloco
+       ====================================================== */
+
+    .intro .page-description {
+        position: absolute !important;
+
+        width: auto !important;
+        max-width: 898px !important;
+
+        height: 20px !important;
+
+        left: 0 !important;
+        top: 82.25px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        font-family: Arial, Helvetica, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+        font-size: 15px !important;
+        line-height: 20px !important;
+
+        display: flex !important;
+        align-items: center !important;
+
+        color: #000000 !important;
+
+        white-space: nowrap !important;
+    }
+
+}
+
+/* ==========================================================
+   DESKTOP — LOGIN / SACOLA
+   ========================================================== */
+
+@media (min-width: 769px) {
+
+    .header .login-lock-icon {
+        position: absolute !important;
+
+        width: 28px !important;
+        height: 28px !important;
+
+        left: 36px !important;
+        top: 4px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        color: #0094FF !important;
+
+        font-size: 15px !important;
+        line-height: 1 !important;
+    }
+
+    .header .login-lock-icon i {
+        color: #0094FF !important;
+    }
+
+
+    .header .login-icon {
+        position: absolute !important;
+
+        width: 26px !important;
+        height: 26px !important;
+
+        left: 75px !important;
+        top: 7px !important;
+
+        margin: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        border-radius: 100px !important;
+
+        background: #0094FF !important;
+        color: #FFFFFF !important;
+
+        font-size: 10px !important;
+    }
+
+
+    .header .login-text {
+        position: absolute !important;
+
+        width: 145.36px !important;
+        height: 27px !important;
+
+        left: 115px !important;
+        top: 7px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 700 !important;
+        font-size: 15px !important;
+        line-height: 27px !important;
+
+        color: #010009 !important;
+    }
+
+}
+
+/* ==========================================================
+   DESKTOP — SACOLA AZUL
+   ========================================================== */
+
+@media (min-width: 769px) {
+
+    .header .login-lock-icon,
+    .header .login-lock-icon i,
+    .header .login-lock-icon i::before,
+    .header .login-lock-icon .fa-bag-shopping,
+    .header .login-lock-icon .fa-bag-shopping::before {
+        color: #0094FF !important;
+        -webkit-text-fill-color: #0094FF !important;
+    }
+
+}
+
+@media (min-width: 769px) {
+
+    .header .login-lock-icon {
+        position: absolute !important;
+
+        width: 28px !important;
+        height: 28px !important;
+
+        left: 36px !important;
+        top: 4px !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: transparent !important;
+
+        color: #0094FF !important;
+        font-size: 15px !important;
+    }
+
+    .header .login-lock-icon > i,
+    .header .login-lock-icon > i::before {
+        color: #0094FF !important;
+        -webkit-text-fill-color: #0094FF !important;
+    }
+
+}
+
+
+/* ==========================================================
+   DESKTOP — LOGIN COM PNG
+   ========================================================== */
+
+@media (min-width: 769px) {
+
+    .header .login-link {
+        position: absolute !important;
+
+        width: 260px !important;
+        height: 40px !important;
+
+        right: 25px !important;
+        top: 11px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: block !important;
+        text-decoration: none !important;
+    }
+
+    /* SACOLA */
+    .header .login-lock-icon {
+        position: absolute !important;
+
+        width: 28px !important;
+        height: 28px !important;
+
+        left: 36px !important;
+        top: 4px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: block !important;
+        line-height: 0 !important;
+    }
+
+    .header .login-lock-icon img {
+        display: block !important;
+
+        width: 28px !important;
+        height: 28px !important;
+
+        object-fit: contain !important;
+    }
+
+    /* ÍCONE AZUL DE LOGIN */
+    .header .login-icon {
+        position: absolute !important;
+
+        width: 26px !important;
+        height: 26px !important;
+
+        left: 75px !important;
+        top: 7px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: block !important;
+        line-height: 0 !important;
+    }
+
+    .header .login-icon img {
+        display: block !important;
+
+        width: 26px !important;
+        height: 26px !important;
+
+        object-fit: contain !important;
+    }
+
+    /* TEXTO */
+    .header .login-text {
+        position: absolute !important;
+
+        width: 145.36px !important;
+        height: 27px !important;
+
+        left: 115px !important;
+        top: 7px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 700 !important;
+        font-size: 15px !important;
+        line-height: 27px !important;
+
+        color: #010009 !important;
+    }
+
+}
+
+
+
+@media (min-width: 769px) {
+
+    /* =========================================
+       SACOLA
+       ========================================= */
+
+    .header .login-lock-icon {
+        position: absolute !important;
+
+        width: 28px !important;
+        height: 28px !important;
+
+        left: 36px !important;
+        top: 4px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: transparent !important;
+    }
+
+    .header .login-lock-icon img {
+        display: block !important;
+
+        width: 28px !important;
+        height: 28px !important;
+
+        object-fit: contain !important;
+    }
+
+
+    /* =========================================
+       CÍRCULO AZUL + PESSOA BRANCA
+       ========================================= */
+
+    .header .login-icon {
+        position: absolute !important;
+
+        width: 26px !important;
+        height: 26px !important;
+
+        left: 75px !important;
+        top: 7px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        border-radius: 50% !important;
+
+        background: #0094FF !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        color: #FFFFFF !important;
+
+        font-size: 11px !important;
+        line-height: 1 !important;
+    }
+
+    .header .login-icon i,
+    .header .login-icon i::before {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+    }
+
+
+    /* =========================================
+       TEXTO
+       ========================================= */
+
+    .header .login-text {
+        position: absolute !important;
+
+        width: 145.36px !important;
+        height: 27px !important;
+
+        left: 115px !important;
+        top: 7px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        line-height: 27px !important;
+
+        color: #010009 !important;
+    }
+
+}
+
+@media (min-width: 769px) {
+
+    .intro {
+        position: relative !important;
+
+        width: 980px !important;
+        max-width: 980px !important;
+        height: 144px !important;
+
+        margin: 0 auto !important;
+        padding: 0 !important;
+
+        background: #FFFFFF !important;
+    }
+
+
+    /* TÍTULO */
+    h1.page-title {
+        position: absolute !important;
+
+        left: 0 !important;
+        top: 37px !important;
+
+        width: auto !important;
+        height: 40.25px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        font-family: Arial, Helvetica, sans-serif !important;
+        font-style: normal !important;
+
+        /* importante */
+        font-weight: 700 !important;
+
+        font-size: 34.9px !important;
+        line-height: 40px !important;
+
+        letter-spacing: 0 !important;
+
+        color: #212529 !important;
+
+        display: flex !important;
+        align-items: center !important;
+    }
+
+
+    /* DESCRIÇÃO */
+    p.page-description {
+        position: absolute !important;
+
+        left: 0 !important;
+        top: 82.25px !important;
+
+        width: 898px !important;
+        height: 20px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        font-family: Arial, Helvetica, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+
+        font-size: 15px !important;
+        line-height: 20px !important;
+
+        letter-spacing: 0 !important;
+
+        color: #000000 !important;
+
+        white-space: nowrap !important;
+
+        display: flex !important;
+        align-items: center !important;
+    }
+
+}
+
+/* ==========================================================
+   FOOTER DESKTOP — FIGMA FINAL
+   ========================================================== */
+
+@media (min-width: 769px) {
+
+    /* ======================================================
+       FRAME DO FOOTER
+       FIGMA: largura total x 465px
+       ====================================================== */
+
+    .site-footer {
+        box-sizing: border-box !important;
+
+        position: relative !important;
+
+        width: 100% !important;
+        max-width: none !important;
+
+        height: 465px !important;
+        min-height: 465px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        background: #FFFFFF !important;
+        color: #010009 !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+
+        overflow: hidden !important;
+    }
+
+
+    /* ======================================================
+       CONTEÚDO
+       FIGMA: 982 x 286
+       centralizado
+       top: 55px
+       ====================================================== */
+
+    .site-footer .site-footer-content {
+        box-sizing: border-box !important;
+
+        position: absolute !important;
+
+        width: 982px !important;
+        min-width: 982px !important;
+        max-width: 982px !important;
+
+        height: 286px !important;
+        min-height: 286px !important;
+        max-height: 286px !important;
+
+        left: 50% !important;
+        top: 55px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        /* elimina o grid antigo */
+        display: block !important;
+    }
+
+
+    /* ======================================================
+       ITENS QUE NÃO APARECEM NO FIGMA
+       ====================================================== */
+
+    .site-footer .footer-hide-mobile {
+        display: none !important;
+    }
+
+
+    /* ======================================================
+       RESET DAS COLUNAS
+       Os grupos serão posicionados individualmente
+       ====================================================== */
+
+    .site-footer .footer-column {
+        position: static !important;
+
+        width: auto !important;
+        min-width: 0 !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: block !important;
+    }
+
+    .site-footer .footer-group {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .site-footer .footer-group + .footer-group {
+        margin-top: 0 !important;
+    }
+
+
+    /* ======================================================
+       COLUNA ESQUERDA
+       ====================================================== */
+
+    /* Páginas de tratamentos */
+
+    .site-footer
+    .footer-column:nth-child(1)
+    .footer-group:nth-child(1) {
+
+        position: absolute !important;
+
+        width: 218px !important;
+
+        left: 0 !important;
+        top: 1px !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* Páginas de artigos científicos */
+
+    .site-footer
+    .footer-column:nth-child(1)
+    .footer-group:nth-child(2) {
+
+        position: absolute !important;
+
+        width: 218px !important;
+
+        left: 1px !important;
+        top: 115px !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* ======================================================
+       COLUNA CENTRAL
+       ====================================================== */
+
+    /* Documentos */
+
+    .site-footer
+    .footer-column:nth-child(2)
+    .footer-group:nth-child(1) {
+
+        position: absolute !important;
+
+        width: 180px !important;
+
+        left: 403px !important;
+        top: 0 !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* Fale com a gente */
+
+    .site-footer
+    .footer-column:nth-child(2)
+    .footer-group:nth-child(2) {
+
+        position: absolute !important;
+
+        width: 180px !important;
+
+        left: 403px !important;
+        top: 111px !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* ======================================================
+       COLUNA DIREITA
+       ====================================================== */
+
+    /* Apresentações */
+
+    .site-footer
+    .footer-column:nth-child(3)
+    .footer-group:nth-child(1) {
+
+        position: absolute !important;
+
+        width: 220px !important;
+
+        left: 746px !important;
+        top: 0 !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* Opiniões de especialistas */
+
+    .site-footer
+    .footer-column:nth-child(3)
+    .footer-group:nth-child(2) {
+
+        position: absolute !important;
+
+        width: 220px !important;
+
+        left: 748px !important;
+        top: 155px !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* ======================================================
+       CONTRATAR
+       Apesar de estar na coluna 3 no HTML,
+       no Figma fica na coluna central
+       ====================================================== */
+
+    .site-footer
+    .footer-column:nth-child(3)
+    .footer-contract {
+
+        position: absolute !important;
+
+        width: 190px !important;
+
+        left: 404px !important;
+        top: 215px !important;
+
+        right: auto !important;
+        bottom: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        transform: none !important;
+    }
+
+
+    /* ======================================================
+       BOTÃO BANCO DE DADOS
+       FIGMA: 235 x 73
+       x:747 / y:213
+       ====================================================== */
+
+    .site-footer a.footer-access-button {
+        box-sizing: border-box !important;
+
+        position: absolute !important;
+
+        width: 235px !important;
+        min-width: 235px !important;
+        max-width: 235px !important;
+
+        height: 73px !important;
+        min-height: 73px !important;
+        max-height: 73px !important;
+
+        left: 747px !important;
+        top: 213px !important;
+
+        right: auto !important;
+        bottom: auto !important;
+
+        margin: 0 !important;
+        padding: 0 30px !important;
+
+        transform: none !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #0094FF !important;
+
+        border: 0 !important;
+        border-radius: 5px !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 800 !important;
+        font-size: 15px !important;
+        line-height: 18px !important;
+
+        color: #FFFFFF !important;
+
+        text-align: center !important;
+        text-decoration: none !important;
+    }
+
+
+    /* impede regra genérica dos links de mudar a cor */
+
+    .site-footer a.footer-access-button,
+    .site-footer a.footer-access-button span,
+    .site-footer a.footer-access-button strong {
+        color: #FFFFFF !important;
+    }
+
+
+    /* ======================================================
+       TIPOGRAFIA — TÍTULOS
+       ====================================================== */
+
+    .site-footer .footer-title {
+        margin: 0 0 14px !important;
+        padding: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 700 !important;
+        font-size: 15px !important;
+        line-height: 19px !important;
+
+        color: #010009 !important;
+    }
+
+
+    /* ======================================================
+       LINKS / TEXTOS CINZA
+       ====================================================== */
+
+    .site-footer
+    .site-footer-content
+    a:not(.footer-access-button),
+
+    .site-footer
+    .site-footer-content
+    p,
+
+    .site-footer
+    .footer-contract-text {
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 500 !important;
+        font-size: 13px !important;
+        line-height: 15px !important;
+
+        color: #8F8F93 !important;
+
+        letter-spacing: 0.005em !important;
+    }
+
+
+    .site-footer
+    .site-footer-content
+    a:not(.footer-access-button) {
+
+        display: block !important;
+
+        width: fit-content !important;
+
+        margin: 0 0 6px !important;
+        padding: 0 !important;
+    }
+
+
+    /* ======================================================
+       CONTRATAR
+       ====================================================== */
+
+    .site-footer .footer-contract .footer-title {
+        margin: 0 0 9px !important;
+
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        line-height: 18px !important;
+
+        color: #010009 !important;
+    }
+
+    .site-footer .footer-contract-text {
+        display: block !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        line-height: 16px !important;
+
+        color: #8F8F93 !important;
+    }
+
+
+    /* ======================================================
+       FAIXA LEGAL / CNPJ
+       FIGMA: 65px
+       ====================================================== */
+
+    .site-footer .site-footer-legal {
+        box-sizing: border-box !important;
+
+        position: absolute !important;
+
+        width: 100% !important;
+        max-width: none !important;
+
+        height: 65px !important;
+        min-height: 65px !important;
+
+        left: 0 !important;
+        bottom: 0 !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #FAFAFA !important;
+
+        border: 3px solid #E3E3E3 !important;
+    }
+
+    .site-footer .site-footer-legal p {
+        width: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+        font-size: 13px !important;
+        line-height: 16px !important;
+
+        color: #8F8F93 !important;
+        text-align: center !important;
+    }
+
+}
+
+/* ==========================================================
+   FOOTER DESKTOP — FIGMA DEFINITIVO
+   NÃO ALTERA MOBILE
+   ========================================================== */
+
+@media screen and (min-width: 769px) {
+
+    /* ======================================================
+       FOOTER COMPLETO
+       ====================================================== */
+
+    html body .site-footer {
+        box-sizing: border-box !important;
+
+        position: relative !important;
+
+        width: 100% !important;
+        max-width: none !important;
+
+        height: 465px !important;
+        min-height: 465px !important;
+
+        /*
+         * Figma:
+         * 50px entre newsletter e footer
+         */
+        margin: 50px 0 0 !important;
+        padding: 0 !important;
+
+        background: #FFFFFF !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+
+        overflow: hidden !important;
+    }
+
+
+    /* ======================================================
+       ÁREA INTERNA
+       Figma: 982 x 286
+       ====================================================== */
+
+    html body .site-footer .site-footer-content {
+        box-sizing: border-box !important;
+
+        position: absolute !important;
+
+        width: 982px !important;
+        min-width: 982px !important;
+        max-width: 982px !important;
+
+        height: 286px !important;
+        min-height: 286px !important;
+        max-height: 286px !important;
+
+        /*
+         * Figma:
+         * left calc(50% - 982px/2 - 8px)
+         */
+        left: calc(50% - 8px) !important;
+        top: 55px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: block !important;
+
+        /* mata completamente o grid antigo */
+        grid-template-columns: none !important;
+        gap: 0 !important;
+    }
+
+
+    /* ======================================================
+       REMOVE ITENS QUE NÃO EXISTEM NO FIGMA
+       ====================================================== */
+
+    html body .site-footer .footer-hide-mobile {
+        display: none !important;
+    }
+
+
+    /* ======================================================
+       RESET DAS COLUNAS
+       ====================================================== */
+
+    html body .site-footer .footer-column {
+        position: static !important;
+
+        width: auto !important;
+        min-width: 0 !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: block !important;
+    }
+
+    html body .site-footer .footer-group {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    html body .site-footer .footer-group + .footer-group {
+        margin-top: 0 !important;
+    }
+
+
+    /* ======================================================
+       1 — PÁGINAS DE TRATAMENTOS
+       x 0 / y 1
+       ====================================================== */
+
+    html body .site-footer
+    .footer-column:nth-child(1)
+    .footer-group:nth-child(1) {
+
+        position: absolute !important;
+
+        left: 0 !important;
+        top: 1px !important;
+
+        width: 218px !important;
+        height: 50px !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* ======================================================
+       2 — PÁGINAS DE ARTIGOS
+       x 1 / y 115
+       ====================================================== */
+
+    html body .site-footer
+    .footer-column:nth-child(1)
+    .footer-group:nth-child(2) {
+
+        position: absolute !important;
+
+        left: 1px !important;
+        top: 115px !important;
+
+        width: 218px !important;
+        height: 51px !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* ======================================================
+       3 — DOCUMENTOS
+       x 403 / y 0
+       ====================================================== */
+
+    html body .site-footer
+    .footer-column:nth-child(2)
+    .footer-group:nth-child(1) {
+
+        position: absolute !important;
+
+        left: 403px !important;
+        top: 0 !important;
+
+        width: 151px !important;
+        height: 72px !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* ======================================================
+       4 — FALE COM A GENTE
+       x 403 / y 111
+       ====================================================== */
+
+    html body .site-footer
+    .footer-column:nth-child(2)
+    .footer-group:nth-child(2) {
+
+        position: absolute !important;
+
+        left: 403px !important;
+        top: 111px !important;
+
+        width: 150px !important;
+        height: 66px !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* ======================================================
+       5 — APRESENTAÇÕES
+       x 746 / y 0
+       ====================================================== */
+
+    html body .site-footer
+    .footer-column:nth-child(3)
+    .footer-group:nth-child(1) {
+
+        position: absolute !important;
+
+        left: 746px !important;
+        top: 0 !important;
+
+        width: 162px !important;
+        height: 118px !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* ======================================================
+       6 — OPINIÕES DE ESPECIALISTAS
+       x 748 / y 155
+       ====================================================== */
+
+    html body .site-footer
+    .footer-column:nth-child(3)
+    .footer-group:nth-child(2) {
+
+        position: absolute !important;
+
+        left: 748px !important;
+        top: 155px !important;
+
+        width: 190px !important;
+        height: 30px !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* ======================================================
+       CONTRATAR
+       TEM QUE IR PARA A COLUNA CENTRAL
+       x 404 / y 215
+       ====================================================== */
+
+    html body .site-footer
+    .site-footer-content
+    > .footer-column:nth-child(3)
+    > .footer-group.footer-contract {
+
+        position: absolute !important;
+
+        left: 404px !important;
+        top: 215px !important;
+        right: auto !important;
+        bottom: auto !important;
+
+        width: 190px !important;
+        height: 42px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        transform: none !important;
+    }
+
+
+    /* ======================================================
+       BOTÃO BANCO DE DADOS
+       x 747 / y 213
+       ====================================================== */
+
+    html body .site-footer
+    .site-footer-content
+    > .footer-column:nth-child(3)
+    > a.footer-access-button {
+
+        box-sizing: border-box !important;
+
+        position: absolute !important;
+
+        left: 747px !important;
+        top: 213px !important;
+        right: auto !important;
+        bottom: auto !important;
+
+        width: 235px !important;
+        min-width: 235px !important;
+        max-width: 235px !important;
+
+        height: 73px !important;
+        min-height: 73px !important;
+        max-height: 73px !important;
+
+        margin: 0 !important;
+        padding: 0 30px !important;
+
+        transform: none !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #0094FF !important;
+
+        border: 0 !important;
+        border-radius: 5px !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 800 !important;
+        font-size: 15px !important;
+        line-height: 18px !important;
+
+        color: #FFFFFF !important;
+
+        text-align: center !important;
+        text-decoration: none !important;
+    }
+
+
+    /* ======================================================
+       TÍTULOS
+       ====================================================== */
+
+    html body .site-footer .footer-title {
+        margin: 0 0 15px !important;
+        padding: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 700 !important;
+        font-size: 15px !important;
+        line-height: 19px !important;
+
+        color: #010009 !important;
+    }
+
+
+    /* ======================================================
+       LINKS CINZA
+       ====================================================== */
+
+    html body .site-footer
+    .site-footer-content
+    a:not(.footer-access-button) {
+
+        display: block !important;
+
+        width: fit-content !important;
+
+        margin: 0 0 5px !important;
+        padding: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 500 !important;
+        font-size: 13px !important;
+        line-height: 16px !important;
+
+        letter-spacing: 0.005em !important;
+
+        color: #8F8F93 !important;
+        text-decoration: none !important;
+    }
+
+
+    /* ======================================================
+       FALE COM A GENTE
+       ====================================================== */
+
+    html body .site-footer
+    .footer-column:nth-child(2)
+    .footer-group:nth-child(2)
+    .footer-title {
+
+        margin-bottom: 10px !important;
+        line-height: 18px !important;
+    }
+
+
+    /* ======================================================
+       APRESENTAÇÕES
+       ====================================================== */
+
+    html body .site-footer
+    .footer-column:nth-child(3)
+    .footer-group:nth-child(1)
+    .footer-title {
+
+        margin-bottom: 12px !important;
+        line-height: 18px !important;
+    }
+
+
+    /* ======================================================
+       CONTRATAR
+       ====================================================== */
+
+    html body .site-footer
+    .footer-contract
+    .footer-title {
+
+        margin: 0 0 9px !important;
+
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        line-height: 18px !important;
+
+        color: #010009 !important;
+    }
+
+    html body .site-footer .footer-contract-text {
+        display: block !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        line-height: 16px !important;
+
+        color: #8F8F93 !important;
+    }
+
+
+    /* ======================================================
+       FAIXA CNPJ
+       ====================================================== */
+
+    html body .site-footer .site-footer-legal {
+        box-sizing: border-box !important;
+
+        position: absolute !important;
+
+        left: 0 !important;
+        bottom: 0 !important;
+
+        width: 100% !important;
+        height: 65px !important;
+        min-height: 65px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #FAFAFA !important;
+
+        border: 3px solid #E3E3E3 !important;
+    }
+
+    html body .site-footer .site-footer-legal p {
+        margin: 0 !important;
+        padding: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+        font-size: 13px !important;
+        line-height: 16px !important;
+
+        color: #8F8F93 !important;
+        text-align: center !important;
+    }
+
+}
