@@ -375,45 +375,27 @@ def get_grupos_fixos_eficacia_v2():
 
     return grupos
 
-
-# ============================================================
-# CLASSIFICAÇÃO DOS TIPOS REAIS -> V2
-# ============================================================
-
 def classificar_tipo_eficacia_v2(tipo):
     """
     Converte os tipos reais cadastrados no banco/admin
     para os cinco benefícios exibidos na Lista V2.
 
-    CONCEITO DEFINIDO:
+    REGRA CORRETA:
 
-    CONTROLE
+    REDUÇÃO DOS SINTOMAS
         -> Redução temporária dos sintomas
 
-    REDUÇÃO TEMPORÁRIA
-        -> Redução temporária dos sintomas
-
-
-    ELIMINAÇÃO TEMPORÁRIA
-    ELIMINAÇÃO DE SINTOMAS
     ELIMINAÇÃO DOS SINTOMAS
         -> Eliminação temporária dos sintomas
 
-
-    REDUÇÃO PERSISTENTE
-    REDUÇÃO DE SINTOMAS
-    REDUÇÃO DOS SINTOMAS
+    CONTROLE
         -> Redução persistente dos sintomas
 
-
     REMISSÃO
-    ELIMINAÇÃO PERSISTENTE
         -> Eliminação persistente dos sintomas
-
 
     CURA
         -> Cura
-
 
     PREVENÇÃO
         -> Não entra na V2
@@ -435,148 +417,122 @@ def classificar_tipo_eficacia_v2(tipo):
         )
     )
 
-    texto = (
-        f"{nome} {slug}"
-    )
+    texto = f"{nome} {slug}"
 
 
-    # --------------------------------------------------------
+    # =====================================================
     # PREVENÇÃO
-    # --------------------------------------------------------
+    # Não entra na V2
+    # =====================================================
 
     if (
         "prevencao" in texto
-        or
-        "preven" in texto
+        or "preven" in texto
     ):
         return None
 
 
-    # --------------------------------------------------------
+    # =====================================================
     # CURA
-    # --------------------------------------------------------
+    # =====================================================
 
     if "cura" in texto:
-
-        slug_segmento = (
-            "cura"
-        )
+        slug_segmento = "cura"
 
 
-    # --------------------------------------------------------
-    # REDUÇÃO TEMPORÁRIA
+    # =====================================================
+    # ELIMINAÇÃO PERSISTENTE DOS SINTOMAS
     #
-    # Controle
-    # Redução temporária
-    # --------------------------------------------------------
-
-    elif "controle" in texto:
-
-        slug_segmento = (
-            "reducao-temporaria-dos-sintomas"
-        )
-
-
-    elif "reducao temporaria" in texto:
-
-        slug_segmento = (
-            "reducao-temporaria-dos-sintomas"
-        )
-
-
-    # --------------------------------------------------------
-    # ELIMINAÇÃO TEMPORÁRIA
-    # --------------------------------------------------------
-
-    elif "eliminacao temporaria" in texto:
-
-        slug_segmento = (
-            "eliminacao-temporaria-dos-sintomas"
-        )
-
-
-    elif "eliminacao de sintomas" in texto:
-
-        slug_segmento = (
-            "eliminacao-temporaria-dos-sintomas"
-        )
-
-
-    elif "eliminacao dos sintomas" in texto:
-
-        slug_segmento = (
-            "eliminacao-temporaria-dos-sintomas"
-        )
-
-
-    # --------------------------------------------------------
-    # REDUÇÃO PERSISTENTE
-    # --------------------------------------------------------
-
-    elif "reducao persistente" in texto:
-
-        slug_segmento = (
-            "reducao-persistente-dos-sintomas"
-        )
-
-
-    elif "reducao de sintomas" in texto:
-
-        slug_segmento = (
-            "reducao-persistente-dos-sintomas"
-        )
-
-
-    elif "reducao dos sintomas" in texto:
-
-        slug_segmento = (
-            "reducao-persistente-dos-sintomas"
-        )
-
-
-    # --------------------------------------------------------
-    # ELIMINAÇÃO PERSISTENTE
-    # --------------------------------------------------------
+    # Tipo real:
+    # Remissão
+    # =====================================================
 
     elif "remissao" in texto:
-
         slug_segmento = (
             "eliminacao-persistente-dos-sintomas"
         )
 
 
+    # Compatibilidade caso exista esse tipo legado
     elif "eliminacao persistente" in texto:
-
         slug_segmento = (
             "eliminacao-persistente-dos-sintomas"
         )
 
 
-    # --------------------------------------------------------
+    # =====================================================
+    # REDUÇÃO PERSISTENTE DOS SINTOMAS
+    #
+    # Tipo real:
+    # Controle
+    # =====================================================
+
+    elif "controle" in texto:
+        slug_segmento = (
+            "reducao-persistente-dos-sintomas"
+        )
+
+
+    # Compatibilidade caso exista esse tipo legado
+    elif "reducao persistente" in texto:
+        slug_segmento = (
+            "reducao-persistente-dos-sintomas"
+        )
+
+
+    # =====================================================
+    # ELIMINAÇÃO TEMPORÁRIA DOS SINTOMAS
+    #
+    # Tipo real:
+    # Eliminação dos sintomas
+    # =====================================================
+
+    elif (
+        "eliminacao dos sintomas" in texto
+        or "eliminacao de sintomas" in texto
+        or "eliminacao temporaria" in texto
+    ):
+        slug_segmento = (
+            "eliminacao-temporaria-dos-sintomas"
+        )
+
+
+    # =====================================================
+    # REDUÇÃO TEMPORÁRIA DOS SINTOMAS
+    #
+    # Tipo real:
+    # Redução dos sintomas
+    # =====================================================
+
+    elif (
+        "reducao dos sintomas" in texto
+        or "reducao de sintomas" in texto
+        or "reducao temporaria" in texto
+    ):
+        slug_segmento = (
+            "reducao-temporaria-dos-sintomas"
+        )
+
+
+    # =====================================================
     # NÃO RECONHECIDO
-    # --------------------------------------------------------
+    # =====================================================
 
     else:
-
         return None
 
 
     return {
+        "slug": slug_segmento,
 
-        "slug":
-            slug_segmento,
+        "nome": NOMES_EFICACIA_V2[
+            slug_segmento
+        ],
 
-        "nome":
-            NOMES_EFICACIA_V2[
-                slug_segmento
-            ],
-
-        "ordem":
-            ORDEM_EFICACIA_V2[
-                slug_segmento
-            ],
+        "ordem": ORDEM_EFICACIA_V2[
+            slug_segmento
+        ],
     }
-
 
 # ============================================================
 # ÍCONE PELO SLUG
@@ -698,10 +654,26 @@ def get_tipo_filtro_react_v2(
 
     preferencias = {
 
+        # =====================================================
+        # 1 — REDUÇÃO TEMPORÁRIA DOS SINTOMAS
+        #
+        # Tipo real:
+        # Redução dos sintomas
+        # =====================================================
+
         "reducao-temporaria-dos-sintomas": [
-            "controle",
+            "reducao de sintomas",
+            "reducao dos sintomas",
             "reducao temporaria",
         ],
+
+
+        # =====================================================
+        # 2 — ELIMINAÇÃO TEMPORÁRIA DOS SINTOMAS
+        #
+        # Tipo real:
+        # Eliminação dos sintomas
+        # =====================================================
 
         "eliminacao-temporaria-dos-sintomas": [
             "eliminacao de sintomas",
@@ -709,22 +681,41 @@ def get_tipo_filtro_react_v2(
             "eliminacao temporaria",
         ],
 
+
+        # =====================================================
+        # 3 — REDUÇÃO PERSISTENTE DOS SINTOMAS
+        #
+        # Tipo real:
+        # Controle
+        # =====================================================
+
         "reducao-persistente-dos-sintomas": [
-            "reducao de sintomas",
-            "reducao dos sintomas",
+            "controle",
             "reducao persistente",
         ],
+
+
+        # =====================================================
+        # 4 — ELIMINAÇÃO PERSISTENTE DOS SINTOMAS
+        #
+        # Tipo real:
+        # Remissão
+        # =====================================================
 
         "eliminacao-persistente-dos-sintomas": [
             "remissao",
             "eliminacao persistente",
         ],
 
+
+        # =====================================================
+        # 5 — CURA
+        # =====================================================
+
         "cura": [
             "cura",
         ],
     }
-
 
     # --------------------------------------------------------
     # BUSCA SOMENTE TIPOS QUE JÁ TINHAM LISTA V1
