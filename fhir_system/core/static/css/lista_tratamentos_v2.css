@@ -8228,3 +8228,372 @@ a.beneficio-card.ativo .beneficio-line {
 .beneficio-card.ativo .beneficio-participantes {
     color: rgba(255, 255, 255, 0.70) !important;
 }
+
+/* ==========================================================
+   MOBILE FINAL — MENU DE BENEFÍCIOS
+   NÃO ALTERA O DESKTOP
+   ========================================================== */
+
+@media only screen and (max-width: 420px) {
+
+    /* ======================================================
+       CONTAINER
+       FIGMA: 320 x 130
+       ====================================================== */
+
+    .beneficios-menu {
+        position: relative !important;
+
+        width: 320px !important;
+        min-width: 320px !important;
+        max-width: 320px !important;
+
+        height: 130px !important;
+        min-height: 130px !important;
+        max-height: 130px !important;
+
+        margin: 0 0 0 -20px !important;
+        padding: 0 !important;
+
+        overflow: hidden !important;
+    }
+
+
+    /* ======================================================
+       ÁREA ROLÁVEL
+       FIGMA: 274 x 81
+       ====================================================== */
+
+    .beneficios-grid {
+        position: absolute !important;
+
+        width: 274px !important;
+        min-width: 274px !important;
+        max-width: 274px !important;
+
+        height: 81px !important;
+        min-height: 81px !important;
+        max-height: 81px !important;
+
+        left: 50% !important;
+        top: 10px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+        padding: 0 0 0 4px !important;
+
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+
+        gap: 20px !important;
+
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+
+        scrollbar-width: none !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .beneficios-grid::-webkit-scrollbar {
+        display: none !important;
+    }
+
+
+    /* ======================================================
+       CARDS
+       FIGMA: 65 x 81
+       ====================================================== */
+
+    a.beneficio-card,
+    a.beneficio-card:hover,
+    a.beneficio-card.ativo,
+    a.beneficio-card:not(.ativo):hover {
+
+        position: relative !important;
+
+        flex: 0 0 65px !important;
+
+        width: 65px !important;
+        min-width: 65px !important;
+        max-width: 65px !important;
+
+        height: 81px !important;
+        min-height: 81px !important;
+        max-height: 81px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        /*
+         * MUITO IMPORTANTE:
+         * no mobile não existe card azul selecionado
+         */
+        background: transparent !important;
+
+        border: 0 !important;
+        border-radius: 9px !important;
+
+        color: #0094FF !important;
+
+        transform: none !important;
+
+        box-shadow: none !important;
+
+        overflow: hidden !important;
+    }
+
+
+    /* primeiro = 66px */
+
+    a.beneficio-card:first-child {
+        flex: 0 0 66px !important;
+
+        width: 66px !important;
+        min-width: 66px !important;
+        max-width: 66px !important;
+    }
+
+
+    /* ======================================================
+       TOPO
+       ====================================================== */
+
+    .beneficio-card-top {
+        position: relative !important;
+
+        width: 100% !important;
+        height: 81px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: block !important;
+    }
+
+
+    /* ======================================================
+       CONTAINER DO ÍCONE
+       ====================================================== */
+
+    .beneficio-icon {
+        position: absolute !important;
+
+        top: 10px !important;
+        left: 50% !important;
+
+        width: auto !important;
+        height: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        transform: translateX(-50%) !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        overflow: visible !important;
+    }
+
+
+    /* outros ícones */
+
+    .beneficio-card[
+        data-segmento-btn="eliminacao-temporaria-dos-sintomas"
+    ] .beneficio-icon-img {
+        width: 25.61px !important;
+        height: 20.89px !important;
+    }
+
+    .beneficio-card[
+        data-segmento-btn="reducao-persistente-dos-sintomas"
+    ] .beneficio-icon-img {
+        width: 22.5px !important;
+        height: 22.5px !important;
+    }
+
+    .beneficio-card[
+        data-segmento-btn="eliminacao-persistente-dos-sintomas"
+    ] .beneficio-icon-img {
+        width: 22.5px !important;
+        height: 22.5px !important;
+    }
+
+    .beneficio-card[
+        data-segmento-btn="cura"
+    ] .beneficio-icon-img {
+        width: 25px !important;
+        height: 27px !important;
+    }
+
+
+    /*
+     * No mobile nenhum ícone muda para branco
+     */
+
+    a.beneficio-card.ativo .beneficio-icon-img,
+    a.beneficio-card:hover .beneficio-icon-img {
+        filter: none !important;
+    }
+
+
+    /* ======================================================
+       NOME
+       ====================================================== */
+
+    .beneficio-nome,
+    a.beneficio-card .beneficio-nome,
+    a.beneficio-card.ativo .beneficio-nome,
+    a.beneficio-card:hover .beneficio-nome {
+
+        position: absolute !important;
+
+        top: 38px !important;
+        left: 50% !important;
+
+        width: 65px !important;
+        min-width: 65px !important;
+        max-width: 65px !important;
+
+        height: 36px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: block !important;
+
+        text-align: center !important;
+
+        overflow: visible !important;
+    }
+
+
+    .beneficio-card .beneficio-label-line {
+        display: block !important;
+
+        position: static !important;
+
+        width: 65px !important;
+        height: 12px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+
+        font-size: 10px !important;
+        line-height: 12px !important;
+
+        text-align: center !important;
+
+        white-space: nowrap !important;
+    }
+
+
+    /* duas primeiras linhas */
+
+    .beneficio-card .beneficio-label-main,
+    .beneficio-card.ativo .beneficio-label-main,
+    .beneficio-card:hover .beneficio-label-main {
+
+        color: #0094FF !important;
+
+        font-weight: 600 !important;
+    }
+
+
+    /* terceira linha */
+
+    .beneficio-card .beneficio-label-muted,
+    .beneficio-card.ativo .beneficio-label-muted,
+    .beneficio-card:hover .beneficio-label-muted {
+
+        color: #8F8F93 !important;
+
+        font-weight: 400 !important;
+    }
+
+
+    /* não gerar "dos sintomas" duplicado */
+
+    .beneficio-card::after {
+        display: none !important;
+        content: none !important;
+    }
+
+
+    /* Cura */
+
+    .beneficio-card[
+        data-segmento-btn="cura"
+    ] .beneficio-nome {
+
+        top: 50px !important;
+        height: 12px !important;
+    }
+
+
+    /* ======================================================
+       NÃO EXISTEM NO MENU MOBILE
+       ====================================================== */
+
+    .beneficio-line,
+    .beneficio-card-bottom,
+    .beneficio-percentual,
+    .beneficio-participantes {
+
+        display: none !important;
+    }
+
+
+    /* ======================================================
+       BARRA
+       ====================================================== */
+
+    .beneficios-scroll-track {
+
+        position: absolute !important;
+
+        width: 262px !important;
+        height: 4px !important;
+
+        left: 50% !important;
+        top: 100px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        background: #D9D9D9 !important;
+
+        border-radius: 100px !important;
+
+        overflow: hidden !important;
+    }
+
+
+    .beneficios-scroll-thumb {
+
+        position: absolute !important;
+
+        width: 48px !important;
+        height: 4px !important;
+
+        left: 0 !important;
+        top: 0 !important;
+
+        background: #0094FF !important;
+
+        border-radius: 100px !important;
+    }
+
+}

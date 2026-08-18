@@ -892,83 +892,166 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
+function ativarSegmento(slug) {
+
+    const mobile =
+        window.matchMedia("(max-width: 420px)").matches;
+
+    let encontrou = false;
 
 
     /* =========================================================
-       ATIVA O BENEFÍCIO SELECIONADO
+       CARDS DO MENU
        ========================================================= */
 
-    function ativarSegmento(slug) {
+    botoes.forEach(function (botao) {
 
-        let encontrou = false;
-
-
-        botoes.forEach(function (botao) {
-
-            const ativo =
-                botao.getAttribute(
-                    "data-segmento-btn"
-                ) === slug;
+        const ativo =
+            botao.getAttribute(
+                "data-segmento-btn"
+            ) === slug;
 
 
-            /* classe visual */
-            botao.classList.toggle(
-                "ativo",
-                ativo
-            );
-
-
-            /* ===============================================
-               CORES
-               =============================================== */
-
-            aplicarCoresBeneficio(
-                botao,
-                ativo
-            );
-
-
-            /* ===============================================
-               ÍCONE REDUÇÃO TEMPORÁRIA
-               =============================================== */
-
-            aplicarIconeReducao(
-                botao,
-                ativo
-            );
-
-
-            if (ativo) {
-                encontrou = true;
-            }
-
-        });
-
+        if (ativo) {
+            encontrou = true;
+        }
 
 
         /* =====================================================
-           MOSTRA SOMENTE A LISTA DO BENEFÍCIO ATIVO
+           MOBILE
+           NÃO MUDA VISUALMENTE NADA
            ===================================================== */
 
-        segmentos.forEach(function (segmento) {
+        if (mobile) {
 
-            const ativo =
-                segmento.getAttribute(
-                    "data-segmento-conteudo"
-                ) === slug;
-
-
-            segmento.classList.toggle(
-                "ativo",
-                ativo
+            /*
+             * Remove o estado visual selecionado.
+             * O card continua igual antes/depois do clique.
+             */
+            botao.classList.remove(
+                "ativo"
             );
 
-        });
+
+            /*
+             * REDUÇÃO TEMPORÁRIA:
+             * sempre mantém o ícone NORMAL no mobile.
+             */
+            const iconeReducao =
+                botao.querySelector(
+                    ".rt-icon-single"
+                );
 
 
-        return encontrou;
-    }
+            if (iconeReducao) {
 
+                const srcNormal =
+                    iconeReducao.getAttribute(
+                        "data-icon-normal"
+                    );
+
+
+                if (srcNormal) {
+                    iconeReducao.src =
+                        srcNormal;
+                }
+
+            }
+
+
+            /*
+             * Remove estilos inline que o JS do desktop
+             * possa ter colocado anteriormente.
+             */
+            botao
+                .querySelectorAll(
+                    ".beneficio-label-main, " +
+                    ".beneficio-label-muted, " +
+                    ".beneficio-percentual, " +
+                    ".beneficio-percentual strong, " +
+                    ".beneficio-participantes"
+                )
+                .forEach(function (elemento) {
+
+                    elemento.style.removeProperty(
+                        "color"
+                    );
+
+                    elemento.style.removeProperty(
+                        "opacity"
+                    );
+
+                });
+
+
+            const linha =
+                botao.querySelector(
+                    ".beneficio-line"
+                );
+
+
+            if (linha) {
+
+                linha.style.removeProperty(
+                    "border-top-color"
+                );
+
+            }
+
+
+            return;
+        }
+
+
+        /* =====================================================
+           DESKTOP
+           CONTINUA EXATAMENTE COMO ESTÁ HOJE
+           ===================================================== */
+
+        botao.classList.toggle(
+            "ativo",
+            ativo
+        );
+
+
+        aplicarCoresBeneficio(
+            botao,
+            ativo
+        );
+
+
+        aplicarIconeReducao(
+            botao,
+            ativo
+        );
+
+    });
+
+
+
+    /* =========================================================
+       CONTEÚDO DA LISTA
+       ISSO FUNCIONA EM MOBILE E DESKTOP
+       ========================================================= */
+
+    segmentos.forEach(function (segmento) {
+
+        const ativo =
+            segmento.getAttribute(
+                "data-segmento-conteudo"
+            ) === slug;
+
+
+        segmento.classList.toggle(
+            "ativo",
+            ativo
+        );
+
+    });
+
+
+    return encontrou;
+}
 
 
     /* =========================================================
@@ -1588,7 +1671,87 @@ document.addEventListener("DOMContentLoaded", function () {
 
         }
 
+function ajustarMenuMobile() {
 
+    const mobile =
+        window.matchMedia(
+            "(max-width: 420px)"
+        ).matches;
+
+
+    const primeiroIcone =
+        document.querySelector(
+            '[data-segmento-btn="reducao-temporaria-dos-sintomas"] .rt-icon-single'
+        );
+
+
+    if (!primeiroIcone) {
+        return;
+    }
+
+
+    if (mobile) {
+
+        primeiroIcone.style.setProperty(
+            "width",
+            "22.55px",
+            "important"
+        );
+
+        primeiroIcone.style.setProperty(
+            "min-width",
+            "22.55px",
+            "important"
+        );
+
+        primeiroIcone.style.setProperty(
+            "height",
+            "20.89px",
+            "important"
+        );
+
+        primeiroIcone.style.setProperty(
+            "min-height",
+            "20.89px",
+            "important"
+        );
+
+    } else {
+
+        /*
+         * RESTAURA EXATAMENTE O DESKTOP ATUAL
+         */
+
+        primeiroIcone.style.setProperty(
+            "width",
+            "45px",
+            "important"
+        );
+
+        primeiroIcone.style.setProperty(
+            "min-width",
+            "52px",
+            "important"
+        );
+
+        primeiroIcone.style.setProperty(
+            "height",
+            "42px",
+            "important"
+        );
+
+    }
+
+}
+
+
+ajustarMenuMobile();
+
+
+window.addEventListener(
+    "resize",
+    ajustarMenuMobile
+);
 
         /* =====================================================
            POINTER UP / CANCEL
