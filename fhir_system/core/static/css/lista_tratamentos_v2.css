@@ -1598,63 +1598,10 @@ a.beneficio-card:hover .beneficio-icon-img, a.beneficio-card.ativo .beneficio-ic
     display: none !important;
   }
 
-  a.beneficio-card.ativo {
-    background: #0094FF !important;
-    border-color: #0094FF !important;
-    color: #FFFFFF !important;
-  }
 
-  a.beneficio-card.ativo .beneficio-nome {
-    color: #FFFFFF !important;
-  }
 
-  a.beneficio-card.ativo .beneficio-line {
-    border-top-color: #FFFFFF !important;
-  }
 
-  a.beneficio-card.ativo .beneficio-percentual {
-    color: rgba(
-        255,
-        255,
-        255,
-        0.8
-      ) !important;
-  }
 
-  a.beneficio-card.ativo .beneficio-percentual strong {
-    color: #FFFFFF !important;
-  }
-
-  a.beneficio-card.ativo .beneficio-icon-img {
-    filter: brightness(0)
-      invert(1) !important;
-  }
-
-  a.beneficio-card:not(.ativo):hover {
-    background: #FFFFFF !important;
-    border-color: #0094FF !important;
-    color: #0094FF !important;
-  }
-
-  a.beneficio-card:not(.ativo):hover .beneficio-nome {
-    color: #0094FF !important;
-  }
-
-  a.beneficio-card:not(.ativo):hover .beneficio-line {
-    border-top-color: #0094FF !important;
-  }
-
-  a.beneficio-card:not(.ativo):hover .beneficio-percentual {
-    color: #8F8F93 !important;
-  }
-
-  a.beneficio-card:not(.ativo):hover .beneficio-percentual strong {
-    color: #0094FF !important;
-  }
-
-  a.beneficio-card:not(.ativo):hover .beneficio-icon-img {
-    filter: none !important;
-  }
 
   .beneficios-scroll-track {
     position: absolute;
@@ -8005,4 +7952,279 @@ main.page-wrapper > section.next-benefits-mobile[hidden] {
         text-align: center !important;
     }
 
+}
+/* ==========================================================
+   REDUÇÃO TEMPORÁRIA — ÍCONE ÚNICO
+   ========================================================== */
+
+.beneficio-card[data-segmento-btn="reducao-temporaria-dos-sintomas"]
+.rt-icon-single {
+    width: 46px !important;
+    height: 43px !important;
+
+    display: block !important;
+    object-fit: contain !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    filter: none !important;
+    transform: none !important;
+}
+
+
+/* impede qualquer regra geral de deixar o PNG todo branco */
+a.beneficio-card[data-segmento-btn="reducao-temporaria-dos-sintomas"].ativo
+.rt-icon-single,
+a.beneficio-card[data-segmento-btn="reducao-temporaria-dos-sintomas"]:hover
+.rt-icon-single {
+    filter: none !important;
+}
+
+
+@media (max-width: 768px) {
+
+    .beneficio-card[data-segmento-btn="reducao-temporaria-dos-sintomas"]
+    .rt-icon-single {
+        width: 22.55px !important;
+        height: 20.89px !important;
+    }
+
+}
+/* Redução temporária — tamanho final */
+.beneficio-card[data-segmento-btn="reducao-temporaria-dos-sintomas"]
+.rt-icon-single {
+    width: 42px !important;
+    height: 39px !important;
+
+    display: block !important;
+    object-fit: contain !important;
+
+    max-width: none !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    transform: none !important;
+    filter: none !important;
+}
+
+.beneficio-card[data-segmento-btn="reducao-temporaria-dos-sintomas"].ativo
+.rt-icon-single {
+    width: 42px !important;
+    height: 39px !important;
+
+    transform: none !important;
+    filter: none !important;
+}
+
+  /* ==========================================================
+   CARDS DE BENEFÍCIOS
+   NORMAL / HOVER / ATIVO
+   ========================================================== */
+
+
+/* ==========================================================
+   ESTADO NORMAL
+   ========================================================== */
+
+a.beneficio-card {
+    background: #FFFFFF !important;
+    border-color: #0094FF !important;
+}
+
+
+/* Nome do benefício */
+a.beneficio-card .beneficio-nome {
+    color: #0094FF !important;
+}
+
+
+/* "de XX,XX% a" */
+a.beneficio-card .beneficio-percentual {
+    color: #8F8F93 !important;
+}
+
+
+/* percentual principal */
+a.beneficio-card .beneficio-percentual strong {
+    color: #0094FF !important;
+}
+
+
+/* dos participantes das pesquisas */
+a.beneficio-card .beneficio-participantes {
+    color: #8F8F93 !important;
+}
+
+
+/* linha */
+a.beneficio-card .beneficio-line {
+    border-top-color: #0094FF !important;
+}
+
+
+
+/* ==========================================================
+   HOVER
+   ========================================================== */
+
+a.beneficio-card:hover {
+    background: #0094FF !important;
+    border-color: #0094FF !important;
+}
+
+
+/* título branco */
+a.beneficio-card:hover .beneficio-nome {
+    color: #FFFFFF !important;
+}
+
+
+/* "de XX,XX% a" branco */
+a.beneficio-card:hover .beneficio-percentual {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
+
+/* percentual principal branco */
+a.beneficio-card:hover .beneficio-percentual strong {
+    color: #FFFFFF !important;
+}
+
+
+/* participantes branco */
+a.beneficio-card:hover .beneficio-participantes {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
+
+/* linha branca */
+a.beneficio-card:hover .beneficio-line {
+    border-top-color: #FFFFFF !important;
+}
+
+
+
+/* ==========================================================
+   SELECIONADO
+   ========================================================== */
+
+a.beneficio-card.ativo {
+    background: #0094FF !important;
+    border-color: #0094FF !important;
+}
+
+
+a.beneficio-card.ativo .beneficio-nome {
+    color: #FFFFFF !important;
+}
+
+
+a.beneficio-card.ativo .beneficio-percentual {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
+
+a.beneficio-card.ativo .beneficio-percentual strong {
+    color: #FFFFFF !important;
+}
+
+
+a.beneficio-card.ativo .beneficio-participantes {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
+
+a.beneficio-card.ativo .beneficio-line {
+    border-top-color: #FFFFFF !important;
+}
+
+
+/* ==========================================================
+   NOME DOS BENEFÍCIOS — 3 LINHAS REAIS
+   ========================================================== */
+
+.beneficio-card .beneficio-label-line {
+    display: block !important;
+    position: static !important;
+
+    width: 100% !important;
+    height: 18px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    float: none !important;
+
+    font-family: "Inter", Arial, sans-serif !important;
+    font-size: 15px !important;
+    line-height: 18px !important;
+
+    text-align: center !important;
+    white-space: nowrap !important;
+}
+
+
+/* NORMAL — duas primeiras linhas azuis */
+.beneficio-card .beneficio-label-main {
+    color: #0094FF !important;
+    font-weight: 600 !important;
+}
+
+
+/* NORMAL — "dos sintomas" cinza */
+.beneficio-card .beneficio-label-muted {
+    color: #8F8F93 !important;
+    font-weight: 400 !important;
+}
+
+
+/* ==========================================================
+   HOVER / SELECIONADO
+   ========================================================== */
+
+/* duas primeiras linhas: branco forte */
+.beneficio-card:hover .beneficio-label-main,
+.beneficio-card.ativo .beneficio-label-main {
+    color: #FFFFFF !important;
+}
+
+
+/* terceira linha: branco mais opaco */
+.beneficio-card:hover .beneficio-label-muted,
+.beneficio-card.ativo .beneficio-label-muted {
+    color: rgba(255, 255, 255, 0.70) !important;
+}
+
+/* de XX% a */
+.beneficio-card .beneficio-percentual {
+    color: #8F8F93 !important;
+}
+
+.beneficio-card:hover .beneficio-percentual,
+.beneficio-card.ativo .beneficio-percentual {
+    color: rgba(255, 255, 255, 0.70) !important;
+}
+
+
+/* percentual grande */
+.beneficio-card .beneficio-percentual strong {
+    color: #0094FF !important;
+}
+
+.beneficio-card:hover .beneficio-percentual strong,
+.beneficio-card.ativo .beneficio-percentual strong {
+    color: #FFFFFF !important;
+}
+
+
+/* participantes */
+.beneficio-card .beneficio-participantes {
+    color: #8F8F93 !important;
+}
+
+.beneficio-card:hover .beneficio-participantes,
+.beneficio-card.ativo .beneficio-participantes {
+    color: rgba(255, 255, 255, 0.70) !important;
 }

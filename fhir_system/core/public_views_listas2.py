@@ -191,53 +191,59 @@ def filtro_relacao_condicao(
 # ============================================================
 # FOOTER
 # ============================================================
-
 def get_footer_listas():
     """
-    Retorna somente as listas V1 publicadas.
+    Retorna somente as páginas de Lista V2 publicadas.
 
-    A V2 utiliza tipos_eficacia e não deve aparecer
-    duplicada no rodapé.
+    Cada registro de PaginaListaTratamento V2 gera
+    apenas UMA opção no seletor do rodapé.
+
+    Exemplo:
+        Enxaqueca -> /enxaqueca/
     """
 
-    listas = (
+    footer_listas = []
+
+
+    # ============================================================
+    # SOMENTE LISTAS V2 PUBLICADAS
+    # ============================================================
+
+    paginas_v2 = (
         PaginaListaTratamento.objects
         .filter(
             publicada=True,
             condicao_saude__isnull=False,
-            tipo_eficacia__isnull=False,
-        )
-        .filter(
-            filtro_template_lista_v1()
+            template=TEMPLATE_LISTA_V2,
         )
         .select_related(
             "condicao_saude",
-            "tipo_eficacia",
         )
         .order_by(
             "condicao_saude__nome",
-            "tipo_eficacia__tipo_eficacia",
         )
     )
 
-    footer_listas = []
 
-    for item in listas:
+    # Evita duplicidade caso exista mais de um registro
+    # publicado para a mesma condição.
+    condicoes_adicionadas = set()
 
-        if not item.condicao_saude_id:
+
+    for pagina in paginas_v2:
+
+        condicao = pagina.condicao_saude
+
+        if not condicao:
             continue
 
-        if not item.tipo_eficacia_id:
+
+        if condicao.pk in condicoes_adicionadas:
             continue
+
 
         condicao_slug = getattr(
-            item.condicao_saude,
-            "slug",
-            None,
-        )
-
-        tipo_slug = getattr(
-            item.tipo_eficacia,
+            condicao,
             "slug",
             None,
         )
@@ -245,31 +251,41 @@ def get_footer_listas():
         if not condicao_slug:
             continue
 
-        if not tipo_slug:
-            continue
+
+        condicoes_adicionadas.add(
+            condicao.pk
+        )
+
+
+        # ========================================================
+        # URL DA LISTA V2
+        # ========================================================
+
+        url = reverse(
+            "pagina_lista_v2",
+            kwargs={
+                "condicao_slug":
+                    condicao_slug,
+            },
+        )
+
+
+        # ========================================================
+        # UMA OPÇÃO POR LISTA V2
+        # ========================================================
 
         footer_listas.append(
             {
-                "label": (
-                    f"{item.condicao_saude.nome} - "
-                    f"{item.tipo_eficacia.tipo_eficacia}"
-                ),
+                "label":
+                    condicao.nome,
 
-                "url": reverse(
-                    "pagina_lista",
-                    kwargs={
-                        "condicao_slug":
-                            condicao_slug,
-
-                        "tipo_eficacia_slug":
-                            tipo_slug,
-                    },
-                ),
+                "url":
+                    url,
             }
         )
 
-    return footer_listas
 
+    return footer_listas
 
 # ============================================================
 # ORDEM DOS 5 BENEFÍCIOS DA V2

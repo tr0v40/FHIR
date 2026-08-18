@@ -67,45 +67,152 @@
     <!-- =========================================================
      MENU DE BENEFÍCIOS
      ========================================================= -->
-
 <section class="beneficios-menu">
 
   <div class="beneficios-grid" id="beneficiosGrid">
 
     {% for card in beneficios_cards %}
+
       <a
         href="#{{ card.slug }}"
         class="beneficio-card {% if card.ativo %}ativo{% endif %}"
         data-segmento-btn="{{ card.slug }}"
       >
 
-        <div class="beneficio-card-top">
+<div class="beneficio-card-top">
 
-          <div class="beneficio-icon">
-            <img
-              src="{% static card.icone %}?v=20260731-3"
-              alt="{{ card.nome }}"
-              class="beneficio-icon-img"
-            >
-          </div>
+  <div class="beneficio-icon">
 
-          <div class="beneficio-nome">
-            {{ card.nome }}
-          </div>
+    {% if card.slug == "reducao-temporaria-dos-sintomas" %}
 
-        </div>
+    
+<img
+  src="{% static 'img/reduca_temporaria_lista.png' %}?v=20260817-400"
+  data-icon-normal="{% static 'img/reduca_temporaria_lista.png' %}?v=20260817-400"
+  data-icon-selected="{% static 'img/reducao_temporaria_sintomas_ativo.png' %}?v=20260817-400"
+  alt="{{ card.nome }}"
+  class="rt-icon-single"
+  style="
+    width: 45px !important;
+    height: 42px !important;
+    min-width: 52px !important;
+    max-width: none !important;
+    object-fit: contain !important;
+    display: block !important;
+  "
+>
+
+    {% else %}
+
+      <img
+        src="{% static card.icone %}?v=20260817-300"
+        alt="{{ card.nome }}"
+        class="beneficio-icon-img"
+      >
+
+    {% endif %}
+
+  </div>
+
+<div
+  class="beneficio-nome"
+  style="
+    display: block !important;
+    width: 102px !important;
+    height: 54px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    text-align: center !important;
+  "
+>
+
+  {% if card.slug == "reducao-temporaria-dos-sintomas" %}
+
+    <span class="beneficio-label-main beneficio-label-line">
+      Redução
+    </span>
+
+    <span class="beneficio-label-main beneficio-label-line">
+      temporária
+    </span>
+
+    <span class="beneficio-label-muted beneficio-label-line">
+      dos sintomas
+    </span>
+
+
+  {% elif card.slug == "eliminacao-temporaria-dos-sintomas" %}
+
+    <span class="beneficio-label-main beneficio-label-line">
+      Eliminação
+    </span>
+
+    <span class="beneficio-label-main beneficio-label-line">
+      temporária
+    </span>
+
+    <span class="beneficio-label-muted beneficio-label-line">
+      dos sintomas
+    </span>
+
+
+  {% elif card.slug == "reducao-persistente-dos-sintomas" %}
+
+    <span class="beneficio-label-main beneficio-label-line">
+      Redução
+    </span>
+
+    <span class="beneficio-label-main beneficio-label-line">
+      persistente
+    </span>
+
+    <span class="beneficio-label-muted beneficio-label-line">
+      dos sintomas
+    </span>
+
+
+  {% elif card.slug == "eliminacao-persistente-dos-sintomas" %}
+
+    <span class="beneficio-label-main beneficio-label-line">
+      Eliminação
+    </span>
+
+    <span class="beneficio-label-main beneficio-label-line">
+      persistente
+    </span>
+
+    <span class="beneficio-label-muted beneficio-label-line">
+      dos sintomas
+    </span>
+
+
+  {% else %}
+
+    <span class="beneficio-label-main beneficio-label-line">
+      {{ card.nome }}
+    </span>
+
+  {% endif %}
+
+</div>
+</div>
+
 
         <div class="beneficio-line"></div>
+
 
         <div class="beneficio-card-bottom">
 
           <div class="beneficio-percentual">
+
             de {{ card.min_str }}% a
 
             <strong>
               {{ card.max_str }}%
             </strong>
+
           </div>
+
 
           <div class="beneficio-participantes">
             dos participantes<br>
@@ -115,6 +222,7 @@
         </div>
 
       </a>
+
     {% endfor %}
 
   </div>
@@ -132,37 +240,62 @@
 
 </section>
 
-    {% for segmento in segmentos %}
-      <section
-        class="segmento-lista {% if segmento.ativo %}ativo{% endif %}"
-        data-segmento-conteudo="{{ segmento.slug }}"
-      >
-        <section class="lista-shell">
+{% for segmento in segmentos %}
+  <section
+    class="segmento-lista {% if segmento.ativo %}ativo{% endif %}"
+    data-segmento-conteudo="{{ segmento.slug }}"
+  >
+    <section class="lista-shell">
 
-          <section class="beneficio-header">
-            <div class="beneficio-header-row">
-              <div class="beneficio-header-title">
-                <span class="beneficio-header-label">Benefício:</span>
+      <section class="beneficio-header">
+        <div class="beneficio-header-row">
+          <div class="beneficio-header-title">
 
-                <img
-                  src="{% static segmento.icone %}?v=20260804-2"
-                  alt="{{ segmento.nome }}"
-                  class="beneficio-header-icon-img"
-                >
+            <span class="beneficio-header-label">
+              Benefício:
+            </span>
+        {% if segmento.slug == "reducao-temporaria-dos-sintomas" %}
 
-                <span class="beneficio-header-name">{{ segmento.nome }}</span>
-              </div>
+          <img
+            src="{% static 'img/reducao_temporaria_sintomas_ativo.png' %}?v=20260817-500"
+            alt="{{ segmento.nome }}"
+            class="beneficio-header-icon-rt"
+            style="
+              width: 26px !important;
+              height: 26px !important;
+              object-fit: contain !important;
+              filter: none !important;
+            "
+          >
 
-              <div class="beneficio-header-count">
-                Tratamentos: {{ segmento.qtd_tratamentos }}
-              </div>
-            </div>
+        {% else %}
 
-            <p class="beneficio-header-text">
-              Conforme as pesquisas, apenas uma parte das pessoas que recebeu o tratamento obteve o benefício acima.
-              Na lista abaixo, os tratamentos estão em ordem decrescente de porcentagem de pessoas que tiveram esse benefício com o tratamento.
-            </p>
-          </section>
+          <img
+            src="{% static segmento.icone %}?v=20260817-500"
+            alt="{{ segmento.nome }}"
+            class="beneficio-header-icon-img"
+          >
+
+
+            {% endif %}
+
+            <span class="beneficio-header-name">
+              {{ segmento.nome }}
+            </span>
+
+          </div>
+
+          <div class="beneficio-header-count">
+            Tratamentos: {{ segmento.qtd_tratamentos }}
+          </div>
+        </div>
+
+        <p class="beneficio-header-text">
+          Conforme as pesquisas, apenas uma parte das pessoas que recebeu o tratamento obteve o benefício acima.
+          Na lista abaixo, os tratamentos estão em ordem decrescente de porcentagem de pessoas que tiveram esse benefício com o tratamento.
+        </p>
+
+      </section>
 
           <section class="lista-box">
             {% for item in segmento.itens %}
@@ -572,14 +705,193 @@
   </div>
 </footer>
 
-  <script>
- document.addEventListener("DOMContentLoaded", function () {
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
     const botoes =
         document.querySelectorAll("[data-segmento-btn]");
 
     const segmentos =
         document.querySelectorAll("[data-segmento-conteudo]");
+
+
+    /* =========================================================
+       CORES DOS CARDS
+       ========================================================= */
+
+    function aplicarCoresBeneficio(botao, destacado) {
+
+        const principais =
+            botao.querySelectorAll(".beneficio-label-main");
+
+        const muted =
+            botao.querySelectorAll(".beneficio-label-muted");
+
+        const percentual =
+            botao.querySelector(".beneficio-percentual");
+
+        const percentualForte =
+            botao.querySelector(".beneficio-percentual strong");
+
+        const participantes =
+            botao.querySelector(".beneficio-participantes");
+
+        const linha =
+            botao.querySelector(".beneficio-line");
+
+
+        /* =====================================================
+           DUAS PRIMEIRAS LINHAS
+           Redução
+           temporária
+           ===================================================== */
+
+        principais.forEach(function (elemento) {
+
+            elemento.style.setProperty(
+                "color",
+                destacado
+                    ? "#FFFFFF"
+                    : "#0094FF",
+                "important"
+            );
+
+        });
+
+
+        /* =====================================================
+           TERCEIRA LINHA
+           dos sintomas
+           ===================================================== */
+
+        muted.forEach(function (elemento) {
+
+            elemento.style.setProperty(
+                "color",
+                destacado
+                    ? "rgba(255, 255, 255, 0.70)"
+                    : "#8F8F93",
+                "important"
+            );
+
+        });
+
+
+        /* =====================================================
+           DE XX,XX% A
+           ===================================================== */
+
+        if (percentual) {
+
+            percentual.style.setProperty(
+                "color",
+                destacado
+                    ? "rgba(255, 255, 255, 0.70)"
+                    : "#8F8F93",
+                "important"
+            );
+
+        }
+
+
+        /* =====================================================
+           88,97%
+           ===================================================== */
+
+        if (percentualForte) {
+
+            percentualForte.style.setProperty(
+                "color",
+                destacado
+                    ? "#FFFFFF"
+                    : "#0094FF",
+                "important"
+            );
+
+        }
+
+
+        /* =====================================================
+           DOS PARTICIPANTES
+           DAS PESQUISAS.
+           ===================================================== */
+
+        if (participantes) {
+
+            participantes.style.setProperty(
+                "color",
+                destacado
+                    ? "rgba(255, 255, 255, 0.70)"
+                    : "#8F8F93",
+                "important"
+            );
+
+        }
+
+
+        /* =====================================================
+           LINHA
+           ===================================================== */
+
+        if (linha) {
+
+            linha.style.setProperty(
+                "border-top-color",
+                destacado
+                    ? "#FFFFFF"
+                    : "#0094FF",
+                "important"
+            );
+
+        }
+
+    }
+
+
+
+    /* =========================================================
+       ÍCONE ESPECIAL
+       REDUÇÃO TEMPORÁRIA
+       ========================================================= */
+
+    function aplicarIconeReducao(botao, destacado) {
+
+        const iconeReducao =
+            botao.querySelector(".rt-icon-single");
+
+        if (!iconeReducao) {
+            return;
+        }
+
+
+        const srcNormal =
+            iconeReducao.getAttribute(
+                "data-icon-normal"
+            );
+
+        const srcSelected =
+            iconeReducao.getAttribute(
+                "data-icon-selected"
+            );
+
+
+        if (
+            destacado &&
+            srcSelected
+        ) {
+
+            iconeReducao.src =
+                srcSelected;
+
+        } else if (srcNormal) {
+
+            iconeReducao.src =
+                srcNormal;
+
+        }
+
+    }
+
 
 
     /* =========================================================
@@ -591,13 +903,40 @@
         let encontrou = false;
 
 
-        /* BOTÕES */
         botoes.forEach(function (botao) {
 
             const ativo =
-                botao.getAttribute("data-segmento-btn") === slug;
+                botao.getAttribute(
+                    "data-segmento-btn"
+                ) === slug;
 
-            botao.classList.toggle("ativo", ativo);
+
+            /* classe visual */
+            botao.classList.toggle(
+                "ativo",
+                ativo
+            );
+
+
+            /* ===============================================
+               CORES
+               =============================================== */
+
+            aplicarCoresBeneficio(
+                botao,
+                ativo
+            );
+
+
+            /* ===============================================
+               ÍCONE REDUÇÃO TEMPORÁRIA
+               =============================================== */
+
+            aplicarIconeReducao(
+                botao,
+                ativo
+            );
+
 
             if (ativo) {
                 encontrou = true;
@@ -606,13 +945,23 @@
         });
 
 
-        /* LISTAS */
+
+        /* =====================================================
+           MOSTRA SOMENTE A LISTA DO BENEFÍCIO ATIVO
+           ===================================================== */
+
         segmentos.forEach(function (segmento) {
 
             const ativo =
-                segmento.getAttribute("data-segmento-conteudo") === slug;
+                segmento.getAttribute(
+                    "data-segmento-conteudo"
+                ) === slug;
 
-            segmento.classList.toggle("ativo", ativo);
+
+            segmento.classList.toggle(
+                "ativo",
+                ativo
+            );
 
         });
 
@@ -623,53 +972,121 @@
 
 
     /* =========================================================
+       HOVER DOS CARDS
+       ========================================================= */
+
+    botoes.forEach(function (botao) {
+
+        /*
+         * Só aplica comportamento visual aos cards
+         * que possuem a estrutura completa.
+         */
+
+        if (
+            !botao.classList.contains(
+                "beneficio-card"
+            )
+        ) {
+            return;
+        }
+
+
+        /* =====================================================
+           MOUSE ENTROU
+           ===================================================== */
+
+        botao.addEventListener(
+            "mouseenter",
+            function () {
+
+                aplicarCoresBeneficio(
+                    botao,
+                    true
+                );
+
+                aplicarIconeReducao(
+                    botao,
+                    true
+                );
+
+            }
+        );
+
+
+        /* =====================================================
+           MOUSE SAIU
+           ===================================================== */
+
+        botao.addEventListener(
+            "mouseleave",
+            function () {
+
+                const ativo =
+                    botao.classList.contains(
+                        "ativo"
+                    );
+
+
+                aplicarCoresBeneficio(
+                    botao,
+                    ativo
+                );
+
+
+                aplicarIconeReducao(
+                    botao,
+                    ativo
+                );
+
+            }
+        );
+
+    });
+
+
+
+    /* =========================================================
        LEVA PARA O TOPO DA LISTA SELECIONADA
        ========================================================= */
 
     function irParaTopoDaLista(slug) {
 
-        /*
-         * Localiza especificamente o segmento que
-         * acabou de ser ativado.
-         */
         const segmentoDestino =
             document.querySelector(
-                '[data-segmento-conteudo="' + slug + '"]'
+                '[data-segmento-conteudo="' +
+                slug +
+                '"]'
             );
+
 
         if (!segmentoDestino) {
             return;
         }
 
 
-        /*
-         * Aguarda a troca display:none -> display:block
-         * acontecer e o navegador recalcular a altura da página.
-         */
         setTimeout(function () {
 
             const lista =
-                segmentoDestino.querySelector(".lista-shell");
+                segmentoDestino.querySelector(
+                    ".lista-shell"
+                );
+
 
             if (!lista) {
                 return;
             }
 
 
-            /*
-             * Calcula a posição REAL da lista na página.
-             */
             const topo =
                 lista.getBoundingClientRect().top +
                 window.pageYOffset;
 
 
-            /*
-             * Vai para o início do bloco azul
-             * Benefício / Tratamentos.
-             */
             window.scrollTo({
-                top: Math.max(0, topo - 8),
+                top: Math.max(
+                    0,
+                    topo - 8
+                ),
                 left: 0,
                 behavior: "smooth"
             });
@@ -686,52 +1103,59 @@
 
     botoes.forEach(function (botao) {
 
-        botao.addEventListener("click", function (event) {
+        botao.addEventListener(
+            "click",
+            function (event) {
 
-            event.preventDefault();
-
-            const slug =
-                botao.getAttribute("data-segmento-btn");
-
-
-            const existe =
-                ativarSegmento(slug);
+                event.preventDefault();
 
 
-            if (!existe) {
-                return;
+                const slug =
+                    botao.getAttribute(
+                        "data-segmento-btn"
+                    );
+
+
+                const existe =
+                    ativarSegmento(
+                        slug
+                    );
+
+
+                if (!existe) {
+                    return;
+                }
+
+
+                /* =============================================
+                   ATUALIZA HASH SEM SCROLL AUTOMÁTICO
+                   ============================================= */
+
+                history.replaceState(
+                    null,
+                    "",
+                    "#" + slug
+                );
+
+
+                /* =============================================
+                   APENAS MENU MOBILE INFERIOR FAZ SCROLL
+                   ============================================= */
+
+                if (
+                    botao.classList.contains(
+                        "next-benefit-mobile-card"
+                    )
+                ) {
+
+                    irParaTopoDaLista(
+                        slug
+                    );
+
+                }
+
             }
-
-
-            /*
-             * Atualiza a URL sem provocar scroll automático
-             * do navegador pelo hash.
-             */
-            history.replaceState(
-                null,
-                "",
-                "#" + slug
-            );
-
-
-            /*
-             * IMPORTANTE:
-             * Só os cards que ficam no FINAL da lista
-             * fazem o scroll.
-             *
-             * O menu superior continua funcionando normalmente.
-             */
-            if (
-                botao.classList.contains(
-                    "next-benefit-mobile-card"
-                )
-            ) {
-
-                irParaTopoDaLista(slug);
-
-            }
-
-        });
+        );
 
     });
 
@@ -742,7 +1166,10 @@
        ========================================================= */
 
     const shareWhatsapp =
-        document.getElementById("share-whatsapp");
+        document.getElementById(
+            "share-whatsapp"
+        );
+
 
     if (shareWhatsapp) {
 
@@ -750,9 +1177,12 @@
             "Você conhece alguém que precisa dessas informações sobre tratamentos? " +
             window.location.href;
 
+
         shareWhatsapp.href =
             "https://wa.me/?text=" +
-            encodeURIComponent(textoCompartilhamento);
+            encodeURIComponent(
+                textoCompartilhamento
+            );
 
     }
 
@@ -763,15 +1193,24 @@
        ========================================================= */
 
     const hashInicial =
-        window.location.hash.replace("#", "");
+        window.location.hash.replace(
+            "#",
+            ""
+        );
 
 
     if (hashInicial) {
 
         const existe =
-            ativarSegmento(hashInicial);
+            ativarSegmento(
+                hashInicial
+            );
 
-        if (!existe && botoes.length > 0) {
+
+        if (
+            !existe &&
+            botoes.length > 0
+        ) {
 
             ativarSegmento(
                 botoes[0].getAttribute(
@@ -791,410 +1230,451 @@
 
     }
 
+
+
+    /* =========================================================
+       SCROLL HORIZONTAL DOS BENEFÍCIOS
+       ========================================================= */
+
+    const beneficiosGrid =
+        document.getElementById(
+            "beneficiosGrid"
+        );
+
+    const beneficiosScrollThumb =
+        document.getElementById(
+            "beneficiosScrollThumb"
+        );
+
+    const beneficiosScrollTrack =
+        document.querySelector(
+            ".beneficios-scroll-track"
+        );
+
+
+
+    /* =========================================================
+       ATUALIZA A BARRA QUANDO OS CARDS SE MOVEM
+       ========================================================= */
+
+    function atualizarBarraBeneficios() {
+
+        if (
+            !beneficiosGrid ||
+            !beneficiosScrollThumb ||
+            !beneficiosScrollTrack
+        ) {
+            return;
+        }
+
+
+        const maxScroll =
+            beneficiosGrid.scrollWidth -
+            beneficiosGrid.clientWidth;
+
+
+        const larguraTrack =
+            beneficiosScrollTrack.clientWidth;
+
+
+        const larguraThumb =
+            beneficiosScrollThumb.offsetWidth;
+
+
+        const movimentoMaximo =
+            larguraTrack -
+            larguraThumb;
+
+
+        if (
+            maxScroll <= 0 ||
+            movimentoMaximo <= 0
+        ) {
+
+            beneficiosScrollThumb.style.transform =
+                "translate3d(0, 0, 0)";
+
+            return;
+        }
+
+
+        const progresso =
+            beneficiosGrid.scrollLeft /
+            maxScroll;
+
+
+        const posicao =
+            progresso *
+            movimentoMaximo;
+
+
+        beneficiosScrollThumb.style.transform =
+            `translate3d(${posicao}px, 0, 0)`;
+
+    }
+
+
+
+    /* =========================================================
+       GRID ARRASTADO MANUALMENTE
+       ========================================================= */
+
+    if (beneficiosGrid) {
+
+        beneficiosGrid.addEventListener(
+            "scroll",
+            atualizarBarraBeneficios,
+            {
+                passive: true
+            }
+        );
+
+    }
+
+
+
+    /* =========================================================
+       SCROLLBAR CUSTOMIZADA
+       ========================================================= */
+
+    if (
+        beneficiosGrid &&
+        beneficiosScrollThumb &&
+        beneficiosScrollTrack
+    ) {
+
+        let arrastando = false;
+
+        let offsetDoPointer = 0;
+
+
+
+        /* =====================================================
+           MÉTRICAS
+           ===================================================== */
+
+        function obterMetricas() {
+
+            const trackRect =
+                beneficiosScrollTrack
+                    .getBoundingClientRect();
+
+
+            const larguraTrack =
+                beneficiosScrollTrack
+                    .clientWidth;
+
+
+            const larguraThumb =
+                beneficiosScrollThumb
+                    .offsetWidth;
+
+
+            const movimentoMaximo =
+                Math.max(
+                    0,
+                    larguraTrack -
+                    larguraThumb
+                );
+
+
+            const maxScroll =
+                Math.max(
+                    0,
+                    beneficiosGrid.scrollWidth -
+                    beneficiosGrid.clientWidth
+                );
+
+
+            return {
+                trackRect,
+                larguraTrack,
+                larguraThumb,
+                movimentoMaximo,
+                maxScroll
+            };
+
+        }
+
+
+
+        /* =====================================================
+           POSIÇÃO ATUAL DO THUMB
+           ===================================================== */
+
+        function posicaoAtualThumb() {
+
+            const {
+                movimentoMaximo,
+                maxScroll
+            } = obterMetricas();
+
+
+            if (
+                maxScroll <= 0 ||
+                movimentoMaximo <= 0
+            ) {
+                return 0;
+            }
+
+
+            const progresso =
+                beneficiosGrid.scrollLeft /
+                maxScroll;
+
+
+            return (
+                progresso *
+                movimentoMaximo
+            );
+
+        }
+
+
+
+        /* =====================================================
+           MOVE THUMB + CARDS
+           ===================================================== */
+
+        function moverPara(posicao) {
+
+            const {
+                movimentoMaximo,
+                maxScroll
+            } = obterMetricas();
+
+
+            const novaPosicao =
+                Math.max(
+                    0,
+                    Math.min(
+                        posicao,
+                        movimentoMaximo
+                    )
+                );
+
+
+            const progresso =
+                movimentoMaximo > 0
+                    ? novaPosicao /
+                      movimentoMaximo
+                    : 0;
+
+
+            beneficiosGrid.scrollLeft =
+                progresso *
+                maxScroll;
+
+
+            beneficiosScrollThumb
+                .style
+                .transform =
+                `translate3d(${novaPosicao}px, 0, 0)`;
+
+        }
+
+
+
+        /* =====================================================
+           POINTER DOWN
+           ===================================================== */
+
+        function iniciarArraste(event) {
+
+            if (
+                event.pointerType === "mouse" &&
+                event.button !== 0
+            ) {
+                return;
+            }
+
+
+            const {
+                trackRect,
+                larguraThumb
+            } = obterMetricas();
+
+
+            const atual =
+                posicaoAtualThumb();
+
+
+            const inicioThumb =
+                trackRect.left +
+                atual;
+
+
+            const fimThumb =
+                inicioThumb +
+                larguraThumb;
+
+
+            const clicouNoThumb =
+                event.clientX >= inicioThumb &&
+                event.clientX <= fimThumb;
+
+
+            if (clicouNoThumb) {
+
+                offsetDoPointer =
+                    event.clientX -
+                    inicioThumb;
+
+            } else {
+
+                offsetDoPointer =
+                    larguraThumb / 2;
+
+
+                moverPara(
+                    event.clientX -
+                    trackRect.left -
+                    offsetDoPointer
+                );
+
+            }
+
+
+            arrastando = true;
+
+
+            beneficiosScrollThumb
+                .classList
+                .add(
+                    "arrastando"
+                );
+
+
+            beneficiosScrollTrack
+                .setPointerCapture(
+                    event.pointerId
+                );
+
+
+            event.preventDefault();
+
+        }
+
+
+
+        /* =====================================================
+           POINTER MOVE
+           ===================================================== */
+
+        function moverArraste(event) {
+
+            if (!arrastando) {
+                return;
+            }
+
+
+            const {
+                trackRect
+            } = obterMetricas();
+
+
+            const novaPosicao =
+                event.clientX -
+                trackRect.left -
+                offsetDoPointer;
+
+
+            moverPara(
+                novaPosicao
+            );
+
+
+            event.preventDefault();
+
+        }
+
+
+
+        /* =====================================================
+           POINTER UP / CANCEL
+           ===================================================== */
+
+        function terminarArraste(event) {
+
+            if (!arrastando) {
+                return;
+            }
+
+
+            arrastando = false;
+
+
+            beneficiosScrollThumb
+                .classList
+                .remove(
+                    "arrastando"
+                );
+
+
+            if (
+                beneficiosScrollTrack
+                    .hasPointerCapture(
+                        event.pointerId
+                    )
+            ) {
+
+                beneficiosScrollTrack
+                    .releasePointerCapture(
+                        event.pointerId
+                    );
+
+            }
+
+        }
+
+
+
+        /* =====================================================
+           EVENTOS DA BARRA
+           ===================================================== */
+
+        beneficiosScrollTrack
+            .addEventListener(
+                "pointerdown",
+                iniciarArraste
+            );
+
+
+        beneficiosScrollTrack
+            .addEventListener(
+                "pointermove",
+                moverArraste
+            );
+
+
+        beneficiosScrollTrack
+            .addEventListener(
+                "pointerup",
+                terminarArraste
+            );
+
+
+        beneficiosScrollTrack
+            .addEventListener(
+                "pointercancel",
+                terminarArraste
+            );
+
+
+        /* posição inicial */
+        atualizarBarraBeneficios();
+
+
+        /* recalcula no resize */
+        window.addEventListener(
+            "resize",
+            atualizarBarraBeneficios
+        );
+
+    }
+
 });
-
-const beneficiosGrid =
-  document.getElementById("beneficiosGrid");
-
-const beneficiosScrollThumb =
-  document.getElementById("beneficiosScrollThumb");
-
-const beneficiosScrollTrack =
-  document.querySelector(".beneficios-scroll-track");
-
-
-/* =========================================================
-   ATUALIZA A BARRA QUANDO OS CARDS SE MOVEM
-   ========================================================= */
-
-function atualizarBarraBeneficios() {
-
-  if (
-    !beneficiosGrid ||
-    !beneficiosScrollThumb ||
-    !beneficiosScrollTrack
-  ) {
-    return;
-  }
-
-  const maxScroll =
-    beneficiosGrid.scrollWidth -
-    beneficiosGrid.clientWidth;
-
-  const larguraTrack =
-    beneficiosScrollTrack.clientWidth;
-
-  const larguraThumb =
-    beneficiosScrollThumb.offsetWidth;
-
-  const movimentoMaximo =
-    larguraTrack - larguraThumb;
-
-
-  if (maxScroll <= 0 || movimentoMaximo <= 0) {
-
-    beneficiosScrollThumb.style.transform =
-      "translate3d(0, 0, 0)";
-
-    return;
-  }
-
-
-  const progresso =
-    beneficiosGrid.scrollLeft / maxScroll;
-
-  const posicao =
-    progresso * movimentoMaximo;
-
-
-  beneficiosScrollThumb.style.transform =
-    `translate3d(${posicao}px, 0, 0)`;
-}
-
-
-/* =========================================================
-   SE O USUÁRIO ARRASTAR OS CARDS,
-   A BARRA TAMBÉM ACOMPANHA
-   ========================================================= */
-
-if (beneficiosGrid) {
-
-  beneficiosGrid.addEventListener(
-    "scroll",
-    atualizarBarraBeneficios,
-    { passive: true }
-  );
-
-}
-
-
-/* =========================================================
-   SCROLLBAR CUSTOMIZADA
-   ========================================================= */
-
-if (
-  beneficiosGrid &&
-  beneficiosScrollThumb &&
-  beneficiosScrollTrack
-) {
-
-  let arrastando = false;
-
-  /*
-   * Distância entre o ponto clicado
-   * e o início da barra azul.
-   */
-  let offsetDoPointer = 0;
-
-
-  /* =======================================================
-     MÉTRICAS
-     ======================================================= */
-
-  function obterMetricas() {
-
-    const trackRect =
-      beneficiosScrollTrack.getBoundingClientRect();
-
-    const larguraTrack =
-      beneficiosScrollTrack.clientWidth;
-
-    const larguraThumb =
-      beneficiosScrollThumb.offsetWidth;
-
-    const movimentoMaximo =
-      Math.max(
-        0,
-        larguraTrack - larguraThumb
-      );
-
-    const maxScroll =
-      Math.max(
-        0,
-        beneficiosGrid.scrollWidth -
-        beneficiosGrid.clientWidth
-      );
-
-    return {
-      trackRect,
-      larguraTrack,
-      larguraThumb,
-      movimentoMaximo,
-      maxScroll
-    };
-  }
-
-
-  /* =======================================================
-     POSIÇÃO ATUAL DO THUMB
-     ======================================================= */
-
-  function posicaoAtualThumb() {
-
-    const {
-      movimentoMaximo,
-      maxScroll
-    } = obterMetricas();
-
-    if (
-      maxScroll <= 0 ||
-      movimentoMaximo <= 0
-    ) {
-      return 0;
-    }
-
-    const progresso =
-      beneficiosGrid.scrollLeft / maxScroll;
-
-    return progresso * movimentoMaximo;
-  }
-
-
-  /* =======================================================
-     MOVE THUMB + CARDS
-     ======================================================= */
-
-  function moverPara(posicao) {
-
-    const {
-      movimentoMaximo,
-      maxScroll
-    } = obterMetricas();
-
-
-    const novaPosicao =
-      Math.max(
-        0,
-        Math.min(
-          posicao,
-          movimentoMaximo
-        )
-      );
-
-
-    const progresso =
-      movimentoMaximo > 0
-        ? novaPosicao / movimentoMaximo
-        : 0;
-
-
-    /*
-     * Movimento dos cards.
-     */
-    beneficiosGrid.scrollLeft =
-      progresso * maxScroll;
-
-
-    /*
-     * Movimento visual imediato da barra.
-     */
-    beneficiosScrollThumb.style.transform =
-      `translate3d(${novaPosicao}px, 0, 0)`;
-  }
-
-
-  /* =======================================================
-     POINTER DOWN
-     ======================================================= */
-
-  function iniciarArraste(event) {
-
-    /*
-     * Aceita somente botão esquerdo do mouse.
-     * Touch/Pen não possuem button = 0 em todos os casos,
-     * por isso a condição só vale para mouse.
-     */
-    if (
-      event.pointerType === "mouse" &&
-      event.button !== 0
-    ) {
-      return;
-    }
-
-
-    const {
-      trackRect,
-      larguraThumb
-    } = obterMetricas();
-
-
-    const atual =
-      posicaoAtualThumb();
-
-
-    /*
-     * Onde começa e termina visualmente
-     * a barra azul.
-     */
-    const inicioThumb =
-      trackRect.left + atual;
-
-    const fimThumb =
-      inicioThumb + larguraThumb;
-
-
-    const clicouNoThumb =
-      event.clientX >= inicioThumb &&
-      event.clientX <= fimThumb;
-
-
-    if (clicouNoThumb) {
-
-      /*
-       * Segurou diretamente a barra azul:
-       * preserva exatamente o ponto agarrado.
-       */
-      offsetDoPointer =
-        event.clientX -
-        inicioThumb;
-
-    } else {
-
-      /*
-       * Tocou/clicou no trilho cinza.
-       *
-       * Centralizamos a barra azul naquele ponto
-       * e já iniciamos o arraste.
-       */
-      offsetDoPointer =
-        larguraThumb / 2;
-
-
-      moverPara(
-        event.clientX -
-        trackRect.left -
-        offsetDoPointer
-      );
-    }
-
-
-    arrastando = true;
-
-
-    beneficiosScrollThumb.classList.add(
-      "arrastando"
-    );
-
-
-    beneficiosScrollTrack.setPointerCapture(
-      event.pointerId
-    );
-
-
-    event.preventDefault();
-  }
-
-
-  /* =======================================================
-     POINTER MOVE
-     ======================================================= */
-
-  function moverArraste(event) {
-
-    if (!arrastando) {
-      return;
-    }
-
-
-    const {
-      trackRect
-    } = obterMetricas();
-
-
-    const novaPosicao =
-      event.clientX -
-      trackRect.left -
-      offsetDoPointer;
-
-
-    moverPara(
-      novaPosicao
-    );
-
-
-    event.preventDefault();
-  }
-
-
-  /* =======================================================
-     POINTER UP / CANCEL
-     ======================================================= */
-
-  function terminarArraste(event) {
-
-    if (!arrastando) {
-      return;
-    }
-
-
-    arrastando = false;
-
-
-    beneficiosScrollThumb.classList.remove(
-      "arrastando"
-    );
-
-
-    if (
-      beneficiosScrollTrack.hasPointerCapture(
-        event.pointerId
-      )
-    ) {
-
-      beneficiosScrollTrack.releasePointerCapture(
-        event.pointerId
-      );
-
-    }
-  }
-
-
-  /* =======================================================
-     EVENTOS NA BARRA INTEIRA
-     ======================================================= */
-
-  beneficiosScrollTrack.addEventListener(
-    "pointerdown",
-    iniciarArraste
-  );
-
-
-  beneficiosScrollTrack.addEventListener(
-    "pointermove",
-    moverArraste
-  );
-
-
-  beneficiosScrollTrack.addEventListener(
-    "pointerup",
-    terminarArraste
-  );
-
-
-  beneficiosScrollTrack.addEventListener(
-    "pointercancel",
-    terminarArraste
-  );
-
-
-  /*
-   * Posição inicial correta.
-   */
-  atualizarBarraBeneficios();
-
-
-  /*
-   * Recalcula se a viewport mudar.
-   */
-  window.addEventListener(
-    "resize",
-    atualizarBarraBeneficios
-  );
-
-}
-
-
-  </script>
+</script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
