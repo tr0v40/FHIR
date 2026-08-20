@@ -1,0 +1,2375 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Medicamentos de referência, genéricos e similares
+    </title>
+
+    {% include 'core/google_analytics.html' %}
+
+    <link
+        rel="shortcut icon"
+        href="{% static 'img/favicon.png' %}"
+        type="image/x-icon"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+
+    <style>
+
+        /* =====================================================
+           RESET
+           ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+            font-family: "Inter", Arial, sans-serif;
+
+            background: #FFFFFF;
+
+            color: #000000;
+
+            overflow-x: hidden;
+        }
+
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+
+        button,
+        input {
+            font-family: "Inter", Arial, sans-serif;
+        }
+
+
+
+        /* =====================================================
+           TOPO AZUL
+           ===================================================== */
+.gs-top-bar {
+    position: relative;
+
+    width: 100%;
+    height: 50px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #0094FF;
+
+    font-family: "Inter", Arial, sans-serif;
+
+    font-style: normal;
+
+    font-weight: 600;
+
+    font-size: 15px;
+    line-height: 27px;
+
+    color: #FFFFFF;
+}
+
+
+/* ==========================================================
+   HEADER — FIGMA
+   ========================================================== */
+
+.gs-header {
+    position: relative;
+
+    width: 100%;
+    height:200px;
+
+    background: #FFFFFF;
+}
+
+
+.gs-header-inner {
+    position: relative;
+
+    width: 980px;
+    height: 142px;
+
+    margin: 0 auto;
+}
+/* ==========================================================
+   LOGO
+   ========================================================== */
+
+.gs-logo-link {
+    position: absolute;
+
+    width: 192px;
+    height: 100px;
+
+    left: -43px;
+    top: 9px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: transparent;
+
+    overflow: hidden;
+}
+
+
+.gs-logo {
+    display: block;
+
+    width: 192px;
+    height: 100px;
+
+    object-fit: contain;
+
+    background: transparent;
+
+    transform: scale(1.55);
+    transform-origin: center center;
+}
+
+.gs-login {
+    position: absolute;
+
+    width: 260px;
+    height: 40px;
+
+    right: 25px;
+    top: 11px;
+
+    display: block;
+
+    color: #010009;
+}
+
+
+/* ==========================================================
+   ÍCONE SACOLA
+   ========================================================== */
+
+.gs-login-bag {
+    position: absolute;
+
+    width: 28px;
+    height: 28px;
+
+    left: 36px;
+    top: 4px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+
+.gs-login-bag img {
+    display: block;
+
+    width: 40px;
+    height: 30px;
+
+    object-fit: contain;
+}
+
+
+/* ==========================================================
+   ÍCONE USUÁRIO
+   ========================================================== */
+
+.gs-login-user {
+    position: absolute;
+
+    width: 26px;
+    height: 26px;
+
+    left: 75px;
+    top: 7px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #0094FF;
+
+    border-radius: 100px;
+
+    color: #FFFFFF;
+
+    font-size: 13px;
+}
+
+
+/* ==========================================================
+   TEXTO LOGIN
+   ========================================================== */
+
+.gs-login-text {
+    position: absolute;
+
+    width: 145px;
+    height: 27px;
+
+    left: 115px;
+    top: 7px;
+
+    display: flex;
+
+    align-items: center;
+
+    font-family: "Inter", Arial, sans-serif;
+
+    font-style: normal;
+
+    font-weight: 700;
+
+    font-size: 15px;
+    line-height: 27px;
+
+    color: #010009;
+
+    white-space: nowrap;
+}
+
+
+
+        /* =====================================================
+           MAIN
+           ===================================================== */
+
+        .gs-main {
+            width: 980px;
+
+            margin: 0 auto;
+
+            padding-top: 50px;
+        }
+
+
+
+        /* =====================================================
+           INTRO
+           ===================================================== */
+
+        .gs-intro {
+            width: 100%;
+        }
+
+
+        .gs-intro h1 {
+            margin: 0;
+
+            font-weight: 700;
+
+            font-size: 32px;
+            line-height: 46px;
+
+            color: #000000;
+        }
+
+
+        .gs-intro p {
+            width: 850px;
+
+            margin: 20px 0 0;
+
+            font-weight: 500;
+
+            font-size: 15px;
+            line-height: 22px;
+
+            color: #000000;
+        }
+
+
+
+        /* =====================================================
+           PESQUISA
+           ===================================================== */
+
+        .gs-search {
+            width: 761px;
+
+            margin-top: 52px;
+        }
+
+
+        .gs-search form {
+            width: 100%;
+
+            margin: 0;
+        }
+
+
+        .gs-search label {
+            display: block;
+
+            margin-bottom: 13px;
+
+            font-weight: 700;
+
+            font-size: 15px;
+            line-height: 22px;
+
+            color: #0094FF;
+        }
+
+
+        .gs-search input {
+            width: 761px;
+            height: 60px;
+
+            margin: 0;
+
+            padding: 0 25px;
+
+            background: #FFFFFF;
+
+            border: 1px solid #0094FF;
+
+            border-radius: 5px;
+
+            outline: none;
+
+            font-weight: 500;
+
+            font-size: 15px;
+            line-height: 22px;
+
+            color: #000000;
+        }
+
+
+        .gs-search input::placeholder {
+            color: #8F8F93;
+
+            opacity: 1;
+        }
+
+
+        .gs-search input:focus {
+            border-color: #0094FF;
+
+            box-shadow:
+                0 0 0 1px
+                rgba(0, 148, 255, 0.10);
+        }
+
+
+
+        /* =====================================================
+           RESULTADOS
+           ===================================================== */
+
+        .gs-results {
+            width: 980px;
+
+            margin-top: 95px;
+
+            display: flex;
+            flex-direction: column;
+
+            align-items: flex-start;
+
+            gap: 35px;
+        }
+
+
+        /* =====================================================
+           CARD
+           ===================================================== */
+
+        .gs-card {
+            position: relative;
+
+            width: 907px;
+            height: 182px;
+
+            flex-shrink: 0;
+
+            background: #FFFFFF;
+
+            box-shadow:
+                0px 0px 7.88204px
+                1.57641px
+                rgba(0, 0, 0, 0.07);
+        }
+
+
+
+        /* =====================================================
+           CONTEÚDO CARD
+           ===================================================== */
+
+        .gs-card-info {
+            position: absolute;
+
+            left: 45px;
+            top: 42px;
+
+            width: 560px;
+            height: 100px;
+        }
+
+
+
+        /* =====================================================
+           TÍTULO CARD
+           ===================================================== */
+
+        .gs-card-title {
+            position: absolute;
+
+            left: 0;
+            top: 0;
+
+            width: 600px;
+
+            margin: 0;
+            padding: 0;
+
+            font-weight: 600;
+
+            font-size: 20px;
+            line-height: 29px;
+
+            color: #000000;
+        }
+
+
+
+        /* =====================================================
+           CATEGORIA
+           ===================================================== */
+
+        .gs-category {
+            position: absolute;
+
+            left: 0;
+            top: 29px;
+
+            width: 550px;
+
+            font-weight: 600;
+
+            font-size: 14px;
+            line-height: 20px;
+
+            color: #0094FF;
+        }
+
+
+
+        /* =====================================================
+           CONTADORES
+           ===================================================== */
+
+        .gs-counts {
+            position: absolute;
+
+            left: 0;
+            top: 64px;
+
+            width: 520px;
+            height: 22px;
+
+            display: flex;
+
+            align-items: center;
+        }
+
+
+        .gs-count {
+            height: 22px;
+
+            display: flex;
+
+            align-items: center;
+
+            white-space: nowrap;
+        }
+
+
+        .gs-count:nth-child(1) {
+            width: 194px;
+        }
+
+
+        .gs-count:nth-child(2) {
+            width: 189px;
+        }
+
+
+        .gs-count:nth-child(3) {
+            width: 135px;
+        }
+
+
+        .gs-count strong {
+            margin: 0;
+
+            font-weight: 600;
+
+            font-size: 14px;
+            line-height: 20px;
+
+            color: #000000;
+        }
+
+
+        .gs-count span {
+            margin-left: 4px;
+
+            font-weight: 400;
+
+            font-size: 15px;
+            line-height: 22px;
+
+            color: #000000;
+        }
+
+
+
+        /* =====================================================
+           BOTÃO VER REMÉDIOS
+           ===================================================== */
+
+        .gs-button {
+            position: absolute;
+
+            right: 28px;
+            bottom: 25px;
+
+            width: 129px;
+            height: 31px;
+
+            margin: 0;
+            padding: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #F0F0F0;
+
+            border: none;
+
+            border-radius: 5px;
+
+            font-weight: 400;
+
+            font-size: 12px;
+            line-height: 17px;
+
+            color: #000000;
+
+            cursor: pointer;
+        }
+
+
+        .gs-button:hover {
+            background: #E3E3E3;
+        }
+
+
+
+        /* =====================================================
+           SEM RESULTADO
+           ===================================================== */
+
+        .gs-empty {
+            width: 907px;
+
+            padding: 40px;
+
+            text-align: center;
+
+            color: #8F8F93;
+
+            font-size: 15px;
+            line-height: 22px;
+        }
+
+
+/* =====================================================
+   CARREGAR MAIS + PROGRESSO
+   ===================================================== */
+
+.gs-load-more-wrapper {
+    width: 907px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 18px;
+
+    margin-top: 45px;
+    margin-bottom: 90px;
+}
+
+
+.gs-load-more {
+    min-width: 180px;
+    height: 44px;
+
+    padding: 0 28px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #FFFFFF;
+
+    border: 1px solid #0094FF;
+
+    border-radius: 5px;
+
+    font-weight: 700;
+
+    font-size: 14px;
+
+    color: #0094FF;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+.gs-load-more:hover {
+    background: #0094FF;
+
+    color: #FFFFFF;
+}
+
+
+.gs-load-more:disabled {
+    opacity: 0.55;
+
+    cursor: wait;
+}
+
+
+
+/* =====================================================
+   ACOMPANHAMENTO
+   ===================================================== */
+
+.gs-progress-status {
+    width: 360px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 9px;
+}
+
+
+.gs-progress-text {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
+    font-family: "Inter", Arial, sans-serif;
+
+    font-weight: 400;
+
+    font-size: 13px;
+    line-height: 19px;
+
+    color: #8F8F93;
+}
+
+
+.gs-progress-text strong {
+    font-weight: 700;
+
+    color: #555555;
+}
+
+
+
+/* =====================================================
+   BARRA DE PROGRESSO
+   ===================================================== */
+
+.gs-progress-track {
+    position: relative;
+
+    width: 260px;
+    height: 4px;
+
+    background: #E3E3E3;
+
+    border-radius: 100px;
+
+    overflow: hidden;
+}
+
+
+.gs-progress-fill {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 0;
+    height: 100%;
+
+    background: #0094FF;
+
+    border-radius: 100px;
+
+    transition: width 0.35s ease;
+}
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+
+        .site-footer {
+            position: relative;
+
+            width: 100%;
+            height: 465px;
+
+            margin-top: 0;
+
+            background: #FFFFFF;
+
+            font-family: "Inter", Arial, sans-serif;
+        }
+
+
+        .site-footer-content {
+            position: relative;
+
+            width: 982px;
+            height: 286px;
+
+            margin: 0 auto;
+
+            top: 55px;
+        }
+
+
+
+        /* =====================================================
+           COLUNAS FOOTER
+           ===================================================== */
+
+        .site-footer-content > .footer-column {
+            position: absolute;
+
+            top: 0;
+        }
+
+
+        .site-footer-content > .footer-column:nth-child(1) {
+            left: 0;
+
+            width: 220px;
+        }
+
+
+        .site-footer-content > .footer-column:nth-child(2) {
+            left: 403px;
+
+            width: 200px;
+        }
+
+
+        .site-footer-content > .footer-column:nth-child(3) {
+            left: 746px;
+
+            width: 236px;
+        }
+
+
+
+        /* =====================================================
+           TÍTULOS FOOTER
+           ===================================================== */
+
+        .site-footer .footer-title {
+            margin: 0 0 14px;
+            padding: 0;
+
+            font-family: "Inter", Arial, sans-serif;
+
+            font-weight: 700;
+
+            font-size: 15px;
+            line-height: 21px;
+
+            color: #010009;
+        }
+
+
+
+        /* =====================================================
+           LINKS FOOTER
+           ===================================================== */
+
+        .site-footer a {
+            display: block;
+
+            width: fit-content;
+
+            margin: 0;
+            padding: 0;
+
+            font-family: "Inter", Arial, sans-serif;
+
+            font-weight: 500;
+
+            font-size: 13px;
+            line-height: 16px;
+
+            letter-spacing: 0.005em;
+
+            color: #8F8F93;
+
+            text-decoration: none;
+        }
+
+
+        .site-footer a:hover {
+            color: #0094FF;
+        }
+
+
+        .site-footer .footer-group {
+            margin: 0;
+            padding: 0;
+        }
+
+
+        .site-footer .footer-group > a + a {
+            margin-top: 5px;
+        }
+
+
+
+        /* =====================================================
+           COLUNA 1
+           ===================================================== */
+
+        .site-footer-content
+        > .footer-column:nth-child(1)
+        > .footer-group:nth-child(1) {
+
+            position: absolute;
+
+            left: 0;
+            top: 0;
+
+            width: 220px;
+        }
+
+
+        .site-footer-content
+        > .footer-column:nth-child(1)
+        > .footer-group:nth-child(2) {
+
+            position: absolute;
+
+            left: 0;
+            top: 115px;
+
+            width: 220px;
+        }
+
+
+        .site-footer-content
+        > .footer-column:nth-child(1)
+        > .footer-group:nth-child(3) {
+
+            display: none;
+        }
+
+
+
+        /* =====================================================
+           COLUNA 2
+           ===================================================== */
+
+        .site-footer-content
+        > .footer-column:nth-child(2)
+        > .footer-group:nth-child(1) {
+
+            position: absolute;
+
+            left: 0;
+            top: 0;
+
+            width: 180px;
+        }
+
+
+        .site-footer-content
+        > .footer-column:nth-child(2)
+        > .footer-group:nth-child(2) {
+
+            position: absolute;
+
+            left: 0;
+            top: 111px;
+
+            width: 180px;
+        }
+
+
+        .site-footer-content
+        > .footer-column:nth-child(2)
+        > .footer-group:nth-child(3) {
+
+            position: absolute;
+
+            left: 0;
+            top: 215px;
+
+            width: 200px;
+        }
+
+
+
+        /* =====================================================
+           COLUNA 3
+           ===================================================== */
+
+        .site-footer-content
+        > .footer-column:nth-child(3)
+        > .footer-group:nth-child(1) {
+
+            position: absolute;
+
+            left: 0;
+            top: 0;
+
+            width: 190px;
+        }
+
+
+        .site-footer-content
+        > .footer-column:nth-child(3)
+        > .footer-group:nth-child(2) {
+
+            position: absolute;
+
+            left: 0;
+            top: 155px;
+
+            width: 235px;
+        }
+
+
+        .footer-contract {
+            display: none;
+        }
+
+
+        .footer-contract-text {
+            display: block;
+
+            margin-top: 5px;
+
+            font-weight: 500;
+
+            font-size: 13px;
+            line-height: 16px;
+
+            color: #8F8F93;
+        }
+
+
+
+        /* =====================================================
+           BOTÃO AZUL FOOTER
+           ===================================================== */
+
+        .site-footer .footer-access-button {
+            position: absolute;
+
+            left: 0;
+            top: 213px;
+
+            width: 235px;
+            height: 73px;
+
+            padding: 0 28px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #0094FF;
+
+            border-radius: 5px;
+
+            font-family: "Inter", Arial, sans-serif;
+
+            font-weight: 800;
+
+            font-size: 15px;
+            line-height: 18px;
+
+            text-align: center;
+
+            color: #FFFFFF;
+        }
+
+
+        .site-footer .footer-access-button:hover {
+            background: #0087EA;
+
+            color: #FFFFFF;
+        }
+
+
+
+        /* =====================================================
+           FAIXA LEGAL
+           ===================================================== */
+
+        .site-footer-legal {
+            position: absolute;
+
+            width: 100%;
+            height: 65px;
+
+            left: 0;
+            bottom: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #FAFAFA;
+
+            border: 3px solid #E3E3E3;
+        }
+
+
+        .site-footer-legal p {
+            margin: 0;
+
+            font-family: "Inter", Arial, sans-serif;
+
+            font-weight: 400;
+
+            font-size: 13px;
+            line-height: 16px;
+
+            color: #8F8F93;
+        }
+
+
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @media screen and (max-width: 768px) {
+
+            .gs-top-bar {
+                height: 40px;
+
+                font-size: 12px;
+            }
+
+
+            .gs-header {
+                height: 105px;
+            }
+
+
+            .gs-header-inner,
+            .gs-main {
+                width: calc(100% - 32px);
+            }
+
+
+            .gs-logo-link {
+                top: 22px;
+            }
+
+
+            .gs-logo {
+                height: 45px;
+            }
+
+
+            .gs-login {
+                top: 25px;
+            }
+
+
+            .gs-login-text {
+                display: none;
+            }
+
+
+            .gs-main {
+                padding-top: 30px;
+            }
+
+
+            .gs-intro h1 {
+                font-size: 25px;
+                line-height: 34px;
+            }
+
+
+            .gs-intro p {
+                width: 100%;
+
+                font-size: 14px;
+                line-height: 21px;
+            }
+
+
+            .gs-search {
+                width: 100%;
+
+                margin-top: 40px;
+            }
+
+
+            .gs-search input {
+                width: 100%;
+            }
+
+
+            .gs-results {
+                width: 100%;
+
+                margin-top: 50px;
+
+                gap: 20px;
+            }
+
+
+            .gs-card {
+                width: 100%;
+                height: 205px;
+            }
+
+
+            .gs-card-info {
+                left: 20px;
+                top: 25px;
+
+                width: calc(100% - 40px);
+            }
+
+
+            .gs-card-title {
+                position: relative;
+
+                width: 100%;
+
+                font-size: 18px;
+                line-height: 25px;
+            }
+
+
+            .gs-category {
+                position: relative;
+
+                top: 2px;
+
+                width: 100%;
+
+                font-size: 13px;
+            }
+
+
+            .gs-counts {
+                top: 76px;
+
+                width: 100%;
+
+                display: grid;
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+
+                gap: 5px;
+            }
+
+
+            .gs-count,
+            .gs-count:nth-child(1),
+            .gs-count:nth-child(2),
+            .gs-count:nth-child(3) {
+
+                width: auto;
+
+                display: block;
+            }
+
+
+            .gs-count strong,
+            .gs-count span {
+                display: block;
+            }
+
+
+            .gs-count span {
+                margin-left: 0;
+            }
+
+
+            .gs-button {
+                right: 20px;
+                bottom: 20px;
+            }
+
+
+
+            /* =================================================
+               FOOTER MOBILE
+               ================================================= */
+
+            .site-footer {
+                height: auto;
+
+                padding-top: 40px;
+            }
+
+
+            .site-footer-content {
+                position: static;
+
+                width: calc(100% - 40px);
+                height: auto;
+
+                display: flex;
+
+                flex-direction: column;
+
+                gap: 30px;
+            }
+
+
+            .site-footer-content > .footer-column,
+            .site-footer-content > .footer-column:nth-child(1),
+            .site-footer-content > .footer-column:nth-child(2),
+            .site-footer-content > .footer-column:nth-child(3) {
+
+                position: static;
+
+                width: 100%;
+            }
+
+
+            .site-footer .footer-group,
+            .site-footer-content .footer-column .footer-group {
+
+                position: static !important;
+
+                margin-bottom: 25px;
+            }
+
+
+            .footer-hide-mobile {
+                display: none !important;
+            }
+
+
+            .site-footer .footer-access-button {
+                position: static;
+
+                margin-top: 20px;
+            }
+
+
+            .site-footer-legal {
+                position: relative;
+
+                margin-top: 40px;
+
+                padding: 0 20px;
+
+                text-align: center;
+            }
+
+
+            .site-footer-legal p {
+                font-size: 11px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     TOPO
+     ========================================================= -->
+
+<div class="gs-top-bar">
+    A plataforma do paciente bem informado
+</div>
+
+
+
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
+
+<header class="gs-header">
+
+    <div class="gs-header-inner">
+
+        <a
+            href="https://www.telix.inf.br/"
+            class="gs-logo-link"
+        >
+
+            <img
+                src="{% static 'img/logo.png' %}"
+                alt="Telix"
+                class="gs-logo"
+            >
+
+        </a>
+
+
+        <a
+            href="#"
+            class="gs-login"
+        >
+
+            <span
+                class="gs-login-bag"
+                aria-hidden="true"
+            >
+
+                <img
+                    src="{% static 'img/saloca_login.png' %}"
+                    alt=""
+                >
+
+            </span>
+
+
+            <span
+                class="gs-login-user"
+                aria-hidden="true"
+            >
+
+                <i class="fa-solid fa-user"></i>
+
+            </span>
+
+
+            <span class="gs-login-text">
+                Cadastre-se/Login
+            </span>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================================
+     CONTEÚDO PRINCIPAL
+     ========================================================= -->
+
+<main class="gs-main">
+
+
+    <!-- INTRO -->
+
+    <section class="gs-intro">
+
+        <h1>
+            Medicamentos de referência, genéricos e similares
+        </h1>
+
+
+        <p>
+            Selecione o princípio ativo para ver a lista completa de
+            medicamentos que o possuem, ou o nome do remédio para ver
+            outros remédios com o mesmo princípio ativo.
+        </p>
+
+    </section>
+
+
+
+    <!-- PESQUISA -->
+
+    <section class="gs-search">
+
+        <form
+            method="get"
+            id="formPesquisaGenericos"
+        >
+
+            <label for="pesquisaPrincipio">
+                Pesquisar princípio ativo ou medicamento
+            </label>
+
+
+            <input
+                id="pesquisaPrincipio"
+                type="search"
+                name="q"
+                value="{{ termo_busca }}"
+                placeholder="Pesquisar princípio ativo ou nome do medicamento..."
+                autocomplete="off"
+            >
+
+        </form>
+
+    </section>
+
+
+
+    <!-- CARDS -->
+
+    <section
+        class="gs-results"
+        id="genericosCardsContainer"
+    >
+
+        {% include "core/partials/genericos_cards.html" %}
+
+    </section>
+
+<!-- ========================================================
+     CARREGAR MAIS + ACOMPANHAMENTO
+     ======================================================== -->
+
+<div
+    class="gs-load-more-wrapper"
+    id="carregarMaisWrapper"
+>
+
+
+    {% if tem_mais %}
+
+        <button
+            type="button"
+            class="gs-load-more"
+            id="carregarMais"
+            data-page="{{ proxima_pagina }}"
+        >
+            Carregar mais
+        </button>
+
+    {% endif %}
+
+
+
+    <div
+        class="gs-progress-status"
+        id="principiosProgress"
+        data-loaded="{{ quantidade_carregada }}"
+        data-total="{{ total_principios }}"
+    >
+
+
+        <div class="gs-progress-text">
+
+            <strong id="principiosLoaded">
+                {{ quantidade_carregada }}
+            </strong>
+
+            <span>
+                de
+            </span>
+
+            <strong id="principiosTotal">
+                {{ total_principios }}
+            </strong>
+
+            <span>
+                princípios ativos
+            </span>
+
+        </div>
+
+
+
+        <div class="gs-progress-track">
+
+            <div
+                class="gs-progress-fill"
+                id="principiosProgressFill"
+            ></div>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+</main>
+
+
+
+<!-- =========================================================
+     FOOTER
+     DIRETO NESTE HTML
+     ========================================================= -->
+
+<footer class="site-footer">
+
+    <div class="site-footer-content">
+
+
+        <!-- ==================================================
+             COLUNA 1
+             ================================================== -->
+
+        <div class="footer-column">
+
+
+            <div class="footer-group">
+
+                <a
+                    href="https://www.telix.inf.br/tratamentos-risco-custo-contraindicado-eficacia-prazo"
+                >
+
+                    <h3 class="footer-title">
+                        Páginas de tratamentos
+                    </h3>
+
+                </a>
+
+
+                <a
+                    href="https://www.telix.inf.br/como-calculamos-a-eficacia-de-tratamentos-de-saude"
+                >
+                    Eficácia — como calculamos
+                </a>
+
+            </div>
+
+
+
+            <div class="footer-group">
+
+                <a
+                    href="https://www.telix.inf.br/evidencias-clinicas-de-pesquisas-sobre-tratamentos-de-saude"
+                >
+
+                    <h3 class="footer-title">
+                        Páginas de artigos científicos
+                    </h3>
+
+                </a>
+
+
+                <a
+                    href="https://www.telix.inf.br/criterios-do-rigor-da-pesquisa-de-tratamentos-de-saude"
+                >
+                    Rigor da pesquisa — critérios
+                </a>
+
+            </div>
+
+
+
+            <div class="footer-group footer-hide-mobile">
+
+                <a
+                    href="https://www.telix.inf.br/medicamentos-genericos-e-similares"
+                >
+                    <h3 class="footer-title"></h3>
+                </a>
+
+
+                <a
+                    href="https://www.telix.inf.br/medicamentos-genericos-e-similares"
+                ></a>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ==================================================
+             COLUNA 2
+             ================================================== -->
+
+        <div class="footer-column">
+
+
+            <div class="footer-group">
+
+                <a
+                    href="https://www.telix.inf.br/documentacao"
+                >
+
+                    <h3 class="footer-title">
+                        Documentos
+                    </h3>
+
+                </a>
+
+
+                <a
+                    href="https://www.telix.inf.br/documentacao/politica-de-privacidade"
+                >
+                    Política de Privacidade
+                </a>
+
+
+                <a
+                    href="https://www.telix.inf.br/documentacao/termos-de-uso"
+                >
+                    Termos de uso
+                </a>
+
+            </div>
+
+
+
+            <div class="footer-group">
+
+                <h3 class="footer-title">
+                    Fale com a gente!
+                </h3>
+
+
+                <a
+                    href="https://api.whatsapp.com/send/?phone=45999040371&text&type=phone_number&app_absent=0"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    (45) 99904-0371
+                </a>
+
+
+                <a
+                    href="mailto:contato@telix.inf.br"
+                >
+                    contato@telix.inf.br
+                </a>
+
+            </div>
+
+
+
+            <div class="footer-group footer-hide-mobile">
+
+                <a
+                    href="https://www.telix.inf.br/marcar-consulta-com-medico"
+                >
+
+                    <h3 class="footer-title">
+                        Não se automedique
+                    </h3>
+
+                </a>
+
+
+                <a
+                    href="https://www.telix.inf.br/marcar-consulta-com-medico"
+                >
+                    Consulte um profissional de saúde
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ==================================================
+             COLUNA 3
+             ================================================== -->
+
+        <div class="footer-column">
+
+
+            <div class="footer-group">
+
+                <h3 class="footer-title">
+                    Apresentações
+                </h3>
+
+
+                <a
+                    href="https://www.telix.inf.br/servicos-de-ti-para-empresas-de-saude-software-computacionalizacao-inovacao"
+                    class="footer-hide-mobile"
+                ></a>
+
+
+                <a
+                    href="https://www.telix.inf.br/perguntas-e-respostas"
+                >
+                    Perguntas e respostas
+                </a>
+
+
+                <a
+                    href="https://www.telix.inf.br/v%C3%ADdeos-entrevistas-e-materias-sobre-tratamentos-de-saude"
+                >
+                    Blog
+                </a>
+
+
+                <a
+                    href="https://www.telix.inf.br/quem-somos-telix-contexto-na-saude"
+                >
+                    Quem somos
+                </a>
+
+
+                <a
+                    href="https://www.telix.inf.br/depoimentos-experiencias-tratamentos-de-sa%C3%BAde"
+                >
+                    Depoimentos
+                </a>
+
+            </div>
+
+
+
+            <div class="footer-group">
+
+                <a
+                    href="https://www.telix.inf.br/entrevistas-com-especialistas-sobre-tratamento-de-sa%C3%BAde"
+                >
+
+                    <h3 class="footer-title">
+                        Opiniões de especialistas
+                    </h3>
+
+                </a>
+
+            </div>
+
+
+
+            <div class="footer-group footer-contract">
+
+                <h3 class="footer-title"></h3>
+
+                <span class="footer-contract-text"></span>
+
+            </div>
+
+
+
+            <a
+                href="https://www.telix.inf.br/condicoes-de-saude"
+                class="footer-access-button"
+            >
+                Acesso grátis ao banco de dados
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ======================================================
+         FAIXA LEGAL
+         ====================================================== -->
+
+    <div class="site-footer-legal">
+
+        <p>
+            Linca Telecomunicações Ltda — CNPJ: 03.376.788-0001/23
+        </p>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
+<script>
+
+(function () {
+
+    "use strict";
+
+
+    /* =====================================================
+       ELEMENTOS
+       ===================================================== */
+
+    const campoPesquisa =
+        document.getElementById(
+            "pesquisaPrincipio"
+        );
+
+
+    const formPesquisa =
+        document.getElementById(
+            "formPesquisaGenericos"
+        );
+
+
+    const cardsContainer =
+        document.getElementById(
+            "genericosCardsContainer"
+        );
+
+
+    const carregarMais =
+        document.getElementById(
+            "carregarMais"
+        );
+
+
+    const principiosProgress =
+        document.getElementById(
+            "principiosProgress"
+        );
+
+
+    const principiosLoaded =
+        document.getElementById(
+            "principiosLoaded"
+        );
+
+
+    const principiosTotal =
+        document.getElementById(
+            "principiosTotal"
+        );
+
+
+    const principiosProgressFill =
+        document.getElementById(
+            "principiosProgressFill"
+        );
+
+
+
+    /* =====================================================
+       FUNÇÃO DE PROGRESSO
+       ===================================================== */
+
+    function atualizarProgressoPrincipios(
+        carregados,
+        total
+    ) {
+
+        carregados =
+            Number(
+                carregados
+            )
+            ||
+            0;
+
+
+        total =
+            Number(
+                total
+            )
+            ||
+            0;
+
+
+        /* -------------------------------------------------
+           TEXTO CARREGADO
+           ------------------------------------------------- */
+
+        if (
+            principiosLoaded
+        ) {
+
+            principiosLoaded.textContent =
+                carregados.toLocaleString(
+                    "pt-BR"
+                );
+
+        }
+
+
+        /* -------------------------------------------------
+           TEXTO TOTAL
+           ------------------------------------------------- */
+
+        if (
+            principiosTotal
+        ) {
+
+            principiosTotal.textContent =
+                total.toLocaleString(
+                    "pt-BR"
+                );
+
+        }
+
+
+        /* -------------------------------------------------
+           BARRA
+           ------------------------------------------------- */
+
+        if (
+            principiosProgressFill
+        ) {
+
+            let percentual =
+                0;
+
+
+            if (
+                total > 0
+            ) {
+
+                percentual =
+                    (
+                        carregados
+                        /
+                        total
+                    )
+                    *
+                    100;
+
+            }
+
+
+            percentual =
+                Math.min(
+                    percentual,
+                    100
+                );
+
+
+            principiosProgressFill.style.width =
+                percentual
+                +
+                "%";
+
+        }
+
+
+        /* -------------------------------------------------
+           ATUALIZA DATASET
+           ------------------------------------------------- */
+
+        if (
+            principiosProgress
+        ) {
+
+            principiosProgress.dataset.loaded =
+                carregados;
+
+
+            principiosProgress.dataset.total =
+                total;
+
+        }
+
+    }
+
+
+
+    /* =====================================================
+       PROGRESSO INICIAL
+       ===================================================== */
+
+    if (
+        principiosProgress
+    ) {
+
+        atualizarProgressoPrincipios(
+
+            principiosProgress.dataset.loaded,
+
+            principiosProgress.dataset.total
+
+        );
+
+    }
+
+
+
+    /* =====================================================
+       PESQUISA AUTOMÁTICA
+       ===================================================== */
+
+    if (
+        campoPesquisa
+        &&
+        formPesquisa
+    ) {
+
+        let timerPesquisa =
+            null;
+
+
+        campoPesquisa.addEventListener(
+            "input",
+            function () {
+
+                clearTimeout(
+                    timerPesquisa
+                );
+
+
+                timerPesquisa =
+                    setTimeout(
+                        function () {
+
+                            formPesquisa.submit();
+
+                        },
+                        500
+                    );
+
+            }
+        );
+
+    }
+
+
+
+    /* =====================================================
+       CARREGAR MAIS
+       ===================================================== */
+
+    if (
+        carregarMais
+        &&
+        cardsContainer
+    ) {
+
+        carregarMais.addEventListener(
+            "click",
+            async function () {
+
+
+                /* -------------------------------------------------
+                   EVITA DUPLO CLIQUE
+                   ------------------------------------------------- */
+
+                if (
+                    carregarMais.disabled
+                ) {
+
+                    return;
+
+                }
+
+
+
+                /* -------------------------------------------------
+                   PÁGINA
+                   ------------------------------------------------- */
+
+                const pagina =
+                    carregarMais.dataset.page;
+
+
+
+                /* -------------------------------------------------
+                   PARÂMETROS
+                   ------------------------------------------------- */
+
+                const parametros =
+                    new URLSearchParams(
+                        window.location.search
+                    );
+
+
+                parametros.set(
+                    "page",
+                    pagina
+                );
+
+
+
+                /* -------------------------------------------------
+                   ESTADO CARREGANDO
+                   ------------------------------------------------- */
+
+                carregarMais.disabled =
+                    true;
+
+
+                carregarMais.textContent =
+                    "Carregando...";
+
+
+
+                try {
+
+
+                    /* =================================================
+                       FETCH
+                       ================================================= */
+
+                    const resposta =
+                        await fetch(
+
+                            (
+                                window.location.pathname
+                                +
+                                "?"
+                                +
+                                parametros.toString()
+                            ),
+
+                            {
+
+                                method:
+                                    "GET",
+
+                                headers: {
+
+                                    "X-Requested-With":
+                                        "XMLHttpRequest"
+
+                                }
+
+                            }
+
+                        );
+
+
+
+                    /* =================================================
+                       ERRO HTTP
+                       ================================================= */
+
+                    if (
+                        !resposta.ok
+                    ) {
+
+                        throw new Error(
+                            "Erro ao carregar mais resultados."
+                        );
+
+                    }
+
+
+
+                    /* =================================================
+                       JSON
+                       ================================================= */
+
+                    const dados =
+                        await resposta.json();
+
+
+
+                    /* =================================================
+                       ADICIONA CARDS
+                       ================================================= */
+
+                    if (
+                        dados.html
+                    ) {
+
+                        cardsContainer.insertAdjacentHTML(
+                            "beforeend",
+                            dados.html
+                        );
+
+                    }
+
+
+
+                    /* =================================================
+                       CONTA QUANTOS CARDS EXISTEM NA TELA
+                       ================================================= */
+
+                    const quantidadeAtual =
+                        cardsContainer.querySelectorAll(
+                            ".gs-card"
+                        ).length;
+
+
+
+                    /* =================================================
+                       TOTAL
+                       ================================================= */
+
+                    const totalAtual =
+                        Number(
+                            dados.total_principios
+                        )
+                        ||
+                        Number(
+                            principiosProgress
+                                ?
+                                principiosProgress.dataset.total
+                                :
+                                0
+                        )
+                        ||
+                        0;
+
+
+
+                    /* =================================================
+                       ATUALIZA O ACOMPANHAMENTO
+                       ================================================= */
+
+                    atualizarProgressoPrincipios(
+                        quantidadeAtual,
+                        totalAtual
+                    );
+
+
+
+                    /* =================================================
+                       AINDA TEM MAIS
+                       ================================================= */
+
+                    if (
+                        dados.tem_mais
+                    ) {
+
+                        carregarMais.dataset.page =
+                            dados.proxima_pagina;
+
+
+                        carregarMais.disabled =
+                            false;
+
+
+                        carregarMais.textContent =
+                            "Carregar mais";
+
+                    }
+
+
+                    /* =================================================
+                       CHEGOU AO FINAL
+                       ================================================= */
+
+                    else {
+
+                        carregarMais.style.display =
+                            "none";
+
+                    }
+
+
+                }
+
+
+                /* =====================================================
+                   ERRO
+                   ===================================================== */
+
+                catch (
+                    erro
+                ) {
+
+                    console.error(
+                        erro
+                    );
+
+
+                    carregarMais.disabled =
+                        false;
+
+
+                    carregarMais.textContent =
+                        "Tentar novamente";
+
+                }
+
+
+            }
+        );
+
+    }
+
+
+})();
+
+</script>
+
+</body>
+
+</html>

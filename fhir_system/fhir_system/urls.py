@@ -11,6 +11,7 @@ from core.domain_views import domain_home
 from core.public_views_detalhes2 import detalhes_tratamentos_v2
 from core.public_views_listas import pagina_lista_por_url
 from core.public_views_en import english_treatment_list_with_filters
+from core.public_views_genericos import genericos_similares,genericos_similares_detalhes
 from core.views import (
     CondicaoSaudeDetailView,
     tipo_eficacia_descricao_json,
@@ -104,13 +105,16 @@ urlpatterns = [
         include("rest_framework.urls"),
     ),
 
-    # =========================================================
-    # REDIRECIONAMENTOS DAS URLs ANTIGAS DA LISTA V2
-    # =========================================================
-
-    # /listas-v2/enxaqueca/
-    # redireciona para:
-    # /enxaqueca/
+    path(
+        "medicamentos-genericos-e-similares/",
+        genericos_similares,
+        name="genericos_similares",
+    ),
+    path(
+    "medicamentos-genericos-e-similares/detalhes/",
+    genericos_similares_detalhes,
+    name="genericos_similares_detalhes",
+    ),
     path(
         "listas-v2/<slug:condicao_slug>/",
         public_views_listas2.redirect_lista_v2_raiz_antiga,

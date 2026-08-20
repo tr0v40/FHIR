@@ -249,7 +249,9 @@ class AlertaTratamentoInline(admin.TabularInline):
 @admin.register(DetalhesTratamentoResumo)
 class DetalhesTratamentoAdmin(ImportExportModelAdmin):
     resource_class = DetalhesTratamentoResumoResource
-
+    ordering = (
+        "nome",
+    )
     inlines = [
         TratamentoCondicaoInline,
         DetalhesTratamentoReacaoAdversaInline,
@@ -294,6 +296,7 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
         "custo_medicamento",
         "condicoes_relacionadas__condicao",
         "contraindicacoes",
+        "reacoes_adversas",
     )
 
     fieldsets = (
@@ -430,10 +433,31 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
 
 @admin.register(ReacaoAdversa)
 class ReacaoAdversaAdmin(admin.ModelAdmin):
-    list_display = ("nome", "descricao", "undesirable_effect_name", "undesirable_effect_description")
-    fields = ("nome", "descricao", "imagem", "undesirable_effect_name", "undesirable_effect_description")
-    search_fields = ("nome", "undesirable_effect_name")
 
+    list_display = (
+        "nome",
+        "descricao",
+        "undesirable_effect_name",
+        "undesirable_effect_description",
+    )
+
+    fields = (
+        "nome",
+        "descricao",
+        "imagem",
+        "undesirable_effect_name",
+        "undesirable_effect_description",
+    )
+
+    search_fields = (
+        "nome",
+        "undesirable_effect_name",
+    )
+
+    # ORDEM ALFABÉTICA
+    ordering = (
+        "nome",
+    )
 
 @admin.register(CondicaoSaude)
 class CondicaoSaudeAdmin(admin.ModelAdmin):

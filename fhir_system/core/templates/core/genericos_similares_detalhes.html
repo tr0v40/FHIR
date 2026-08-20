@@ -1,0 +1,2121 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Remédios com {{ principio_ativo }} | Telix
+    </title>
+
+
+    {% include 'core/google_analytics.html' %}
+
+
+    <link
+        rel="shortcut icon"
+        href="{% static 'img/favicon.png' %}"
+        type="image/x-icon"
+    >
+
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+
+    <style>
+
+        /* =====================================================
+           RESET
+           ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+            font-family: "Inter", Arial, sans-serif;
+
+            background: #FFFFFF;
+
+            color: #010009;
+
+            overflow-x: hidden;
+        }
+
+
+        a {
+            color: inherit;
+
+            text-decoration: none;
+        }
+
+
+        button,
+        input {
+            font-family: "Inter", Arial, sans-serif;
+        }
+
+
+
+        /* =====================================================
+           FAIXA AZUL
+           ===================================================== */
+
+        .gd-top-bar {
+            width: 100%;
+            height: 50px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #0094FF;
+
+            color: #FFFFFF;
+
+            font-family: "Inter", Arial, sans-serif;
+
+            font-weight: 600;
+
+            font-size: 15px;
+            line-height: 27px;
+        }
+
+
+
+        /* =====================================================
+           HEADER
+           ===================================================== */
+
+        .gd-header {
+            width: 100%;
+            height: 142px;
+
+            background: #FFFFFF;
+        }
+
+
+        .gd-header-inner {
+            position: relative;
+
+            width: 980px;
+            height: 142px;
+
+            margin: 0 auto;
+        }
+
+
+
+        /* =====================================================
+           LOGO
+           ===================================================== */
+
+        .gd-logo-link {
+            position: absolute;
+
+            width: 192px;
+            height: 100px;
+
+            left: -43px;
+            top: 9px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            overflow: hidden;
+
+            background: transparent;
+        }
+
+
+        .gd-logo {
+            display: block;
+
+            width: 192px;
+            height: 100px;
+
+            object-fit: contain;
+
+            background: transparent;
+
+            transform: scale(1.55);
+
+            transform-origin: center center;
+        }
+
+
+
+        /* =====================================================
+           LOGIN
+           ===================================================== */
+
+        .gd-login {
+            position: absolute;
+
+            width: 260px;
+            height: 40px;
+
+            right: 25px;
+            top: 11px;
+
+            color: #010009;
+        }
+
+
+        .gd-login-bag {
+            position: absolute;
+
+            width: 28px;
+            height: 28px;
+
+            left: 36px;
+            top: 4px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .gd-login-bag img {
+            display: block;
+
+            width: 28px;
+            height: 28px;
+
+            object-fit: contain;
+        }
+
+
+        .gd-login-user {
+            position: absolute;
+
+            width: 26px;
+            height: 26px;
+
+            left: 75px;
+            top: 7px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #0094FF;
+
+            border-radius: 100px;
+
+            color: #FFFFFF;
+
+            font-size: 13px;
+        }
+
+
+        .gd-login-text {
+            position: absolute;
+
+            width: 145px;
+            height: 27px;
+
+            left: 115px;
+            top: 7px;
+
+            display: flex;
+
+            align-items: center;
+
+            font-weight: 700;
+
+            font-size: 15px;
+            line-height: 27px;
+
+            white-space: nowrap;
+
+            color: #010009;
+        }
+
+
+
+        /* =====================================================
+           CONTEÚDO
+           ===================================================== */
+
+        .gd-main {
+            width: 980px;
+
+            margin: 0 auto;
+
+            padding-top: 60px;
+            padding-bottom: 110px;
+        }
+
+
+
+        /* =====================================================
+           INTRO
+           ===================================================== */
+
+        .gd-intro {
+            width: 907px;
+
+            margin: 0;
+        }
+
+
+        .gd-title {
+            margin: 0;
+
+            font-weight: 600;
+
+            font-size: 24px;
+            line-height: 35px;
+
+            color: #010009;
+        }
+
+
+        .gd-title strong {
+            font-weight: 700;
+        }
+
+
+        .gd-description {
+            margin: 14px 0 0;
+
+            font-weight: 400;
+
+            font-size: 14px;
+            line-height: 21px;
+
+            color: #8F8F93;
+        }
+
+
+
+        /* =====================================================
+           LISTA
+           ===================================================== */
+
+        .gd-list {
+            width: 907px;
+
+            margin-top: 58px;
+        }
+
+
+
+        /* =====================================================
+           CARD DO MEDICAMENTO
+           ===================================================== */
+
+        .gd-medicine {
+            position: relative;
+
+            width: 907px;
+            min-height: 184px;
+
+            display: grid;
+
+            grid-template-columns:
+                140px
+                minmax(0, 1fr)
+                190px;
+
+            align-items: center;
+
+            padding: 24px 0;
+
+            border-bottom: 1px solid #E3E3E3;
+
+            background: #FFFFFF;
+
+            color: #010009;
+        }
+
+
+
+        /* =====================================================
+           CARD CLICÁVEL
+           ===================================================== */
+
+        .gd-medicine-clickable {
+            cursor: pointer;
+
+            transition:
+                background-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+
+        .gd-medicine-clickable:hover {
+            background: #FAFAFA;
+        }
+
+
+        .gd-medicine-clickable:hover .gd-name {
+            color: #0094FF;
+        }
+
+
+        .gd-medicine-clickable:hover .gd-buy-button {
+            background: #FFE3C3;
+        }
+
+
+        .gd-medicine-clickable:focus {
+            outline: 2px solid #0094FF;
+
+            outline-offset: 2px;
+        }
+
+
+        .gd-medicine-disabled {
+            cursor: default;
+        }
+
+
+
+        /* =====================================================
+           IMAGEM
+           ===================================================== */
+
+        .gd-image-area {
+            width: 140px;
+            height: 130px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .gd-image {
+            display: block;
+
+            max-width: 105px;
+            max-height: 120px;
+
+            width: auto;
+            height: auto;
+
+            object-fit: contain;
+        }
+
+
+        .gd-no-image {
+            width: 90px;
+            height: 100px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 10px;
+
+            background: #F7F7F7;
+
+            border: 1px solid #EEEEEE;
+
+            border-radius: 4px;
+
+            color: #B0B0B0;
+
+            font-size: 11px;
+            line-height: 15px;
+
+            text-align: center;
+        }
+
+
+
+        /* =====================================================
+           INFORMAÇÕES
+           ===================================================== */
+
+        .gd-info {
+            min-width: 0;
+
+            padding-right: 30px;
+        }
+
+
+        .gd-name {
+            margin: 0;
+
+            font-weight: 700;
+
+            font-size: 17px;
+            line-height: 25px;
+
+            color: #010009;
+
+            transition: color 0.2s ease;
+        }
+
+
+
+        /* =====================================================
+           CATEGORIA REGULATÓRIA
+           ===================================================== */
+
+        .gd-regulatory {
+            display: inline-flex;
+
+            align-items: center;
+
+            min-height: 22px;
+
+            margin-top: 6px;
+
+            padding: 2px 9px;
+
+            background: #F0F0F0;
+
+            border-radius: 5px;
+
+            font-weight: 500;
+
+            font-size: 11px;
+            line-height: 16px;
+
+            color: #010009;
+        }
+
+
+
+        /* =====================================================
+           META
+           ===================================================== */
+
+        .gd-meta {
+            margin-top: 18px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+
+            font-size: 12px;
+            line-height: 17px;
+
+            color: #010009;
+        }
+
+
+        .gd-meta-row strong {
+            font-weight: 700;
+        }
+
+
+
+        /* =====================================================
+           PREÇO / COMPRA
+           ===================================================== */
+
+        .gd-buy-area {
+            width: 190px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+
+        .gd-price {
+            margin-bottom: 10px;
+
+            font-weight: 500;
+
+            font-size: 12px;
+            line-height: 18px;
+
+            color: #010009;
+        }
+
+
+        .gd-price strong {
+            font-weight: 700;
+        }
+
+
+
+        /* =====================================================
+           BOTÃO COMPRAR
+           ===================================================== */
+
+        .gd-buy-button {
+            width: 116px;
+            height: 30px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #FFF0DE;
+
+            border-radius: 4px;
+
+            font-weight: 500;
+
+            font-size: 11px;
+            line-height: 16px;
+
+            color: #010009;
+
+            transition: background 0.2s ease;
+        }
+
+
+        .gd-no-buy {
+            font-size: 11px;
+            line-height: 16px;
+
+            color: #8F8F93;
+        }
+
+
+
+        /* =====================================================
+           VAZIO
+           ===================================================== */
+
+        .gd-empty {
+            width: 907px;
+
+            padding: 60px 20px;
+
+            text-align: center;
+
+            color: #8F8F93;
+
+            font-size: 14px;
+            line-height: 21px;
+        }
+
+
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+
+        .site-footer {
+            position: relative;
+
+            width: 100%;
+            height: 465px;
+
+            background: #FFFFFF;
+
+            font-family: "Inter", Arial, sans-serif;
+        }
+
+
+        .site-footer-content {
+            position: relative;
+
+            width: 982px;
+            height: 286px;
+
+            margin: 0 auto;
+
+            top: 55px;
+
+            left: -8px;
+        }
+
+
+
+        /* =====================================================
+           FOOTER — COLUNAS
+           ===================================================== */
+
+        .footer-column {
+            position: absolute;
+
+            top: 0;
+        }
+
+
+        .footer-column:nth-child(1) {
+            width: 220px;
+
+            left: 0;
+        }
+
+
+        .footer-column:nth-child(2) {
+            width: 180px;
+
+            left: 403px;
+        }
+
+
+        .footer-column:nth-child(3) {
+            width: 236px;
+
+            left: 746px;
+        }
+
+
+
+        /* =====================================================
+           FOOTER — LINKS
+           ===================================================== */
+
+        .site-footer a {
+            display: block;
+
+            width: fit-content;
+
+            color: #8F8F93;
+
+            font-weight: 500;
+
+            font-size: 13px;
+            line-height: 15px;
+
+            letter-spacing: 0.005em;
+
+            text-decoration: none;
+        }
+
+
+        .site-footer a:hover {
+            color: #0094FF;
+        }
+
+
+        .footer-title {
+            margin: 0;
+
+            font-weight: 700;
+
+            font-size: 15px;
+            line-height: 21px;
+
+            color: #010009;
+        }
+
+
+
+        /* =====================================================
+           FOOTER — COLUNA 1
+           ===================================================== */
+
+        .footer-column:nth-child(1)
+        .footer-group:nth-child(1) {
+            position: absolute;
+
+            top: 1px;
+            left: 0;
+
+            width: 218px;
+        }
+
+
+        .footer-column:nth-child(1)
+        .footer-group:nth-child(1)
+        > a:last-child {
+            margin-top: 14px;
+        }
+
+
+        .footer-column:nth-child(1)
+        .footer-group:nth-child(2) {
+            position: absolute;
+
+            top: 115px;
+            left: 1px;
+
+            width: 218px;
+        }
+
+
+        .footer-column:nth-child(1)
+        .footer-group:nth-child(2)
+        > a:last-child {
+            margin-top: 14px;
+        }
+
+
+
+        /* =====================================================
+           FOOTER — COLUNA 2
+           ===================================================== */
+
+        .footer-column:nth-child(2)
+        .footer-group:nth-child(1) {
+            position: absolute;
+
+            top: 0;
+            left: 0;
+        }
+
+
+        .footer-column:nth-child(2)
+        .footer-group:nth-child(1)
+        > a:nth-child(2) {
+            margin-top: 14px;
+        }
+
+
+        .footer-column:nth-child(2)
+        .footer-group:nth-child(1)
+        > a:nth-child(3) {
+            margin-top: 6px;
+        }
+
+
+        .footer-column:nth-child(2)
+        .footer-group:nth-child(2) {
+            position: absolute;
+
+            left: 0;
+            top: 111px;
+        }
+
+
+        .footer-column:nth-child(2)
+        .footer-group:nth-child(2)
+        > a {
+            margin-top: 10px;
+        }
+
+
+        .footer-contract {
+            position: absolute;
+
+            left: 0;
+            top: 215px;
+
+            width: 164px;
+        }
+
+
+        .footer-contract-text {
+            display: block;
+
+            margin-top: 9px;
+
+            color: #8F8F93;
+
+            font-weight: 500;
+
+            font-size: 13px;
+            line-height: 16px;
+        }
+
+
+
+        /* =====================================================
+           FOOTER — COLUNA 3
+           ===================================================== */
+
+        .footer-column:nth-child(3)
+        .footer-group:nth-child(1) {
+            position: absolute;
+
+            left: 0;
+            top: 0;
+        }
+
+
+        .footer-column:nth-child(3)
+        .footer-group:nth-child(1)
+        > a {
+            margin-top: 8px;
+        }
+
+
+        .footer-column:nth-child(3)
+        .footer-group:nth-child(2) {
+            position: absolute;
+
+            left: 2px;
+            top: 155px;
+
+            width: 235px;
+        }
+
+
+
+        /* =====================================================
+           BOTÃO FOOTER
+           ===================================================== */
+
+        .footer-access-button {
+            position: absolute;
+
+            left: 1px;
+            top: 213px;
+
+            width: 235px !important;
+            height: 73px;
+
+            display: flex !important;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 0 25px;
+
+            background: #0094FF;
+
+            border-radius: 5px;
+
+            color: #FFFFFF !important;
+
+            font-weight: 800 !important;
+
+            font-size: 15px !important;
+            line-height: 18px !important;
+
+            text-align: center;
+        }
+
+
+        .footer-access-button:hover {
+            background: #0086E8;
+
+            color: #FFFFFF !important;
+        }
+
+
+
+        /* =====================================================
+           FOOTER LEGAL
+           ===================================================== */
+
+        .site-footer-legal {
+            position: absolute;
+
+            width: 100%;
+            height: 65px;
+
+            left: 0;
+            bottom: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #FAFAFA;
+
+            border: 3px solid #E3E3E3;
+        }
+
+
+        .site-footer-legal p {
+            position: relative;
+
+            left: -8px;
+
+            margin: 0;
+
+            color: #8F8F93;
+
+            font-weight: 400;
+
+            font-size: 13px;
+            line-height: 16px;
+        }
+
+/* =====================================================
+   CARREGAR MAIS MEDICAMENTOS
+   ===================================================== */
+
+.gd-load-more-wrapper {
+    width: 907px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 14px;
+
+    margin-top: 45px;
+}
+
+
+.gd-load-more {
+    min-width: 180px;
+    height: 44px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 28px;
+
+    background: #FFFFFF;
+
+    border: 1px solid #0094FF;
+
+    border-radius: 5px;
+
+    color: #0094FF;
+
+    font-family: "Inter", Arial, sans-serif;
+
+    font-weight: 700;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+.gd-load-more:hover {
+    background: #0094FF;
+
+    color: #FFFFFF;
+}
+
+
+.gd-load-more:disabled {
+    opacity: 0.55;
+
+    cursor: wait;
+}
+
+
+.gd-progress {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
+    color: #8F8F93;
+
+    font-size: 13px;
+    line-height: 19px;
+}
+
+
+.gd-progress strong {
+    color: #555555;
+
+    font-weight: 700;
+}
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @media screen and (max-width: 768px) {
+
+            .gd-top-bar {
+                height: 40px;
+
+                padding: 0 15px;
+
+                text-align: center;
+
+                font-size: 12px;
+            }
+
+
+            .gd-header {
+                height: 105px;
+            }
+
+
+            .gd-header-inner,
+            .gd-main {
+                width: calc(100% - 32px);
+            }
+
+
+            .gd-logo-link {
+                width: 145px;
+                height: 78px;
+
+                left: -15px;
+                top: 5px;
+            }
+
+
+            .gd-logo {
+                width: 145px;
+                height: 78px;
+
+                transform: scale(1.35);
+            }
+
+
+            .gd-login {
+                right: 0;
+                top: 14px;
+
+                width: 110px;
+            }
+
+
+            .gd-login-bag {
+                left: 0;
+            }
+
+
+            .gd-login-user {
+                left: 37px;
+            }
+
+
+            .gd-login-text {
+                display: none;
+            }
+
+
+            .gd-main {
+                padding-top: 35px;
+                padding-bottom: 70px;
+            }
+
+
+            .gd-intro,
+            .gd-list {
+                width: 100%;
+            }
+
+
+            .gd-title {
+                font-size: 21px;
+                line-height: 30px;
+            }
+
+
+            .gd-list {
+                margin-top: 35px;
+            }
+
+
+            .gd-medicine {
+                width: 100%;
+                min-height: auto;
+
+                grid-template-columns:
+                    95px
+                    minmax(0, 1fr);
+
+                padding: 25px 0;
+            }
+
+
+            .gd-image-area {
+                width: 90px;
+                height: 110px;
+
+                align-self: start;
+            }
+
+
+            .gd-image {
+                max-width: 75px;
+                max-height: 100px;
+            }
+
+
+            .gd-info {
+                padding-right: 0;
+            }
+
+
+            .gd-name {
+                font-size: 15px;
+                line-height: 22px;
+            }
+
+
+            .gd-buy-area {
+                grid-column: 2;
+
+                width: 100%;
+
+                margin-top: 20px;
+
+                align-items: flex-start;
+            }
+
+
+            .site-footer {
+                height: auto;
+
+                padding: 40px 0 0;
+            }
+
+
+            .site-footer-content {
+                position: static;
+
+                width: calc(100% - 40px);
+                height: auto;
+
+                margin: 0 auto;
+
+                display: flex;
+
+                flex-direction: column;
+
+                gap: 30px;
+            }
+
+
+            .footer-column,
+            .footer-column:nth-child(1),
+            .footer-column:nth-child(2),
+            .footer-column:nth-child(3) {
+                position: static;
+
+                width: 100%;
+            }
+
+
+            .footer-group,
+            .footer-column .footer-group,
+            .footer-contract {
+                position: static !important;
+
+                margin-bottom: 25px;
+            }
+
+
+            .footer-access-button {
+                position: static;
+
+                margin-top: 15px;
+            }
+
+
+            .footer-hide-mobile {
+                display: none !important;
+            }
+
+
+            .site-footer-legal {
+                position: relative;
+
+                margin-top: 40px;
+
+                padding: 0 20px;
+
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     FAIXA AZUL
+     ========================================================= -->
+
+<div class="gd-top-bar">
+
+    A plataforma do paciente bem informado
+
+</div>
+
+
+
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
+
+<header class="gd-header">
+
+    <div class="gd-header-inner">
+
+
+        <a
+            href="https://www.telix.inf.br/"
+            class="gd-logo-link"
+        >
+
+            <img
+                src="{% static 'img/logo.png' %}"
+                alt="Telix"
+                class="gd-logo"
+            >
+
+        </a>
+
+
+
+        <a
+            href="#"
+            class="gd-login"
+        >
+
+            <span class="gd-login-bag">
+
+                <img
+                    src="{% static 'img/saloca_login.png' %}"
+                    alt=""
+                >
+
+            </span>
+
+
+            <span class="gd-login-user">
+
+                <i class="fa-solid fa-user"></i>
+
+            </span>
+
+
+            <span class="gd-login-text">
+
+                Cadastre-se/Login
+
+            </span>
+
+        </a>
+
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================================
+     CONTEÚDO PRINCIPAL
+     ========================================================= -->
+
+<main class="gd-main">
+
+
+    <!-- =====================================================
+         CABEÇALHO DA PÁGINA
+         ===================================================== -->
+
+    <section class="gd-intro">
+
+
+        <h1 class="gd-title">
+
+            Remédios com o princípio ativo:
+
+            <strong>
+                {{ principio_ativo }}
+            </strong>
+
+        </h1>
+
+
+        <p class="gd-description">
+
+            Veja todos os medicamentos vendidos no Brasil
+            com o mesmo princípio ativo
+
+        </p>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         LISTA DE MEDICAMENTOS
+         ===================================================== -->
+<section
+    class="gd-list"
+    id="medicamentosContainer"
+>
+
+    {% include "core/partials/genericos_detalhes_cards.html" %}
+
+</section>
+
+
+
+<!-- =====================================================
+     CARREGAR MAIS
+     ===================================================== -->
+
+<div class="gd-load-more-wrapper">
+
+
+    {% if tem_mais %}
+
+        <button
+            type="button"
+            class="gd-load-more"
+            id="carregarMaisMedicamentos"
+            data-page="{{ proxima_pagina }}"
+        >
+
+            Carregar mais
+
+        </button>
+
+    {% endif %}
+
+
+    <div
+        class="gd-progress"
+        id="medicamentosProgress"
+        data-total="{{ total_medicamentos }}"
+    >
+
+        <strong id="medicamentosLoaded">
+            {{ quantidade_carregada }}
+        </strong>
+
+        <span>de</span>
+
+        <strong id="medicamentosTotal">
+            {{ total_medicamentos }}
+        </strong>
+
+        <span>medicamentos</span>
+
+    </div>
+
+
+</div>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
+<footer class="site-footer">
+
+
+    <div class="site-footer-content">
+
+
+        <!-- =================================================
+             COLUNA 1
+             ================================================= -->
+
+        <div class="footer-column">
+
+
+            <div class="footer-group">
+
+
+                <a
+                    href="https://www.telix.inf.br/tratamentos-risco-custo-contraindicado-eficacia-prazo"
+                >
+
+                    <h3 class="footer-title">
+
+                        Páginas de tratamentos
+
+                    </h3>
+
+                </a>
+
+
+                <a
+                    href="https://www.telix.inf.br/como-calculamos-a-eficacia-de-tratamentos-de-saude"
+                >
+
+                    Eficácia - como calculamos
+
+                </a>
+
+
+            </div>
+
+
+
+            <div class="footer-group">
+
+
+                <a
+                    href="https://www.telix.inf.br/evidencias-clinicas-de-pesquisas-sobre-tratamentos-de-saude"
+                >
+
+                    <h3 class="footer-title">
+
+                        Páginas de artigos científicos
+
+                    </h3>
+
+                </a>
+
+
+                <a
+                    href="https://www.telix.inf.br/criterios-do-rigor-da-pesquisa-de-tratamentos-de-saude"
+                >
+
+                    Rigor da pesquisa - critérios
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             COLUNA 2
+             ================================================= -->
+
+        <div class="footer-column">
+
+
+            <div class="footer-group">
+
+
+                <a
+                    href="https://www.telix.inf.br/documentacao"
+                >
+
+                    <h3 class="footer-title">
+
+                        Documentos
+
+                    </h3>
+
+                </a>
+
+
+                <a
+                    href="https://www.telix.inf.br/documentacao/politica-de-privacidade"
+                >
+
+                    Política de Privacidade
+
+                </a>
+
+
+                <a
+                    href="https://www.telix.inf.br/documentacao/termos-de-uso"
+                >
+
+                    Termos de uso
+
+                </a>
+
+
+            </div>
+
+
+
+            <div class="footer-group">
+
+
+                <h3 class="footer-title">
+
+                    Fale com a gente!
+
+                </h3>
+
+
+                <a
+                    href="https://api.whatsapp.com/send/?phone=45999040371&text&type=phone_number&app_absent=0"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    (45) 99904-0371
+
+                </a>
+
+
+                <a
+                    href="mailto:contato@telix.inf.br"
+                >
+
+                    contato@telix.inf.br
+
+                </a>
+
+
+            </div>
+
+
+
+            <div class="footer-contract">
+
+
+                <h3 class="footer-title">
+
+                    Contratar
+
+                </h3>
+
+
+                <span class="footer-contract-text">
+
+                    Paciente bem informado
+
+                </span>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             COLUNA 3
+             ================================================= -->
+
+        <div class="footer-column">
+
+
+            <div class="footer-group">
+
+
+                <h3 class="footer-title">
+
+                    Apresentações
+
+                </h3>
+
+
+                <a
+                    href="https://www.telix.inf.br/perguntas-e-respostas"
+                >
+
+                    Perguntas e respostas
+
+                </a>
+
+
+                <a
+                    href="https://www.telix.inf.br/v%C3%ADdeos-entrevistas-e-materias-sobre-tratamentos-de-saude"
+                >
+
+                    Blog
+
+                </a>
+
+
+                <a
+                    href="https://www.telix.inf.br/quem-somos-telix-contexto-na-saude"
+                >
+
+                    Quem somos
+
+                </a>
+
+
+                <a
+                    href="https://www.telix.inf.br/depoimentos-experiencias-tratamentos-de-sa%C3%BAde"
+                >
+
+                    Depoimentos
+
+                </a>
+
+
+            </div>
+
+
+
+            <div class="footer-group">
+
+
+                <a
+                    href="https://www.telix.inf.br/entrevistas-com-especialistas-sobre-tratamento-de-sa%C3%BAde"
+                >
+
+                    <h3 class="footer-title">
+
+                        Opiniões de especialistas
+
+                    </h3>
+
+                </a>
+
+
+            </div>
+
+
+
+            <a
+                href="https://www.telix.inf.br/condicoes-de-saude"
+                class="footer-access-button"
+            >
+
+                Acesso grátis ao banco de dados
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         FAIXA LEGAL
+         ===================================================== -->
+
+    <div class="site-footer-legal">
+
+        <p>
+
+            Linca Telecomunicações Ltda - CNPJ: 03.376.788-0001/23
+
+        </p>
+
+    </div>
+
+
+</footer>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     CARD INTEIRO CLICÁVEL
+     ========================================================= -->
+
+<script>
+
+(function () {
+
+    "use strict";
+
+
+    const medicamentosContainer =
+        document.getElementById(
+            "medicamentosContainer"
+        );
+
+
+    const carregarMais =
+        document.getElementById(
+            "carregarMaisMedicamentos"
+        );
+
+
+    const medicamentosLoaded =
+        document.getElementById(
+            "medicamentosLoaded"
+        );
+
+
+    const medicamentosTotal =
+        document.getElementById(
+            "medicamentosTotal"
+        );
+
+
+
+    /* =====================================================
+       ABRIR LINK DE COMPRA
+       ===================================================== */
+
+    function abrirMedicamento(
+        card
+    ) {
+
+        if (
+            !card
+        ) {
+
+            return;
+
+        }
+
+
+        const href =
+            card.dataset.href;
+
+
+        if (
+            !href
+        ) {
+
+            return;
+
+        }
+
+
+        const novaJanela =
+            window.open(
+                href,
+                "_blank"
+            );
+
+
+        if (
+            novaJanela
+        ) {
+
+            novaJanela.opener =
+                null;
+
+        }
+
+    }
+
+
+
+    /* =====================================================
+       CLIQUE NOS CARDS
+       ===================================================== */
+
+    if (
+        medicamentosContainer
+    ) {
+
+        medicamentosContainer.addEventListener(
+            "click",
+            function (event) {
+
+                const card =
+                    event.target.closest(
+                        ".gd-medicine-clickable"
+                    );
+
+
+                if (
+                    !card
+                    ||
+                    !medicamentosContainer.contains(
+                        card
+                    )
+                ) {
+
+                    return;
+
+                }
+
+
+                abrirMedicamento(
+                    card
+                );
+
+            }
+        );
+
+
+
+        medicamentosContainer.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key !== "Enter"
+                    &&
+                    event.key !== " "
+                ) {
+
+                    return;
+
+                }
+
+
+                const card =
+                    event.target.closest(
+                        ".gd-medicine-clickable"
+                    );
+
+
+                if (
+                    !card
+                ) {
+
+                    return;
+
+                }
+
+
+                event.preventDefault();
+
+
+                abrirMedicamento(
+                    card
+                );
+
+            }
+        );
+
+    }
+
+
+
+    /* =====================================================
+       CARREGAR MAIS
+       ===================================================== */
+
+    if (
+        carregarMais
+        &&
+        medicamentosContainer
+    ) {
+
+        carregarMais.addEventListener(
+            "click",
+            async function () {
+
+
+                if (
+                    carregarMais.disabled
+                ) {
+
+                    return;
+
+                }
+
+
+                const pagina =
+                    carregarMais.dataset.page;
+
+
+                const parametros =
+                    new URLSearchParams(
+                        window.location.search
+                    );
+
+
+                parametros.set(
+                    "page",
+                    pagina
+                );
+
+
+                carregarMais.disabled =
+                    true;
+
+
+                carregarMais.textContent =
+                    "Carregando...";
+
+
+                try {
+
+
+                    const resposta =
+                        await fetch(
+
+                            window.location.pathname
+                            +
+                            "?"
+                            +
+                            parametros.toString(),
+
+                            {
+
+                                headers: {
+
+                                    "X-Requested-With":
+                                        "XMLHttpRequest"
+
+                                }
+
+                            }
+
+                        );
+
+
+                    if (
+                        !resposta.ok
+                    ) {
+
+                        throw new Error(
+                            "Erro ao carregar medicamentos."
+                        );
+
+                    }
+
+
+                    const dados =
+                        await resposta.json();
+
+
+
+                    /* =========================================
+                       INSERE NOVOS MEDICAMENTOS
+                       ========================================= */
+
+                    if (
+                        dados.html
+                    ) {
+
+                        medicamentosContainer.insertAdjacentHTML(
+                            "beforeend",
+                            dados.html
+                        );
+
+                    }
+
+
+
+                    /* =========================================
+                       CONTA O QUE ESTÁ NA TELA
+                       ========================================= */
+
+                    const quantidadeAtual =
+                        medicamentosContainer.querySelectorAll(
+                            ".gd-medicine"
+                        ).length;
+
+
+
+                    if (
+                        medicamentosLoaded
+                    ) {
+
+                        medicamentosLoaded.textContent =
+                            quantidadeAtual.toLocaleString(
+                                "pt-BR"
+                            );
+
+                    }
+
+
+                    if (
+                        medicamentosTotal
+                    ) {
+
+                        medicamentosTotal.textContent =
+                            Number(
+                                dados.total_medicamentos
+                            ).toLocaleString(
+                                "pt-BR"
+                            );
+
+                    }
+
+
+
+                    /* =========================================
+                       PRÓXIMA PÁGINA
+                       ========================================= */
+
+                    if (
+                        dados.tem_mais
+                    ) {
+
+                        carregarMais.dataset.page =
+                            dados.proxima_pagina;
+
+
+                        carregarMais.disabled =
+                            false;
+
+
+                        carregarMais.textContent =
+                            "Carregar mais";
+
+                    }
+
+                    else {
+
+                        carregarMais.style.display =
+                            "none";
+
+                    }
+
+
+                }
+
+                catch (
+                    erro
+                ) {
+
+                    console.error(
+                        erro
+                    );
+
+
+                    carregarMais.disabled =
+                        false;
+
+
+                    carregarMais.textContent =
+                        "Tentar novamente";
+
+                }
+
+
+            }
+        );
+
+    }
+
+
+})();
+
+</script>
+
+
+</body>
+
+</html>

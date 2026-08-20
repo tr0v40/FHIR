@@ -1,0 +1,138 @@
+{% for tratamento in tratamentos %}
+
+    <article
+        class="gd-medicine {% if tratamento.link_para_compra_de_tratamento %}gd-medicine-clickable{% else %}gd-medicine-disabled{% endif %}"
+
+        {% if tratamento.link_para_compra_de_tratamento %}
+            data-href="{{ tratamento.link_para_compra_de_tratamento }}"
+            role="link"
+            tabindex="0"
+            aria-label="Comprar {{ tratamento.nome }}"
+        {% endif %}
+    >
+
+
+        <!-- IMAGEM -->
+
+        <div class="gd-image-area">
+
+            {% if tratamento.imagem %}
+
+                <img
+                    src="{{ tratamento.imagem.url }}"
+                    alt="{{ tratamento.nome }}"
+                    class="gd-image"
+                >
+
+            {% elif tratamento.imagem_anv %}
+
+                <img
+                    src="{{ tratamento.imagem_anv.url }}"
+                    alt="{{ tratamento.nome }}"
+                    class="gd-image"
+                >
+
+            {% else %}
+
+                <div class="gd-no-image">
+                    Imagem não disponível
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+
+        <!-- INFORMAÇÕES -->
+
+        <div class="gd-info">
+
+            <h2 class="gd-name">
+                {{ tratamento.nome }}
+            </h2>
+
+
+            {% if tratamento.categoria_regulatoria %}
+
+                <div class="gd-regulatory">
+
+                    {{ tratamento.get_categoria_regulatoria_display }}
+
+                </div>
+
+            {% endif %}
+
+
+            <div class="gd-meta">
+
+                <div class="gd-meta-row">
+
+                    <strong>
+                        Princípio ativo:
+                    </strong>
+
+                    {{ tratamento.principio_ativo }}
+
+                </div>
+
+
+                {% if tratamento.fabricante %}
+
+                    <div class="gd-meta-row">
+
+                        <strong>
+                            Fabricante:
+                        </strong>
+
+                        {{ tratamento.fabricante }}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PREÇO -->
+
+        <div class="gd-buy-area">
+
+            {% if tratamento.custo_medicamento != None %}
+
+                <div class="gd-price">
+
+                    Valor:
+
+                    <strong>
+                        R$ {{ tratamento.custo_medicamento|floatformat:2 }}
+                    </strong>
+
+                </div>
+
+            {% endif %}
+
+
+            {% if tratamento.link_para_compra_de_tratamento %}
+
+                <span class="gd-buy-button">
+                    Comprar
+                </span>
+
+            {% else %}
+
+                <span class="gd-no-buy">
+                    Compra indisponível
+                </span>
+
+            {% endif %}
+
+        </div>
+
+
+    </article>
+
+{% endfor %}

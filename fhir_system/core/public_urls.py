@@ -2,7 +2,9 @@ from django.urls import path
 from .public_views import pagina_detalhe_tratamento
 from .public_views_pesquisas import pesquisas_tratamento
 
+
 urlpatterns = [
+
 
     path(
         "<slug:condicao_slug>/<slug:tratamento_slug>/",
@@ -14,6 +16,7 @@ urlpatterns = [
         pesquisas_tratamento,
         name="pesquisas_tratamento",
     ),
+
 
 
 ]

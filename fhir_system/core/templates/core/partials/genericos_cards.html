@@ -1,0 +1,96 @@
+{% for item in items %}
+
+<a
+    class="gs-card"
+    href="{% url 'genericos_similares_detalhes' %}?principio={{ item.principio_ativo|urlencode }}"
+>
+
+    <div class="gs-card-info">
+
+        <h2 class="gs-card-title">
+            {{ item.principio_ativo }}
+        </h2>
+
+
+        {% if item.categoria %}
+
+            <div class="gs-category">
+                {{ item.categoria }}
+            </div>
+
+        {% endif %}
+
+
+        <div class="gs-counts">
+
+            <div class="gs-count">
+
+                <strong>
+                    Referência:
+                </strong>
+
+                <span>
+                    {{ item.qtd_referencia }}
+                </span>
+
+            </div>
+
+
+            <div class="gs-count">
+
+                <strong>
+                    Similares:
+                </strong>
+
+                <span>
+                    {{ item.qtd_similares }}
+                </span>
+
+            </div>
+
+
+            <div class="gs-count">
+
+                <strong>
+                    Genéricos:
+                </strong>
+
+                <span>
+                    {{ item.qtd_genericos }}
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <span class="gs-button">
+        Ver remédios
+    </span>
+
+</a>
+
+
+{% empty %}
+
+<div class="gs-empty">
+
+    {% if termo_busca %}
+
+        Nenhum princípio ativo ou medicamento encontrado para
+
+        <strong>
+            {{ termo_busca }}
+        </strong>.
+
+    {% else %}
+
+        Nenhum princípio ativo cadastrado.
+
+    {% endif %}
+
+</div>
+
+{% endfor %}
