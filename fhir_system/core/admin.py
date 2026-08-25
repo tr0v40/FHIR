@@ -245,7 +245,52 @@ class AlertaTratamentoInline(admin.TabularInline):
         "ordem",
         "id",
     )
+class ReacoesAdversasFilter(admin.SimpleListFilter):
 
+    title = "Reações adversas"
+    parameter_name = "reacoes_adversas"
+
+
+    def lookups(self, request, model_admin):
+
+        reacoes = (
+            DetalhesTratamentoReacaoAdversa.objects
+            .exclude(
+                reacao_adversa__isnull=True
+            )
+            .values_list(
+                "reacao_adversa_id",
+                "reacao_adversa__nome",
+            )
+            .order_by(
+                "reacao_adversa__nome"
+            )
+            .distinct()
+        )
+
+        return [
+            (
+                str(reacao_id),
+                nome,
+            )
+            for reacao_id, nome in reacoes
+        ]
+
+
+    def queryset(self, request, queryset):
+
+        if not self.value():
+            return queryset
+
+        return (
+            queryset
+            .filter(
+                reacoes_adversas_detalhes__reacao_adversa_id=
+                    self.value()
+            )
+            .distinct()
+        )
+    
 @admin.register(DetalhesTratamentoResumo)
 class DetalhesTratamentoAdmin(ImportExportModelAdmin):
     resource_class = DetalhesTratamentoResumoResource
@@ -268,6 +313,7 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
         "eficacia_min",
         "eficacia_max",
         "custo_medicamento",
+         "reacoes_adversas_list",
         "condicoes_saude_list",
         "contraindicacoes_list",
     )
@@ -285,7 +331,7 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
         "codigo_anvisa",
         "principio_ativo",
         "grupo",
-        "condicoes_relacionadas__condicao__nome",
+       
     )
 
     list_filter = (
@@ -296,7 +342,7 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
         "custo_medicamento",
         "condicoes_relacionadas__condicao",
         "contraindicacoes",
-        "reacoes_adversas",
+         ReacoesAdversasFilter,
     )
 
     fieldsets = (
@@ -393,13 +439,55 @@ class DetalhesTratamentoAdmin(ImportExportModelAdmin):
     def contraindicacoes_list(self, obj):
         return ", ".join(obj.contraindicacoes.values_list("nome", flat=True))
 
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        return qs.prefetch_related(
-            "contraindicacoes",
-            "condicoes_relacionadas__condicao",
+    @admin.display(description="Reações adversas")
+    def reacoes_adversas_list(self, obj):
+
+        nomes = []
+
+        for detalhe in obj.reacoes_adversas_detalhes.all():
+
+            if (
+                detalhe.reacao_adversa_id
+                and detalhe.reacao_adversa
+            ):
+                nomes.append(
+                    detalhe.reacao_adversa.nome
+                )
+
+        # Remove duplicados mantendo a ordem
+        nomes = list(
+            dict.fromkeys(nomes)
         )
 
+        return ", ".join(nomes) or "-"
+
+    def get_queryset(self, request):
+
+        qs = super().get_queryset(request)
+
+        return qs.prefetch_related(
+
+            "contraindicacoes",
+
+            "condicoes_relacionadas__condicao",
+
+            models.Prefetch(
+
+                "reacoes_adversas_detalhes",
+
+                queryset=(
+                    DetalhesTratamentoReacaoAdversa.objects
+                    .select_related(
+                        "reacao_adversa"
+                    )
+                    .order_by(
+                        "reacao_adversa__nome"
+                    )
+                ),
+
+            ),
+
+        )
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
 
