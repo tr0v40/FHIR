@@ -10,6 +10,9 @@ from django.db.models import (
 )
 from django.db.models.functions import Coalesce, NullIf
 from django.db.models.expressions import ExpressionWrapper
+from core.public_views_listas2 import (
+    get_footer_listas as get_footer_listas_v2
+)
 
 from .models import (
     PaginaDetalheTratamento,
@@ -124,98 +127,6 @@ def _format_prazo_efeito(
 
     return None
 
-
-def get_footer_listas():
-    """
-    Retorna somente as listas publicadas da V1.
-
-    A V1 utiliza:
-    - template core/lista_tratamentos.html;
-    - campo tipo_eficacia preenchido;
-    - URLs no formato /listas/condicao/eficacia/.
-
-    A V2 compartilha a mesma tabela, mas possui
-    tipo_eficacia vazio e utiliza tipos_eficacia.
-    """
-
-    listas = (
-        PaginaListaTratamento.objects
-        .filter(
-            publicada=True,
-            condicao_saude__isnull=False,
-            tipo_eficacia__isnull=False,
-        )
-        .filter(
-            Q(
-                template=TEMPLATE_LISTA_V1,
-            )
-            | Q(
-                template__isnull=True,
-            )
-            | Q(
-                template="",
-            )
-        )
-        .select_related(
-            "condicao_saude",
-            "tipo_eficacia",
-        )
-        .order_by(
-            "condicao_saude__nome",
-            "tipo_eficacia__tipo_eficacia",
-        )
-    )
-
-    footer_listas = []
-
-    for item in listas:
-        if not item.condicao_saude_id:
-            continue
-
-        if not item.tipo_eficacia_id:
-            continue
-
-        condicao = item.condicao_saude
-        tipo_eficacia = item.tipo_eficacia
-
-        if not condicao or not tipo_eficacia:
-            continue
-
-        condicao_slug = getattr(
-            condicao,
-            "slug",
-            None,
-        )
-
-        tipo_eficacia_slug = getattr(
-            tipo_eficacia,
-            "slug",
-            None,
-        )
-
-        if not condicao_slug:
-            continue
-
-        if not tipo_eficacia_slug:
-            continue
-
-        footer_listas.append(
-            {
-                "label": (
-                    f"{condicao.nome} - "
-                    f"{tipo_eficacia.tipo_eficacia}"
-                ),
-                "url": reverse(
-                    "pagina_lista",
-                    kwargs={
-                        "condicao_slug": condicao_slug,
-                        "tipo_eficacia_slug": tipo_eficacia_slug,
-                    },
-                ),
-            }
-        )
-
-    return footer_listas
 
 
 def pagina_detalhe_tratamento(
@@ -506,7 +417,7 @@ def pagina_detalhe_tratamento(
         "eficacias_por_tipo": eficacias_por_tipo,
         "ef_filtro_slug": ef_slug,
         "avaliacoes": avaliacoes,
-        "footer_listas": get_footer_listas(),
+        "footer_listas": get_footer_listas_v2(),
     }
 
     return render(

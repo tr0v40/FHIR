@@ -1056,212 +1056,1103 @@
 
     font-weight: 700;
 }
+/* ==========================================================
+   MOBILE — DETALHES DE GENÉRICOS E SIMILARES
+   FIGMA 320px
+   ========================================================== */
 
-        /* =====================================================
-           MOBILE
-           ===================================================== */
+@media screen and (max-width: 768px) {
 
-        @media screen and (max-width: 768px) {
 
-            .gd-top-bar {
-                height: 40px;
+    /* ======================================================
+       RESET
+       ====================================================== */
 
-                padding: 0 15px;
+    html,
+    body {
+        width: 100%;
+        min-width: 0;
 
-                text-align: center;
+        margin: 0;
+        padding: 0;
 
-                font-size: 12px;
-            }
+        overflow-x: hidden;
+    }
 
 
-            .gd-header {
-                height: 105px;
-            }
+    body {
+        background: #FFFFFF;
+    }
 
 
-            .gd-header-inner,
-            .gd-main {
-                width: calc(100% - 32px);
-            }
 
+    /* ======================================================
+       FAIXA AZUL
+       FIGMA: 59px
+       ====================================================== */
 
-            .gd-logo-link {
-                width: 145px;
-                height: 78px;
+    .gd-top-bar {
+        width: 100%;
+        height: 59px;
 
-                left: -15px;
-                top: 5px;
-            }
+        margin: 0;
+        padding: 0 15px;
 
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-            .gd-logo {
-                width: 145px;
-                height: 78px;
+        background: #0094FF;
 
-                transform: scale(1.35);
-            }
+        font-family: "Inter", Arial, sans-serif;
 
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 21px;
 
-            .gd-login {
-                right: 0;
-                top: 14px;
+        text-align: center;
 
-                width: 110px;
-            }
+        color: #FFFFFF;
+    }
 
 
-            .gd-login-bag {
-                left: 0;
-            }
 
+    /* ======================================================
+       HEADER BRANCO
+       59 + 76 = 135px total
+       ====================================================== */
 
-            .gd-login-user {
-                left: 37px;
-            }
+    .gd-header {
+        width: 100%;
+        height: 76px;
 
+        margin: 0;
 
-            .gd-login-text {
-                display: none;
-            }
+        background: #FFFFFF;
+    }
 
 
-            .gd-main {
-                padding-top: 35px;
-                padding-bottom: 70px;
-            }
+    .gd-header-inner {
+        position: relative;
 
+        width: 320px;
+        max-width: 100%;
+        height: 76px;
 
-            .gd-intro,
-            .gd-list {
-                width: 100%;
-            }
+        margin: 0 auto;
+    }
 
 
-            .gd-title {
-                font-size: 21px;
-                line-height: 30px;
-            }
 
+    /* ======================================================
+       LOGO
+       ====================================================== */
 
-            .gd-list {
-                margin-top: 35px;
-            }
+    .gd-logo-link {
+        position: absolute;
 
+        width: 127px;
+        height: 68px;
 
-            .gd-medicine {
-                width: 100%;
-                min-height: auto;
+        left: -3px;
+        top: 8px;
 
-                grid-template-columns:
-                    95px
-                    minmax(0, 1fr);
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-                padding: 25px 0;
-            }
+        overflow: hidden;
 
+        background: transparent;
+    }
 
-            .gd-image-area {
-                width: 90px;
-                height: 110px;
 
-                align-self: start;
-            }
+    .gd-logo {
+        display: block;
 
+        width: 127px;
+        height: 68px;
 
-            .gd-image {
-                max-width: 75px;
-                max-height: 100px;
-            }
+        object-fit: contain;
 
+        background: transparent;
 
-            .gd-info {
-                padding-right: 0;
-            }
+        transform: scale(1.40);
+        transform-origin: center center;
+    }
 
 
-            .gd-name {
-                font-size: 15px;
-                line-height: 22px;
-            }
 
+    /* ======================================================
+       LOGIN
+       ====================================================== */
 
-            .gd-buy-area {
-                grid-column: 2;
+    .gd-login {
+        position: absolute;
 
-                width: 100%;
+        width: 214.5px;
+        height: 33px;
 
-                margin-top: 20px;
+        right: 10.5px;
+        top: 23px;
 
-                align-items: flex-start;
-            }
+        display: block;
 
+        color: #010009;
+    }
 
-            .site-footer {
-                height: auto;
 
-                padding: 40px 0 0;
-            }
 
+    /* SACOLA */
 
-            .site-footer-content {
-                position: static;
+    .gd-login-bag {
+        position: absolute;
 
-                width: calc(100% - 40px);
-                height: auto;
+        width: 15px;
+        height: 15px;
 
-                margin: 0 auto;
+        left: 43px;
+        top: 9px;
 
-                display: flex;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-                flex-direction: column;
 
-                gap: 30px;
-            }
+    .gd-login-bag img {
+        display: block;
 
+        width: 15px;
+        height: 15px;
 
-            .footer-column,
-            .footer-column:nth-child(1),
-            .footer-column:nth-child(2),
-            .footer-column:nth-child(3) {
-                position: static;
+        object-fit: contain;
+    }
 
-                width: 100%;
-            }
 
 
-            .footer-group,
-            .footer-column .footer-group,
-            .footer-contract {
-                position: static !important;
+    /* USUÁRIO */
 
-                margin-bottom: 25px;
-            }
+    .gd-login-user {
+        position: absolute;
 
+        width: 21.45px;
+        height: 21.45px;
 
-            .footer-access-button {
-                position: static;
+        left: 61.88px;
+        top: 5.78px;
 
-                margin-top: 15px;
-            }
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
+        background: #0094FF;
 
-            .footer-hide-mobile {
-                display: none !important;
-            }
+        border-radius: 50%;
 
+        color: #FFFFFF;
 
-            .site-footer-legal {
-                position: relative;
+        font-size: 10px;
+    }
 
-                margin-top: 40px;
 
-                padding: 0 20px;
 
-                text-align: center;
-            }
+    /* TEXTO LOGIN */
 
-        }
+    .gd-login-text {
+        position: absolute;
 
+        width: 119.92px;
+        height: 22.27px;
+
+        left: 94.88px;
+        top: 5.36px;
+
+        display: flex;
+
+        align-items: center;
+
+        font-weight: 700;
+
+        font-size: 12.375px;
+        line-height: 22px;
+
+        white-space: nowrap;
+
+        color: #010009;
+    }
+
+
+
+    /* ======================================================
+       MAIN
+       ====================================================== */
+
+    .gd-main {
+        width: 320px;
+        max-width: 100%;
+
+        margin: 0 auto;
+
+        padding: 0 0 55px;
+    }
+
+
+
+    /* ======================================================
+       INTRO MOBILE
+       FIGMA: 96px
+       ====================================================== */
+
+    .gd-intro {
+        width: 100%;
+        min-height: 96px;
+
+        margin: 0;
+
+        padding:
+            24px
+            21px
+            18px;
+    }
+
+
+
+    /* ======================================================
+       TÍTULO
+
+       No HTML existe:
+       "Remédios com o princípio ativo:"
+       <strong>Cloridrato...</strong>
+
+       No mobile escondemos o prefixo e deixamos
+       somente o princípio.
+       ====================================================== */
+
+    .gd-title {
+        margin: 0;
+        padding: 0;
+
+        font-size: 0;
+        line-height: 0;
+
+        color: #000000;
+    }
+
+
+    .gd-title strong {
+        display: block;
+
+        width: 100%;
+
+        font-family: "Inter", Arial, sans-serif;
+
+        font-weight: 700;
+
+        font-size: 20px;
+        line-height: 29px;
+
+        color: #000000;
+    }
+
+
+
+    /* ======================================================
+       SUBTÍTULO
+
+       Troca visualmente o texto desktop por:
+       "Genéricos e similares"
+       ====================================================== */
+
+    .gd-description {
+        margin: 10px 0 0;
+        padding: 0;
+
+        font-size: 0;
+        line-height: 0;
+    }
+
+
+    .gd-description::after {
+        content: "Genéricos e similares";
+
+        display: block;
+
+        font-family: "Inter", Arial, sans-serif;
+
+        font-weight: 500;
+
+        font-size: 13px;
+        line-height: 19px;
+
+        color: #0094FF;
+    }
+
+
+
+    /* ======================================================
+       LISTA
+       ====================================================== */
+
+    .gd-list {
+        width: 100%;
+
+        margin: 0;
+        padding: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        align-items: center;
+    }
+
+
+
+    /* ======================================================
+       CARD MEDICAMENTO
+       FIGMA: 290px
+       ====================================================== */
+
+    .gd-medicine {
+        position: relative;
+
+        width: 290px;
+        max-width: calc(100% - 30px);
+
+        min-height: 263px;
+
+        margin: 0;
+
+        padding:
+            16px
+            16px
+            16px;
+
+        display: grid;
+
+        grid-template-columns:
+            104px
+            minmax(0, 1fr);
+
+        grid-template-rows:
+            auto
+            auto;
+
+        column-gap: 8px;
+        row-gap: 20px;
+
+        align-items: start;
+
+        background: #FFFFFF;
+
+        border-bottom: 1px solid #E0E0E0;
+    }
+
+
+
+    /* ======================================================
+       CARD CLICÁVEL
+       ====================================================== */
+
+    .gd-medicine-clickable {
+        cursor: pointer;
+    }
+
+
+    .gd-medicine-clickable:hover {
+        background: #FAFAFA;
+    }
+
+
+    .gd-medicine-clickable:hover .gd-name {
+        color: #050606;
+    }
+
+
+    .gd-medicine-clickable:focus {
+        outline: 2px solid #0094FF;
+
+        outline-offset: -2px;
+    }
+
+
+
+    /* ======================================================
+       IMAGEM
+       FIGMA: 104 x 104
+       ====================================================== */
+
+    .gd-image-area {
+        grid-column: 1;
+        grid-row: 1;
+
+        width: 104px;
+        height: 104px;
+
+        margin: 8px 0 0;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+    }
+
+
+    .gd-image {
+        display: block;
+
+        width: 104px;
+        height: 104px;
+
+        max-width: 104px;
+        max-height: 104px;
+
+        object-fit: contain;
+    }
+
+
+
+    /* ======================================================
+       SEM IMAGEM
+       ====================================================== */
+
+    .gd-no-image {
+        width: 104px;
+        height: 104px;
+
+        padding: 8px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        background: #F7F7F7;
+
+        border: 1px solid #EEEEEE;
+
+        border-radius: 4px;
+
+        font-size: 10px;
+        line-height: 14px;
+
+        color: #B0B0B0;
+
+        text-align: center;
+    }
+
+
+
+    /* ======================================================
+       INFORMAÇÕES
+       ====================================================== */
+
+    .gd-info {
+        grid-column: 2;
+        grid-row: 1;
+
+        width: 100%;
+        min-width: 0;
+
+        margin: 0;
+
+        padding: 0;
+    }
+
+
+
+    /* ======================================================
+       NOME DO MEDICAMENTO
+       ====================================================== */
+
+    .gd-name {
+        width: 100%;
+
+        margin: 0;
+        padding: 0;
+
+        font-family: "Inter", Arial, sans-serif;
+
+        font-weight: 700;
+
+        font-size: 15px;
+        line-height: 20px;
+
+        color: #050606;
+
+        overflow-wrap: anywhere;
+    }
+
+
+
+    /* ======================================================
+       REFERÊNCIA / SIMILAR / GENÉRICO
+       ====================================================== */
+
+    .gd-regulatory {
+        width: fit-content;
+        min-width: 65px;
+
+        min-height: 22px;
+
+        margin: 6px 0 0;
+
+        padding: 3px 8px;
+
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        background: #DCDCDC;
+
+        border-radius: 15px;
+
+        font-weight: 700;
+
+        font-size: 10px;
+        line-height: 15px;
+
+        color: #212529;
+
+        white-space: nowrap;
+    }
+
+
+
+    /* ======================================================
+       PRINCÍPIO + FABRICANTE
+       ====================================================== */
+
+    .gd-meta {
+        width: 100%;
+
+        margin: 16px 0 0;
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 10px;
+
+        font-size: 10px;
+        line-height: 15px;
+
+        color: #212529;
+    }
+
+
+    .gd-meta-row {
+        width: 100%;
+
+        font-weight: 400;
+
+        overflow-wrap: anywhere;
+    }
+
+
+    .gd-meta-row strong {
+        font-weight: 700;
+    }
+
+
+
+    /* ======================================================
+       PREÇO / COMPRA
+       ABAIXO DO CONTEÚDO
+       ====================================================== */
+
+    .gd-buy-area {
+        grid-column: 1 / -1;
+        grid-row: 2;
+
+        width: 100%;
+        min-height: 73px;
+
+        margin: 0;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+
+
+    /* ======================================================
+       PREÇO
+       ====================================================== */
+
+    .gd-price {
+        min-height: 23px;
+
+        margin: 0 0 8px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 3px;
+
+        font-weight: 500;
+
+        font-size: 10px;
+        line-height: 22px;
+
+        color: #000000;
+    }
+
+
+    .gd-price strong {
+        font-weight: 500;
+    }
+
+
+
+    /* ======================================================
+       COMPRAR
+       FIGMA: 121 x 26
+       ====================================================== */
+
+    .gd-buy-button {
+        width: 121px;
+        height: 26px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        background: #FEEEDC;
+
+        border-radius: 4px;
+
+        font-family: Arial, sans-serif;
+
+        font-weight: 400;
+
+        font-size: 10px;
+        line-height: 21px;
+
+        color: #000000;
+
+        text-align: center;
+    }
+
+
+
+    /* ======================================================
+       COMPRA INDISPONÍVEL
+       ====================================================== */
+
+    .gd-no-buy {
+        min-height: 26px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        font-size: 10px;
+        line-height: 15px;
+
+        color: #8F8F93;
+
+        text-align: center;
+    }
+
+
+
+    /* ======================================================
+       CARREGAR MAIS
+       ====================================================== */
+
+    .gd-load-more-wrapper {
+        width: 290px;
+        max-width: calc(100% - 30px);
+
+        margin:
+            35px
+            auto
+            55px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        gap: 14px;
+    }
+
+
+    .gd-load-more {
+        min-width: 150px;
+        height: 40px;
+
+        padding: 0 20px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        background: #FFFFFF;
+
+        border: 1px solid #0094FF;
+
+        border-radius: 5px;
+
+        color: #0094FF;
+
+        font-weight: 700;
+
+        font-size: 13px;
+
+        cursor: pointer;
+    }
+
+
+
+    /* ======================================================
+       CONTADOR
+       ====================================================== */
+
+    .gd-progress {
+        width: 100%;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 4px;
+
+        font-size: 11px;
+        line-height: 16px;
+
+        color: #8F8F93;
+    }
+
+
+    .gd-progress strong {
+        font-weight: 700;
+
+        color: #555555;
+    }
+
+
+
+    /* ======================================================
+       FOOTER MOBILE
+       ====================================================== */
+
+    .site-footer {
+        position: relative;
+
+        width: 100%;
+        height: 887px;
+
+        margin: 0;
+        padding: 0;
+
+        background: #FFFFFF;
+    }
+
+
+    .site-footer-content {
+        position: relative;
+
+        width: 320px;
+        max-width: 100%;
+        height: 814px;
+
+        top: 0;
+        left: 0;
+
+        margin: 0 auto;
+
+        display: block;
+    }
+
+
+
+    /* REMOVE POSICIONAMENTO DESKTOP DAS COLUNAS */
+
+    .footer-column,
+    .footer-column:nth-child(1),
+    .footer-column:nth-child(2),
+    .footer-column:nth-child(3) {
+        position: static;
+
+        width: 100%;
+        height: 0;
+
+        margin: 0;
+        padding: 0;
+    }
+
+
+
+    /* ======================================================
+       FOOTER GERAL
+       ====================================================== */
+
+    .site-footer .footer-group {
+        margin: 0;
+        padding: 0;
+    }
+
+
+    .site-footer .footer-title {
+        margin: 0;
+        padding: 0;
+
+        font-weight: 700;
+
+        font-size: 15px;
+        line-height: 21px;
+
+        color: #010009;
+    }
+
+
+    .site-footer a {
+        display: block;
+
+        width: fit-content;
+
+        margin: 0;
+
+        font-weight: 500;
+
+        font-size: 13px;
+        line-height: 16px;
+
+        color: #8F8F93;
+    }
+
+
+
+    /* PÁGINAS DE TRATAMENTOS */
+
+    .site-footer-content
+    > .footer-column:nth-child(1)
+    > .footer-group:nth-child(1) {
+
+        position: absolute !important;
+
+        width: 244px;
+
+        left: 20px;
+        top: 42px;
+    }
+
+
+
+    /* ARTIGOS */
+
+    .site-footer-content
+    > .footer-column:nth-child(1)
+    > .footer-group:nth-child(2) {
+
+        position: absolute !important;
+
+        width: 244px;
+
+        left: 20px;
+        top: 136px;
+    }
+
+
+
+    /* DOCUMENTOS */
+
+    .site-footer-content
+    > .footer-column:nth-child(2)
+    > .footer-group:nth-child(1) {
+
+        position: absolute !important;
+
+        width: 244px;
+
+        left: 20px;
+        top: 235px;
+    }
+
+
+
+    /* FALE COM A GENTE */
+
+    .site-footer-content
+    > .footer-column:nth-child(2)
+    > .footer-group:nth-child(2) {
+
+        position: absolute !important;
+
+        width: 244px;
+
+        left: 20px;
+        top: 334px;
+    }
+
+
+
+    /* APRESENTAÇÕES */
+
+    .site-footer-content
+    > .footer-column:nth-child(3)
+    > .footer-group:nth-child(1) {
+
+        position: absolute !important;
+
+        width: 244px;
+
+        left: 20px;
+        top: 432px;
+    }
+
+
+
+    /* OPINIÕES */
+
+    .site-footer-content
+    > .footer-column:nth-child(3)
+    > .footer-group:nth-child(2) {
+
+        position: absolute !important;
+
+        width: 244px;
+
+        left: 20px;
+        top: 566px;
+    }
+
+
+
+    /* CONTRATAR */
+
+    .site-footer-content
+    > .footer-column:nth-child(2)
+    > .footer-contract {
+
+        position: absolute !important;
+
+        width: 244px;
+
+        left: 20px;
+        top: 603px;
+
+        margin: 0;
+    }
+
+
+    .footer-contract-text {
+        display: block;
+
+        margin-top: 4px;
+
+        font-weight: 500;
+
+        font-size: 13px;
+        line-height: 16px;
+
+        color: #8F8F93;
+    }
+
+
+
+    /* BOTÃO AZUL */
+
+    .site-footer .footer-access-button {
+        position: absolute;
+
+        width: 232px !important;
+        height: 65px;
+
+        left: 32px;
+        top: 688px;
+
+        margin: 0;
+
+        padding: 0 28px;
+
+        display: flex !important;
+
+        align-items: center;
+        justify-content: center;
+
+        background: #0094FF;
+
+        border-radius: 5px;
+
+        color: #FFFFFF !important;
+
+        font-weight: 700 !important;
+
+        font-size: 15px !important;
+        line-height: 18px !important;
+
+        text-align: center;
+    }
+
+
+
+    /* ======================================================
+       LEGAL
+       ====================================================== */
+
+    .site-footer-legal {
+        box-sizing: border-box;
+
+        position: absolute;
+
+        width: 100%;
+        height: 73px;
+
+        left: 0;
+        top: 814px;
+        bottom: auto;
+
+        margin: 0;
+
+        padding: 0 25px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        background: #F4F4F4;
+
+        border: 3px solid #E3E3E3;
+
+        text-align: center;
+    }
+
+
+    .site-footer-legal p {
+        position: static;
+
+        width: 249px;
+
+        margin: 0;
+
+        font-weight: 500;
+
+        font-size: 13px;
+        line-height: 17px;
+
+        color: #8F8F93;
+
+        text-align: center;
+    }
+
+
+}
     </style>
 
 </head>

@@ -277,7 +277,7 @@ def genericos_similares(request):
         # ----------------------------------------------------
 
         .order_by(
-            "-total_medicamentos",
+           
             "principio_ativo",
         )
     )

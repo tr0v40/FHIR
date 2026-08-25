@@ -191,42 +191,27 @@ def filtro_relacao_condicao(
 # ============================================================
 # FOOTER
 # ============================================================
+
 def get_footer_listas():
-    """
-    Retorna somente as páginas de Lista V2 publicadas.
-
-    Cada registro de PaginaListaTratamento V2 gera
-    apenas UMA opção no seletor do rodapé.
-
-    Exemplo:
-        Enxaqueca -> /enxaqueca/
-    """
-
-    footer_listas = []
-
-
-    # ============================================================
-    # SOMENTE LISTAS V2 PUBLICADAS
-    # ============================================================
 
     paginas_v2 = (
         PaginaListaTratamento.objects
         .filter(
             publicada=True,
             condicao_saude__isnull=False,
-            template=TEMPLATE_LISTA_V2,
+            template="core/lista_tratamentos_v2.html",
         )
         .select_related(
-            "condicao_saude",
+            "condicao_saude"
         )
         .order_by(
-            "condicao_saude__nome",
+            "condicao_saude__nome"
         )
     )
 
 
-    # Evita duplicidade caso exista mais de um registro
-    # publicado para a mesma condição.
+    footer_listas = []
+
     condicoes_adicionadas = set()
 
 
@@ -237,18 +222,55 @@ def get_footer_listas():
         if not condicao:
             continue
 
+        if not condicao.slug:
+            continue
 
         if condicao.pk in condicoes_adicionadas:
             continue
 
-
-        condicao_slug = getattr(
-            condicao,
-            "slug",
-            None,
+        condicoes_adicionadas.add(
+            condicao.pk
         )
 
-        if not condicao_slug:
+
+        footer_listas.append(
+            {
+                "label":
+                    condicao.nome,
+
+                "url":
+                    reverse(
+                        "pagina_lista_v2",
+                        kwargs={
+                            "condicao_slug":
+                                condicao.slug,
+                        },
+                    ),
+            }
+        )
+
+
+    return footer_listas
+
+    condicoes_adicionadas = set()
+
+
+    for pagina in paginas_v2:
+
+        condicao = pagina.condicao_saude
+
+
+        if not condicao:
+            continue
+
+
+        if not condicao.slug:
+            continue
+
+
+        # Evita que a mesma condição apareça
+        # mais de uma vez no footer.
+        if condicao.pk in condicoes_adicionadas:
             continue
 
 
@@ -257,30 +279,22 @@ def get_footer_listas():
         )
 
 
-        # ========================================================
-        # URL DA LISTA V2
-        # ========================================================
-
-        url = reverse(
-            "pagina_lista_v2",
-            kwargs={
-                "condicao_slug":
-                    condicao_slug,
-            },
-        )
-
-
-        # ========================================================
-        # UMA OPÇÃO POR LISTA V2
-        # ========================================================
-
         footer_listas.append(
             {
+
                 "label":
                     condicao.nome,
 
+
                 "url":
-                    url,
+                    reverse(
+                        "pagina_lista_v2",
+                        kwargs={
+                            "condicao_slug":
+                                condicao.slug,
+                        },
+                    ),
+
             }
         )
 

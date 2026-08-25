@@ -1,5 +1,9 @@
   # ==================== IMPORTS SESSIONS ==================== #
 
+from core.public_views_listas2 import (
+    get_footer_listas as get_footer_listas_v2
+)
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import admin
 from django.contrib.auth import login
@@ -850,7 +854,7 @@ def detalhes_tratamentos(request, slug):
         'estrelas_preenchidas': estrelas_preenchidas,
         'estrelas_vazias': estrelas_vazias,
         'detalhes_reacoes_adversas': detalhes_reacoes_ordenadas,
-        'footer_listas': get_footer_listas(),
+       'footer_listas': get_footer_listas_v2(),
     })
 
 

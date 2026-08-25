@@ -339,58 +339,91 @@
            PESQUISA
            ===================================================== */
 
-        .gs-search {
-            width: 761px;
+/* =====================================================
+   PESQUISA — DESKTOP
+   ===================================================== */
 
-            margin-top: 52px;
-        }
+.gs-search {
+    position: relative;
 
+    width: 780px;
 
-        .gs-search form {
-            width: 100%;
-
-            margin: 0;
-        }
-
-
-        .gs-search label {
-            display: block;
-
-            margin-bottom: 13px;
-
-            font-weight: 700;
-
-            font-size: 15px;
-            line-height: 22px;
-
-            color: #0094FF;
-        }
+    margin-top: 55px;
+}
 
 
-        .gs-search input {
-            width: 761px;
-            height: 60px;
+.gs-search form {
+    width: 100%;
 
-            margin: 0;
+    margin: 0;
+    padding: 0;
+}
 
-            padding: 0 25px;
 
-            background: #FFFFFF;
+/* LABEL */
 
-            border: 1px solid #0094FF;
+.gs-search label {
+    display: block;
 
-            border-radius: 5px;
+    width: 100%;
 
-            outline: none;
+    margin: 0 0 14px 0;
+    padding: 0;
 
-            font-weight: 500;
+    font-family: "Inter", Arial, sans-serif;
 
-            font-size: 15px;
-            line-height: 22px;
+    font-weight: 600;
 
-            color: #000000;
-        }
+    font-size: 15px;
+    line-height: 22px;
 
+    color: #0094FF;
+}
+
+
+/* INPUT */
+
+.gs-search input {
+    display: block;
+
+    width: 780px;
+    height: 60px;
+
+    margin: 0;
+    padding: 0 24px;
+
+    background: #FFFFFF;
+
+    border: 1px solid #0094FF;
+    border-radius: 5px;
+
+    outline: none;
+
+    font-family: "Inter", Arial, sans-serif;
+
+    font-weight: 400;
+
+    font-size: 15px;
+    line-height: 22px;
+
+    color: #000000;
+}
+
+
+.gs-search input::placeholder {
+    color: #8F8F93;
+
+    opacity: 1;
+}
+
+
+.gs-search input:focus {
+    border-color: #0094FF;
+
+    box-shadow:
+        0 0 0 1px
+        rgba(0, 148, 255, 0.10);
+}
 
         .gs-search input::placeholder {
             color: #8F8F93;
@@ -1129,242 +1162,1242 @@
         }
 
 
+/* ==========================================================
+   MOBILE — MEDICAMENTOS GENÉRICOS E SIMILARES
+   ÚNICO BLOCO RESPONSIVO
+   ========================================================== */
 
-        /* =====================================================
-           MOBILE
-           ===================================================== */
+@media screen and (max-width: 768px) {
 
-        @media screen and (max-width: 768px) {
 
-            .gs-top-bar {
-                height: 40px;
+    /* ======================================================
+       RESET MOBILE
+       ====================================================== */
 
-                font-size: 12px;
-            }
+    html,
+    body {
+        width: 100%;
+        min-width: 0;
 
+        margin: 0;
+        padding: 0;
 
-            .gs-header {
-                height: 105px;
-            }
+        overflow-x: hidden;
+    }
 
 
-            .gs-header-inner,
-            .gs-main {
-                width: calc(100% - 32px);
-            }
+    body {
+        background: #FFFFFF;
+    }
 
 
-            .gs-logo-link {
-                top: 22px;
-            }
 
+    /* ======================================================
+       FAIXA SUPERIOR
+       FIGMA: 59px
+       ====================================================== */
 
-            .gs-logo {
-                height: 45px;
-            }
+    .gs-top-bar {
+        position: relative;
 
+        width: 100%;
+        height: 59px;
 
-            .gs-login {
-                top: 25px;
-            }
+        margin: 0;
+        padding: 0 15px;
 
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-            .gs-login-text {
-                display: none;
-            }
+        background: #0094FF;
 
+        font-family: "Inter", Arial, sans-serif;
 
-            .gs-main {
-                padding-top: 30px;
-            }
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 21px;
 
+        text-align: center;
 
-            .gs-intro h1 {
-                font-size: 25px;
-                line-height: 34px;
-            }
+        color: #FFFFFF;
+    }
 
 
-            .gs-intro p {
-                width: 100%;
 
-                font-size: 14px;
-                line-height: 21px;
-            }
+    /* ======================================================
+       HEADER
+       59px azul + 76px branco = 135px total
+       ====================================================== */
 
+    .gs-header {
+        position: relative;
 
-            .gs-search {
-                width: 100%;
+        width: 100%;
+        height: 76px;
 
-                margin-top: 40px;
-            }
+        margin: 0;
 
+        background: #FFFFFF;
+    }
 
-            .gs-search input {
-                width: 100%;
-            }
 
+    .gs-header-inner {
+        position: relative;
 
-            .gs-results {
-                width: 100%;
+        width: 320px;
+        max-width: 100%;
+        height: 76px;
 
-                margin-top: 50px;
+        margin: 0 auto;
+    }
 
-                gap: 20px;
-            }
 
 
-            .gs-card {
-                width: 100%;
-                height: 205px;
-            }
+    /* ======================================================
+       LOGO
+       ====================================================== */
 
+    .gs-logo-link {
+        position: absolute;
 
-            .gs-card-info {
-                left: 20px;
-                top: 25px;
+        width: 127px;
+        height: 68px;
 
-                width: calc(100% - 40px);
-            }
+        left: -3px;
+        top: 8px;
 
+        margin: 0;
 
-            .gs-card-title {
-                position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-                width: 100%;
+        overflow: hidden;
 
-                font-size: 18px;
-                line-height: 25px;
-            }
+        background: transparent;
+    }
 
 
-            .gs-category {
-                position: relative;
+    .gs-logo {
+        display: block;
 
-                top: 2px;
+        width: 127px;
+        height: 68px;
 
-                width: 100%;
+        object-fit: contain;
 
-                font-size: 13px;
-            }
+        background: transparent;
 
+        transform: scale(1.40);
+        transform-origin: center center;
+    }
 
-            .gs-counts {
-                top: 76px;
 
-                width: 100%;
 
-                display: grid;
+    /* ======================================================
+       LOGIN
+       ====================================================== */
 
-                grid-template-columns:
-                    repeat(3, 1fr);
+    .gs-login {
+        position: absolute;
 
-                gap: 5px;
-            }
+        width: 214.5px;
+        height: 33px;
 
+        right: 10.5px;
+        top: 23px;
 
-            .gs-count,
-            .gs-count:nth-child(1),
-            .gs-count:nth-child(2),
-            .gs-count:nth-child(3) {
+        display: block;
 
-                width: auto;
+        margin: 0;
 
-                display: block;
-            }
+        color: #010009;
 
+        text-decoration: none;
+    }
 
-            .gs-count strong,
-            .gs-count span {
-                display: block;
-            }
 
 
-            .gs-count span {
-                margin-left: 0;
-            }
+    /* SACOLA */
 
+    .gs-login-bag {
+        position: absolute;
 
-            .gs-button {
-                right: 20px;
-                bottom: 20px;
-            }
+        width: 15px;
+        height: 15px;
 
+        left: 43px;
+        top: 9px;
 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-            /* =================================================
-               FOOTER MOBILE
-               ================================================= */
 
-            .site-footer {
-                height: auto;
+    .gs-login-bag img {
+        display: block;
 
-                padding-top: 40px;
-            }
+        width: 15px;
+        height: 15px;
 
+        object-fit: contain;
+    }
 
-            .site-footer-content {
-                position: static;
 
-                width: calc(100% - 40px);
-                height: auto;
 
-                display: flex;
+    /* USUÁRIO */
 
-                flex-direction: column;
+    .gs-login-user {
+        position: absolute;
 
-                gap: 30px;
-            }
+        width: 21.45px;
+        height: 21.45px;
 
+        left: 61.88px;
+        top: 5.78px;
 
-            .site-footer-content > .footer-column,
-            .site-footer-content > .footer-column:nth-child(1),
-            .site-footer-content > .footer-column:nth-child(2),
-            .site-footer-content > .footer-column:nth-child(3) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-                position: static;
+        background: #0094FF;
 
-                width: 100%;
-            }
+        border-radius: 50%;
 
+        color: #FFFFFF;
 
-            .site-footer .footer-group,
-            .site-footer-content .footer-column .footer-group {
+        font-size: 10px;
+    }
 
-                position: static !important;
 
-                margin-bottom: 25px;
-            }
 
+    /* TEXTO LOGIN */
 
-            .footer-hide-mobile {
-                display: none !important;
-            }
+    .gs-login-text {
+        position: absolute;
 
+        width: 119.92px;
+        height: 22.27px;
 
-            .site-footer .footer-access-button {
-                position: static;
+        left: 94.88px;
+        top: 5.36px;
 
-                margin-top: 20px;
-            }
+        display: flex;
+        align-items: center;
 
+        font-family: "Inter", Arial, sans-serif;
 
-            .site-footer-legal {
-                position: relative;
+        font-weight: 700;
+        font-size: 12.375px;
+        line-height: 22px;
 
-                margin-top: 40px;
+        white-space: nowrap;
 
-                padding: 0 20px;
+        color: #010009;
+    }
 
-                text-align: center;
-            }
 
 
-            .site-footer-legal p {
-                font-size: 11px;
-            }
+    /* ======================================================
+       MAIN
+       ====================================================== */
 
-        }
+    .gs-main {
+        width: 320px;
+        max-width: 100%;
+
+        margin: 0 auto;
+
+        padding: 0;
+    }
+
+
+
+    /* ======================================================
+       INTRO
+
+       Aqui deixamos em fluxo normal em vez de absolute.
+       Isso impede textos de se sobreporem em telas diferentes.
+       ====================================================== */
+
+    .gs-intro {
+        position: relative;
+
+        width: 100%;
+        height: auto;
+
+        margin: 0;
+
+        padding:
+            28px
+            15px
+            0;
+    }
+
+
+    .gs-intro h1 {
+        position: static;
+
+        width: 100%;
+
+        margin: 0;
+        padding: 0;
+
+        font-family: "Inter", Arial, sans-serif;
+
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 29px;
+
+        color: #000000;
+    }
+
+
+    .gs-intro p {
+        position: static;
+
+        width: 100%;
+
+        margin: 8px 0 0;
+        padding: 0;
+
+        font-family: "Inter", Arial, sans-serif;
+
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 19px;
+
+        color: #000000;
+    }
+
+
+
+    /* ======================================================
+       PESQUISA
+
+       IMPORTANTE:
+       label e input NÃO usam position:absolute.
+       Portanto a label pode ter 1 ou 2 linhas sem ser cortada.
+       ====================================================== */
+
+    .gs-search {
+        position: relative;
+
+        width: 100%;
+        height: auto;
+
+        margin: 0;
+
+        padding:
+            40px
+            13px
+            32px;
+    }
+
+
+    .gs-search form {
+        position: relative;
+
+        width: 100%;
+        height: auto;
+
+        margin: 0;
+        padding: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+
+
+    /* LABEL */
+
+    .gs-search label {
+        position: static;
+
+        width: 100%;
+        height: auto;
+
+        margin:
+            0
+            0
+            14px
+            2px;
+
+        padding: 0;
+
+        display: block;
+
+        font-family: "Inter", Arial, sans-serif;
+
+        font-weight: 700;
+        font-size: 15px;
+        line-height: 22px;
+
+        color: #0094FF;
+
+        white-space: normal;
+    }
+
+
+
+    /* INPUT */
+
+    .gs-search input {
+        position: static;
+
+        width: 100%;
+        height: 60px;
+
+        margin: 0;
+        padding: 0 11px;
+
+        background: #FFFFFF;
+
+        border: 1px solid #0094FF;
+        border-radius: 5px;
+
+        outline: none;
+
+        font-family: "Inter", Arial, sans-serif;
+
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 19px;
+
+        color: #000000;
+    }
+
+
+    .gs-search input::placeholder {
+        color: #8F8F93;
+
+        opacity: 1;
+
+        text-overflow: ellipsis;
+    }
+
+
+    .gs-search input:focus {
+        border-color: #0094FF;
+
+        box-shadow:
+            0 0 0 1px
+            rgba(0, 148, 255, 0.10);
+    }
+
+
+
+    /* ======================================================
+       RESULTADOS
+       ====================================================== */
+
+    .gs-results {
+        width: 100%;
+
+        margin: 0;
+
+        padding:
+            10px
+            0
+            0;
+
+        display: flex;
+        flex-direction: column;
+
+        align-items: center;
+
+        gap: 25px;
+    }
+
+
+
+    /* ======================================================
+       CARD
+       FIGMA: 307 x 150
+       ====================================================== */
+
+    .gs-card {
+        position: relative;
+
+        width: calc(100% - 13px);
+        max-width: 307px;
+
+        height: 150px;
+        min-height: 150px;
+
+        margin: 0;
+        padding: 0;
+
+        flex-shrink: 0;
+
+        background: #FFFFFF;
+
+        border-radius: 5px;
+
+        box-shadow:
+            0 0 7.88px
+            rgba(0, 0, 0, 0.10);
+    }
+
+
+
+    /* ======================================================
+       CONTEÚDO CARD
+       ====================================================== */
+
+    .gs-card-info {
+        position: absolute;
+
+        width: calc(100% - 30px);
+        height: 85px;
+
+        left: 15px;
+        top: 15px;
+
+        margin: 0;
+    }
+
+
+
+    /* ======================================================
+       TÍTULO CARD
+       ====================================================== */
+
+    .gs-card-title {
+        position: absolute;
+
+        width: 100%;
+
+        left: 0;
+        top: 0;
+
+        margin: 0;
+        padding: 0;
+
+        font-family: "Inter", Arial, sans-serif;
+
+        font-weight: 700;
+
+        font-size: 15px;
+        line-height: 22px;
+
+        color: #000000;
+    }
+
+
+
+    /* ======================================================
+       CATEGORIA
+       ====================================================== */
+
+    .gs-category {
+        position: absolute;
+
+        width: 100%;
+
+        left: 0;
+        top: 27px;
+
+        margin: 0;
+        padding: 0;
+
+        font-family: "Inter", Arial, sans-serif;
+
+        font-weight: 600;
+
+        font-size: 13px;
+        line-height: 19px;
+
+        color: #0094FF;
+    }
+
+
+
+    /* ======================================================
+       CONTADORES
+       ====================================================== */
+
+    .gs-counts {
+        position: absolute;
+
+        width: 100%;
+        height: 15px;
+
+        left: 0;
+        top: 69px;
+
+        display: grid;
+
+        grid-template-columns:
+            1.15fr
+            1.1fr
+            0.9fr;
+
+        align-items: center;
+    }
+
+
+    .gs-count,
+    .gs-count:nth-child(1),
+    .gs-count:nth-child(2),
+    .gs-count:nth-child(3) {
+        width: auto;
+        height: 15px;
+
+        display: flex;
+        align-items: center;
+
+        white-space: nowrap;
+    }
+
+
+    .gs-count strong {
+        display: inline;
+
+        margin: 0;
+
+        font-family: "Inter", Arial, sans-serif;
+
+        font-weight: 500;
+
+        font-size: 10px;
+        line-height: 15px;
+
+        color: #000000;
+    }
+
+
+    .gs-count span {
+        display: inline;
+
+        margin-left: 6px;
+
+        font-family: "Inter", Arial, sans-serif;
+
+        font-weight: 700;
+
+        font-size: 10px;
+        line-height: 15px;
+
+        color: #000000;
+    }
+
+
+
+    /* ======================================================
+       BOTÃO VER REMÉDIOS
+       ====================================================== */
+
+    .gs-button {
+        position: absolute;
+
+        width: 101px;
+        height: 22px;
+
+        right: 15px;
+        bottom: 15px;
+
+        margin: 0;
+        padding: 0;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        background: #F0F0F0;
+
+        border: 0;
+
+        border-radius: 5px;
+
+        font-family: "Inter", Arial, sans-serif;
+
+        font-weight: 400;
+
+        font-size: 10px;
+        line-height: 15px;
+
+        color: #000000;
+
+        cursor: pointer;
+    }
+
+
+    .gs-button:hover {
+        background: #E3E3E3;
+    }
+
+
+
+    /* ======================================================
+       SEM RESULTADOS
+       ====================================================== */
+
+    .gs-empty {
+        width: calc(100% - 26px);
+        max-width: 307px;
+
+        margin: 0 auto;
+
+        padding: 30px 15px;
+
+        font-size: 13px;
+        line-height: 19px;
+
+        text-align: center;
+    }
+
+
+
+    /* ======================================================
+       CARREGAR MAIS
+       ====================================================== */
+
+    .gs-load-more-wrapper {
+        width: calc(100% - 26px);
+        max-width: 307px;
+
+        margin:
+            35px
+            auto
+            60px;
+
+        display: flex;
+        flex-direction: column;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 14px;
+    }
+
+
+    .gs-load-more {
+        min-width: 150px;
+        height: 40px;
+
+        padding: 0 20px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        background: #FFFFFF;
+
+        border: 1px solid #0094FF;
+        border-radius: 5px;
+
+        font-family: "Inter", Arial, sans-serif;
+
+        font-weight: 700;
+
+        font-size: 13px;
+
+        color: #0094FF;
+
+        cursor: pointer;
+    }
+
+
+    .gs-load-more:hover {
+        background: #0094FF;
+
+        color: #FFFFFF;
+    }
+
+
+    .gs-load-more:disabled {
+        opacity: 0.55;
+
+        cursor: wait;
+    }
+
+
+
+    /* ======================================================
+       PROGRESSO
+       ====================================================== */
+
+    .gs-progress-status {
+        width: 280px;
+        max-width: 100%;
+
+        display: flex;
+        flex-direction: column;
+
+        align-items: center;
+
+        gap: 9px;
+    }
+
+
+    .gs-progress-text {
+        width: 100%;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        flex-wrap: wrap;
+
+        gap: 4px;
+
+        font-family: "Inter", Arial, sans-serif;
+
+        font-weight: 400;
+
+        font-size: 12px;
+        line-height: 18px;
+
+        color: #8F8F93;
+    }
+
+
+    .gs-progress-text strong {
+        font-weight: 700;
+
+        color: #555555;
+    }
+
+
+    .gs-progress-track {
+        position: relative;
+
+        width: 240px;
+        max-width: 100%;
+
+        height: 4px;
+
+        background: #E3E3E3;
+
+        border-radius: 100px;
+
+        overflow: hidden;
+    }
+
+
+    .gs-progress-fill {
+        position: absolute;
+
+        left: 0;
+        top: 0;
+
+        height: 100%;
+
+        background: #0094FF;
+
+        border-radius: 100px;
+    }
+
+
+
+    /* ======================================================
+       FOOTER MOBILE
+       FIGMA: 887px
+       ====================================================== */
+
+    .site-footer {
+        position: relative;
+
+        width: 100%;
+        height: 887px;
+
+        margin: 0;
+        padding: 0;
+
+        background: #FFFFFF;
+    }
+
+
+    .site-footer-content {
+        position: relative;
+
+        width: 320px;
+        max-width: 100%;
+        height: 814px;
+
+        top: 0;
+        left: 0;
+
+        margin: 0 auto;
+
+        display: block;
+    }
+
+
+
+    /* ======================================================
+       RESET DAS COLUNAS DO DESKTOP
+       ====================================================== */
+
+    .site-footer-content > .footer-column,
+    .site-footer-content > .footer-column:nth-child(1),
+    .site-footer-content > .footer-column:nth-child(2),
+    .site-footer-content > .footer-column:nth-child(3) {
+        position: static;
+
+        width: 100%;
+        height: 0;
+
+        margin: 0;
+        padding: 0;
+    }
+
+
+
+    /* ======================================================
+       FOOTER — CONFIGURAÇÃO GERAL
+       ====================================================== */
+
+    .site-footer .footer-group {
+        margin: 0;
+        padding: 0;
+    }
+
+
+    .site-footer .footer-title {
+        margin: 0;
+        padding: 0;
+
+        font-family: "Inter", Arial, sans-serif;
+
+        font-weight: 700;
+
+        font-size: 15px;
+        line-height: 21px;
+
+        color: #010009;
+    }
+
+
+    .site-footer a {
+        display: block;
+
+        width: fit-content;
+
+        margin: 0;
+
+        font-family: "Inter", Arial, sans-serif;
+
+        font-weight: 500;
+
+        font-size: 13px;
+        line-height: 16px;
+
+        color: #8F8F93;
+
+        text-decoration: none;
+    }
+
+
+    .site-footer .footer-group > a + a {
+        margin-top: 11px;
+    }
+
+
+
+    /* ======================================================
+       PÁGINAS DE TRATAMENTOS
+       ====================================================== */
+
+    .site-footer-content
+    > .footer-column:nth-child(1)
+    > .footer-group:nth-child(1) {
+
+        position: absolute !important;
+
+        width: 244px;
+
+        left: 20px;
+        top: 42px;
+
+        margin: 0;
+    }
+
+
+
+    /* ======================================================
+       ARTIGOS CIENTÍFICOS
+       ====================================================== */
+
+    .site-footer-content
+    > .footer-column:nth-child(1)
+    > .footer-group:nth-child(2) {
+
+        position: absolute !important;
+
+        width: 244px;
+
+        left: 20px;
+        top: 136px;
+
+        margin: 0;
+    }
+
+
+
+    /* ======================================================
+       DOCUMENTOS
+       ====================================================== */
+
+    .site-footer-content
+    > .footer-column:nth-child(2)
+    > .footer-group:nth-child(1) {
+
+        position: absolute !important;
+
+        width: 244px;
+
+        left: 20px;
+        top: 235px;
+
+        margin: 0;
+    }
+
+
+    .site-footer-content
+    > .footer-column:nth-child(2)
+    > .footer-group:nth-child(1)
+    > a:nth-child(2) {
+
+        margin-top: 8px;
+    }
+
+
+    .site-footer-content
+    > .footer-column:nth-child(2)
+    > .footer-group:nth-child(1)
+    > a:nth-child(3) {
+
+        margin-top: 5px;
+    }
+
+
+
+    /* ======================================================
+       FALE COM A GENTE
+       ====================================================== */
+
+    .site-footer-content
+    > .footer-column:nth-child(2)
+    > .footer-group:nth-child(2) {
+
+        position: absolute !important;
+
+        width: 244px;
+
+        left: 20px;
+        top: 334px;
+
+        margin: 0;
+    }
+
+
+    .site-footer-content
+    > .footer-column:nth-child(2)
+    > .footer-group:nth-child(2)
+    > a {
+
+        margin-top: 8px;
+    }
+
+
+
+    /* ======================================================
+       APRESENTAÇÕES
+       ====================================================== */
+
+    .site-footer-content
+    > .footer-column:nth-child(3)
+    > .footer-group:nth-child(1) {
+
+        position: absolute !important;
+
+        width: 244px;
+
+        left: 20px;
+        top: 432px;
+
+        margin: 0;
+    }
+
+
+    .site-footer-content
+    > .footer-column:nth-child(3)
+    > .footer-group:nth-child(1)
+    > a {
+
+        margin-top: 7px;
+    }
+
+
+
+    /* ======================================================
+       OPINIÕES DE ESPECIALISTAS
+       ====================================================== */
+
+    .site-footer-content
+    > .footer-column:nth-child(3)
+    > .footer-group:nth-child(2) {
+
+        position: absolute !important;
+
+        width: 244px;
+
+        left: 20px;
+        top: 566px;
+
+        margin: 0;
+    }
+
+
+
+    /* ======================================================
+       CONTRATAR
+       ====================================================== */
+
+    .site-footer-content
+    > .footer-column:nth-child(3)
+    > .footer-contract {
+
+        position: absolute !important;
+
+        display: block !important;
+
+        width: 244px;
+
+        left: 20px;
+        top: 603px;
+
+        margin: 0;
+    }
+
+
+    .footer-contract-text {
+        display: block;
+
+        margin-top: 4px;
+
+        font-family: "Inter", Arial, sans-serif;
+
+        font-weight: 500;
+
+        font-size: 13px;
+        line-height: 16px;
+
+        color: #8F8F93;
+    }
+
+
+
+    /* ======================================================
+       ESCONDER ITENS MOBILE
+       ====================================================== */
+
+    .footer-hide-mobile {
+        display: none !important;
+    }
+
+
+
+    /* ======================================================
+       BOTÃO BANCO DE DADOS
+       ====================================================== */
+
+    .site-footer .footer-access-button {
+        position: absolute;
+
+        width: 232px;
+        height: 65px;
+
+        left: 32px;
+        top: 688px;
+
+        margin: 0;
+        padding: 0 28px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        background: #0094FF;
+
+        border-radius: 5px;
+
+        font-family: "Inter", Arial, sans-serif;
+
+        font-weight: 700;
+
+        font-size: 15px;
+        line-height: 18px;
+
+        text-align: center;
+
+        color: #FFFFFF;
+    }
+
+
+
+    /* ======================================================
+       FAIXA LEGAL
+       ====================================================== */
+
+    .site-footer-legal {
+        box-sizing: border-box;
+
+        position: absolute;
+
+        width: 100%;
+        height: 73px;
+
+        left: 0;
+        top: 814px;
+        bottom: auto;
+
+        margin: 0;
+        padding: 0 25px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        background: #F4F4F4;
+
+        border: 3px solid #E3E3E3;
+
+        text-align: center;
+    }
+
+
+    .site-footer-legal p {
+        width: 249px;
+
+        margin: 0;
+
+        font-family: "Inter", Arial, sans-serif;
+
+        font-weight: 500;
+
+        font-size: 13px;
+        line-height: 17px;
+
+        color: #8F8F93;
+
+        text-align: center;
+    }
+
+
+}
 
     </style>
 
@@ -1827,9 +2860,13 @@
 
             <div class="footer-group footer-contract">
 
-                <h3 class="footer-title"></h3>
+                <h3 class="footer-title">
+                    Contratar
+                </h3>
 
-                <span class="footer-contract-text"></span>
+                <span class="footer-contract-text">
+                    Paciente bem informado
+                </span>
 
             </div>
 
