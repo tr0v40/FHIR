@@ -3,11 +3,12 @@ from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
-
+from core.public_views_home import home
 from core import views
 from core import public_views_listas2
 
 from core.domain_views import domain_home
+from core.public_views_home import home
 from core.public_views_detalhes2 import detalhes_tratamentos_v2
 from core.public_views_listas import pagina_lista_por_url
 from core.public_views_en import english_treatment_list_with_filters
@@ -33,6 +34,13 @@ urlpatterns = [
         name="domain_home_alias",
     ),
 
+    
+    path(
+        "home/",
+        home,
+        name="home",
+    ),
+
     # =========================================================
     # ADMINISTRAÇÃO E AUTENTICAÇÃO
     # =========================================================
@@ -48,6 +56,11 @@ urlpatterns = [
     # =========================================================
     # ROTAS INTERNAS / SISTEMA
     # =========================================================
+
+    # =========================================================
+# NOVA HOME TELIX
+# =========================================================
+
     path(
         "comentarios/",
         views.comentario_view,

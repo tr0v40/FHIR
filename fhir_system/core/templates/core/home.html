@@ -1,0 +1,3593 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Telix — Contexto na saúde</title>
+
+    {% include 'core/google_analytics.html' %}
+
+    <link
+        rel="shortcut icon"
+        href="{% static 'img/favicon.png' %}"
+        type="image/x-icon"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+
+<style>
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-width: 0;
+
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    overflow-x: hidden;
+
+    background: #FFFFFF;
+
+    font-family: "Inter", Arial, sans-serif;
+
+    color: #010009;
+}
+
+button,
+select,
+input {
+    font-family: inherit;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   TOP BAR
+   ========================================================= */
+
+.top-bar {
+    width: 100%;
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #0094FF;
+
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 27px;
+
+    color: #FFFFFF;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.header {
+    width: 100%;
+    height: 142px;
+
+    background: #FFFFFF;
+}
+
+.header-inner {
+    position: relative;
+
+    width: 980px;
+    max-width: calc(100% - 30px);
+    height: 142px;
+
+    margin: 0 auto;
+}
+
+
+/* LOGO */
+
+.logo-link {
+    position: absolute;
+
+    width: 192px;
+    height: 100px;
+
+    left: -43px;
+    top: 9px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+.logo {
+    display: block;
+
+    width: 192px;
+    height: 100px;
+
+    object-fit: contain;
+}
+
+
+/* LOGIN */
+
+.login-link {
+    position: absolute;
+
+    width: 260px;
+    height: 40px;
+
+    right: 25px;
+    top: 61px;
+
+    display: flex;
+    align-items: center;
+
+    color: #010009;
+}
+
+.login-lock-icon {
+    width: 28px;
+    height: 28px;
+
+    margin-left: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-lock-icon img {
+    width: 28px;
+    height: 28px;
+
+    object-fit: contain;
+}
+
+.login-icon {
+    width: 26px;
+    height: 26px;
+
+    margin-left: 11px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #0094FF;
+
+    color: #FFFFFF;
+
+    font-size: 12px;
+}
+
+.login-text {
+    margin-left: 14px;
+
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 27px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.home-main {
+    width: 100%;
+}
+
+
+/* =========================================================
+   MENU PRINCIPAL
+   ========================================================= */
+
+.home-menu {
+    width: 100%;
+
+    padding: 28px 15px 0;
+
+    background: #FFFFFF;
+}
+
+.home-menu-inner {
+    width: 980px;
+    max-width: 100%;
+    height: 299px;
+
+    margin: 0 auto;
+}
+
+
+/* TABS */
+
+.home-tabs {
+    position: relative;
+    z-index: 2;
+
+    width: 100%;
+    height: 55px;
+
+    display: grid;
+
+    grid-template-columns:
+        321px
+        321px
+        321px;
+
+    justify-content: space-between;
+}
+
+.home-tab {
+    width: 321px;
+    height: 55px;
+
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    border: 1px solid #0094FF;
+    border-bottom: 0;
+
+    border-radius:
+        15px
+        15px
+        0
+        0;
+
+    background: #FFFFFF;
+
+    color: #0094FF;
+
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 23px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
+.home-tab i {
+    width: 20px;
+
+    font-size: 20px;
+
+    text-align: center;
+}
+
+.home-tab.active {
+    background: #0094FF;
+
+    color: #FFFFFF;
+}
+
+
+/* CONTEÚDO MENU */
+
+.home-menu-content {
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+    height: 244px;
+
+    border: 1px solid #0094FF;
+
+    border-radius:
+        0
+        0
+        15px
+        15px;
+
+    background: #FFFFFF;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+
+/* Quando + Tratamentos estiver ativo, todo o painel fica azul */
+
+.home-menu-content.tratamentos-active {
+    background: #0094FF;
+}
+
+.home-menu-content.tratamentos-active
+.home-menu-description {
+    color: #FFFFFF;
+}
+
+.home-menu-content.tratamentos-active
+.home-tab-panel {
+    background: transparent;
+}
+
+
+/* Textos específicos para desktop/mobile nas três abas */
+
+.home-menu-text-desktop {
+    display: inline;
+}
+
+.home-menu-text-mobile {
+    display: none;
+}
+
+
+/* Busca de tratamento dentro da aba Tratamentos */
+
+.home-menu-treatment-search {
+    position: relative;
+
+    width: 396px;
+    height: 51px;
+
+    margin-top: 24px;
+}
+
+.home-menu-treatment-search select {
+    width: 100%;
+    height: 51px;
+
+    padding:
+        0
+        48px
+        0
+        16px;
+
+    border: 1px solid #FFFFFF;
+    border-radius: 8px;
+
+    background: #FFFFFF;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    outline: none;
+
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 27px;
+
+    color: #8F8F93;
+
+    cursor: pointer;
+}
+
+.home-menu-treatment-search i {
+    position: absolute;
+
+    width: 18px;
+    height: 18px;
+
+    right: 14px;
+    top: 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #0094FF;
+
+    font-size: 15px;
+
+    pointer-events: none;
+}
+
+.home-tab-panel {
+    width: 100%;
+    height: 100%;
+
+    padding:
+        68px
+        56px
+        45px;
+}
+
+.home-tab-panel[hidden] {
+    display: none !important;
+}
+
+.home-menu-description {
+    margin: 0 0 24px;
+
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 27px;
+
+    color: #000000;
+}
+
+
+/* SELECT */
+
+.home-select-wrap {
+    position: relative;
+
+    width: 282px;
+    height: 51px;
+}
+
+.home-select-wrap::after {
+    content: "";
+
+    position: absolute;
+
+    width: 8px;
+    height: 8px;
+
+    right: 17px;
+    top: 18px;
+
+    border-right: 1.5px solid #0094FF;
+    border-bottom: 1.5px solid #0094FF;
+
+    transform: rotate(45deg);
+
+    pointer-events: none;
+}
+
+.home-select {
+    width: 282px;
+    height: 51px;
+
+    padding:
+        0
+        44px
+        0
+        16px;
+
+    border: 1px solid #0094FF;
+
+    border-radius: 8px;
+
+    background: #FFFFFF;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    outline: none;
+
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 27px;
+
+    color: #8F8F93;
+
+    cursor: pointer;
+}
+
+.home-select-wrap-wide,
+.home-select-wide {
+    width: 390px;
+}
+
+
+/* =========================================================
+   FEATURES - DESKTOP
+   ========================================================= */
+
+/* Respiro entre o menu de seleção e o primeiro banner */
+.home-feature-one {
+    margin-top: 24px;
+}
+
+.home-feature {
+    width: 100%;
+
+    margin: 0;
+    padding: 0;
+}
+
+.home-feature-blue {
+    height: 457px;
+
+    background: #0094FF;
+}
+
+.home-feature-white {
+    height: 463px;
+
+    background: #FFFFFF;
+}
+
+.home-feature-third {
+    height: 464px;
+}
+
+.home-feature-inner {
+    width: 980px;
+    max-width: 100%;
+    height: 100%;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns:
+        490px
+        490px;
+}
+
+
+/* TEXTO */
+
+.home-feature-copy {
+    width: 349px;
+
+    margin: auto;
+
+    color: #FFFFFF;
+}
+
+.home-feature-copy-dark {
+    width: 353px;
+
+    color: #000000;
+}
+
+.home-feature-title {
+    margin: 0 0 16px;
+
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+
+    text-align: center;
+}
+
+.home-feature-description {
+    margin: 0;
+
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 27px;
+
+    text-align: justify;
+}
+
+
+/* IMAGEM */
+
+.home-feature-media {
+    width: 490px;
+    height: 100%;
+
+    overflow: hidden;
+
+    background: #EEEEEE;
+}
+
+.home-feature-media img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+/* =========================================================
+   ESPAÇO ENTRE MENU E PRIMEIRO BANNER
+   DESKTOP
+   ========================================================= */
+
+.home-feature.home-feature-one {
+    margin-top: 24px;
+}
+/* =========================================================
+   SELECTS DOS BLOCOS
+   ========================================================= */
+
+.home-inline-select {
+    position: relative;
+
+    width: 291px;
+    height: 51px;
+
+    margin: 32px auto 0;
+}
+
+.home-inline-select::after {
+    content: "";
+
+    position: absolute;
+
+    width: 8px;
+    height: 8px;
+
+    right: 16px;
+    top: 18px;
+
+    border-right: 1.5px solid #0094FF;
+    border-bottom: 1.5px solid #0094FF;
+
+    transform: rotate(45deg);
+
+    pointer-events: none;
+}
+
+.home-inline-select select {
+    width: 100%;
+    height: 51px;
+
+    padding:
+        0
+        42px
+        0
+        16px;
+
+    border: 1px solid #0094FF;
+
+    border-radius: 8px;
+
+    background: #FFFFFF;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    outline: none;
+
+    font-size: 15px;
+
+    color: #8F8F93;
+
+    cursor: pointer;
+}
+
+
+/* SEGUNDO SELECT DOS ARTIGOS */
+
+.home-article-treatment-select {
+    position: relative;
+
+    width: 291px;
+    height: 51px;
+
+    margin: 10px auto 0;
+}
+
+.home-article-treatment-select::after {
+    content: "";
+
+    position: absolute;
+
+    width: 8px;
+    height: 8px;
+
+    right: 16px;
+    top: 18px;
+
+    border-right: 1.5px solid #0094FF;
+    border-bottom: 1.5px solid #0094FF;
+
+    transform: rotate(45deg);
+
+    pointer-events: none;
+}
+
+.home-article-treatment-select select {
+    width: 100%;
+    height: 51px;
+
+    padding:
+        0
+        42px
+        0
+        16px;
+
+    border: 1px solid #0094FF;
+
+    border-radius: 8px;
+
+    background: #FFFFFF;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    outline: none;
+
+    font-size: 15px;
+
+    color: #8F8F93;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   BUSCA DE TRATAMENTO
+   ========================================================= */
+
+.home-treatment-search {
+    position: relative;
+
+    width: 291px;
+    height: 51px;
+
+    margin: 32px auto 0;
+}
+
+.home-treatment-search select {
+    width: 100%;
+    height: 51px;
+
+    padding:
+        0
+        45px
+        0
+        16px;
+
+    border: 1px solid #0094FF;
+
+    border-radius: 8px;
+
+    background: #FFFFFF;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    outline: none;
+
+    font-size: 15px;
+
+    color: #8F8F93;
+
+    cursor: pointer;
+}
+
+.home-treatment-search i {
+    position: absolute;
+
+    width: 16px;
+    height: 16px;
+
+    right: 12px;
+    top: 17px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #0094FF;
+
+    font-size: 15px;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   SHARE BANNER
+   ========================================================= */
+
+.home-share {
+    width: 100%;
+
+    padding: 80px 15px 0;
+
+    background: #FFFFFF;
+}
+
+.share-banner {
+    position: relative;
+
+    width: 954px;
+    max-width: 100%;
+    height: 300px;
+
+    margin: 0 auto;
+
+    overflow: hidden;
+
+    background: #16352D;
+}
+
+.share-banner-picture,
+.share-banner-img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+}
+
+.share-banner-img {
+    object-fit: cover;
+}
+
+.share-whatsapp-link {
+    position: absolute;
+
+    width: 167px;
+    height: 34px;
+
+    right: 25px;
+    bottom: 30px;
+
+    z-index: 10;
+}
+
+
+/* =========================================================
+   NEWSLETTER
+   ========================================================= */
+
+.newsletter-strip {
+    width: 100%;
+    height: 238px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background: #0094FF;
+
+    color: #FFFFFF;
+}
+
+.newsletter-icon {
+    width: 47px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 38px;
+}
+
+.newsletter-title {
+    margin: 10px 0 14px;
+
+    font-weight: 700;
+    font-size: 25px;
+    line-height: 34px;
+
+    text-align: center;
+}
+
+.newsletter-button {
+    width: 193px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 5px;
+
+    background: #FFFFFF;
+
+    color: #0094FF;
+
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 18px;
+}
+
+
+/* =========================================================
+   FOOTER DESKTOP
+   ========================================================= */
+
+.site-footer {
+    width: 100%;
+
+    background: #FFFFFF;
+}
+
+.site-footer-content {
+    position: relative;
+
+    width: 982px;
+    max-width: calc(100% - 30px);
+    height: 400px;
+
+    margin: 0 auto;
+
+    padding-top: 55px;
+}
+
+
+/* GRUPOS */
+
+.footer-group {
+    position: absolute;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.footer-title {
+    margin: 0 0 6px;
+
+    color: #010009;
+
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 21px;
+}
+
+.footer-group a,
+.footer-contract-text {
+    color: #8F8F93;
+
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+}
+
+
+/* COLUNA 1 */
+
+.footer-treatments {
+    left: 0;
+    top: 55px;
+
+    width: 220px;
+}
+
+.footer-articles {
+    left: 0;
+    top: 169px;
+
+    width: 220px;
+}
+
+
+/* COLUNA 2 */
+
+.footer-documents {
+    left: 403px;
+    top: 55px;
+
+    width: 180px;
+}
+
+.footer-contact {
+    left: 403px;
+    top: 166px;
+
+    width: 180px;
+}
+
+.footer-contract {
+    left: 403px;
+    top: 270px;
+
+    width: 190px;
+}
+
+
+/* COLUNA 3 */
+
+.footer-presentations {
+    left: 746px;
+    top: 55px;
+
+    width: 200px;
+}
+
+.footer-opinions {
+    left: 746px;
+    top: 210px;
+
+    width: 220px;
+}
+
+
+/* BOTÃO */
+
+.footer-access-button {
+    position: absolute;
+
+    width: 235px;
+    height: 73px;
+
+    left: 746px;
+    top: 268px;
+
+    padding: 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 5px;
+
+    background: #0094FF;
+
+    color: #FFFFFF;
+
+    font-weight: 800;
+    font-size: 15px;
+    line-height: 18px;
+
+    text-align: center;
+}
+
+
+/* LEGAL */
+
+.site-footer-legal {
+    width: 100%;
+    height: 65px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 3px solid #E3E3E3;
+
+    background: #FAFAFA;
+}
+
+.site-footer-legal p {
+    margin: 0;
+
+    color: #8F8F93;
+
+    font-size: 13px;
+    line-height: 16px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media screen and (max-width: 1000px) and (min-width: 769px) {
+
+    .home-tabs {
+        grid-template-columns:
+            repeat(3, 1fr);
+    }
+
+    .home-tab {
+        width: 100%;
+    }
+
+    .home-feature-inner {
+        grid-template-columns:
+            50%
+            50%;
+    }
+
+    .home-feature-media {
+        width: 100%;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   FIGMA 320px
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+
+    html,
+    body {
+        width: 100%;
+        min-width: 0;
+
+        margin: 0;
+        padding: 0;
+
+        overflow-x: hidden;
+
+        background: #FFFFFF;
+    }
+
+
+    /* =====================================================
+       HEADER
+       TOTAL 135px
+       ===================================================== */
+
+    .top-bar {
+        width: 100%;
+        height: 59px;
+
+        padding: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #0094FF;
+
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 21px;
+
+        text-align: center;
+
+        color: #FFFFFF;
+    }
+
+
+    .header {
+        width: 100%;
+        height: 76px;
+
+        background: #FFFFFF;
+    }
+
+
+    .header-inner {
+        position: relative;
+
+        width: 320px;
+        max-width: 100%;
+        height: 76px;
+
+        margin: 0 auto;
+    }
+
+
+    /* LOGO */
+
+    .logo-link {
+        position: absolute;
+
+        width: 127px;
+        height: 68px;
+
+        left: -3px;
+        top: 8px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        overflow: hidden;
+    }
+
+
+    .logo {
+        width: 127px;
+        height: 68px;
+
+        object-fit: contain;
+    }
+
+
+    /* LOGIN */
+
+    .login-link {
+        position: absolute;
+
+        width: 214.5px;
+        height: 33px;
+
+        right: 10.5px;
+        top: 23px;
+
+        display: block;
+    }
+
+
+    .login-lock-icon {
+        position: absolute;
+
+        width: 15px;
+        height: 15px;
+
+        left: 44px;
+        top: 9px;
+
+        margin: 0;
+    }
+
+
+    .login-lock-icon img {
+        width: 15px;
+        height: 15px;
+    }
+
+
+    .login-icon {
+        position: absolute;
+
+        width: 21.45px;
+        height: 21.45px;
+
+        left: 61.88px;
+        top: 5.78px;
+
+        margin: 0;
+
+        border-radius: 50%;
+
+        font-size: 9px;
+    }
+
+
+    .login-text {
+        position: absolute;
+
+        width: 119.92px;
+        height: 22.27px;
+
+        left: 94.88px;
+        top: 5.36px;
+
+        margin: 0;
+
+        display: flex;
+        align-items: center;
+
+        font-weight: 700;
+        font-size: 12.375px;
+        line-height: 22px;
+    }
+
+
+
+    /* =====================================================
+       MAIN
+       ===================================================== */
+
+    .home-main {
+        width: 320px;
+        max-width: 100%;
+
+        margin: 0 auto;
+
+        background: #FFFFFF;
+    }
+
+
+
+    /* =====================================================
+       MENU
+       320 x 292
+       ===================================================== */
+
+    .home-menu {
+        width: 320px;
+        max-width: 100%;
+        height: 292px;
+
+        margin: 0 auto;
+
+        padding:
+            15px
+            15px
+            29px;
+
+        background: #FFFFFF;
+    }
+
+
+    .home-menu-inner {
+        position: relative;
+
+        width: 290px;
+        height: 248px;
+
+        margin: 0 auto;
+    }
+
+
+    .home-tabs {
+        position: relative;
+
+        z-index: 2;
+
+        width: 290px;
+        height: 30px;
+
+        display: grid;
+
+        grid-template-columns:
+            90px
+            90px
+            90px;
+
+        justify-content: space-between;
+    }
+
+
+    .home-tab {
+        width: 90px;
+        height: 30px;
+
+        margin: 0;
+
+        padding: 0 5px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 4px;
+
+        border: 1px solid #0094FF;
+        border-bottom: 0;
+
+        border-radius:
+            10px
+            10px
+            0
+            0;
+
+        background: #FFFFFF;
+
+        color: #0094FF;
+
+        font-family: Arial, sans-serif;
+        font-weight: 700;
+        font-size: 10px;
+        line-height: 11px;
+
+        text-align: left;
+    }
+
+
+    .home-tab i {
+        display: block;
+
+        width: 10px;
+
+        flex: 0 0 10px;
+
+        font-size: 10px;
+    }
+
+
+    .home-tab span {
+        display: block;
+
+        max-width: 62px;
+    }
+
+
+    .home-tab.active {
+        background: #0094FF;
+
+        color: #FFFFFF;
+    }
+
+
+    .home-menu-content {
+        position: absolute;
+        z-index: 1;
+
+        width: 290px;
+        height: 220px;
+
+        left: 0;
+        top: 28px;
+
+        border: 1px solid #0094FF;
+
+        border-radius:
+            0
+            0
+            15px
+            15px;
+
+        background: #FFFFFF;
+
+        transition:
+            background 0.2s ease,
+            color 0.2s ease;
+    }
+
+
+    /* + Tratamentos: painel inteiro azul também no mobile */
+
+    .home-menu-content.tratamentos-active {
+        background: #0094FF;
+    }
+
+
+    .home-menu-content.tratamentos-active
+    .home-menu-description {
+        color: #FFFFFF;
+    }
+
+
+    .home-menu-content.tratamentos-active
+    .home-tab-panel {
+        background: transparent;
+    }
+
+
+    .home-menu-text-desktop {
+        display: none;
+    }
+
+
+    .home-menu-text-mobile {
+        display: inline;
+    }
+
+
+    .home-tab-panel {
+        position: relative;
+
+        width: 100%;
+        height: 100%;
+
+        padding: 0;
+    }
+
+
+    /* Labels das três abas no mobile.
+       Todas ficam dentro do painel, acima dos campos. */
+
+    .home-menu-description {
+        position: absolute;
+
+        width: 234px;
+
+        left: 28px;
+        top: 40px;
+
+        margin: 0;
+
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 24px;
+
+        color: #000000;
+    }
+
+
+    /* Tratamentos ativo = texto branco sobre o painel azul */
+
+    .home-menu-content.tratamentos-active
+    [data-home-panel="tratamentos"]
+    .home-menu-description {
+        color: #FFFFFF;
+        font-weight: 600;
+    }
+
+
+    .home-menu-content.tratamentos-active
+    .home-menu-treatment-search {
+        position: absolute;
+
+        width: 232px;
+        height: 43px;
+
+        left: 28px;
+        top: 139px;
+
+        margin: 0;
+    }
+
+
+    .home-menu-content.tratamentos-active
+    .home-menu-treatment-search select {
+        width: 232px;
+        height: 43px;
+
+        padding:
+            0
+            38px
+            0
+            13px;
+
+        border: 0;
+        border-radius: 5px;
+
+        background: #FFFFFF;
+
+        font-weight: 400;
+        font-size: 12.35px;
+        line-height: 22px;
+
+        color: #8F8F93;
+    }
+
+
+    .home-menu-content.tratamentos-active
+    .home-menu-treatment-search i {
+        right: 13px;
+        top: 14px;
+
+        color: #0094FF;
+
+        font-size: 14px;
+    }
+
+
+    .home-select-wrap,
+    .home-select-wrap-wide {
+        position: absolute;
+
+        width: 232px;
+        height: 42.76px;
+
+        left: 28px;
+        top: 139px;
+    }
+
+
+    .home-select-wrap::after {
+        width: 7px;
+        height: 7px;
+
+        right: 14px;
+        top: 15px;
+
+        border-right: 1px solid #0094FF;
+        border-bottom: 1px solid #0094FF;
+    }
+
+
+    .home-select,
+    .home-select-wide {
+        width: 232px;
+        height: 42.76px;
+
+        padding:
+            0
+            35px
+            0
+            13px;
+
+        border: 0.82px solid #0094FF;
+
+        border-radius: 5px;
+
+        font-size: 12.35px;
+        line-height: 22px;
+    }
+
+
+
+    /* =====================================================
+       BASE DOS BLOCOS
+       ===================================================== */
+
+    .home-feature {
+        position: relative;
+
+        width: 320px;
+        max-width: 100%;
+
+        margin: 0 auto;
+
+        padding: 0;
+    }
+
+
+    .home-feature-inner {
+        position: relative;
+
+        width: 320px;
+        max-width: 100%;
+        height: 100%;
+
+        margin: 0;
+
+        display: block;
+    }
+
+
+    .home-feature-media {
+        position: absolute;
+
+        width: 320px;
+        height: 302px;
+
+        left: 0;
+        top: 0;
+
+        margin: 0;
+
+        overflow: hidden;
+    }
+
+
+    .home-feature-media img {
+        display: block;
+
+        width: 320px;
+        height: 302px;
+
+        object-fit: cover;
+    }
+
+
+    .home-feature-copy,
+    .home-feature-copy-dark {
+        position: absolute;
+
+        width: 320px;
+
+        left: 0;
+
+        margin: 0;
+        padding: 0;
+    }
+
+
+
+    /* =====================================================
+       BLOCO 1
+       IMAGEM + AZUL
+       624px
+       ===================================================== */
+
+    .home-feature-one {
+        height: 624px !important;
+
+        margin-top: 18px;
+
+        background: #0094FF;
+    }
+
+
+    .home-feature-one .home-feature-copy {
+        position: absolute;
+
+        width: 320px;
+        height: 322px;
+
+        left: 0;
+        top: 302px;
+
+        margin: 0;
+        padding: 0;
+
+        background: #0094FF;
+
+        color: #FFFFFF;
+    }
+
+
+    .home-feature-one .home-feature-title {
+        position: absolute;
+
+        width: 311px;
+        height: 48px;
+
+        left: 4.5px;
+        top: 13px;
+
+        margin: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 24px;
+
+        text-align: center;
+
+        color: #FFFFFF;
+    }
+
+
+    .home-feature-one .home-feature-description {
+        position: absolute;
+
+        width: 260px;
+
+        left: 30px;
+        top: 74px;
+
+        margin: 0;
+
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 25px;
+
+        text-align: justify;
+
+        color: #FFFFFF;
+    }
+
+
+    .home-feature-one .home-inline-select {
+        position: absolute;
+
+        width: 232px;
+        height: 42.76px;
+
+        left: 44px;
+        top: 251px;
+
+        margin: 0;
+    }
+
+
+    .home-feature-one .home-inline-select select {
+        width: 232px;
+        height: 42.76px;
+
+        padding:
+            0
+            35px
+            0
+            13px;
+
+        border: 0.82px solid #0094FF;
+
+        border-radius: 5px;
+
+        background: #FFFFFF;
+
+        font-size: 12.35px;
+        line-height: 22px;
+
+        color: #8F8F93;
+    }
+
+
+
+    /* =====================================================
+       BLOCO 2
+       IMAGEM + BRANCO
+       660px
+       ===================================================== */
+
+    .home-feature-two {
+        height: 660px !important;
+
+        background: #FFFFFF;
+    }
+
+
+    .home-feature-two .home-feature-copy {
+        position: absolute;
+
+        width: 320px;
+        height: 358px;
+
+        left: 0;
+        top: 302px;
+
+        margin: 0;
+        padding: 0;
+
+        background: #FFFFFF;
+
+        color: #000000;
+    }
+
+
+    .home-feature-two .home-feature-title {
+        position: absolute;
+
+        width: 311px;
+        height: 58px;
+
+        left: 4.5px;
+        top: 13px;
+
+        margin: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 24px;
+
+        text-align: center;
+
+        color: #000000;
+    }
+
+
+    .home-feature-two .home-feature-description {
+        position: absolute;
+
+        width: 260px;
+
+        left: 30px;
+        top: 87px;
+
+        margin: 0;
+
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 27px;
+
+        text-align: justify;
+
+        color: #000000;
+    }
+
+
+    .home-feature-two .home-treatment-search {
+        position: absolute;
+
+        width: 232px;
+        height: 42.76px;
+
+        left: 44px;
+        top: 292px;
+
+        margin: 0;
+    }
+
+
+    .home-feature-two .home-treatment-search select {
+        width: 232px;
+        height: 42.76px;
+
+        padding:
+            0
+            38px
+            0
+            16px;
+
+        border: 1px solid #0094FF;
+
+        border-radius: 6px;
+
+        background: #FFFFFF;
+
+        font-size: 13px;
+        line-height: 27px;
+
+        color: #8F8F93;
+    }
+
+
+    .home-feature-two .home-treatment-search i {
+        right: 13px;
+        top: 13px;
+
+        font-size: 14px;
+    }
+
+
+
+    /* =====================================================
+       BLOCO 3
+       686px
+       ===================================================== */
+
+    .home-feature-third {
+        height: 686px !important;
+
+        background: #0094FF;
+    }
+
+
+    .home-feature-third .home-feature-copy {
+        position: absolute;
+
+        width: 320px;
+        height: 384px;
+
+        left: 0;
+        top: 302px;
+
+        margin: 0;
+        padding: 0;
+
+        background: #0094FF;
+
+        color: #FFFFFF;
+    }
+
+
+    .home-feature-third .home-feature-title {
+        position: absolute;
+
+        width: 311px;
+        height: 58px;
+
+        left: 4.5px;
+        top: 13px;
+
+        margin: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 24px;
+
+        text-align: center;
+
+        color: #FFFFFF;
+    }
+
+
+    .home-feature-third .home-feature-description {
+        position: absolute;
+
+        width: 260px;
+
+        left: 30px;
+        top: 87px;
+
+        margin: 0;
+
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 25px;
+
+        text-align: justify;
+
+        color: #FFFFFF;
+    }
+
+
+    /* PRIMEIRO SELECT */
+
+    .home-feature-third .home-inline-select {
+        position: absolute;
+
+        width: 232px;
+        height: 42.76px;
+
+        left: 44px;
+        top: 254px;
+
+        margin: 0;
+    }
+
+
+    .home-feature-third .home-inline-select select {
+        width: 232px;
+        height: 42.76px;
+
+        padding:
+            0
+            35px
+            0
+            13px;
+
+        border: 0.82px solid #0094FF;
+
+        border-radius: 5px;
+
+        font-size: 12.35px;
+
+        color: #8F8F93;
+    }
+
+
+    /* SEGUNDO SELECT */
+
+    .home-feature-third
+    .home-article-treatment-select {
+        position: absolute;
+
+        width: 231px;
+        height: 42.66px;
+
+        left: 45px;
+        top: 315px;
+
+        margin: 0;
+    }
+
+
+    .home-feature-third
+    .home-article-treatment-select select {
+        width: 231px;
+        height: 42.66px;
+
+        padding:
+            0
+            35px
+            0
+            13px;
+
+        border: 0.82px solid #0094FF;
+
+        border-radius: 6px;
+
+        background: #FFFFFF;
+
+        font-size: 12.28px;
+
+        color: #8F8F93;
+    }
+
+
+
+    /* =====================================================
+       BANNER
+       320 x 454
+       ===================================================== */
+
+    .home-share {
+        width: 320px;
+        max-width: 100%;
+        height: 454px;
+
+        margin: 0 auto;
+
+        padding: 0;
+    }
+
+
+    .share-banner {
+        position: relative;
+
+        width: 320px;
+        height: 454px;
+
+        margin: 0;
+
+        overflow: hidden;
+
+        background: #111111;
+    }
+
+
+    .share-banner-picture,
+    .share-banner-img {
+        width: 320px;
+        height: 454px;
+    }
+
+
+    .share-banner-img {
+        object-fit: cover;
+    }
+
+
+    .share-banner::after {
+        content: "";
+
+        position: absolute;
+
+        z-index: 2;
+
+        width: 100%;
+        height: 205px;
+
+        left: 0;
+        top: 0;
+
+        background:
+            linear-gradient(
+                180deg,
+                #0E100D 9.96%,
+                rgba(0, 0, 0, 0) 100%
+            );
+
+        pointer-events: none;
+    }
+
+
+    .share-whatsapp-link {
+        position: absolute;
+
+        z-index: 5;
+
+        width: 153px;
+        height: 31px;
+
+        left: 83px;
+        right: auto;
+
+        bottom: 21px;
+    }
+
+
+
+    /* =====================================================
+       NEWSLETTER
+       320 x 238
+       ===================================================== */
+
+    .newsletter-strip {
+        position: relative;
+
+        width: 320px;
+        max-width: 100%;
+        height: 238px;
+
+        margin: 0 auto;
+
+        padding: 0;
+
+        display: block;
+
+        background: #0094FF;
+    }
+
+
+    .newsletter-icon {
+        position: absolute;
+
+        width: 47px;
+        height: 40px;
+
+        left: 136px;
+        top: 36px;
+
+        font-size: 38px;
+    }
+
+
+    .newsletter-title {
+        position: absolute;
+
+        width: 239px;
+        height: 61px;
+
+        left: 40px;
+        top: 89px;
+
+        margin: 0;
+
+        font-weight: 700;
+        font-size: 15px;
+        line-height: 25px;
+
+        text-align: center;
+    }
+
+
+    .newsletter-button {
+        position: absolute;
+
+        width: 166px;
+        height: 41px;
+
+        left: 77px;
+        top: 163px;
+
+        border-radius: 5px;
+
+        font-size: 15px;
+    }
+
+
+
+    /* =====================================================
+       FOOTER MOBILE
+       320 x 887
+       ===================================================== */
+
+    .site-footer {
+        position: relative;
+
+        width: 320px;
+        max-width: 100%;
+        height: 887px;
+
+        margin: 0 auto;
+
+        background: #FFFFFF;
+    }
+
+
+    .site-footer-content {
+        position: relative;
+
+        width: 320px;
+        height: 814px;
+
+        margin: 0;
+
+        padding: 0;
+    }
+
+
+    .footer-group {
+        position: absolute;
+
+        gap: 5px;
+    }
+
+
+    .footer-title {
+        margin: 0;
+
+        font-size: 15px;
+        line-height: 21px;
+    }
+
+
+    .footer-group a,
+    .footer-contract-text {
+        font-size: 13px;
+        line-height: 16px;
+    }
+
+
+    /* TRATAMENTOS */
+
+    .footer-treatments {
+        width: 230px;
+
+        left: 21px;
+        top: 42px;
+    }
+
+
+    /* ARTIGOS */
+
+    .footer-articles {
+        width: 230px;
+
+        left: 21px;
+        top: 136px;
+    }
+
+
+    /* DOCUMENTOS */
+
+    .footer-documents {
+        width: 180px;
+
+        left: 21px;
+        top: 235px;
+    }
+
+
+    /* CONTATO */
+
+    .footer-contact {
+        width: 180px;
+
+        left: 21px;
+        top: 334px;
+    }
+
+
+    /* APRESENTAÇÕES */
+
+    .footer-presentations {
+        width: 190px;
+
+        left: 20px;
+        top: 432px;
+    }
+
+
+    /* OPINIÕES */
+
+    .footer-opinions {
+        width: 230px;
+
+        left: 21px;
+        top: 566px;
+    }
+
+
+    /* CONTRATAR */
+
+    .footer-contract {
+        width: 210px;
+
+        left: 21px;
+        top: 603px;
+    }
+
+
+    /* BOTÃO */
+
+    .footer-access-button {
+        position: absolute;
+
+        width: 232px;
+        height: 65px;
+
+        left: 20px;
+        top: 688px;
+
+        padding: 12px 22px;
+
+        font-weight: 700;
+
+        border-radius: 5px;
+    }
+
+
+    /* LEGAL */
+
+    .site-footer-legal {
+        position: absolute;
+
+        width: 320px;
+        height: 73px;
+
+        left: 0;
+        top: 814px;
+
+        padding: 0;
+
+        border: 3px solid #E3E3E3;
+
+        background: #F4F4F4;
+    }
+
+
+    .site-footer-legal p {
+        width: 249px;
+
+        margin: 0;
+
+        font-weight: 500;
+        font-size: 13.67px;
+        line-height: 17px;
+
+        text-align: center;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+
+<body>
+
+
+<!-- =========================================================
+     TOP BAR
+     ========================================================= -->
+
+<div class="top-bar">
+
+    A plataforma do paciente bem informado
+
+</div>
+
+
+
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
+
+<header class="header">
+
+    <div class="header-inner">
+
+
+        <a
+            href="/home/"
+            class="logo-link"
+        >
+
+            <img
+                class="logo"
+                src="{% static 'img/logo.png' %}"
+                alt="Telix"
+            >
+
+        </a>
+
+
+        <a
+            href="/accounts/login/"
+            class="login-link"
+        >
+
+
+            <span
+                class="login-lock-icon"
+                aria-hidden="true"
+            >
+
+                <img
+                    src="{% static 'img/saloca_login.png' %}"
+                    alt=""
+                >
+
+            </span>
+
+
+            <span
+                class="login-icon"
+                aria-hidden="true"
+            >
+
+                <i class="fa-solid fa-user"></i>
+
+            </span>
+
+
+            <span class="login-text">
+
+                Cadastre-se/Login
+
+            </span>
+
+
+        </a>
+
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================================
+     MAIN
+     ========================================================= -->
+
+<main class="home-main">
+
+
+
+<!-- =========================================================
+     MENU HOME
+     ========================================================= -->
+
+<section class="home-menu">
+
+    <div class="home-menu-inner">
+
+
+        <div class="home-tabs">
+
+
+            <button
+                type="button"
+                class="home-tab"
+                data-home-tab="doencas"
+            >
+
+                <i
+                    class="fa-solid fa-temperature-half"
+                    aria-hidden="true"
+                ></i>
+
+                <span>
+                    Doenças e sintomas
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="home-tab active"
+                data-home-tab="tratamentos"
+            >
+
+                <i
+                    class="fa-solid fa-plus"
+                    aria-hidden="true"
+                ></i>
+
+                <span>
+                    Tratamentos
+                </span>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="home-tab"
+                data-home-tab="artigos"
+            >
+
+                <i
+                    class="fa-solid fa-magnifying-glass"
+                    aria-hidden="true"
+                ></i>
+
+                <span>
+                    Artigos científicos
+                </span>
+
+            </button>
+
+
+        </div>
+
+
+
+        <div class="home-menu-content">
+
+
+            <!-- DOENÇAS -->
+
+            <div
+                class="home-tab-panel"
+                data-home-panel="doencas"
+                hidden
+            >
+
+                <p class="home-menu-description">
+
+                    <span class="home-menu-text-desktop">
+                        Selecione doença ou sintoma para ver lista de tratamentos
+                        em ordem de eficácia.
+                    </span>
+
+                    <span class="home-menu-text-mobile">
+                        selecione doença ou sintoma para ver lista de tratamentos
+                        em ordem de eficácia
+                    </span>
+
+                </p>
+
+
+                <div class="home-select-wrap">
+
+                    <select
+                        class="home-select"
+                        data-navigation-select
+                    >
+
+                        <option value="">
+                            Selecione a doença ou sintoma
+                        </option>
+
+
+                        {% for item in condicoes_home %}
+
+                            <option value="{{ item.url }}">
+                                {{ item.nome }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TRATAMENTOS -->
+
+            <div
+                class="home-tab-panel"
+                data-home-panel="tratamentos"
+            >
+
+                <p class="home-menu-description">
+
+                    <span class="home-menu-text-desktop">
+                        Selecione o tratamento de saúde para ver a eficácia,
+                        prazo para efeito, segurança de uso por grupo, custo,
+                        contraindicações e reações adversas.
+                    </span>
+
+                    <span class="home-menu-text-mobile">
+                        Selecione doença ou sintoma para ver lista de tratamentos
+                        em ordem de eficácia
+                    </span>
+
+                </p>
+
+
+                <div class="home-menu-treatment-search">
+
+                    <select
+                        data-navigation-select
+                        aria-label="Encontre o tratamento"
+                    >
+
+                        <option value="">
+                            Encontre o tratamento
+                        </option>
+
+
+            {% for item in tratamentos_home %}
+
+                <option value="{{ item.url }}">
+                    {{ item.label }}
+                </option>
+
+            {% endfor %}
+
+                    </select>
+
+
+                    <i
+                        class="fa-solid fa-magnifying-glass"
+                        aria-hidden="true"
+                    ></i>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ARTIGOS -->
+
+            <div
+                class="home-tab-panel"
+                data-home-panel="artigos"
+                hidden
+            >
+
+                <p class="home-menu-description">
+
+                    <span class="home-menu-text-desktop">
+                        Selecione doença e tratamento para ver artigos científicos
+                        que revelam a eficácia do tratamento para a doença
+                    </span>
+
+                    <span class="home-menu-text-mobile">
+                        Selecione a doença e o tratamento para ver artigos
+                        científicos sobre sua eficácia
+                    </span>
+
+                </p>
+
+
+                <div
+                    class="
+                        home-select-wrap
+                        home-select-wrap-wide
+                    "
+                >
+
+                    <select
+                        class="
+                            home-select
+                            home-select-wide
+                        "
+                        data-navigation-select
+                    >
+
+                        <option value="">
+                            Selecione um tratamento
+                        </option>
+
+
+                        {% for item in tratamentos_home %}
+
+                            {% if item.url_pesquisas %}
+
+                                <option
+                                    value="{{ item.url_pesquisas }}"
+                                >
+                                    {{ item.label }}
+                                </option>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     BLOCO 1
+     ========================================================= -->
+
+<section
+    class="
+        home-feature
+        home-feature-blue
+        home-feature-one
+    "
+>
+
+    <div class="home-feature-inner">
+
+
+        <div class="home-feature-copy">
+
+
+            <h2 class="home-feature-title">
+
+                Tratamentos em ordem de<br>
+                eficácia
+
+            </h2>
+
+
+            <p class="home-feature-description">
+
+                Compare a eficácia e o prazo de efeito de cada
+                tratamento, verificando a porcentagem de pessoas
+                que obtiveram resultados e quanto tempo levou para
+                perceber os benefícios após o início do tratamento.
+
+            </p>
+
+
+            <div class="home-inline-select">
+
+                <select
+                    data-navigation-select
+                >
+
+                    <option value="">
+                        Selecione a doença ou sintoma
+                    </option>
+
+
+                    {% for item in condicoes_home %}
+
+                        <option value="{{ item.url }}">
+                            {{ item.nome }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="home-feature-media">
+
+            <img
+                src="{% static 'img/home_tratamentos.png' %}"
+                alt="Tratamentos em ordem de eficácia"
+            >
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     BLOCO 2
+     ========================================================= -->
+
+<section
+    class="
+        home-feature
+        home-feature-white
+        home-feature-two
+    "
+>
+
+    <div class="home-feature-inner">
+
+
+        <div class="home-feature-media">
+
+            <img
+                src="{% static 'img/home_detalhes.png' %}"
+                alt="Detalhes completos sobre tratamentos"
+            >
+
+        </div>
+
+
+
+        <div
+            class="
+                home-feature-copy
+                home-feature-copy-dark
+            "
+        >
+
+
+            <h2 class="home-feature-title">
+
+                Detalhes completos sobre<br>
+                tratamentos
+
+            </h2>
+
+
+            <p class="home-feature-description">
+
+                Confira na página de detalhes informações completas
+                sobre os riscos de reações adversas, efeitos colaterais,
+                precauções e orientações de uso de cada tratamento.
+                Tudo apresentado de forma clara, acessível e intuitiva
+                para facilitar sua decisão.
+
+            </p>
+
+
+            <div class="home-treatment-search">
+
+                <select
+                    data-navigation-select
+                >
+
+                    <option value="">
+                        Encontre o tratamento
+                    </option>
+
+
+                    {% for item in tratamentos_home %}
+
+                        <option value="{{ item.url }}">
+                            {{ item.label }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+
+                <i
+                    class="fa-solid fa-magnifying-glass"
+                    aria-hidden="true"
+                ></i>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     BLOCO 3
+     ========================================================= -->
+
+<section
+    class="
+        home-feature
+        home-feature-blue
+        home-feature-third
+    "
+>
+
+    <div class="home-feature-inner">
+
+
+        <div class="home-feature-copy">
+
+
+            <h2 class="home-feature-title">
+
+                Artigos científicos que<br>
+                evidenciam a eficácia
+
+            </h2>
+
+
+            <p class="home-feature-description">
+
+                Nossa plataforma traz dados de pesquisas e artigos
+                científicos sobre tratamento de saúde, tornando fácil
+                e prático encontrar os artigos relevantes e mais atuais.
+
+            </p>
+
+
+
+            <!-- PRIMEIRO SELECT: CONDIÇÃO -->
+
+            <div class="home-inline-select">
+
+                <select
+                    id="home-article-condition"
+                >
+
+                    <option value="">
+                        Selecione a doença ou sintoma
+                    </option>
+
+
+                    {% for item in condicoes_home %}
+
+                        <option value="{{ item.nome }}">
+                            {{ item.nome }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+
+            <!-- SEGUNDO SELECT: TRATAMENTO -->
+
+            <div class="home-article-treatment-select">
+
+                <select
+                    id="home-article-treatment"
+                    data-navigation-select
+                >
+
+                    <option value="">
+                        Selecione o tratamento
+                    </option>
+
+
+                    {% for item in tratamentos_home %}
+
+                        {% if item.url_pesquisas %}
+
+                            <option
+                                value="{{ item.url_pesquisas }}"
+                                data-condicao="{{ item.condicao }}"
+                            >
+                                {{ item.nome }}
+                            </option>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="home-feature-media">
+
+            <img
+                src="{% static 'img/home_artigos.png' %}"
+                alt="Artigos científicos"
+            >
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     BANNER FAMÍLIA
+     ========================================================= -->
+
+<section class="home-share">
+
+    <div class="share-banner">
+
+
+        <picture class="share-banner-picture">
+
+            <source
+                media="(max-width: 768px)"
+                srcset="{% static 'img/banner mobile.png' %}"
+            >
+
+            <img
+                class="share-banner-img"
+                src="{% static 'img/banner familia.png' %}"
+                alt="Você conhece alguém que precisa desse conteúdo?"
+            >
+
+        </picture>
+
+
+        <a
+            href="https://api.whatsapp.com/send/?text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.%0A%0Ahttps%3A%2F%2Fwww.telix.inf.br%2F"
+            class="share-whatsapp-link"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Compartilhar pelo WhatsApp"
+        ></a>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     NEWSLETTER
+     ========================================================= -->
+
+<section class="newsletter-strip">
+
+
+    <div
+        class="newsletter-icon"
+        aria-hidden="true"
+    >
+
+        <i class="fa-regular fa-envelope"></i>
+
+    </div>
+
+
+    <h2 class="newsletter-title">
+
+        Mantenha-se atualizado sobre<br>
+        tratamentos de saúde
+
+    </h2>
+
+
+    <a
+        href="https://www.telix.inf.br/mantenha-se-atualizado"
+        class="newsletter-button"
+    >
+
+        Cadastrar e-mail
+
+    </a>
+
+
+</section>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
+<footer class="site-footer">
+
+
+    <div class="site-footer-content">
+
+
+        <!-- TRATAMENTOS -->
+
+        <div class="footer-group footer-treatments">
+
+            <a
+                href="https://www.telix.inf.br/tratamentos-risco-custo-contraindicado-eficacia-prazo"
+            >
+
+                <h3 class="footer-title">
+                    Páginas de tratamentos
+                </h3>
+
+            </a>
+
+
+            <a
+                href="https://www.telix.inf.br/como-calculamos-a-eficacia-de-tratamentos-de-saude"
+            >
+                Eficácia — como calculamos
+            </a>
+
+        </div>
+
+
+
+        <!-- ARTIGOS -->
+
+        <div class="footer-group footer-articles">
+
+            <a
+                href="https://www.telix.inf.br/evidencias-clinicas-de-pesquisas-sobre-tratamentos-de-saude"
+            >
+
+                <h3 class="footer-title">
+                    Páginas de artigos científicos
+                </h3>
+
+            </a>
+
+
+            <a
+                href="https://www.telix.inf.br/criterios-do-rigor-da-pesquisa-de-tratamentos-de-saude"
+            >
+                Rigor da pesquisa — critérios
+            </a>
+
+        </div>
+
+
+
+        <!-- DOCUMENTOS -->
+
+        <div class="footer-group footer-documents">
+
+            <a href="https://www.telix.inf.br/documentacao">
+
+                <h3 class="footer-title">
+                    Documentos
+                </h3>
+
+            </a>
+
+
+            <a
+                href="https://www.telix.inf.br/documentacao/politica-de-privacidade"
+            >
+                Política de Privacidade
+            </a>
+
+
+            <a
+                href="https://www.telix.inf.br/documentacao/termos-de-uso"
+            >
+                Termos de uso
+            </a>
+
+        </div>
+
+
+
+        <!-- CONTATO -->
+
+        <div class="footer-group footer-contact">
+
+            <h3 class="footer-title">
+                Fale com a gente!
+            </h3>
+
+
+            <a
+                href="https://api.whatsapp.com/send/?phone=45999040371&text&type=phone_number&app_absent=0"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                (45) 99904-0371
+            </a>
+
+
+            <a href="mailto:contato@telix.inf.br">
+                contato@telix.inf.br
+            </a>
+
+        </div>
+
+
+
+        <!-- APRESENTAÇÕES -->
+
+        <div class="footer-group footer-presentations">
+
+            <h3 class="footer-title">
+                Apresentações
+            </h3>
+
+
+            <a href="https://www.telix.inf.br/perguntas-e-respostas">
+                Perguntas e respostas
+            </a>
+
+
+            <a
+                href="https://www.telix.inf.br/v%C3%ADdeos-entrevistas-e-materias-sobre-tratamentos-de-saude"
+            >
+                Blog
+            </a>
+
+
+            <a
+                href="https://www.telix.inf.br/quem-somos-telix-contexto-na-saude"
+            >
+                Quem somos
+            </a>
+
+
+            <a
+                href="https://www.telix.inf.br/depoimentos-experiencias-tratamentos-de-sa%C3%BAde"
+            >
+                Depoimentos
+            </a>
+
+        </div>
+
+
+
+        <!-- OPINIÕES -->
+
+        <div class="footer-group footer-opinions">
+
+            <a
+                href="https://www.telix.inf.br/entrevistas-com-especialistas-sobre-tratamento-de-sa%C3%BAde"
+            >
+
+                <h3 class="footer-title">
+                    Opiniões de especialistas
+                </h3>
+
+            </a>
+
+        </div>
+
+
+
+        <!-- CONTRATAR -->
+
+        <div class="footer-group footer-contract">
+
+            <h3 class="footer-title">
+                Contratar
+            </h3>
+
+            <span class="footer-contract-text">
+                Paciente bem informado
+            </span>
+
+        </div>
+
+
+
+        <!-- BOTÃO -->
+
+        <a
+            href="https://www.telix.inf.br/condicoes-de-saude"
+            class="footer-access-button"
+        >
+            Acesso grátis ao banco de dados
+        </a>
+
+
+    </div>
+
+
+
+    <div class="site-footer-legal">
+
+        <p>
+            Linca Telecomunicações Ltda — CNPJ: 03.376.788-0001/23
+        </p>
+
+    </div>
+
+
+</footer>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        /* =====================================================
+           TABS
+           ===================================================== */
+
+        const tabs =
+            document.querySelectorAll(
+                "[data-home-tab]"
+            );
+
+
+        const panels =
+            document.querySelectorAll(
+                "[data-home-panel]"
+            );
+
+
+        function ativarAba(nome) {
+
+            /* =====================================================
+            ATIVA / DESATIVA AS ABAS
+            ===================================================== */
+
+            tabs.forEach(
+                function (tab) {
+
+                    const ativo =
+                        tab.getAttribute(
+                            "data-home-tab"
+                        ) === nome;
+
+
+                    tab.classList.toggle(
+                        "active",
+                        ativo
+                    );
+
+                }
+            );
+
+
+            /* =====================================================
+            MOSTRA O CONTEÚDO CORRESPONDENTE
+            ===================================================== */
+
+            panels.forEach(
+                function (panel) {
+
+                    const ativo =
+                        panel.getAttribute(
+                            "data-home-panel"
+                        ) === nome;
+
+
+                    panel.hidden =
+                        !ativo;
+
+                }
+            );
+
+
+            /* =====================================================
+            MUDA A COR DA CAIXA DE CONTEÚDO
+            ===================================================== */
+
+            const menuContent =
+                document.querySelector(
+                    ".home-menu-content"
+                );
+
+
+            if (menuContent) {
+
+                menuContent.classList.toggle(
+                    "tratamentos-active",
+                    nome === "tratamentos"
+                );
+
+            }
+
+        }
+
+
+        tabs.forEach(
+            function (tab) {
+
+
+                tab.addEventListener(
+                    "click",
+                    function () {
+
+
+                        const target =
+                            tab.getAttribute(
+                                "data-home-tab"
+                            );
+
+
+                        ativarAba(
+                            target
+                        );
+
+
+                    }
+                );
+
+
+            }
+        );
+
+
+        /* aba inicial */
+
+        ativarAba(
+            "tratamentos"
+        );
+
+
+
+        /* =====================================================
+           SELECTS DE NAVEGAÇÃO
+           ===================================================== */
+
+        const navigationSelects =
+            document.querySelectorAll(
+                "[data-navigation-select]"
+            );
+
+
+        navigationSelects.forEach(
+            function (select) {
+
+
+                select.addEventListener(
+                    "change",
+                    function () {
+
+
+                        const url =
+                            select.value;
+
+
+                        if (!url) {
+                            return;
+                        }
+
+
+                        window.location.href =
+                            url;
+
+
+                    }
+                );
+
+
+            }
+        );
+
+
+
+        /* =====================================================
+           FILTRAR TRATAMENTOS DOS ARTIGOS
+           ===================================================== */
+
+        const conditionSelect =
+            document.getElementById(
+                "home-article-condition"
+            );
+
+
+        const treatmentSelect =
+            document.getElementById(
+                "home-article-treatment"
+            );
+
+
+        if (
+            conditionSelect &&
+            treatmentSelect
+        ) {
+
+
+            const treatmentOptions =
+                Array.from(
+                    treatmentSelect.options
+                );
+
+
+            conditionSelect.addEventListener(
+                "change",
+                function () {
+
+
+                    const condicao =
+                        conditionSelect
+                            .value
+                            .trim()
+                            .toLowerCase();
+
+
+                    treatmentSelect.value =
+                        "";
+
+
+                    treatmentOptions.forEach(
+                        function (option) {
+
+
+                            if (!option.value) {
+
+                                option.hidden =
+                                    false;
+
+                                return;
+
+                            }
+
+
+                            const condicaoOption =
+                                (
+                                    option
+                                        .dataset
+                                        .condicao ||
+                                    ""
+                                )
+                                .trim()
+                                .toLowerCase();
+
+
+                            option.hidden =
+                                condicao !== "" &&
+                                condicaoOption !== condicao;
+
+
+                        }
+                    );
+
+
+                }
+            );
+
+        }
+
+
+    }
+);
+
+</script>
+
+
+</body>
+</html>
