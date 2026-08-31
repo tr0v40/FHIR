@@ -6,6 +6,10 @@ from core.models import (
     PaginaDetalheTratamento,
 )
 
+from core.public_views_listas2 import (
+    classificar_tipo_eficacia_v2,
+)
+
 
 def home(request):
 
@@ -28,8 +32,10 @@ def home(request):
         )
     )
 
+
     condicoes_home = []
     condicoes_adicionadas = set()
+
 
     for pagina in paginas_lista:
 
@@ -44,19 +50,26 @@ def home(request):
         if condicao.pk in condicoes_adicionadas:
             continue
 
+
         condicoes_adicionadas.add(
             condicao.pk
         )
 
-        condicoes_home.append({
-            "nome": condicao.nome,
 
-            "url": reverse(
-                "pagina_lista_v2",
-                kwargs={
-                    "condicao_slug": condicao.slug,
-                },
-            ),
+        condicoes_home.append({
+
+            "nome":
+                condicao.nome,
+
+            "url":
+                reverse(
+                    "pagina_lista_v2",
+                    kwargs={
+                        "condicao_slug":
+                            condicao.slug,
+                    },
+                ),
+
         })
 
 
@@ -82,83 +95,191 @@ def home(request):
         )
     )
 
+
     tratamentos_home = []
 
     tratamentos_adicionados = set()
+
 
     for pagina in paginas_tratamentos:
 
         tratamento = pagina.tratamento
         condicao = pagina.condicao
 
-        if not tratamento or not condicao:
+
+        if not tratamento:
             continue
 
-        if not tratamento.slug or not condicao.slug:
+        if not condicao:
+            continue
+
+        if not tratamento.slug:
+            continue
+
+        if not condicao.slug:
             continue
 
 
-        # Evita duplicar a mesma página tratamento + condição
+        # =====================================================
+        # EVITA DUPLICIDADE
+        # =====================================================
+
         chave = (
             tratamento.pk,
             condicao.pk,
         )
 
+
         if chave in tratamentos_adicionados:
             continue
+
+
+        # =====================================================
+        # DESCOBRE UM BENEFÍCIO V2 VÁLIDO
+        # =====================================================
+
+        ef_slug = ""
+
+
+        evidencias = (
+            tratamento
+            .evidencias
+            .filter(
+                condicao_saude=condicao
+            )
+            .prefetch_related(
+                "eficacia_por_evidencias__tipo_eficacia"
+            )
+            .distinct()
+        )
+
+
+        for evidencia in evidencias:
+
+            eficacias = (
+                evidencia
+                .eficacia_por_evidencias
+                .all()
+            )
+
+
+            for eficacia in eficacias:
+
+                tipo = eficacia.tipo_eficacia
+
+                if not tipo:
+                    continue
+
+
+                categoria = (
+                    classificar_tipo_eficacia_v2(
+                        tipo
+                    )
+                )
+
+
+                if not categoria:
+                    continue
+
+
+                ef_slug = categoria["slug"]
+
+                break
+
+
+            if ef_slug:
+                break
+
+
+        # =====================================================
+        # IMPORTANTE
+        #
+        # A página de detalhe V2 exige um benefício válido.
+        # Se não existir benefício V2 para esse tratamento +
+        # condição, não colocamos a opção no dropdown.
+        # =====================================================
+
+        if not ef_slug:
+            continue
+
 
         tratamentos_adicionados.add(
             chave
         )
 
 
-        # -----------------------------------------------------
+        # =====================================================
         # URL DA PÁGINA DE DETALHES
-        # -----------------------------------------------------
+        # =====================================================
 
-        url_detalhe = reverse(
+        url_base_detalhe = reverse(
             "pagina_detalhe_tratamento_v2",
             kwargs={
-                "condicao_slug": condicao.slug,
-                "tratamento_slug": tratamento.slug,
+                "condicao_slug":
+                    condicao.slug,
+
+                "tratamento_slug":
+                    tratamento.slug,
             },
         )
 
 
-        # -----------------------------------------------------
+        url_detalhe = (
+            f"{url_base_detalhe}"
+            f"?ef={ef_slug}"
+        )
+
+
+        # =====================================================
         # URL DOS ARTIGOS / PESQUISAS
-        # -----------------------------------------------------
+        # =====================================================
 
         try:
 
-            url_pesquisas = reverse(
+            url_base_pesquisas = reverse(
                 "pesquisas_tratamento",
                 kwargs={
-                    "condicao_slug": condicao.slug,
-                    "tratamento_slug": tratamento.slug,
+                    "condicao_slug":
+                        condicao.slug,
+
+                    "tratamento_slug":
+                        tratamento.slug,
                 },
             )
+
+
+            url_pesquisas = (
+                f"{url_base_pesquisas}"
+                f"?ef={ef_slug}"
+            )
+
 
         except NoReverseMatch:
 
             url_pesquisas = ""
 
 
-        # -----------------------------------------------------
-        # LABEL DA ABA + TRATAMENTOS
-        #
-        # Exemplo:
-        # Ubrelyv — AbbVie
-        # -----------------------------------------------------
+        # =====================================================
+        # FABRICANTE
+        # =====================================================
 
         fabricante = (
-            tratamento.fabricante or ""
+            tratamento.fabricante
+            or ""
         ).strip()
+
+
+        # =====================================================
+        # LABEL
+        #
+        # Cefaly — CEFALY Technology
+        # =====================================================
 
         if fabricante:
 
             label = (
-                f"{tratamento.nome} — "
+                f"{tratamento.nome}"
+                f" — "
                 f"{fabricante}"
             )
 
@@ -166,6 +287,10 @@ def home(request):
 
             label = tratamento.nome
 
+
+        # =====================================================
+        # ITEM
+        # =====================================================
 
         tratamentos_home.append({
 
@@ -181,11 +306,15 @@ def home(request):
             "label":
                 label,
 
+            "ef_slug":
+                ef_slug,
+
             "url":
                 url_detalhe,
 
             "url_pesquisas":
                 url_pesquisas,
+
         })
 
 
@@ -200,6 +329,7 @@ def home(request):
 
         "tratamentos_home":
             tratamentos_home,
+
     }
 
 
