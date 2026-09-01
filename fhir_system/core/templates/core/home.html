@@ -381,10 +381,13 @@ a {
 }
 
 
-/* Busca de tratamento dentro da aba Tratamentos */
+/* =========================================================
+   AUTOCOMPLETE - ABA TRATAMENTOS (DESKTOP)
+   ========================================================= */
 
 .home-menu-treatment-search {
     position: relative;
+    z-index: 30;
 
     width: 396px;
     height: 51px;
@@ -392,7 +395,7 @@ a {
     margin-top: 24px;
 }
 
-.home-menu-treatment-search select {
+.home-menu-treatment-search input {
     width: 100%;
     height: 51px;
 
@@ -407,21 +410,25 @@ a {
 
     background: #FFFFFF;
 
-    appearance: none;
-    -webkit-appearance: none;
-
     outline: none;
 
     font-weight: 400;
     font-size: 15px;
     line-height: 27px;
 
-    color: #8F8F93;
-
-    cursor: pointer;
+    color: #010009;
 }
 
-.home-menu-treatment-search i {
+.home-menu-treatment-search input::placeholder {
+    color: #8F8F93;
+    opacity: 1;
+}
+
+.home-menu-treatment-search input::-webkit-search-cancel-button {
+    display: none;
+}
+
+.home-menu-treatment-search > i {
     position: absolute;
 
     width: 18px;
@@ -429,6 +436,8 @@ a {
 
     right: 14px;
     top: 16px;
+
+    z-index: 3;
 
     display: flex;
     align-items: center;
@@ -439,6 +448,72 @@ a {
     font-size: 15px;
 
     pointer-events: none;
+}
+
+.home-treatment-results {
+    position: absolute;
+
+    width: 100%;
+    max-height: 260px;
+
+    left: 0;
+    top: calc(100% + 6px);
+
+    z-index: 999;
+
+    overflow-y: auto;
+
+    border: 1px solid #E3E3E3;
+    border-radius: 8px;
+
+    background: #FFFFFF;
+
+    box-shadow:
+        0 6px 18px
+        rgba(0, 0, 0, 0.14);
+}
+
+.home-treatment-results[hidden],
+.home-treatment-result[hidden] {
+    display: none !important;
+}
+
+.home-treatment-result {
+    width: 100%;
+    min-height: 44px;
+
+    padding:
+        11px
+        16px;
+
+    display: block;
+
+    border: 0;
+    border-bottom: 1px solid #EEEEEE;
+
+    background: #FFFFFF;
+
+    color: #333333;
+
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.home-treatment-result:last-child {
+    border-bottom: 0;
+}
+
+.home-treatment-result:hover,
+.home-treatment-result:focus,
+.home-treatment-result.is-active {
+    background: #F2F8FF;
+    color: #0094FF;
+    outline: none;
 }
 
 .home-tab-panel {
@@ -768,6 +843,7 @@ a {
 
 .home-treatment-search {
     position: relative;
+    z-index: 30;
 
     width: 291px;
     height: 51px;
@@ -775,7 +851,7 @@ a {
     margin: 32px auto 0;
 }
 
-.home-treatment-search select {
+.home-treatment-search input {
     width: 100%;
     height: 51px;
 
@@ -791,19 +867,23 @@ a {
 
     background: #FFFFFF;
 
-    appearance: none;
-    -webkit-appearance: none;
-
     outline: none;
 
     font-size: 15px;
 
-    color: #8F8F93;
-
-    cursor: pointer;
+    color: #010009;
 }
 
-.home-treatment-search i {
+.home-treatment-search input::placeholder {
+    color: #8F8F93;
+    opacity: 1;
+}
+
+.home-treatment-search input::-webkit-search-cancel-button {
+    display: none;
+}
+
+.home-treatment-search > i {
     position: absolute;
 
     width: 16px;
@@ -811,6 +891,8 @@ a {
 
     right: 12px;
     top: 17px;
+
+    z-index: 3;
 
     display: flex;
     align-items: center;
@@ -828,10 +910,6 @@ a {
    SHARE BANNER
    ========================================================= */
 
-/* =========================================================
-   SHARE BANNER
-   ========================================================= */
-
 .home-share {
     width: 100%;
 
@@ -839,6 +917,7 @@ a {
 
     background: #FFFFFF;
 }
+
 .share-banner {
     position: relative;
 
@@ -1521,6 +1600,10 @@ a {
     }
 
 
+    /* =====================================================
+       AUTOCOMPLETE TRATAMENTOS - MOBILE
+       ===================================================== */
+
     .home-menu-content.tratamentos-active
     .home-menu-treatment-search {
         position: absolute;
@@ -1532,11 +1615,13 @@ a {
         top: 139px;
 
         margin: 0;
+
+        z-index: 30;
     }
 
 
     .home-menu-content.tratamentos-active
-    .home-menu-treatment-search select {
+    .home-menu-treatment-search input {
         width: 232px;
         height: 43px;
 
@@ -1555,18 +1640,43 @@ a {
         font-size: 12.35px;
         line-height: 22px;
 
-        color: #8F8F93;
+        color: #010009;
     }
 
 
     .home-menu-content.tratamentos-active
-    .home-menu-treatment-search i {
+    .home-menu-treatment-search > i {
         right: 13px;
         top: 14px;
 
         color: #0094FF;
 
         font-size: 14px;
+    }
+
+
+    .home-menu-content.tratamentos-active
+    .home-treatment-results {
+        width: 232px;
+
+        top: 49px;
+
+        max-height: 190px;
+
+        border-radius: 5px;
+    }
+
+
+    .home-menu-content.tratamentos-active
+    .home-treatment-result {
+        min-height: 39px;
+
+        padding:
+            9px
+            13px;
+
+        font-size: 12px;
+        line-height: 18px;
     }
 
 
@@ -1887,7 +1997,7 @@ a {
     }
 
 
-    .home-feature-two .home-treatment-search select {
+    .home-feature-two .home-treatment-search input {
         width: 232px;
         height: 42.76px;
 
@@ -1906,15 +2016,38 @@ a {
         font-size: 13px;
         line-height: 27px;
 
-        color: #8F8F93;
+        color: #010009;
     }
 
 
-    .home-feature-two .home-treatment-search i {
+    .home-feature-two .home-treatment-search > i {
         right: 13px;
         top: 13px;
 
         font-size: 14px;
+    }
+
+
+    .home-feature-two .home-treatment-results {
+        width: 232px;
+
+        top: 49px;
+
+        max-height: 190px;
+
+        border-radius: 6px;
+    }
+
+
+    .home-feature-two .home-treatment-result {
+        min-height: 39px;
+
+        padding:
+            9px
+            13px;
+
+        font-size: 12px;
+        line-height: 18px;
     }
 
 
@@ -2638,34 +2771,52 @@ a {
 
                 </p>
 
+                <div
+                    class="home-menu-treatment-search"
+                    id="home-treatment-search-wrap"
+                    data-treatment-autocomplete
+                >
 
-                <div class="home-menu-treatment-search">
-
-                    <select
-                        data-navigation-select
+                    <input
+                        type="search"
+                        id="home-treatment-search-input"
+                        placeholder="Encontre o tratamento"
+                        autocomplete="off"
                         aria-label="Encontre o tratamento"
+                        aria-autocomplete="list"
+                        aria-controls="home-treatment-results"
+                        aria-expanded="false"
                     >
-
-                        <option value="">
-                            Encontre o tratamento
-                        </option>
-
-
-            {% for item in tratamentos_home %}
-
-                <option value="{{ item.url }}">
-                    {{ item.label }}
-                </option>
-
-            {% endfor %}
-
-                    </select>
-
 
                     <i
                         class="fa-solid fa-magnifying-glass"
                         aria-hidden="true"
                     ></i>
+
+                    <div
+                        class="home-treatment-results"
+                        id="home-treatment-results"
+                        role="listbox"
+                        hidden
+                    >
+
+                        {% for item in tratamentos_home %}
+
+                            <button
+                                type="button"
+                                class="home-treatment-result"
+                                data-treatment-label="{{ item.label }}"
+                                data-treatment-url="{{ item.url }}"
+                                role="option"
+                                aria-selected="false"
+                                hidden
+                            >
+                                {{ item.label }}
+                            </button>
+
+                        {% endfor %}
+
+                    </div>
 
                 </div>
 
@@ -2879,32 +3030,54 @@ a {
             </p>
 
 
-            <div class="home-treatment-search">
+            <div
+                class="home-treatment-search"
+                id="home-detail-treatment-search-wrap"
+                data-treatment-autocomplete
+            >
 
-                <select
-                    data-navigation-select
+                <input
+                    type="search"
+                    id="home-detail-treatment-search-input"
+                    placeholder="Encontre o tratamento"
+                    autocomplete="off"
+                    aria-label="Encontre o tratamento"
+                    aria-autocomplete="list"
+                    aria-controls="home-detail-treatment-results"
+                    aria-expanded="false"
                 >
-
-                    <option value="">
-                        Encontre o tratamento
-                    </option>
-
-
-                    {% for item in tratamentos_home %}
-
-                        <option value="{{ item.url }}">
-                            {{ item.label }}
-                        </option>
-
-                    {% endfor %}
-
-                </select>
 
 
                 <i
                     class="fa-solid fa-magnifying-glass"
                     aria-hidden="true"
                 ></i>
+
+
+                <div
+                    class="home-treatment-results"
+                    id="home-detail-treatment-results"
+                    role="listbox"
+                    hidden
+                >
+
+                    {% for item in tratamentos_home %}
+
+                        <button
+                            type="button"
+                            class="home-treatment-result"
+                            data-treatment-label="{{ item.label }}"
+                            data-treatment-url="{{ item.url }}"
+                            role="option"
+                            aria-selected="false"
+                            hidden
+                        >
+                            {{ item.label }}
+                        </button>
+
+                    {% endfor %}
+
+                </div>
 
             </div>
 
@@ -3516,6 +3689,429 @@ document.addEventListener(
             document.getElementById(
                 "home-article-treatment"
             );
+
+
+        /* =====================================================
+           AUTOCOMPLETE - BUSCA DE TRATAMENTO
+           FUNCIONA EM TODOS OS CAMPOS COM:
+           data-treatment-autocomplete
+           ===================================================== */
+
+        const treatmentAutocompleteWraps =
+            document.querySelectorAll(
+                "[data-treatment-autocomplete]"
+            );
+
+
+        function normalizeTreatmentText(value) {
+
+            return (value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .trim();
+
+        }
+
+
+        treatmentAutocompleteWraps.forEach(
+            function (treatmentSearchWrap) {
+
+                const treatmentSearchInput =
+                    treatmentSearchWrap.querySelector(
+                        'input[type="search"]'
+                    );
+
+                const treatmentResults =
+                    treatmentSearchWrap.querySelector(
+                        ".home-treatment-results"
+                    );
+
+
+                if (
+                    !treatmentSearchInput ||
+                    !treatmentResults
+                ) {
+                    return;
+                }
+
+
+                const treatmentOptions =
+                    Array.from(
+                        treatmentResults.querySelectorAll(
+                            ".home-treatment-result"
+                        )
+                    );
+
+
+                let visibleOptions = [];
+                let activeIndex = -1;
+
+
+                function clearActiveTreatment() {
+
+                    treatmentOptions.forEach(
+                        function (option) {
+
+                            option.classList.remove(
+                                "is-active"
+                            );
+
+                            option.setAttribute(
+                                "aria-selected",
+                                "false"
+                            );
+
+                        }
+                    );
+
+                    activeIndex = -1;
+
+                }
+
+
+                function closeTreatmentResults() {
+
+                    treatmentResults.hidden = true;
+
+                    treatmentSearchInput.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                    clearActiveTreatment();
+
+                }
+
+
+                function filterTreatments() {
+
+                    const search =
+                        normalizeTreatmentText(
+                            treatmentSearchInput.value
+                        );
+
+
+                    let visibleCount = 0;
+                    visibleOptions = [];
+
+
+                    treatmentOptions.forEach(
+                        function (option) {
+
+                            const label =
+                                normalizeTreatmentText(
+                                    option.dataset
+                                        .treatmentLabel
+                                );
+
+
+                            const matches =
+                                search.length > 0 &&
+                                label.includes(search) &&
+                                visibleCount < 8;
+
+
+                            option.hidden =
+                                !matches;
+
+
+                            option.classList.remove(
+                                "is-active"
+                            );
+
+
+                            option.setAttribute(
+                                "aria-selected",
+                                "false"
+                            );
+
+
+                            if (matches) {
+
+                                visibleOptions.push(
+                                    option
+                                );
+
+                                visibleCount++;
+
+                            }
+
+                        }
+                    );
+
+
+                    activeIndex = -1;
+
+
+                    const shouldOpen =
+                        search.length > 0 &&
+                        visibleCount > 0;
+
+
+                    treatmentResults.hidden =
+                        !shouldOpen;
+
+
+                    treatmentSearchInput.setAttribute(
+                        "aria-expanded",
+                        shouldOpen
+                            ? "true"
+                            : "false"
+                    );
+
+                }
+
+
+                function activateTreatment(index) {
+
+                    if (!visibleOptions.length) {
+                        return;
+                    }
+
+
+                    if (index < 0) {
+                        index =
+                            visibleOptions.length - 1;
+                    }
+
+
+                    if (
+                        index >=
+                        visibleOptions.length
+                    ) {
+                        index = 0;
+                    }
+
+
+                    clearActiveTreatment();
+
+
+                    activeIndex = index;
+
+
+                    const activeOption =
+                        visibleOptions[
+                            activeIndex
+                        ];
+
+
+                    activeOption.classList.add(
+                        "is-active"
+                    );
+
+
+                    activeOption.setAttribute(
+                        "aria-selected",
+                        "true"
+                    );
+
+
+                    activeOption.scrollIntoView({
+                        block: "nearest"
+                    });
+
+                }
+
+
+                function openTreatment(option) {
+
+                    if (!option) {
+                        return;
+                    }
+
+
+                    const url =
+                        option.dataset
+                            .treatmentUrl;
+
+
+                    const label =
+                        option.dataset
+                            .treatmentLabel;
+
+
+                    treatmentSearchInput.value =
+                        label || "";
+
+
+                    closeTreatmentResults();
+
+
+                    if (url) {
+
+                        window.location.href =
+                            url;
+
+                    }
+
+                }
+
+
+                treatmentSearchInput.addEventListener(
+                    "input",
+                    filterTreatments
+                );
+
+
+                treatmentSearchInput.addEventListener(
+                    "focus",
+                    filterTreatments
+                );
+
+
+                treatmentSearchInput.addEventListener(
+                    "keydown",
+                    function (event) {
+
+                        if (
+                            event.key ===
+                            "Escape"
+                        ) {
+
+                            closeTreatmentResults();
+
+                            return;
+
+                        }
+
+
+                        if (
+                            event.key ===
+                            "ArrowDown"
+                        ) {
+
+                            if (
+                                treatmentResults.hidden
+                            ) {
+
+                                filterTreatments();
+
+                            }
+
+
+                            if (
+                                visibleOptions.length
+                            ) {
+
+                                event.preventDefault();
+
+
+                                activateTreatment(
+                                    activeIndex + 1
+                                );
+
+                            }
+
+                            return;
+
+                        }
+
+
+                        if (
+                            event.key ===
+                            "ArrowUp"
+                        ) {
+
+                            if (
+                                visibleOptions.length
+                            ) {
+
+                                event.preventDefault();
+
+
+                                activateTreatment(
+                                    activeIndex - 1
+                                );
+
+                            }
+
+                            return;
+
+                        }
+
+
+                        if (
+                            event.key ===
+                            "Enter"
+                        ) {
+
+                            const selectedOption =
+                                activeIndex >= 0
+                                    ? visibleOptions[
+                                        activeIndex
+                                    ]
+                                    : visibleOptions[
+                                        0
+                                    ];
+
+
+                            if (selectedOption) {
+
+                                event.preventDefault();
+
+
+                                openTreatment(
+                                    selectedOption
+                                );
+
+                            }
+
+                        }
+
+                    }
+                );
+
+
+                treatmentOptions.forEach(
+                    function (option) {
+
+                        option.addEventListener(
+                            "mousedown",
+                            function (event) {
+
+                                event.preventDefault();
+
+                            }
+                        );
+
+
+                        option.addEventListener(
+                            "click",
+                            function () {
+
+                                openTreatment(
+                                    option
+                                );
+
+                            }
+                        );
+
+                    }
+                );
+
+
+                document.addEventListener(
+                    "click",
+                    function (event) {
+
+                        if (
+                            !treatmentSearchWrap
+                                .contains(
+                                    event.target
+                                )
+                        ) {
+
+                            closeTreatmentResults();
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
 
 
         if (

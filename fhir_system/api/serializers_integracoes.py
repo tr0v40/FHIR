@@ -37,6 +37,8 @@ class IntegracaoDetalhesTratamentoListSerializer(serializers.ModelSerializer):
             "descricao",
             "quando_usar",
             "custo_medicamento",
+            "link_para_compra_de_tratamento",
+            "especificacao_do_custo",
             "alertas",
         ]
         read_only_fields = ["id"]
