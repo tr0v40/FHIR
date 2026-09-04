@@ -516,7 +516,7 @@ class DetalhesTratamentoResumo(models.Model):
     eficacia_max = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     prazo_efeito_min = models.IntegerField(blank=True, null=True)  
     prazo_efeito_max = models.IntegerField(blank=True, null=True)
-    link_para_compra_de_tratamento = models.URLField(blank=True, null=True)
+    link_para_compra_de_tratamento = models.URLField(max_length=2000,blank=True, null=True)
     especificacao_do_custo = models.CharField(max_length=200,blank=True)
     reacoes_adversas = models.ManyToManyField(
         ReacaoAdversa,

@@ -89,7 +89,22 @@
             font-family: "Inter", Arial, sans-serif;
         }
 
+/* =========================================================
+   HEADER ACOMPANHA A ROLAGEM
+   DESKTOP + MOBILE
+   ========================================================= */
 
+.gs-header-sticky {
+    position: sticky;
+
+    top: 0;
+
+    width: 100%;
+
+    z-index: 1000;
+
+    background: #FFFFFF;
+}
 
         /* =====================================================
            TOPO AZUL
@@ -464,104 +479,113 @@
            CARD
            ===================================================== */
 
-        .gs-card {
-            position: relative;
 
-            width: 907px;
-            height: 182px;
+.gs-card {
+    position: relative;
 
-            flex-shrink: 0;
+    width: 907px;
 
-            background: #FFFFFF;
+    min-height: 182px;
+    height: auto;
 
-            box-shadow:
-                0px 0px 7.88204px
-                1.57641px
-                rgba(0, 0, 0, 0.07);
-        }
+    padding:
+        42px
+        190px
+        42px
+        45px;
 
+    flex-shrink: 0;
 
+    background: #FFFFFF;
 
-        /* =====================================================
-           CONTEÚDO CARD
-           ===================================================== */
-
-        .gs-card-info {
-            position: absolute;
-
-            left: 45px;
-            top: 42px;
-
-            width: 560px;
-            height: 100px;
-        }
+    box-shadow:
+        0px 0px 7.88204px
+        1.57641px
+        rgba(0, 0, 0, 0.07);
+}
 
 
+/* =========================================================
+   CONTEÚDO
+   ========================================================= */
 
-        /* =====================================================
-           TÍTULO CARD
-           ===================================================== */
+.gs-card-info {
+    position: relative;
 
-        .gs-card-title {
-            position: absolute;
+    width: 600px;
+    height: auto;
 
-            left: 0;
-            top: 0;
-
-            width: 600px;
-
-            margin: 0;
-            padding: 0;
-
-            font-weight: 600;
-
-            font-size: 20px;
-            line-height: 29px;
-
-            color: #000000;
-        }
+    left: auto;
+    top: auto;
+}
 
 
+/* =========================================================
+   TÍTULO
+   ========================================================= */
 
-        /* =====================================================
-           CATEGORIA
-           ===================================================== */
+.gs-card-title {
+    position: relative;
 
-        .gs-category {
-            position: absolute;
+    width: 600px;
 
-            left: 0;
-            top: 29px;
+    left: auto;
+    top: auto;
 
-            width: 550px;
+    margin: 0;
+    padding: 0;
 
-            font-weight: 600;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 29px;
 
-            font-size: 14px;
-            line-height: 20px;
+    color: #000000;
 
-            color: #0094FF;
-        }
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
 
 
+/* =========================================================
+   CATEGORIA
+   ========================================================= */
 
-        /* =====================================================
-           CONTADORES
-           ===================================================== */
+.gs-category {
+    position: relative;
 
-        .gs-counts {
-            position: absolute;
+    width: 550px;
 
-            left: 0;
-            top: 64px;
+    left: auto;
+    top: auto;
 
-            width: 520px;
-            height: 22px;
+    margin-top: 6px;
 
-            display: flex;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
 
-            align-items: center;
-        }
+    color: #0094FF;
+}
+
+
+/* =========================================================
+   CONTADORES
+   ========================================================= */
+
+.gs-counts {
+    position: relative;
+
+    width: 520px;
+    height: 22px;
+
+    left: auto;
+    top: auto;
+
+    margin-top: 26px;
+
+    display: flex;
+    align-items: center;
+}
 
 
         .gs-count {
@@ -1190,7 +1214,22 @@
         background: #FFFFFF;
     }
 
+/* =========================================================
+   HEADER ACOMPANHA A ROLAGEM
+   DESKTOP + MOBILE
+   ========================================================= */
 
+.gs-header-sticky {
+    position: sticky;
+
+    top: 0;
+
+    width: 100%;
+
+    z-index: 1000;
+
+    background: #FFFFFF;
+}
 
     /* ======================================================
        FAIXA SUPERIOR
@@ -1620,126 +1659,107 @@
        CARD
        FIGMA: 307 x 150
        ====================================================== */
+.gs-card {
+    position: relative;
 
-    .gs-card {
-        position: relative;
+    width: calc(100% - 13px);
+    max-width: 307px;
 
-        width: calc(100% - 13px);
-        max-width: 307px;
+    min-height: 150px;
+    height: auto;
 
-        height: 150px;
-        min-height: 150px;
+    padding:
+        15px
+        15px
+        52px;
 
-        margin: 0;
-        padding: 0;
+    margin: 0;
 
-        flex-shrink: 0;
+    flex-shrink: 0;
 
-        background: #FFFFFF;
+    background: #FFFFFF;
 
-        border-radius: 5px;
+    border-radius: 5px;
 
-        box-shadow:
-            0 0 7.88px
-            rgba(0, 0, 0, 0.10);
-    }
-
-
-
-    /* ======================================================
-       CONTEÚDO CARD
-       ====================================================== */
-
-    .gs-card-info {
-        position: absolute;
-
-        width: calc(100% - 30px);
-        height: 85px;
-
-        left: 15px;
-        top: 15px;
-
-        margin: 0;
-    }
+    box-shadow:
+        0 0 7.88px
+        rgba(0, 0, 0, 0.10);
+}
 
 
+.gs-card-info {
+    position: relative;
 
-    /* ======================================================
-       TÍTULO CARD
-       ====================================================== */
+    width: 100%;
+    height: auto;
 
-    .gs-card-title {
-        position: absolute;
+    left: auto;
+    top: auto;
 
-        width: 100%;
-
-        left: 0;
-        top: 0;
-
-        margin: 0;
-        padding: 0;
-
-        font-family: "Inter", Arial, sans-serif;
-
-        font-weight: 700;
-
-        font-size: 15px;
-        line-height: 22px;
-
-        color: #000000;
-    }
+    margin: 0;
+}
 
 
+.gs-card-title {
+    position: relative;
 
-    /* ======================================================
-       CATEGORIA
-       ====================================================== */
+    width: 100%;
 
-    .gs-category {
-        position: absolute;
+    left: auto;
+    top: auto;
 
-        width: 100%;
+    margin: 0;
+    padding: 0;
 
-        left: 0;
-        top: 27px;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 22px;
 
-        margin: 0;
-        padding: 0;
+    color: #000000;
 
-        font-family: "Inter", Arial, sans-serif;
-
-        font-weight: 600;
-
-        font-size: 13px;
-        line-height: 19px;
-
-        color: #0094FF;
-    }
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
 
 
+.gs-category {
+    position: relative;
 
-    /* ======================================================
-       CONTADORES
-       ====================================================== */
+    width: 100%;
 
-    .gs-counts {
-        position: absolute;
+    left: auto;
+    top: auto;
 
-        width: 100%;
-        height: 15px;
+    margin-top: 5px;
 
-        left: 0;
-        top: 69px;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 19px;
 
-        display: grid;
+    color: #0094FF;
+}
 
-        grid-template-columns:
-            1.15fr
-            1.1fr
-            0.9fr;
 
-        align-items: center;
-    }
+.gs-counts {
+    position: relative;
+
+    width: 100%;
+    height: auto;
+
+    left: auto;
+    top: auto;
+
+    margin-top: 22px;
+
+    display: grid;
+
+    grid-template-columns:
+        1.15fr
+        1.1fr
+        1fr;
+
+    align-items: center;
+}
 
 
     .gs-count,
@@ -2410,72 +2430,72 @@
 <!-- =========================================================
      TOPO
      ========================================================= -->
-
-<div class="gs-top-bar">
-    A plataforma do paciente bem informado
-</div>
-
-
-
 <!-- =========================================================
-     HEADER
+     HEADER FIXO DURANTE A ROLAGEM
      ========================================================= -->
 
-<header class="gs-header">
+<div class="gs-header-sticky">
 
-    <div class="gs-header-inner">
-
-        <a
-            href="https://www.telix.inf.br/"
-            class="gs-logo-link"
-        >
-
-            <img
-                src="{% static 'img/logo.png' %}"
-                alt="Telix"
-                class="gs-logo"
-            >
-
-        </a>
+    <div class="gs-top-bar">
+        A plataforma do paciente bem informado
+    </div>
 
 
-        <a
-            href="#"
-            class="gs-login"
-        >
+    <header class="gs-header">
 
-            <span
-                class="gs-login-bag"
-                aria-hidden="true"
+        <div class="gs-header-inner">
+
+            <a
+                href="https://www.telix.inf.br/"
+                class="gs-logo-link"
             >
 
                 <img
-                    src="{% static 'img/saloca_login.png' %}"
-                    alt=""
+                    src="{% static 'img/logo.png' %}"
+                    alt="Telix"
+                    class="gs-logo"
                 >
 
-            </span>
+            </a>
 
 
-            <span
-                class="gs-login-user"
-                aria-hidden="true"
+            <a
+                href="#"
+                class="gs-login"
             >
 
-                <i class="fa-solid fa-user"></i>
+                <span
+                    class="gs-login-bag"
+                    aria-hidden="true"
+                >
 
-            </span>
+                    <img
+                        src="{% static 'img/saloca_login.png' %}"
+                        alt=""
+                    >
+
+                </span>
 
 
-            <span class="gs-login-text">
-                Cadastre-se/Login
-            </span>
+                <span
+                    class="gs-login-user"
+                    aria-hidden="true"
+                >
+                    <i class="fa-solid fa-user"></i>
+                </span>
 
-        </a>
 
-    </div>
+                <span class="gs-login-text">
+                    Cadastre-se/Login
+                </span>
 
-</header>
+            </a>
+
+        </div>
+
+    </header>
+
+</div>
 
 
 
