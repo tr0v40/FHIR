@@ -1,5 +1,4 @@
-{% load static l10n %}
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -15,869 +14,1093 @@
           c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
           t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
           y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-
           clarity('set', 'page_url', window.location.href);
-
-          window.addEventListener('popstate', function() {
-              clarity('set', 'page_url', window.location.href);
-          });
-
-          window.addEventListener('hashchange', function() {
-              clarity('set', 'page_url', window.location.href);
-          });
+          window.addEventListener('popstate', function(){ clarity('set','page_url',window.location.href); });
+          window.addEventListener('hashchange', function(){ clarity('set','page_url',window.location.href); });
       })(window, document, "clarity", "script", "ubap1t6puk");
     </script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
 
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #ffffff;
-            color: #333;
+        :root{
+            --blue:#0193ff;
+            --blue-dark:#0076d7;
+            --blue-soft:#eaf6ff;
+            --text:#111827;
+            --muted:#8b8b8b;
+            --border:#e5e7eb;
+            --danger:#ff4148;
+            --green:#4ac94d;
+            --page:980px;
         }
 
-        .topo-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        *{box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{
+            margin:0;
+            background:#fff;
+            color:var(--text);
+            font-family:Inter, Arial, Helvetica, sans-serif;
+            font-size:14px;
+        }
+        a{color:inherit}
+        img{max-width:100%}
+
+        .page-wrap{
+            width:min(calc(100% - 32px), var(--page));
+            margin:0 auto;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: auto;
-            padding: 20px;
+        /* HEADER */
+        .top-strip{
+            height:30px;
+            background:var(--blue);
+            color:#fff;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:11px;
+            font-weight:600;
+        }
+        .site-header{
+            background:#fff;
+            border-bottom:2px solid var(--blue);
+        }
+        .site-header-inner{
+            min-height:108px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:24px;
+        }
+        .site-logo img{
+            width:112px;
+            height:auto;
+            display:block;
+        }
+        .header-account{
+            display:flex;
+            align-items:center;
+            gap:8px;
+            color:#111;
+            font-size:12px;
+            font-weight:600;
+            text-decoration:none;
+        }
+        .header-account i{color:var(--blue);font-size:18px}
+
+        /* HERO */
+        .hero{
+            display:grid;
+            grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);
+            gap:70px;
+            align-items:center;
+            padding:70px 0 32px;
+        }
+        .hero h1{
+            margin:0 0 5px;
+            font-size:32px;
+            line-height:1.1;
+            font-weight:700;
+            color:#090909;
+        }
+        .treatment-types{
+            color:var(--blue);
+            font-size:13px;
+            font-weight:700;
+            margin-bottom:22px;
+        }
+        .meta-row{
+            margin:0 0 10px;
+            line-height:1.45;
+        }
+        .meta-label{color:#a0a0a0}
+        .meta-value{color:#111;font-weight:700}
+        .hero-description{
+            margin:22px 0 0;
+            color:#374151;
+            font-size:14px;
+            line-height:1.55;
+            max-width:590px;
+        }
+        .hero-image{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            min-height:220px;
+        }
+        .hero-image img{
+            width:100%;
+            max-width:390px;
+            max-height:220px;
+            object-fit:contain;
+            object-position:center;
         }
 
-        .tratamento-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            margin-bottom: 50px;
+        /* SUMMARY */
+        .summary-grid{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:10px;
+            margin:18px auto 72px;
+        }
+        .summary-card{
+            min-height:88px;
+            border:1px solid var(--blue);
+            border-radius:8px;
+            padding:14px 16px;
+            text-decoration:none;
+            display:flex;
+            gap:12px;
+            align-items:flex-start;
+            background:#fff;
+            color:var(--blue);
+        }
+        .summary-card.primary{
+            background:var(--blue);
+            color:#fff;
+        }
+        .summary-card i{
+            width:26px;
+            text-align:center;
+            font-size:22px;
+            margin-top:2px;
+        }
+        .summary-card-title{
+            display:block;
+            font-weight:700;
+            font-size:14px;
+            line-height:1.15;
+            margin-bottom:5px;
+        }
+        .summary-card-value{
+            display:block;
+            font-size:12px;
+            line-height:1.35;
+            opacity:.95;
         }
 
-        .tratamento-info {
-            max-width: 50%;
+        /* SECTIONS */
+        .section{padding:52px 0}
+        .section-title{
+            margin:0 0 8px;
+            font-size:25px;
+            line-height:1.2;
+            font-weight:650;
+            color:#090909;
+        }
+        .section-description{
+            margin:0 0 28px;
+            color:#4b5563;
+            line-height:1.5;
+            max-width:900px;
         }
 
-        .tratamento-info h2 {
-            color: #007bff;
-            font-weight: bold;
-            font-size: 15px;
+        /* EFFICACY CARDS */
+        .efficacy-grid{
+            display:grid;
+            grid-template-columns:repeat(5,1fr);
+            gap:48px;
+            align-items:stretch;
+        }
+        .eff-card{
+            position:relative;
+            min-height:215px;
+            border:2px solid rgba(1,147,255,.5);
+            border-radius:10px;
+            padding:18px 10px;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            text-align:center;
+            color:rgba(1,147,255,.7);
+            background:#fff;
+        }
+        .eff-card.has-data{
+            background:var(--blue);
+            border-color:var(--blue);
+            color:#fff;
+        }
+        .eff-check{
+            position:absolute;
+            right:-8px;
+            top:-11px;
+            width:22px;
+            height:22px;
+            border-radius:50%;
+            background:var(--green);
+            color:#fff;
+            display:grid;
+            place-items:center;
+            font-size:12px;
+            border:2px solid #fff;
+        }
+        .eff-icon{
+            width:38px;
+            height:38px;
+            object-fit:contain;
+            margin-bottom:12px;
+        }
+        .eff-label{
+            min-height:54px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:13px;
+            line-height:1.3;
+            font-weight:600;
+        }
+        .eff-range{
+            margin-top:auto;
+            padding-top:15px;
+            font-size:13px;
+            opacity:.85;
+        }
+        .eff-max{
+            font-size:18px;
+            font-weight:700;
+            margin-top:3px;
         }
 
-        .tratamento-info h3 {
-            font-size: 28px;
-            font-weight: bold;
-            margin-bottom: 10px;
+        /* EVIDENCES */
+        .evidence-heading{
+            margin-bottom:24px;
+            font-size:17px;
+            font-weight:700;
+        }
+        .evidence-heading a{color:var(--blue);text-decoration:none}
+        .evidence-shell{
+            border-radius:10px;
+            background:#fff;
+            box-shadow:0 2px 20px rgba(0,0,0,.13);
+            padding:10px 28px;
+        }
+        .evidence-item{
+            display:grid;
+            grid-template-columns:140px minmax(0,1fr) 280px;
+            gap:28px;
+            padding:34px 0;
+            border-bottom:2px solid #eee;
+        }
+        .evidence-item:last-child{border-bottom:0}
+        .evidence-logo{
+            min-height:130px;
+            display:flex;
+            align-items:flex-start;
+            justify-content:center;
+            padding-top:8px;
+        }
+        .evidence-logo img{
+            max-width:120px;
+            max-height:100px;
+            object-fit:contain;
+        }
+        .evidence-main p{margin:0 0 12px}
+        .evidence-label{font-weight:700;color:#777}
+        .evidence-primary{font-weight:700;color:#111}
+        .evidence-secondary{margin-left:82px!important}
+        .rigor{
+            display:inline-flex;
+            gap:4px;
+            margin-left:5px;
+            vertical-align:middle;
+        }
+        .rigor span{
+            width:21px;height:21px;
+            display:grid;place-items:center;
+            border:1px solid var(--blue);
+            border-radius:3px;
+            font-size:11px;
+            font-weight:700;
+            color:var(--blue);
+        }
+        .rigor span.active{background:var(--blue);color:#fff}
+        .evidence-authors{font-style:italic}
+        .evidence-reference{color:#555;font-size:12px}
+        .evidence-title{font-size:13px;line-height:1.45}
+        .evidence-link{
+            color:var(--blue);
+            text-decoration:underline;
+            word-break:break-all;
+            font-size:12px;
+        }
+        .evidence-description{
+            font-size:13px;
+            line-height:1.5;
+            color:#222;
+            padding-top:44px;
+        }
+        .empty-box{
+            padding:24px;
+            border:1px solid var(--border);
+            border-radius:8px;
+            color:#777;
+            text-align:center;
         }
 
-        .tratamento-info p {
-            font-size: 16px;
-            line-height: 1.5;
+        /* WHEN TO USE */
+        .when-use{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:70px;
+            padding:52px 0 36px;
         }
-
-        .table-container {
-            margin-top: 30px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            border-top: px solid #ddd;
-            padding-top: 40px;
+        .when-use-copy{
+            max-width:420px;
+            text-align:right;
         }
-
-        .table {
-            width: 95%;
-            max-width: 1300px;
-            border-collapse: collapse;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            border-radius: 10px;
-            overflow: hidden;
+        .when-use-copy h2{
+            color:var(--blue);
+            font-size:18px;
+            margin:0 0 4px;
+            font-weight:700;
         }
+        .when-use-copy p{margin:0;line-height:1.5}
+        .when-use img{width:150px}
 
-        .table th {
-            background: #ffffff;
-            color: #0c0101;
-            text-align: center;
-            padding: 12px;
-            font-size: 16px;
-            text-transform: uppercase;
-            font-weight: bold;
-            border: 6px solid #f1f1f1;
+        /* SAFETY TABLE */
+        .safety-table-wrap{overflow-x:auto}
+        .safety-table{
+            width:100%;
+            border-collapse:collapse;
+            font-size:12px;
         }
-
-        .table td {
-            text-align: center;
-            padding: 12px;
-            font-size: 15px;
-            border: 6px solid #f1f1f1;
+        .safety-table th,.safety-table td{
+            border:1px solid #ddd;
+            padding:12px 14px;
+            text-align:center;
+            vertical-align:middle;
         }
-
-        .yes {
-            background-color: #007bff;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-weight: bold;
-            display: inline-block;
-            min-width: 50px;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        .safety-table th{
+            font-weight:700;
+            color:#222;
+            background:#fff;
         }
-
-        .no {
-            background-color: #dc3545;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-weight: bold;
-            display: inline-block;
-            min-width: 50px;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        .pill{
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            min-width:82px;
+            height:25px;
+            border-radius:7px;
+            color:#fff;
+            font-weight:800;
+            font-size:11px;
         }
+        .pill.yes{background:var(--blue)}
+        .pill.no{background:var(--danger)}
 
-        .eficacia-titulo {
-            font-weight: 700;
-            font-size: 32px;
-            text-align: center;
-            margin-bottom: 12px;
+        /* CONTRA / ADVERSE */
+        .cards-title{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:20px;
+            margin-bottom:20px;
         }
-
-        .eficacia-section {
-            max-width: 720px;
-            margin: 20px auto 0;
-            text-align: center;
-            font-family: Arial, sans-serif;
+        .cards-title h2{margin:0;font-size:24px;font-weight:600}
+        .cards-title img{width:42px}
+        .cards-grid{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:22px;
         }
-
-        .eficacia-item {
-            margin-bottom: 24px;
+        .info-card{
+            border:1px solid #ddd;
+            border-radius:7px;
+            overflow:hidden;
+            background:#fff;
+            min-width:0;
         }
-
-        .efficacy-bar-wrapper {
-            display: flex;
-            justify-content: center;
+        .info-card img{
+            width:100%;
+            height:175px;
+            object-fit:cover;
+            display:block;
         }
-
-        .efficacy-bar {
-            position: relative;
-            width: 70%;
-            max-width: 400px;
-            height: 50px;
-            border-radius: 3px;
-            overflow: hidden;
+        .info-card-body{padding:14px}
+        .info-card h3{
+            margin:0 0 8px;
+            font-size:15px;
+            font-weight:700;
         }
-
-        .eficacia-caption {
-            margin-top: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 15px;
-            color: #444;
+        .info-card p{
+            margin:0;
+            color:#969696;
+            font-size:12px;
+            line-height:1.45;
         }
-
-        .eficacia-caption-icon img {
-            width: 52px;
-            height: 36px;
-            object-fit: contain;
+        .frequency{
+            margin-bottom:7px!important;
+            color:#333!important;
         }
+        .frequency strong{color:var(--blue);text-transform:uppercase}
 
-        .eficacia-caption-text-strong {
-            color: #6a6a6a;
-            font-size: 20px;
-            font-weight: 700;
+        /* DETAILS */
+        .details-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:50px;
+            padding:40px 0;
         }
-
-        .eficacia-caption-range-min {
-            font-size: 20px;
-            color: #cbcbcb;
+        .details-grid h3{font-size:17px;font-weight:700;margin-bottom:15px}
+        .detail-line{display:flex;gap:10px;margin-bottom:14px;align-items:flex-start}
+        .detail-line i{color:var(--blue);width:20px;margin-top:2px}
+        .detail-line a{color:#111;font-weight:700}
+        .detail-links a{
+            display:block;
+            color:#777;
+            text-decoration:none;
+            margin-bottom:8px;
         }
+        .detail-links a:first-of-type{color:#111;font-weight:700}
 
-        .eficacia-caption-range-max {
-            font-size: 20px;
-            font-weight: 700;
+        /* CTA + COMMENTS */
+        .consult-wrap{text-align:center;padding:35px 0}
+        .consult-btn{
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            width:min(100%,600px);
+            min-height:42px;
+            padding:10px 20px;
+            background:var(--blue);
+            color:#fff;
+            text-decoration:none;
+            border-radius:3px;
+            font-weight:600;
         }
-
-        .quando-usar-texto {
-            max-width: 420px;
-            margin: 0 auto;
-            text-align: center;
-            font-size: 16px;
-            color: #000;
+        .comments{max-width:820px;margin:0 auto;padding:25px 0 60px}
+        .comments-kicker{color:var(--blue);font-weight:700;margin-bottom:3px}
+        .comments h2{font-size:20px;font-weight:500;margin-bottom:12px}
+        .comments textarea{
+            width:100%;
+            min-height:100px;
+            resize:vertical;
+            border:1px solid #ccc;
+            border-radius:5px;
+            padding:12px;
         }
-
-        .preco-link {
-            color: #000;
-            font-weight: 700;
-            text-decoration: underline;
-            text-underline-offset: 2px;
+        .char-count{text-align:right;color:#777;font-size:11px}
+        .submit-wrap{text-align:center;margin:18px 0 35px}
+        .submit-btn{
+            border:0;border-radius:5px;background:var(--blue);color:#fff;
+            padding:9px 18px;font-weight:600;
         }
-
-        .preco-desc {
-            color: #000;
-            font-size: 0.95rem;
+        .comments-title{text-align:center;color:var(--blue);font-size:20px;font-weight:700}
+        .comment-card{
+            border:1px solid #ddd;
+            border-radius:6px;
+            padding:16px;
+            margin:14px 0;
+            background:#fafafa;
         }
+        .comment-card h3{font-size:14px;color:var(--blue);font-weight:700}
+        .comment-card p{white-space:pre-wrap;line-height:1.55}
+        .comment-card small{color:#777}
 
-        .contraindications-section {
-            margin-top: 80px;
-            padding-top: 60px;
+        @media(max-width:900px){
+            .hero{grid-template-columns:1fr;gap:28px;padding-top:45px}
+            .hero-image{grid-row:1}
+            .summary-grid{grid-template-columns:repeat(2,1fr)}
+            .efficacy-grid{grid-template-columns:repeat(2,1fr);gap:16px}
+            .evidence-item{grid-template-columns:110px 1fr}
+            .evidence-description{grid-column:2;padding-top:0}
+            .cards-grid{grid-template-columns:repeat(2,1fr)}
         }
-
-        .zoom-img {
-            transition: none !important;
-            transform: none !important;
-        }
-
-        .comentarios-wrapper {
-            max-width: 800px;
-            margin: 50px auto 0;
-            text-align: center;
-            padding: 0 15px;
-            box-sizing: border-box;
-        }
-
-        .comentarios-lista {
-            max-height: 400px;
-            overflow-y: auto;
-            padding-right: 10px;
-            margin: 0 auto;
-            width: 100%;
-            max-width: 750px;
-        }
-
-        .comentario-card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 10px auto;
-            background-color: #f9f9f9;
-            text-align: left;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .comentario-card:hover {
-            background-color: #f0f8ff;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .contra-indicado-title {
-    font-size: 30px;
-    font-weight: 400;
-    color: #222;
-    margin-bottom: 20px;
-}
-
-.reacao-card {
-    background: #fff;
-    border: 1px solid #d9d9d9;
-    border-radius: 6px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.reacao-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-}
-
-.reacao-card-img {
-    width: 100%;
-    height: 210px;
-    object-fit: cover;
-    display: block;
-}
-
-.reacao-card-body {
-    padding: 14px 14px 16px;
-}
-
-.reacao-frequencia {
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 8px;
-}
-
-.reacao-grau {
-    color: #0d6efd;
-    font-weight: 500;
-    text-transform: uppercase;
-    margin-left: 4px;
-}
-
-.reacao-titulo {
-    font-size: 18px;
-    font-weight: 700;
-    color: #000;
-    margin-bottom: 10px;
-}
-
-.reacao-descricao {
-    font-size: 14px;
-    line-height: 1.5;
-    color: #9a9a9a;
-    margin: 0;
-}
-
-@media (max-width: 768px) {
-    .reacao-card-img {
-        height: 180px;
-    }
-}
-
-        @media (max-width: 992px) {
-            .tratamento-container {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .tratamento-info,
-            .col-md-5 {
-                max-width: 100%;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .table {
-                width: 100%;
-            }
-
-            .table th,
-            .table td {
-                font-size: 14px;
-                padding: 10px;
-            }
-
-            .no,
-            .yes {
-                padding: 6px 10px;
-                font-size: 14px;
-            }
-
-            .adhesion-clock {
-                display: none !important;
-            }
-
-            .tratamento-info h2 {
-                justify-content: center !important;
-                text-align: center !important;
-                width: 100%;
-            }
-
-            .tratamento-info h2 > span {
-                display: block;
-                text-align: center !important;
-                width: 100%;
-            }
-
-            img {
-                border: none !important;
-                margin: 0 !important;
-                display: block !important;
-                border-radius: 0 !important;
-            }
-
-            .col-md-5,
-            .shadow-sm {
-                border: none !important;
-                outline: none !important;
-                box-shadow: none !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                border-radius: 0 !important;
-            }
+        @media(max-width:640px){
+            .page-wrap{width:min(calc(100% - 24px), var(--page))}
+            .top-strip{font-size:9px}
+            .site-header-inner{min-height:80px}
+            .site-logo img{width:90px}
+            .hero h1{font-size:27px}
+            .summary-grid{grid-template-columns:1fr}
+            .section{padding:36px 0}
+            .section-title{font-size:22px}
+            .efficacy-grid{grid-template-columns:1fr 1fr;gap:10px}
+            .eff-card{min-height:190px}
+            .evidence-shell{padding:0 16px}
+            .evidence-item{grid-template-columns:1fr;gap:12px}
+            .evidence-logo{min-height:auto;justify-content:flex-start}
+            .evidence-description{grid-column:1;padding:0}
+            .evidence-secondary{margin-left:0!important}
+            .when-use{flex-direction:column-reverse;gap:20px}
+            .when-use-copy{text-align:center}
+            .cards-grid{grid-template-columns:1fr}
+            .details-grid{grid-template-columns:1fr;gap:25px}
         }
     </style>
 </head>
+
 <body>
+    <!-- HEADER -->
+    <div class="top-strip">A plataforma do paciente bem informado</div>
 
-    <div class="topo-container">
-        <a href="https://www.telix.inf.br/">
-            <img src="{% static 'img/logo.png' %}" alt="Telix Logo" style="height: 210px;">
-        </a>
+    <header class="site-header">
+        <div class="page-wrap site-header-inner">
+            <a class="site-logo" href="https://www.telix.inf.br/">
+                <img src="{% static 'img/logo.png' %}" alt="Telix - contexto na saúde">
+            </a>
 
-        <div class="container">
-            <div class="tratamento-container" style="margin-bottom: 10px;">
-                <div class="tratamento-info">
-                    <h3 style="font-family: Arial, sans-serif; font-weight: bold; font-size: 40px; line-height: 1.2; color: #000;">
-                        <strong>{{ tratamento.nome }}</strong>
-                    </h3>
-
-                    <h2 style="color: #0094FF; display: flex; align-items: center; gap: 8px;">
-                        <span>
-                            {% for tipo in tratamento.tipo_tratamento.all %}
-                                {{ tipo.nome }}{% if not forloop.last %}, {% endif %}
-                            {% empty %}
-                                Nenhum tipo selecionado
-                            {% endfor %}
-                        </span>
-                    </h2>
-
-                    <p>
-                        <strong style="font-weight: normal; color: #000;">Fabricante:</strong>
-                        <span style="color: #B0B0B0;">{{ tratamento.fabricante }}</span>
-                    </p>
-                    <p>
-                        <strong style="color: #B0B0B0;">Princípio ativo:</strong>
-                        <span style="font-weight: bold; color: #000;">{{ tratamento.principio_ativo }}</span>
-                    </p>
-
-                    <p>{{ tratamento.descricao }}</p>
-                </div>
-
-                {% if tratamento.imagem_detalhes %}
-                <div class="col-md-5 ms-md-3 mt-4 mt-md-0 p-0">
-                    <img src="{{ tratamento.imagem_detalhes.url }}" alt="Imagem de Detalhes do Tratamento" class="img-fluid" style="width: 600px; height: 180px; object-fit: cover; object-position: top; border: none; margin: 0; border-radius: 0;">
-                </div>
-                {% endif %}
-            </div>
+            <a class="header-account" href="#">
+                <i class="fa-solid fa-lock"></i>
+                <i class="fa-solid fa-circle-user"></i>
+                <span>Cadastre-se/Login</span>
+            </a>
         </div>
-    </div>
+    </header>
 
-    {% if prazo_efeito %}
-    <div class="prerequisite-section" style="display:flex;align-items:center;justify-content:center;margin-bottom:20px;margin-top:150px;">
-      <i class="fas fa-clock" style="font-size:30px;color:#0094FF;margin-right:10px;"></i>
-      <span style="font-size:18px;color:#808080;text-align:center;">
-        Prazo para efeito: <strong>{{ prazo_efeito }}</strong>
-      </span>
-    </div>
-    {% endif %}
+    <main>
+        <!-- TRATAMENTO -->
+        <section class="page-wrap hero">
+            <div>
+                <h1>{{ tratamento.nome }}{% if tratamento.nome %}<sup style="font-size:12px">®</sup>{% endif %}</h1>
 
-    <p class="eficacia-titulo">
-      Eficácia no tratamento de {{ condicao.nome }}
-    </p>
-
-    <div class="eficacia-section">
-      {% for tipo_eficacia in eficacias_por_tipo %}
-        <div class="eficacia-item">
-        <div class="efficacy-bar-wrapper">
-        <div
-            class="efficacy-bar"
-            style="
-            background: linear-gradient(
-                to right,
-                #0094FF 0%,
-                #0094FF {{ tipo_eficacia.max|unlocalize }}%,
-                rgba(0, 148, 255, 0.3) {{ tipo_eficacia.max|unlocalize }}%,
-                rgba(0, 148, 255, 0.3) 100%
-            );
-            "
-        ></div>
-        </div>
-
-          <div class="eficacia-caption">
-            <span class="eficacia-caption-icon">
-              {% if tipo_eficacia.imagem_url %}
-                <img src="{{ tipo_eficacia.imagem_url }}" alt="{{ tipo_eficacia.label }}">
-              {% else %}
-                <img src="{% static 'img/default-icon.png' %}" alt="{{ tipo_eficacia.label }}">
-              {% endif %}
-            </span>
-
-            <span class="eficacia-caption-text">
-              <span class="eficacia-caption-text-strong">{{ tipo_eficacia.label }}</span>
-              <span class="eficacia-caption-range-min">{{ tipo_eficacia.min_str }}</span>
-              a
-              <span class="eficacia-caption-range-max">{{ tipo_eficacia.max_str }}%</span>
-            </span>
-          </div>
-        </div>
-      {% empty %}
-        <p class="text-center text-muted">Sem dados de eficácia para este tratamento.</p>
-      {% endfor %}
-    </div>
-
-    <div style="display: flex; justify-content: center; margin-top: 5px;">
-     <a href="{% url 'pesquisas_tratamento' condicao_slug=condicao_slug tratamento_slug=tratamento.slug %}{% if ef_filtro_slug %}?ef={{ ef_filtro_slug|urlencode }}{% endif %}"
-         style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 20px; font-size: 16px; color: #0094FF; border: 2px solid #0094FF; border-radius: 5px; text-decoration: none; width: auto;">
-          Veja as pesquisas
-          <img src="{% static 'img/seta.png' %}" alt="Seta" style="margin-left: 10px; width: 15px; height: 15px; vertical-align: middle;">
-      </a>
-    </div>
-
-    <div class="adhesion-section mt-5">
-      <div class="d-flex justify-content-center align-items-center flex-wrap">
-        <div style="padding-right: 20px; margin-top: 10px;">
-          <h2 style="color: #0094FF; font-size: 20px; margin-bottom: 2px; font-weight: 600; text-align: center;">
-            Quando usar?
-          </h2>
-          <p class="quando-usar-texto">
-            {{ tratamento.quando_usar }}
-          </p>
-        </div>
-
-        <div>
-          <img src="{% static 'img/relogio.png' %}"
-               alt="Relógio Adesão"
-               class="adhesion-clock"
-               style="width: 270px; height: auto;">
-        </div>
-      </div>
-    </div>
-
-    <div class="table-container">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>GRUPO</th>
-                    <th>INDICADO PARA</th>
-                    <th>MOTIVO</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Crianças menores de 12 anos</td>
-                    <td><span class="{% if tratamento.indicado_criancas == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_criancas }}</span></td>
-                    <td>{{ tratamento.motivo_criancas|default:"-" }}</td>
-                </tr>
-                <tr>
-                    <td>Adolescentes 12 a 17 anos</td>
-                    <td><span class="{% if tratamento.indicado_adolescentes == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_adolescentes }}</span></td>
-                    <td>{{ tratamento.motivo_adolescentes|default:"-" }}</td>
-                </tr>
-                <tr>
-                    <td>Idosos +65 anos</td>
-                    <td><span class="{% if tratamento.indicado_idosos == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_idosos }}</span></td>
-                    <td>{{ tratamento.motivo_idosos|default:"-" }}</td>
-                </tr>
-                <tr>
-                    <td>Adultos</td>
-                    <td><span class="{% if tratamento.indicado_adultos == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_adultos }}</span></td>
-                    <td>{{ tratamento.motivo_adultos|default:"-" }}</td>
-                </tr>
-                <tr>
-                    <td>Lactantes</td>
-                    <td><span class="{% if tratamento.indicado_lactantes == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_lactantes }}</span></td>
-                    <td>{{ tratamento.motivo_lactantes|default:"-" }}</td>
-                </tr>
-                <tr>
-                    <td>Gravidez</td>
-                    <td><span class="{% if tratamento.indicado_gravidez == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_gravidez }}</span></td>
-                    <td>{{ tratamento.motivo_gravidez|default:"-" }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="contraindications-section container mt-5">
-        <h2 class="contraindicado-title" style="display: flex; justify-content: space-between; align-items: center;">
-            <span style="font-size: 30px;">Contraindicado para</span>
-            <img src="{% static 'img/icone.png' %}" alt="Ícone Contraindicado" style="width: 80px; height: auto;">
-        </h2>
-    </div>
-
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-          {% for contraindicacao in tratamento.contraindicacoes.all %}
-            <div class="col-12 col-sm-6 col-md-4 mb-4 d-flex">
-              <div class="card shadow-sm w-100 h-100 d-flex flex-column">
-                {% if contraindicacao.imagem %}
-                  <img src="{{ contraindicacao.imagem.url }}" alt="{{ contraindicacao.descricao }}" class="card-img-top" style="height: 180px; object-fit: cover;">
-                {% else %}
-                  <img src="{% static 'img/default-medicamento.png' %}" alt="Imagem não disponível" class="card-img-top" style="height: 180px; object-fit: cover;">
-                {% endif %}
-                <div class="card-body d-flex flex-column justify-content-between text-start">
-                    <h6 class="card-title fw-bold" style="font-size: 1.1rem;">{{ contraindicacao.nome }}</h6>
-                    <p class="mb-0" style="color: #B0B0B0;">{{ contraindicacao.descricao }}</p>
-                </div>
-              </div>
-            </div>
-          {% empty %}
-            <p class="text-center">Não há contraindicações.</p>
-          {% endfor %}
-        </div>
-    </div>
-
-    <div class="container mt-4">
-        <div class="d-flex flex-wrap justify-content-center gap-5">
-            <div class="col-md-5 pe-md-4">
-                <h5 class="fw-bold mb-3" style="color: #000;">Detalhes</h5>
-                <ul class="list-unstyled mb-0">
-                    <li class="d-flex align-items-start mb-3">
-                        <img src="{% static 'img/cifrao.png' %}" alt="Ícone de custo" style="width: 26px; height: 30px; align-self: start; margin-top: 2px;" class="me-2">
-                        <div>
-                            <div>
-                                <span style="color:#999;">Valor do tratamento: </span>
-                                {% if tratamento.link_para_compra_de_tratamento %}
-                                    <a href="{{ tratamento.link_para_compra_de_tratamento }}" target="_blank" rel="noopener noreferrer" class="preco-link">
-                                        R${{ tratamento.custo_medicamento|floatformat:2 }}
-                                    </a>
-                                {% else %}
-                                    <span class="preco-link" style="text-decoration:none;">
-                                        R${{ tratamento.custo_medicamento|floatformat:2 }}
-                                    </span>
-                                {% endif %}
-                            </div>
-
-                            {% if tratamento.especificacao_do_custo %}
-                                <div class="preco-desc fw-bold">
-                                    ({{ tratamento.especificacao_do_custo }})
-                                </div>
-                            {% endif %}
-                        </div>
-                    </li>
-
-                    {% if tratamento.alertas %}
-                    <li class="d-flex align-items-start">
-                        <img src="{% static 'img/alerta.png' %}" alt="Ícone de alerta" style="width: 26px; height: 26px; align-self: start; margin-top: 2px;" class="me-2">
-                        <div>
-                            <span style="color: #999;">Alerta:</span>
-                            <span class="text-dark ms-1">{{ tratamento.alertas }}</span>
-                        </div>
-                    </li>
-                    {% endif %}
-                </ul>
-            </div>
-
-            <div class="col-md-5 ps-md-4">
-                <h5 class="fw-bold mb-3 text-dark">Links</h5>
-                <ul class="list-unstyled mb-0">
-                    {% if tratamento.opiniao_especialista %}
-                    <li class="fw-bold text-dark mb-2">
-                        <a href="{{ tratamento.opiniao_especialista }}" class="text-decoration-none text-dark">Opinião de especialista</a>
-                    </li>
-                    {% endif %}
-
-                    {% if tratamento.interacao_medicamentosa %}
-                    <li class="text-secondary fw-semibold mb-1">
-                        <a href="{{ tratamento.interacao_medicamentosa }}" class="text-decoration-none text-secondary fw-semibold">Interações medicamentosas</a>
-                    </li>
-                    {% endif %}
-
-                    {% if tratamento.genericos_similares %}
-                    <li class="text-secondary fw-semibold mb-1">
-                        <a href="{{ tratamento.genericos_similares }}" class="text-decoration-none text-secondary fw-semibold">Genéricos e similares</a>
-                    </li>
-                    {% endif %}
-
-                    {% if tratamento.prescricao_eletronica %}
-                    <li class="text-secondary fw-semibold">
-                        <a href="{{ tratamento.prescricao_eletronica }}" class="text-decoration-none text-secondary fw-semibold">Prescrição eletrônica</a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </div>
-
-   <div class="contraindications-section container mt-5">
-    <h2 class="contra-indicado-title">Reações Adversas</h2>
-</div>
-
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        {% for detalhe in detalhes_reacoes_adversas %}
-        <div class="col-12 col-sm-6 col-lg-4 mb-4 d-flex">
-            <div class="reacao-card w-100">
-                {% if detalhe.reacao_adversa.imagem %}
-                    <img 
-                        src="{{ detalhe.reacao_adversa.imagem.url }}" 
-                        alt="{{ detalhe.reacao_adversa.nome }}"
-                        class="reacao-card-img"
-                    >
-                {% else %}
-                    <img 
-                        src="{% static 'img/default-reacao.png' %}" 
-                        alt="Imagem não disponível"
-                        class="reacao-card-img"
-                    >
-                {% endif %}
-
-                <div class="reacao-card-body">
-                    <p class="reacao-frequencia">
-                        {% if detalhe.reacao_min and detalhe.reacao_max %}
-                            {{ detalhe.reacao_min }}% a {{ detalhe.reacao_max }}%
-                        {% else %}
-                            &lt; 0,01%
-                        {% endif %}
-
-                        {% if detalhe.grau_comunalidade %}
-                            <span class="reacao-grau">
-                                {{ detalhe.get_grau_comunalidade_display }}
-                            </span>
-                        {% endif %}
-                    </p>
-
-                    <h6 class="reacao-titulo">{{ detalhe.reacao_adversa.nome }}</h6>
-
-                    <p class="reacao-descricao">
-                        {{ detalhe.reacao_adversa.descricao }}
-                    </p>
-                </div>
-            </div>
-        </div>
-        {% empty %}
-        <p class="text-center">Nenhuma reação adversa encontrada.</p>
-        {% endfor %}
-    </div>
-</div>
-
-    <div style="width: 100%; display: flex; justify-content: center; margin: 40px 0 20px 0;">
-        <a href="https://cliente.doutorbeneficios.com/consumidor-1eemej6h"
-           style="display: block; width: 100%; max-width: 600px; padding: 12px 20px; background-color: #0094FF; color: #ffffff; text-align: center; text-decoration: none; font-size: 18px; font-weight: 700; border-radius: 4px; border: none; cursor: pointer;">
-            Agende sua consulta
-        </a>
-    </div>
-
-    <div class="comentarios-wrapper">
-        <label style="color: #0094FF; font-size: 1.2rem; font-weight: bold; text-align: left; display: block; margin-bottom: 5px;">
-            Compartilhe sua experiência
-        </label>
-
-        <h3 style="text-align: left; margin-bottom: 10px;">Você já utilizou este medicamento?</h3>
-
-        <form id="formAvaliacao" method="post" action="{% url 'salvar_avaliacao' tratamento.id %}">
-            {% csrf_token %}
-            <input type="hidden" id="usuario_nome" name="usuario_nome">
-
-            <textarea
-                id="comentario"
-                name="comentario"
-                placeholder="Deixe sua mensagem"
-                rows="4"
-                maxlength="400"
-                required
-                oninput="updateCount(this)"
-                style="width:100%; padding:12px; font-size:14px; box-sizing:border-box; border:1px solid #ccc; border-radius:6px; resize:vertical;"
-            ></textarea>
-
-            <div id="char-count" style="font-size:13px; color:#777; margin-top:4px; text-align:right;">
-                400 caracteres restantes
-            </div>
-
-            <div style="text-align:center; margin-top:20px;">
-                <button type="button" onclick="handleSubmit()"
-                        style="padding:10px 20px; background-color:#007bff; color:white; border:none; border-radius:6px; font-size:16px; cursor:pointer; font-weight:500; transition:background 0.3s;"
-                        onmouseover="this.style.backgroundColor='#0056b3'"
-                        onmouseout="this.style.backgroundColor='#007bff'">
-                    Enviar Avaliação
-                </button>
-            </div>
-        </form>
-
-        <div class="modal fade" id="modalNome" tabindex="-1" aria-labelledby="modalNomeLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="modalNomeLabel">Como você quer aparecer nos comentários?</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-              </div>
-              <div class="modal-body">
-                <input type="text" id="nome_modal" class="form-control" placeholder="Digite seu nome ou apelido">
-                <small class="text-muted">Esse nome será exibido publicamente junto ao seu comentário.</small>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="salvarNomeEEnviar()">
-                  Confirmar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-top: 50px; text-align: center;">
-            <h3 style="color: #007bff; font-size: 1.6rem; font-weight: bold;">
-                Comentários dos usuários:
-            </h3>
-
-            {% if avaliacoes %}
-                <div class="comentarios-lista">
-                    {% for avaliacao in avaliacoes %}
-                        <div class="comentario-card">
-                            <h4 style="color: #007bff; font-size: 1.2rem; font-weight: bold; margin-bottom: 10px;">
-                                {% if avaliacao.usuario_nome %}
-                                    {{ avaliacao.usuario_nome }}
-                                {% else %}
-                                    Usuário Anônimo
-                                {% endif %}
-                            </h4>
-
-                            <p style="font-size: 1rem; color: #333; margin: 0 0 5px 0; word-wrap: break-word; overflow-wrap: break-word; white-space: pre-wrap; text-align: justify; line-height: 1.6;">
-                                {{ avaliacao.comentario }}
-                            </p>
-
-                            <small style="color: #666; font-size: 0.9rem;">
-                                Publicado em {{ avaliacao.data|date:"d/m/Y H:i" }}
-                            </small>
-                        </div>
+                <div class="treatment-types">
+                    {% for tipo in tratamento.tipo_tratamento.all %}
+                        {{ tipo.nome }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        Tratamento
                     {% endfor %}
                 </div>
-            {% else %}
-                <p style="font-size: 1.2rem; color: #888;">
-                    Nenhum comentário ainda. Seja o primeiro a deixar o seu!
+
+                <p class="meta-row">
+                    <span class="meta-label">Informações sobre tratamento para:</span>
+                    <span class="meta-value">{{ condicao.nome }}</span>
                 </p>
+
+                <p class="meta-row">
+                    <span class="meta-label">Fabricante:</span>
+                    <span class="meta-value">{{ tratamento.fabricante }}</span>
+                </p>
+
+                <p class="meta-row">
+                    <span class="meta-label">Princípio ativo:</span>
+                    <span class="meta-value">{{ tratamento.principio_ativo }}</span>
+                </p>
+
+                <div class="hero-description">{{ descricao_detalhe }}</div>
+            </div>
+
+            <div class="hero-image">
+                {% if tratamento.imagem_detalhes %}
+                    <img src="{{ tratamento.imagem_detalhes.url }}" alt="{{ tratamento.nome }}">
+                {% else %}
+                    <img src="{% static 'img/default-medicamento.png' %}" alt="Imagem não disponível">
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- RESUMO -->
+        <section class="page-wrap">
+            <div class="summary-grid">
+                <a class="summary-card primary" href="#eficacia">
+                    <i class="fa-solid fa-thumbs-up"></i>
+                    <span>
+                        <span class="summary-card-title">Eficácia</span>
+                        <span class="summary-card-value">
+                            {% with e=eficacias_por_tipo.0 %}
+                                {% if e %}{{ e.label }}: {{ e.min_str }}% a {{ e.max_str }}%{% else %}Ver resultados{% endif %}
+                            {% endwith %}
+                        </span>
+                    </span>
+                </a>
+
+                <a class="summary-card primary" href="#quando-usar">
+                    <i class="fa-regular fa-clock"></i>
+                    <span>
+                        <span class="summary-card-title">Prazo para efeito</span>
+                        <span class="summary-card-value">{{ prazo_efeito|default:"Consulte os detalhes" }}</span>
+                    </span>
+                </a>
+
+                <a class="summary-card primary" href="#seguranca">
+                    <i class="fa-solid fa-people-group"></i>
+                    <span>
+                        <span class="summary-card-title">Segurança de uso</span>
+                        <span class="summary-card-value">Adultos, crianças, adolescentes, idosos, lactantes e gravidez</span>
+                    </span>
+                </a>
+
+                <a class="summary-card" href="#evidencias">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>
+                        <span class="summary-card-title">Artigos científicos</span>
+                        <span class="summary-card-value">
+                            {% if evidencias %}{{ evidencias|length }} evidência{{ evidencias|length|pluralize:"s" }} cadastrada{{ evidencias|length|pluralize:"s" }}{% else %}Ver evidências{% endif %}
+                        </span>
+                    </span>
+                </a>
+
+                {% if tratamento.genericos_similares %}
+                <a class="summary-card" href="{{ tratamento.genericos_similares }}">
+                    <i class="fa-solid fa-capsules"></i>
+                    <span>
+                        <span class="summary-card-title">Genéricos e similares</span>
+                        <span class="summary-card-value">Consultar opções</span>
+                    </span>
+                </a>
+                {% else %}
+                <div class="summary-card">
+                    <i class="fa-solid fa-capsules"></i>
+                    <span>
+                        <span class="summary-card-title">Genéricos e similares</span>
+                        <span class="summary-card-value">Informação não cadastrada</span>
+                    </span>
+                </div>
+                {% endif %}
+
+                <a class="summary-card primary" href="#contraindicacoes">
+                    <i class="fa-solid fa-ban"></i>
+                    <span>
+                        <span class="summary-card-title">Contraindicações</span>
+                        <span class="summary-card-value">{{ tratamento.contraindicacoes.all|length }} cadastrada{{ tratamento.contraindicacoes.all|length|pluralize:"s" }}</span>
+                    </span>
+                </a>
+
+                <div class="summary-card primary">
+                    <i class="fa-solid fa-dollar-sign"></i>
+                    <span>
+                        <span class="summary-card-title">Custo</span>
+                        <span class="summary-card-value">
+                            {% if tratamento.custo_medicamento %}R$ {{ tratamento.custo_medicamento|floatformat:2 }}{% else %}Não informado{% endif %}
+                        </span>
+                    </span>
+                </div>
+
+                <a class="summary-card primary" href="#reacoes">
+                    <i class="fa-solid fa-diamond-exclamation"></i>
+                    <span>
+                        <span class="summary-card-title">Reações adversas</span>
+                        <span class="summary-card-value">Ver riscos e reações cadastradas</span>
+                    </span>
+                </a>
+            </div>
+        </section>
+
+        <!-- EFICÁCIA -->
+        <section id="eficacia" class="section">
+            <div class="page-wrap">
+                <h2 class="section-title">Eficácia no tratamento de {{ condicao.nome|lower }}</h2>
+                <p class="section-description">
+                    De acordo com as pesquisas, as taxas mínimas e máximas de pacientes que apresentaram benefícios após iniciar o tratamento foram:
+                </p>
+
+                <div class="efficacy-grid">
+                    {% for tipo_eficacia in eficacias_por_tipo %}
+                        <div class="eff-card has-data">
+                            <span class="eff-check"><i class="fa-solid fa-check"></i></span>
+
+                            {% if tipo_eficacia.imagem_url %}
+                                <img class="eff-icon" src="{{ tipo_eficacia.imagem_url }}" alt="{{ tipo_eficacia.label }}">
+                            {% else %}
+                                <i class="fa-solid fa-face-smile" style="font-size:30px;margin-bottom:12px"></i>
+                            {% endif %}
+
+                            <div class="eff-label">{{ tipo_eficacia.label }}</div>
+                            <div class="eff-range">de {{ tipo_eficacia.min_str }}%</div>
+                            <div class="eff-max">a {{ tipo_eficacia.max_str }}%</div>
+                        </div>
+                    {% empty %}
+                        <div class="empty-box" style="grid-column:1/-1">Sem dados de eficácia cadastrados para este tratamento.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- EVIDÊNCIAS CLÍNICAS AGORA NA MESMA PÁGINA -->
+        <section id="evidencias" class="section">
+            <div class="page-wrap">
+                <div class="evidence-heading">
+                    Pesquisas sobre eficácia do tratamento:
+                    <a href="{% url 'pesquisas_tratamento' condicao.slug tratamento.slug %}{% if ef_filtro_slug %}?ef={{ ef_filtro_slug }}{% endif %}">
+                        {{ tratamento.nome }}
+                    </a>
+                    <div style="font-weight:400;color:#999;margin-top:2px">para: {{ condicao.nome }}</div>
+                </div>
+
+                {% if evidencias %}
+                    <div class="evidence-shell">
+                        {% for evidencia in evidencias %}
+                            <article class="evidence-item">
+                                <div class="evidence-logo">
+                                    {% if evidencia.imagem_estudo %}
+                                        <img src="{{ evidencia.imagem_estudo.url }}" alt="Imagem do estudo">
+                                    {% else %}
+                                        <span style="color:#aaa">Imagem não disponível</span>
+                                    {% endif %}
+                                </div>
+
+                                <div class="evidence-main">
+                                    {% with efics=evidencia.efics_ordenadas|default:evidencia.eficacia_por_evidencias.all %}
+                                        {% if efics and efics|length > 0 %}
+                                            <p>
+                                                <span class="evidence-label">Eficácia:</span>
+                                                <span class="evidence-primary">
+                                                    {{ efics.0.tipo_eficacia.tipo_eficacia }} – {{ efics.0.percentual_eficacia_calculado|floatformat:2 }}%
+                                                </span>
+                                            </p>
+
+                                            {% for ef in efics|slice:"1:" %}
+                                                <p class="evidence-secondary">
+                                                    {{ ef.tipo_eficacia.tipo_eficacia }} – {{ ef.percentual_eficacia_calculado|floatformat:2 }}%
+                                                </p>
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endwith %}
+
+                                    <p>
+                                        <span class="evidence-label">Rigor da pesquisa:</span>
+                                        <span class="rigor">
+                                            {% with rigor_value=evidencia.rigor_da_pesquisa %}
+                                                {% for i in "1234567" %}
+                                                    <span class="{% if i|add:'0' <= rigor_value %}active{% endif %}">{{ i }}</span>
+                                                {% endfor %}
+                                            {% endwith %}
+                                        </span>
+                                    </p>
+
+                                    <p><span class="evidence-label">Quantidade de participantes:</span> <strong>{{ evidencia.numero_participantes }}</strong></p>
+                                    <p><span class="evidence-label">Data:</span> <strong>{{ evidencia.data_publicacao|date:"m/Y" }}</strong></p>
+
+                                    <p>
+                                        <span class="evidence-label">País(es):</span>
+                                        {% with qs=evidencia.paises.all %}
+                                            {% if qs %}
+                                                <strong>
+                                                    {% for p in qs|slice:":3" %}
+                                                        {{ p.get_nome_display|default:p.nome }}{% if not forloop.last %}, {% endif %}
+                                                    {% endfor %}
+                                                    {% if qs|length > 3 %}… (+{{ qs|length|add:"-3" }}){% endif %}
+                                                </strong>
+                                            {% else %}
+                                                —
+                                            {% endif %}
+                                        {% endwith %}
+                                    </p>
+
+                                    <p class="evidence-authors">{{ evidencia.autores }}</p>
+
+                                    {% if evidencia.referencia_bibliografica %}
+                                        <p class="evidence-reference">{{ evidencia.referencia_bibliografica }}</p>
+                                    {% endif %}
+
+                                    <p class="evidence-title">{{ evidencia.titulo_estudo }}</p>
+
+                                    {% if evidencia.link_estudo %}
+                                        <a class="evidence-link" href="{{ evidencia.link_estudo }}" target="_blank" rel="noopener noreferrer">
+                                            {{ evidencia.link_estudo }}
+                                        </a>
+                                    {% endif %}
+                                </div>
+
+                                <div class="evidence-description">
+                                    {{ evidencia.descricao|truncatechars:400|linebreaksbr }}
+                                </div>
+                            </article>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-box">
+                        <strong>Sem evidências carregadas nesta página.</strong><br>
+                        Se existem pesquisas na tela separada, adicione <code>evidencias</code> ao contexto da view de detalhes.
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- QUANDO USAR -->
+        <section id="quando-usar" class="page-wrap when-use">
+            <div class="when-use-copy">
+                <h2>Quando usar?</h2>
+                <p>{{ tratamento.quando_usar }}</p>
+            </div>
+            <img src="{% static 'img/relogio.png' %}" alt="Quando usar">
+        </section>
+
+        <!-- SEGURANÇA -->
+        <section id="seguranca" class="section">
+            <div class="page-wrap">
+                <div class="safety-table-wrap">
+                    <table class="safety-table">
+                        <thead>
+                            <tr>
+                                <th>Grupo</th>
+                                <th>Segurança de uso</th>
+                                <th>Motivo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Crianças menores de 12 anos</td>
+                                <td><span class="pill {% if tratamento.indicado_criancas == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_criancas }}</span></td>
+                                <td>{{ tratamento.motivo_criancas|default:"-" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Adolescentes 12 a 17 anos</td>
+                                <td><span class="pill {% if tratamento.indicado_adolescentes == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_adolescentes }}</span></td>
+                                <td>{{ tratamento.motivo_adolescentes|default:"-" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Idosos +65 anos</td>
+                                <td><span class="pill {% if tratamento.indicado_idosos == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_idosos }}</span></td>
+                                <td>{{ tratamento.motivo_idosos|default:"-" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Adultos</td>
+                                <td><span class="pill {% if tratamento.indicado_adultos == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_adultos }}</span></td>
+                                <td>{{ tratamento.motivo_adultos|default:"-" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Lactantes</td>
+                                <td><span class="pill {% if tratamento.indicado_lactantes == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_lactantes }}</span></td>
+                                <td>{{ tratamento.motivo_lactantes|default:"-" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Gravidez</td>
+                                <td><span class="pill {% if tratamento.indicado_gravidez == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_gravidez }}</span></td>
+                                <td>{{ tratamento.motivo_gravidez|default:"-" }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTRAINDICAÇÕES -->
+        <section id="contraindicacoes" class="section">
+            <div class="page-wrap">
+                <div class="cards-title">
+                    <h2>Contraindicado para</h2>
+                    <img src="{% static 'img/icone.png' %}" alt="">
+                </div>
+
+                <div class="cards-grid">
+                    {% for contraindicacao in tratamento.contraindicacoes.all %}
+                        <article class="info-card">
+                            {% if contraindicacao.imagem %}
+                                <img src="{{ contraindicacao.imagem.url }}" alt="{{ contraindicacao.nome }}">
+                            {% else %}
+                                <img src="{% static 'img/default-medicamento.png' %}" alt="Imagem não disponível">
+                            {% endif %}
+                            <div class="info-card-body">
+                                <h3>{{ contraindicacao.nome }}</h3>
+                                <p>{{ contraindicacao.descricao }}</p>
+                            </div>
+                        </article>
+                    {% empty %}
+                        <div class="empty-box" style="grid-column:1/-1">Não há contraindicações cadastradas.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- DETALHES / LINKS -->
+        <section class="page-wrap details-grid">
+            <div>
+                <h3>Detalhes</h3>
+
+                <div class="detail-line">
+                    <i class="fa-solid fa-dollar-sign"></i>
+                    <div>
+                        <span style="color:#999">Valor do tratamento:</span>
+                        {% if tratamento.link_para_compra_de_tratamento %}
+                            <a href="{{ tratamento.link_para_compra_de_tratamento }}" target="_blank" rel="noopener noreferrer">
+                                R$ {{ tratamento.custo_medicamento|floatformat:2 }}
+                            </a>
+                        {% else %}
+                            <strong>R$ {{ tratamento.custo_medicamento|floatformat:2 }}</strong>
+                        {% endif %}
+                        {% if tratamento.especificacao_do_custo %}
+                            <div><strong>({{ tratamento.especificacao_do_custo }})</strong></div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if tratamento.alertas %}
+                    <div class="detail-line">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <div><span style="color:#999">Alerta:</span> {{ tratamento.alertas }}</div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="detail-links">
+                <h3>Links</h3>
+                {% if tratamento.opiniao_especialista %}
+                    <a href="{{ tratamento.opiniao_especialista }}">Opinião de especialista</a>
+                {% endif %}
+                {% if tratamento.interacao_medicamentosa %}
+                    <a href="{{ tratamento.interacao_medicamentosa }}">Interações medicamentosas</a>
+                {% endif %}
+                {% if tratamento.genericos_similares %}
+                    <a href="{{ tratamento.genericos_similares }}">Genéricos e similares</a>
+                {% endif %}
+                {% if tratamento.prescricao_eletronica %}
+                    <a href="{{ tratamento.prescricao_eletronica }}">Prescrição eletrônica</a>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- REAÇÕES ADVERSAS -->
+        <section id="reacoes" class="section">
+            <div class="page-wrap">
+                <div class="cards-title">
+                    <h2>Reações Adversas</h2>
+                </div>
+
+                <div class="cards-grid">
+                    {% for detalhe in detalhes_reacoes_adversas %}
+                        <article class="info-card">
+                            {% if detalhe.reacao_adversa.imagem %}
+                                <img src="{{ detalhe.reacao_adversa.imagem.url }}" alt="{{ detalhe.reacao_adversa.nome }}">
+                            {% else %}
+                                <img src="{% static 'img/default-reacao.png' %}" alt="Imagem não disponível">
+                            {% endif %}
+
+                            <div class="info-card-body">
+                                <p class="frequency">
+                                    {% if detalhe.reacao_min and detalhe.reacao_max %}
+                                        {{ detalhe.reacao_min }}% a {{ detalhe.reacao_max }}%
+                                    {% else %}
+                                        &lt; 0,01%
+                                    {% endif %}
+
+                                    {% if detalhe.grau_comunalidade %}
+                                        <strong>{{ detalhe.get_grau_comunalidade_display }}</strong>
+                                    {% endif %}
+                                </p>
+
+                                <h3>{{ detalhe.reacao_adversa.nome }}</h3>
+                                <p>{{ detalhe.reacao_adversa.descricao }}</p>
+                            </div>
+                        </article>
+                    {% empty %}
+                        <div class="empty-box" style="grid-column:1/-1">Nenhuma reação adversa encontrada.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- CONSULTA -->
+        <section class="page-wrap consult-wrap">
+            <a class="consult-btn" href="https://cliente.doutorbeneficios.com/consumidor-1eemej6h">
+                Agende sua consulta
+            </a>
+        </section>
+
+        <!-- AVALIAÇÕES -->
+        <section class="comments">
+            <div class="comments-kicker">Compartilhe sua experiência</div>
+            <h2>Você já utilizou este medicamento?</h2>
+
+            <form id="formAvaliacao" method="post" action="{% url 'salvar_avaliacao' tratamento.id %}">
+                {% csrf_token %}
+                <input type="hidden" id="usuario_nome" name="usuario_nome">
+
+                <textarea
+                    id="comentario"
+                    name="comentario"
+                    placeholder="Deixe sua mensagem"
+                    maxlength="400"
+                    required
+                    oninput="updateCount(this)"
+                ></textarea>
+
+                <div id="char-count" class="char-count">400 caracteres restantes</div>
+
+                <div class="submit-wrap">
+                    <button class="submit-btn" type="button" onclick="handleSubmit()">Enviar Avaliação</button>
+                </div>
+            </form>
+
+            <div class="modal fade" id="modalNome" tabindex="-1" aria-labelledby="modalNomeLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalNomeLabel">Como você quer aparecer nos comentários?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" id="nome_modal" class="form-control" placeholder="Digite seu nome ou apelido">
+                            <small class="text-muted">Esse nome será exibido publicamente junto ao seu comentário.</small>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" onclick="salvarNomeEEnviar()">Confirmar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="comments-title">Comentários dos usuários:</h2>
+
+            {% if avaliacoes %}
+                {% for avaliacao in avaliacoes %}
+                    <article class="comment-card">
+                        <h3>{{ avaliacao.usuario_nome|default:"Usuário Anônimo" }}</h3>
+                        <p>{{ avaliacao.comentario }}</p>
+                        <small>Publicado em {{ avaliacao.data|date:"d/m/Y H:i" }}</small>
+                    </article>
+                {% endfor %}
+            {% else %}
+                <p style="text-align:center;color:#888">Nenhum comentário ainda. Seja o primeiro a deixar o seu!</p>
             {% endif %}
-        </div>
-    </div>
+        </section>
+    </main>
 
     {% include 'core/includes/footer_telix.html' %}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-    function updateCount(textarea) {
-        const maxLength = textarea.getAttribute('maxlength');
-        const currentLength = textarea.value.length;
-        const remaining = maxLength - currentLength;
-        document.getElementById('char-count').innerText =
-            remaining + " caracteres restantes";
-    }
-
-    function getFormAvaliacao() {
-        let form = document.getElementById('formAvaliacao');
-        if (!form) {
-            form = document.querySelector('form[action*="salvar-avaliacao"]');
-        }
-        if (!form) {
-            console.error('Form de avaliação não encontrado no DOM');
-        }
-        return form;
-    }
-
-    function handleSubmit() {
-        const comentario = document.getElementById('comentario').value.trim();
-        const nomeHidden = document.getElementById('usuario_nome').value.trim();
-
-        if (!comentario) {
-            alert("Por favor, escreva seu comentário antes de enviar.");
-            return;
+        function updateCount(textarea){
+            const maxLength = Number(textarea.getAttribute('maxlength')) || 400;
+            const remaining = maxLength - textarea.value.length;
+            document.getElementById('char-count').innerText = remaining + " caracteres restantes";
         }
 
-        const form = getFormAvaliacao();
-        if (!form) return;
-
-        if (nomeHidden) {
-            form.submit();
-            return;
+        function getFormAvaliacao(){
+            return document.getElementById('formAvaliacao');
         }
 
-        const modalElement = document.getElementById('modalNome');
-        const modal = new bootstrap.Modal(modalElement);
-        modal.show();
-    }
+        function handleSubmit(){
+            const comentario = document.getElementById('comentario').value.trim();
+            const nomeHidden = document.getElementById('usuario_nome').value.trim();
 
-    function salvarNomeEEnviar() {
-        const nomeModal = document.getElementById('nome_modal').value.trim();
-        if (!nomeModal) {
-            alert("Por favor, informe seu nome ou apelido.");
-            return;
+            if(!comentario){
+                alert("Por favor, escreva seu comentário antes de enviar.");
+                return;
+            }
+
+            const form = getFormAvaliacao();
+            if(!form) return;
+
+            if(nomeHidden){
+                form.submit();
+                return;
+            }
+
+            const modal = new bootstrap.Modal(document.getElementById('modalNome'));
+            modal.show();
         }
 
-        document.getElementById('usuario_nome').value = nomeModal;
+        function salvarNomeEEnviar(){
+            const nomeModal = document.getElementById('nome_modal').value.trim();
 
-        const form = getFormAvaliacao();
-        if (!form) return;
+            if(!nomeModal){
+                alert("Por favor, informe seu nome ou apelido.");
+                return;
+            }
 
-        form.submit();
-    }
+            document.getElementById('usuario_nome').value = nomeModal;
 
-   
+            const form = getFormAvaliacao();
+            if(form) form.submit();
+        }
     </script>
 </body>
 </html>

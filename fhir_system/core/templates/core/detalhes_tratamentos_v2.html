@@ -1,5 +1,4 @@
-{% load static l10n %}
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -15,876 +14,3698 @@
           c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
           t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
           y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-
           clarity('set', 'page_url', window.location.href);
-
-          window.addEventListener('popstate', function() {
-              clarity('set', 'page_url', window.location.href);
-          });
-
-          window.addEventListener('hashchange', function() {
-              clarity('set', 'page_url', window.location.href);
-          });
+          window.addEventListener('popstate', function(){ clarity('set','page_url',window.location.href); });
+          window.addEventListener('hashchange', function(){ clarity('set','page_url',window.location.href); });
       })(window, document, "clarity", "script", "ubap1t6puk");
     </script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #ffffff;
-            color: #333;
+<style>
+        :root{
+            --blue:#0193ff;
+            --blue-dark:#0076d7;
+            --blue-soft:#eaf6ff;
+            --text:#111827;
+            --muted:#8b8b8b;
+            --border:#e5e7eb;
+            --danger:#ff4148;
+            --green:#4ac94d;
+            --page:980px;
         }
 
-        .topo-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        *{box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{
+            margin:0;
+            background:#fff;
+            color:var(--text);
+            font-family:Inter, Arial, Helvetica, sans-serif;
+            font-size:14px;
+        }
+        a{color:inherit}
+        img{max-width:100%}
+
+        .page-wrap{
+            width:min(calc(100% - 32px), var(--page));
+            margin:0 auto;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: auto;
-            padding: 20px;
-        }
+        /* HEADER */
+ /* =========================================================
+   HEADER - FIGMA
+   ========================================================= */
 
-        .tratamento-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            margin-bottom: 50px;
-        }
+.top-strip{
+    width:100%;
+    height:50px;
 
-        .tratamento-info {
-            max-width: 50%;
-        }
+    background:#0193FF;
+    color:#FFFFFF;
 
-        .tratamento-info h2 {
-            color: #007bff;
-            font-weight: bold;
-            font-size: 15px;
-        }
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-        .tratamento-info h3 {
-            font-size: 28px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .tratamento-info p {
-            font-size: 16px;
-            line-height: 1.5;
-        }
-
-        .table-container {
-            margin-top: 30px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            border-top: px solid #ddd;
-            padding-top: 40px;
-        }
-
-        .table {
-            width: 95%;
-            max-width: 1300px;
-            border-collapse: collapse;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .table th {
-            background: #ffffff;
-            color: #0c0101;
-            text-align: center;
-            padding: 12px;
-            font-size: 16px;
-            text-transform: uppercase;
-            font-weight: bold;
-            border: 6px solid #f1f1f1;
-        }
-
-        .table td {
-            text-align: center;
-            padding: 12px;
-            font-size: 15px;
-            border: 6px solid #f1f1f1;
-        }
-
-        .yes {
-            background-color: #007bff;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-weight: bold;
-            display: inline-block;
-            min-width: 50px;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-        }
-
-        .no {
-            background-color: #dc3545;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-weight: bold;
-            display: inline-block;
-            min-width: 50px;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-        }
-
-        .eficacia-titulo {
-            font-weight: 700;
-            font-size: 32px;
-            text-align: center;
-            margin-bottom: 12px;
-        }
-
-        .eficacia-section {
-            max-width: 720px;
-            margin: 20px auto 0;
-            text-align: center;
-            font-family: Arial, sans-serif;
-        }
-
-        .eficacia-item {
-            margin-bottom: 24px;
-        }
-
-        .efficacy-bar-wrapper {
-            display: flex;
-            justify-content: center;
-        }
-
-        .efficacy-bar {
-            position: relative;
-            width: 70%;
-            max-width: 400px;
-            height: 50px;
-            border-radius: 3px;
-            overflow: hidden;
-            background: rgba(0, 148, 255, 0.3);
-        }
-
-        .efficacy-bar-fill {
-            height: 100%;
-            background: #0094FF;
-            border-radius: 3px 0 0 3px;
-        }
-
-        .eficacia-caption {
-            margin-top: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 15px;
-            color: #444;
-        }
-
-        .eficacia-caption-icon img {
-            width: 52px;
-            height: 36px;
-            object-fit: contain;
-        }
-
-        .eficacia-caption-text-strong {
-            color: #6a6a6a;
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .eficacia-caption-range-min {
-            font-size: 20px;
-            color: #cbcbcb;
-        }
-
-        .eficacia-caption-range-max {
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .quando-usar-texto {
-            max-width: 420px;
-            margin: 0 auto;
-            text-align: center;
-            font-size: 16px;
-            color: #000;
-        }
-
-        .preco-link {
-            color: #000;
-            font-weight: 700;
-            text-decoration: underline;
-            text-underline-offset: 2px;
-        }
-
-        .preco-desc {
-            color: #000;
-            font-size: 0.95rem;
-        }
-
-        .contraindications-section {
-            margin-top: 80px;
-            padding-top: 60px;
-        }
-
-        .zoom-img {
-            transition: none !important;
-            transform: none !important;
-        }
-
-        .comentarios-wrapper {
-            max-width: 800px;
-            margin: 50px auto 0;
-            text-align: center;
-            padding: 0 15px;
-            box-sizing: border-box;
-        }
-
-        .comentarios-lista {
-            max-height: 400px;
-            overflow-y: auto;
-            padding-right: 10px;
-            margin: 0 auto;
-            width: 100%;
-            max-width: 750px;
-        }
-
-        .comentario-card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 10px auto;
-            background-color: #f9f9f9;
-            text-align: left;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .comentario-card:hover {
-            background-color: #f0f8ff;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .contra-indicado-title {
-    font-size: 30px;
-    font-weight: 400;
-    color: #222;
-    margin-bottom: 20px;
+    font-family:Inter, Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:600;
+    font-size:15px;
+    line-height:27px;
 }
 
-.reacao-card {
-    background: #fff;
-    border: 1px solid #d9d9d9;
-    border-radius: 6px;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+/* área branca do header */
+.site-header{
+    width:100%;
+    height:142px;
+    background:#FFFFFF;
+
+    /* IMPORTANTE:
+       Figma não possui linha azul abaixo do header */
+    border:0;
+    border-bottom:0;
 }
 
-.reacao-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+/*
+   O Figma trabalha com uma margem central de 980px.
+   Mantemos o page-wrap para não quebrar o restante da página.
+*/
+.site-header-inner{
+    width:min(calc(100% - 32px), 980px);
+    height:142px;
+    min-height:142px;
+    margin:0 auto;
+
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+
+    position:relative;
 }
 
-.reacao-card-img {
+/* LOGOTIPO */
+
+.site-logo{
+    position:absolute;
+    left:0;
+    top:9px;
+
+    width:220px;
+    height:100px;
+
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+
+    background:transparent !important;
+    border:none !important;
+    box-shadow:none !important;
+    text-decoration:none;
+}
+
+.site-logo img{
+    width:180px;
+    max-width:none;
+    height:auto;
+    margin-left: -36px;
+
+    display:block;
+
+    background:transparent !important;
+    border:none !important;
+    box-shadow:none !important;
+}
+
+
+
+/* CADASTRE-SE / LOGIN */
+
+.header-account{
+    position:absolute;
+
+    /*
+       Figma:
+       width:260px
+       right:25px
+       top absoluto:61px
+
+       61 - 50px da faixa = 11px
+    */
+    width:260px;
+    height:40px;
+
+    right:25px;
+    top:11px;
+
+    display:flex;
+    align-items:center;
+
+    color:#010009;
+
+    font-family:Inter, Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:700;
+    font-size:15px;
+    line-height:27px;
+
+    text-decoration:none;
+}
+
+
+/* cadeado */
+.header-account .fa-lock{
+    position:absolute;
+    left:36px;
+    top:10px;
+
+    color:#0193FF;
+    font-size:18px;
+}
+
+
+/* usuário */
+.header-account .fa-circle-user{
+    position:absolute;
+    left:75px;
+    top:7px;
+
+    width:26px;
+    height:26px;
+
+    color:#0193FF;
+    font-size:26px;
+}
+
+
+/* texto */
+.header-account span{
+    position:absolute;
+
+    left:115px;
+    top:7px;
+
+    height:27px;
+
+    display:flex;
+    align-items:center;
+
+    white-space:nowrap;
+
+    color:#010009;
+
+    font-weight:700;
+    font-size:15px;
+    line-height:27px;
+}
+
+/* =========================================================
+   MENU DE ÂNCORAS DO TRATAMENTO
+   ========================================================= */
+
+.page-anchor-menu {
     width: 100%;
-    height: 210px;
-    object-fit: cover;
-    display: block;
+    height: 94px;
+
+    background: #FFFFFF;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* ADICIONAR */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+/* área central do menu */
+.page-anchor-menu-inner {
+    width: 957px;
+    max-width: calc(100% - 32px);
+    height: 70px;
+
+    display: flex;
+    align-items: stretch;
+
+    position: relative;
+
+    background: #FFFFFF;
+    border-radius: 7px 7px 0 0;
+
+    /* linha cinza inferior do Figma */
+    
 }
 
-.reacao-card-body {
-    padding: 14px 14px 16px;
-}
 
-.reacao-frequencia {
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 8px;
-}
+/* item */
+.page-anchor-link {
+    height: 70px;
 
-.reacao-grau {
-    color: #0d6efd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    padding: 0 20px;
+
+    color: #848383 !important;
+
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
     font-weight: 500;
-    text-transform: uppercase;
-    margin-left: 4px;
+    font-size: 13px;
+    line-height: 121%;
+
+    text-align: center;
+    text-decoration: none !important;
+
+    white-space: nowrap;
+
+    transition:
+        color .18s ease,
+        border-color .18s ease;
 }
 
-.reacao-titulo {
-    font-size: 18px;
-    font-weight: 700;
-    color: #000;
-    margin-bottom: 10px;
+
+/* larguras seguindo o Figma */
+.page-anchor-link:nth-child(1) {
+    width: 100px;
 }
 
-.reacao-descricao {
-    font-size: 14px;
-    line-height: 1.5;
-    color: #9a9a9a;
+.page-anchor-link:nth-child(2) {
+    width: 119px;
+}
+
+.page-anchor-link:nth-child(3) {
+    width: 120px;
+}
+
+.page-anchor-link:nth-child(4) {
+    width: 159px;
+}
+
+.page-anchor-link:nth-child(5) {
+    width: 100px;
+}
+
+.page-anchor-link:nth-child(6) {
+    width: 120px;
+}
+
+.page-anchor-link:nth-child(7) {
+    width: 119px;
+}
+
+.page-anchor-link:nth-child(8) {
+    width: 120px;
+}
+/* =========================================================
+   LINHA AZUL DO ITEM
+   A linha cinza fica somente no container
+   ========================================================= */
+/* =========================================================
+   LINHA INFERIOR DE CADA ITEM
+   ========================================================= */
+
+.page-anchor-link::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 5px;
+
+    background: #CCCCCC;
+
+    transition: background-color .18s ease;
+}
+
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+.page-anchor-link:hover {
+    color: #0193FF !important;
+    background: #EAF6FF;
+}
+
+.page-anchor-link:hover::after {
+    background: #0193FF;
+}
+
+
+/* =========================================================
+   ITEM ATIVO
+   ========================================================= */
+
+.page-anchor-link.active {
+    color: #0193FF !important;
+}
+
+.page-anchor-link.active::after {
+    background: #0193FF;
+}
+
+
+/* =========================================================
+   QUANDO O MOUSE ESTIVER EM OUTRO ITEM
+   esconder temporariamente o estado ativo
+   ========================================================= */
+
+.page-anchor-menu-inner:hover
+.page-anchor-link.active:not(:hover) {
+    color: #848383 !important;
+}
+
+.page-anchor-menu-inner:hover
+.page-anchor-link.active:not(:hover)::after {
+    background: #CCCCCC;
+}
+/* Quando existe hover no menu,
+   esconde visualmente o azul do item ativo */
+.page-anchor-menu-inner:hover .page-anchor-link.active:not(:hover) {
+    color: #848383 !important;
+}
+
+.page-anchor-menu-inner:hover .page-anchor-link.active:not(:hover)::after {
+    background: transparent;
+}
+
+#eficacia,
+#prazo-efeito,
+#seguranca,
+#contraindicacoes,
+#detalhes,
+#reacoes,
+#artigos,
+#avaliacoes {
+    scroll-margin-top: 100px;
+}
+
+/* =========================================================
+   RESPONSIVO
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .page-anchor-menu {
+        height: 74px;
+        overflow: hidden;
+    }
+
+    .page-anchor-menu-inner {
+        width: 100%;
+        max-width: 100%;
+        height: 70px;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        justify-content: flex-start;
+
+        scrollbar-width: none;
+    }
+
+    .page-anchor-menu-inner::-webkit-scrollbar {
+        display: none;
+    }
+
+    .page-anchor-link {
+        flex: 0 0 auto;
+    }
+}
+        /* HERO */
+        .hero{
+            display:grid;
+            grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);
+            gap:70px;
+            align-items:center;
+            padding:70px 0 32px;
+        }
+.hero h1{
+    margin:0 0 5px;
+    font-size:32px;
+    line-height:1.1;
+    font-weight:700;
+    color:#090909;
+}
+        .treatment-types{
+            color:var(--blue);
+            font-size:13px;
+            font-weight:700;
+            margin-bottom:22px;
+        }
+        .meta-row{
+            margin:0 0 10px;
+            line-height:1.45;
+        }
+        .meta-label{color:#a0a0a0}
+        .meta-value{color:#111;font-weight:700}
+        .hero-description{
+            margin:22px 0 0;
+            color:#374151;
+            font-size:14px;
+            line-height:1.55;
+            max-width:590px;
+        }
+        .hero-image{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            min-height:220px;
+        }
+        .hero-image img{
+            width:100%;
+            max-width:390px;
+            max-height:220px;
+            object-fit:contain;
+            object-position:center;
+        }/* =========================================================
+   MENU / RESUMO - FIGMA
+   ========================================================= */
+
+.treatment-menu{
+    width:100%;
+    background:#FFFFFF;
+    margin:0;
+    padding:0 0 55px;
+}
+
+.treatment-menu-grid{
+    width:980px;
+    max-width:calc(100% - 32px);
+    margin:0 auto;
+
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    grid-template-rows:109px 41px 109px;
+
+    column-gap:15px;
+    row-gap:12px;
+
+    position:relative;
+}
+
+
+/* =========================================================
+   POSICIONAMENTO CORRETO DOS CARDS DO MENU
+   ========================================================= */
+
+/* =========================================================
+   POSICIONAMENTO CORRETO DOS CARDS DO MENU
+   ========================================================= */
+
+/* Eficácia */
+.treatment-menu-grid > :nth-child(1){
+    grid-column:1;
+    grid-row:1;
+}
+
+/* Segurança */
+.treatment-menu-grid > :nth-child(2){
+    grid-column:2;
+    grid-row:1;
+}
+
+/* Artigos científicos */
+.treatment-menu-grid > :nth-child(3){
+    grid-column:3;
+    grid-row:2;
+}
+
+/* Genéricos e similares */
+.treatment-menu-grid > :nth-child(4){
+    grid-column:1;
+    grid-row:2;
+}
+
+/* Experiências de uso */
+.treatment-menu-grid > :nth-child(5){
+    grid-column:2;
+    grid-row:2;
+}
+
+/* Contraindicações */
+.treatment-menu-grid > :nth-child(6){
+    grid-column:3;
+    grid-row:1;
+}
+
+/* Custo */
+.treatment-menu-grid > :nth-child(7){
+    grid-column:1;
+    grid-row:3;
+}
+
+/* Risco de reações adversas */
+.treatment-menu-grid > :nth-child(8){
+    grid-column:2;
+    grid-row:3;
+}
+/* =========================================================
+   CARDS AZUIS
+   ========================================================= */
+
+.menu-card{
+    width:100%;
+    height:109px;
+
+    box-sizing:border-box;
+    position:relative;
+
+    border-radius:10px;
+    overflow:hidden;
+
+    font-family:Inter, Arial, Helvetica, sans-serif;
+    text-decoration:none;
+}
+
+
+/* ESTADO NORMAL */
+
+.menu-card-blue{
+    background:#0193FF;
+    border:1px solid #0193FF;
+    color:#FFFFFF;
+
+    transition:
+        background-color .18s ease,
+        border-color .18s ease,
+        color .18s ease;
+}
+
+
+/* =========================================================
+   HOVER DOS CARDS
+   azul -> branco
+   ========================================================= */
+
+.menu-card-blue:hover,
+.menu-card-blue:focus{
+    background:#FFFFFF;
+    border:1px solid #0193FF;
+    color:#0193FF;
+    text-decoration:none;
+}
+
+
+/* título */
+
+.menu-card-blue:hover .menu-card-heading,
+.menu-card-blue:focus .menu-card-heading{
+    color:#0193FF;
+}
+
+
+/* conteúdo inferior */
+
+.menu-card-blue:hover .menu-card-bottom,
+.menu-card-blue:focus .menu-card-bottom{
+    color:#0193FF;
+}
+
+
+/* textos internos */
+
+.menu-card-blue:hover .menu-card-heading span,
+.menu-card-blue:hover .menu-card-bottom span,
+.menu-card-blue:hover .menu-card-bottom strong,
+.menu-card-blue:focus .menu-card-heading span,
+.menu-card-blue:focus .menu-card-bottom span,
+.menu-card-blue:focus .menu-card-bottom strong{
+    color:#0193FF;
+}
+
+/* PRAZO PARA EFEITO ABAIXO DAS EVIDÊNCIAS */
+
+.effect-time-section{
+    width:100%;
+    padding:14px 0 0;
+}
+
+/* =========================================================
+   PRAZO PARA EFEITO - ABAIXO DAS EVIDÊNCIAS
+   ========================================================= */
+
+.effect-time-section{
+    width:100%;
+    padding:22px 0 0;
+}
+
+.effect-time{
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-size:14px;
+    line-height:20px;
+}
+
+.effect-time-icon{
+    width:24px;
+    height:24px;
+
+    flex:0 0 24px;
+
+    display:block;
+    object-fit:contain;
+}
+
+.effect-time-label{
+    color:#A3A2A2;
+    font-weight:400;
+    font-size:14px;
+    line-height:20px;
+}
+
+.effect-time-value{
+    color:#111111;
+    font-weight:600;
+    font-size:14px;
+    line-height:20px;
+}
+/* =========================================================
+   ÍCONES PNG
+   ========================================================= */
+
+.menu-icon{
+    width:30px;
+    height:30px;
+
+    flex:0 0 30px;
+
+    display:block;
+    object-fit:contain;
+    object-position:center;
+
+    margin:0;
+    padding:0;
+
+    transition:filter .18s ease;
+}
+
+
+/*
+   IMPORTANTE:
+
+   Como os PNGs que você colocou já são brancos,
+   precisamos transformá-los em azul quando o card
+   ficar branco.
+
+   Esse filtro transforma o branco aproximadamente
+   no azul #0193FF.
+*/
+
+.menu-card-blue:hover .menu-icon,
+.menu-card-blue:focus .menu-icon{
+    filter:
+        brightness(0)
+        saturate(100%)
+        invert(42%)
+        sepia(99%)
+        saturate(1897%)
+        hue-rotate(178deg)
+        brightness(101%)
+        contrast(105%);
+}
+
+
+/* =========================================================
+   CABEÇALHO
+   ========================================================= */
+.menu-card-heading{
+    position:absolute;
+
+    left:20px;
+    top:24px;
+
+    display:flex;
+    align-items:center;
+    gap:17px;
+
+    color:#FFFFFF;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:500;
+    font-size:20px;
+    line-height:24px;
+
+    transition:color .18s ease;
+}
+
+.menu-card-heading span{
+    margin:0;
+    padding:0;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:500;
+    font-size:20px;
+    line-height:24px;
+
+    color:inherit;
+}
+
+
+/* =========================================================
+   PARTE INFERIOR
+   ========================================================= */
+.menu-card-bottom{
+    position:absolute;
+
+    left:20px;
+    top:72px;
+
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+
+    color:#FFFFFF;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:600;
+    font-size:16px;
+    line-height:19px;
+
+    transition:color .18s ease;
+}
+
+.menu-card-bottom strong,
+.menu-card-bottom span{
+    margin:0;
+    padding:0;
+
+    color:inherit;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:600;
+    font-size:16px;
+    line-height:19px;
+}
+/* =========================================================
+   EFICÁCIA
+   ========================================================= */
+
+.menu-efficacy-bottom{
+    top:63px;
+    align-items:center;
+    gap:8px;
+}
+
+
+/* 80,22% */
+
+.menu-efficacy-bottom strong{
+    width:59px;
+    min-width:59px;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:600;
+    font-size:16px;
+    line-height:19px;
+
+    display:flex;
+    align-items:center;
+
+    text-align:center;
+}
+
+
+/* Redução temporária de sintomas */
+
+.menu-efficacy-bottom span{
+    width:169px;
+    max-width:169px;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:600;
+    font-size:16px;
+    line-height:19px;
+
+    display:flex;
+    align-items:center;
+
+    text-align:left;
+}
+
+/* =========================================================
+   BANNER ATENDIMENTO EXCLUSIVO
+   ========================================================= */
+
+.exclusive-service-banner {
+    width: 903px;
+    max-width: calc(100% - 32px);
+
+    margin: 55px auto;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+.exclusive-service-banner img {
+    width: 100%;
+    height: auto;
+
+    display: block;
+    object-fit: cover;
+}
+
+
+/* =========================================================
+   ÁREA CLICÁVEL DO BOTÃO ASSINAR
+   ========================================================= */
+
+.exclusive-service-subscribe {
+    position: absolute;
+
+    width: 167px;
+    height: 34px;
+
+    right: 10px;
+    bottom: 31px;
+
+    z-index: 5;
+
+    cursor: pointer;
+}
+
+/* =========================================================
+   REAÇÕES ADVERSAS
+   ========================================================= */
+
+.menu-reaction-heading{
+    top:12px;
+    align-items:center;
+}
+
+.menu-reaction-heading span{
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:500;
+    font-size:20px;
+    line-height:24px;
+}
+
+.menu-reaction-heading + .menu-card-bottom{
+    top:72px;
+}
+/* =========================================================
+   LINKS CENTRAIS
+   Artigos científicos
+   Genéricos e similares
+   Experiências de uso
+   ========================================================= */
+
+.menu-middle-link,
+.menu-middle-link:link,
+.menu-middle-link:visited {
+
+    width: 100%;
+    height: 41px;
+
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     margin: 0;
+    padding: 0;
+
+    background: #FFFFFF;
+
+    border: 1px solid #0193FF;
+    border-radius: 10px;
+
+    color: #0193FF !important;
+
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+
+    text-align: center;
+    text-decoration: none !important;
+
+    cursor: pointer;
+
+    transition:
+        background-color .18s ease,
+        color .18s ease,
+        border-color .18s ease;
 }
 
-@media (max-width: 768px) {
-    .reacao-card-img {
-        height: 180px;
+
+/* =========================================================
+   HOVER DOS LINKS CENTRAIS
+
+   branco -> azul
+   ========================================================= */
+
+.menu-middle-link:hover,
+.menu-middle-link:focus,
+.menu-middle-link:active {
+
+    background: #0193FF !important;
+
+    border-color: #0193FF !important;
+
+    color: #FFFFFF !important;
+
+    text-decoration: none !important;
+
+    outline: none;
+}
+/* =========================================================
+   RESPONSIVO DO MENU
+   ========================================================= */
+
+@media(max-width:900px){
+
+    .treatment-menu-grid{
+        width:calc(100% - 32px);
+        max-width:none;
+
+        grid-template-columns:repeat(3, minmax(0,1fr));
+
+        column-gap:10px;
+        row-gap:10px;
+    }
+
+    .menu-card-heading{
+        left:15px;
+        gap:10px;
+        font-size:17px;
+    }
+
+    .menu-card-bottom{
+        left:15px;
+        font-size:14px;
+    }
+
+    .menu-middle-link{
+        font-size:16px;
+    }
+
+    .menu-icon{
+        width:27px;
+        height:27px;
+        flex-basis:27px;
     }
 }
 
-        @media (max-width: 992px) {
-            .tratamento-container {
-                flex-direction: column;
-                text-align: center;
-            }
 
-            .tratamento-info,
-            .col-md-5 {
-                max-width: 100%;
-            }
+@media(max-width:640px){
+
+    .treatment-menu{
+        padding-bottom:35px;
+    }
+
+    .treatment-menu-grid{
+        width:calc(100% - 24px);
+
+        display:flex;
+        flex-direction:column;
+
+        gap:10px;
+    }
+
+    .menu-card{
+        height:109px;
+    }
+
+    .menu-middle-link{
+        height:41px;
+    }
+}
+
+        .summary-card.primary{
+            background:var(--blue);
+            color:#fff;
+        }
+        .summary-card i{
+            width:26px;
+            text-align:center;
+            font-size:22px;
+            margin-top:2px;
+        }
+        .summary-card-title{
+            display:block;
+            font-weight:700;
+            font-size:14px;
+            line-height:1.15;
+            margin-bottom:5px;
+        }
+        .summary-card-value{
+            display:block;
+            font-size:12px;
+            line-height:1.35;
+            opacity:.95;
         }
 
-        @media (max-width: 768px) {
-            .table {
-                width: 100%;
-            }
+        /* SECTIONS */
+        .section{padding:52px 0}
+        .section-title{
+            margin:0 0 8px;
+            font-size:25px;
+            line-height:1.2;
+            font-weight:800;
+            color:#090909;
+        }
+        .section-description{
+            margin:0 0 28px;
+            color:#4b5563;
+            line-height:1.5;
+            max-width:900px;
+        }
+/* =========================================================
+   EFICÁCIA - FIGMA
+   ========================================================= */
 
-            .table th,
-            .table td {
-                font-size: 14px;
-                padding: 10px;
-            }
+.efficacy-grid{
+    width:899px;
+    max-width:100%;
+    margin:0 auto;
 
-            .no,
-            .yes {
-                padding: 6px 10px;
-                font-size: 14px;
-            }
+    display:grid;
+    grid-template-columns:repeat(5, 138px);
+    justify-content:space-between;
+    align-items:start;
 
-            .adhesion-clock {
-                display: none !important;
-            }
+    gap:0;
+}
 
-            .tratamento-info h2 {
-                justify-content: center !important;
-                text-align: center !important;
-                width: 100%;
-            }
 
-            .tratamento-info h2 > span {
-                display: block;
-                text-align: center !important;
-                width: 100%;
-            }
+/* CARD BASE */
 
-            img {
-                border: none !important;
-                margin: 0 !important;
-                display: block !important;
-                border-radius: 0 !important;
-            }
+.eff-card{
+    position:relative;
 
-            .col-md-5,
-            .shadow-sm {
-                border: none !important;
-                outline: none !important;
-                box-shadow: none !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                border-radius: 0 !important;
-            }
+    width:138px;
+    height:215px;
+    min-height:215px;
+
+    box-sizing:border-box;
+
+    background:#FFFFFF;
+    border:1.85419px solid rgba(1,147,255,.50);
+    border-radius:9.27096px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    padding:18px 8px 16px;
+
+    text-align:center;
+
+    color:rgba(1,147,255,.50);
+}
+
+
+/* =========================================================
+   COM EVIDÊNCIA
+   ========================================================= */
+
+.eff-card.has-data{
+    background:#0193FF;
+    border-color:#0193FF;
+    color:#FFFFFF;
+}
+
+
+/* =========================================================
+   SEM EVIDÊNCIA
+   ========================================================= */
+
+.eff-card.no-data{
+    background:#FFFFFF;
+    border-color:rgba(1,147,255,.50);
+    color:rgba(1,147,255,.50);
+}
+
+
+/* =========================================================
+   CHECK VERDE
+   somente cards que possuem evidência
+   ========================================================= */
+
+.eff-check{
+    position:absolute;
+
+    width:26px;
+    height:26px;
+
+    right:-13px;
+    top:-13px;
+
+    border-radius:50%;
+
+    background:#4AC94D;
+    border:2px solid #FFFFFF;
+
+    color:#FFFFFF;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:14px;
+
+    z-index:2;
+}
+
+.eff-card.no-data .eff-check{
+    display:none;
+}
+
+
+/* =========================================================
+   ÍCONE
+   ========================================================= */
+
+.eff-icon-wrap{
+    height:38px;
+    width:100%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    margin-bottom:9px;
+}
+
+.eff-icon{
+    width:38px;
+    height:38px;
+
+    object-fit:contain;
+
+    margin:0;
+}
+
+
+/* imagens normais */
+.eff-card.has-data .eff-icon{
+    filter:brightness(0) invert(1);
+}
+.eff-card.has-data .eff-icon-active-custom{
+    filter:none;
+}
+
+/*
+   Cards sem dados:
+   deixa o ícone visualmente mais claro.
+*/
+.eff-card.no-data .eff-icon{
+    opacity:.50;
+}
+
+
+/* fallback Font Awesome */
+
+.eff-fallback-icon{
+    font-size:30px;
+    line-height:38px;
+}
+
+.eff-card.has-data .eff-fallback-icon{
+    color:#FFFFFF;
+}
+
+.eff-card.no-data .eff-fallback-icon{
+    color:rgba(1,147,255,.50);
+}
+
+
+/* =========================================================
+   NOME DO TIPO DE EFICÁCIA
+   ========================================================= */
+
+.eff-label{
+    width:124px;
+    min-height:51px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-family:Inter, Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:500;
+
+    font-size:13.9064px;
+    line-height:17px;
+
+    text-align:center;
+
+    color:inherit;
+}
+
+
+/* =========================================================
+   VALORES
+   ========================================================= */
+
+.eff-values{
+    width:100%;
+    margin-top:auto;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+
+/* "de 58,28%" */
+
+.eff-range{
+    margin:0;
+    padding:0;
+
+    font-family:Inter, Arial, Helvetica, sans-serif;
+    font-weight:500;
+
+    font-size:15px;
+    line-height:18px;
+
+    text-align:center;
+
+    color:rgba(255,255,255,.70);
+}
+
+
+/* "a 80,22%" */
+
+.eff-max{
+    margin-top:4px;
+
+    font-family:Inter, Arial, Helvetica, sans-serif;
+    font-weight:500;
+
+    font-size:20px;
+    line-height:24px;
+
+    text-align:center;
+
+    color:#FFFFFF;
+}
+.evidence-extra{
+    display:none;
+}
+
+/* =========================================================
+   BOTÃO VER MAIS EVIDÊNCIAS CIENTÍFICAS
+   ========================================================= */
+
+.evidence-load-more {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    padding: 22px 0 10px;
+}
+
+.evidence-load-more button {
+    box-sizing: border-box;
+
+    width: 294px;
+    height: 34px;
+
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #FFFFFF;
+
+    border: 1px solid #0193FF;
+    border-radius: 5px;
+
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 18px;
+
+    color: #0193FF;
+
+    cursor: pointer;
+
+    transition:
+        background-color .18s ease,
+        color .18s ease;
+}
+
+.evidence-load-more button:hover {
+    background: #0193FF;
+    color: #FFFFFF;
+}
+
+/* =========================================================
+   VALORES SEM EVIDÊNCIA
+   ========================================================= */
+
+.eff-card.no-data .eff-range{
+    color:#A3A2A2;
+}
+
+.eff-card.no-data .eff-max{
+    color:#0193FF;
+}
+
+
+/* =========================================================
+   RESPONSIVO
+   ========================================================= */
+
+@media(max-width:950px){
+
+    .efficacy-grid{
+        width:100%;
+        grid-template-columns:repeat(5,138px);
+        gap:20px;
+
+        justify-content:start;
+
+        overflow-x:auto;
+
+        padding:15px 15px 20px;
+    }
+
+    .eff-card{
+        flex:0 0 138px;
+    }
+}
+
+        /* EVIDENCES */
+        .evidence-heading{
+            margin-bottom:24px;
+            font-size:17px;
+            font-weight:700;
+        }
+        .evidence-heading a{color:var(--blue);text-decoration:none}
+        .evidence-shell{
+            border-radius:10px;
+            background:#fff;
+            box-shadow:0 2px 20px rgba(0,0,0,.13);
+            padding:10px 28px;
+        }
+        .evidence-item{
+            display:grid;
+            grid-template-columns:140px minmax(0,1fr) 280px;
+            gap:28px;
+            padding:34px 0;
+            border-bottom:2px solid #eee;
+        }
+        .evidence-item:last-child{border-bottom:0}
+        .evidence-logo{
+            min-height:130px;
+            display:flex;
+            align-items:flex-start;
+            justify-content:center;
+            padding-top:8px;
+        }
+
+        /* =========================================================
+   BANNER - OUTROS TRATAMENTOS / EVIDÊNCIAS
+   Desktop
+   ========================================================= */
+
+
+
+
+   /* =========================================================
+   BANNER WHATSAPP
+   ========================================================= */
+.whatsapp-share-banner {
+    width: 903px;
+    max-width: calc(100% - 32px);
+
+    margin: 38px auto 55px;
+
+    position: relative;
+    overflow: hidden;
+}
+
+.whatsapp-share-banner img {
+    width: 100%;
+    height: auto;
+
+    display: block;
+    object-fit: cover;
+}
+
+
+/* =========================================================
+   ÁREA CLICÁVEL - BOTÃO WHATSAPP
+   ========================================================= */
+
+.whatsapp-share-click {
+    position: absolute;
+
+    width: 167px;
+    height: 34px;
+
+    right: 10px;
+    bottom: 25px;
+
+    padding: 0;
+    margin: 0;
+
+    background: transparent;
+    border: none;
+    outline: none;
+
+    font-size: 0;
+    line-height: 0;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    z-index: 10;
+    cursor: pointer;
+}
+
+.whatsapp-share-click:focus,
+.whatsapp-share-click:active {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   BANNER ENTRE AS EVIDÊNCIAS - DESKTOP
+   ocupa toda a largura do evidence-shell
+   ========================================================= */
+
+.evidence-efficacy-banner {
+    width: calc(100% + 56px);
+    height: auto;
+
+    /* anula os 28px de padding de cada lado do evidence-shell */
+    margin-left: -28px;
+    margin-right: -28px;
+
+    display: block;
+    position: relative;
+
+    overflow: hidden;
+
+    text-decoration: none;
+}
+
+.evidence-efficacy-banner img {
+    width: 100%;
+    height: auto;
+
+    display: block;
+
+    object-fit: cover;
+}
+
+/* inicialmente somente desktop */
+@media (max-width: 768px) {
+    .evidence-efficacy-banner {
+        display: none;
+    }
+}
+        .evidence-logo img{
+            max-width:120px;
+            max-height:100px;
+            object-fit:contain;
+        }
+        .evidence-main p{margin:0 0 12px}
+        .evidence-label{font-weight:700;color:#777}
+        .evidence-primary{font-weight:700;color:#111}
+        .evidence-secondary{margin-left:82px!important}
+        .rigor{
+            display:inline-flex;
+            gap:4px;
+            margin-left:5px;
+            vertical-align:middle;
+        }
+        .rigor span{
+            width:21px;height:21px;
+            display:grid;place-items:center;
+            border:1px solid var(--blue);
+            border-radius:3px;
+            font-size:11px;
+            font-weight:700;
+            color:var(--blue);
+        }
+        .rigor span.active{background:var(--blue);color:#fff}
+        .evidence-authors{font-style:italic}
+        .evidence-reference{color:#555;font-size:12px}
+        .evidence-title{font-size:13px;line-height:1.45}
+        .evidence-link{
+            color:var(--blue);
+            text-decoration:underline;
+            word-break:break-all;
+            font-size:12px;
+        }
+        .evidence-description{
+            font-size:13px;
+            line-height:1.5;
+            color:#222;
+            padding-top:44px;
+        }
+        .empty-box{
+            padding:24px;
+            border:1px solid var(--border);
+            border-radius:8px;
+            color:#777;
+            text-align:center;
+        }
+
+        /* WHEN TO USE */
+        .when-use{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:70px;
+            padding:52px 0 36px;
+        }
+        .when-use-copy{
+            max-width:420px;
+            text-align:right;
+        }
+        .when-use-copy h2{
+            color:var(--blue);
+            font-size:18px;
+            margin:0 0 4px;
+            font-weight:700;
+        }
+        .when-use-copy p{margin:0;line-height:1.5}
+        .when-use img{width:150px}
+
+/* =========================================================
+   SAFETY TABLE
+   ========================================================= */
+
+.safety-table-wrap {
+    overflow-x: auto;
+}
+
+.safety-table {
+    width: 100%;
+    border-collapse: collapse !important;
+    border: 4px solid #efefef !important;
+    font-size: 12px;
+}
+
+.safety-table th,
+.safety-table td {
+    border: 4px solid #efefef !important;
+    padding: 12px 14px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Cabeçalho */
+.safety-table th {
+    font-weight: 700;
+}
+        .pill{
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            min-width:82px;
+            height:25px;
+            border-radius:7px;
+            color:#fff;
+            font-weight:800;
+            font-size:11px;
+        }
+        .pill.yes{background:var(--blue)}
+        .pill.no{background:var(--danger)}
+
+        /* CONTRA / ADVERSE */
+        .cards-title{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:20px;
+            margin-bottom:20px;
+        }
+        .cards-title h2{margin:0;font-size:24px;font-weight:600}
+        .cards-title img{width:42px}
+        .cards-grid{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:22px;
+        }
+        .info-card{
+            border:1px solid #ddd;
+            border-radius:7px;
+            overflow:hidden;
+            background:#fff;
+            min-width:0;
+        }
+        .info-card img{
+            width:100%;
+            height:175px;
+            object-fit:cover;
+            display:block;
+        }
+        .info-card-body{padding:14px}
+        .info-card h3{
+            margin:0 0 8px;
+            font-size:15px;
+            font-weight:700;
+        }
+        .info-card p{
+            margin:0;
+            color:#969696;
+            font-size:12px;
+            line-height:1.45;
+        }
+        .frequency{
+            margin-bottom:7px!important;
+            color:#333!important;
+        }
+        .frequency strong{color:var(--blue);text-transform:uppercase}
+
+/* =========================================================
+   DETALHES / LINKS / ALERTA - FIGMA
+   ========================================================= */
+
+.details-section{
+    width:100%;
+    background:#FFFFFF;
+    padding:34px 0 69px;
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+}
+
+.details-section .details-container{
+    width:900px;
+    max-width:calc(100% - 32px);
+    margin:0 auto;
+}
+
+
+/* =========================================================
+   LINHA SUPERIOR: DETALHES + LINKS
+   ========================================================= */
+
+.details-top{
+    display:grid;
+    grid-template-columns:459px 443px;
+    align-items:start;
+
+    margin-bottom:69px;
+}
+
+
+/* =========================================================
+   TÍTULOS
+   ========================================================= */
+
+.details-title{
+    margin:0 0 16px;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:700;
+    font-size:20px;
+    line-height:24px;
+
+    color:#000000;
+}
+
+
+/* =========================================================
+   DETALHES / PREÇO
+   ========================================================= */
+
+.details-price{
+    display:flex;
+    align-items:flex-start;
+
+    min-height:55px;
+}
+
+/* ÍCONE DO CIFRÃO */
+.details-price-icon{
+    width:26px;
+    height:30px;
+    flex:0 0 26px;
+
+    display:block;
+    object-fit:contain;
+    object-position:center;
+
+    margin-top:0;
+    margin-right:8px;
+}
+
+
+.details-price-content{
+    flex:1;
+}
+
+.details-price-line{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+
+    min-height:24px;
+
+    font-size:16px;
+    line-height:24px;
+}
+
+.details-price-label{
+    color:#999999;
+    font-weight:400;
+}
+
+.details-price-value{
+    margin-left:4px;
+
+    color:#000000;
+    font-weight:700;
+}
+
+.details-price-value a{
+    color:#000000;
+    font-weight:700;
+    text-decoration:underline;
+}
+
+.details-price-description{
+    margin-top:5px;
+
+    color:#000000;
+
+    font-size:15.2px;
+    line-height:23px;
+    font-weight:700;
+}
+
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+.details-links{
+    width:443px;
+}
+
+.details-links-grid{
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    column-gap:30px;
+    row-gap:8px;
+}
+
+.details-link{
+    display:flex;
+    align-items:center;
+
+    min-height:24px;
+
+    color:#6C757D;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-size:16px;
+    line-height:24px;
+    font-weight:700;
+
+    text-decoration:none;
+}
+
+.details-link:hover{
+    color:#0193FF;
+}
+
+.details-link-primary{
+    color:#0193FF;
+}
+
+
+/* =========================================================
+   ALERTA
+   ========================================================= */
+
+.details-alert{
+    box-sizing:border-box;
+
+    width:900px;
+    max-width:100%;
+
+    padding:20px;
+
+    background:#FFFFFF;
+    border:1px solid #E0E0E0;
+    border-radius:5px;
+}
+
+.details-alert-header{
+    display:flex;
+    align-items:center;
+
+    min-height:24px;
+
+    margin-bottom:2px;
+}
+
+.details-alert-icon{
+    width:25px;
+    height:22px;
+    flex:0 0 25px;
+
+    display:block;
+    object-fit:contain;
+    object-position:center;
+
+    margin:1px 10px 0 0;
+}
+
+.details-alert-title{
+    color:#000000;
+
+    font-size:16px;
+    line-height:24px;
+    font-weight:700;
+}
+
+.details-alert-text{
+    max-width:828px;
+
+    padding-left:35px;
+
+    color:#212529;
+
+    font-size:16px;
+    line-height:24px;
+    font-weight:400;
+}/* =========================================================
+   FOOTER - DESKTOP
+   ========================================================= */
+
+.site-footer{
+    width:100%;
+    background:#FFFFFF;
+    border-top:0;
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+}
+
+
+/* CONTEÚDO PRINCIPAL */
+
+.footer-details{
+    width:982px;
+    max-width:calc(100% - 32px);
+    min-height:286px;
+
+    margin:55px auto 45px;
+
+    display:grid;
+    grid-template-columns:239px 239px 236px;
+    column-gap:164px;
+
+    align-items:start;
+}
+
+
+/* =========================================================
+   PADRÃO DOS TÍTULOS
+   ========================================================= */
+
+.site-footer h3{
+    margin:0;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:700;
+    font-size:15px;
+    line-height:21px;
+
+    color:#010009;
+}
+
+
+/* =========================================================
+   LINKS / TEXTOS CINZA
+   ========================================================= */
+
+.footer-block > a,
+.footer-block > p,
+.footer-contact > a,
+.footer-contact > p,
+.footer-no-medication p{
+    display:block;
+
+    width:max-content;
+    max-width:100%;
+
+    margin:0 0 6px;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:500;
+    font-size:13px;
+    line-height:15px;
+    letter-spacing:.005em;
+
+    color:#8F8F93;
+
+    text-decoration:none;
+}
+
+
+/* Primeiro link depois dos títulos */
+
+.footer-block h3 + a,
+.footer-block h3 + p{
+    margin-top:14px;
+}
+
+
+/* =========================================================
+   COLUNA 1
+   ========================================================= */
+
+.footer-column-1{
+    width:239px;
+}
+
+.footer-scientific{
+    margin-top:64px;
+}
+
+.footer-share{
+    margin-top:29px;
+    margin-left:14px;
+}
+
+.footer-premium{
+    margin-top:28px;
+}
+
+
+/* COMPARTILHE / PLANO PREMIUM */
+
+.site-footer .footer-special{
+    display:block;
+
+    width:max-content;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:700;
+    font-size:15px;
+    line-height:18px;
+
+    color:#010009;
+
+    text-decoration:none;
+}
+
+.site-footer .footer-special:hover{
+    color:#0193FF;
+}
+
+
+/* =========================================================
+   COLUNA 2
+   ========================================================= */
+
+.footer-column-2{
+    width:239px;
+}
+
+.footer-contact{
+    margin-top:39px;
+}
+
+.footer-contact h3{
+    margin-bottom:10px;
+}
+
+.footer-contact p,
+.footer-contact a{
+    margin-bottom:6px;
+}
+
+.footer-no-medication{
+    margin-top:42px;
+}
+
+.footer-no-medication h3{
+    margin-bottom:5px;
+}
+
+.footer-no-medication p{
+    width:220px;
+    margin:0;
+}
+
+
+/* =========================================================
+   COLUNA 3
+   ========================================================= */
+
+.footer-column-3{
+    width:236px;
+}
+
+.footer-column-3 .footer-block > a{
+    margin-bottom:8px;
+}
+
+.footer-specialists{
+    margin-top:38px;
+}
+
+.footer-specialists h3{
+    line-height:21px;
+}
+
+
+/* =========================================================
+   SELECIONE A DOENÇA
+   ========================================================= */
+.footer-disease{
+    margin-top:28px;
+}
+
+.footer-disease-label{
+    width:194px;
+    height:18px;
+
+    margin:0 0 6px 0;
+
+    display:flex;
+    align-items:center;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:600;
+    font-size:15px;
+    line-height:18px;
+
+    color:#000000;
+}
+
+.footer-disease-select{
+    position:relative;
+    width:194px;
+}
+
+.footer-disease-button{
+    box-sizing:border-box;
+
+    width:194px;
+    height:40px;
+
+    padding:0;
+    position:relative;
+
+    display:block;
+
+    background:#0193FF;
+    border:0;
+    border-radius:5px;
+
+    cursor:pointer;
+}
+
+.footer-disease-button span:first-child{
+    position:absolute;
+
+    width:82px;
+    height:18px;
+
+    left:30px;
+    top:11px;
+
+    display:flex;
+    align-items:center;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:700;
+    font-size:15px;
+    line-height:18px;
+
+    color:#FFFFFF;
+    opacity:.5;
+}
+
+/* SETA */
+
+.footer-chevron{
+    width:11px;
+    height:11px;
+
+    border-right:3px solid #FFFFFF;
+    border-bottom:3px solid #FFFFFF;
+
+    transform:rotate(45deg) translateY(-2px);
+
+    opacity:1;
+}
+
+
+/* =========================================================
+   RODAPÉ INFERIOR / CNPJ
+   ========================================================= */
+/* =========================================================
+   FAIXA INFERIOR DO FOOTER - CNPJ
+   ========================================================= */
+
+.footer-bottom{
+    box-sizing: border-box;
+
+    width: 100%;
+    height: 65px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #FAFAFA;
+    border: 3px solid #E3E3E3;
+
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 16px;
+
+    color: #8F8F93;
+}
+
+.footer-disease-select{
+    position:relative;
+    width:194px;
+}
+
+.footer-disease-options{
+    display:none;
+
+    position:absolute;
+    left:0;
+    bottom:48px;
+
+    width:100%;
+    max-height:220px;
+    overflow-y:auto;
+
+    background:#FFFFFF;
+
+    border:1px solid #E3E3E3;
+    border-radius:5px;
+
+    box-shadow:0 4px 14px rgba(0,0,0,.12);
+
+    z-index:100;
+}
+
+.footer-disease-options.open{
+    display:block;
+}
+
+.site-footer .footer-disease-options a{
+    display:block;
+
+    padding:10px 14px;
+
+    font-family:'Inter', Arial, sans-serif;
+    font-size:13px;
+    font-weight:500;
+
+    color:#333333;
+
+    text-decoration:none;
+
+    transition:.15s ease;
+}
+
+.site-footer .footer-disease-options a:hover{
+    color:#0193FF;
+    background:#F5FAFF;
+}
+
+.footer-disease-button.open .footer-chevron{
+    transform:rotate(225deg) translateY(-2px);
+}
+/* =========================================================
+   RESPONSIVO
+   ========================================================= */
+
+@media(max-width:950px){
+
+    .details-top{
+        grid-template-columns:1fr;
+        gap:35px;
+
+        margin-bottom:45px;
+    }
+
+    .details-links{
+        width:100%;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .details-links-grid{
+        grid-template-columns:1fr;
+    }
+
+    .details-alert-text{
+        padding-left:0;
+        margin-top:10px;
+    }
+
+}
+
+        /* CTA + COMMENTS */
+/* =========================================================
+   BOTÃO - AGENDE SUA CONSULTA
+   ========================================================= */
+
+.consult-wrap{
+    width:100%;
+    max-width:none;
+    text-align:center;
+    padding:84px 0 35px;
+}
+
+.consult-btn{
+    box-sizing:border-box;
+
+    width:500px;
+    max-width:calc(100% - 32px);
+    height:51px;
+
+    margin:0 auto;
+    padding:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#0193FF;
+
+    border:2px solid #FFFFFF;
+    border-radius:5px;
+
+    color:#FFFFFF !important;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:400;
+    font-size:20px;
+    line-height:24px;
+
+    text-align:center;
+    text-decoration:none !important;
+}
+
+.consult-btn:hover,
+.consult-btn:focus{
+    background:#0193FF;
+    color:#FFFFFF !important;
+    text-decoration:none !important;
+}
+        .comments{max-width:820px;margin:0 auto;padding:25px 0 60px}
+        .comments-kicker{color:var(--blue);font-weight:700;margin-bottom:3px}
+        .comments h2{font-size:20px;font-weight:500;margin-bottom:12px}
+        .comments textarea{
+            width:100%;
+            min-height:100px;
+            resize:vertical;
+            border:1px solid #ccc;
+            border-radius:5px;
+            padding:12px;
+        }
+        .char-count{text-align:right;color:#777;font-size:11px}
+        .submit-wrap{text-align:center;margin:18px 0 35px}
+        .submit-btn{
+            border:0;border-radius:5px;background:var(--blue);color:#fff;
+            padding:9px 18px;font-weight:600;
+        }
+/* =========================================================
+   COMENTÁRIOS DOS USUÁRIOS / AVALIAÇÃO DOS PACIENTES
+   ========================================================= */
+
+.comments-title{
+    width:900px;
+    max-width:100%;
+
+    margin:0 auto 18px;
+
+    color:#000000;
+
+    font-family:Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:800;
+    font-size:31px;
+    line-height:31px;
+
+    text-align:left;
+}
+
+/* área que contém os comentários */
+.comments-list{
+    width:958px;
+    max-width:100%;
+    max-height:293px;
+
+    margin:0 auto;
+
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    padding:10px 29px;
+}
+
+/* card individual */
+.comment-card{
+    box-sizing:border-box;
+
+    width:900px;
+    max-width:100%;
+    min-height:273px;
+
+    margin:0 auto 18px;
+    padding:24px 16px 20px;
+
+    display:flex;
+    flex-direction:column;
+
+    background:#F9F9F9;
+
+    border:1px solid #DDDDDD;
+    box-shadow:0 2px 4px rgba(0,0,0,.10);
+    border-radius:8px;
+}
+
+/* texto da avaliação */
+.comment-card p{
+    margin:0 0 55px;
+
+    color:#333333;
+
+    font-family:Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:400;
+    font-size:16px;
+    line-height:26px;
+
+    white-space:pre-wrap;
+}
+
+/* nome do usuário */
+.comment-card h3{
+    margin:auto 0 8px;
+
+    color:#000000;
+
+    font-family:Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:700;
+    font-size:19.2px;
+    line-height:23px;
+}
+
+/* data */
+.comment-card small{
+    display:block;
+
+    color:#666666;
+
+    font-family:Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:400;
+    font-size:14.4px;
+    line-height:22px;
+}
+
+/* =========================================================
+   BOTÃO - VOLTAR PARA LISTA DE TRATAMENTOS
+   ========================================================= */
+
+.back-treatment-list {
+    width: 100%;
+    padding: 10px 0 70px;
+}
+
+.back-treatment-list-inner {
+    width: 900px;
+    max-width: calc(100% - 32px);
+    margin: 0 auto;
+}
+
+.back-treatment-list-btn {
+    width: 100%;
+    min-height: 54px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px 25px;
+
+    background: #0193FF;
+    border: 1px solid #0193FF;
+    border-radius: 5px;
+
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 500;
+
+    color: #FFFFFF !important;
+    text-align: center;
+    text-decoration: none !important;
+
+    transition: background-color .2s ease;
+}
+
+.back-treatment-list-btn:hover,
+.back-treatment-list-btn:focus {
+    background: #0076D7;
+    border-color: #0076D7;
+    color: #FFFFFF !important;
+    text-decoration: none !important;
+}
+
+@media (max-width: 640px) {
+    .back-treatment-list {
+        padding: 5px 0 45px;
+    }
+
+    .back-treatment-list-inner {
+        width: calc(100% - 24px);
+        max-width: none;
+    }
+
+    .back-treatment-list-btn {
+        min-height: 48px;
+        padding: 10px 15px;
+        font-size: 14px;
+        line-height: 19px;
+    }
+}
+
+        @media(max-width:900px){
+            .hero{grid-template-columns:1fr;gap:28px;padding-top:45px}
+            .hero-image{grid-row:1}
+            .summary-grid{grid-template-columns:repeat(2,1fr)}
+            .efficacy-grid{grid-template-columns:repeat(2,1fr);gap:16px}
+            .evidence-item{grid-template-columns:110px 1fr}
+            .evidence-description{grid-column:2;padding-top:0}
+            .cards-grid{grid-template-columns:repeat(2,1fr)}
+        }
+        @media(max-width:640px){
+            .page-wrap{width:min(calc(100% - 24px), var(--page))}
+            .top-strip{font-size:9px}
+            .site-header-inner{min-height:80px}
+            .site-logo img{width:90px}
+            .hero h1{font-size:27px}
+            .summary-grid{grid-template-columns:1fr}
+            .section{padding:36px 0}
+            .section-title{font-size:22px}
+            .efficacy-grid{grid-template-columns:1fr 1fr;gap:10px}
+            .eff-card{min-height:190px}
+            .evidence-shell{padding:0 16px}
+            .evidence-item{grid-template-columns:1fr;gap:12px}
+            .evidence-logo{min-height:auto;justify-content:flex-start}
+            .evidence-description{grid-column:1;padding:0}
+            .evidence-secondary{margin-left:0!important}
+            .when-use{flex-direction:column-reverse;gap:20px}
+            .when-use-copy{text-align:center}
+            .cards-grid{grid-template-columns:1fr}
+            .details-grid{grid-template-columns:1fr;gap:25px}
         }
     </style>
 </head>
+
 <body>
+    <!-- HEADER -->
+    <div class="top-strip">A plataforma do paciente bem informado</div>
 
-    <div class="topo-container">
-        <a href="https://www.telix.inf.br/">
-            <img src="{% static 'img/logo.png' %}" alt="Telix Logo" style="height: 210px;">
+    <header class="site-header">
+        <div class="page-wrap site-header-inner">
+            <a class="site-logo" href="https://www.telix.inf.br/">
+                <img src="{% static 'img/logotipo.png' %}" alt="Telix - contexto na saúde">
+            </a>
+
+            <a class="header-account" href="#">
+                <i class="fa-solid fa-lock"></i>
+                <i class="fa-solid fa-circle-user"></i>
+                <span>Cadastre-se/Login</span>
+            </a>
+        </div>
+    </header>
+
+
+    <!-- =========================================================
+     MENU DE NAVEGAÇÃO DA PÁGINA
+     ========================================================= -->
+<nav class="page-anchor-menu" aria-label="Navegação do tratamento">
+
+    <div class="page-anchor-menu-inner">
+
+        <a href="#eficacia" class="page-anchor-link">
+            Eficácia
         </a>
 
-        <div class="container">
-            <div class="tratamento-container" style="margin-bottom: 10px;">
-                <div class="tratamento-info">
-                    <h3 style="font-family: Arial, sans-serif; font-weight: bold; font-size: 40px; line-height: 1.2; color: #000;">
-                        <strong>{{ tratamento.nome }}</strong>
-                    </h3>
-
-                    <h2 style="color: #0094FF; display: flex; align-items: center; gap: 8px;">
-                        <span>
-                            {% for tipo in tratamento.tipo_tratamento.all %}
-                                {{ tipo.nome }}{% if not forloop.last %}, {% endif %}
-                            {% empty %}
-                                Nenhum tipo selecionado
-                            {% endfor %}
-                        </span>
-                    </h2>
-
-                    <p>
-                        <strong style="font-weight: normal; color: #000;">Fabricante:</strong>
-                        <span style="color: #B0B0B0;">{{ tratamento.fabricante }}</span>
-                    </p>
-                    <p>
-                        <strong style="color: #B0B0B0;">Princípio ativo:</strong>
-                        <span style="font-weight: bold; color: #000;">{{ tratamento.principio_ativo }}</span>
-                    </p>
-
-                    <p>{{ tratamento.descricao }}</p>
-                </div>
-
-                {% if tratamento.imagem_detalhes %}
-                <div class="col-md-5 ms-md-3 mt-4 mt-md-0 p-0">
-                    <img src="{{ tratamento.imagem_detalhes.url }}" alt="Imagem de Detalhes do Tratamento" class="img-fluid" style="width: 600px; height: 180px; object-fit: cover; object-position: top; border: none; margin: 0; border-radius: 0;">
-                </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
-    {% if prazo_efeito %}
-    <div class="prerequisite-section" style="display:flex;align-items:center;justify-content:center;margin-bottom:20px;margin-top:150px;">
-      <i class="fas fa-clock" style="font-size:30px;color:#0094FF;margin-right:10px;"></i>
-      <span style="font-size:18px;color:#808080;text-align:center;">
-        Prazo para efeito: <strong>{{ prazo_efeito }}</strong>
-      </span>
-    </div>
-    {% endif %}
-
-<p class="eficacia-titulo">
-  Eficácia no tratamento de {{ condicao.nome }}
-</p>
-
-<div class="eficacia-section">
-  <div class="eficacia-item">
-
-<div class="efficacy-bar-wrapper">
-  <div class="efficacy-bar">
-    <div
-      class="efficacy-bar-fill"
-      style="width: {{ eficacia_v2.max|unlocalize }}%;"
-    ></div>
-  </div>
-</div>
-
-    <div class="eficacia-caption">
-      <span class="eficacia-caption-icon">
-        <img
-          src="{% static eficacia_v2.icone %}"
-          alt="{{ eficacia_v2.nome }}"
-        >
-      </span>
-
-      <span class="eficacia-caption-text">
-        <span class="eficacia-caption-text-strong">
-          {{ eficacia_v2.nome }}
-        </span>
-
-        <span class="eficacia-caption-range-min">
-          {{ eficacia_v2.min_str }}
-        </span>
-
-        a
-
-        <span class="eficacia-caption-range-max">
-          {{ eficacia_v2.max_str }}%
-        </span>
-      </span>
-    </div>
-
-  </div>
-</div>
-
-    <div style="display: flex; justify-content: center; margin-top: 5px;">
-     <a href="{% url 'pesquisas_tratamento' condicao_slug=condicao_slug tratamento_slug=tratamento.slug %}{% if ef_filtro_slug %}?ef={{ ef_filtro_slug|urlencode }}{% endif %}"
-         style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 20px; font-size: 16px; color: #0094FF; border: 2px solid #0094FF; border-radius: 5px; text-decoration: none; width: auto;">
-          Veja as pesquisas
-          <img src="{% static 'img/seta.png' %}" alt="Seta" style="margin-left: 10px; width: 15px; height: 15px; vertical-align: middle;">
-      </a>
-    </div>
-
-    <div class="adhesion-section mt-5">
-      <div class="d-flex justify-content-center align-items-center flex-wrap">
-        <div style="padding-right: 20px; margin-top: 10px;">
-          <h2 style="color: #0094FF; font-size: 20px; margin-bottom: 2px; font-weight: 600; text-align: center;">
-            Quando usar?
-          </h2>
-          <p class="quando-usar-texto">
-            {{ tratamento.quando_usar }}
-          </p>
-        </div>
-
-        <div>
-          <img src="{% static 'img/relogio.png' %}"
-               alt="Relógio Adesão"
-               class="adhesion-clock"
-               style="width: 270px; height: auto;">
-        </div>
-      </div>
-    </div>
-
-    <div class="table-container">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>GRUPO</th>
-                    <th>INDICADO PARA</th>
-                    <th>MOTIVO</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Crianças menores de 12 anos</td>
-                    <td><span class="{% if tratamento.indicado_criancas == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_criancas }}</span></td>
-                    <td>{{ tratamento.motivo_criancas|default:"-" }}</td>
-                </tr>
-                <tr>
-                    <td>Adolescentes 12 a 17 anos</td>
-                    <td><span class="{% if tratamento.indicado_adolescentes == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_adolescentes }}</span></td>
-                    <td>{{ tratamento.motivo_adolescentes|default:"-" }}</td>
-                </tr>
-                <tr>
-                    <td>Idosos +65 anos</td>
-                    <td><span class="{% if tratamento.indicado_idosos == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_idosos }}</span></td>
-                    <td>{{ tratamento.motivo_idosos|default:"-" }}</td>
-                </tr>
-                <tr>
-                    <td>Adultos</td>
-                    <td><span class="{% if tratamento.indicado_adultos == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_adultos }}</span></td>
-                    <td>{{ tratamento.motivo_adultos|default:"-" }}</td>
-                </tr>
-                <tr>
-                    <td>Lactantes</td>
-                    <td><span class="{% if tratamento.indicado_lactantes == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_lactantes }}</span></td>
-                    <td>{{ tratamento.motivo_lactantes|default:"-" }}</td>
-                </tr>
-                <tr>
-                    <td>Gravidez</td>
-                    <td><span class="{% if tratamento.indicado_gravidez == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_gravidez }}</span></td>
-                    <td>{{ tratamento.motivo_gravidez|default:"-" }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="contraindications-section container mt-5">
-        <h2 class="contraindicado-title" style="display: flex; justify-content: space-between; align-items: center;">
-            <span style="font-size: 30px;">Contraindicado para</span>
-            <img src="{% static 'img/icone.png' %}" alt="Ícone Contraindicado" style="width: 80px; height: auto;">
-        </h2>
-    </div>
-
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-          {% for contraindicacao in tratamento.contraindicacoes.all %}
-            <div class="col-12 col-sm-6 col-md-4 mb-4 d-flex">
-              <div class="card shadow-sm w-100 h-100 d-flex flex-column">
-                {% if contraindicacao.imagem %}
-                  <img src="{{ contraindicacao.imagem.url }}" alt="{{ contraindicacao.descricao }}" class="card-img-top" style="height: 180px; object-fit: cover;">
-                {% else %}
-                  <img src="{% static 'img/default-medicamento.png' %}" alt="Imagem não disponível" class="card-img-top" style="height: 180px; object-fit: cover;">
-                {% endif %}
-                <div class="card-body d-flex flex-column justify-content-between text-start">
-                    <h6 class="card-title fw-bold" style="font-size: 1.1rem;">{{ contraindicacao.nome }}</h6>
-                    <p class="mb-0" style="color: #B0B0B0;">{{ contraindicacao.descricao }}</p>
-                </div>
-              </div>
-            </div>
-          {% empty %}
-            <p class="text-center">Não há contraindicações.</p>
-          {% endfor %}
-        </div>
-    </div>
-
-    <div class="container mt-4">
-        <div class="d-flex flex-wrap justify-content-center gap-5">
-            <div class="col-md-5 pe-md-4">
-                <h5 class="fw-bold mb-3" style="color: #000;">Detalhes</h5>
-                <ul class="list-unstyled mb-0">
-                    <li class="d-flex align-items-start mb-3">
-                        <img src="{% static 'img/cifrao.png' %}" alt="Ícone de custo" style="width: 26px; height: 30px; align-self: start; margin-top: 2px;" class="me-2">
-                        <div>
-                            <div>
-                                <span style="color:#999;">Valor do tratamento: </span>
-                                {% if tratamento.link_para_compra_de_tratamento %}
-                                    <a href="{{ tratamento.link_para_compra_de_tratamento }}" target="_blank" rel="noopener noreferrer" class="preco-link">
-                                        R${{ tratamento.custo_medicamento|floatformat:2 }}
-                                    </a>
-                                {% else %}
-                                    <span class="preco-link" style="text-decoration:none;">
-                                        R${{ tratamento.custo_medicamento|floatformat:2 }}
-                                    </span>
-                                {% endif %}
-                            </div>
-
-                            {% if tratamento.especificacao_do_custo %}
-                                <div class="preco-desc fw-bold">
-                                    ({{ tratamento.especificacao_do_custo }})
-                                </div>
-                            {% endif %}
-                        </div>
-                    </li>
-
-                    {% if tratamento.alertas %}
-                    <li class="d-flex align-items-start">
-                        <img src="{% static 'img/alerta.png' %}" alt="Ícone de alerta" style="width: 26px; height: 26px; align-self: start; margin-top: 2px;" class="me-2">
-                        <div>
-                            <span style="color: #999;">Alerta:</span>
-                            <span class="text-dark ms-1">{{ tratamento.alertas }}</span>
-                        </div>
-                    </li>
-                    {% endif %}
-                </ul>
-            </div>
-
-            <div class="col-md-5 ps-md-4">
-                <h5 class="fw-bold mb-3 text-dark">Links</h5>
-                <ul class="list-unstyled mb-0">
-                    {% if tratamento.opiniao_especialista %}
-                    <li class="fw-bold text-dark mb-2">
-                        <a href="{{ tratamento.opiniao_especialista }}" class="text-decoration-none text-dark">Opinião de especialista</a>
-                    </li>
-                    {% endif %}
-
-                    {% if tratamento.interacao_medicamentosa %}
-                    <li class="text-secondary fw-semibold mb-1">
-                        <a href="{{ tratamento.interacao_medicamentosa }}" class="text-decoration-none text-secondary fw-semibold">Interações medicamentosas</a>
-                    </li>
-                    {% endif %}
-
-                    {% if tratamento.genericos_similares %}
-                    <li class="text-secondary fw-semibold mb-1">
-                        <a href="{{ tratamento.genericos_similares }}" class="text-decoration-none text-secondary fw-semibold">Genéricos e similares</a>
-                    </li>
-                    {% endif %}
-
-                    {% if tratamento.prescricao_eletronica %}
-                    <li class="text-secondary fw-semibold">
-                        <a href="{{ tratamento.prescricao_eletronica }}" class="text-decoration-none text-secondary fw-semibold">Prescrição eletrônica</a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </div>
-
-   <div class="contraindications-section container mt-5">
-    <h2 class="contra-indicado-title">Reações Adversas</h2>
-</div>
-
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        {% for detalhe in detalhes_reacoes_adversas %}
-        <div class="col-12 col-sm-6 col-lg-4 mb-4 d-flex">
-            <div class="reacao-card w-100">
-                {% if detalhe.reacao_adversa.imagem %}
-                    <img 
-                        src="{{ detalhe.reacao_adversa.imagem.url }}" 
-                        alt="{{ detalhe.reacao_adversa.nome }}"
-                        class="reacao-card-img"
-                    >
-                {% else %}
-                    <img 
-                        src="{% static 'img/default-reacao.png' %}" 
-                        alt="Imagem não disponível"
-                        class="reacao-card-img"
-                    >
-                {% endif %}
-
-                <div class="reacao-card-body">
-                    <p class="reacao-frequencia">
-                        {% if detalhe.reacao_min and detalhe.reacao_max %}
-                            {{ detalhe.reacao_min }}% a {{ detalhe.reacao_max }}%
-                        {% else %}
-                            &lt; 0,01%
-                        {% endif %}
-
-                        {% if detalhe.grau_comunalidade %}
-                            <span class="reacao-grau">
-                                {{ detalhe.get_grau_comunalidade_display }}
-                            </span>
-                        {% endif %}
-                    </p>
-
-                    <h6 class="reacao-titulo">{{ detalhe.reacao_adversa.nome }}</h6>
-
-                    <p class="reacao-descricao">
-                        {{ detalhe.reacao_adversa.descricao }}
-                    </p>
-                </div>
-            </div>
-        </div>
-        {% empty %}
-        <p class="text-center">Nenhuma reação adversa encontrada.</p>
-        {% endfor %}
-    </div>
-</div>
-
-    <div style="width: 100%; display: flex; justify-content: center; margin: 40px 0 20px 0;">
-        <a href="https://cliente.doutorbeneficios.com/consumidor-1eemej6h"
-           style="display: block; width: 100%; max-width: 600px; padding: 12px 20px; background-color: #0094FF; color: #ffffff; text-align: center; text-decoration: none; font-size: 18px; font-weight: 700; border-radius: 4px; border: none; cursor: pointer;">
-            Agende sua consulta
+        <a href="#prazo-efeito" class="page-anchor-link">
+            Prazo para<br>efeito
         </a>
+
+        <a href="#seguranca" class="page-anchor-link">
+            Segurança<br>de uso
+        </a>
+
+        <a href="#contraindicacoes" class="page-anchor-link">
+            Contraindicações
+        </a>
+
+        <a href="#custo" class="page-anchor-link">
+            Custo
+        </a>
+
+        <a href="#reacoes" class="page-anchor-link">
+            Reações<br>adversas
+        </a>
+
+        <a href="#evidencias" class="page-anchor-link">
+            Artigos<br>científicos
+        </a>
+
+        <a href="#avaliacoes" class="page-anchor-link">
+            Avaliações
+        </a>
+
     </div>
 
-    <div class="comentarios-wrapper">
-        <label style="color: #0094FF; font-size: 1.2rem; font-weight: bold; text-align: left; display: block; margin-bottom: 5px;">
-            Compartilhe sua experiência
-        </label>
+</nav>
 
-        <h3 style="text-align: left; margin-bottom: 10px;">Você já utilizou este medicamento?</h3>
+    <main>
+        <!-- TRATAMENTO -->
+        <section class="page-wrap hero">
+            <div>
+                <h1>{{ tratamento.nome }}{% if tratamento.nome %}<sup style="font-size:12px">®</sup>{% endif %}</h1>
 
-        <form id="formAvaliacao" method="post" action="{% url 'salvar_avaliacao' tratamento.id %}">
-            {% csrf_token %}
-            <input type="hidden" id="usuario_nome" name="usuario_nome">
-
-            <textarea
-                id="comentario"
-                name="comentario"
-                placeholder="Deixe sua mensagem"
-                rows="4"
-                maxlength="400"
-                required
-                oninput="updateCount(this)"
-                style="width:100%; padding:12px; font-size:14px; box-sizing:border-box; border:1px solid #ccc; border-radius:6px; resize:vertical;"
-            ></textarea>
-
-            <div id="char-count" style="font-size:13px; color:#777; margin-top:4px; text-align:right;">
-                400 caracteres restantes
-            </div>
-
-            <div style="text-align:center; margin-top:20px;">
-                <button type="button" onclick="handleSubmit()"
-                        style="padding:10px 20px; background-color:#007bff; color:white; border:none; border-radius:6px; font-size:16px; cursor:pointer; font-weight:500; transition:background 0.3s;"
-                        onmouseover="this.style.backgroundColor='#0056b3'"
-                        onmouseout="this.style.backgroundColor='#007bff'">
-                    Enviar Avaliação
-                </button>
-            </div>
-        </form>
-
-        <div class="modal fade" id="modalNome" tabindex="-1" aria-labelledby="modalNomeLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="modalNomeLabel">Como você quer aparecer nos comentários?</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-              </div>
-              <div class="modal-body">
-                <input type="text" id="nome_modal" class="form-control" placeholder="Digite seu nome ou apelido">
-                <small class="text-muted">Esse nome será exibido publicamente junto ao seu comentário.</small>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="salvarNomeEEnviar()">
-                  Confirmar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-top: 50px; text-align: center;">
-            <h3 style="color: #007bff; font-size: 1.6rem; font-weight: bold;">
-                Comentários dos usuários:
-            </h3>
-
-            {% if avaliacoes %}
-                <div class="comentarios-lista">
-                    {% for avaliacao in avaliacoes %}
-                        <div class="comentario-card">
-                            <h4 style="color: #007bff; font-size: 1.2rem; font-weight: bold; margin-bottom: 10px;">
-                                {% if avaliacao.usuario_nome %}
-                                    {{ avaliacao.usuario_nome }}
-                                {% else %}
-                                    Usuário Anônimo
-                                {% endif %}
-                            </h4>
-
-                            <p style="font-size: 1rem; color: #333; margin: 0 0 5px 0; word-wrap: break-word; overflow-wrap: break-word; white-space: pre-wrap; text-align: justify; line-height: 1.6;">
-                                {{ avaliacao.comentario }}
-                            </p>
-
-                            <small style="color: #666; font-size: 0.9rem;">
-                                Publicado em {{ avaliacao.data|date:"d/m/Y H:i" }}
-                            </small>
-                        </div>
+                <div class="treatment-types">
+                    {% for tipo in tratamento.tipo_tratamento.all %}
+                        {{ tipo.nome }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        Tratamento
                     {% endfor %}
                 </div>
-            {% else %}
-                <p style="font-size: 1.2rem; color: #888;">
-                    Nenhum comentário ainda. Seja o primeiro a deixar o seu!
+
+                <p class="meta-row">
+                    <span class="meta-label">Informações sobre tratamento para:</span>
+                    <span class="meta-value">{{ condicao.nome }}</span>
                 </p>
-            {% endif %}
+
+                <p class="meta-row">
+                    <span class="meta-label">Fabricante:</span>
+                    <span class="meta-value">{{ tratamento.fabricante }}</span>
+                </p>
+
+                <p class="meta-row">
+                    <span class="meta-label">Princípio ativo:</span>
+                    <span class="meta-value">{{ tratamento.principio_ativo }}</span>
+                </p>
+
+                <div class="hero-description">{{ descricao_detalhe }}</div>
+            </div>
+
+            <div class="hero-image">
+                {% if tratamento.imagem_detalhes %}
+                    <img src="{{ tratamento.imagem_detalhes.url }}" alt="{{ tratamento.nome }}">
+                {% else %}
+                    <img src="{% static 'img/default-medicamento.png' %}" alt="Imagem não disponível">
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- EFICÁCIA -->
+        <section id="eficacia" class="section">
+            <div class="page-wrap">
+                <h2 class="section-title">Eficácia no tratamento de {{ condicao.nome|lower }}</h2>
+                <p class="section-description">
+                    De acordo com as pesquisas, as taxas mínimas e máximas de pacientes que apresentaram benefícios após iniciar o tratamento foram:
+                </p>
+
+            <div class="efficacy-grid">
+
+                {% for tipo_eficacia in eficacias_cards %}
+
+                    <div class="eff-card {% if tipo_eficacia.tem_dados %}has-data{% else %}no-data{% endif %}">
+
+                        {% if tipo_eficacia.tem_dados %}
+                            <span class="eff-check">
+                                <i class="fa-solid fa-check"></i>
+                            </span>
+                        {% endif %}
+
+                        <!-- ÍCONE -->
+            <!-- ÍCONE -->
+            <div class="eff-icon-wrap">
+
+                {% if tipo_eficacia.label == "Redução temporária dos sintomas" %}
+
+                    <img
+                        class="eff-icon eff-icon-active-custom"
+                        src="{% static 'img/reducao_temporaria_sintomas_ativo.png' %}"
+                        alt="Redução temporária dos sintomas"
+                    >
+
+                {% elif tipo_eficacia.icone %}
+
+                    <img
+                        class="eff-icon"
+                        src="{% static tipo_eficacia.icone %}"
+                        alt="{{ tipo_eficacia.label }}"
+                    >
+
+                {% else %}
+
+                    <i class="fa-solid fa-face-smile eff-fallback-icon"></i>
+
+                {% endif %}
+
+            </div>
+
+            <!-- NOME -->
+            <div class="eff-label">
+                {{ tipo_eficacia.label }}
+            </div>
+
+            <!-- VALORES -->
+            <div class="eff-values">
+
+                {% if tipo_eficacia.tem_dados %}
+
+                    <div class="eff-range">
+                        de {{ tipo_eficacia.min_str }}%
+                    </div>
+
+                    <div class="eff-max">
+                        a {{ tipo_eficacia.max_str }}%
+                    </div>
+
+                {% else %}
+
+                    <div class="eff-range">
+                        —
+                    </div>
+
+                    <div class="eff-max">
+                        —
+                    </div>
+
+                {% endif %}
+
+            </div>
+
         </div>
+
+    {% endfor %}
+
+</div>
+
+            </div>
+        </section>
+
+
+        <!-- EVIDÊNCIAS CLÍNICAS AGORA NA MESMA PÁGINA -->
+        <section id="evidencias" class="section">
+            <div class="page-wrap">
+                <div class="evidence-heading">
+                    Pesquisas sobre eficácia do tratamento:
+                    <a href="{% url 'pesquisas_tratamento' condicao.slug tratamento.slug %}{% if ef_filtro_slug %}?ef={{ ef_filtro_slug }}{% endif %}">
+                        {{ tratamento.nome }}
+                    </a>
+                    <div style="font-weight:400;color:#999;margin-top:2px">para: {{ condicao.nome }}</div>
+                </div>
+
+                {% if evidencias %}
+                    <div class="evidence-shell">
+                        {% for evidencia in evidencias %}
+                            <article
+                                class="evidence-item {% if forloop.counter > 5 %}evidence-extra{% endif %}"
+                            >
+                  
+                                <div class="evidence-logo">
+                                    {% if evidencia.imagem_estudo %}
+                                        <img src="{{ evidencia.imagem_estudo.url }}" alt="Imagem do estudo">
+                                    {% else %}
+                                        <span style="color:#aaa">Imagem não disponível</span>
+                                    {% endif %}
+                                </div>
+
+                                <div class="evidence-main">
+                                    {% with efics=evidencia.efics_ordenadas|default:evidencia.eficacia_por_evidencias.all %}
+                                        {% if efics and efics|length > 0 %}
+                                            <p>
+                                                <span class="evidence-label">Eficácia:</span>
+                                                <span class="evidence-primary">
+                                                    {{ efics.0.tipo_eficacia.tipo_eficacia }} – {{ efics.0.percentual_eficacia_calculado|floatformat:2 }}%
+                                                </span>
+                                            </p>
+
+                                            {% for ef in efics|slice:"1:" %}
+                                                <p class="evidence-secondary">
+                                                    {{ ef.tipo_eficacia.tipo_eficacia }} – {{ ef.percentual_eficacia_calculado|floatformat:2 }}%
+                                                </p>
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endwith %}
+
+                                    <p>
+                                        <span class="evidence-label">Rigor da pesquisa:</span>
+                                        <span class="rigor">
+                                            {% with rigor_value=evidencia.rigor_da_pesquisa %}
+                                                {% for i in "1234567" %}
+                                                    <span class="{% if i|add:'0' <= rigor_value %}active{% endif %}">{{ i }}</span>
+                                                {% endfor %}
+                                            {% endwith %}
+                                        </span>
+                                    </p>
+
+                                    <p><span class="evidence-label">Quantidade de participantes:</span> <strong>{{ evidencia.numero_participantes }}</strong></p>
+                                    <p><span class="evidence-label">Data:</span> <strong>{{ evidencia.data_publicacao|date:"m/Y" }}</strong></p>
+
+                                    <p>
+                                        <span class="evidence-label">País(es):</span>
+                                        {% with qs=evidencia.paises.all %}
+                                            {% if qs %}
+                                                <strong>
+                                                    {% for p in qs|slice:":3" %}
+                                                        {{ p.get_nome_display|default:p.nome }}{% if not forloop.last %}, {% endif %}
+                                                    {% endfor %}
+                                                    {% if qs|length > 3 %}… (+{{ qs|length|add:"-3" }}){% endif %}
+                                                </strong>
+                                            {% else %}
+                                                —
+                                            {% endif %}
+                                        {% endwith %}
+                                    </p>
+
+                                    <p class="evidence-authors">{{ evidencia.autores }}</p>
+
+                                    {% if evidencia.referencia_bibliografica %}
+                                        <p class="evidence-reference">{{ evidencia.referencia_bibliografica }}</p>
+                                    {% endif %}
+
+                                    <p class="evidence-title">{{ evidencia.titulo_estudo }}</p>
+
+                                    {% if evidencia.link_estudo %}
+                                        <a class="evidence-link" href="{{ evidencia.link_estudo }}" target="_blank" rel="noopener noreferrer">
+                                            {{ evidencia.link_estudo }}
+                                        </a>
+                                    {% endif %}
+                                </div>
+
+                                <div class="evidence-description">
+                                    {{ evidencia.descricao|truncatechars:400|linebreaksbr }}
+                                </div>
+                            </article>
+                        {% if forloop.counter == 3 or forloop.last and forloop.counter < 3 %}
+                            <a
+                                class="evidence-efficacy-banner"
+                                href="/{{ condicao.slug }}/"
+                                aria-label="Comparar outros tratamentos para {{ condicao.nome }}"
+                            >
+                                <img
+                                    src="{% static 'img/ver_eficacia_outros_tratamentos_desk.png' %}"
+                                    alt="Ver eficácia de outros tratamentos para {{ condicao.nome }}"
+                                >
+                            </a>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if evidencias|length > 5 %}
+                            <div class="evidence-load-more">
+                                <button type="button" id="load-more-evidences">
+                                    Carregar mais
+                                </button>
+                            </div>
+                        {% endif %}
+
+                    </div>
+                {% else %}
+                    <div class="empty-box">
+                        <strong>Sem evidências carregadas nesta página.</strong><br>
+                        Se existem pesquisas na tela separada, adicione <code>evidencias</code> ao contexto da view de detalhes.
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+
+
+
+<!-- PRAZO PARA EFEITO -->
+<section id="prazo-efeito" class="effect-time-section">
+    <div class="page-wrap">
+
+        <div class="effect-time">
+
+            <img
+                src="{% static 'img/prazo_efe.png' %}"
+                class="effect-time-icon"
+                alt="Prazo para efeito"
+            >
+
+            <span class="effect-time-label">
+                Prazo para efeito
+            </span>
+
+            <strong class="effect-time-value">
+                {{ prazo_efeito|default:"Não informado" }}
+            </strong>
+
+        </div>
+
+    </div>
+</section>
+
+
+        <!-- QUANDO USAR -->
+        <section id="quando-usar" class="page-wrap when-use">
+            <div class="when-use-copy">
+                <h2>Quando usar?</h2>
+                <p>{{ tratamento.quando_usar }}</p>
+            </div>
+            <img src="{% static 'img/relogio.png' %}" alt="Quando usar">
+        </section>
+
+        <!-- SEGURANÇA -->
+        <section id="seguranca" class="section">
+            <div class="page-wrap">
+                <div class="safety-table-wrap">
+                    <table class="safety-table">
+                        <thead>
+                            <tr>
+                                <th>Grupo</th>
+                                <th>Segurança de uso</th>
+                                <th>Motivo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Crianças menores de 12 anos</td>
+                                <td><span class="pill {% if tratamento.indicado_criancas == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_criancas }}</span></td>
+                                <td>{{ tratamento.motivo_criancas|default:"-" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Adolescentes 12 a 17 anos</td>
+                                <td><span class="pill {% if tratamento.indicado_adolescentes == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_adolescentes }}</span></td>
+                                <td>{{ tratamento.motivo_adolescentes|default:"-" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Idosos +65 anos</td>
+                                <td><span class="pill {% if tratamento.indicado_idosos == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_idosos }}</span></td>
+                                <td>{{ tratamento.motivo_idosos|default:"-" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Adultos</td>
+                                <td><span class="pill {% if tratamento.indicado_adultos == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_adultos }}</span></td>
+                                <td>{{ tratamento.motivo_adultos|default:"-" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Lactantes</td>
+                                <td><span class="pill {% if tratamento.indicado_lactantes == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_lactantes }}</span></td>
+                                <td>{{ tratamento.motivo_lactantes|default:"-" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Gravidez</td>
+                                <td><span class="pill {% if tratamento.indicado_gravidez == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_gravidez }}</span></td>
+                                <td>{{ tratamento.motivo_gravidez|default:"-" }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================================
+     BANNER ATENDIMENTO EXCLUSIVO
+     ========================================================= -->
+
+<div class="exclusive-service-banner">
+
+    <img
+        src="{% static 'img/atendimento_exclusivo.png' %}"
+        alt="Atendimento exclusivo com nossos tutores para tirar suas dúvidas sobre tratamentos de saúde"
+    >
+
+    <a
+        href="https://telix.inf.br/paciente-bem-informado"
+        class="exclusive-service-subscribe"
+        aria-label="Assinar"
+    ></a>
+
+</div>
+
+        <!-- CONTRAINDICAÇÕES -->
+        <section id="contraindicacoes" class="section">
+            <div class="page-wrap">
+                <div class="cards-title">
+                    <h2>Contraindicado para</h2>
+                    <img src="{% static 'img/icone.png' %}" alt="">
+                </div>
+
+                <div class="cards-grid">
+                    {% for contraindicacao in tratamento.contraindicacoes.all %}
+                        <article class="info-card">
+                            {% if contraindicacao.imagem %}
+                                <img src="{{ contraindicacao.imagem.url }}" alt="{{ contraindicacao.nome }}">
+                            {% else %}
+                                <img src="{% static 'img/default-medicamento.png' %}" alt="Imagem não disponível">
+                            {% endif %}
+                            <div class="info-card-body">
+                                <h3>{{ contraindicacao.nome }}</h3>
+                                <p>{{ contraindicacao.descricao }}</p>
+                            </div>
+                        </article>
+                    {% empty %}
+                        <div class="empty-box" style="grid-column:1/-1">Não há contraindicações cadastradas.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+<!-- =========================================================
+     DETALHES / LINKS / ALERTA
+     ========================================================= -->
+
+<section id="custo" class="details-section">
+
+    <div class="details-container">
+
+        <!-- DETALHES + LINKS -->
+        <div class="details-top">
+
+
+            <!-- =========================
+                 DETALHES
+                 ========================= -->
+
+            <div class="details-info">
+
+                <h3 class="details-title">
+                    Detalhes
+                </h3>
+
+
+                <div class="details-price">
+
+                <img
+                    src="{% static 'img/cifrao_cf.png' %}"
+                    class="menu-icon"
+                    alt=""
+                >
+
+                    <div class="details-price-content">
+
+                        <div class="details-price-line">
+
+                            <span class="details-price-label">
+                                Valor do tratamento:
+                            </span>
+
+
+                            <span class="details-price-value">
+
+                                {% if tratamento.link_para_compra_de_tratamento %}
+
+                                    <a
+                                        href="{{ tratamento.link_para_compra_de_tratamento }}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        R$ {{ tratamento.custo_medicamento|floatformat:2 }}
+                                    </a>
+
+                                {% else %}
+
+                                    <strong>
+                                        R$ {{ tratamento.custo_medicamento|floatformat:2 }}
+                                    </strong>
+
+                                {% endif %}
+
+                            </span>
+
+                        </div>
+
+
+                        {% if tratamento.especificacao_do_custo %}
+
+                            <div class="details-price-description">
+                                ({{ tratamento.especificacao_do_custo }})
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================
+                 LINKS
+                 ========================= -->
+
+            <div class="details-links">
+
+                <h3 class="details-title">
+                    Links
+                </h3>
+
+
+                <div class="details-links-grid">
+
+
+                    <!-- OPINIÃO DE ESPECIALISTA -->
+
+                    {% if tratamento.opiniao_especialista %}
+
+                        <a
+                            href="{{ tratamento.opiniao_especialista }}"
+                            class="details-link details-link-primary"
+                        >
+                            Opinião de especialista
+                        </a>
+
+                    {% else %}
+
+                        <a
+                            href="#"
+                            class="details-link details-link-primary"
+                        >
+                            Opinião de especialista
+                        </a>
+
+                    {% endif %}
+
+
+
+                    <!-- GENÉRICOS -->
+
+                    {% if tratamento.genericos_similares %}
+
+                        <a
+                            href="{{ tratamento.genericos_similares }}"
+                            class="details-link"
+                        >
+                            Genéricos e similares
+                        </a>
+
+                    {% else %}
+
+                        <a
+                            href="#genericos-similares"
+                            class="details-link"
+                        >
+                            Genéricos e similares
+                        </a>
+
+                    {% endif %}
+
+
+
+                    <!-- INTERAÇÕES -->
+
+                    <a
+                        href="#interacoes"
+                        class="details-link"
+                    >
+                        Interações medicamentosas
+                    </a>
+
+
+
+                    <!-- PRESCRIÇÃO -->
+
+                    <a
+                        href="#prescricao"
+                        class="details-link"
+                    >
+                        Prescrição eletrônica
+                    </a>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             ALERTA
+             ================================================= -->
+
+        {% if tratamento.alertas %}
+
+            <div class="details-alert">
+
+
+                <div class="details-alert-header">
+
+                    <img
+                        src="{% static 'img/alerta_cf.png' %}"
+                        class="details-alert-icon"
+                        alt=""
+                    >
+
+                    <span class="details-alert-title">
+                        Alerta:
+                    </span>
+
+                </div>
+
+
+                <div class="details-alert-text">
+
+                    {{ tratamento.alertas|linebreaksbr }}
+
+                </div>
+
+
+            </div>
+
+        {% endif %}
+
+
     </div>
 
-    {% include 'core/includes/footer_telix.html' %}
+</section>
+
+        <!-- REAÇÕES ADVERSAS -->
+        <section id="reacoes" class="section">
+            <div class="page-wrap">
+                <div class="cards-title">
+                    <h2>Reações Adversas</h2>
+                </div>
+
+                <div class="cards-grid">
+                    {% for detalhe in detalhes_reacoes_adversas %}
+                        <article class="info-card">
+                            {% if detalhe.reacao_adversa.imagem %}
+                                <img src="{{ detalhe.reacao_adversa.imagem.url }}" alt="{{ detalhe.reacao_adversa.nome }}">
+                            {% else %}
+                                <img src="{% static 'img/default-reacao.png' %}" alt="Imagem não disponível">
+                            {% endif %}
+
+                            <div class="info-card-body">
+                                <p class="frequency">
+                                    {% if detalhe.reacao_min and detalhe.reacao_max %}
+                                        {{ detalhe.reacao_min }}% a {{ detalhe.reacao_max }}%
+                                    {% else %}
+                                        &lt; 0,01%
+                                    {% endif %}
+
+                                    {% if detalhe.grau_comunalidade %}
+                                        <strong>{{ detalhe.get_grau_comunalidade_display }}</strong>
+                                    {% endif %}
+                                </p>
+
+                                <h3>{{ detalhe.reacao_adversa.nome }}</h3>
+                                <p>{{ detalhe.reacao_adversa.descricao }}</p>
+                            </div>
+                        </article>
+                    {% empty %}
+                        <div class="empty-box" style="grid-column:1/-1">Nenhuma reação adversa encontrada.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- CONSULTA -->
+        <section class="page-wrap consult-wrap">
+            <a class="consult-btn" href="https://cliente.doutorbeneficios.com/consumidor-1eemej6h">
+                Agende sua consulta
+            </a>
+        </section>
+
+        <!-- AVALIAÇÕES -->
+       
+<section id="avaliacoes" class="comments">
+            <div class="comments-kicker">Compartilhe sua experiência</div>
+            <h2>Você já utilizou este medicamento?</h2>
+
+            <form id="formAvaliacao" method="post" action="{% url 'salvar_avaliacao' tratamento.id %}">
+                {% csrf_token %}
+                <input type="hidden" id="usuario_nome" name="usuario_nome">
+
+                <textarea
+                    id="comentario"
+                    name="comentario"
+                    placeholder="Deixe sua mensagem"
+                    maxlength="400"
+                    required
+                    oninput="updateCount(this)"
+                ></textarea>
+
+                <div id="char-count" class="char-count">400 caracteres restantes</div>
+
+                <div class="submit-wrap">
+                    <button class="submit-btn" type="button" onclick="handleSubmit()">Enviar Avaliação</button>
+                </div>
+            </form>
+
+            <div class="modal fade" id="modalNome" tabindex="-1" aria-labelledby="modalNomeLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalNomeLabel">Como você quer aparecer nos comentários?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" id="nome_modal" class="form-control" placeholder="Digite seu nome ou apelido">
+                            <small class="text-muted">Esse nome será exibido publicamente junto ao seu comentário.</small>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary" onclick="salvarNomeEEnviar()">Confirmar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="comments-title">Comentários dos usuários:</h2>
+
+            {% if avaliacoes %}
+                {% for avaliacao in avaliacoes %}
+                    <article class="comment-card">
+                        <h3>{{ avaliacao.usuario_nome|default:"Usuário Anônimo" }}</h3>
+                        <p>{{ avaliacao.comentario }}</p>
+                        <small>Publicado em {{ avaliacao.data|date:"d/m/Y H:i" }}</small>
+                    </article>
+                {% endfor %}
+            {% else %}
+                <p style="text-align:center;color:#888">Nenhum comentário ainda. Seja o primeiro a deixar o seu!</p>
+            {% endif %}
+        </section>
+    </main>
+
+
+
+<!-- =========================================================
+     BANNER WHATSAPP
+     ========================================================= -->
+
+<div class="whatsapp-share-banner">
+
+    <img
+        src="{% static 'img/banner-compartilhe-tratamentos.png' %}"
+        alt="Compartilhe este conteúdo pelo WhatsApp"
+    >
+
+    <button
+        type="button"
+        class="whatsapp-share-click"
+        id="btnWhatsApp"
+        aria-label="Compartilhar pelo WhatsApp"
+    ></button>
+
+</div>
+
+
+
+    <!-- =========================================================
+         FOOTER
+         ========================================================= -->
+<footer class="site-footer">
+
+    <div class="footer-details">
+
+        <!-- ==================================================
+             COLUNA 1
+             ================================================== -->
+        <div class="footer-column footer-column-1">
+
+            <div class="footer-block">
+                <h3>Páginas de tratamentos</h3>
+
+                <a href="#">
+                    Eficácia - como calculamos
+                </a>
+            </div>
+
+
+            <div class="footer-block footer-scientific">
+                <h3>Páginas de artigos científicos</h3>
+
+                <a href="#">
+                    Rigor da pesquisa - critérios
+                </a>
+            </div>
+
+
+            <a href="#" class="footer-special footer-share">
+                Compartilhe
+            </a>
+
+
+            <a href="#" class="footer-special footer-premium">
+                Contratar plano premium
+            </a>
+
+        </div>
+
+
+        <!-- ==================================================
+             COLUNA 2
+             ================================================== -->
+        <div class="footer-column footer-column-2">
+
+            <div class="footer-block">
+                <h3>Documentos</h3>
+
+                <a href="#">Política de Privacidade</a>
+                <a href="#">Termos de uso</a>
+            </div>
+
+
+            <div class="footer-block footer-contact">
+                <h3>Fale com a gente!</h3>
+
+                <p>(45) 99904-0371</p>
+
+                <a href="mailto:contato@telix.inf.br">
+                    contato@telix.inf.br
+                </a>
+            </div>
+
+
+            <div class="footer-no-medication">
+                <h3>Não se automedique</h3>
+
+                <p>Consulte um profissional de saúde</p>
+            </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             COLUNA 3
+             ================================================== -->
+        <div class="footer-column footer-column-3">
+
+            <div class="footer-block">
+                <h3>Apresentações</h3>
+
+                <a href="#">Perguntas e respostas</a>
+                <a href="#">Blog</a>
+                <a href="#">Quem somos</a>
+                <a href="#">Depoimentos</a>
+            </div>
+
+
+            <div class="footer-specialists">
+                <h3>Opiniões de especialistas</h3>
+            </div>
+
+<div class="footer-disease-select">
+
+    <button
+        type="button"
+        class="footer-disease-button"
+        id="footerDiseaseButton"
+        aria-expanded="false"
+    >
+        <span>{{ condicao.nome }}</span>
+        <span class="footer-chevron"></span>
+    </button>
+
+    <div class="footer-disease-options" id="footerDiseaseOptions">
+
+        {% for item in condicoes %}
+            <a href="{% url 'lista_tratamentos' item.slug %}">
+                {{ item.nome }}
+            </a>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MANTENHA SUA FAIXA/CNPJ AQUI -->
+    <div class="footer-bottom">
+        Linca Telecomunicações Ltda — CNPJ: 03.376.788-0001/23
+    </div>
+
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-    function updateCount(textarea) {
-        const maxLength = textarea.getAttribute('maxlength');
-        const currentLength = textarea.value.length;
-        const remaining = maxLength - currentLength;
-        document.getElementById('char-count').innerText =
-            remaining + " caracteres restantes";
-    }
-
-    function getFormAvaliacao() {
-        let form = document.getElementById('formAvaliacao');
-        if (!form) {
-            form = document.querySelector('form[action*="salvar-avaliacao"]');
-        }
-        if (!form) {
-            console.error('Form de avaliação não encontrado no DOM');
-        }
-        return form;
-    }
-
-    function handleSubmit() {
-        const comentario = document.getElementById('comentario').value.trim();
-        const nomeHidden = document.getElementById('usuario_nome').value.trim();
-
-        if (!comentario) {
-            alert("Por favor, escreva seu comentário antes de enviar.");
-            return;
+        function updateCount(textarea){
+            const maxLength = Number(textarea.getAttribute('maxlength')) || 400;
+            const remaining = maxLength - textarea.value.length;
+            document.getElementById('char-count').innerText = remaining + " caracteres restantes";
         }
 
-        const form = getFormAvaliacao();
-        if (!form) return;
-
-        if (nomeHidden) {
-            form.submit();
-            return;
+        function getFormAvaliacao(){
+            return document.getElementById('formAvaliacao');
         }
 
-        const modalElement = document.getElementById('modalNome');
-        const modal = new bootstrap.Modal(modalElement);
-        modal.show();
-    }
+        function handleSubmit(){
+            const comentario = document.getElementById('comentario').value.trim();
+            const nomeHidden = document.getElementById('usuario_nome').value.trim();
 
-    function salvarNomeEEnviar() {
-        const nomeModal = document.getElementById('nome_modal').value.trim();
-        if (!nomeModal) {
-            alert("Por favor, informe seu nome ou apelido.");
-            return;
+            if(!comentario){
+                alert("Por favor, escreva seu comentário antes de enviar.");
+                return;
+            }
+
+            const form = getFormAvaliacao();
+            if(!form) return;
+
+            if(nomeHidden){
+                form.submit();
+                return;
+            }
+
+            const modal = new bootstrap.Modal(document.getElementById('modalNome'));
+            modal.show();
         }
 
-        document.getElementById('usuario_nome').value = nomeModal;
+        function salvarNomeEEnviar(){
+            const nomeModal = document.getElementById('nome_modal').value.trim();
 
-        const form = getFormAvaliacao();
-        if (!form) return;
+            if(!nomeModal){
+                alert("Por favor, informe seu nome ou apelido.");
+                return;
+            }
 
-        form.submit();
-    }
+            document.getElementById('usuario_nome').value = nomeModal;
 
-   
+            const form = getFormAvaliacao();
+            if(form) form.submit();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+    const loadMoreButton = document.getElementById('load-more-evidences');
+
+    if (!loadMoreButton) return;
+
+    loadMoreButton.addEventListener('click', function () {
+
+        const hiddenEvidences =
+            document.querySelectorAll('.evidence-extra');
+
+        hiddenEvidences.forEach(function (evidence) {
+            evidence.style.display = 'grid';
+        });
+
+        this.parentElement.style.display = 'none';
+    });
+
+});
     </script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const menuLinks = document.querySelectorAll('.page-anchor-link');
+
+    const sections = [];
+
+    menuLinks.forEach(link => {
+
+        const selector = link.getAttribute('href');
+
+        if (!selector || !selector.startsWith('#')) return;
+
+        const section = document.querySelector(selector);
+
+        if (section) {
+            sections.push({
+                link: link,
+                section: section
+            });
+        }
+
+    });
+
+
+    /* CLIQUE */
+    menuLinks.forEach(link => {
+
+        link.addEventListener('click', function () {
+
+            menuLinks.forEach(item => {
+                item.classList.remove('active');
+            });
+
+            this.classList.add('active');
+
+        });
+
+    });
+
+
+    /* ATUALIZA CONFORME O SCROLL */
+    function updateActiveMenu() {
+
+        let current = null;
+
+        sections.forEach(item => {
+
+            const rect = item.section.getBoundingClientRect();
+
+            if (rect.top <= 180) {
+                current = item;
+            }
+
+        });
+
+
+        if (current) {
+
+            menuLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+
+            current.link.classList.add('active');
+
+        }
+
+    }
+
+
+    window.addEventListener('scroll', updateActiveMenu, {
+        passive: true
+    });
+
+    updateActiveMenu();
+
+});
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const btnWhatsApp = document.getElementById("btnWhatsApp");
+
+    if (!btnWhatsApp) return;
+
+
+    btnWhatsApp.addEventListener("click", function () {
+
+        const mensagem =
+            "Vi esse site sobre comparação de tratamentos de saúde e achei que você poderia gostar.";
+
+        const link =
+            "https://www.telix.inf.br/?utm_source=whatsapp&utm_medium=banner";
+
+        const texto =
+            `${mensagem}\n\n${link}`;
+
+        const whatsapp =
+            `https://wa.me/?text=${encodeURIComponent(texto)}`;
+
+        window.open(
+            whatsapp,
+            "_blank",
+            "noopener,noreferrer"
+        );
+
+    });
+
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const button = document.getElementById('footerDiseaseButton');
+    const options = document.getElementById('footerDiseaseOptions');
+
+    if (!button || !options) return;
+
+    button.addEventListener('click', function (event) {
+
+        event.stopPropagation();
+
+        const isOpen = options.classList.toggle('open');
+
+        button.classList.toggle('open', isOpen);
+        button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+
+    });
+
+    document.addEventListener('click', function () {
+
+        options.classList.remove('open');
+        button.classList.remove('open');
+        button.setAttribute('aria-expanded', 'false');
+
+    });
+
+});
+</script>
+
 </body>
 </html>
