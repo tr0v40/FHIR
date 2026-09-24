@@ -17,10 +17,16 @@ ALLOWED_HOSTS = [
     "localhost",
     "0.0.0.0",
     "cadastros.telix.inf.br",
+    "tratamentos.telix.inf.br",
     "www.telix.health",
     "telix.health",
     "www.telix.inf.br",
     "telix.inf.br",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://cadastros.telix.inf.br",
+    "https://tratamentos.telix.inf.br",
 ]
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 20000
