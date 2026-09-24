@@ -1334,9 +1334,6 @@
 
     color:#FFFFFF;
 }
-.evidence-extra{
-    display:none;
-}
 
 /* =========================================================
    BOTÃO VER MAIS EVIDÊNCIAS CIENTÍFICAS
@@ -1444,6 +1441,10 @@
             border-bottom:2px solid #eee;
         }
         .evidence-item:last-child{border-bottom:0}
+        /* Oculta as evidências após a 5ª */
+        .evidence-item.evidence-extra{
+            display:none;
+}
         .evidence-logo{
             min-height:130px;
             display:flex;
