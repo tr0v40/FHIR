@@ -10,7 +10,7 @@ SECRET_KEY = os.getenv(
     "DJANGO_SECRET_KEY", "chave-secreta"
 )  # Usa 'chave-secreta' se não houver .env
 DEBUG = False
-DEBUG = True
+
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
