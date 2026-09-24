@@ -406,11 +406,16 @@
 #prazo-efeito,
 #seguranca,
 #contraindicacoes,
-#detalhes,
+#custo,
 #reacoes,
 #artigos,
 #avaliacoes {
     scroll-margin-top: 100px;
+}
+
+/* Custo */
+#custo {
+    scroll-margin-top: 180px;
 }
 
 /* =========================================================
@@ -1929,29 +1934,36 @@
 
 .site-footer{
     width:100%;
+
     background:#FFFFFF;
     border-top:0;
+
     font-family:'Inter', Arial, Helvetica, sans-serif;
+
+    position:relative;
 }
 
-
 /* CONTEÚDO PRINCIPAL */
-
 .footer-details{
     width:982px;
     max-width:calc(100% - 32px);
-    min-height:286px;
+    height:300px;
 
-    margin:55px auto 45px;
+    margin:14px auto 0;
 
     display:grid;
+
+    /*
+       Posições do Figma:
+       coluna 1 = 0px
+       coluna 2 = 404px
+       coluna 3 = 746px
+    */
     grid-template-columns:239px 239px 236px;
-    column-gap:164px;
+    column-gap:165px;
 
     align-items:start;
 }
-
-
 /* =========================================================
    PADRÃO DOS TÍTULOS
    ========================================================= */
@@ -2020,7 +2032,19 @@
 
 .footer-share{
     margin-top:29px;
-    margin-left:14px;
+    margin-left:0;
+
+    display:flex !important;
+    align-items:center;
+    gap:7px;
+}
+
+.footer-whatsapp-icon{
+    width:20px;
+    height:20px;
+    object-fit:contain;
+    display:block;
+    flex-shrink:0;
 }
 
 .footer-premium{
@@ -2110,15 +2134,20 @@
 /* =========================================================
    SELECIONE A DOENÇA
    ========================================================= */
+/* =========================================================
+   SELECIONE A DOENÇA - FIGMA
+   ========================================================= */
+
 .footer-disease{
     margin-top:28px;
+    width:194px;
 }
 
 .footer-disease-label{
-    width:194px;
+    width:142px;
     height:18px;
 
-    margin:0 0 6px 0;
+    margin:0 0 6px 1px;
 
     display:flex;
     align-items:center;
@@ -2132,19 +2161,25 @@
     color:#000000;
 }
 
+/* container do botão */
 .footer-disease-select{
     position:relative;
+
     width:194px;
+    height:40px;
 }
 
+/* botão azul */
 .footer-disease-button{
     box-sizing:border-box;
+
+    position:relative;
 
     width:194px;
     height:40px;
 
+    margin:0;
     padding:0;
-    position:relative;
 
     display:block;
 
@@ -2155,17 +2190,23 @@
     cursor:pointer;
 }
 
+/* texto: Enxaqueca */
 .footer-disease-button span:first-child{
     position:absolute;
 
-    width:82px;
+    width:auto;
     height:18px;
 
     left:30px;
-    top:11px;
+    top:50%;
+
+    transform:translateY(-50%);
 
     display:flex;
     align-items:center;
+
+    margin:0;
+    padding:0;
 
     font-family:'Inter', Arial, Helvetica, sans-serif;
     font-style:normal;
@@ -2175,55 +2216,66 @@
 
     color:#FFFFFF;
     opacity:.5;
+
+    white-space:nowrap;
 }
 
-/* SETA */
+/* =========================================================
+   SETA DO FIGMA
+   ========================================================= */
 
 .footer-chevron{
-    width:11px;
-    height:11px;
+    position:absolute;
 
-    border-right:3px solid #FFFFFF;
-    border-bottom:3px solid #FFFFFF;
+    width:15px;
+    height:8px;
 
-    transform:rotate(45deg) translateY(-2px);
+    right:20px;
+    top:50%;
+
+    transform:translateY(-50%);
+
+    border:0;
 
     opacity:1;
 }
 
+/* lado esquerdo do V */
+.footer-chevron::before{
+    content:"";
 
-/* =========================================================
-   RODAPÉ INFERIOR / CNPJ
-   ========================================================= */
-/* =========================================================
-   FAIXA INFERIOR DO FOOTER - CNPJ
-   ========================================================= */
+    position:absolute;
 
-.footer-bottom{
-    box-sizing: border-box;
+    width:10px;
+    height:3px;
 
-    width: 100%;
-    height: 65px;
+    left:0;
+    top:2px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background:#FFFFFF;
+    border-radius:2px;
 
-    background: #FAFAFA;
-    border: 3px solid #E3E3E3;
-
-    font-family: 'Inter', Arial, Helvetica, sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 13px;
-    line-height: 16px;
-
-    color: #8F8F93;
+    transform:rotate(45deg);
+    transform-origin:center;
 }
 
-.footer-disease-select{
-    position:relative;
-    width:194px;
+/* lado direito do V */
+.footer-chevron::after{
+    content:"";
+
+    position:absolute;
+
+    width:10px;
+    height:3px;
+
+    right:0;
+    top:2px;
+
+    background:#FFFFFF;
+    border-radius:2px;
+
+    transform:rotate(-45deg);
+    transform-origin:center;
 }
 
 .footer-disease-options{
@@ -2231,24 +2283,32 @@
 
     position:absolute;
     left:0;
-    bottom:48px;
+    top:48px;
+    bottom:auto;
 
-    width:100%;
+    width:194px;
     max-height:220px;
     overflow-y:auto;
 
     background:#FFFFFF;
-
     border:1px solid #E3E3E3;
     border-radius:5px;
 
     box-shadow:0 4px 14px rgba(0,0,0,.12);
 
-    z-index:100;
+    z-index:1000;
 }
 
 .footer-disease-options.open{
     display:block;
+}
+
+.site-footer{
+    transition:padding-bottom .18s ease;
+}
+
+.site-footer:has(.footer-disease-options.open){
+    padding-bottom:220px;
 }
 
 .site-footer .footer-disease-options a{
@@ -2273,7 +2333,37 @@
 }
 
 .footer-disease-button.open .footer-chevron{
-    transform:rotate(225deg) translateY(-2px);
+    transform:translateY(-50%) rotate(180deg);
+
+}
+
+
+
+.footer-bottom{
+    box-sizing:border-box;
+
+    width:100%;
+    height:65px;
+
+    margin:0;
+    padding:0;
+
+    background:#FAFAFA;
+    border-top:3px solid #E3E3E3;
+    border-bottom:3px solid #E3E3E3;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-weight:400;
+    font-size:13px;
+    line-height:16px;
+
+    color:#8F8F93;
+
+    text-align:center;
 }
 /* =========================================================
    RESPONSIVO
@@ -2356,9 +2446,23 @@
     color:#FFFFFF !important;
     text-decoration:none !important;
 }
-        .comments{max-width:820px;margin:0 auto;padding:25px 0 60px}
-        .comments-kicker{color:var(--blue);font-weight:700;margin-bottom:3px}
-        .comments h2{font-size:20px;font-weight:500;margin-bottom:12px}
+.comments{
+    max-width:1000px;
+    margin:0 auto;
+    padding:25px 0 60px;
+}
+
+.comments-main-title{
+    margin:0 0 24px;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:600;
+    font-size:20px;
+    line-height:29px;
+
+    color:#000000;
+}
         .comments textarea{
             width:100%;
             min-height:100px;
@@ -2378,7 +2482,7 @@
    ========================================================= */
 
 .comments-title{
-    width:900px;
+    width:1200px;
     max-width:100%;
 
     margin:0 auto 18px;
@@ -2387,8 +2491,8 @@
 
     font-family:Arial, Helvetica, sans-serif;
     font-style:normal;
-    font-weight:800;
-    font-size:31px;
+    font-weight:600;
+    font-size:25px;
     line-height:31px;
 
     text-align:left;
@@ -2396,7 +2500,7 @@
 
 /* área que contém os comentários */
 .comments-list{
-    width:958px;
+    width:1058px;
     max-width:100%;
     max-height:293px;
 
@@ -2412,7 +2516,7 @@
 .comment-card{
     box-sizing:border-box;
 
-    width:900px;
+    width:1000px;
     max-width:100%;
     min-height:273px;
 
@@ -2576,9 +2680,9 @@
 
     <header class="site-header">
         <div class="page-wrap site-header-inner">
-            <a class="site-logo" href="https://www.telix.inf.br/">
-                <img src="{% static 'img/logotipo.png' %}" alt="Telix - contexto na saúde">
-            </a>
+        <a class="site-logo" href="/home/">
+            <img src="{% static 'img/logotipo.png' %}" alt="Telix - contexto na saúde">
+        </a>
 
             <a class="header-account" href="#">
                 <i class="fa-solid fa-lock"></i>
@@ -3282,8 +3386,9 @@
         <!-- AVALIAÇÕES -->
        
 <section id="avaliacoes" class="comments">
-            <div class="comments-kicker">Compartilhe sua experiência</div>
-            <h2>Você já utilizou este medicamento?</h2>
+    <section id="avaliacoes" class="comments">
+
+        <h2 class="comments-main-title">Avaliação dos pacientes</h2>
 
             <form id="formAvaliacao" method="post" action="{% url 'salvar_avaliacao' tratamento.id %}">
                 {% csrf_token %}
@@ -3349,7 +3454,7 @@
 <div class="whatsapp-share-banner">
 
     <img
-        src="{% static 'img/banner-compartilhe-tratamentos.png' %}"
+        src="{% static 'img/banner_familia.png' %}"
         alt="Compartilhe este conteúdo pelo WhatsApp"
     >
 
@@ -3395,7 +3500,8 @@
 
 
             <a href="#" class="footer-special footer-share">
-                Compartilhe
+                <img src="{% static 'img/whats-app.png' %}" alt="WhatsApp" class="footer-whatsapp-icon">
+                <span>Compartilhe</span>
             </a>
 
 
@@ -3458,25 +3564,44 @@
                 <h3>Opiniões de especialistas</h3>
             </div>
 
-<div class="footer-disease-select">
+<div class="footer-disease">
 
-    <button
-        type="button"
-        class="footer-disease-button"
-        id="footerDiseaseButton"
-        aria-expanded="false"
-    >
-        <span>{{ condicao.nome }}</span>
-        <span class="footer-chevron"></span>
-    </button>
+    <div class="footer-disease-label">
+        Selecione a doença
+    </div>
 
-    <div class="footer-disease-options" id="footerDiseaseOptions">
+    <div class="footer-disease-select">
 
-        {% for item in condicoes %}
-            <a href="{% url 'lista_tratamentos' item.slug %}">
-                {{ item.nome }}
+        <button
+            type="button"
+            class="footer-disease-button"
+            id="footerDiseaseButton"
+            aria-expanded="false"
+            aria-controls="footerDiseaseOptions"
+        >
+            <span>
+                {{ condicao.nome|default:"Enxaqueca" }}
+            </span>
+
+            <span class="footer-chevron"></span>
+        </button>
+
+        <div
+            class="footer-disease-options"
+            id="footerDiseaseOptions"
+        >
+
+        {% for item in footer_listas %}
+            <a href="{{ item.url }}">
+                {{ item.label }}
             </a>
+        {% empty %}
+            <span class="footer-disease-empty">
+                Nenhuma opção disponível
+            </span>
         {% endfor %}
+
+        </div>
 
     </div>
 
