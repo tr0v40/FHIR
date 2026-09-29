@@ -165,16 +165,15 @@
     /* ==========================================================
        KPIs
     ========================================================== */
+.kpi-grid {
+    display: grid;
 
-    .kpi-grid {
-        display: grid;
-        grid-template-columns:
-            repeat(6, minmax(130px, 1fr));
+    grid-template-columns:
+        repeat(7, minmax(0, 1fr));
 
-        gap: 12px;
-
-        margin-bottom: 18px;
-    }
+    gap: 12px;
+    margin-bottom: 18px;
+}
 
     .kpi-card {
         background: #ffffff;
@@ -448,14 +447,14 @@
        RESPONSIVO
     ========================================================== */
 
-    @media (max-width: 1400px) {
+@media (max-width: 1400px) {
 
-        .kpi-grid {
-            grid-template-columns:
-                repeat(3, 1fr);
-        }
-
+    .kpi-grid {
+        grid-template-columns:
+            repeat(7, minmax(0, 1fr));
     }
+
+}
 
     @media (max-width: 1100px) {
 
@@ -686,11 +685,24 @@
         <div class="kpi-card">
 
             <div class="kpi-label">
-                Tratamentos encontrados
+                Tratamentos cadastrados
             </div>
 
             <div class="kpi-value">
-                {{ total_tratamentos }}
+                {{ total_tratamentos_cadastrados }}
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Sem condição associada
+            </div>
+
+            <div class="kpi-value">
+                {{ total_tratamentos_sem_condicao }}
             </div>
 
         </div>
@@ -1157,7 +1169,190 @@
 
     </div>
 
+    <!-- ======================================================
+         TRATAMENTOS SEM CONDIÇÃO ASSOCIADA
+    ======================================================= -->
 
+    <div class="table-card">
+
+        <div class="table-header">
+
+            <div>
+
+                <div class="chart-title">
+                    Tratamentos sem condição associada
+                </div>
+
+                <div class="chart-description">
+                    Tratamentos cadastrados que ainda não possuem
+                    vínculo com nenhuma condição de saúde.
+                </div>
+
+            </div>
+
+
+            <div class="table-count">
+
+                {{ total_tratamentos_sem_condicao }}
+
+                tratamento{{ total_tratamentos_sem_condicao|pluralize }}
+
+            </div>
+
+        </div>
+
+
+        <div class="table-scroll-large">
+
+            <table class="report-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Tratamento
+                        </th>
+
+                        <th>
+                            Fabricante
+                        </th>
+
+                        <th>
+                            Princípio ativo
+                        </th>
+
+                        <th>
+                            Ação
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in tratamentos_sem_condicao %}
+
+                    <tr>
+
+                        <td class="cell-main">
+
+                            {% if item.nome == "-" %}
+
+                                <span class="cell-muted">
+                                    Não informado
+                                </span>
+
+                            {% else %}
+
+                                {{ item.nome }}
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if item.fabricante == "-" %}
+
+                                <span class="cell-muted">
+                                    Não informado
+                                </span>
+
+                            {% else %}
+
+                                {{ item.fabricante }}
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if item.principio_ativo == "-" %}
+
+                                <span class="cell-muted">
+                                    Não informado
+                                </span>
+
+                            {% else %}
+
+                                {{ item.principio_ativo }}
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if item.admin_url %}
+
+                                <a
+                                    class="url-link"
+                                    href="{{ item.admin_url }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Editar tratamento
+                                </a>
+
+                            {% else %}
+
+                                <span class="cell-muted">
+                                    —
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td
+                            colspan="4"
+                            class="empty-state"
+                        >
+                            Todos os tratamentos possuem
+                            uma condição associada.
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% if total_tratamentos_sem_condicao > 50 %}
+
+            <div
+                style="
+                    margin-top: 12px;
+                    font-size: 12px;
+                    color: #6b7280;
+                "
+            >
+                Exibindo os primeiros 50 de
+                {{ total_tratamentos_sem_condicao }}
+                tratamentos sem condição associada.
+            </div>
+
+        {% endif %}
+
+    </div>
 </div>
 
 

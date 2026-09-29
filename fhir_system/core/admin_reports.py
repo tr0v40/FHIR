@@ -1,5 +1,7 @@
 # core/admin_reports.py
 
+from collections import defaultdict
+
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Q
 from django.shortcuts import render
@@ -21,10 +23,25 @@ def relatorios_dashboard(request):
     # FILTROS
     # ============================================================
 
-    filtro_doenca = request.GET.get("doenca", "").strip()
-    filtro_tratamento = request.GET.get("tratamento", "").strip()
-    filtro_principio = request.GET.get("principio", "").strip()
-    filtro_url = request.GET.get("url", "").strip()
+    filtro_doenca = request.GET.get(
+        "doenca",
+        "",
+    ).strip()
+
+    filtro_tratamento = request.GET.get(
+        "tratamento",
+        "",
+    ).strip()
+
+    filtro_principio = request.GET.get(
+        "principio",
+        "",
+    ).strip()
+
+    filtro_url = request.GET.get(
+        "url",
+        "",
+    ).strip()
 
     # ============================================================
     # CONDIÇÕES
@@ -33,25 +50,48 @@ def relatorios_dashboard(request):
     condicoes_qs = CondicaoSaude.objects.all()
 
     if filtro_doenca:
+
         condicoes_qs = condicoes_qs.filter(
-            Q(nome__icontains=filtro_doenca)
-            | Q(condition__icontains=filtro_doenca)
+            Q(
+                nome__icontains=filtro_doenca
+            )
+            |
+            Q(
+                condition__icontains=filtro_doenca
+            )
         )
 
-    condicoes_qs = condicoes_qs.order_by("nome")
+    condicoes_qs = (
+        condicoes_qs
+        .order_by("nome")
+    )
+
+    # Materializa apenas uma vez.
+    # A partir daqui não fazemos novas queries para condições.
+    condicoes = list(
+        condicoes_qs
+    )
+
+    condicao_ids = [
+        condicao.id
+        for condicao in condicoes
+    ]
 
     # ============================================================
     # URLS DE LISTA V2 PUBLICADAS
     # ============================================================
-
-    urls_lista_publicadas = (
-        PaginaListaTratamentoV2.objects
-        .filter(publicada=True)
-        .select_related("condicao_saude")
-    )
+    #
+    # Precisamos somente saber quais condições possuem página.
+    # Portanto não carregamos os objetos completos.
+    # ============================================================
 
     condicoes_com_url_lista = set(
-        urls_lista_publicadas.values_list(
+        PaginaListaTratamentoV2.objects
+        .filter(
+            publicada=True,
+            condicao_saude_id__in=condicao_ids,
+        )
+        .values_list(
             "condicao_saude_id",
             flat=True,
         )
@@ -59,26 +99,147 @@ def relatorios_dashboard(request):
 
     # ============================================================
     # URLS DE DETALHE PUBLICADAS
+    # ============================================================
     #
-    # Mapeia:
-    # (condicao_id, tratamento_id) -> página publicada
+    # Antes:
+    #
+    #   select_related("condicao", "tratamento")
+    #
+    # Isso carregava objetos relacionados que não eram necessários
+    # para identificar se a URL existe.
+    #
+    # Agora buscamos somente:
+    #
+    #   condicao_id
+    #   tratamento_id
+    #
+    # Resultado:
+    #
+    #   {
+    #       (condicao_id, tratamento_id),
+    #       ...
+    #   }
+    #
     # ============================================================
 
-    paginas_detalhe = (
+    paginas_detalhe_chaves = set(
         PaginaDetalheTratamento.objects
-        .filter(publicada=True)
-        .select_related(
-            "condicao",
-            "tratamento",
+        .filter(
+            publicada=True,
+            condicao_id__in=condicao_ids,
+        )
+        .values_list(
+            "condicao_id",
+            "tratamento_id",
         )
     )
 
-    paginas_detalhe_map = {
-        (
-            pagina.condicao_id,
-            pagina.tratamento_id,
-        ): pagina
-        for pagina in paginas_detalhe
+    # ============================================================
+    # RELAÇÕES TRATAMENTO X CONDIÇÃO
+    # ============================================================
+    #
+    # ESTA É A PRINCIPAL OTIMIZAÇÃO.
+    #
+    # O código anterior fazia:
+    #
+    #   para cada condição:
+    #       SELECT TratamentoCondicao
+    #       SELECT DetalhesTratamentoResumo
+    #
+    # Isso criava o problema N+1.
+    #
+    # Agora buscamos TODAS as relações em uma única consulta.
+    # ============================================================
+
+    relacoes = (
+        TratamentoCondicao.objects
+        .filter(
+            condicao_id__in=condicao_ids
+        )
+        .values_list(
+            "condicao_id",
+            "tratamento_id",
+        )
+    )
+
+    # ============================================================
+    # MAPA:
+    #
+    # condicao_id -> conjunto de tratamento_ids
+    #
+    # Exemplo:
+    #
+    # {
+    #     1: {10, 20, 30},
+    #     2: {40, 50},
+    # }
+    #
+    # ============================================================
+
+    tratamentos_por_condicao = defaultdict(
+        set
+    )
+
+    todos_tratamento_ids = set()
+
+    for (
+        condicao_id,
+        tratamento_id,
+    ) in relacoes:
+
+        tratamentos_por_condicao[
+            condicao_id
+        ].add(
+            tratamento_id
+        )
+
+        todos_tratamento_ids.add(
+            tratamento_id
+        )
+
+    # ============================================================
+    # TRATAMENTOS UTILIZADOS NO RELATÓRIO
+    # ============================================================
+    #
+    # Todos são carregados de uma vez.
+    #
+    # Os filtros também são aplicados diretamente no banco.
+    # ============================================================
+
+    tratamentos_qs = (
+        DetalhesTratamentoResumo.objects
+        .filter(
+            id__in=todos_tratamento_ids
+        )
+    )
+
+    if filtro_tratamento:
+
+        tratamentos_qs = (
+            tratamentos_qs.filter(
+                nome__icontains=filtro_tratamento
+            )
+        )
+
+    if filtro_principio:
+
+        tratamentos_qs = (
+            tratamentos_qs.filter(
+                principio_ativo__icontains=(
+                    filtro_principio
+                )
+            )
+        )
+
+    # ============================================================
+    # MAPA DE TRATAMENTOS
+    #
+    # tratamento_id -> objeto
+    # ============================================================
+
+    tratamentos_map = {
+        tratamento.id: tratamento
+        for tratamento in tratamentos_qs
     }
 
     # ============================================================
@@ -97,93 +258,95 @@ def relatorios_dashboard(request):
     # ============================================================
     # PERCORRE CONDIÇÕES
     # ============================================================
+    #
+    # IMPORTANTE:
+    #
+    # Nenhuma query de TratamentoCondicao ou
+    # DetalhesTratamentoResumo acontece aqui.
+    # ============================================================
 
-    for condicao in condicoes_qs:
+    for condicao in condicoes:
 
         # --------------------------------------------------------
-        # Relações tratamento x condição
+        # IDs relacionados à condição
         # --------------------------------------------------------
 
-        relacoes = (
-            TratamentoCondicao.objects
-            .filter(condicao=condicao)
-        )
-
-        tratamento_ids = list(
-            relacoes.values_list(
-                "tratamento_id",
-                flat=True,
+        tratamento_ids = (
+            tratamentos_por_condicao.get(
+                condicao.id,
+                set(),
             )
         )
 
         # --------------------------------------------------------
-        # Tratamentos
+        # Obtém os tratamentos diretamente do mapa em memória
         # --------------------------------------------------------
 
-        tratamentos_qs = (
-            DetalhesTratamentoResumo.objects
-            .filter(id__in=tratamento_ids)
-            .distinct()
-            .order_by("nome")
+        tratamentos = [
+            tratamentos_map[
+                tratamento_id
+            ]
+            for tratamento_id
+            in tratamento_ids
+            if tratamento_id
+            in tratamentos_map
+        ]
+
+        # Mantém a mesma ordenação do código anterior.
+        tratamentos.sort(
+            key=lambda tratamento: (
+                tratamento.nome or ""
+            ).lower()
         )
 
-        if filtro_tratamento:
-            tratamentos_qs = tratamentos_qs.filter(
-                nome__icontains=filtro_tratamento
-            )
-
-        if filtro_principio:
-            tratamentos_qs = tratamentos_qs.filter(
-                principio_ativo__icontains=filtro_principio
-            )
-
-        tratamentos = list(tratamentos_qs)
-
         # --------------------------------------------------------
-        # Se estamos pesquisando tratamento/princípio e esta
-        # condição não possui nenhum resultado, não mostramos.
+        # Se tratamento/princípio está sendo pesquisado e essa
+        # condição não possui resultados, não mostramos.
         # --------------------------------------------------------
 
         if (
-            (filtro_tratamento or filtro_principio)
+            (
+                filtro_tratamento
+                or filtro_principio
+            )
             and not tratamentos
         ):
             continue
 
         # --------------------------------------------------------
-        # URL de lista da doença
+        # URL da página de lista da condição
         # --------------------------------------------------------
 
         possui_url_lista = (
-            condicao.id in condicoes_com_url_lista
+            condicao.id
+            in condicoes_com_url_lista
         )
 
         # --------------------------------------------------------
-        # Monta linhas detalhadas
+        # Linhas dessa condição
         # --------------------------------------------------------
-
-        principios_condicao = set()
 
         linhas_condicao = []
 
         for tratamento in tratamentos:
+
+            # ----------------------------------------------------
+            # URL de detalhe
+            # ----------------------------------------------------
 
             chave_url = (
                 condicao.id,
                 tratamento.id,
             )
 
-            pagina_detalhe = paginas_detalhe_map.get(
-                chave_url
-            )
-
             possui_url_detalhe = (
-                pagina_detalhe is not None
+                chave_url
+                in paginas_detalhe_chaves
             )
 
-            # --------------------------------------------
+            # ----------------------------------------------------
             # FILTRO DE URL
-            # --------------------------------------------
+            # ----------------------------------------------------
 
             if (
                 filtro_url == "sim"
@@ -197,33 +360,41 @@ def relatorios_dashboard(request):
             ):
                 continue
 
-            # --------------------------------------------
+            # ----------------------------------------------------
             # PRINCÍPIO ATIVO
-            # --------------------------------------------
+            # ----------------------------------------------------
 
             principio = ""
 
             if tratamento.principio_ativo:
+
                 principio = (
-                    tratamento.principio_ativo
+                    tratamento
+                    .principio_ativo
                     .strip()
                 )
 
             if principio:
-                principios_condicao.add(principio)
-                principios_filtrados.add(principio)
+
+                principios_filtrados.add(
+                    principio
+                )
+
+            # ----------------------------------------------------
+            # Tratamento encontrado
+            # ----------------------------------------------------
 
             tratamentos_ids_filtrados.add(
                 tratamento.id
             )
 
-            # --------------------------------------------
-            # URL pública
-            # --------------------------------------------
+            # ----------------------------------------------------
+            # URL PÚBLICA
+            # ----------------------------------------------------
 
             url_publica = ""
 
-            if pagina_detalhe:
+            if possui_url_detalhe:
 
                 condicao_slug = getattr(
                     condicao,
@@ -237,29 +408,62 @@ def relatorios_dashboard(request):
                     None,
                 )
 
-                if condicao_slug and tratamento_slug:
+                if (
+                    condicao_slug
+                    and tratamento_slug
+                ):
+
                     try:
+
                         url_publica = reverse(
                             "pagina_detalhe_tratamento",
                             kwargs={
-                                "condicao_slug": condicao_slug,
-                                "tratamento_slug": tratamento_slug,
+                                "condicao_slug": (
+                                    condicao_slug
+                                ),
+                                "tratamento_slug": (
+                                    tratamento_slug
+                                ),
                             },
                         )
+
                     except Exception:
+
                         url_publica = ""
 
+            # ----------------------------------------------------
+            # Contadores de URL
+            # ----------------------------------------------------
+
             if possui_url_detalhe:
+
                 total_urls_detalhe_publicadas += 1
+
             else:
+
                 total_urls_detalhe_ausentes += 1
 
-            linha = {
-                "condicao_id": condicao.id,
-                "condicao": condicao.nome,
+            # ----------------------------------------------------
+            # Linha
+            # ----------------------------------------------------
 
-                "tratamento_id": tratamento.id,
-                "tratamento": tratamento.nome,
+            linha = {
+
+                "condicao_id": (
+                    condicao.id
+                ),
+
+                "condicao": (
+                    condicao.nome
+                ),
+
+                "tratamento_id": (
+                    tratamento.id
+                ),
+
+                "tratamento": (
+                    tratamento.nome
+                ),
 
                 "principio_ativo": (
                     principio
@@ -267,14 +471,22 @@ def relatorios_dashboard(request):
                     else "-"
                 ),
 
-                "possui_url": possui_url_detalhe,
-                "url_publica": url_publica,
+                "possui_url": (
+                    possui_url_detalhe
+                ),
+
+                "url_publica": (
+                    url_publica
+                ),
             }
 
-            linhas_condicao.append(linha)
+            linhas_condicao.append(
+                linha
+            )
 
         # --------------------------------------------------------
-        # Se filtro URL eliminou tudo, não mostra a condição
+        # Se o filtro de URL eliminou todos os tratamentos,
+        # não mostramos a condição.
         # --------------------------------------------------------
 
         if (
@@ -284,7 +496,7 @@ def relatorios_dashboard(request):
             continue
 
         # --------------------------------------------------------
-        # Tabela completa
+        # TABELA COMPLETA
         # --------------------------------------------------------
 
         tabela_completa.extend(
@@ -292,37 +504,47 @@ def relatorios_dashboard(request):
         )
 
         # --------------------------------------------------------
-        # Resumo por condição
-        #
-        # Conta somente as linhas que sobreviveram aos filtros.
+        # RESUMO DA CONDIÇÃO
         # --------------------------------------------------------
 
         tratamentos_condicao_ids = {
             linha["tratamento_id"]
-            for linha in linhas_condicao
+            for linha
+            in linhas_condicao
         }
 
         principios_condicao_filtrados = {
             linha["principio_ativo"]
-            for linha in linhas_condicao
-            if linha["principio_ativo"] != "-"
+            for linha
+            in linhas_condicao
+            if linha[
+                "principio_ativo"
+            ] != "-"
         }
 
         total_urls_condicao = sum(
             1
-            for linha in linhas_condicao
+            for linha
+            in linhas_condicao
             if linha["possui_url"]
         )
 
         total_sem_url_condicao = sum(
             1
-            for linha in linhas_condicao
+            for linha
+            in linhas_condicao
             if not linha["possui_url"]
         )
 
         tabela_resumo.append({
-            "id": condicao.id,
-            "nome": condicao.nome,
+
+            "id": (
+                condicao.id
+            ),
+
+            "nome": (
+                condicao.nome
+            ),
 
             "tratamentos": len(
                 tratamentos_condicao_ids
@@ -332,7 +554,9 @@ def relatorios_dashboard(request):
                 principios_condicao_filtrados
             ),
 
-            "possui_url_lista": possui_url_lista,
+            "possui_url_lista": (
+                possui_url_lista
+            ),
 
             "urls_tratamentos": (
                 total_urls_condicao
@@ -344,6 +568,108 @@ def relatorios_dashboard(request):
         })
 
     # ============================================================
+    # TRATAMENTOS CADASTRADOS
+    # ============================================================
+
+    total_tratamentos_cadastrados = (
+        DetalhesTratamentoResumo.objects
+        .count()
+    )
+
+    # ============================================================
+    # TRATAMENTOS COM CONDIÇÃO
+    # ============================================================
+    #
+    # Podemos aproveitar o conjunto que já carregamos anteriormente.
+    #
+    # Isso evita executar outra consulta COUNT DISTINCT.
+    # ============================================================
+
+    total_tratamentos_com_condicao = len(
+        todos_tratamento_ids
+    )
+
+    # ============================================================
+    # TRATAMENTOS SEM CONDIÇÃO
+    # ============================================================
+    #
+    # O queryset retorna apenas os tratamentos que não aparecem
+    # nas relações TratamentoCondicao.
+    # ============================================================
+
+    tratamentos_sem_condicao_qs = (
+        DetalhesTratamentoResumo.objects
+        .exclude(
+            id__in=todos_tratamento_ids
+        )
+        .order_by(
+            "nome",
+            "fabricante",
+        )
+    )
+
+    # ============================================================
+    # QUANTIDADE SEM CONDIÇÃO
+    # ============================================================
+
+    total_tratamentos_sem_condicao = (
+        tratamentos_sem_condicao_qs
+        .count()
+    )
+
+    # ============================================================
+    # PRIMEIROS 50 SEM CONDIÇÃO
+    # ============================================================
+    #
+    # Mantemos o limite para não enviar milhares de linhas HTML.
+    # ============================================================
+
+    tratamentos_sem_condicao = []
+
+    for tratamento in (
+        tratamentos_sem_condicao_qs[:50]
+    ):
+
+        try:
+
+            admin_url = reverse(
+                "admin:core_detalhestratamentoresumo_change",
+                args=[
+                    tratamento.pk
+                ],
+            )
+
+        except Exception:
+
+            admin_url = ""
+
+        tratamentos_sem_condicao.append({
+
+            "id": (
+                tratamento.pk
+            ),
+
+            "nome": (
+                tratamento.nome
+                or "-"
+            ),
+
+            "fabricante": (
+                tratamento.fabricante
+                or "-"
+            ),
+
+            "principio_ativo": (
+                tratamento.principio_ativo
+                or "-"
+            ),
+
+            "admin_url": (
+                admin_url
+            ),
+        })
+
+    # ============================================================
     # KPIs
     # ============================================================
 
@@ -351,6 +677,7 @@ def relatorios_dashboard(request):
         tabela_resumo
     )
 
+    # Tratamentos encontrados dentro das condições e filtros
     total_tratamentos = len(
         tratamentos_ids_filtrados
     )
@@ -371,14 +698,20 @@ def relatorios_dashboard(request):
         total_urls_detalhe_ausentes
     )
 
+    # ============================================================
+    # COBERTURA
+    # ============================================================
+
     cobertura_url = 0
 
     if total_registros:
+
         cobertura_url = round(
             (
                 total_urls_publicadas
                 / total_registros
-            ) * 100,
+            )
+            * 100,
             1,
         )
 
@@ -387,16 +720,25 @@ def relatorios_dashboard(request):
     # ============================================================
 
     tabela_resumo.sort(
-        key=lambda x: (
-            -x["tratamentos"],
-            x["nome"].lower(),
+        key=lambda item: (
+            -item["tratamentos"],
+            (
+                item["nome"]
+                or ""
+            ).lower(),
         )
     )
 
     tabela_completa.sort(
-        key=lambda x: (
-            x["condicao"].lower(),
-            x["tratamento"].lower(),
+        key=lambda item: (
+            (
+                item["condicao"]
+                or ""
+            ).lower(),
+            (
+                item["tratamento"]
+                or ""
+            ).lower(),
         )
     )
 
@@ -405,30 +747,99 @@ def relatorios_dashboard(request):
     # ============================================================
 
     context = {
-        "title": "Relatórios",
 
-        "tabela": tabela_resumo,
-        "tabela_completa": tabela_completa,
+        "title": (
+            "Relatórios"
+        ),
 
-        "total_condicoes": total_condicoes,
-        "total_tratamentos": total_tratamentos,
-        "total_principios": total_principios,
-        "total_registros": total_registros,
+        # --------------------------------------------------------
+        # TABELAS
+        # --------------------------------------------------------
+
+        "tabela": (
+            tabela_resumo
+        ),
+
+        "tabela_completa": (
+            tabela_completa
+        ),
+
+        "tratamentos_sem_condicao": (
+            tratamentos_sem_condicao
+        ),
+
+        # --------------------------------------------------------
+        # KPIs
+        # --------------------------------------------------------
+
+        "total_condicoes": (
+            total_condicoes
+        ),
+
+        "total_tratamentos": (
+            total_tratamentos
+        ),
+
+        "total_tratamentos_cadastrados": (
+            total_tratamentos_cadastrados
+        ),
+
+        "total_tratamentos_com_condicao": (
+            total_tratamentos_com_condicao
+        ),
+
+        "total_tratamentos_sem_condicao": (
+            total_tratamentos_sem_condicao
+        ),
+
+        "total_principios": (
+            total_principios
+        ),
+
+        "total_registros": (
+            total_registros
+        ),
+
+        # --------------------------------------------------------
+        # URLS
+        # --------------------------------------------------------
 
         "total_urls_publicadas": (
             total_urls_publicadas
         ),
 
-        "total_sem_url": total_sem_url,
+        "total_sem_url": (
+            total_sem_url
+        ),
 
-        "cobertura_url": cobertura_url,
+        "cobertura_url": (
+            cobertura_url
+        ),
 
-        # Filtros atuais
-        "filtro_doenca": filtro_doenca,
-        "filtro_tratamento": filtro_tratamento,
-        "filtro_principio": filtro_principio,
-        "filtro_url": filtro_url,
+        # --------------------------------------------------------
+        # FILTROS
+        # --------------------------------------------------------
+
+        "filtro_doenca": (
+            filtro_doenca
+        ),
+
+        "filtro_tratamento": (
+            filtro_tratamento
+        ),
+
+        "filtro_principio": (
+            filtro_principio
+        ),
+
+        "filtro_url": (
+            filtro_url
+        ),
     }
+
+    # ============================================================
+    # RENDER
+    # ============================================================
 
     return render(
         request,
