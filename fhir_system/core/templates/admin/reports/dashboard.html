@@ -1102,6 +1102,145 @@
     </div>
 
     <!-- ======================================================
+         TRATAMENTOS COM CONDIÇÃO, MAS SEM URL ASSOCIADA
+    ======================================================= -->
+
+    <div class="table-card" id="card-tratamentos-sem-url">
+
+        <div class="table-header">
+
+            <div>
+                <div class="chart-title">
+                    Tratamentos com condição associada, mas sem URL
+                </div>
+
+                <div class="chart-description">
+                    Tratamentos que já possuem vínculo com uma condição
+                    de saúde, mas ainda não possuem página de detalhe publicada.
+                </div>
+            </div>
+
+            <div class="table-count">
+                {{ total_tratamentos_sem_url }}
+                tratamento{{ total_tratamentos_sem_url|pluralize }}
+            </div>
+
+        </div>
+
+        <div class="table-scroll">
+
+            <table class="report-table">
+
+                <thead>
+                    <tr>
+                        <th>Tratamento</th>
+                        <th>Condição associada sem URL</th>
+                        <th>Fabricante</th>
+                        <th>Princípio ativo</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for item in tratamentos_sem_url %}
+
+                    <tr class="linha-tratamento-sem-url">
+
+                        <td class="cell-main">
+                            {% if item.nome == "-" %}
+                                <span class="cell-muted">
+                                    Não informado
+                                </span>
+                            {% else %}
+                                {{ item.nome }}
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if item.condicoes_texto %}
+                                {{ item.condicoes_texto }}
+                            {% else %}
+                                <span class="cell-muted">—</span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if item.fabricante == "-" %}
+                                <span class="cell-muted">
+                                    Não informado
+                                </span>
+                            {% else %}
+                                {{ item.fabricante }}
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if item.principio_ativo == "-" %}
+                                <span class="cell-muted">
+                                    Não informado
+                                </span>
+                            {% else %}
+                                {{ item.principio_ativo }}
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if item.admin_url %}
+                                <a
+                                    class="url-link"
+                                    href="{{ item.admin_url }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Editar tratamento
+                                </a>
+                            {% else %}
+                                <span class="cell-muted">—</span>
+                            {% endif %}
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td
+                            colspan="5"
+                            class="empty-state"
+                        >
+                            Nenhum tratamento com condição associada
+                            está sem URL de detalhe publicada.
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div
+            id="paginacao-tratamentos-sem-url"
+            class="dashboard-pagination"
+        >
+            <div
+                id="paginacao-tratamentos-sem-url-info"
+                class="dashboard-pagination-info"
+            ></div>
+
+            <div
+                id="paginacao-tratamentos-sem-url-botoes"
+                class="dashboard-pagination-buttons"
+            ></div>
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
          TRATAMENTOS SEM CONDIÇÃO ASSOCIADA
     ======================================================= -->
 
@@ -1856,6 +1995,230 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     renderizarPagina();
+
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    function iniciarPaginacaoTabela(config) {
+
+        const linhas = Array.from(
+            document.querySelectorAll(config.seletorLinhas)
+        );
+
+        const container = document.getElementById(
+            config.idContainer
+        );
+
+        const info = document.getElementById(
+            config.idInfo
+        );
+
+        const botoes = document.getElementById(
+            config.idBotoes
+        );
+
+        if (!container || !info || !botoes) {
+            return;
+        }
+
+        if (!linhas.length) {
+            container.style.display = "none";
+            return;
+        }
+
+        const porPagina = 20;
+        const total = linhas.length;
+        const totalPaginas = Math.ceil(
+            total / porPagina
+        );
+
+        let paginaAtual = 1;
+
+        function criarBotao(
+            texto,
+            pagina,
+            ativo,
+            desabilitado
+        ) {
+            const botao = document.createElement(
+                "button"
+            );
+
+            botao.type = "button";
+            botao.textContent = texto;
+            botao.className =
+                "dashboard-page-button";
+
+            if (ativo) {
+                botao.classList.add("active");
+            }
+
+            botao.disabled = desabilitado;
+
+            if (!desabilitado) {
+                botao.addEventListener(
+                    "click",
+                    function () {
+                        paginaAtual = pagina;
+                        renderizar();
+
+                        const card = document.getElementById(
+                            "card-tratamentos-sem-url"
+                        );
+
+                        if (card) {
+                            card.scrollIntoView({
+                                behavior: "smooth",
+                                block: "start"
+                            });
+                        }
+                    }
+                );
+            }
+
+            return botao;
+        }
+
+        function criarReticencias() {
+            const span = document.createElement(
+                "span"
+            );
+
+            span.className =
+                "dashboard-page-ellipsis";
+
+            span.textContent = "...";
+
+            return span;
+        }
+
+        function renderizarBotoes() {
+
+            botoes.innerHTML = "";
+
+            botoes.appendChild(
+                criarBotao(
+                    "‹",
+                    paginaAtual - 1,
+                    false,
+                    paginaAtual === 1
+                )
+            );
+
+            const paginas = new Set([
+                1,
+                totalPaginas,
+                paginaAtual,
+                paginaAtual - 1,
+                paginaAtual + 1,
+                paginaAtual - 2,
+                paginaAtual + 2
+            ]);
+
+            const paginasValidas = Array.from(
+                paginas
+            )
+            .filter(function (pagina) {
+                return (
+                    pagina >= 1 &&
+                    pagina <= totalPaginas
+                );
+            })
+            .sort(function (a, b) {
+                return a - b;
+            });
+
+            let paginaAnterior = null;
+
+            paginasValidas.forEach(
+                function (pagina) {
+
+                    if (
+                        paginaAnterior !== null &&
+                        pagina - paginaAnterior > 1
+                    ) {
+                        botoes.appendChild(
+                            criarReticencias()
+                        );
+                    }
+
+                    botoes.appendChild(
+                        criarBotao(
+                            String(pagina),
+                            pagina,
+                            pagina === paginaAtual,
+                            false
+                        )
+                    );
+
+                    paginaAnterior = pagina;
+                }
+            );
+
+            botoes.appendChild(
+                criarBotao(
+                    "›",
+                    paginaAtual + 1,
+                    false,
+                    paginaAtual === totalPaginas
+                )
+            );
+        }
+
+        function renderizar() {
+
+            const inicio =
+                (paginaAtual - 1) * porPagina;
+
+            const fim = Math.min(
+                inicio + porPagina,
+                total
+            );
+
+            linhas.forEach(
+                function (linha, indice) {
+                    linha.style.display = (
+                        indice >= inicio &&
+                        indice < fim
+                    )
+                    ? ""
+                    : "none";
+                }
+            );
+
+            info.textContent =
+                "Exibindo " +
+                (inicio + 1) +
+                "–" +
+                fim +
+                " de " +
+                total +
+                " tratamentos";
+
+            renderizarBotoes();
+        }
+
+        if (totalPaginas <= 1) {
+            container.style.display = "none";
+            return;
+        }
+
+        renderizar();
+    }
+
+    iniciarPaginacaoTabela({
+        seletorLinhas:
+            ".linha-tratamento-sem-url",
+        idContainer:
+            "paginacao-tratamentos-sem-url",
+        idInfo:
+            "paginacao-tratamentos-sem-url-info",
+        idBotoes:
+            "paginacao-tratamentos-sem-url-botoes"
+    });
 
 });
 </script>

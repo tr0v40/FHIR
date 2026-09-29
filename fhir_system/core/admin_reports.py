@@ -568,6 +568,118 @@ def relatorios_dashboard(request):
         })
 
     # ============================================================
+    # TRATAMENTOS COM CONDIÇÃO ASSOCIADA, MAS SEM URL
+    # ============================================================
+    #
+    # IMPORTANTE:
+    # - não executa consultas adicionais;
+    # - reutiliza tratamentos_map, tratamentos_por_condicao e
+    #   paginas_detalhe_chaves já carregados em memória;
+    # - cada tratamento aparece apenas uma vez;
+    # - se faltar URL em mais de uma condição, as condições são
+    #   agrupadas na mesma linha.
+    # ============================================================
+
+    tratamentos_sem_url_map = {}
+
+    for condicao in condicoes:
+
+        tratamento_ids = tratamentos_por_condicao.get(
+            condicao.id,
+            set(),
+        )
+
+        for tratamento_id in tratamento_ids:
+
+            tratamento = tratamentos_map.get(
+                tratamento_id
+            )
+
+            # O tratamento pode não estar no mapa quando foi
+            # eliminado pelos filtros de tratamento/princípio.
+            if not tratamento:
+                continue
+
+            chave_url = (
+                condicao.id,
+                tratamento.id,
+            )
+
+            # Nesta tabela entram SOMENTE relações que:
+            # 1. possuem condição associada;
+            # 2. não possuem URL de detalhe publicada.
+            if chave_url in paginas_detalhe_chaves:
+                continue
+
+            item = tratamentos_sem_url_map.get(
+                tratamento.id
+            )
+
+            if item is None:
+
+                try:
+                    admin_url = reverse(
+                        "admin:core_detalhestratamentoresumo_change",
+                        args=[tratamento.pk],
+                    )
+                except Exception:
+                    admin_url = ""
+
+                item = {
+                    "id": tratamento.pk,
+                    "nome": tratamento.nome or "-",
+                    "fabricante": tratamento.fabricante or "-",
+                    "principio_ativo": (
+                        tratamento.principio_ativo or "-"
+                    ),
+                    "condicoes": [],
+                    "admin_url": admin_url,
+                }
+
+                tratamentos_sem_url_map[
+                    tratamento.id
+                ] = item
+
+            nome_condicao = (
+                condicao.nome
+                or getattr(
+                    condicao,
+                    "condition",
+                    "",
+                )
+                or "-"
+            )
+
+            if nome_condicao not in item["condicoes"]:
+                item["condicoes"].append(
+                    nome_condicao
+                )
+
+    tratamentos_sem_url = list(
+        tratamentos_sem_url_map.values()
+    )
+
+    for item in tratamentos_sem_url:
+        item["condicoes"].sort(
+            key=lambda valor: valor.lower()
+        )
+        item["condicoes_texto"] = ", ".join(
+            item["condicoes"]
+        )
+
+    tratamentos_sem_url.sort(
+        key=lambda item: (
+            (item["nome"] or "").lower(),
+            (item["fabricante"] or "").lower(),
+        )
+    )
+
+    total_tratamentos_sem_url = len(
+        tratamentos_sem_url
+    )
+
+
+    # ============================================================
     # TRATAMENTOS CADASTRADOS
     # ============================================================
 
@@ -766,6 +878,14 @@ def relatorios_dashboard(request):
 
         "tratamentos_sem_condicao": (
             tratamentos_sem_condicao
+        ),
+
+        "tratamentos_sem_url": (
+            tratamentos_sem_url
+        ),
+
+        "total_tratamentos_sem_url": (
+            total_tratamentos_sem_url
         ),
 
         # --------------------------------------------------------
