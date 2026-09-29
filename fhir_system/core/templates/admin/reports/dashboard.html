@@ -1,0 +1,1414 @@
+{% extends "admin/base_site.html" %}
+
+{% block extrahead %}
+{{ block.super }}
+
+<script src="https://cdn.plot.ly/plotly-3.1.0.min.js"></script>
+
+<style>
+
+    /* ==========================================================
+       CONTAINER
+    ========================================================== */
+
+    .report-container {
+        width: 100%;
+        max-width: none;
+        padding: 8px 4px 40px;
+        box-sizing: border-box;
+    }
+
+
+    /* ==========================================================
+       CABEÇALHO
+    ========================================================== */
+
+    .report-header {
+        margin-bottom: 18px;
+    }
+
+    .report-header h1 {
+        margin: 0 0 4px 0;
+        font-size: 28px;
+        font-weight: 700;
+        color: #111827;
+    }
+
+    .report-subtitle {
+        font-size: 13px;
+        color: #6b7280;
+    }
+
+
+    /* ==========================================================
+       FILTROS
+    ========================================================== */
+
+    .filters-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+
+        padding: 16px;
+        margin-bottom: 18px;
+
+        box-shadow:
+            0 1px 2px rgba(0,0,0,.03);
+    }
+
+    .filters-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 12px;
+    }
+
+    .filters-grid {
+        display: grid;
+
+        grid-template-columns:
+            minmax(180px, 1fr)
+            minmax(180px, 1fr)
+            minmax(180px, 1fr)
+            minmax(140px, .6fr)
+            auto;
+
+        gap: 12px;
+        align-items: end;
+    }
+
+    .filter-field {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .filter-field label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #4b5563;
+    }
+
+    .filter-field input,
+    .filter-field select {
+        width: 100%;
+        height: 40px;
+
+        padding: 0 11px;
+
+        border: 1px solid #d1d5db;
+        border-radius: 7px;
+
+        background: #ffffff;
+        color: #111827;
+
+        box-sizing: border-box;
+    }
+
+    .filter-field input:focus,
+    .filter-field select:focus {
+        outline: none;
+        border-color: #2563eb;
+
+        box-shadow:
+            0 0 0 2px rgba(37,99,235,.10);
+    }
+
+    .filter-actions {
+        display: flex;
+        gap: 8px;
+        white-space: nowrap;
+    }
+
+    .filter-button,
+    .clear-button {
+        height: 40px;
+
+        padding: 0 16px;
+
+        border-radius: 7px;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 13px;
+        font-weight: 600;
+
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .filter-button {
+        border: 0;
+        background: #2563eb;
+        color: #ffffff;
+    }
+
+    .filter-button:hover {
+        background: #1d4ed8;
+        color: #ffffff;
+    }
+
+    .clear-button {
+        border: 1px solid #d1d5db;
+        background: #ffffff;
+        color: #374151;
+    }
+
+    .clear-button:hover {
+        background: #f9fafb;
+        color: #111827;
+    }
+
+
+    /* ==========================================================
+       KPIs
+    ========================================================== */
+
+    .kpi-grid {
+        display: grid;
+        grid-template-columns:
+            repeat(6, minmax(130px, 1fr));
+
+        gap: 12px;
+
+        margin-bottom: 18px;
+    }
+
+    .kpi-card {
+        background: #ffffff;
+
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+
+        padding: 16px;
+
+        box-shadow:
+            0 1px 3px rgba(0,0,0,.04);
+    }
+
+    .kpi-label {
+        color: #6b7280;
+        font-size: 11px;
+        margin-bottom: 7px;
+    }
+
+    .kpi-value {
+        color: #111827;
+        font-size: 26px;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+
+    /* ==========================================================
+       GRÁFICOS
+    ========================================================== */
+
+    .chart-grid {
+        display: grid;
+
+        grid-template-columns:
+            minmax(0, 2fr)
+            minmax(330px, 1fr);
+
+        gap: 16px;
+
+        margin-bottom: 18px;
+    }
+
+    .chart-card {
+        background: #ffffff;
+
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+
+        padding: 16px;
+
+        min-width: 0;
+
+        box-shadow:
+            0 1px 3px rgba(0,0,0,.03);
+    }
+
+    .chart-title {
+        color: #111827;
+        font-size: 15px;
+        font-weight: 700;
+
+        margin-bottom: 4px;
+    }
+
+    .chart-description {
+        font-size: 11px;
+        color: #6b7280;
+        margin-bottom: 6px;
+    }
+
+
+    /* ==========================================================
+       TABELAS
+    ========================================================== */
+
+    .table-card {
+        background: #ffffff;
+
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+
+        padding: 16px;
+
+        margin-bottom: 18px;
+
+        box-shadow:
+            0 1px 3px rgba(0,0,0,.03);
+    }
+
+    .table-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 15px;
+
+        margin-bottom: 12px;
+    }
+
+    .table-count {
+        font-size: 12px;
+        color: #6b7280;
+    }
+
+    .table-scroll {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .table-scroll-large {
+        width: 100%;
+        max-height: 650px;
+
+        overflow-x: auto;
+        overflow-y: auto;
+
+        border: 1px solid #f3f4f6;
+        border-radius: 8px;
+    }
+
+    .report-table {
+        width: 100%;
+
+        border-collapse: collapse;
+
+        font-size: 12px;
+    }
+
+    .report-table thead th {
+        background: #f8fafc;
+
+        color: #4b5563;
+
+        text-align: left;
+
+        padding: 11px 12px;
+
+        border-bottom: 1px solid #e5e7eb;
+
+        font-size: 11px;
+        font-weight: 700;
+
+        white-space: nowrap;
+    }
+
+    .table-scroll-large
+    .report-table thead th {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+    }
+
+    .report-table tbody td {
+        padding: 11px 12px;
+
+        border-bottom: 1px solid #f3f4f6;
+
+        color: #374151;
+
+        vertical-align: middle;
+    }
+
+    .report-table tbody tr:hover {
+        background: #f9fafb;
+    }
+
+    .report-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .cell-main {
+        font-weight: 600;
+        color: #111827;
+    }
+
+    .cell-muted {
+        color: #9ca3af;
+    }
+
+
+    /* ==========================================================
+       STATUS
+    ========================================================== */
+
+    .status-success {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        background: #dcfce7;
+        color: #166534;
+
+        border-radius: 999px;
+
+        padding: 4px 9px;
+
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .status-danger {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        background: #fee2e2;
+        color: #991b1b;
+
+        border-radius: 999px;
+
+        padding: 4px 9px;
+
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .status-warning {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        background: #fef3c7;
+        color: #92400e;
+
+        border-radius: 999px;
+
+        padding: 4px 9px;
+
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+
+    /* ==========================================================
+       LINK URL
+    ========================================================== */
+
+    .url-link {
+        font-size: 11px;
+        font-weight: 600;
+
+        color: #2563eb;
+
+        text-decoration: none;
+    }
+
+    .url-link:hover {
+        text-decoration: underline;
+    }
+
+
+    /* ==========================================================
+       ESTADO VAZIO
+    ========================================================== */
+
+    .empty-state {
+        padding: 30px !important;
+        text-align: center;
+
+        color: #6b7280 !important;
+
+        background: #fafafa;
+    }
+
+
+    /* ==========================================================
+       RESPONSIVO
+    ========================================================== */
+
+    @media (max-width: 1400px) {
+
+        .kpi-grid {
+            grid-template-columns:
+                repeat(3, 1fr);
+        }
+
+    }
+
+    @media (max-width: 1100px) {
+
+        .filters-grid {
+            grid-template-columns:
+                repeat(2, 1fr);
+        }
+
+        .filter-actions {
+            grid-column: span 2;
+        }
+
+        .chart-grid {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+    @media (max-width: 700px) {
+
+        .kpi-grid {
+            grid-template-columns:
+                repeat(2, 1fr);
+        }
+
+        .filters-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .filter-actions {
+            grid-column: auto;
+        }
+
+        .filter-button,
+        .clear-button {
+            flex: 1;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="report-container">
+
+
+    <!-- ======================================================
+         CABEÇALHO
+    ======================================================= -->
+
+    <div class="report-header">
+
+        <h1>
+            Dashboard de Conteúdo
+        </h1>
+
+        <div class="report-subtitle">
+            Acompanhamento das condições de saúde,
+            tratamentos, princípios ativos e cobertura
+            das páginas publicadas.
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         FILTROS
+    ======================================================= -->
+
+    <form
+        method="get"
+        class="filters-card"
+    >
+
+        <div class="filters-title">
+            Filtros
+        </div>
+
+        <div class="filters-grid">
+
+
+            <!-- Doença -->
+
+            <div class="filter-field">
+
+                <label for="doenca">
+                    Doença / condição
+                </label>
+
+                <input
+                    id="doenca"
+                    type="text"
+                    name="doenca"
+                    value="{{ filtro_doenca }}"
+                    placeholder="Ex.: Enxaqueca"
+                >
+
+            </div>
+
+
+            <!-- Tratamento -->
+
+            <div class="filter-field">
+
+                <label for="tratamento">
+                    Tratamento
+                </label>
+
+                <input
+                    id="tratamento"
+                    type="text"
+                    name="tratamento"
+                    value="{{ filtro_tratamento }}"
+                    placeholder="Ex.: Maxalt"
+                >
+
+            </div>
+
+
+            <!-- Princípio -->
+
+            <div class="filter-field">
+
+                <label for="principio">
+                    Princípio ativo
+                </label>
+
+                <input
+                    id="principio"
+                    type="text"
+                    name="principio"
+                    value="{{ filtro_principio }}"
+                    placeholder="Ex.: Rizatriptana"
+                >
+
+            </div>
+
+
+            <!-- URL -->
+
+            <div class="filter-field">
+
+                <label for="url">
+                    URL do tratamento
+                </label>
+
+                <select
+                    id="url"
+                    name="url"
+                >
+
+                    <option value="">
+                        Todas
+                    </option>
+
+                    <option
+                        value="sim"
+                        {% if filtro_url == "sim" %}
+                            selected
+                        {% endif %}
+                    >
+                        Com URL
+                    </option>
+
+                    <option
+                        value="nao"
+                        {% if filtro_url == "nao" %}
+                            selected
+                        {% endif %}
+                    >
+                        Sem URL
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Botões -->
+
+            <div class="filter-actions">
+
+                <button
+                    type="submit"
+                    class="filter-button"
+                >
+                    Pesquisar
+                </button>
+
+                <a
+                    href="{% url 'admin:relatorios-dashboard' %}"
+                    class="clear-button"
+                >
+                    Limpar
+                </a>
+
+            </div>
+
+        </div>
+
+    </form>
+
+
+    <!-- ======================================================
+         CARDS
+    ======================================================= -->
+
+    <div class="kpi-grid">
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Condições encontradas
+            </div>
+
+            <div class="kpi-value">
+                {{ total_condicoes }}
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Tratamentos encontrados
+            </div>
+
+            <div class="kpi-value">
+                {{ total_tratamentos }}
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Princípios ativos
+            </div>
+
+            <div class="kpi-value">
+                {{ total_principios }}
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Registros no relatório
+            </div>
+
+            <div class="kpi-value">
+                {{ total_registros }}
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                URLs de tratamentos
+            </div>
+
+            <div class="kpi-value">
+                {{ total_urls_publicadas }}
+            </div>
+
+        </div>
+
+
+        <div class="kpi-card">
+
+            <div class="kpi-label">
+                Cobertura de URLs
+            </div>
+
+            <div class="kpi-value">
+                {{ cobertura_url }}%
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ======================================================
+         GRÁFICOS
+    ======================================================= -->
+
+    <div class="chart-grid">
+
+
+        <!-- Tratamentos por condição -->
+
+        <div class="chart-card">
+
+            <div class="chart-title">
+                Tratamentos por condição
+            </div>
+
+            <div class="chart-description">
+                Quantidade de tratamentos encontrados
+                para cada condição de saúde.
+            </div>
+
+            <div
+                id="grafico-tratamentos"
+                style="height:520px;"
+            ></div>
+
+        </div>
+
+
+        <!-- Cobertura -->
+
+        <div class="chart-card">
+
+            <div class="chart-title">
+                Cobertura das URLs de tratamento
+            </div>
+
+            <div class="chart-description">
+                Tratamentos que possuem ou não página
+                de detalhe publicada.
+            </div>
+
+            <div
+                id="grafico-url"
+                style="height:520px;"
+            ></div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ======================================================
+         RESUMO POR CONDIÇÃO
+    ======================================================= -->
+
+    <div class="table-card">
+
+        <div class="table-header">
+
+            <div>
+
+                <div class="chart-title">
+                    Resumo por condição
+                </div>
+
+                <div class="chart-description">
+                    Consolidado dos tratamentos e
+                    princípios ativos por doença.
+                </div>
+
+            </div>
+
+            <div class="table-count">
+                {{ total_condicoes }}
+                condição{{ total_condicoes|pluralize:"ões" }}
+            </div>
+
+        </div>
+
+
+        <div class="table-scroll">
+
+            <table class="report-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Condição de saúde
+                        </th>
+
+                        <th>
+                            Tratamentos
+                        </th>
+
+                        <th>
+                            Princípios ativos
+                        </th>
+
+                        <th>
+                            URL da lista
+                        </th>
+
+                        <th>
+                            URLs de tratamentos
+                        </th>
+
+                        <th>
+                            Tratamentos sem URL
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in tabela %}
+
+                    <tr>
+
+                        <td class="cell-main">
+                            {{ item.nome }}
+                        </td>
+
+
+                        <td>
+                            {{ item.tratamentos }}
+                        </td>
+
+
+                        <td>
+                            {{ item.principios }}
+                        </td>
+
+
+                        <td>
+
+                            {% if item.possui_url_lista %}
+
+                                <span class="status-success">
+                                    Sim
+                                </span>
+
+                            {% else %}
+
+                                <span class="status-danger">
+                                    Não
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if item.urls_tratamentos > 0 %}
+
+                                <span class="status-success">
+                                    {{ item.urls_tratamentos }}
+                                </span>
+
+                            {% else %}
+
+                                <span class="status-danger">
+                                    0
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if item.sem_url_tratamentos > 0 %}
+
+                                <span class="status-warning">
+                                    {{ item.sem_url_tratamentos }}
+                                </span>
+
+                            {% else %}
+
+                                <span class="status-success">
+                                    0
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td
+                            colspan="6"
+                            class="empty-state"
+                        >
+                            Nenhuma condição encontrada
+                            com os filtros selecionados.
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================================
+         TABELA COMPLETA
+    ======================================================= -->
+
+    <div class="table-card">
+
+        <div class="table-header">
+
+            <div>
+
+                <div class="chart-title">
+                    Detalhamento completo
+                </div>
+
+                <div class="chart-description">
+                    Relação completa entre doença,
+                    tratamento, princípio ativo e página
+                    publicada.
+                </div>
+
+            </div>
+
+
+            <div class="table-count">
+
+                {{ total_registros }}
+
+                registro{{ total_registros|pluralize }}
+
+            </div>
+
+        </div>
+
+
+        <div class="table-scroll-large">
+
+            <table class="report-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Doença / condição
+                        </th>
+
+                        <th>
+                            Tratamento
+                        </th>
+
+                        <th>
+                            Princípio ativo
+                        </th>
+
+                        <th>
+                            Possui URL
+                        </th>
+
+                        <th>
+                            Página
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in tabela_completa %}
+
+                    <tr>
+
+
+                        <!-- Condição -->
+
+                        <td class="cell-main">
+
+                            {{ item.condicao }}
+
+                        </td>
+
+
+                        <!-- Tratamento -->
+
+                        <td>
+
+                            {{ item.tratamento }}
+
+                        </td>
+
+
+                        <!-- Princípio -->
+
+                        <td>
+
+                            {% if item.principio_ativo == "-" %}
+
+                                <span class="cell-muted">
+                                    Não informado
+                                </span>
+
+                            {% else %}
+
+                                {{ item.principio_ativo }}
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- URL -->
+
+                        <td>
+
+                            {% if item.possui_url %}
+
+                                <span class="status-success">
+                                    Sim
+                                </span>
+
+                            {% else %}
+
+                                <span class="status-danger">
+                                    Não
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- Página -->
+
+                        <td>
+
+                            {% if item.url_publica %}
+
+                                <a
+                                    class="url-link"
+                                    href="{{ item.url_publica }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Abrir página
+                                </a>
+
+                            {% else %}
+
+                                <span class="cell-muted">
+                                    —
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td
+                            colspan="5"
+                            class="empty-state"
+                        >
+                            Nenhum tratamento encontrado
+                            com os filtros selecionados.
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- ==========================================================
+     JSON PARA OS GRÁFICOS
+=========================================================== -->
+
+{{ tabela|json_script:"dados-relatorio" }}
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const elementoDados =
+            document.getElementById(
+                "dados-relatorio"
+            );
+
+        if (!elementoDados) {
+            return;
+        }
+
+        const dados = JSON.parse(
+            elementoDados.textContent
+        );
+
+
+        /* ======================================================
+           GRÁFICO 1
+           Tratamentos por condição
+        ====================================================== */
+
+        const topDados = [...dados]
+            .sort(
+                (a, b) =>
+                    b.tratamentos
+                    - a.tratamentos
+            )
+            .slice(0, 20);
+
+
+        const nomes = topDados
+            .map(
+                item => item.nome
+            )
+            .reverse();
+
+
+        const tratamentos = topDados
+            .map(
+                item => item.tratamentos
+            )
+            .reverse();
+
+
+        Plotly.newPlot(
+            "grafico-tratamentos",
+
+            [
+                {
+                    type: "bar",
+
+                    orientation: "h",
+
+                    y: nomes,
+
+                    x: tratamentos,
+
+                    text: tratamentos,
+
+                    textposition:
+                        "outside",
+
+                    cliponaxis:
+                        false,
+
+                    hovertemplate:
+                        "<b>%{y}</b><br>" +
+                        "Tratamentos: %{x}" +
+                        "<extra></extra>",
+                }
+            ],
+
+            {
+                autosize: true,
+
+                margin: {
+                    l: 190,
+                    r: 60,
+                    t: 20,
+                    b: 50,
+                },
+
+                xaxis: {
+                    title:
+                        "Quantidade de tratamentos",
+
+                    rangemode:
+                        "tozero",
+
+                    gridcolor:
+                        "#f3f4f6",
+
+                    zeroline:
+                        false,
+                },
+
+                yaxis: {
+                    automargin: true,
+                },
+
+                paper_bgcolor:
+                    "transparent",
+
+                plot_bgcolor:
+                    "transparent",
+
+                font: {
+                    family:
+                        "Arial, sans-serif",
+
+                    size: 11,
+
+                    color:
+                        "#374151",
+                },
+
+                showlegend: false,
+            },
+
+            {
+                responsive: true,
+                displaylogo: false,
+            }
+        );
+
+
+        /* ======================================================
+           GRÁFICO 2
+           Cobertura de URLs
+        ====================================================== */
+
+        const comUrl =
+            Number(
+                "{{ total_urls_publicadas|default:0 }}"
+            );
+
+        const semUrl =
+            Number(
+                "{{ total_sem_url|default:0 }}"
+            );
+
+
+        Plotly.newPlot(
+            "grafico-url",
+
+            [
+                {
+                    type: "pie",
+
+                    values: [
+                        comUrl,
+                        semUrl
+                    ],
+
+                    labels: [
+                        "Com URL",
+                        "Sem URL"
+                    ],
+
+                    hole: 0.70,
+
+                    textinfo:
+                        "label+percent",
+
+                    hovertemplate:
+                        "<b>%{label}</b><br>" +
+                        "Tratamentos: %{value}<br>" +
+                        "%{percent}" +
+                        "<extra></extra>",
+                }
+            ],
+
+            {
+                autosize: true,
+
+                margin: {
+                    l: 30,
+                    r: 30,
+                    t: 30,
+                    b: 30,
+                },
+
+                showlegend: true,
+
+                legend: {
+                    orientation: "h",
+                    x: 0.5,
+                    xanchor: "center",
+                    y: -0.05,
+                },
+
+                paper_bgcolor:
+                    "transparent",
+
+                font: {
+                    family:
+                        "Arial, sans-serif",
+
+                    color:
+                        "#374151",
+                },
+
+                annotations: [
+                    {
+                        text:
+                            "<b>{{ cobertura_url }}%</b>" +
+                            "<br>" +
+                            "<span style='font-size:11px'>" +
+                            "cobertura" +
+                            "</span>",
+
+                        x: 0.5,
+                        y: 0.5,
+
+                        xref: "paper",
+                        yref: "paper",
+
+                        font: {
+                            size: 21,
+                            color: "#111827",
+                        },
+
+                        showarrow: false,
+                    }
+                ],
+            },
+
+            {
+                responsive: true,
+                displaylogo: false,
+            }
+        );
+
+
+    }
+);
+
+</script>
+
+{% endblock %}

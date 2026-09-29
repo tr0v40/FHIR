@@ -10,6 +10,7 @@ from django.contrib.admin.models import LogEntry
 from django.utils.html import format_html
 from django.urls import path, reverse
 from django.utils.html import format_html
+from core.admin_reports import relatorios_dashboard
 from .models import SegurancaUso
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
@@ -877,15 +878,35 @@ admin.site.register(Avaliacao, AvaliacaoAdmin)
 # rota extra dentro do admin
 _original_get_urls = admin.site.get_urls
 
+
 def get_urls():
+
     urls = _original_get_urls()
+
     custom = [
-        path("urls-disponiveis/", admin_urls_list, name="urls-disponiveis"),
+
+        path(
+            "urls-disponiveis/",
+            admin.site.admin_view(
+                admin_urls_list
+            ),
+            name="urls-disponiveis",
+        ),
+
+        path(
+            "relatorios/",
+            admin.site.admin_view(
+                relatorios_dashboard
+            ),
+            name="relatorios-dashboard",
+        ),
+
     ]
+
     return custom + urls
 
-admin.site.get_urls = get_urls
 
+admin.site.get_urls = get_urls
 
 
 
@@ -920,6 +941,29 @@ class PaginaDetalheTratamentoAdmin(admin.ModelAdmin):
         ("Sistema", {"fields": ("created_at",), "classes": ("collapse",)}),
     )
     readonly_fields = ("created_at",)
+
+    def formfield_for_foreignkey(
+        self,
+        db_field,
+        request,
+        **kwargs
+    ):
+        formfield = super().formfield_for_foreignkey(
+            db_field,
+            request,
+            **kwargs
+        )
+
+        if db_field.name == "tratamento":
+
+            formfield.label_from_instance = (
+                lambda obj:
+                    f"{obj.nome} — {obj.fabricante}"
+                    if obj.fabricante
+                    else f"{obj.nome} — Sem fabricante"
+            )
+
+        return formfield
 
  
     def _public_url_path(self, obj):
@@ -1955,25 +1999,6 @@ class TreatmentUrlEnglishAdmin(admin.ModelAdmin):
     @admin.display(description="Health condition")
     def condition_en(self, obj):
         return obj.condition.condition or obj.condition.nome
-
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-
-        return (
-            queryset
-            .filter(
-                models.Q(
-                    template="core/lista_tratamentos.html"
-                )
-                | models.Q(template__isnull=True)
-                | models.Q(template="")
-            )
-            .select_related(
-                "condicao_saude",
-                "tipo_eficacia",
-            )
-            .distinct()
-        )
 
     def _public_url_path(self, obj):
         condition_slug = obj.condition.condition_slug or obj.condition.slug

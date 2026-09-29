@@ -485,8 +485,6 @@ class DetalhesTratamentoResumo(models.Model):
             self.slug = slug
         super().save(*args, **kwargs)
 
-    def __str__(self):
-        return self.nome
     
     fabricante = models.CharField(max_length=200,blank=True)
     id_tratamento = models.CharField(
@@ -626,6 +624,9 @@ class DetalhesTratamentoResumo(models.Model):
         verbose_name_plural = "Detalhes Tratamentos - Resumo"
 
     def __str__(self):
+        if self.fabricante:
+            return f"{self.nome} — {self.fabricante}"
+
         return self.nome
 
 COUNTRY_TRANSLATION = {

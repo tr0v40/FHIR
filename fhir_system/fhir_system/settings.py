@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv(
     "DJANGO_SECRET_KEY", "chave-secreta"
 )  # Usa 'chave-secreta' se não houver .env
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = [
@@ -168,21 +168,23 @@ JAZZMIN_SETTINGS = {
     "user_avatar": None,
     "show_sidebar": True,
     "navigation_expanded": True,
+
     "icons": {
         "auth.User": "fas fa-user",
         "auth.Group": "fas fa-users",
         "core.ResourceStudyReport": "fas fa-file-medical-alt",
     },
+
     "custom_links": {
         "core": [
             {
                 "name": "Ver Relatórios",
-                "url": "admin:core_resourcestudyreport_changelist",
-                "icon": "fas fa-file-alt",
-                "permissions": ["core.view_resourcestudyreport"],
+                "url": "admin:relatorios-dashboard",
+                "icon": "fas fa-chart-bar",
             }
         ]
     },
+
     "show_ui_builder": False,
 }
 
