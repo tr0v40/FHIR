@@ -38,7 +38,102 @@
         font-size: 13px;
         color: #6b7280;
     }
+/* ==========================================================
+   PAGINAÇÃO DAS TABELAS
+========================================================== */
 
+.dashboard-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    padding-top: 16px;
+    margin-top: 4px;
+
+    border-top: 1px solid #e5e7eb;
+}
+
+
+.dashboard-pagination-info {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+
+.dashboard-pagination-buttons {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+
+.dashboard-page-button {
+    min-width: 34px;
+    height: 34px;
+
+    padding: 0 10px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+
+    background: #ffffff;
+    color: #374151;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease;
+}
+
+
+.dashboard-page-button:hover:not(:disabled) {
+    background: #f3f4f6;
+}
+
+
+.dashboard-page-button.active {
+    background: #2563eb;
+    border-color: #2563eb;
+    color: #ffffff;
+}
+
+
+.dashboard-page-button:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+
+.dashboard-page-ellipsis {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 28px;
+
+    font-size: 12px;
+    color: #6b7280;
+}
+
+
+@media (max-width: 700px) {
+
+    .dashboard-pagination {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dashboard-pagination-buttons {
+        flex-wrap: wrap;
+    }
+}
 
     /* ==========================================================
        FILTROS
@@ -814,7 +909,6 @@
 
     </div>
 
-
     <!-- ======================================================
          RESUMO POR CONDIÇÃO
     ======================================================= -->
@@ -885,7 +979,7 @@
 
                     {% for item in tabela %}
 
-                    <tr>
+                    <tr class="linha-resumo-condicao">
 
                         <td class="cell-main">
                             {{ item.nome }}
@@ -979,6 +1073,29 @@
                 </tbody>
 
             </table>
+
+        </div>
+
+
+        <!-- ==================================================
+             PAGINAÇÃO DO RESUMO POR CONDIÇÃO
+        =================================================== -->
+
+        <div
+            id="paginacao-resumo-condicao"
+            class="dashboard-pagination"
+        >
+
+            <div
+                id="paginacao-resumo-info"
+                class="dashboard-pagination-info"
+            ></div>
+
+
+            <div
+                id="paginacao-resumo-botoes"
+                class="dashboard-pagination-buttons"
+            ></div>
 
         </div>
 
@@ -1164,6 +1281,203 @@
                 </tbody>
 
             </table>
+
+        </div>
+
+    </div>
+    <!-- ======================================================
+         TABELA COMPLETA
+    ======================================================= -->
+
+    <div class="table-card">
+
+        <div class="table-header">
+
+            <div>
+
+                <div class="chart-title">
+                    Detalhamento completo
+                </div>
+
+                <div class="chart-description">
+                    Relação completa entre doença,
+                    tratamento, princípio ativo e página
+                    publicada.
+                </div>
+
+            </div>
+
+
+            <div class="table-count">
+
+                {{ total_registros }}
+
+                registro{{ total_registros|pluralize }}
+
+            </div>
+
+        </div>
+
+
+        <div class="table-scroll-large">
+
+            <table class="report-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Doença / condição
+                        </th>
+
+                        <th>
+                            Tratamento
+                        </th>
+
+                        <th>
+                            Princípio ativo
+                        </th>
+
+                        <th>
+                            Possui URL
+                        </th>
+
+                        <th>
+                            Página
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in tabela_completa %}
+
+                    <tr>
+
+
+                        <!-- Condição -->
+
+                        <td class="cell-main">
+
+                            {{ item.condicao }}
+
+                        </td>
+
+
+                        <!-- Tratamento -->
+
+                        <td>
+
+                            {{ item.tratamento }}
+
+                        </td>
+
+
+                        <!-- Princípio -->
+
+                        <td>
+
+                            {% if item.principio_ativo == "-" %}
+
+                                <span class="cell-muted">
+                                    Não informado
+                                </span>
+
+                            {% else %}
+
+                                {{ item.principio_ativo }}
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- URL -->
+
+                        <td>
+
+                            {% if item.possui_url %}
+
+                                <span class="status-success">
+                                    Sim
+                                </span>
+
+                            {% else %}
+
+                                <span class="status-danger">
+                                    Não
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <!-- Página -->
+
+                        <td>
+
+                            {% if item.url_publica %}
+
+                                <a
+                                    class="url-link"
+                                    href="{{ item.url_publica }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Abrir página
+                                </a>
+
+                            {% else %}
+
+                                <span class="cell-muted">
+                                    —
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td
+                            colspan="5"
+                            class="empty-state"
+                        >
+                            Nenhum tratamento encontrado
+                            com os filtros selecionados.
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+            <div
+    id="paginacao-resumo-condicao"
+    class="dashboard-pagination"
+>
+    <div
+        id="paginacao-resumo-info"
+        class="dashboard-pagination-info"
+    ></div>
+
+    <div
+        id="paginacao-resumo-botoes"
+        class="dashboard-pagination-buttons"
+    ></div>
+</div>
 
         </div>
 
@@ -1604,6 +1918,328 @@ document.addEventListener(
     }
 );
 
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const linhas = Array.from(
+        document.querySelectorAll(
+            ".linha-resumo-condicao"
+        )
+    );
+
+    const containerPaginacao = document.getElementById(
+        "paginacao-resumo-condicao"
+    );
+
+    const infoPaginacao = document.getElementById(
+        "paginacao-resumo-info"
+    );
+
+    const botoesPaginacao = document.getElementById(
+        "paginacao-resumo-botoes"
+    );
+
+    if (
+        !linhas.length ||
+        !containerPaginacao ||
+        !infoPaginacao ||
+        !botoesPaginacao
+    ) {
+        return;
+    }
+
+
+    /* ======================================================
+       CONFIGURAÇÃO
+    ====================================================== */
+
+    const registrosPorPagina = 20;
+
+    const totalRegistros = linhas.length;
+
+    const totalPaginas = Math.ceil(
+        totalRegistros / registrosPorPagina
+    );
+
+    let paginaAtual = 1;
+
+
+    /* ======================================================
+       CRIA BOTÃO
+    ====================================================== */
+
+    function criarBotao(
+        texto,
+        pagina,
+        ativo = false,
+        desabilitado = false
+    ) {
+
+        const botao = document.createElement(
+            "button"
+        );
+
+        botao.type = "button";
+
+        botao.textContent = texto;
+
+        botao.className =
+            "dashboard-page-button";
+
+        if (ativo) {
+            botao.classList.add(
+                "active"
+            );
+        }
+
+        botao.disabled = desabilitado;
+
+        if (!desabilitado) {
+
+            botao.addEventListener(
+                "click",
+                function () {
+
+                    paginaAtual = pagina;
+
+                    renderizarPagina();
+
+                    /*
+                     * Mantém o usuário próximo da tabela
+                     * quando troca de página.
+                     */
+                    const tabela = document.querySelector(
+                        ".linha-resumo-condicao"
+                    );
+
+                    if (tabela) {
+
+                        const tabelaContainer = tabela.closest(
+                            ".table-card"
+                        );
+
+                        if (tabelaContainer) {
+
+                            tabelaContainer.scrollIntoView({
+                                behavior: "smooth",
+                                block: "start"
+                            });
+
+                        }
+
+                    }
+
+                }
+            );
+
+        }
+
+        return botao;
+    }
+
+
+    /* ======================================================
+       RETICÊNCIAS
+    ====================================================== */
+
+    function criarReticencias() {
+
+        const span = document.createElement(
+            "span"
+        );
+
+        span.className =
+            "dashboard-page-ellipsis";
+
+        span.textContent = "...";
+
+        return span;
+    }
+
+
+    /* ======================================================
+       RENDERIZA BOTÕES
+    ====================================================== */
+
+    function renderizarPaginacao() {
+
+        botoesPaginacao.innerHTML = "";
+
+
+        /* --------------------------------------------------
+           ANTERIOR
+        -------------------------------------------------- */
+
+        botoesPaginacao.appendChild(
+            criarBotao(
+                "‹",
+                paginaAtual - 1,
+                false,
+                paginaAtual === 1
+            )
+        );
+
+
+        /* --------------------------------------------------
+           PÁGINAS
+        -------------------------------------------------- */
+
+        const paginas = new Set();
+
+        paginas.add(1);
+
+        paginas.add(totalPaginas);
+
+        paginas.add(paginaAtual);
+
+        paginas.add(paginaAtual - 1);
+
+        paginas.add(paginaAtual + 1);
+
+        paginas.add(paginaAtual - 2);
+
+        paginas.add(paginaAtual + 2);
+
+
+        const paginasValidas = Array.from(
+            paginas
+        )
+        .filter(function (pagina) {
+
+            return (
+                pagina >= 1 &&
+                pagina <= totalPaginas
+            );
+
+        })
+        .sort(function (a, b) {
+
+            return a - b;
+
+        });
+
+
+        let paginaAnterior = null;
+
+
+        paginasValidas.forEach(
+            function (pagina) {
+
+                if (
+                    paginaAnterior !== null &&
+                    pagina - paginaAnterior > 1
+                ) {
+
+                    botoesPaginacao.appendChild(
+                        criarReticencias()
+                    );
+
+                }
+
+
+                botoesPaginacao.appendChild(
+                    criarBotao(
+                        String(pagina),
+                        pagina,
+                        pagina === paginaAtual,
+                        false
+                    )
+                );
+
+
+                paginaAnterior = pagina;
+
+            }
+        );
+
+
+        /* --------------------------------------------------
+           PRÓXIMA
+        -------------------------------------------------- */
+
+        botoesPaginacao.appendChild(
+            criarBotao(
+                "›",
+                paginaAtual + 1,
+                false,
+                paginaAtual === totalPaginas
+            )
+        );
+    }
+
+
+    /* ======================================================
+       RENDERIZA PÁGINA
+    ====================================================== */
+
+    function renderizarPagina() {
+
+        const inicio = (
+            paginaAtual - 1
+        ) * registrosPorPagina;
+
+        const fim = Math.min(
+            inicio + registrosPorPagina,
+            totalRegistros
+        );
+
+
+        linhas.forEach(
+            function (linha, indice) {
+
+                if (
+                    indice >= inicio &&
+                    indice < fim
+                ) {
+
+                    linha.style.display = "";
+
+                } else {
+
+                    linha.style.display = "none";
+
+                }
+
+            }
+        );
+
+
+        /* --------------------------------------------------
+           TEXTO
+        -------------------------------------------------- */
+
+        infoPaginacao.textContent =
+            "Exibindo " +
+            (inicio + 1) +
+            "–" +
+            fim +
+            " de " +
+            totalRegistros +
+            " condições";
+
+
+        renderizarPaginacao();
+    }
+
+
+    /* ======================================================
+       INICIALIZA
+    ====================================================== */
+
+    if (totalPaginas <= 1) {
+
+        containerPaginacao.style.display =
+            "none";
+
+        return;
+    }
+
+
+    renderizarPagina();
+
+});
 </script>
 
 {% endblock %}
