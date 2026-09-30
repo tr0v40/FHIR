@@ -968,7 +968,7 @@ class PaginaDetalheTratamentoAdmin(admin.ModelAdmin):
  
     def _public_url_path(self, obj):
         return reverse(
-            "pagina_detalhe_tratamento",
+            "pagina_detalhe_tratamento_v2",
             kwargs={"condicao_slug": obj.condicao.slug, "tratamento_slug": obj.tratamento.slug},
         )
 

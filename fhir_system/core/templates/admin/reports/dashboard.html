@@ -121,7 +121,155 @@
     font-size: 12px;
     color: #6b7280;
 }
+/* ==========================================================
+   EXPANSÃO DOS TRATAMENTOS POR CONDIÇÃO
+========================================================== */
 
+.condition-expand-button {
+    width: 24px;
+    height: 24px;
+
+    margin-right: 8px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+
+    background: #ffffff;
+    color: #2563eb;
+
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+
+    cursor: pointer;
+}
+
+.condition-expand-button:hover {
+    background: #eff6ff;
+    border-color: #2563eb;
+}
+
+
+.condition-expand-placeholder {
+    display: inline-block;
+
+    width: 24px;
+
+    margin-right: 8px;
+}
+
+
+.condition-detail-row > td {
+    padding: 0 !important;
+
+    background: #f8fafc;
+}
+
+
+.condition-detail-container {
+    padding: 14px 24px 18px 48px;
+}
+
+
+.condition-detail-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+}
+
+
+.condition-detail-table th {
+    padding: 10px 12px;
+
+    text-align: left;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    color: #6b7280;
+
+    background: #f9fafb;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+
+.condition-detail-table td {
+    padding: 10px 12px;
+
+    font-size: 12px;
+
+    border-bottom: 1px solid #f1f5f9;
+}
+
+
+.condition-detail-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.condition-detail-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    padding: 12px 0 0;
+}
+
+.condition-detail-pagination-info {
+    font-size: 11px;
+    color: #6b7280;
+}
+
+.condition-detail-pagination-buttons {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.condition-detail-page-button {
+    min-width: 30px;
+    height: 30px;
+
+    padding: 0 8px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+
+    background: #ffffff;
+    color: #374151;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.condition-detail-page-button:hover:not(:disabled) {
+    border-color: #2563eb;
+    color: #2563eb;
+}
+
+.condition-detail-page-button.active {
+    border-color: #2563eb;
+    background: #2563eb;
+    color: #ffffff;
+}
+
+.condition-detail-page-button:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.condition-detail-page-ellipsis {
+    padding: 0 3px;
+    color: #6b7280;
+}
 
 @media (max-width: 700px) {
 
@@ -980,10 +1128,30 @@
                     {% for item in tabela %}
 
                     <tr class="linha-resumo-condicao">
+                    <td class="cell-main">
 
-                        <td class="cell-main">
-                            {{ item.nome }}
-                        </td>
+                        {% if item.tratamentos > 0 %}
+
+                            <button
+                                type="button"
+                                class="condition-expand-button"
+                                data-condition-id="{{ item.id }}"
+                                aria-expanded="false"
+                                title="Ver tratamentos"
+                            >
+                                +
+                            </button>
+
+                        {% else %}
+
+                            <span class="condition-expand-placeholder">
+                            </span>
+
+                        {% endif %}
+
+                        {{ item.nome }}
+
+                    </td>
 
 
                         <td>
@@ -1053,6 +1221,175 @@
                         </td>
 
                     </tr>
+<tr
+    class="condition-detail-row"
+    id="condition-detail-{{ item.id }}"
+    style="display: none;"
+>
+
+    <td colspan="6">
+
+        <div class="condition-detail-container">
+
+            <table class="condition-detail-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Tratamento</th>
+                        <th>Princípio ativo</th>
+                        <th>Fabricante</th>
+                        <th>URL</th>
+                        <th>Ação</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for detalhe in item.detalhes %}
+
+                        <tr
+                            class="linha-detalhe-tratamento"
+                            data-condition-id="{{ item.id }}"
+                        >
+                        <td class="cell-main">
+                            {{ detalhe.tratamento }}
+                        </td>
+
+
+                        <td>
+
+                            {% if detalhe.principio_ativo == "-" %}
+
+                                <span class="cell-muted">
+                                    Não informado
+                                </span>
+
+                            {% else %}
+
+                                {{ detalhe.principio_ativo }}
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if detalhe.fabricante == "-" %}
+
+                                <span class="cell-muted">
+                                    Não informado
+                                </span>
+
+                            {% else %}
+
+                                {{ detalhe.fabricante }}
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if detalhe.possui_url %}
+
+                                <span class="status-success">
+                                    Sim
+                                </span>
+
+                            {% else %}
+
+                                <span class="status-danger">
+                                    Não
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if detalhe.possui_url and detalhe.url_publica %}
+
+                                <a
+                                    href="{{ detalhe.url_publica }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="url-link"
+                                >
+                                    Ver página
+                                </a>
+
+                            {% elif detalhe.admin_url %}
+
+                                <a
+                                    href="{{ detalhe.admin_url }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="url-link"
+                                >
+                                    Editar tratamento
+                                </a>
+
+                            {% else %}
+
+                                <span class="cell-muted">
+                                    —
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td
+                            colspan="5"
+                            class="empty-state"
+                        >
+                            Nenhum tratamento associado.
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            <!-- ================================================
+                 PAGINAÇÃO DOS TRATAMENTOS DESTA CONDIÇÃO
+            ================================================= -->
+
+            <div
+                class="condition-detail-pagination"
+                data-condition-id="{{ item.id }}"
+            >
+                <div
+                    class="condition-detail-pagination-info"
+                    id="detail-info-{{ item.id }}"
+                ></div>
+
+                <div
+                    class="condition-detail-pagination-buttons"
+                    id="detail-buttons-{{ item.id }}"
+                ></div>
+            </div>
+
+        </div>
+
+    </td>
+
+</tr>
 
                     {% empty %}
 
@@ -1069,176 +1406,9 @@
                     </tr>
 
                     {% endfor %}
-
                 </tbody>
 
             </table>
-
-        </div>
-
-
-        <!-- ==================================================
-             PAGINAÇÃO DO RESUMO POR CONDIÇÃO
-        =================================================== -->
-
-        <div
-            id="paginacao-resumo-condicao"
-            class="dashboard-pagination"
-        >
-
-            <div
-                id="paginacao-resumo-info"
-                class="dashboard-pagination-info"
-            ></div>
-
-
-            <div
-                id="paginacao-resumo-botoes"
-                class="dashboard-pagination-buttons"
-            ></div>
-
-        </div>
-
-    </div>
-
-    <!-- ======================================================
-         TRATAMENTOS COM CONDIÇÃO, MAS SEM URL ASSOCIADA
-    ======================================================= -->
-
-    <div class="table-card" id="card-tratamentos-sem-url">
-
-        <div class="table-header">
-
-            <div>
-                <div class="chart-title">
-                    Tratamentos com condição associada, mas sem URL
-                </div>
-
-                <div class="chart-description">
-                    Tratamentos que já possuem vínculo com uma condição
-                    de saúde, mas ainda não possuem página de detalhe publicada.
-                </div>
-            </div>
-
-            <div class="table-count">
-                {{ total_tratamentos_sem_url }}
-                tratamento{{ total_tratamentos_sem_url|pluralize }}
-            </div>
-
-        </div>
-
-        <div class="table-scroll">
-
-            <table class="report-table">
-
-                <thead>
-                    <tr>
-                        <th>Tratamento</th>
-                        <th>Condição associada sem URL</th>
-                        <th>Fabricante</th>
-                        <th>Princípio ativo</th>
-                        <th>Ação</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    {% for item in tratamentos_sem_url %}
-
-                    <tr class="linha-tratamento-sem-url">
-
-                        <td class="cell-main">
-                            {% if item.nome == "-" %}
-                                <span class="cell-muted">
-                                    Não informado
-                                </span>
-                            {% else %}
-                                {{ item.nome }}
-                            {% endif %}
-                        </td>
-
-                        <td>
-                            {% if item.condicoes_texto %}
-                                {{ item.condicoes_texto }}
-                            {% else %}
-                                <span class="cell-muted">—</span>
-                            {% endif %}
-                        </td>
-
-                        <td>
-                            {% if item.fabricante == "-" %}
-                                <span class="cell-muted">
-                                    Não informado
-                                </span>
-                            {% else %}
-                                {{ item.fabricante }}
-                            {% endif %}
-                        </td>
-
-                        <td>
-                            {% if item.principio_ativo == "-" %}
-                                <span class="cell-muted">
-                                    Não informado
-                                </span>
-                            {% else %}
-                                {{ item.principio_ativo }}
-                            {% endif %}
-                        </td>
-
-                        <td>
-                            {% if item.admin_url %}
-                                <a
-                                    class="url-link"
-                                    href="{{ item.admin_url }}"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Editar tratamento
-                                </a>
-                            {% else %}
-                                <span class="cell-muted">—</span>
-                            {% endif %}
-                        </td>
-
-                    </tr>
-
-                    {% empty %}
-
-                    <tr>
-                        <td
-                            colspan="5"
-                            class="empty-state"
-                        >
-                            Nenhum tratamento com condição associada
-                            está sem URL de detalhe publicada.
-                        </td>
-                    </tr>
-
-                    {% endfor %}
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-        <div
-            id="paginacao-tratamentos-sem-url"
-            class="dashboard-pagination"
-        >
-            <div
-                id="paginacao-tratamentos-sem-url-info"
-                class="dashboard-pagination-info"
-            ></div>
-
-            <div
-                id="paginacao-tratamentos-sem-url-botoes"
-                class="dashboard-pagination-buttons"
-            ></div>
-        </div>
-
-    </div>
-
 
     <!-- ======================================================
          TRATAMENTOS SEM CONDIÇÃO ASSOCIADA
@@ -1674,6 +1844,268 @@ document.addEventListener(
 
     }
 );
+
+// ==========================================================
+// PAGINAÇÃO DOS TRATAMENTOS DENTRO DE CADA CONDIÇÃO
+// ==========================================================
+
+const tratamentosPorPagina = 12;
+
+function iniciarPaginacaoDetalhes(conditionId) {
+
+    const linhas = Array.from(
+        document.querySelectorAll(
+            '.linha-detalhe-tratamento[data-condition-id="' +
+            conditionId +
+            '"]'
+        )
+    );
+
+    const info = document.getElementById(
+        "detail-info-" + conditionId
+    );
+
+    const botoes = document.getElementById(
+        "detail-buttons-" + conditionId
+    );
+
+    const container = document.querySelector(
+        '.condition-detail-pagination[data-condition-id="' +
+        conditionId +
+        '"]'
+    );
+
+    if (
+        !linhas.length ||
+        !info ||
+        !botoes ||
+        !container
+    ) {
+        return;
+    }
+
+    const total = linhas.length;
+
+    const totalPaginas = Math.ceil(
+        total / tratamentosPorPagina
+    );
+
+    let paginaAtual = 1;
+
+
+    function criarBotao(
+        texto,
+        pagina,
+        ativo = false,
+        desabilitado = false
+    ) {
+
+        const botao = document.createElement(
+            "button"
+        );
+
+        botao.type = "button";
+
+        botao.className =
+            "condition-detail-page-button";
+
+        botao.textContent = texto;
+
+        if (ativo) {
+            botao.classList.add("active");
+        }
+
+        botao.disabled = desabilitado;
+
+        if (!desabilitado) {
+
+            botao.addEventListener(
+                "click",
+                function () {
+
+                    paginaAtual = pagina;
+
+                    renderizar();
+
+                }
+            );
+
+        }
+
+        return botao;
+    }
+
+
+    function criarReticencias() {
+
+        const span = document.createElement(
+            "span"
+        );
+
+        span.className =
+            "condition-detail-page-ellipsis";
+
+        span.textContent = "...";
+
+        return span;
+    }
+
+
+    function renderizarBotoes() {
+
+        botoes.innerHTML = "";
+
+        // Anterior
+        botoes.appendChild(
+            criarBotao(
+                "‹",
+                paginaAtual - 1,
+                false,
+                paginaAtual === 1
+            )
+        );
+
+
+        const paginas = new Set([
+            1,
+            totalPaginas,
+            paginaAtual,
+            paginaAtual - 1,
+            paginaAtual + 1
+        ]);
+
+
+        const paginasValidas =
+            Array.from(paginas)
+                .filter(function (pagina) {
+
+                    return (
+                        pagina >= 1 &&
+                        pagina <= totalPaginas
+                    );
+
+                })
+                .sort(function (a, b) {
+                    return a - b;
+                });
+
+
+        let anterior = null;
+
+
+        paginasValidas.forEach(
+            function (pagina) {
+
+                if (
+                    anterior !== null &&
+                    pagina - anterior > 1
+                ) {
+
+                    botoes.appendChild(
+                        criarReticencias()
+                    );
+
+                }
+
+
+                botoes.appendChild(
+                    criarBotao(
+                        String(pagina),
+                        pagina,
+                        pagina === paginaAtual,
+                        false
+                    )
+                );
+
+                anterior = pagina;
+            }
+        );
+
+
+        // Próxima
+        botoes.appendChild(
+            criarBotao(
+                "›",
+                paginaAtual + 1,
+                false,
+                paginaAtual === totalPaginas
+            )
+        );
+    }
+
+
+    function renderizar() {
+
+        const inicio =
+            (paginaAtual - 1) *
+            tratamentosPorPagina;
+
+        const fim = Math.min(
+            inicio + tratamentosPorPagina,
+            total
+        );
+
+
+        linhas.forEach(
+            function (linha, indice) {
+
+                linha.style.display =
+                    (
+                        indice >= inicio &&
+                        indice < fim
+                    )
+                    ? ""
+                    : "none";
+
+            }
+        );
+
+
+        info.textContent =
+            "Exibindo " +
+            (inicio + 1) +
+            "–" +
+            fim +
+            " de " +
+            total +
+            " tratamentos";
+
+
+        renderizarBotoes();
+    }
+
+
+    // Se houver 14 ou menos, não precisamos
+    // mostrar controles de paginação.
+    if (totalPaginas <= 1) {
+
+        container.style.display = "none";
+
+        linhas.forEach(function (linha) {
+            linha.style.display = "";
+        });
+
+        return;
+    }
+
+
+    renderizar();
+}
+
+
+// Inicializa uma paginação independente
+// para cada condição.
+document
+    .querySelectorAll(
+        ".condition-detail-pagination"
+    )
+    .forEach(function (container) {
+
+        iniciarPaginacaoDetalhes(
+            container.dataset.conditionId
+        );
+
+    });
 
 </script>
 
@@ -2222,5 +2654,67 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 </script>
+<script>
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
+        const botoes = document.querySelectorAll(
+            ".condition-expand-button"
+        );
+
+        botoes.forEach(function (botao) {
+
+            botao.addEventListener(
+                "click",
+                function () {
+
+                    const conditionId =
+                        botao.dataset.conditionId;
+
+                    const detalhe =
+                        document.getElementById(
+                            "condition-detail-" +
+                            conditionId
+                        );
+
+                    if (!detalhe) {
+                        return;
+                    }
+
+                    const aberto =
+                        detalhe.style.display !== "none";
+
+                    if (aberto) {
+
+                        detalhe.style.display = "none";
+
+                        botao.textContent = "+";
+
+                        botao.setAttribute(
+                            "aria-expanded",
+                            "false"
+                        );
+
+                    } else {
+
+                        detalhe.style.display = "table-row";
+
+                        botao.textContent = "−";
+
+                        botao.setAttribute(
+                            "aria-expanded",
+                            "true"
+                        );
+
+                    }
+
+                }
+            );
+
+        });
+
+    }
+);
+</script>
 {% endblock %}

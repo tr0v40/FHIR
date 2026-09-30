@@ -416,7 +416,7 @@ def relatorios_dashboard(request):
                     try:
 
                         url_publica = reverse(
-                            "pagina_detalhe_tratamento",
+                            "pagina_detalhe_tratamento_v2",
                             kwargs={
                                 "condicao_slug": (
                                     condicao_slug
@@ -449,21 +449,11 @@ def relatorios_dashboard(request):
 
             linha = {
 
-                "condicao_id": (
-                    condicao.id
-                ),
+                "condicao_id": condicao.id,
+                "condicao": condicao.nome,
 
-                "condicao": (
-                    condicao.nome
-                ),
-
-                "tratamento_id": (
-                    tratamento.id
-                ),
-
-                "tratamento": (
-                    tratamento.nome
-                ),
+                "tratamento_id": tratamento.id,
+                "tratamento": tratamento.nome,
 
                 "principio_ativo": (
                     principio
@@ -471,15 +461,22 @@ def relatorios_dashboard(request):
                     else "-"
                 ),
 
-                "possui_url": (
-                    possui_url_detalhe
+                "fabricante": (
+                    tratamento.fabricante
+                    or "-"
                 ),
 
-                "url_publica": (
-                    url_publica
+                "possui_url": possui_url_detalhe,
+
+                "url_publica": url_publica,
+
+                "admin_url": reverse(
+                    "admin:core_detalhestratamentoresumo_change",
+                    args=[tratamento.pk],
                 ),
             }
 
+            # ADICIONAR ISTO
             linhas_condicao.append(
                 linha
             )
@@ -494,7 +491,6 @@ def relatorios_dashboard(request):
             and not linhas_condicao
         ):
             continue
-
         # --------------------------------------------------------
         # TABELA COMPLETA
         # --------------------------------------------------------
@@ -535,7 +531,19 @@ def relatorios_dashboard(request):
             in linhas_condicao
             if not linha["possui_url"]
         )
-
+        linhas_condicao.sort(
+            key=lambda item: (
+                (
+                    item["principio_ativo"]
+                    if item["principio_ativo"] != "-"
+                    else "ZZZZZZ"
+                ).lower(),
+                (
+                    item["tratamento"]
+                    or ""
+                ).lower(),
+            )
+        )
         tabela_resumo.append({
 
             "id": (
@@ -565,6 +573,8 @@ def relatorios_dashboard(request):
             "sem_url_tratamentos": (
                 total_sem_url_condicao
             ),
+
+            "detalhes": linhas_condicao,
         })
 
     # ============================================================
