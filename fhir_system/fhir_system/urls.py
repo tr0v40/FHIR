@@ -3,7 +3,8 @@ from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
-from core.public_views_home import home
+from django.views.generic import RedirectView
+
 from core import views
 from core import public_views_listas2
 
@@ -23,11 +24,16 @@ urlpatterns = [
     # =========================================================
     # HOME POR DOMÍNIO
     # =========================================================
-    path(
+
+        path(
         "",
-        domain_home,
-        name="domain_home",
+        RedirectView.as_view(
+            url="/home/",
+            permanent=False,
+        ),
+        name="redirect_home",
     ),
+
     path(
         "home",
         domain_home,
