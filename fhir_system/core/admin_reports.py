@@ -850,6 +850,13 @@ def relatorios_dashboard(request):
             ).lower(),
         )
     )
+    dados_grafico = [
+    {
+        "nome": item["nome"],
+        "tratamentos": item["tratamentos"],
+    }
+    for item in tabela_resumo[:20]
+]
 
     tabela_completa.sort(
         key=lambda item: (
@@ -877,10 +884,8 @@ def relatorios_dashboard(request):
         # --------------------------------------------------------
         # TABELAS
         # --------------------------------------------------------
-
-        "tabela": (
-            tabela_resumo
-        ),
+        "tabela": tabela_resumo,
+        "dados_grafico": dados_grafico,
 
         "tabela_completa": (
             tabela_completa

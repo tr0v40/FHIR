@@ -1618,7 +1618,7 @@
      JSON PARA OS GRÁFICOS
 =========================================================== -->
 
-{{ tabela|json_script:"dados-relatorio" }}
+{{ dados_grafico|json_script:"dados-relatorio" }}
 
 
 <script>
@@ -2161,7 +2161,7 @@ document.addEventListener("DOMContentLoaded", function () {
        CONFIGURAÇÃO
     ====================================================== */
 
-    const registrosPorPagina = 20;
+    const registrosPorPagina = 10;
 
     const totalRegistros = linhas.length;
 
