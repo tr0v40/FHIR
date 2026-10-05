@@ -874,6 +874,10 @@
    BANNER ATENDIMENTO EXCLUSIVO
    ========================================================= */
 
+/* =========================================================
+   BANNER ATENDIMENTO EXCLUSIVO
+   ========================================================= */
+
 .exclusive-service-banner {
     width: 903px;
     max-width: calc(100% - 32px);
@@ -881,8 +885,11 @@
     margin: 55px auto;
 
     position: relative;
+    display: block;
 
     overflow: hidden;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 .exclusive-service-banner img {
@@ -891,6 +898,8 @@
 
     display: block;
     object-fit: cover;
+
+    pointer-events: none;
 }
 
 
@@ -1463,15 +1472,29 @@
 
    /* =========================================================
    BANNER WHATSAPP
+   ========================================================= *//* =========================================================
+   BANNER WHATSAPP - TODO CLICÁVEL
    ========================================================= */
+
 .whatsapp-share-banner {
     width: 903px;
     max-width: calc(100% - 32px);
 
     margin: 38px auto 55px;
+    padding: 0;
 
+    display: block;
     position: relative;
+
+    background: transparent;
+    border: none;
+    outline: none;
+
     overflow: hidden;
+    cursor: pointer;
+
+    appearance: none;
+    -webkit-appearance: none;
 }
 
 .whatsapp-share-banner img {
@@ -1480,9 +1503,16 @@
 
     display: block;
     object-fit: cover;
+
+    pointer-events: none;
 }
 
-
+.whatsapp-share-banner:focus,
+.whatsapp-share-banner:active {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
 /* =========================================================
    ÁREA CLICÁVEL - BOTÃO WHATSAPP
    ========================================================= */
@@ -1530,16 +1560,15 @@
     width: calc(100% + 56px);
     height: auto;
 
-    /* anula os 28px de padding de cada lado do evidence-shell */
     margin-left: -28px;
     margin-right: -28px;
 
     display: block;
     position: relative;
-
     overflow: hidden;
 
     text-decoration: none;
+    cursor: pointer;
 }
 
 .evidence-efficacy-banner img {
@@ -1547,8 +1576,9 @@
     height: auto;
 
     display: block;
-
     object-fit: cover;
+
+    pointer-events: none;
 }
 
 /* inicialmente somente desktop */
@@ -1933,11 +1963,16 @@
    FOOTER - DESKTOP
    ========================================================= */
 
+
 .site-footer{
     width:100%;
+    height:424px;
+
+    margin:0;
+    padding:0;
 
     background:#FFFFFF;
-    border-top:0;
+    border:0;
 
     font-family:'Inter', Arial, Helvetica, sans-serif;
 
@@ -1950,20 +1985,32 @@
     max-width:calc(100% - 32px);
     height:300px;
 
-    margin:14px auto 0;
+    margin:0 auto;
 
-    display:grid;
+    position:relative;
+}
 
-    /*
-       Posições do Figma:
-       coluna 1 = 0px
-       coluna 2 = 404px
-       coluna 3 = 746px
-    */
-    grid-template-columns:239px 239px 236px;
-    column-gap:165px;
 
-    align-items:start;
+/* posição das 3 colunas conforme Figma */
+
+.footer-column{
+    position:absolute;
+    top:41px;
+}
+
+.footer-column-1{
+    left:0;
+    width:239px;
+}
+
+.footer-column-2{
+    left:404px;
+    width:239px;
+}
+
+.footer-column-3{
+    left:746px;
+    width:236px;
 }
 /* =========================================================
    PADRÃO DOS TÍTULOS
@@ -1981,7 +2028,25 @@
     color:#010009;
 }
 
+/* WhatsApp - Fale com a gente */
 
+.footer-contact-title{
+    display:flex;
+    align-items:center;
+    gap:7px;
+
+    margin:0 0 10px 0;
+}
+
+.footer-contact-whatsapp-icon{
+    width:20px;
+    height:20px;
+
+    display:block;
+    flex-shrink:0;
+
+    object-fit:contain;
+}
 /* =========================================================
    LINKS / TEXTOS CINZA
    ========================================================= */
@@ -2022,10 +2087,6 @@
 /* =========================================================
    COLUNA 1
    ========================================================= */
-
-.footer-column-1{
-    width:239px;
-}
 
 .footer-scientific{
     margin-top:64px;
@@ -2080,17 +2141,11 @@
    COLUNA 2
    ========================================================= */
 
-.footer-column-2{
-    width:239px;
-}
 
 .footer-contact{
     margin-top:39px;
 }
 
-.footer-contact h3{
-    margin-bottom:10px;
-}
 
 .footer-contact p,
 .footer-contact a{
@@ -2115,11 +2170,8 @@
    COLUNA 3
    ========================================================= */
 
-.footer-column-3{
-    width:236px;
-}
 
-.footer-column-3 .footer-block > a{
+ .footer-block > a{
     margin-bottom:8px;
 }
 
@@ -2305,11 +2357,11 @@
 }
 
 .site-footer{
-    transition:padding-bottom .18s ease;
+    transition:height .18s ease;
 }
 
 .site-footer:has(.footer-disease-options.open){
-    padding-bottom:220px;
+    height:644px;
 }
 
 .site-footer .footer-disease-options a{
@@ -2338,10 +2390,12 @@
 
 }
 
-
-
 .footer-bottom{
     box-sizing:border-box;
+
+    position:absolute;
+    left:0;
+    bottom:0;
 
     width:100%;
     height:65px;
@@ -3085,16 +3139,16 @@
 
 <div class="exclusive-service-banner">
 
+<a
+    href="https://telix.inf.br/paciente-bem-informado"
+    class="exclusive-service-banner"
+    aria-label="Atendimento exclusivo com nossos tutores"
+>
     <img
-        src="{% static 'img/atendimento_exclusivo.png' %}"
+        src="{% static 'img/cuida_da_sua_saude.png' %}"
         alt="Atendimento exclusivo com nossos tutores para tirar suas dúvidas sobre tratamentos de saúde"
     >
-
-    <a
-        href="https://telix.inf.br/paciente-bem-informado"
-        class="exclusive-service-subscribe"
-        aria-label="Assinar"
-    ></a>
+</a>
 
 </div>
 
@@ -3453,18 +3507,17 @@
      ========================================================= -->
 
 <div class="whatsapp-share-banner">
-
+<button
+    type="button"
+    class="whatsapp-share-banner"
+    id="btnWhatsApp"
+    aria-label="Compartilhar este conteúdo pelo WhatsApp"
+>
     <img
         src="{% static 'img/banner_familia.png' %}"
         alt="Compartilhe este conteúdo pelo WhatsApp"
     >
-
-    <button
-        type="button"
-        class="whatsapp-share-click"
-        id="btnWhatsApp"
-        aria-label="Compartilhar pelo WhatsApp"
-    ></button>
+</button>
 
 </div>
 
@@ -3526,15 +3579,24 @@
             </div>
 
 
-            <div class="footer-block footer-contact">
-                <h3>Fale com a gente!</h3>
+        <div class="footer-block footer-contact">
 
-                <p>(45) 99904-0371</p>
+            <h3 class="footer-contact-title">
+                <img
+                    src="{% static 'img/whats-app.png' %}"
+                    alt="WhatsApp"
+                    class="footer-contact-whatsapp-icon"
+                >
+                <span>Fale com a gente!</span>
+            </h3>
 
-                <a href="mailto:contato@telix.inf.br">
-                    contato@telix.inf.br
-                </a>
-            </div>
+            <p>(45) 99904-0371</p>
+
+            <a href="mailto:contato@telix.inf.br">
+                contato@telix.inf.br
+            </a>
+
+        </div>
 
 
             <div class="footer-no-medication">
