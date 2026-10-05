@@ -2501,132 +2501,310 @@
     color:#FFFFFF !important;
     text-decoration:none !important;
 }
-.comments{
-    max-width:1000px;
-    margin:0 auto;
-    padding:25px 0 60px;
-}
-
-.comments-main-title{
-    margin:0 0 24px;
-
-    font-family:'Inter', Arial, Helvetica, sans-serif;
-    font-style:normal;
-    font-weight:600;
-    font-size:20px;
-    line-height:29px;
-
-    color:#000000;
-}
-        .comments textarea{
-            width:100%;
-            min-height:100px;
-            resize:vertical;
-            border:1px solid #ccc;
-            border-radius:5px;
-            padding:12px;
-        }
-        .char-count{text-align:right;color:#777;font-size:11px}
-        .submit-wrap{text-align:center;margin:18px 0 35px}
-        .submit-btn{
-            border:0;border-radius:5px;background:var(--blue);color:#fff;
-            padding:9px 18px;font-weight:600;
-        }
 /* =========================================================
-   COMENTÁRIOS DOS USUÁRIOS / AVALIAÇÃO DOS PACIENTES
+   AVALIAÇÃO DOS PACIENTES - FIGMA
    ========================================================= */
 
-.comments-title{
-    width:1200px;
-    max-width:100%;
+.comments {
+    box-sizing: border-box;
 
-    margin:0 auto 18px;
+    position: relative;
 
-    color:#000000;
+    width: 100%;
+    max-width: 1920px;
+    height: 462px;
 
-    font-family:Arial, Helvetica, sans-serif;
-    font-style:normal;
-    font-weight:600;
-    font-size:25px;
-    line-height:31px;
+    margin: 0 auto;
+    padding: 0;
 
-    text-align:left;
+    background: #FFFFFF;
+
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
 }
 
-/* área que contém os comentários */
-.comments-list{
-    width:1058px;
-    max-width:100%;
-    max-height:293px;
 
-    margin:0 auto;
+/* =========================================================
+   TÍTULO
+   ========================================================= */
 
-    overflow-y:auto;
-    overflow-x:hidden;
+.comments-main-title {
+    position: absolute;
 
-    padding:10px 29px;
+    width: 958px;
+    max-width: calc(100% - 32px);
+    height: 31px;
+
+    left: 50%;
+    top: 20px;
+
+    transform: translateX(-50%);
+
+    margin: 0;
+
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 25.6px;
+    line-height: 31px;
+
+    display: flex;
+    align-items: center;
+
+    color: #000000;
 }
 
-/* card individual */
-.comment-card{
-    box-sizing:border-box;
 
-    width:1000px;
-    max-width:100%;
-    min-height:273px;
+/* =========================================================
+   ÁREA DOS COMENTÁRIOS
+   ========================================================= */
 
-    margin:0 auto 18px;
-    padding:24px 16px 20px;
+.comments-list {
+    position: absolute;
 
-    display:flex;
-    flex-direction:column;
+    width: 958px;
+    max-width: calc(100% - 32px);
+    height: 293px;
 
-    background:#F9F9F9;
+    left: 50%;
+    top: 59px;
 
-    border:1px solid #DDDDDD;
-    box-shadow:0 2px 4px rgba(0,0,0,.10);
-    border-radius:8px;
+    transform: translateX(-50%);
+
+    box-sizing: border-box;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding: 10px 29px;
 }
+
+
+/* =========================================================
+   CARD DA AVALIAÇÃO
+   ========================================================= */
+
+.comment-card {
+    box-sizing: border-box;
+
+    width: 900px;
+    max-width: 100%;
+    min-height: 273px;
+
+    margin: 0 auto 18px;
+    padding: 14px 16px 20px;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #F9F9F9;
+
+    border: 1px solid #DDDDDD;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
 
 /* texto da avaliação */
-.comment-card p{
-    margin:0 0 55px;
 
-    color:#333333;
+.comment-card p {
+    margin: 0;
 
-    font-family:Arial, Helvetica, sans-serif;
-    font-style:normal;
-    font-weight:400;
-    font-size:16px;
-    line-height:26px;
+    width: 100%;
 
-    white-space:pre-wrap;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 26px;
+
+    color: #333333;
+
+    white-space: pre-wrap;
 }
+
 
 /* nome do usuário */
-.comment-card h3{
-    margin:auto 0 8px;
 
-    color:#000000;
+.comment-card h3 {
+    margin: auto 0 4px;
 
-    font-family:Arial, Helvetica, sans-serif;
-    font-style:normal;
-    font-weight:700;
-    font-size:19.2px;
-    line-height:23px;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 19.2px;
+    line-height: 23px;
+
+    color: #000000;
 }
 
+
 /* data */
-.comment-card small{
-    display:block;
 
-    color:#666666;
+.comment-card small {
+    display: block;
 
-    font-family:Arial, Helvetica, sans-serif;
-    font-style:normal;
-    font-weight:400;
-    font-size:14.4px;
-    line-height:22px;
+    margin: 0;
+
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14.4px;
+    line-height: 22px;
+
+    color: #666666;
+}
+
+
+/* =========================================================
+   NENHUMA AVALIAÇÃO
+   ========================================================= */
+
+.comments-empty {
+    position: absolute;
+
+    width: 958px;
+    max-width: calc(100% - 32px);
+    height: 131px;
+
+    left: 50%;
+    top: 59px;
+
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 31px;
+
+    text-align: center;
+
+    color: #8F8F93;
+}
+
+
+/* =========================================================
+   BOTÃO "AVALIE ESSE TRATAMENTO"
+   ========================================================= */
+
+.evaluate-treatment-btn {
+    position: absolute;
+
+    width: 211px;
+    height: 44px;
+
+    left: calc(50% + 239px);
+    top: 365px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    padding: 0;
+
+    background: #0193FF;
+    border: 0;
+    border-radius: 6px;
+
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+
+    color: #FFFFFF !important;
+
+    text-align: center;
+    text-decoration: none !important;
+
+    cursor: pointer;
+}
+
+.evaluate-treatment-btn:hover,
+.evaluate-treatment-btn:focus {
+    background: #0085E8;
+    color: #FFFFFF !important;
+    text-decoration: none !important;
+}
+
+
+/* quando NÃO houver avaliações */
+
+.comments.no-reviews .comments-list {
+    height: 131px;
+}
+
+.comments.no-reviews .evaluate-treatment-btn {
+    top: 203px;
+}
+
+
+/* =========================================================
+   RESPONSIVO
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+    .comments {
+        height: auto;
+        min-height: 360px;
+
+        padding: 20px 16px 40px;
+    }
+
+    .comments-main-title,
+    .comments-list,
+    .comments-empty,
+    .evaluate-treatment-btn {
+        position: relative;
+
+        left: auto;
+        top: auto;
+
+        transform: none;
+    }
+
+    .comments-main-title {
+        width: 100%;
+        max-width: none;
+
+        margin-bottom: 8px;
+    }
+
+    .comments-list {
+        width: 100%;
+        max-width: none;
+        height: auto;
+        max-height: 293px;
+
+        padding: 10px 0;
+    }
+
+    .comment-card {
+        width: 100%;
+    }
+
+    .comments-empty {
+        width: 100%;
+        max-width: none;
+        height: 131px;
+    }
+
+    .evaluate-treatment-btn {
+        margin: 13px 0 0 auto;
+    }
+
+    .comments.no-reviews .evaluate-treatment-btn {
+        top: auto;
+    }
 }
 
 /* =========================================================
@@ -3438,67 +3616,71 @@
             </a>
         </section>
 
-        <!-- AVALIAÇÕES -->
-       
-<section id="avaliacoes" class="comments">
-    <section id="avaliacoes" class="comments">
 
-        <h2 class="comments-main-title">Avaliação dos pacientes</h2>
 
-            <form id="formAvaliacao" method="post" action="{% url 'salvar_avaliacao' tratamento.id %}">
-                {% csrf_token %}
-                <input type="hidden" id="usuario_nome" name="usuario_nome">
+<!-- =========================================================
+     AVALIAÇÕES DOS PACIENTES
+     ========================================================= -->
 
-                <textarea
-                    id="comentario"
-                    name="comentario"
-                    placeholder="Deixe sua mensagem"
-                    maxlength="400"
-                    required
-                    oninput="updateCount(this)"
-                ></textarea>
+<section
+    id="avaliacoes"
+    class="comments {% if avaliacoes %}has-reviews{% else %}no-reviews{% endif %}"
+>
 
-                <div id="char-count" class="char-count">400 caracteres restantes</div>
+    <div class="comments-content">
 
-                <div class="submit-wrap">
-                    <button class="submit-btn" type="button" onclick="handleSubmit()">Enviar Avaliação</button>
-                </div>
-            </form>
+        <h2 class="comments-main-title">
+            Avaliação dos pacientes
+        </h2>
 
-            <div class="modal fade" id="modalNome" tabindex="-1" aria-labelledby="modalNomeLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalNomeLabel">Como você quer aparecer nos comentários?</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                        </div>
-                        <div class="modal-body">
-                            <input type="text" id="nome_modal" class="form-control" placeholder="Digite seu nome ou apelido">
-                            <small class="text-muted">Esse nome será exibido publicamente junto ao seu comentário.</small>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary" onclick="salvarNomeEEnviar()">Confirmar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <h2 class="comments-title">Comentários dos usuários:</h2>
+        <div class="comments-list">
 
             {% if avaliacoes %}
+
                 {% for avaliacao in avaliacoes %}
+
                     <article class="comment-card">
-                        <h3>{{ avaliacao.usuario_nome|default:"Usuário Anônimo" }}</h3>
-                        <p>{{ avaliacao.comentario }}</p>
-                        <small>Publicado em {{ avaliacao.data|date:"d/m/Y H:i" }}</small>
+
+                        <p class="comment-text">
+                            {{ avaliacao.comentario }}
+                        </p>
+
+                        <h3>
+                            {{ avaliacao.usuario_nome|default:"Usuário Anônimo" }}
+                        </h3>
+
+                        <small>
+                            Publicado em {{ avaliacao.data|date:"d/m/Y H:i" }}
+                        </small>
+
                     </article>
+
                 {% endfor %}
+
             {% else %}
-                <p style="text-align:center;color:#888">Nenhum comentário ainda. Seja o primeiro a deixar o seu!</p>
+
+                <div class="comments-empty">
+                    Nenhuma avaliação
+                </div>
+
             {% endif %}
-        </section>
-    </main>
+
+        </div>
+
+    </div>
+
+    <div class="evaluate-treatment-wrap">
+        <a
+            href="https://www.telix.inf.br/avalie-o-tratamento-realizado"
+            class="evaluate-treatment-btn"
+        >
+            Avalie esse tratamento
+        </a>
+    </div>
+
+</section>
+</main>
+    
 
 
 
