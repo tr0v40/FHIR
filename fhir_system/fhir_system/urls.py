@@ -4,7 +4,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
 from django.views.generic import RedirectView
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
+from django.shortcuts import redirect
+from urllib.parse import urlencode
 from core.forms import CustomAuthenticationForm
 
 from core import views
@@ -20,6 +22,23 @@ from core.views import (
     CondicaoSaudeDetailView,
     tipo_eficacia_descricao_json,
 )
+
+
+def admin_login_redirect(request):
+    """
+    Redireciona o login padrão do Django Admin
+    para a nova tela de login Telix.
+    """
+
+    next_url = request.GET.get("next") or "/admin/"
+
+    query_string = urlencode({
+        "next": next_url
+    })
+
+    return redirect(
+        f"/accounts/login/?{query_string}"
+    )
 
 
 urlpatterns = [
@@ -53,25 +72,63 @@ urlpatterns = [
 # ADMINISTRAÇÃO E AUTENTICAÇÃO
 # =========================================================
 
-    path(
-        "admin/",
-        admin.site.urls,
-    ),
+# ---------------------------------------------------------
+# LOGIN DO ADMIN
+# Redireciona o login nativo para a tela Telix V2
+# ---------------------------------------------------------
 
-    path(
-        "accounts/login/",
-        LoginView.as_view(
-            template_name="registration/login_v2.html",
-            authentication_form=CustomAuthenticationForm,
-        ),
-        name="login",
-    ),
+path(
+    "admin/login/",
+    admin_login_redirect,
+    name="admin_login_redirect",
+),
 
-    path(
-        "accounts/",
-        include("django.contrib.auth.urls"),
+# ---------------------------------------------------------
+# LOGOUT DO ADMIN
+# Encerra a sessão e envia para a tela Telix V2
+# IMPORTANTE: precisa ficar ANTES de admin.site.urls
+# ---------------------------------------------------------
+
+path(
+    "admin/logout/",
+    LogoutView.as_view(
+        next_page="/accounts/login/"
     ),
-    # =========================================================
+    name="admin_logout_custom",
+),
+
+# ---------------------------------------------------------
+# DJANGO ADMIN
+# ---------------------------------------------------------
+
+path(
+    "admin/",
+    admin.site.urls,
+),
+
+# ---------------------------------------------------------
+# LOGIN TELIX V2
+# ---------------------------------------------------------
+
+path(
+    "accounts/login/",
+    LoginView.as_view(
+        template_name="registration/login_v2.html",
+        authentication_form=CustomAuthenticationForm,
+        redirect_authenticated_user=True,
+    ),
+    name="login",
+),
+
+# ---------------------------------------------------------
+# OUTRAS ROTAS DE AUTENTICAÇÃO
+# ---------------------------------------------------------
+
+path(
+    "accounts/",
+    include("django.contrib.auth.urls"),
+),
+#======================================================
 # NOVA HOME TELIX
 # =========================================================
 
