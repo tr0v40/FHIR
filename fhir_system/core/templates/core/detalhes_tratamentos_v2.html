@@ -3707,7 +3707,6 @@
     </a>
 
 </div>
-
 <!-- =========================================================
      FOOTER
      ========================================================= -->
@@ -3722,40 +3721,26 @@
         <div class="footer-column footer-column-1">
 
             <div class="footer-block">
-
-                <h3>
-                    <a href="https://www.telix.inf.br/tratamentos-risco-custo-contraindicado-eficacia-prazo">
-                        Páginas de tratamentos
-                    </a>
-                </h3>
+                <h3>Páginas de tratamentos</h3>
 
                 <a href="https://www.telix.inf.br/como-calculamos-a-eficacia-de-tratamentos-de-saude">
                     Eficácia - como calculamos
                 </a>
-
             </div>
 
 
             <div class="footer-block footer-scientific">
-
-                <h3>
-                    <a href="https://www.telix.inf.br/evidencias-clinicas-de-pesquisas-sobre-tratamentos-de-saude">
-                        Páginas de artigos científicos
-                    </a>
-                </h3>
+                <h3>Páginas de artigos científicos</h3>
 
                 <a href="https://www.telix.inf.br/criterios-do-rigor-da-pesquisa-de-tratamentos-de-saude">
                     Rigor da pesquisa - critérios
                 </a>
-
             </div>
 
 
             <a
-                href="https://api.whatsapp.com/send/?phone=5545999040371&text=Vi%20esse%20site%20sobre%20compara%C3%A7%C3%A3o%20de%20tratamentos%20de%20sa%C3%BAde%20e%20achei%20que%20voc%C3%AA%20poderia%20gostar.&type=phone_number&app_absent=0"
+                href="https://api.whatsapp.com/send/?phone=5545999040371&text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.&type=phone_number&app_absent=0"
                 class="footer-special footer-share"
-                target="_blank"
-                rel="noopener noreferrer"
             >
                 <img
                     src="{% static 'img/whats-app.png' %}"
@@ -3782,12 +3767,7 @@
         <div class="footer-column footer-column-2">
 
             <div class="footer-block">
-
-                <h3>
-                    <a href="https://www.telix.inf.br/documentacao">
-                        Documentos
-                    </a>
-                </h3>
+                <h3>Documentos</h3>
 
                 <a href="https://www.telix.inf.br/documentacao/politica-de-privacidade">
                     Política de Privacidade
@@ -3796,38 +3776,21 @@
                 <a href="https://www.telix.inf.br/documentacao/termos-de-uso">
                     Termos de uso
                 </a>
-
             </div>
 
 
             <div class="footer-block footer-contact">
 
                 <h3 class="footer-contact-title">
-
-                    <a
-                        href="https://wa.me/45999040371"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                    <img
+                        src="{% static 'img/whats-app.png' %}"
+                        alt="WhatsApp"
+                        class="footer-contact-whatsapp-icon"
                     >
-                        <img
-                            src="{% static 'img/whats-app.png' %}"
-                            alt="WhatsApp"
-                            class="footer-contact-whatsapp-icon"
-                        >
-                        <span>Fale com a gente!</span>
-                    </a>
-
+                    <span>Fale com a gente!</span>
                 </h3>
 
-                <p>
-                    <a
-                        href="https://wa.me/45999040371"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        (45) 99904-0371
-                    </a>
-                </p>
+                <p>(45) 99904-0371</p>
 
                 <a href="mailto:contato@telix.inf.br">
                     contato@telix.inf.br
@@ -3837,11 +3800,9 @@
 
 
             <div class="footer-no-medication">
-
                 <h3>Não se automedique</h3>
 
                 <p>Consulte um profissional de saúde</p>
-
             </div>
 
         </div>
@@ -3853,7 +3814,6 @@
         <div class="footer-column footer-column-3">
 
             <div class="footer-block">
-
                 <h3>Apresentações</h3>
 
                 <a href="https://www.telix.inf.br/perguntas-e-respostas">
@@ -3871,18 +3831,11 @@
                 <a href="https://www.telix.inf.br/depoimentos-experiencias-tratamentos-de-sa%C3%BAde">
                     Depoimentos
                 </a>
-
             </div>
 
 
             <div class="footer-specialists">
-
-                <h3>
-                    <a href="https://www.telix.inf.br/entrevistas-com-especialistas-sobre-tratamento-de-sa%C3%BAde">
-                        Opiniões de especialistas
-                    </a>
-                </h3>
-
+                <h3>Opiniões de especialistas</h3>
             </div>
 
 
@@ -3908,25 +3861,20 @@
                         <span class="footer-chevron"></span>
                     </button>
 
-
                     <div
                         class="footer-disease-options"
                         id="footerDiseaseOptions"
                     >
 
-                        {% for item in footer_listas %}
-
-                            <a href="{{ item.url }}">
-                                {{ item.label }}
-                            </a>
-
-                        {% empty %}
-
-                            <span class="footer-disease-empty">
-                                Nenhuma opção disponível
-                            </span>
-
-                        {% endfor %}
+                    {% for item in footer_listas %}
+                        <a href="{{ item.url }}">
+                            {{ item.label }}
+                        </a>
+                    {% empty %}
+                        <span class="footer-disease-empty">
+                            Nenhuma opção disponível
+                        </span>
+                    {% endfor %}
 
                     </div>
 
@@ -3939,6 +3887,7 @@
     </div>
 
 
+    <!-- MANTENHA SUA FAIXA/CNPJ AQUI -->
     <div class="footer-bottom">
         Linca Telecomunicações Ltda — CNPJ: 03.376.788-0001/23
     </div>
