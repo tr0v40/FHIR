@@ -1,241 +1,1384 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>{% block title %}Telix - Sistema de Saúde{% endblock %}</title>
 
-    <!-- Estilos -->
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
-    <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/png">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    
+    <title>
+        {% block title %}Telix - Sistema de Saúde{% endblock %}
+    </title>
 
-    <!-- Select2 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- =====================================================
+         FAVICON
+         ===================================================== -->
+
+    <link
+        rel="icon"
+        href="{% static 'img/favicon.png' %}"
+        type="image/png"
+    >
+
+
+    <!-- =====================================================
+         BOOTSTRAP
+         ===================================================== -->
+
+    <link
+        href="{% static 'css/bootstrap.min.css' %}"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         SELECT2
+         ===================================================== -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         CSS PRINCIPAL
+         ===================================================== -->
+
+    <link
+        href="{% static 'css/styles.css' %}"
+        rel="stylesheet"
+    >
+
 
     <style>
-        html, body {
-            height: 100%;
+
+        /* =====================================================
+           ESTRUTURA GERAL
+           ===================================================== */
+
+        html,
+        body {
             margin: 0;
             padding: 0;
+
+            width: 100%;
+            min-height: 100%;
+        }
+
+
+        body {
+            min-height: 100vh;
+
             display: flex;
             flex-direction: column;
+
+            background: #ffffff;
+
+            color: #222222;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
         }
+
+
+        * {
+            box-sizing: border-box;
+        }
+
 
         .content-wrapper {
-            flex: 1;
-        }
-
-        .footer {
-            background-color: #bbbdc0;
-            color: #f1f1f1;
-            padding: 30px 0;
             width: 100%;
-            margin-top: auto;
-            position: relative;
-            bottom: 0;
-            left: 0;
-            text-align: center;
-            border-top: none;
-        }
 
-        .footer-container {
-            background:transparent;
-            display: flex;  
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            text-align: center;
-            max-width: 1200px;
-            margin: auto;
-            padding: 0 20px;
-            border-top: none;
-        }
+            flex: 1 0 auto;
 
-        .footer-left img {
-            max-height: 50px;
-            margin-bottom: 10px;
-        }
-
-        .footer-text {
-            font-size: 14px;
-            color: #f1f1f1;
-            margin: 3px 0;
-        }
-
-        .footer-links {
             display: flex;
             flex-direction: column;
-            gap: 10px;
         }
 
-        .footer-link {
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
+
+        /* =====================================================
+           HEADER
+           ===================================================== */
+
+        .telix-header {
+            width: 100%;
+            height: 82px;
+
+            flex-shrink: 0;
+
+            background: #ffffff;
+
+            border-top: 4px solid #0798f6;
+            border-bottom: 1px solid #eeeeee;
+
+            position: relative;
+            z-index: 1000;
         }
 
-        .footer-link:hover {
-            text-decoration: underline;
-        }
 
-        .footer-btn {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
+        .telix-header-container {
+            width: 100%;
+            max-width: 1440px;
+            height: 100%;
+
+            margin: 0 auto;
+
+            padding: 0 40px;
+
             display: flex;
             align-items: center;
-            gap: 8px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
-        .footer-btn:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-        }
 
-        .footer-social {
+        /* =====================================================
+           LOGO
+           ===================================================== */
+
+        .telix-header-logo {
             display: flex;
+            align-items: center;
+
+            flex-shrink: 0;
+
+            text-decoration: none;
+        }
+
+
+        .telix-header-logo img {
+            display: block;
+
+            width: auto;
+            height: 54px;
+
+            object-fit: contain;
+        }
+
+
+        /* =====================================================
+           MENU
+           ===================================================== */
+
+        .telix-header-nav {
+            display: flex;
+            align-items: center;
+
+            gap: 30px;
+
+            margin-left: 45px;
+            margin-right: auto;
+        }
+
+
+        .telix-header-nav a {
+            color: #444444;
+
+            font-size: 14px;
+            font-weight: 500;
+
+            text-decoration: none;
+
+            transition: color 0.2s ease;
+        }
+
+
+        .telix-header-nav a:hover {
+            color: #0798f6;
+        }
+
+
+        /* =====================================================
+           USUÁRIO
+           ===================================================== */
+
+        .telix-header-user {
+            display: flex;
+            align-items: center;
+
             gap: 15px;
+
+            flex-shrink: 0;
         }
 
-        .social-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #ddd;
-            color: #333;
-            font-size: 18px;
+
+        .telix-user-name {
+            color: #555555;
+
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+
+        .telix-login-link {
+            color: #0798f6;
+
+            font-size: 14px;
+            font-weight: 600;
+
             text-decoration: none;
-            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
-        .social-btn:hover {
-            background-color: #007bff;
-            color: white;
-            transform: scale(1.1);
+
+        .telix-login-link:hover {
+            color: #087fc9;
         }
+
+
+        .telix-logout-form {
+            margin: 0;
+        }
+
+
+        .telix-logout-button {
+            padding: 7px 16px;
+
+            border: 1px solid #0798f6;
+            border-radius: 5px;
+
+            background: #ffffff;
+
+            color: #0798f6;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition:
+                background-color 0.2s ease,
+                color 0.2s ease;
+        }
+
+
+        .telix-logout-button:hover {
+            background: #0798f6;
+            color: #ffffff;
+        }
+
+
+        /* =====================================================
+           FOOTER NOVO
+           PADRÃO DAS PÁGINAS DE TRATAMENTO
+           ===================================================== */
+/* =====================================================
+   FOOTER — MEDIDAS ORIGINAIS DO FIGMA
+   ===================================================== */
+
+.site-footer {
+    width: 100%;
+    height: 489px;
+    flex: 0 0 489px;
+
+    position: relative;
+
+    margin: 0;
+    padding: 0;
+
+    background: #ffffff;
+
+    font-family: "Inter", Arial, sans-serif;
+
+    overflow: hidden;
+}
+
+
+/* =====================================================
+   ÁREA PRINCIPAL — FIGMA: 424px
+   ===================================================== */
+
+.site-footer-main {
+    width: 100%;
+    height: 424px;
+
+    position: relative;
+
+    margin: 0;
+    padding: 0;
+
+    background: #ffffff;
+}
+
+
+/* =====================================================
+   CONTEÚDO INTERNO — FIGMA: 982 x 300
+   ===================================================== */
+
+.site-footer-container {
+    width: 982px;
+    height: 300px;
+
+    position: relative;
+
+    margin: 0 auto;
+
+    top: 14px;
+
+    display: block;
+}
+
+
+/* =====================================================
+   COLUNAS
+   ===================================================== */
+
+.site-footer-column {
+    position: absolute;
+    top: 0;
+
+    width: auto;
+}
+
+
+/* COLUNA 1 */
+
+.site-footer-column:nth-child(1) {
+    left: 0;
+    width: 220px;
+}
+
+
+/* COLUNA 2 */
+
+.site-footer-column:nth-child(2) {
+    left: 404px;
+    width: 240px;
+}
+
+
+/* COLUNA 3 */
+
+.site-footer-column:nth-child(3) {
+    left: 746px;
+    width: 236px;
+}
+
+
+/* =====================================================
+   RESET DOS BLOCOS
+   ===================================================== */
+
+.site-footer-section {
+    position: absolute;
+
+    margin: 0;
+    padding: 0;
+}
+
+
+/* =====================================================
+   COLUNA 1
+   ===================================================== */
+
+.site-footer-column:nth-child(1)
+.site-footer-section:nth-child(1) {
+    top: 41px;
+    left: 0;
+}
+
+
+.site-footer-column:nth-child(1)
+.site-footer-section:nth-child(2) {
+    top: 159px;
+    left: 2px;
+}
+
+
+.site-footer-column:nth-child(1)
+.site-footer-section:nth-child(3) {
+    top: 239px;
+    left: 2px;
+}
+
+
+/* =====================================================
+   COLUNA 2
+   ===================================================== */
+
+.site-footer-column:nth-child(2)
+.site-footer-section:nth-child(1) {
+    top: 41px;
+    left: 0;
+}
+
+
+.site-footer-column:nth-child(2)
+.site-footer-section:nth-child(2) {
+    top: 155px;
+    left: 0;
+}
+
+
+.site-footer-column:nth-child(2)
+.site-footer-section:nth-child(3) {
+    top: 253px;
+    left: 0;
+}
+
+
+/* =====================================================
+   COLUNA 3
+   ===================================================== */
+
+.site-footer-column:nth-child(3)
+.site-footer-section:nth-child(1) {
+    top: 41px;
+    left: 0;
+}
+
+
+.site-footer-column:nth-child(3)
+.site-footer-section:nth-child(2) {
+    top: 182px;
+    left: 0;
+}
+
+
+.site-footer-column:nth-child(3)
+.site-footer-section:nth-child(3) {
+    top: 236px;
+    left: 0;
+}
+
+
+/* =====================================================
+   TÍTULOS
+   ===================================================== */
+
+.site-footer-title,
+.site-footer-premium,
+.site-footer-share,
+.site-footer-disease-label {
+
+    margin: 0;
+
+    color: #010009;
+
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 21px;
+
+    text-decoration: none;
+}
+
+
+.site-footer-title:hover,
+.site-footer-premium:hover,
+.site-footer-share:hover {
+    color: #010009;
+    text-decoration: none;
+}
+
+
+/* =====================================================
+   LINKS
+   ===================================================== */
+
+.site-footer-links {
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+
+    margin-top: 13px;
+}
+
+
+.site-footer-link,
+.site-footer-contact a {
+
+    color: #8F8F93;
+
+    font-family: "Inter", Arial, sans-serif;
+
+    font-style: normal;
+    font-weight: 500;
+
+    font-size: 13px;
+    line-height: 15px;
+
+    letter-spacing: 0.005em;
+
+    text-decoration: none;
+}
+
+
+.site-footer-link:hover,
+.site-footer-contact a:hover {
+    color: #8F8F93;
+    text-decoration: underline;
+}
+
+
+/* =====================================================
+   CONTATO
+   ===================================================== */
+
+.site-footer-whatsapp-title {
+
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+}
+
+
+.site-footer-whatsapp-icon {
+
+    display: inline-flex;
+
+    width: 20px;
+    height: 20px;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #02941E;
+
+    font-size: 20px;
+}
+
+
+.site-footer-contact {
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+
+    margin-top: 4px;
+
+    padding-left: 0;
+}
+
+
+/* =====================================================
+   COMPARTILHE
+   ===================================================== */
+
+.site-footer-share {
+
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    white-space: nowrap;
+}
+
+
+/* =====================================================
+   PREMIUM
+   ===================================================== */
+
+.site-footer-premium {
+
+    display: block;
+
+    width: 220px;
+
+    white-space: nowrap;
+}
+
+
+/* =====================================================
+   SELETOR
+   ===================================================== */
+
+.site-footer-disease-label {
+
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-weight: 600;
+
+    line-height: 18px;
+}
+
+
+.site-footer-disease-wrapper {
+
+    position: relative;
+
+    width: 194px;
+    height: 40px;
+}
+
+
+.site-footer-disease-select {
+
+    width: 194px;
+    height: 40px;
+
+    padding: 0 42px 0 20px;
+
+    border: none;
+    border-radius: 5px;
+
+    outline: none;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    background: #0193FF;
+
+    color: rgba(255, 255, 255, 0.65);
+
+    font-family: "Inter", Arial, sans-serif;
+
+    font-size: 15px;
+    line-height: 18px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.site-footer-disease-select option {
+    color: #333333;
+    background: #ffffff;
+}
+
+
+.site-footer-disease-arrow {
+
+    position: absolute;
+
+    right: 18px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #ffffff;
+
+    font-size: 15px;
+
+    pointer-events: none;
+}
+
+
+/* =====================================================
+   BARRA INFERIOR — FIGMA: 65px
+   ===================================================== */
+
+.site-footer-bottom {
+
+    width: 100%;
+    height: 65px;
+
+    position: absolute;
+
+    left: 0;
+    bottom: 0;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 0 20px;
+
+    box-sizing: border-box;
+
+    background: #FAFAFA;
+
+    border-top: 3px solid #E3E3E3;
+
+    color: #8F8F93;
+
+    font-family: "Inter", Arial, sans-serif;
+
+    font-style: normal;
+    font-weight: 400;
+
+    font-size: 13px;
+    line-height: 16px;
+
+    text-align: center;
+}
+
+        /* =====================================================
+           TABLET
+           ===================================================== */
+
+        @media (max-width: 992px) {
+
+            .telix-header-container {
+                padding: 0 25px;
+            }
+
+
+            .site-footer-container {
+                max-width: 760px;
+
+                column-gap: 45px;
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @media (max-width: 768px) {
+
+            .telix-header {
+                height: 70px;
+            }
+
+
+            .telix-header-container {
+                padding: 0 18px;
+            }
+
+
+            .telix-header-logo img {
+                height: 44px;
+            }
+
+
+            .telix-header-nav {
+                display: none;
+            }
+
+
+            .telix-user-name {
+                display: none;
+            }
+
+
+            .site-footer-main {
+                padding:
+                    35px
+                    25px
+                    28px;
+            }
+
+
+            .site-footer-container {
+                max-width: none;
+
+                grid-template-columns: 1fr;
+
+                row-gap: 30px;
+            }
+
+
+            .site-footer-section {
+                margin-bottom: 22px;
+            }
+
+
+            .site-footer-disease-wrapper {
+                width: 100%;
+                max-width: 250px;
+            }
+
+        }
+
     </style>
 
-    {% block extra_css %}{% endblock %}
+
+    {% block extra_css %}
+    {% endblock %}
+
 </head>
 
+
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">
-                <img src="{% static 'img/logo2.png' %}" alt="Logo" height="50">
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="telix-header">
+
+        <div class="telix-header-container">
+
+
+            <!-- LOGO -->
+
+            <a
+                href="/home/"
+                class="telix-header-logo"
+                aria-label="Telix - Página inicial"
+            >
+
+                <img
+                    src="{% static 'img/logo2.png' %}"
+                    alt="Telix - Contexto na saúde"
+                >
+
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Sobre</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Contato</a></li>
-                </ul>
-                <ul class="navbar-nav ms-auto">
-                    {% if user.is_authenticated %}
-                        <li class="nav-item"><a class="nav-link">{{ user.username }}</a></li>
-                        <li class="nav-item">
-                            <form method="post" action="{% url 'logout' %}" class="d-inline">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-sm btn-primary">Logout</button>
-                            </form>
-                        </li>
-                    {% else %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Cadastre-se</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Conteúdo da Página -->
-    <div class="content-wrapper">
-        {% block content %}{% endblock %}
-    </div>
 
-    <!-- FOOTER -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-left">
-                <a class="navbar-brand" href="https://www.telix.inf.br/">
-                 
+            <!-- MENU -->
+
+            <nav
+                class="telix-header-nav"
+                aria-label="Navegação principal"
+            >
+
+                <a href="/home/">
+                    Home
                 </a>
-                <p class="footer-text">Linca Telecomunicações Ltda</p>
-                <p class="footer-text">CNPJ: 03.376.788-0001/23</p>
-                <p class="footer-text">Rua Marechal Deodoro, 1606, Centro - Foz do Iguaçu/PR</p>
+
+                <a
+                    href="https://www.telix.inf.br/quem-somos-telix-contexto-na-saude"
+                >
+                    Quem somos
+                </a>
+
+                <a
+                    href="https://www.telix.inf.br/documentacao"
+                >
+                    Documentos
+                </a>
+
+            </nav>
+
+
+            <!-- USUÁRIO -->
+
+            <div class="telix-header-user">
+
+                {% if user.is_authenticated %}
+
+                    <span class="telix-user-name">
+                        {{ user.username }}
+                    </span>
+
+
+                    <form
+                        method="post"
+                        action="{% url 'logout' %}"
+                        class="telix-logout-form"
+                    >
+
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="telix-logout-button"
+                        >
+                            Sair
+                        </button>
+
+                    </form>
+
+                {% else %}
+
+                    <a
+                        href="{% url 'login' %}"
+                        class="telix-login-link"
+                    >
+                        Login
+                    </a>
+
+                {% endif %}
+
             </div>
 
-            <div class="footer-links">
-                <a href="https://www.telix.inf.br/blog" class="footer-link">Blog</a>
-                <a href="https://www.telix.inf.br/tratamentos" class="footer-link">Tratamentos</a>
-                <a href="https://www.telix.inf.br/quem-somos" class="footer-link">Quem Somos</a>
-            </div>  
-
-            <div class="footer-center">
-                <div class="footer-social">
-                    <a href="https://www.instagram.com/telix.inf.br/" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.facebook.com/people/Telix-contexto-na-sa%C3%BAde/100089318347896/" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://www.linkedin.com/company/telix-canais-de-not%C3%ADcias" target="_blank" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-                <button class="footer-btn">
-                    <i class="fas fa-download"></i> Baixar App
-                </button>
-            </div>
         </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         CONTEÚDO
+         ===================================================== -->
+
+    <main class="content-wrapper">
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer class="site-footer">
+
+
+        <div class="site-footer-main">
+
+            <div class="site-footer-container">
+
+
+                <!-- =================================================
+                     COLUNA 1
+                     ================================================= -->
+
+                <div class="site-footer-column">
+
+
+                    <!-- PÁGINAS DE TRATAMENTOS -->
+
+                    <div class="site-footer-section">
+
+                        <a
+                            href="https://www.telix.inf.br/tratamentos-risco-custo-contraindicado-eficacia-prazo"
+                            class="site-footer-title"
+                        >
+                            Páginas de tratamentos
+                        </a>
+
+
+                        <div class="site-footer-links">
+
+                            <a
+                                href="https://www.telix.inf.br/como-calculamos-a-eficacia-de-tratamentos-de-saude"
+                                class="site-footer-link"
+                            >
+                                Eficácia - como calculamos
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ARTIGOS CIENTÍFICOS -->
+
+                    <div class="site-footer-section">
+
+                        <a
+                            href="https://www.telix.inf.br/evidencias-clinicas-de-pesquisas-sobre-tratamentos-de-saude"
+                            class="site-footer-title"
+                        >
+                            Páginas de artigos científicos
+                        </a>
+
+
+                        <div class="site-footer-links">
+
+                            <a
+                                href="https://www.telix.inf.br/criterios-do-rigor-da-pesquisa-de-tratamentos-de-saude"
+                                class="site-footer-link"
+                            >
+                                Rigor da pesquisa - critérios
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- COMPARTILHE -->
+
+                    <div class="site-footer-section">
+
+                        <a
+                            href="https://api.whatsapp.com/send/?phone=5545999040371"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="site-footer-share"
+                        >
+
+                            <span class="site-footer-whatsapp-icon">
+                                <i class="fab fa-whatsapp"></i>
+                            </span>
+
+                            <span>
+                                Compartilhe
+                            </span>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     COLUNA 2
+                     ================================================= -->
+
+                <div class="site-footer-column">
+
+
+                    <!-- DOCUMENTOS -->
+
+                    <div class="site-footer-section">
+
+                        <a
+                            href="https://www.telix.inf.br/documentacao"
+                            class="site-footer-title"
+                        >
+                            Documentos
+                        </a>
+
+
+                        <div class="site-footer-links">
+
+                            <a
+                                href="https://www.telix.inf.br/documentacao/politica-de-privacidade"
+                                class="site-footer-link"
+                            >
+                                Política de Privacidade
+                            </a>
+
+
+                            <a
+                                href="https://www.telix.inf.br/documentacao/termos-de-uso"
+                                class="site-footer-link"
+                            >
+                                Termos de uso
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CONTATO -->
+
+                    <div class="site-footer-section">
+
+                        <a
+                            href="https://wa.me/5545999040371"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="site-footer-title site-footer-whatsapp-title"
+                        >
+
+                            <span class="site-footer-whatsapp-icon">
+                                <i class="fab fa-whatsapp"></i>
+                            </span>
+
+                            <span>
+                                Fale com a gente!
+                            </span>
+
+                        </a>
+
+
+                        <div class="site-footer-contact">
+
+                            <a href="tel:+5545999040371">
+                                (45) 99904-0371
+                            </a>
+
+                            <a href="mailto:contato@telix.inf.br">
+                                contato@telix.inf.br
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PREMIUM -->
+
+                    <div class="site-footer-section">
+
+                        <a
+                            href="https://www.telix.inf.br/paciente-bem-informado"
+                            class="site-footer-premium"
+                        >
+                            Contratar plano premium
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     COLUNA 3
+                     ================================================= -->
+
+                <div class="site-footer-column">
+
+
+                    <!-- APRESENTAÇÕES -->
+
+                    <div class="site-footer-section">
+
+                        <span class="site-footer-title">
+                            Apresentações
+                        </span>
+
+
+                        <div class="site-footer-links">
+
+                            <a
+                                href="https://www.telix.inf.br/perguntas-e-respostas"
+                                class="site-footer-link"
+                            >
+                                Perguntas e respostas
+                            </a>
+
+
+                            <a
+                                href="https://www.telix.inf.br/v%C3%ADdeos-entrevistas-e-materias-sobre-tratamentos-de-saude"
+                                class="site-footer-link"
+                            >
+                                Blog
+                            </a>
+
+
+                            <a
+                                href="https://www.telix.inf.br/quem-somos-telix-contexto-na-saude"
+                                class="site-footer-link"
+                            >
+                                Quem somos
+                            </a>
+
+
+                            <a
+                                href="https://www.telix.inf.br/depoimentos-experiencias-tratamentos-de-sa%C3%BAde"
+                                class="site-footer-link"
+                            >
+                                Depoimentos
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ESPECIALISTAS -->
+
+                    <div class="site-footer-section">
+
+                        <a
+                            href="https://www.telix.inf.br/entrevistas-com-especialistas-sobre-tratamento-de-sa%C3%BAde"
+                            class="site-footer-title"
+                        >
+                            Opiniões de especialistas
+                        </a>
+
+                    </div>
+
+
+                    <!-- SELETOR -->
+
+                    <div class="site-footer-section">
+
+                        <label
+                            for="footer-condition-select"
+                            class="site-footer-disease-label"
+                        >
+                            Selecione a doença
+                        </label>
+
+
+                        <div class="site-footer-disease-wrapper">
+
+                            <select
+                                id="footer-condition-select"
+                                class="site-footer-disease-select"
+                                aria-label="Selecione a doença"
+                            >
+
+                                {% if footer_listas %}
+
+                                    {% for item in footer_listas %}
+
+                                        <option
+                                            value="/{{ item.slug }}/"
+                                        >
+                                            {{ item.nome }}
+                                        </option>
+
+                                    {% endfor %}
+
+                                {% else %}
+
+                                    <option value="/enxaqueca/">
+                                        Enxaqueca
+                                    </option>
+
+                                {% endif %}
+
+                            </select>
+
+
+                            <span class="site-footer-disease-arrow">
+                                <i class="fas fa-chevron-down"></i>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             LINHA INFERIOR
+             ================================================= -->
+
+        <div class="site-footer-bottom">
+
+            Linca Telecomunicações Ltda
+            &nbsp;—&nbsp;
+            CNPJ: 03.376.788-0001/23
+
+        </div>
+
     </footer>
 
-    <!-- JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
 
-    <!-- Bootstrap -->
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 
-    <!-- Select2 -->
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- FONT AWESOME -->
 
-    <!-- Ativação do Select2 -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"
+    ></script>
+
+
+    <!-- JQUERY -->
+
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+    ></script>
+
+
+    <!-- BOOTSTRAP -->
+
+    <script
+        src="{% static 'js/bootstrap.bundle.min.js' %}"
+    ></script>
+
+
+    <!-- SELECT2 -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"
+    ></script>
+
+
+    <!-- =====================================================
+         SELECT2
+         ===================================================== -->
+
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        setTimeout(function() {
-        if (typeof $ !== 'undefined' && $.fn.select2) {
-            $('#publico').select2({
-            placeholder: "Selecione o público",
-            allowClear: true,
-            width: '100%'
-            });
 
-            $('#contraindicacoes').select2({
-            placeholder: "Selecione as contraindicações",
-            allowClear: true,
-            width: '100%'
-            });
-        }
-        }, 100);
-    });
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                setTimeout(
+                    function () {
+
+                        if (
+                            typeof $ !== "undefined" &&
+                            $.fn &&
+                            $.fn.select2
+                        ) {
+
+                            const publico =
+                                $("#publico");
+
+                            const contraindicacoes =
+                                $("#contraindicacoes");
+
+
+                            if (publico.length) {
+
+                                publico.select2({
+                                    placeholder:
+                                        "Selecione o público",
+                                    allowClear: true,
+                                    width: "100%"
+                                });
+
+                            }
+
+
+                            if (contraindicacoes.length) {
+
+                                contraindicacoes.select2({
+                                    placeholder:
+                                        "Selecione as contraindicações",
+                                    allowClear: true,
+                                    width: "100%"
+                                });
+
+                            }
+
+                        }
+
+                    },
+                    100
+                );
+
+            }
+        );
+
     </script>
 
+
+    <!-- =====================================================
+         SELETOR DO FOOTER
+         ===================================================== -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                const footerConditionSelect =
+                    document.getElementById(
+                        "footer-condition-select"
+                    );
+
+
+                if (footerConditionSelect) {
+
+                    footerConditionSelect.addEventListener(
+                        "change",
+                        function () {
+
+                            if (this.value) {
+                                window.location.href =
+                                    this.value;
+                            }
+
+                        }
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
+
+    {% block extra_js %}
+    {% endblock %}
+
+
+</body>
+
+</html>

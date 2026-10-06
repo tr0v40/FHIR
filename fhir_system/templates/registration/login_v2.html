@@ -1,0 +1,1755 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="robots"
+        content="noindex, nofollow"
+    >
+
+    <title>Acesso administrativo | Telix</title>
+
+    <link
+        rel="icon"
+        href="{% static 'img/favicon.png' %}"
+        type="image/png"
+    >
+
+    <style>
+
+        /* =========================================================
+           RESET
+           ========================================================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+
+            display: flex;
+            flex-direction: column;
+
+            background: #FFFFFF;
+
+            color: #010009;
+
+            font-family:
+                'Inter',
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            -webkit-font-smoothing: antialiased;
+        }
+
+
+        /* =========================================================
+           HEADER ADMINISTRATIVO
+           ========================================================= */
+
+        .admin-header {
+            width: 100%;
+            height: 82px;
+
+            flex: 0 0 82px;
+
+            position: relative;
+
+            background: #FFFFFF;
+
+            border-top: 4px solid #0193FF;
+            border-bottom: 1px solid #EAEAEA;
+        }
+
+        .admin-header-inner {
+            width: 982px;
+            max-width: calc(100% - 32px);
+            height: 100%;
+
+            margin: 0 auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .admin-header-logo {
+            display: flex;
+            align-items: center;
+
+            text-decoration: none;
+        }
+
+        .admin-header-logo img {
+            display: block;
+
+            width: auto;
+            height: 80px;
+
+            object-fit: contain;
+        }
+
+        .admin-header-area {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            color: #8F8F93;
+
+            font-size: 13px;
+            line-height: 16px;
+
+            font-weight: 500;
+        }
+
+        .admin-header-lock {
+            width: 28px;
+            height: 28px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #F0F8FF;
+
+            color: #0193FF;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+
+        /* =========================================================
+           ÁREA CENTRAL
+           ========================================================= */
+
+        .login-main {
+            width: 100%;
+
+            min-height: 650px;
+
+            flex: 1 0 auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 60px 20px;
+
+            background: #F7F8FA;
+        }
+
+
+        /* =========================================================
+           CARD LOGIN
+           ========================================================= */
+
+        .login-card {
+            width: 100%;
+            max-width: 430px;
+
+            padding: 42px 42px 36px;
+
+            background: #FFFFFF;
+
+            border: 1px solid #E6E8EB;
+            border-radius: 14px;
+
+            box-shadow:
+                0 18px 45px rgba(0, 0, 0, .06),
+                0 4px 12px rgba(0, 0, 0, .03);
+        }
+
+        .login-card-header {
+            margin-bottom: 31px;
+
+            text-align: center;
+        }
+
+        .login-card-header h1 {
+            margin: 0 0 8px;
+
+            font-size: 27px;
+            line-height: 33px;
+
+            font-weight: 700;
+
+            color: #010009;
+        }
+
+        .login-card-header p {
+            max-width: 320px;
+
+            margin: 0 auto;
+
+            color: #777B82;
+
+            font-size: 14px;
+            line-height: 21px;
+
+            font-weight: 400;
+        }
+
+
+        /* =========================================================
+           ERROS
+           ========================================================= */
+
+        .login-error {
+            margin: 0 0 24px;
+
+            padding: 13px 15px;
+
+            background: #FFF6F6;
+
+            border: 1px solid #EFB3B3;
+            border-radius: 7px;
+
+            color: #C52626;
+
+            font-size: 13px;
+            line-height: 19px;
+        }
+
+        .login-error ul {
+            margin: 0;
+            padding: 0;
+
+            list-style: none;
+        }
+
+        .login-error p {
+            margin: 0;
+        }
+
+
+        /* =========================================================
+           CAMPOS
+           ========================================================= */
+
+        .form-group {
+            width: 100%;
+
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+
+            margin: 0 0 7px;
+
+            color: #202124;
+
+            font-size: 13px;
+            line-height: 18px;
+
+            font-weight: 700;
+        }
+
+        .form-group input {
+            display: block;
+
+            width: 100%;
+            height: 48px;
+
+            padding: 0 14px;
+
+            background: #FFFFFF;
+
+            border: 1px solid #CFD4DA;
+            border-radius: 7px;
+
+            outline: none;
+
+            color: #202124;
+
+            font-family: inherit;
+            font-size: 15px;
+
+            transition:
+                border-color .18s ease,
+                box-shadow .18s ease;
+        }
+
+        .form-group input:hover {
+            border-color: #AEB5BD;
+        }
+
+        .form-group input:focus {
+            border-color: #0193FF;
+
+            box-shadow:
+                0 0 0 3px rgba(1, 147, 255, .12);
+        }
+
+
+        /* =========================================================
+           SENHA
+           ========================================================= */
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 52px;
+        }
+
+        .toggle-password {
+            position: absolute;
+
+            top: 50%;
+            right: 8px;
+
+            transform: translateY(-50%);
+
+            width: 38px;
+            height: 36px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 0;
+
+            border: 0;
+            border-radius: 5px;
+
+            background: transparent;
+
+            color: #7C8187;
+
+            cursor: pointer;
+        }
+
+        .toggle-password:hover {
+            color: #0193FF;
+
+            background: #F2F4F6;
+        }
+
+        .toggle-password svg {
+            width: 19px;
+            height: 19px;
+        }
+
+
+        /* =========================================================
+           BOTÃO ENTRAR
+           ========================================================= */
+
+        .login-button {
+            width: 100%;
+            height: 49px;
+
+            margin-top: 4px;
+
+            border: 0;
+            border-radius: 7px;
+
+            background: #0193FF;
+
+            color: #FFFFFF;
+
+            font-family: inherit;
+
+            font-size: 15px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition:
+                background-color .18s ease,
+                box-shadow .18s ease,
+                transform .08s ease;
+        }
+
+        .login-button:hover {
+            background: #0084E6;
+
+            box-shadow:
+                0 5px 14px rgba(1, 147, 255, .20);
+        }
+
+        .login-button:active {
+            transform: translateY(1px);
+        }
+
+
+        /* =========================================================
+           AVISO DE SEGURANÇA
+           ========================================================= */
+
+        .security-notice {
+            display: flex;
+            align-items: flex-start;
+
+            gap: 10px;
+
+            margin-top: 24px;
+            padding-top: 20px;
+
+            border-top: 1px solid #ECEEF0;
+        }
+
+        .security-icon {
+            width: 19px;
+            height: 19px;
+
+            flex: 0 0 19px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 1px;
+
+            border-radius: 50%;
+
+            background: #E9F5FF;
+
+            color: #0193FF;
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .security-notice p {
+            margin: 0;
+
+            color: #74787E;
+
+            font-size: 12px;
+            line-height: 18px;
+        }
+
+
+        /* =========================================================
+           FOOTER - MESMO PADRÃO DA PÁGINA DE DETALHES
+           ========================================================= */
+
+        .site-footer {
+            width: 100%;
+            height: 424px;
+
+            flex: 0 0 424px;
+
+            margin: 0;
+            padding: 0;
+
+            background: #FFFFFF;
+            border: 0;
+
+            font-family:
+                'Inter',
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            position: relative;
+        }
+
+
+        /* CONTEÚDO PRINCIPAL */
+
+        .footer-details {
+            width: 982px;
+            max-width: calc(100% - 32px);
+            height: 300px;
+
+            margin: 0 auto;
+
+            position: relative;
+        }
+
+
+        /* =========================================================
+           COLUNAS
+           ========================================================= */
+
+        .footer-column {
+            position: absolute;
+
+            top: 41px;
+        }
+
+        .footer-column-1 {
+            left: 0;
+            width: 239px;
+        }
+
+        .footer-column-2 {
+            left: 404px;
+            width: 239px;
+        }
+
+        .footer-column-3 {
+            left: 746px;
+            width: 236px;
+        }
+
+
+        /* =========================================================
+           TÍTULOS
+           ========================================================= */
+
+        .site-footer h3 {
+            margin: 0;
+
+            font-family:
+                'Inter',
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            font-style: normal;
+            font-weight: 700;
+
+            font-size: 15px;
+            line-height: 21px;
+
+            color: #010009;
+        }
+
+
+        /* =========================================================
+           LINKS
+           ========================================================= */
+
+        .footer-block > a,
+        .footer-block > p,
+        .footer-contact > a,
+        .footer-contact > p,
+        .footer-no-medication p {
+            display: block;
+
+            width: max-content;
+            max-width: 100%;
+
+            margin: 0 0 6px;
+
+            font-family:
+                'Inter',
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            font-style: normal;
+            font-weight: 500;
+
+            font-size: 13px;
+            line-height: 15px;
+
+            letter-spacing: .005em;
+
+            color: #8F8F93;
+
+            text-decoration: none;
+        }
+
+        .footer-block h3 + a,
+        .footer-block h3 + p {
+            margin-top: 14px;
+        }
+
+        .footer-block > a {
+            margin-bottom: 8px;
+        }
+
+
+        /* =========================================================
+           COLUNA 1
+           ========================================================= */
+
+        .footer-scientific {
+            margin-top: 64px;
+        }
+
+        .footer-whatsapp-icon {
+            width: 20px;
+            height: 20px;
+
+            display: block;
+
+            flex-shrink: 0;
+
+            object-fit: contain;
+        }
+
+
+        /* =========================================================
+           ESPECIAIS
+           ========================================================= */
+
+        .site-footer .footer-special {
+            display: block;
+
+            width: max-content;
+
+            font-family:
+                'Inter',
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            font-style: normal;
+            font-weight: 700;
+
+            font-size: 15px;
+            line-height: 18px;
+
+            color: #010009;
+
+            text-decoration: none;
+        }
+
+        .site-footer .footer-special:hover {
+            color: #0193FF;
+        }
+
+
+        /* =========================================================
+           COMPARTILHE
+           ========================================================= */
+
+        .footer-share {
+            display: flex !important;
+            align-items: center;
+
+            gap: 7px;
+        }
+
+
+        /* =========================================================
+           COLUNA 2
+           ========================================================= */
+
+        .footer-contact {
+            margin-top: 39px;
+        }
+
+        .footer-contact-title {
+            display: flex;
+            align-items: center;
+
+            gap: 7px;
+
+            margin: 0 0 10px 0;
+        }
+
+        .footer-contact-whatsapp-icon {
+            width: 20px;
+            height: 20px;
+
+            display: block;
+
+            flex-shrink: 0;
+
+            object-fit: contain;
+        }
+
+        .footer-contact p,
+        .footer-contact a {
+            margin-bottom: 6px;
+        }
+
+
+        /* =========================================================
+           COLUNA 3
+           ========================================================= */
+
+        .footer-specialists {
+            margin-top: 38px;
+        }
+
+        .footer-specialists h3 {
+            line-height: 21px;
+        }
+
+
+        /* =========================================================
+           BLOCOS INFERIORES
+           ========================================================= */
+
+        .footer-share,
+        .footer-premium,
+        .footer-disease {
+            position: absolute;
+
+            top: 225px;
+
+            margin-top: 0 !important;
+        }
+
+
+        /* =========================================================
+           DOENÇA
+           ========================================================= */
+
+        .footer-disease-label {
+            width: 142px;
+            height: 18px;
+
+            margin: 0 0 6px 1px;
+
+            display: flex;
+            align-items: center;
+
+            font-family:
+                'Inter',
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            font-style: normal;
+            font-weight: 600;
+
+            font-size: 15px;
+            line-height: 18px;
+
+            color: #000000;
+        }
+
+        .footer-disease-select {
+            position: relative;
+
+            width: 194px;
+            height: 40px;
+        }
+
+        .footer-disease-button {
+            box-sizing: border-box;
+
+            position: relative;
+
+            width: 194px;
+            height: 40px;
+
+            margin: 0;
+            padding: 0;
+
+            display: block;
+
+            background: #0193FF;
+
+            border: 0;
+            border-radius: 5px;
+
+            cursor: pointer;
+        }
+
+        .footer-disease-button span:first-child {
+            position: absolute;
+
+            width: auto;
+            height: 18px;
+
+            left: 30px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            display: flex;
+            align-items: center;
+
+            margin: 0;
+            padding: 0;
+
+            font-family:
+                'Inter',
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            font-style: normal;
+            font-weight: 700;
+
+            font-size: 15px;
+            line-height: 18px;
+
+            color: #FFFFFF;
+
+            opacity: .5;
+
+            white-space: nowrap;
+        }
+
+
+        /* =========================================================
+           CHEVRON
+           ========================================================= */
+
+        .footer-chevron {
+            position: absolute;
+
+            width: 15px;
+            height: 8px;
+
+            right: 20px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            border: 0;
+        }
+
+        .footer-chevron::before {
+            content: "";
+
+            position: absolute;
+
+            width: 10px;
+            height: 3px;
+
+            left: 0;
+            top: 2px;
+
+            background: #FFFFFF;
+
+            border-radius: 2px;
+
+            transform: rotate(45deg);
+        }
+
+        .footer-chevron::after {
+            content: "";
+
+            position: absolute;
+
+            width: 10px;
+            height: 3px;
+
+            right: 0;
+            top: 2px;
+
+            background: #FFFFFF;
+
+            border-radius: 2px;
+
+            transform: rotate(-45deg);
+        }
+
+
+        /* =========================================================
+           OPÇÕES
+           ========================================================= */
+
+        .footer-disease-options {
+            display: none;
+
+            position: absolute;
+
+            left: 0;
+            top: 48px;
+
+            width: 194px;
+            max-height: 220px;
+
+            overflow-y: auto;
+
+            background: #FFFFFF;
+
+            border: 1px solid #E3E3E3;
+            border-radius: 5px;
+
+            box-shadow:
+                0 4px 14px rgba(0, 0, 0, .12);
+
+            z-index: 1000;
+        }
+
+        .footer-disease-options.open {
+            display: block;
+        }
+
+        .site-footer {
+            transition: height .18s ease;
+        }
+
+        .site-footer:has(.footer-disease-options.open) {
+            height: 644px;
+            flex-basis: 644px;
+        }
+
+        .site-footer .footer-disease-options a {
+            display: block;
+
+            padding: 10px 14px;
+
+            font-family:
+                'Inter',
+                Arial,
+                sans-serif;
+
+            font-size: 13px;
+            font-weight: 500;
+
+            color: #333333;
+
+            text-decoration: none;
+
+            transition: .15s ease;
+        }
+
+        .site-footer .footer-disease-options a:hover {
+            color: #0193FF;
+
+            background: #F5FAFF;
+        }
+
+        .footer-disease-button.open .footer-chevron {
+            transform:
+                translateY(-50%)
+                rotate(180deg);
+        }
+
+        .footer-disease-empty {
+            display: block;
+
+            padding: 10px 14px;
+
+            color: #8F8F93;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================================================
+           FOOTER BOTTOM
+           ========================================================= */
+
+        .footer-bottom {
+            box-sizing: border-box;
+
+            position: absolute;
+
+            left: 0;
+            bottom: 0;
+
+            width: 100%;
+            height: 65px;
+
+            margin: 0;
+            padding: 0;
+
+            background: #FAFAFA;
+
+            border-top: 3px solid #E3E3E3;
+            border-bottom: 3px solid #E3E3E3;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-family:
+                'Inter',
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            font-weight: 400;
+
+            font-size: 13px;
+            line-height: 16px;
+
+            color: #8F8F93;
+
+            text-align: center;
+        }
+
+
+        /* =========================================================
+           RESPONSIVO
+           ========================================================= */
+
+        @media (max-width: 900px) {
+
+            .admin-header-inner {
+                padding: 0 20px;
+            }
+
+            .site-footer {
+                height: auto;
+                flex-basis: auto;
+
+                padding-top: 35px;
+            }
+
+            .footer-details {
+                width: 100%;
+                max-width: 600px;
+                height: auto;
+
+                padding: 0 25px 35px;
+
+                display: grid;
+
+                grid-template-columns: 1fr 1fr;
+
+                gap: 40px;
+            }
+
+            .footer-column {
+                position: static;
+
+                width: auto !important;
+            }
+
+            .footer-scientific,
+            .footer-contact,
+            .footer-specialists {
+                margin-top: 28px;
+            }
+
+            .footer-share,
+            .footer-premium,
+            .footer-disease {
+                position: static;
+
+                margin-top: 28px !important;
+            }
+
+            .footer-bottom {
+                position: static;
+
+                margin-top: 10px;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .admin-header {
+                height: 70px;
+
+                flex-basis: 70px;
+            }
+
+            .admin-header-logo img {
+                height: 45px;
+            }
+
+            .admin-header-area {
+                font-size: 12px;
+            }
+
+            .login-main {
+                min-height: auto;
+
+                padding: 35px 16px;
+            }
+
+            .login-card {
+                padding: 34px 25px 30px;
+            }
+
+            .login-card-header h1 {
+                font-size: 24px;
+                line-height: 29px;
+            }
+
+            .footer-details {
+                grid-template-columns: 1fr;
+
+                max-width: 380px;
+            }
+
+            .footer-bottom {
+                height: auto;
+                min-height: 65px;
+
+                padding: 15px 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================================
+         HEADER
+         ========================================================= -->
+
+    <header class="admin-header">
+
+        <div class="admin-header-inner">
+
+            <a
+                href="/home/"
+                class="admin-header-logo"
+                aria-label="Telix"
+            >
+                <img
+                    src="{% static 'img/logotipo.png' %}"
+                    alt="Telix"
+                >
+            </a>
+
+
+            <div class="admin-header-area">
+
+                <span class="admin-header-lock">
+                    ✓
+                </span>
+
+                <span>
+                    Área administrativa
+                </span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         LOGIN
+         ========================================================= -->
+
+    <main class="login-main">
+
+        <section class="login-card">
+
+            <div class="login-card-header">
+
+                <h1>
+                    Acesso administrativo
+                </h1>
+
+                <p>
+                    Entre com suas credenciais para acessar
+                    o sistema.
+                </p>
+
+            </div>
+
+
+            <!-- ERROS -->
+
+            {% if form.non_field_errors %}
+
+                <div
+                    class="login-error"
+                    role="alert"
+                >
+                    {{ form.non_field_errors }}
+                </div>
+
+            {% endif %}
+
+
+            {% if form.username.errors %}
+
+                <div
+                    class="login-error"
+                    role="alert"
+                >
+                    {{ form.username.errors }}
+                </div>
+
+            {% endif %}
+
+
+            {% if form.password.errors %}
+
+                <div
+                    class="login-error"
+                    role="alert"
+                >
+                    {{ form.password.errors }}
+                </div>
+
+            {% endif %}
+
+
+            <!-- FORM -->
+
+            <form
+                method="post"
+                autocomplete="on"
+            >
+
+                {% csrf_token %}
+
+
+                {% if next %}
+
+                    <input
+                        type="hidden"
+                        name="next"
+                        value="{{ next }}"
+                    >
+
+                {% endif %}
+
+
+                <div class="form-group">
+
+                    <label
+                        for="id_username"
+                        class="form-label"
+                    >
+                        Usuário
+                    </label>
+
+                    {{ form.username }}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label
+                        for="id_password"
+                        class="form-label"
+                    >
+                        Senha
+                    </label>
+
+
+                    <div class="password-wrapper">
+
+                        {{ form.password }}
+
+
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            id="togglePassword"
+                            aria-label="Mostrar senha"
+                        >
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path
+                                    d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12"
+                                ></path>
+
+                                <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="3"
+                                ></circle>
+
+                            </svg>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="login-button"
+                >
+                    Entrar
+                </button>
+
+
+                <div class="security-notice">
+
+                    <span class="security-icon">
+                        ✓
+                    </span>
+
+                    <p>
+                        Acesso restrito a usuários autorizados.
+                        Tentativas de acesso podem ser registradas
+                        para fins de segurança.
+                    </p>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         FOOTER
+         ========================================================= -->
+
+    <footer class="site-footer">
+
+        <div class="footer-details">
+
+
+            <!-- ==================================================
+                 COLUNA 1
+                 ================================================== -->
+
+            <div class="footer-column footer-column-1">
+
+                <div class="footer-block">
+
+                    <h3>
+
+                        <a
+                            href="https://www.telix.inf.br/tratamentos-risco-custo-contraindicado-eficacia-prazo"
+                            style="color: inherit; text-decoration: none;"
+                        >
+                            Páginas de tratamentos
+                        </a>
+
+                    </h3>
+
+
+                    <a
+                        href="https://www.telix.inf.br/como-calculamos-a-eficacia-de-tratamentos-de-saude"
+                    >
+                        Eficácia - como calculamos
+                    </a>
+
+                </div>
+
+
+                <div class="footer-block footer-scientific">
+
+                    <h3>
+
+                        <a
+                            href="https://www.telix.inf.br/evidencias-clinicas-de-pesquisas-sobre-tratamentos-de-saude"
+                            style="color: inherit; text-decoration: none;"
+                        >
+                            Páginas de artigos científicos
+                        </a>
+
+                    </h3>
+
+
+                    <a
+                        href="https://www.telix.inf.br/criterios-do-rigor-da-pesquisa-de-tratamentos-de-saude"
+                    >
+                        Rigor da pesquisa - critérios
+                    </a>
+
+                </div>
+
+
+                <a
+                    href="https://api.whatsapp.com/send/?phone=5545999040371&amp;text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.&amp;type=phone_number&amp;app_absent=0"
+                    class="footer-special footer-share"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    <img
+                        src="{% static 'img/whats-app.png' %}"
+                        alt="WhatsApp"
+                        class="footer-whatsapp-icon"
+                    >
+
+                    <span>
+                        Compartilhe
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <!-- ==================================================
+                 COLUNA 2
+                 ================================================== -->
+
+            <div class="footer-column footer-column-2">
+
+                <div class="footer-block">
+
+                    <h3>
+
+                        <a
+                            href="https://www.telix.inf.br/documentacao"
+                            style="color: inherit; text-decoration: none;"
+                        >
+                            Documentos
+                        </a>
+
+                    </h3>
+
+
+                    <a
+                        href="https://www.telix.inf.br/documentacao/politica-de-privacidade"
+                    >
+                        Política de Privacidade
+                    </a>
+
+
+                    <a
+                        href="https://www.telix.inf.br/documentacao/termos-de-uso"
+                    >
+                        Termos de uso
+                    </a>
+
+                </div>
+
+
+                <div class="footer-block footer-contact">
+
+                    <h3 class="footer-contact-title">
+
+                        <img
+                            src="{% static 'img/whats-app.png' %}"
+                            alt="WhatsApp"
+                            class="footer-contact-whatsapp-icon"
+                        >
+
+
+                        <a
+                            href="https://wa.me/45999040371"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style="color: inherit; text-decoration: none;"
+                        >
+                            Fale com a gente!
+                        </a>
+
+                    </h3>
+
+
+                    <p>
+
+                        <a
+                            href="https://wa.me/45999040371"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style="color: inherit; text-decoration: none;"
+                        >
+                            (45) 99904-0371
+                        </a>
+
+                    </p>
+
+
+                    <a href="mailto:contato@telix.inf.br">
+                        contato@telix.inf.br
+                    </a>
+
+                </div>
+
+
+                <a
+                    href="https://www.telix.inf.br/paciente-bem-informado"
+                    class="footer-special footer-premium"
+                >
+                    Contratar plano premium
+                </a>
+
+            </div>
+
+
+            <!-- ==================================================
+                 COLUNA 3
+                 ================================================== -->
+
+            <div class="footer-column footer-column-3">
+
+                <div class="footer-block">
+
+                    <h3>
+                        Apresentações
+                    </h3>
+
+
+                    <a
+                        href="https://www.telix.inf.br/perguntas-e-respostas"
+                    >
+                        Perguntas e respostas
+                    </a>
+
+
+                    <a
+                        href="https://www.telix.inf.br/v%C3%ADdeos-entrevistas-e-materias-sobre-tratamentos-de-saude"
+                    >
+                        Blog
+                    </a>
+
+
+                    <a
+                        href="https://www.telix.inf.br/quem-somos-telix-contexto-na-saude"
+                    >
+                        Quem somos
+                    </a>
+
+
+                    <a
+                        href="https://www.telix.inf.br/depoimentos-experiencias-tratamentos-de-sa%C3%BAde"
+                    >
+                        Depoimentos
+                    </a>
+
+                </div>
+
+
+                <div class="footer-specialists">
+
+                    <h3>
+
+                        <a
+                            href="https://www.telix.inf.br/entrevistas-com-especialistas-sobre-tratamento-de-sa%C3%BAde"
+                            style="color: inherit; text-decoration: none;"
+                        >
+                            Opiniões de especialistas
+                        </a>
+
+                    </h3>
+
+                </div>
+
+
+                <!-- DOENÇAS -->
+
+                <div class="footer-disease">
+
+                    <div class="footer-disease-label">
+                        Selecione a doença
+                    </div>
+
+
+                    <div class="footer-disease-select">
+
+                        <button
+                            type="button"
+                            class="footer-disease-button"
+                            id="footerDiseaseButton"
+                            aria-expanded="false"
+                            aria-controls="footerDiseaseOptions"
+                        >
+
+                            <span>
+                                {{ condicao.nome|default:"Enxaqueca" }}
+                            </span>
+
+                            <span class="footer-chevron"></span>
+
+                        </button>
+
+
+                        <div
+                            class="footer-disease-options"
+                            id="footerDiseaseOptions"
+                        >
+
+                            {% for item in footer_listas %}
+
+                                <a href="{{ item.url }}">
+                                    {{ item.label }}
+                                </a>
+
+                            {% empty %}
+
+                                <span class="footer-disease-empty">
+                                    Nenhuma opção disponível
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             BOTTOM
+             ===================================================== -->
+
+        <div class="footer-bottom">
+
+            Linca Telecomunicações Ltda
+            &nbsp;—&nbsp;
+            CNPJ: 03.376.788-0001/23
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+         ========================================================= -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                /* ===============================================
+                   MOSTRAR SENHA
+                   =============================================== */
+
+                const togglePassword =
+                    document.getElementById(
+                        "togglePassword"
+                    );
+
+                const password =
+                    document.getElementById(
+                        "id_password"
+                    );
+
+
+                if (togglePassword && password) {
+
+                    togglePassword.addEventListener(
+                        "click",
+                        function () {
+
+                            const hidden =
+                                password.type === "password";
+
+
+                            password.type =
+                                hidden
+                                    ? "text"
+                                    : "password";
+
+
+                            this.setAttribute(
+                                "aria-label",
+                                hidden
+                                    ? "Ocultar senha"
+                                    : "Mostrar senha"
+                            );
+
+                        }
+                    );
+
+                }
+
+
+                /* ===============================================
+                   DROPDOWN DO FOOTER
+                   =============================================== */
+
+                const diseaseButton =
+                    document.getElementById(
+                        "footerDiseaseButton"
+                    );
+
+                const diseaseOptions =
+                    document.getElementById(
+                        "footerDiseaseOptions"
+                    );
+
+
+                if (
+                    diseaseButton &&
+                    diseaseOptions
+                ) {
+
+                    diseaseButton.addEventListener(
+                        "click",
+                        function (event) {
+
+                            event.stopPropagation();
+
+
+                            const open =
+                                diseaseOptions.classList.toggle(
+                                    "open"
+                                );
+
+
+                            diseaseButton.classList.toggle(
+                                "open",
+                                open
+                            );
+
+
+                            diseaseButton.setAttribute(
+                                "aria-expanded",
+                                open
+                                    ? "true"
+                                    : "false"
+                            );
+
+                        }
+                    );
+
+
+                    document.addEventListener(
+                        "click",
+                        function (event) {
+
+                            if (
+                                !diseaseOptions.contains(event.target) &&
+                                !diseaseButton.contains(event.target)
+                            ) {
+
+                                diseaseOptions.classList.remove(
+                                    "open"
+                                );
+
+                                diseaseButton.classList.remove(
+                                    "open"
+                                );
+
+                                diseaseButton.setAttribute(
+                                    "aria-expanded",
+                                    "false"
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

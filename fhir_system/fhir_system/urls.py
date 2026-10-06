@@ -4,6 +4,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
 from django.views.generic import RedirectView
+from django.contrib.auth.views import LoginView
+from core.forms import CustomAuthenticationForm
 
 from core import views
 from core import public_views_listas2
@@ -47,22 +49,28 @@ urlpatterns = [
         name="home",
     ),
 
-    # =========================================================
-    # ADMINISTRAÇÃO E AUTENTICAÇÃO
-    # =========================================================
+# =========================================================
+# ADMINISTRAÇÃO E AUTENTICAÇÃO
+# =========================================================
+
     path(
         "admin/",
         admin.site.urls,
     ),
+
+    path(
+        "accounts/login/",
+        LoginView.as_view(
+            template_name="registration/login_v2.html",
+            authentication_form=CustomAuthenticationForm,
+        ),
+        name="login",
+    ),
+
     path(
         "accounts/",
         include("django.contrib.auth.urls"),
     ),
-
-    # =========================================================
-    # ROTAS INTERNAS / SISTEMA
-    # =========================================================
-
     # =========================================================
 # NOVA HOME TELIX
 # =========================================================

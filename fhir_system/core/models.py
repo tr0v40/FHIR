@@ -2010,3 +2010,37 @@ class AlertaTratamento(models.Model):
         if self.titulo:
             return f"{self.tratamento} — {self.titulo}"
         return f"{self.tratamento} — Alerta {self.id}"
+
+
+from django.conf import settings
+from django.db import models
+
+
+class LoginSecurity(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="login_security",
+    )
+
+    failed_attempts = models.PositiveSmallIntegerField(
+        default=0
+    )
+
+    locked_until = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
+    last_failed_at = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
+    last_failed_ip = models.GenericIPAddressField(
+        null=True,
+        blank=True
+    )
+
+    def __str__(self):
+        return f"Segurança de login - {self.user}"

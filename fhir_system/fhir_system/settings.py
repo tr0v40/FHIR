@@ -188,6 +188,10 @@ JAZZMIN_SETTINGS = {
     "show_ui_builder": False,
 }
 
+
+AUTHENTICATION_BACKENDS = [
+    "core.auth_backends.SecureModelBackend",
+]
 # Configurações de Senha
 AUTH_PASSWORD_VALIDATORS = [
     {

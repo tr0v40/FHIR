@@ -1556,6 +1556,13 @@
    ocupa toda a largura do evidence-shell
    ========================================================= */
 
+/* =========================================================
+   BANNER EFICÁCIA - DESKTOP
+   ========================================================= */
+/* =========================================================
+   BANNER EFICÁCIA
+   ========================================================= */
+
 .evidence-efficacy-banner {
     width: calc(100% + 56px);
     height: auto;
@@ -1568,17 +1575,68 @@
     overflow: hidden;
 
     text-decoration: none;
-    cursor: pointer;
+    color: #fff;
 }
 
-.evidence-efficacy-banner img {
+.evidence-efficacy-banner-image {
     width: 100%;
     height: auto;
-
     display: block;
     object-fit: cover;
+}
+
+
+/* TEXTO SOBRE O BANNER */
+.evidence-efficacy-banner-copy {
+    position: absolute;
+
+    left: 22px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #fff;
+    z-index: 2;
+
+    font-family: Arial, sans-serif;
 
     pointer-events: none;
+}
+
+
+/* Ver eficácia de */
+.evidence-efficacy-line-1 {
+    font-size: 29px;
+    line-height: 1.05;
+    font-weight: 400;
+}
+
+.evidence-efficacy-line-1 strong {
+    font-weight: 700;
+}
+
+
+/* outros tratamentos */
+.evidence-efficacy-line-2 {
+    margin-top: 3px;
+
+    font-size: 29px;
+    line-height: 1.05;
+    font-weight: 700;
+}
+
+
+/* para Enxaqueca */
+.evidence-efficacy-line-3 {
+    margin-top: 10px;
+
+    font-size: 23px;
+    line-height: 1.1;
+    font-weight: 400;
+}
+
+.evidence-efficacy-line-3 span {
+    font-weight: 400;
 }
 
 /* inicialmente somente desktop */
@@ -2191,9 +2249,26 @@
    SELECIONE A DOENÇA - FIGMA
    ========================================================= */
 
-.footer-disease{
-    margin-top:28px;
-    width:194px;
+
+/* =========================================================
+   ALINHAMENTO HORIZONTAL DOS 3 BLOCOS INFERIORES
+   ========================================================= */
+/* =========================================================
+   ALINHAMENTO DOS BLOCOS INFERIORES DO FOOTER
+   ========================================================= */
+
+.footer-share,
+.footer-premium,
+.footer-disease {
+    position: absolute;
+    top: 225px;
+    margin-top: 0 !important;
+}
+
+.footer-no-medication {
+    position: absolute;
+    top: 225px;
+    margin-top: 0 !important;
 }
 
 .footer-disease-label{
@@ -3186,690 +3261,713 @@
                                         <a class="evidence-link" href="{{ evidencia.link_estudo }}" target="_blank" rel="noopener noreferrer">
                                             {{ evidencia.link_estudo }}
                                         </a>
-                                    {% endif %}
-                                </div>
+                                        {% endif %}
+                                    </div>
 
-                                <div class="evidence-description">
-                                    {{ evidencia.descricao|truncatechars:400|linebreaksbr }}
-                                </div>
-                            </article>
-                        {% if forloop.counter == 3 or forloop.last and forloop.counter < 3 %}
+                                    <div class="evidence-description">
+                                        {{ evidencia.descricao|truncatechars:400|linebreaksbr }}
+                                    </div>
+                                </article>
+                            {% if forloop.counter == 3 or forloop.last and forloop.counter < 3 %}
+
                             <a
                                 class="evidence-efficacy-banner"
                                 href="/{{ condicao.slug }}/"
                                 aria-label="Comparar outros tratamentos para {{ condicao.nome }}"
                             >
                                 <img
-                                    src="{% static 'img/ver_eficacia_outros_tratamentos_desk.png' %}"
-                                    alt="Ver eficácia de outros tratamentos para {{ condicao.nome }}"
+                                    src="{% static 'img/banner_eficacia.png' %}"
+                                    alt=""
+                                    class="evidence-efficacy-banner-image"
                                 >
+
+                                <div class="evidence-efficacy-banner-copy">
+
+                                    <div class="evidence-efficacy-line-1">
+                                        Ver <strong>eficácia</strong> de
+                                    </div>
+
+                                    <div class="evidence-efficacy-line-2">
+                                        outros tratamentos
+                                    </div>
+
+                                    <div class="evidence-efficacy-line-3">
+                                        para <span>{{ condicao.nome }}</span>
+                                    </div>
+
+                                </div>
+
                             </a>
-                        {% endif %}
-                        {% endfor %}
 
-                        {% if evidencias|length > 5 %}
-                            <div class="evidence-load-more">
-                                <button type="button" id="load-more-evidences">
-                                    Carregar mais
-                                </button>
-                            </div>
-                        {% endif %}
-
-                    </div>
-                {% else %}
-                    <div class="empty-box">
-                        <strong>Sem evidências carregadas nesta página.</strong><br>
-                        Se existem pesquisas na tela separada, adicione <code>evidencias</code> ao contexto da view de detalhes.
-                    </div>
-                {% endif %}
-            </div>
-        </section>
-
-
-
-<!-- PRAZO PARA EFEITO -->
-<section id="prazo-efeito" class="effect-time-section">
-    <div class="page-wrap">
-
-        <div class="effect-time">
-
-            <img
-                src="{% static 'img/prazo_efe.png' %}"
-                class="effect-time-icon"
-                alt="Prazo para efeito"
-            >
-
-            <span class="effect-time-label">
-                Prazo para efeito
-            </span>
-
-            <strong class="effect-time-value">
-                {{ prazo_efeito|default:"Não informado" }}
-            </strong>
-
-        </div>
-
-    </div>
-</section>
-
-
-        <!-- QUANDO USAR -->
-        <section id="quando-usar" class="page-wrap when-use">
-            <div class="when-use-copy">
-                <h2>Quando usar?</h2>
-                <p>{{ tratamento.quando_usar }}</p>
-            </div>
-            <img src="{% static 'img/relogio.png' %}" alt="Quando usar">
-        </section>
-
-        <!-- SEGURANÇA -->
-        <section id="seguranca" class="section">
-            <div class="page-wrap">
-                <div class="safety-table-wrap">
-                    <table class="safety-table">
-                        <thead>
-                            <tr>
-                                <th>Grupo</th>
-                                <th>Segurança de uso</th>
-                                <th>Motivo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Crianças menores de 12 anos</td>
-                                <td><span class="pill {% if tratamento.indicado_criancas == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_criancas }}</span></td>
-                                <td>{{ tratamento.motivo_criancas|default:"-" }}</td>
-                            </tr>
-                            <tr>
-                                <td>Adolescentes 12 a 17 anos</td>
-                                <td><span class="pill {% if tratamento.indicado_adolescentes == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_adolescentes }}</span></td>
-                                <td>{{ tratamento.motivo_adolescentes|default:"-" }}</td>
-                            </tr>
-                            <tr>
-                                <td>Idosos +65 anos</td>
-                                <td><span class="pill {% if tratamento.indicado_idosos == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_idosos }}</span></td>
-                                <td>{{ tratamento.motivo_idosos|default:"-" }}</td>
-                            </tr>
-                            <tr>
-                                <td>Adultos</td>
-                                <td><span class="pill {% if tratamento.indicado_adultos == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_adultos }}</span></td>
-                                <td>{{ tratamento.motivo_adultos|default:"-" }}</td>
-                            </tr>
-                            <tr>
-                                <td>Lactantes</td>
-                                <td><span class="pill {% if tratamento.indicado_lactantes == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_lactantes }}</span></td>
-                                <td>{{ tratamento.motivo_lactantes|default:"-" }}</td>
-                            </tr>
-                            <tr>
-                                <td>Gravidez</td>
-                                <td><span class="pill {% if tratamento.indicado_gravidez == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_gravidez }}</span></td>
-                                <td>{{ tratamento.motivo_gravidez|default:"-" }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- =========================================================
-     BANNER ATENDIMENTO EXCLUSIVO
-     ========================================================= -->
-
-<div class="exclusive-service-banner">
-
-<a
-    href="https://telix.inf.br/paciente-bem-informado"
-    class="exclusive-service-banner"
-    aria-label="Atendimento exclusivo com nossos tutores"
->
-    <img
-        src="{% static 'img/cuida_da_sua_saude.png' %}"
-        alt="Atendimento exclusivo com nossos tutores para tirar suas dúvidas sobre tratamentos de saúde"
-    >
-</a>
-
-</div>
-
-        <!-- CONTRAINDICAÇÕES -->
-        <section id="contraindicacoes" class="section">
-            <div class="page-wrap">
-                <div class="cards-title">
-                    <h2>Contraindicado para</h2>
-                    <img src="{% static 'img/icone.png' %}" alt="">
-                </div>
-
-                <div class="cards-grid">
-                    {% for contraindicacao in tratamento.contraindicacoes.all %}
-                        <article class="info-card">
-                            {% if contraindicacao.imagem %}
-                                <img src="{{ contraindicacao.imagem.url }}" alt="{{ contraindicacao.nome }}">
-                            {% else %}
-                                <img src="{% static 'img/default-medicamento.png' %}" alt="Imagem não disponível">
                             {% endif %}
-                            <div class="info-card-body">
-                                <h3>{{ contraindicacao.nome }}</h3>
-                                <p>{{ contraindicacao.descricao }}</p>
-                            </div>
-                        </article>
-                    {% empty %}
-                        <div class="empty-box" style="grid-column:1/-1">Não há contraindicações cadastradas.</div>
-                    {% endfor %}
-                </div>
-            </div>
-        </section>
-<!-- =========================================================
-     DETALHES / LINKS / ALERTA
-     ========================================================= -->
+                            {% endfor %}
 
-<section id="custo" class="details-section">
-
-    <div class="details-container">
-
-        <!-- DETALHES + LINKS -->
-        <div class="details-top">
-
-
-            <!-- =========================
-                 DETALHES
-                 ========================= -->
-
-            <div class="details-info">
-
-                <h3 class="details-title">
-                    Detalhes
-                </h3>
-
-
-                <div class="details-price">
-
-                <img
-                    src="{% static 'img/cifrao_cf.png' %}"
-                    class="menu-icon"
-                    alt=""
-                >
-
-                    <div class="details-price-content">
-
-                        <div class="details-price-line">
-
-                            <span class="details-price-label">
-                                Valor do tratamento:
-                            </span>
-
-
-                            <span class="details-price-value">
-
-                                {% if tratamento.link_para_compra_de_tratamento %}
-
-                                    <a
-                                        href="{{ tratamento.link_para_compra_de_tratamento }}"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        R$ {{ tratamento.custo_medicamento|floatformat:2 }}
-                                    </a>
-
-                                {% else %}
-
-                                    <strong>
-                                        R$ {{ tratamento.custo_medicamento|floatformat:2 }}
-                                    </strong>
-
-                                {% endif %}
-
-                            </span>
+                            {% if evidencias|length > 5 %}
+                                <div class="evidence-load-more">
+                                    <button type="button" id="load-more-evidences">
+                                        Carregar mais
+                                    </button>
+                                </div>
+                            {% endif %}
 
                         </div>
-
-
-                        {% if tratamento.especificacao_do_custo %}
-
-                            <div class="details-price-description">
-                                ({{ tratamento.especificacao_do_custo }})
-                            </div>
-
-                        {% endif %}
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- =========================
-                 LINKS
-                 ========================= -->
-
-            <div class="details-links">
-
-                <h3 class="details-title">
-                    Links
-                </h3>
-
-
-                <div class="details-links-grid">
-
-
-                    <!-- OPINIÃO DE ESPECIALISTA -->
-
-                    {% if tratamento.opiniao_especialista %}
-
-                        <a
-                            href="{{ tratamento.opiniao_especialista }}"
-                            class="details-link details-link-primary"
-                        >
-                            Opinião de especialista
-                        </a>
-
                     {% else %}
-
-                        <a
-                            href="#"
-                            class="details-link details-link-primary"
-                        >
-                            Opinião de especialista
-                        </a>
-
+                        <div class="empty-box">
+                            <strong>Sem evidências carregadas nesta página.</strong><br>
+                            Se existem pesquisas na tela separada, adicione <code>evidencias</code> ao contexto da view de detalhes.
+                        </div>
                     {% endif %}
-
-
-
-                    <!-- GENÉRICOS -->
-
-                    {% if tratamento.genericos_similares %}
-
-                        <a
-                            href="{{ tratamento.genericos_similares }}"
-                            class="details-link"
-                        >
-                            Genéricos e similares
-                        </a>
-
-                    {% else %}
-
-                        <a
-                            href="#genericos-similares"
-                            class="details-link"
-                        >
-                            Genéricos e similares
-                        </a>
-
-                    {% endif %}
-
-
-
-                    <!-- INTERAÇÕES -->
-
-                    <a
-                        href="#interacoes"
-                        class="details-link"
-                    >
-                        Interações medicamentosas
-                    </a>
-
-
-
-                    <!-- PRESCRIÇÃO -->
-
-                    <a
-                        href="#prescricao"
-                        class="details-link"
-                    >
-                        Prescrição eletrônica
-                    </a>
-
-
                 </div>
+            </section>
+
+
+
+    <!-- PRAZO PARA EFEITO -->
+    <section id="prazo-efeito" class="effect-time-section">
+        <div class="page-wrap">
+
+            <div class="effect-time">
+
+                <img
+                    src="{% static 'img/prazo_efe.png' %}"
+                    class="effect-time-icon"
+                    alt="Prazo para efeito"
+                >
+
+                <span class="effect-time-label">
+                    Prazo para efeito
+                </span>
+
+                <strong class="effect-time-value">
+                    {{ prazo_efeito|default:"Não informado" }}
+                </strong>
 
             </div>
 
         </div>
+    </section>
 
 
+            <!-- QUANDO USAR -->
+            <section id="quando-usar" class="page-wrap when-use">
+                <div class="when-use-copy">
+                    <h2>Quando usar?</h2>
+                    <p>{{ tratamento.quando_usar }}</p>
+                </div>
+                <img src="{% static 'img/relogio.png' %}" alt="Quando usar">
+            </section>
 
-        <!-- =================================================
-             ALERTA
-             ================================================= -->
+            <!-- SEGURANÇA -->
+            <section id="seguranca" class="section">
+                <div class="page-wrap">
+                    <div class="safety-table-wrap">
+                        <table class="safety-table">
+                            <thead>
+                                <tr>
+                                    <th>Grupo</th>
+                                    <th>Segurança de uso</th>
+                                    <th>Motivo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Crianças menores de 12 anos</td>
+                                    <td><span class="pill {% if tratamento.indicado_criancas == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_criancas }}</span></td>
+                                    <td>{{ tratamento.motivo_criancas|default:"-" }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Adolescentes 12 a 17 anos</td>
+                                    <td><span class="pill {% if tratamento.indicado_adolescentes == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_adolescentes }}</span></td>
+                                    <td>{{ tratamento.motivo_adolescentes|default:"-" }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Idosos +65 anos</td>
+                                    <td><span class="pill {% if tratamento.indicado_idosos == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_idosos }}</span></td>
+                                    <td>{{ tratamento.motivo_idosos|default:"-" }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Adultos</td>
+                                    <td><span class="pill {% if tratamento.indicado_adultos == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_adultos }}</span></td>
+                                    <td>{{ tratamento.motivo_adultos|default:"-" }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Lactantes</td>
+                                    <td><span class="pill {% if tratamento.indicado_lactantes == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_lactantes }}</span></td>
+                                    <td>{{ tratamento.motivo_lactantes|default:"-" }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Gravidez</td>
+                                    <td><span class="pill {% if tratamento.indicado_gravidez == 'SIM' %}yes{% else %}no{% endif %}">{{ tratamento.indicado_gravidez }}</span></td>
+                                    <td>{{ tratamento.motivo_gravidez|default:"-" }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
 
-        {% if tratamento.alertas %}
+            <!-- =========================================================
+        BANNER ATENDIMENTO EXCLUSIVO
+        ========================================================= -->
 
-            <div class="details-alert">
+    <div class="exclusive-service-banner">
+
+    <a
+        href="https://telix.inf.br/paciente-bem-informado"
+        class="exclusive-service-banner"
+        aria-label="Atendimento exclusivo com nossos tutores"
+    >
+        <img
+            src="{% static 'img/cuida_da_sua_saude.png' %}"
+            alt="Atendimento exclusivo com nossos tutores para tirar suas dúvidas sobre tratamentos de saúde"
+        >
+    </a>
+
+    </div>
+
+            <!-- CONTRAINDICAÇÕES -->
+            <section id="contraindicacoes" class="section">
+                <div class="page-wrap">
+                    <div class="cards-title">
+                        <h2>Contraindicado para</h2>
+                        <img src="{% static 'img/icone.png' %}" alt="">
+                    </div>
+
+                    <div class="cards-grid">
+                        {% for contraindicacao in tratamento.contraindicacoes.all %}
+                            <article class="info-card">
+                                {% if contraindicacao.imagem %}
+                                    <img src="{{ contraindicacao.imagem.url }}" alt="{{ contraindicacao.nome }}">
+                                {% else %}
+                                    <img src="{% static 'img/default-medicamento.png' %}" alt="Imagem não disponível">
+                                {% endif %}
+                                <div class="info-card-body">
+                                    <h3>{{ contraindicacao.nome }}</h3>
+                                    <p>{{ contraindicacao.descricao }}</p>
+                                </div>
+                            </article>
+                        {% empty %}
+                            <div class="empty-box" style="grid-column:1/-1">Não há contraindicações cadastradas.</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+    <!-- =========================================================
+        DETALHES / LINKS / ALERTA
+        ========================================================= -->
+
+    <section id="custo" class="details-section">
+
+        <div class="details-container">
+
+            <!-- DETALHES + LINKS -->
+            <div class="details-top">
 
 
-                <div class="details-alert-header">
+                <!-- =========================
+                    DETALHES
+                    ========================= -->
+
+                <div class="details-info">
+
+                    <h3 class="details-title">
+                        Detalhes
+                    </h3>
+
+
+                    <div class="details-price">
 
                     <img
-                        src="{% static 'img/alerta_cf.png' %}"
-                        class="details-alert-icon"
+                        src="{% static 'img/cifrao_cf.png' %}"
+                        class="menu-icon"
                         alt=""
                     >
 
-                    <span class="details-alert-title">
-                        Alerta:
-                    </span>
+                        <div class="details-price-content">
 
-                </div>
+                            <div class="details-price-line">
 
-
-                <div class="details-alert-text">
-
-                    {{ tratamento.alertas|linebreaksbr }}
-
-                </div>
+                                <span class="details-price-label">
+                                    Valor do tratamento:
+                                </span>
 
 
-            </div>
+                                <span class="details-price-value">
 
-        {% endif %}
+                                    {% if tratamento.link_para_compra_de_tratamento %}
+
+                                        <a
+                                            href="{{ tratamento.link_para_compra_de_tratamento }}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            R$ {{ tratamento.custo_medicamento|floatformat:2 }}
+                                        </a>
+
+                                    {% else %}
+
+                                        <strong>
+                                            R$ {{ tratamento.custo_medicamento|floatformat:2 }}
+                                        </strong>
+
+                                    {% endif %}
+
+                                </span>
+
+                            </div>
 
 
-    </div>
+                            {% if tratamento.especificacao_do_custo %}
 
-</section>
+                                <div class="details-price-description">
+                                    ({{ tratamento.especificacao_do_custo }})
+                                </div>
 
-        <!-- REAÇÕES ADVERSAS -->
-        <section id="reacoes" class="section">
-            <div class="page-wrap">
-                <div class="cards-title">
-                    <h2>Reações Adversas</h2>
-                </div>
-
-                <div class="cards-grid">
-                    {% for detalhe in detalhes_reacoes_adversas %}
-                        <article class="info-card">
-                            {% if detalhe.reacao_adversa.imagem %}
-                                <img src="{{ detalhe.reacao_adversa.imagem.url }}" alt="{{ detalhe.reacao_adversa.nome }}">
-                            {% else %}
-                                <img src="{% static 'img/default-reacao.png' %}" alt="Imagem não disponível">
                             {% endif %}
 
-                            <div class="info-card-body">
-                                <p class="frequency">
-                                    {% if detalhe.reacao_min and detalhe.reacao_max %}
-                                        {{ detalhe.reacao_min }}% a {{ detalhe.reacao_max }}%
-                                    {% else %}
-                                        &lt; 0,01%
-                                    {% endif %}
+                        </div>
 
-                                    {% if detalhe.grau_comunalidade %}
-                                        <strong>{{ detalhe.get_grau_comunalidade_display }}</strong>
-                                    {% endif %}
-                                </p>
+                    </div>
 
-                                <h3>{{ detalhe.reacao_adversa.nome }}</h3>
-                                <p>{{ detalhe.reacao_adversa.descricao }}</p>
-                            </div>
-                        </article>
-                    {% empty %}
-                        <div class="empty-box" style="grid-column:1/-1">Nenhuma reação adversa encontrada.</div>
-                    {% endfor %}
                 </div>
+
+
+
+                <!-- =========================
+                    LINKS
+                    ========================= -->
+
+                <div class="details-links">
+
+                    <h3 class="details-title">
+                        Links
+                    </h3>
+
+
+                    <div class="details-links-grid">
+
+
+                        <!-- OPINIÃO DE ESPECIALISTA -->
+
+                        {% if tratamento.opiniao_especialista %}
+
+                            <a
+                                href="{{ tratamento.opiniao_especialista }}"
+                                class="details-link details-link-primary"
+                            >
+                                Opinião de especialista
+                            </a>
+
+                        {% else %}
+
+                            <a
+                                href="#"
+                                class="details-link details-link-primary"
+                            >
+                                Opinião de especialista
+                            </a>
+
+                        {% endif %}
+
+
+
+                        <!-- GENÉRICOS -->
+
+                        {% if tratamento.genericos_similares %}
+
+                            <a
+                                href="{{ tratamento.genericos_similares }}"
+                                class="details-link"
+                            >
+                                Genéricos e similares
+                            </a>
+
+                        {% else %}
+
+                            <a
+                                href="#genericos-similares"
+                                class="details-link"
+                            >
+                                Genéricos e similares
+                            </a>
+
+                        {% endif %}
+
+
+
+                        <!-- INTERAÇÕES -->
+
+                        <a
+                            href="#interacoes"
+                            class="details-link"
+                        >
+                            Interações medicamentosas
+                        </a>
+
+
+
+                        <!-- PRESCRIÇÃO -->
+
+                        <a
+                            href="#prescricao"
+                            class="details-link"
+                        >
+                            Prescrição eletrônica
+                        </a>
+
+
+                    </div>
+
+                </div>
+
             </div>
-        </section>
-
-        <!-- CONSULTA -->
-        <section class="page-wrap consult-wrap">
-            <a class="consult-btn" href="https://cliente.doutorbeneficios.com/consumidor-1eemej6h">
-                Agende sua consulta
-            </a>
-        </section>
 
 
 
-<!-- =========================================================
-     AVALIAÇÕES DOS PACIENTES
-     ========================================================= -->
+            <!-- =================================================
+                ALERTA
+                ================================================= -->
 
-<section
-    id="avaliacoes"
-    class="comments {% if avaliacoes %}has-reviews{% else %}no-reviews{% endif %}"
->
+            {% if tratamento.alertas %}
 
-    <div class="comments-content">
+                <div class="details-alert">
 
-        <h2 class="comments-main-title">
-            Avaliação dos pacientes
-        </h2>
 
-        <div class="comments-list">
+                    <div class="details-alert-header">
 
-            {% if avaliacoes %}
+                        <img
+                            src="{% static 'img/alerta_cf.png' %}"
+                            class="details-alert-icon"
+                            alt=""
+                        >
 
-                {% for avaliacao in avaliacoes %}
+                        <span class="details-alert-title">
+                            Alerta:
+                        </span>
 
-                    <article class="comment-card">
+                    </div>
 
-                        <p class="comment-text">
-                            {{ avaliacao.comentario }}
-                        </p>
 
-                        <h3>
-                            {{ avaliacao.usuario_nome|default:"Usuário Anônimo" }}
-                        </h3>
+                    <div class="details-alert-text">
 
-                        <small>
-                            Publicado em {{ avaliacao.data|date:"d/m/Y H:i" }}
-                        </small>
+                        {{ tratamento.alertas|linebreaksbr }}
 
-                    </article>
+                    </div>
 
-                {% endfor %}
 
-            {% else %}
-
-                <div class="comments-empty">
-                    Nenhuma avaliação
                 </div>
 
             {% endif %}
 
+
         </div>
 
-    </div>
+    </section>
 
-    <div class="evaluate-treatment-wrap">
-        <a
-            href="https://www.telix.inf.br/avalie-o-tratamento-realizado"
-            class="evaluate-treatment-btn"
-        >
-            Avalie esse tratamento
-        </a>
-    </div>
+            <!-- REAÇÕES ADVERSAS -->
+            <section id="reacoes" class="section">
+                <div class="page-wrap">
+                    <div class="cards-title">
+                        <h2>Reações Adversas</h2>
+                    </div>
 
-</section>
-</main>
-    
+                    <div class="cards-grid">
+                        {% for detalhe in detalhes_reacoes_adversas %}
+                            <article class="info-card">
+                                {% if detalhe.reacao_adversa.imagem %}
+                                    <img src="{{ detalhe.reacao_adversa.imagem.url }}" alt="{{ detalhe.reacao_adversa.nome }}">
+                                {% else %}
+                                    <img src="{% static 'img/default-reacao.png' %}" alt="Imagem não disponível">
+                                {% endif %}
+
+                                <div class="info-card-body">
+                                    <p class="frequency">
+                                        {% if detalhe.reacao_min and detalhe.reacao_max %}
+                                            {{ detalhe.reacao_min }}% a {{ detalhe.reacao_max }}%
+                                        {% else %}
+                                            &lt; 0,01%
+                                        {% endif %}
+
+                                        {% if detalhe.grau_comunalidade %}
+                                            <strong>{{ detalhe.get_grau_comunalidade_display }}</strong>
+                                        {% endif %}
+                                    </p>
+
+                                    <h3>{{ detalhe.reacao_adversa.nome }}</h3>
+                                    <p>{{ detalhe.reacao_adversa.descricao }}</p>
+                                </div>
+                            </article>
+                        {% empty %}
+                            <div class="empty-box" style="grid-column:1/-1">Nenhuma reação adversa encontrada.</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+
+            <!-- CONSULTA -->
+            <section class="page-wrap consult-wrap">
+                <a class="consult-btn" href="https://cliente.doutorbeneficios.com/consumidor-1eemej6h">
+                    Agende sua consulta
+                </a>
+            </section>
 
 
 
-<!-- =========================================================
-     BANNER WHATSAPP
-     ========================================================= -->
+    <!-- =========================================================
+        AVALIAÇÕES DOS PACIENTES
+        ========================================================= -->
 
-<!-- =========================================================
-     BANNER WHATSAPP
-     ========================================================= -->
-
-<div class="whatsapp-share-banner">
-
-    <a
-        href="https://api.whatsapp.com/send/?phone=5545999040371&text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.&type=phone_number&app_absent=0"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Compartilhar este conteúdo pelo WhatsApp"
+    <section
+        id="avaliacoes"
+        class="comments {% if avaliacoes %}has-reviews{% else %}no-reviews{% endif %}"
     >
-        <img
-            src="{% static 'img/banner_familia.png' %}"
-            alt="Compartilhe este conteúdo pelo WhatsApp"
-        >
-    </a>
 
-</div><!-- =========================================================
-     FOOTER
-     ========================================================= -->
+        <div class="comments-content">
 
-<footer class="site-footer">
+            <h2 class="comments-main-title">
+                Avaliação dos pacientes
+            </h2>
 
-    <div class="footer-details">
+            <div class="comments-list">
 
-        <!-- ==================================================
-             COLUNA 1
-             ================================================== -->
-        <div class="footer-column footer-column-1">
+                {% if avaliacoes %}
 
-            <div class="footer-block">
+                    {% for avaliacao in avaliacoes %}
 
-                <h3>
-                    <a
-                        href="https://www.telix.inf.br/tratamentos-risco-custo-contraindicado-eficacia-prazo"
-                        style="color: inherit; text-decoration: none;"
-                    >
-                        Páginas de tratamentos
-                    </a>
-                </h3>
+                        <article class="comment-card">
 
-                <a href="https://www.telix.inf.br/como-calculamos-a-eficacia-de-tratamentos-de-saude">
-                    Eficácia - como calculamos
-                </a>
+                            <p class="comment-text">
+                                {{ avaliacao.comentario }}
+                            </p>
 
-            </div>
+                            <h3>
+                                {{ avaliacao.usuario_nome|default:"Usuário Anônimo" }}
+                            </h3>
 
+                            <small>
+                                Publicado em {{ avaliacao.data|date:"d/m/Y H:i" }}
+                            </small>
 
-            <div class="footer-block footer-scientific">
+                        </article>
 
-                <h3>
-                    <a
-                        href="https://www.telix.inf.br/evidencias-clinicas-de-pesquisas-sobre-tratamentos-de-saude"
-                        style="color: inherit; text-decoration: none;"
-                    >
-                        Páginas de artigos científicos
-                    </a>
-                </h3>
+                    {% endfor %}
 
-                <a href="https://www.telix.inf.br/criterios-do-rigor-da-pesquisa-de-tratamentos-de-saude">
-                    Rigor da pesquisa - critérios
-                </a>
+                {% else %}
+
+                    <div class="comments-empty">
+                        Nenhuma avaliação
+                    </div>
+
+                {% endif %}
 
             </div>
-
-
-            <a
-                href="https://api.whatsapp.com/send/?phone=5545999040371&text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.&type=phone_number&app_absent=0"
-                class="footer-special footer-share"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                <img
-                    src="{% static 'img/whats-app.png' %}"
-                    alt="WhatsApp"
-                    class="footer-whatsapp-icon"
-                >
-
-                <span>Compartilhe</span>
-            </a>
 
         </div>
 
+        <div class="evaluate-treatment-wrap">
+            <a
+                href="https://www.telix.inf.br/avalie-o-tratamento-realizado"
+                class="evaluate-treatment-btn"
+            >
+                Avalie esse tratamento
+            </a>
+        </div>
 
-        <!-- ==================================================
-             COLUNA 2
-             ================================================== -->
-        <div class="footer-column footer-column-2">
+    </section>
+    </main>
+        
 
-            <div class="footer-block">
 
-                <h3>
-                    <a
-                        href="https://www.telix.inf.br/documentacao"
-                        style="color: inherit; text-decoration: none;"
-                    >
-                        Documentos
+
+    <!-- =========================================================
+        BANNER WHATSAPP
+        ========================================================= -->
+
+    <!-- =========================================================
+        BANNER WHATSAPP
+        ========================================================= -->
+
+    <div class="whatsapp-share-banner">
+
+        <a
+            href="https://api.whatsapp.com/send/?phone=5545999040371&text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.&type=phone_number&app_absent=0"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Compartilhar este conteúdo pelo WhatsApp"
+        >
+            <img
+                src="{% static 'img/banner_familia.png' %}"
+                alt="Compartilhe este conteúdo pelo WhatsApp"
+            >
+        </a>
+
+    </div>
+    
+    
+    <!-- =========================================================
+        FOOTER
+        ========================================================= -->
+
+    <footer class="site-footer">
+
+        <div class="footer-details">
+
+            <!-- ==================================================
+                COLUNA 1
+                ================================================== -->
+            <div class="footer-column footer-column-1">
+
+                <div class="footer-block">
+
+                    <h3>
+                        <a
+                            href="https://www.telix.inf.br/tratamentos-risco-custo-contraindicado-eficacia-prazo"
+                            style="color: inherit; text-decoration: none;"
+                        >
+                            Páginas de tratamentos
+                        </a>
+                    </h3>
+
+                    <a href="https://www.telix.inf.br/como-calculamos-a-eficacia-de-tratamentos-de-saude">
+                        Eficácia - como calculamos
                     </a>
-                </h3>
 
-                <a href="https://www.telix.inf.br/documentacao/politica-de-privacidade">
-                    Política de Privacidade
-                </a>
-
-                <a href="https://www.telix.inf.br/documentacao/termos-de-uso">
-                    Termos de uso
-                </a>
-
-            </div>
+                </div>
 
 
-            <div class="footer-block footer-contact">
+                <div class="footer-block footer-scientific">
 
-                <h3 class="footer-contact-title">
+                    <h3>
+                        <a
+                            href="https://www.telix.inf.br/evidencias-clinicas-de-pesquisas-sobre-tratamentos-de-saude"
+                            style="color: inherit; text-decoration: none;"
+                        >
+                            Páginas de artigos científicos
+                        </a>
+                    </h3>
 
+                    <a href="https://www.telix.inf.br/criterios-do-rigor-da-pesquisa-de-tratamentos-de-saude">
+                        Rigor da pesquisa - critérios
+                    </a>
+
+                </div>
+
+
+                <a
+                    href="https://api.whatsapp.com/send/?phone=5545999040371&text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.&type=phone_number&app_absent=0"
+                    class="footer-special footer-share"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
                     <img
                         src="{% static 'img/whats-app.png' %}"
                         alt="WhatsApp"
-                        class="footer-contact-whatsapp-icon"
+                        class="footer-whatsapp-icon"
                     >
 
-                    <a
-                        href="https://wa.me/45999040371"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style="color: inherit; text-decoration: none;"
-                    >
-                        <span>Fale com a gente!</span>
-                    </a>
-
-                </h3>
-
-
-                <p>
-                    <a
-                        href="https://wa.me/45999040371"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style="color: inherit; text-decoration: none;"
-                    >
-                        (45) 99904-0371
-                    </a>
-                </p>
-
-
-                <a href="mailto:contato@telix.inf.br">
-                    contato@telix.inf.br
+                    <span>Compartilhe</span>
                 </a>
 
             </div>
 
 
-            <a
-                href="https://www.telix.inf.br/melhore-da-enxaqueca"
-                class="footer-special footer-premium"
-            >
-                Contratar plano premium
-            </a>
+            <!-- ==================================================
+                COLUNA 2
+                ================================================== -->
+            <div class="footer-column footer-column-2">
 
-        </div>
+                <div class="footer-block">
+
+                    <h3>
+                        <a
+                            href="https://www.telix.inf.br/documentacao"
+                            style="color: inherit; text-decoration: none;"
+                        >
+                            Documentos
+                        </a>
+                    </h3>
+
+                    <a href="https://www.telix.inf.br/documentacao/politica-de-privacidade">
+                        Política de Privacidade
+                    </a>
+
+                    <a href="https://www.telix.inf.br/documentacao/termos-de-uso">
+                        Termos de uso
+                    </a>
+
+                </div>
 
 
-        <!-- ==================================================
-             COLUNA 3
-             ================================================== -->
-        <div class="footer-column footer-column-3">
+                <div class="footer-block footer-contact">
 
-            <div class="footer-block">
+                    <h3 class="footer-contact-title">
 
-                <h3>Apresentações</h3>
+                        <img
+                            src="{% static 'img/whats-app.png' %}"
+                            alt="WhatsApp"
+                            class="footer-contact-whatsapp-icon"
+                        >
 
-                <a href="https://www.telix.inf.br/perguntas-e-respostas">
-                    Perguntas e respostas
+                        <a
+                            href="https://wa.me/45999040371"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style="color: inherit; text-decoration: none;"
+                        >
+                            <span>Fale com a gente!</span>
+                        </a>
+
+                    </h3>
+
+
+                    <p>
+                        <a
+                            href="https://wa.me/45999040371"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style="color: inherit; text-decoration: none;"
+                        >
+                            (45) 99904-0371
+                        </a>
+                    </p>
+
+
+                    <a href="mailto:contato@telix.inf.br">
+                        contato@telix.inf.br
+                    </a>
+
+                </div>
+
+
+                <a
+                    href="https://www.telix.inf.br/paciente-bem-informado"
+                    class="footer-special footer-premium"
+                >
+                    Contratar plano premium
                 </a>
 
-                <a href="https://www.telix.inf.br/v%C3%ADdeos-entrevistas-e-materias-sobre-tratamentos-de-saude">
-                    Blog
-                </a>
+            </div>
 
-                <a href="https://www.telix.inf.br/quem-somos-telix-contexto-na-saude">
-                    Quem somos
+
+            <!-- ==================================================
+                COLUNA 3
+                ================================================== -->
+            <div class="footer-column footer-column-3">
+
+                <div class="footer-block">
+
+                    <h3>Apresentações</h3>
+
+                    <a href="https://www.telix.inf.br/perguntas-e-respostas">
+                        Perguntas e respostas
+                    </a>
+
+                    <a href="https://www.telix.inf.br/v%C3%ADdeos-entrevistas-e-materias-sobre-tratamentos-de-saude">
+                        Blog
+                    </a>
+
+                    <a href="https://www.telix.inf.br/quem-somos-telix-contexto-na-saude">
+                        Quem somos
                 </a>
 
                 <a href="https://www.telix.inf.br/depoimentos-experiencias-tratamentos-de-sa%C3%BAde">
@@ -3893,13 +3991,48 @@
             </div>
 
 
-            <a
-                href="https://www.telix.inf.br/condicoes-de-saude"
-                class="footer-database-access"
-            >
-                Acesso grátis ao banco de dados
-            </a>
+<div class="footer-disease">
 
+    <div class="footer-disease-label">
+        Selecione a doença
+    </div>
+
+    <div class="footer-disease-select">
+
+        <button
+            type="button"
+            class="footer-disease-button"
+            id="footerDiseaseButton"
+            aria-expanded="false"
+            aria-controls="footerDiseaseOptions"
+        >
+            <span>
+                {{ condicao.nome|default:"Enxaqueca" }}
+            </span>
+
+            <span class="footer-chevron"></span>
+        </button>
+
+        <div
+            class="footer-disease-options"
+            id="footerDiseaseOptions"
+        >
+
+            {% for item in footer_listas %}
+                <a href="{{ item.url }}">
+                    {{ item.label }}
+                </a>
+            {% empty %}
+                <span class="footer-disease-empty">
+                    Nenhuma opção disponível
+                </span>
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
         </div>
 
     </div>

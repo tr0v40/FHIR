@@ -1,5 +1,10 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import get_user_model
+from django.utils import timezone
+
+from .models import LoginSecurity
 from django_select2.forms import Select2MultipleWidget
 from django import forms
 from .models import TreatmentListUrlEnglish, TipoEficacia, TreatmentsUSA
@@ -13,6 +18,125 @@ from .models import (
     Pais,
     TratamentoCondicao,
 )
+
+class CustomAuthenticationForm(AuthenticationForm):
+
+    MAX_FAILED_ATTEMPTS = 3
+
+    def confirm_login_allowed(self, user):
+        """
+        Mantém todas as validações padrão do Django.
+        """
+        super().confirm_login_allowed(user)
+
+    def get_invalid_login_error(self):
+        """
+        Retorna uma mensagem de erro de acordo com
+        o estado atual de segurança da conta.
+        """
+
+        username = self.data.get("username", "").strip()
+
+        # Não informa se um usuário existe ou não.
+        if not username:
+            return forms.ValidationError(
+                "Usuário ou senha inválidos.",
+                code="invalid_login",
+            )
+
+        UserModel = get_user_model()
+
+        try:
+            user = UserModel._default_manager.get(
+                **{
+                    UserModel.USERNAME_FIELD: username
+                }
+            )
+
+        except UserModel.DoesNotExist:
+            return forms.ValidationError(
+                "Usuário ou senha inválidos.",
+                code="invalid_login",
+            )
+
+        security, _ = LoginSecurity.objects.get_or_create(
+            user=user
+        )
+
+        now = timezone.now()
+
+        # =====================================================
+        # BLOQUEIO ATIVO
+        # =====================================================
+
+        if (
+            security.locked_until
+            and security.locked_until > now
+        ):
+            return forms.ValidationError(
+                (
+                    "Acesso temporariamente bloqueado após "
+                    "3 tentativas inválidas. "
+                    "Tente novamente em 30 minutos."
+                ),
+                code="account_locked",
+            )
+
+        # =====================================================
+        # BLOQUEIO EXPIRADO
+        # =====================================================
+
+        if (
+            security.locked_until
+            and security.locked_until <= now
+        ):
+            security.failed_attempts = 0
+            security.locked_until = None
+
+            security.save(
+                update_fields=[
+                    "failed_attempts",
+                    "locked_until",
+                ]
+            )
+
+        # =====================================================
+        # TENTATIVAS RESTANTES
+        # =====================================================
+
+        failed_attempts = security.failed_attempts or 0
+
+        remaining = max(
+            0,
+            self.MAX_FAILED_ATTEMPTS - failed_attempts
+        )
+
+        if remaining == 2:
+            message = (
+                "Usuário ou senha inválidos. "
+                "Restam 2 tentativas."
+            )
+
+        elif remaining == 1:
+            message = (
+                "Usuário ou senha inválidos. "
+                "Resta 1 tentativa."
+            )
+
+        elif remaining <= 0:
+            message = (
+                "Acesso temporariamente bloqueado após "
+                "3 tentativas inválidas. "
+                "Tente novamente em 30 minutos."
+            )
+
+        else:
+            message = "Usuário ou senha inválidos."
+
+        return forms.ValidationError(
+            message,
+            code="invalid_login",
+        )
 
 class UserRegisterForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)

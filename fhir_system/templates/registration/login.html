@@ -1,206 +1,353 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Acesso Administrativo | Telix{% endblock %}
 
 {% block content %}
+
 <style>
-    /* Garante que o HTML e Body ocupem toda a altura */
-    html, body {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        background-color: #f8f9fa; /* Fundo cinza claro, igual ao tratamentos */
+
+/* =========================================================
+   PÁGINA DE LOGIN
+   ========================================================= */
+
+.login-page {
+    width: 100%;
+
+    min-height: 650px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 60px 20px;
+
+    background: #f7f8fa;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.login-container {
+    width: 100%;
+    max-width: 430px;
+
+    background: #ffffff;
+
+    border: 1px solid #eeeeee;
+    border-radius: 14px;
+
+    padding: 42px 42px 38px;
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.08);
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   CABEÇALHO
+   ========================================================= */
+
+.login-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.login-header h1 {
+    margin: 0 0 8px;
+
+    font-size: 28px;
+    line-height: 1.2;
+    font-weight: 700;
+
+    color: #222222;
+}
+
+.login-header p {
+    margin: 0;
+
+    font-size: 14px;
+    line-height: 1.5;
+
+    color: #777777;
+}
+
+
+/* =========================================================
+   ERROS DO DJANGO
+   ========================================================= */
+
+.login-error {
+    margin-bottom: 22px;
+    padding: 12px 14px;
+
+    background: #fff3f3;
+    border: 1px solid #f0b8b8;
+    border-radius: 7px;
+
+    color: #b42318;
+
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+
+/* =========================================================
+   CAMPOS
+   ========================================================= */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #333333;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* Aplica o estilo diretamente aos inputs gerados pelo Django */
+
+.login-container input[type="text"],
+.login-container input[type="email"],
+.login-container input[type="password"] {
+
+    display: block;
+
+    width: 100%;
+    height: 48px;
+
+    padding: 0 14px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border: 1px solid #d6d9dd;
+    border-radius: 7px;
+
+    color: #222222;
+
+    font-size: 15px;
+
+    outline: none;
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+
+.login-container input:focus {
+    border-color: #0798f6;
+
+    box-shadow:
+        0 0 0 3px rgba(7, 152, 246, 0.12);
+}
+
+
+/* =========================================================
+   BOTÃO
+   ========================================================= */
+
+.btn-login {
+    width: 100%;
+    height: 50px;
+
+    margin-top: 8px;
+
+    border: 0;
+    border-radius: 7px;
+
+    background: #0798f6;
+
+    color: #ffffff;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background .2s ease,
+        box-shadow .2s ease;
+}
+
+
+.btn-login:hover {
+    background: #0789dc;
+
+    box-shadow:
+        0 5px 14px rgba(7, 152, 246, 0.22);
+}
+
+
+/* =========================================================
+   AVISO DE SEGURANÇA
+   ========================================================= */
+
+.login-security {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+
+    margin-top: 22px;
+    padding-top: 20px;
+
+    border-top: 1px solid #eeeeee;
+
+    color: #777777;
+
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.login-security-icon {
+    flex: 0 0 auto;
+
+    width: 17px;
+    height: 17px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 1px;
+
+    border-radius: 50%;
+
+    background: #e9f5fd;
+
+    color: #0798f6;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   RESPONSIVO
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .login-page {
+        min-height: 520px;
+        padding: 35px 16px 55px;
     }
 
-    /* Define um container para a página inteira */
-    .page-container {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-    }
-
-    /* Estilizando o formulário de login */
     .login-container {
-        background: white;
-        border-radius: 16px;
-        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1); /* Sombra mais suave */
-        padding: 50px 40px;
-        width: 100%;
-        max-width: 600px; /* Aumentando a largura do formulário */
-        margin: auto;
-        text-align: center;
+        padding: 32px 24px;
     }
 
-    /* Título do formulário */
-    .login-container h3 {
-        font-size: 32px;
-        font-weight: bold;
-        margin-bottom: 30px;
-        color: #333;
+    .login-header h1 {
+        font-size: 25px;
     }
 
-    /* Labels do formulário */
-    .form-group {
-        text-align: left;
-        margin-bottom: 30px; /* Aumentando o espaço entre os campos */
-    }
-
-    .form-label {
-        font-weight: bold;
-        font-size: 18px;
-        color: #555;
-        margin-bottom: 10px;
-        display: block;
-    }
-
-    /* Estilizando os campos de entrada */
-    .form-control {
-        width: 100%;
-        border-radius: 12px;
-        border: 1px solid #ccc;
-        padding: 18px;
-        font-size: 18px;
-        transition: all 0.3s;
-        background: #f9f9f9;
-        margin-bottom: 20px;
-    }
-
-    /* Foco nos campos */
-    .form-control:focus {
-        border-color: #007bff;
-        box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.3);
-        outline: none;
-    }
-
-    /* Botão de login */
-    .btn-login {
-        background: linear-gradient(to right, #007bff, #0056b3);
-        color: white;
-        font-size: 22px;
-        font-weight: bold;
-        padding: 18px;
-        border-radius: 12px;
-        width: 100%;
-        border: none;
-        transition: 0.3s;
-        cursor: pointer;
-        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Hover no botão */
-    .btn-login:hover {
-        background: linear-gradient(to right, #0056b3, #003d80);
-        transform: scale(1.05);
-    }
-
-    /* Link de cadastro */
-    .register-link a {
-        font-weight: bold;
-        color: #007bff;
-        text-decoration: none;
-        font-size: 18px;
-    }
-
-    .register-link a:hover {
-        text-decoration: underline;
-    }
-
-    /* FOOTER */
-    .footer {
-        background-color: #002b58;
-        color: #f1f1f1;
-        padding: 30px 0;
-        width: 100%;
-        margin-top: auto;
-        position: relative;
-        bottom: 0;
-    }
-
-    .footer-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-    }
-
-    .footer-social {
-        display: flex;
-        gap: 15px;
-    }
-
-    .social-btn {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background-color: #007bff;
-        color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 18px;
-        text-decoration: none;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-
-    .social-btn:hover {
-        background-color: #0056b3;
-        transform: scale(1.1);
-    }
-
-    /* Links do footer */
-    .footer-links {
-        display: flex;
-        gap: 20px;
-        flex-direction: column;
-    }
-
-    .footer-link {
-        color: white;
-        text-decoration: none;
-        font-size: 16px;
-    }
-
-    .footer-link:hover {
-        text-decoration: underline;
-    }
-
-    /* Copywright */
-    .footer-bottom {
-        text-align: center;
-        margin-top: 30px;
-    }
+}
 
 </style>
 
-<!-- Container da Página -->
-<div class="login-container">
-    <h3>Login</h3>
-    <form method="post">
-        {% csrf_token %}
-        
-        <div class="form-group">
-            <label for="id_username" class="form-label">Usuário</label>
-            {{ form.username }}
+
+<div class="login-page">
+
+    <div class="login-container">
+
+        <div class="login-header">
+
+            <h1>Acesso administrativo</h1>
+
+            <p>
+                Entre com suas credenciais para acessar o sistema.
+            </p>
+
         </div>
 
-        <div class="form-group">
-            <label for="id_password" class="form-label">Senha</label>
-            {{ form.password }}
+
+    {% if form.non_field_errors %}
+
+        <div class="login-error">
+
+            {% for error in form.non_field_errors %}
+                {{ error }}
+            {% endfor %}
+
         </div>
 
-        <button type="submit" class="btn-login">Entrar</button>
+    {% endif %}
 
-        <div class="register-link">
-            <p>Ainda não tem uma conta? <a href="{% url 'register' %}" class="text-primary">Cadastre-se</a></p>
-        </div>
-    </form>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+
+            <div class="form-group">
+
+                <label
+                    for="id_username"
+                    class="form-label"
+                >
+                    Usuário
+                </label>
+
+                {{ form.username }}
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label
+                    for="id_password"
+                    class="form-label"
+                >
+                    Senha
+                </label>
+
+                {{ form.password }}
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="btn-login"
+            >
+                Entrar
+            </button>
+
+
+            <div class="login-security">
+
+                <span class="login-security-icon">
+                    ✓
+                </span>
+
+                <span>
+                    Acesso restrito a usuários autorizados.
+                    Tentativas de acesso podem ser registradas
+                    para fins de segurança.
+                </span>
+
+            </div>
+
+        </form>
+
+    </div>
+
 </div>
 
 {% endblock %}
