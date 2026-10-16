@@ -1,0 +1,1916 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Tratamentos para {{ condicao.nome }}</title>
+
+  {% include 'core/google_analytics.html' %}
+<link rel="stylesheet" href="{% static 'css/lista_tratamentos_v2.css' %}">
+  <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+</head>
+
+<body>
+
+  <div class="top-bar">
+    A plataforma do paciente bem informado
+  </div>
+
+  <main class="page-wrapper">
+
+    <header class="header">
+      <a class="site-logo" href="/home/">
+        <img class="logo" src="{% static 'img/logo.png' %}" alt="Telix">
+      </a>
+
+<a href="#" class="login-link">
+
+    <!-- SACOLA AZUL EM PNG -->
+    <span class="login-lock-icon" aria-hidden="true">
+        <img
+            src="{% static 'img/saloca_login.png' %}"
+            alt=""
+        >
+    </span>
+
+    <!-- USUÁRIO BRANCO NO CÍRCULO AZUL -->
+    <span class="login-icon" aria-hidden="true">
+        <i class="fa-solid fa-user"></i>
+    </span>
+
+    <span class="login-text">
+        Cadastre-se/Login
+    </span>
+
+</a>
+    </header>
+
+    <section class="intro">
+      <h1 class="page-title">
+        Tratamentos para {{ condicao.nome|lower }}
+      </h1>
+
+      <p class="page-description">
+        Classificados por tipo de benefício obtido pelos pacientes com o uso dos tratamentos, com base em pesquisas científicas.
+      </p>
+    </section>
+
+    <!-- =========================================================
+     MENU DE BENEFÍCIOS
+     ========================================================= -->
+<section class="beneficios-menu">
+
+  <div class="beneficios-grid" id="beneficiosGrid">
+
+    {% for card in beneficios_cards %}
+
+      <a
+        href="#{{ card.slug }}"
+        class="beneficio-card {% if card.ativo %}ativo{% endif %}"
+        data-segmento-btn="{{ card.slug }}"
+      >
+
+<div class="beneficio-card-top">
+
+  <div class="beneficio-icon">
+
+    {% if card.slug == "reducao-temporaria-dos-sintomas" %}
+
+    
+<img
+  src="{% static 'img/reduca_temporaria_lista.png' %}?v=20260817-400"
+  data-icon-normal="{% static 'img/reduca_temporaria_lista.png' %}?v=20260817-400"
+  data-icon-selected="{% static 'img/reducao_temporaria_sintomas_ativo.png' %}?v=20260817-400"
+  alt="{{ card.nome }}"
+  class="rt-icon-single"
+  style="
+    width: 45px !important;
+    height: 42px !important;
+    min-width: 52px !important;
+    max-width: none !important;
+    object-fit: contain !important;
+    display: block !important;
+  "
+>
+
+    {% else %}
+
+      <img
+        src="{% static card.icone %}?v=20260817-300"
+        alt="{{ card.nome }}"
+        class="beneficio-icon-img"
+      >
+
+    {% endif %}
+
+  </div>
+
+<div
+  class="beneficio-nome"
+  style="
+    display: block !important;
+    width: 102px !important;
+    height: 54px !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    text-align: center !important;
+  "
+>
+
+  {% if card.slug == "reducao-temporaria-dos-sintomas" %}
+
+    <span class="beneficio-label-main beneficio-label-line">
+      Redução
+    </span>
+
+    <span class="beneficio-label-main beneficio-label-line">
+      temporária
+    </span>
+
+    <span class="beneficio-label-muted beneficio-label-line">
+      dos sintomas
+    </span>
+
+
+  {% elif card.slug == "eliminacao-temporaria-dos-sintomas" %}
+
+    <span class="beneficio-label-main beneficio-label-line">
+      Eliminação
+    </span>
+
+    <span class="beneficio-label-main beneficio-label-line">
+      temporária
+    </span>
+
+    <span class="beneficio-label-muted beneficio-label-line">
+      dos sintomas
+    </span>
+
+
+  {% elif card.slug == "reducao-persistente-dos-sintomas" %}
+
+    <span class="beneficio-label-main beneficio-label-line">
+      Redução
+    </span>
+
+    <span class="beneficio-label-main beneficio-label-line">
+      persistente
+    </span>
+
+    <span class="beneficio-label-muted beneficio-label-line">
+      dos sintomas
+    </span>
+
+
+  {% elif card.slug == "eliminacao-persistente-dos-sintomas" %}
+
+    <span class="beneficio-label-main beneficio-label-line">
+      Eliminação
+    </span>
+
+    <span class="beneficio-label-main beneficio-label-line">
+      persistente
+    </span>
+
+    <span class="beneficio-label-muted beneficio-label-line">
+      dos sintomas
+    </span>
+
+
+  {% else %}
+
+    <span class="beneficio-label-main beneficio-label-line">
+      {{ card.nome }}
+    </span>
+
+  {% endif %}
+
+</div>
+</div>
+
+
+        <div class="beneficio-line"></div>
+
+
+        <div class="beneficio-card-bottom">
+
+          <div class="beneficio-percentual">
+
+            de {{ card.min_str }}% a
+
+            <strong>
+              {{ card.max_str }}%
+            </strong>
+
+          </div>
+
+
+          <div class="beneficio-participantes">
+            dos participantes<br>
+            das pesquisas.
+          </div>
+
+        </div>
+
+      </a>
+
+    {% endfor %}
+
+  </div>
+
+
+  <!-- barra visual do scroll -->
+  <div class="beneficios-scroll-track">
+
+    <div
+      class="beneficios-scroll-thumb"
+      id="beneficiosScrollThumb"
+    ></div>
+
+  </div>
+
+</section>
+
+{% for segmento in segmentos %}
+  <section
+    class="segmento-lista {% if segmento.ativo %}ativo{% endif %}"
+    data-segmento-conteudo="{{ segmento.slug }}"
+  >
+    <section class="lista-shell">
+
+      <section class="beneficio-header">
+        <div class="beneficio-header-row">
+          <div class="beneficio-header-title">
+
+            <span class="beneficio-header-label">
+              Benefício:
+            </span>
+        {% if segmento.slug == "reducao-temporaria-dos-sintomas" %}
+
+          <img
+            src="{% static 'img/reducao_temporaria_sintomas_ativo.png' %}?v=20260817-500"
+            alt="{{ segmento.nome }}"
+            class="beneficio-header-icon-rt"
+            style="
+              width: 26px !important;
+              height: 26px !important;
+              object-fit: contain !important;
+              filter: none !important;
+            "
+          >
+
+        {% else %}
+
+          <img
+            src="{% static segmento.icone %}?v=20260817-500"
+            alt="{{ segmento.nome }}"
+            class="beneficio-header-icon-img"
+          >
+
+
+            {% endif %}
+
+            <span class="beneficio-header-name">
+              {{ segmento.nome }}
+            </span>
+
+          </div>
+
+          <div class="beneficio-header-count">
+            Tratamentos: {{ segmento.qtd_tratamentos }}
+          </div>
+        </div>
+
+        <p class="beneficio-header-text">
+          Conforme as pesquisas, apenas uma parte das pessoas que recebeu o tratamento obteve o benefício acima.
+          Na lista abaixo, os tratamentos estão em ordem decrescente de porcentagem de pessoas que tiveram esse benefício com o tratamento.
+        </p>
+
+      </section>
+
+          <section class="lista-box">
+            {% for item in segmento.itens %}
+              {% with tratamento=item.obj %}
+                <a
+                  href="{% url 'pagina_detalhe_tratamento_v2' condicao_slug=condicao.slug tratamento_slug=tratamento.slug %}?ef={{ segmento.slug }}"
+                  class="tratamento-card"
+                >
+                  <div class="tratamento-img-wrap">
+                    {% if tratamento.imagem %}
+                      <img src="{{ tratamento.imagem.url }}" alt="{{ tratamento.nome }}" class="tratamento-img">
+                    {% else %}
+                      <img src="{% static 'default-image.jpg' %}" alt="Imagem não disponível" class="tratamento-img">
+                    {% endif %}
+                  </div>
+
+                  <div class="tratamento-main">
+                    <h2 class="tratamento-nome">
+                      {{ tratamento.nome }}
+                    </h2>
+
+                    <div class="tratamento-tipo">
+                      {% for tipo in tratamento.tipo_tratamento.all %}
+                        {{ tipo.nome }}{% if not forloop.last %} • {% endif %}
+                      {% empty %}
+                        Nenhum tipo selecionado
+                      {% endfor %}
+                    </div>
+
+                    <p class="tratamento-info">
+                      <strong>Princípio ativo:</strong> {{ tratamento.principio_ativo|default:"ND" }}
+                    </p>
+
+                    <p class="tratamento-info">
+                      <strong>Fabricante:</strong> {{ tratamento.fabricante|default:"ND" }}
+                    </p>
+
+                    <span class="btn-detalhes">
+                      ver detalhes ›
+                    </span>
+
+                    <p class="tratamento-descricao">
+                      {{ item.descricao_lista }}
+                    </p>
+                  </div>
+
+                  <div class="eficacia-box">
+                    <div class="bar-bg">
+                      <div
+                        class="bar-range"
+                        style="left: {{ item.min_css }}%; width: {{ item.range_css }}%;"
+                      ></div>
+
+                      <div
+                        class="bar-marker"
+                        style="left: {{ item.max_css }}%;"
+                      ></div>
+                    </div>
+
+                    <div class="eficacia-numero">
+                      {{ item.min_str }} a <strong>&nbsp;{{ item.max_str }}%</strong>
+                    </div>
+
+                    <div class="eficacia-label">
+                    <span>dos participantes tiveram o benefício</span>
+
+                    <span class="benefit-mini-icon">
+                        <img
+                        src="{% static segmento.icone %}?v=20260804-2"
+                        alt="{{ segmento.nome }}"
+                        class="benefit-mini-icon-img"
+                        >
+                    </span>
+                    </div>
+
+                    <div class="prazo-label">
+                      Prazo para efeito
+                    </div>
+
+                    <div class="prazo-valor">
+                      {{ tratamento.prazo_efeito_min_formatado }} a {{ tratamento.prazo_efeito_max_formatado }}
+                    </div>
+                  </div>
+                </a>
+              {% endwith %}
+            {% empty %}
+              <div class="empty-state">
+                Nenhum tratamento encontrado para este tipo de eficácia.
+              </div>
+            {% endfor %}          
+        
+        </section>
+
+          <section class="lista-action-bar">
+            <p class="lista-action-text">
+              Ordene essa lista por custo do tratamento, prazo para efeito ou
+              risco de reações adversas, ou filtre por segurança de uso para
+              grupos específicos, e filtre por contraindicações.
+            </p>
+            {% if segmento.filtro_react_path %}
+
+                <a
+                    href="#"
+                    class="lista-action-button js-filtro-react"
+                    data-react-path="{{ segmento.filtro_react_path }}"
+                >
+                    Filtrar e ordenar
+                </a>
+
+            {% else %}
+
+          <button
+            type="button"
+            class="lista-action-button"
+            {% if segmento.url_filtro_react %}
+              data-filtro-path="{{ segmento.url_filtro_react }}"
+            {% endif %}
+          >
+            Filtrar e ordenar
+          </button>
+
+            {% endif %}
+          </section>
+
+        </section>
+      </section>
+    {% endfor %}
+
+<section class="next-benefits-mobile" aria-label="Ir para o próximo benefício" hidden>
+    <h2 class="next-benefits-mobile-title">
+        Ir para o próximo benefício:
+    </h2>
+
+    <div class="next-benefits-mobile-grid">
+        {% for card in beneficios_cards %}
+            <a
+                href="#{{ card.slug }}"
+                class="next-benefit-mobile-card"
+                data-segmento-btn="{{ card.slug }}"
+            >
+                <span class="next-benefit-mobile-icon">
+                    <img
+                        src="{% static card.icone %}?v=20260731-3"
+                        alt="{{ card.nome }}"
+                        class="next-benefit-mobile-icon-img"
+                    >
+                </span>
+    <span class="next-benefit-mobile-text">
+
+        {% if card.slug == "reducao-temporaria-dos-sintomas" %}
+            <span class="next-benefit-label-main">
+                Redução<br>temporária
+            </span>
+            <span class="next-benefit-label-muted">
+                dos sintomas
+            </span>
+
+        {% elif card.slug == "eliminacao-temporaria-dos-sintomas" %}
+            <span class="next-benefit-label-main">
+                Eliminação<br>temporária
+            </span>
+            <span class="next-benefit-label-muted">
+                dos sintomas
+            </span>
+
+        {% elif card.slug == "reducao-persistente-dos-sintomas" %}
+            <span class="next-benefit-label-main">
+                Redução<br>persistente
+            </span>
+            <span class="next-benefit-label-muted">
+                dos sintomas
+            </span>
+
+        {% elif card.slug == "eliminacao-persistente-dos-sintomas" %}
+            <span class="next-benefit-label-main">
+                Eliminação<br>persistente
+            </span>
+            <span class="next-benefit-label-muted">
+                dos sintomas
+            </span>
+
+        {% else %}
+            <span class="next-benefit-label-main">
+                {{ card.nome }}
+            </span>
+        {% endif %}
+
+    </span>
+            </a>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="share-banner">
+
+    <picture class="share-banner-picture">
+
+        <!-- MOBILE -->
+        <source
+            media="(max-width: 768px)"
+            srcset="{% static 'img/banner mobile.png' %}"
+        >
+
+        <!-- DESKTOP -->
+        <img
+            class="share-banner-img"
+            src="{% static 'img/banner familia.png' %}"
+            alt="Você conhece alguém que precisa desse conteúdo?"
+        >
+
+    </picture>
+
+    <a
+        href="https://api.whatsapp.com/send/?text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.%0A%0Ahttps%3A%2F%2Fwww.telix.inf.br%2F"
+        class="share-whatsapp-link"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Compartilhar este site pelo WhatsApp"
+    ></a>
+
+</section>
+
+
+<section class="newsletter-strip">
+
+<div class="newsletter-icon" aria-hidden="true">
+    <i class="fa-regular fa-envelope"></i>
+</div>
+
+    <h2 class="newsletter-title">
+        Mantenha-se atualizado sobre<br>
+        tratamentos de saúde
+    </h2>
+
+    <a
+        href="https://www.telix.inf.br/mantenha-se-atualizado"
+        class="newsletter-button"
+    >
+        Cadastrar e-mail
+    </a>
+
+</section>
+
+</main>
+
+
+<footer class="site-footer">
+  <div class="site-footer-content">
+
+    <!-- COLUNA 1 -->
+    <div class="footer-column">
+
+      <div class="footer-group">
+        <a href="https://www.telix.inf.br/tratamentos-risco-custo-contraindicado-eficacia-prazo">
+          <h3 class="footer-title">
+            Páginas de tratamentos
+          </h3>
+        </a>
+
+        <a href="https://www.telix.inf.br/como-calculamos-a-eficacia-de-tratamentos-de-saude">
+          Eficácia — como calculamos
+        </a>
+      </div>
+
+      <div class="footer-group">
+        <a href="https://www.telix.inf.br/evidencias-clinicas-de-pesquisas-sobre-tratamentos-de-saude">
+          <h3 class="footer-title">
+            Páginas de artigos científicos
+          </h3>
+        </a>
+
+        <a href="https://www.telix.inf.br/criterios-do-rigor-da-pesquisa-de-tratamentos-de-saude">
+          Rigor da pesquisa — critérios
+        </a>
+      </div>
+
+      <div class="footer-group footer-hide-mobile">
+        <a href="https://www.telix.inf.br/medicamentos-genericos-e-similares">
+          <h3 class="footer-title">
+            
+          </h3>
+        </a>
+
+        <a href="https://www.telix.inf.br/medicamentos-genericos-e-similares">
+          
+        </a>
+      </div>
+
+    </div>
+
+    <!-- COLUNA 2 -->
+    <div class="footer-column">
+
+      <div class="footer-group">
+        <a href="https://www.telix.inf.br/documentacao">
+          <h3 class="footer-title">
+            Documentos
+          </h3>
+        </a>
+
+        <a href="https://www.telix.inf.br/documentacao/politica-de-privacidade">
+          Política de Privacidade
+        </a>
+
+        <a href="https://www.telix.inf.br/documentacao/termos-de-uso">
+          Termos de uso
+        </a>
+      </div>
+
+      <div class="footer-group">
+        <h3 class="footer-title">
+          Fale com a gente!
+        </h3>
+
+        <a
+          href="https://api.whatsapp.com/send/?phone=45999040371&text&type=phone_number&app_absent=0"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          (45) 99904-0371
+        </a>
+
+        <a href="mailto:contato@telix.inf.br">
+          contato@telix.inf.br
+        </a>
+      </div>
+
+      <div class="footer-group footer-hide-mobile">
+        <a href="https://www.telix.inf.br/marcar-consulta-com-medico">
+          <h3 class="footer-title">
+            Não se automedique
+          </h3>
+        </a>
+
+        <a href="https://www.telix.inf.br/marcar-consulta-com-medico">
+          Consulte um profissional de saúde
+        </a>
+      </div>
+
+    </div>
+
+    <!-- COLUNA 3 -->
+    <div class="footer-column">
+
+      <div class="footer-group">
+        <h3 class="footer-title">
+          Apresentações
+        </h3>
+
+        <a
+            href="https://www.telix.inf.br/servicos-de-ti-para-empresas-de-saude-software-computacionalizacao-inovacao"
+            class="footer-hide-mobile"
+        >
+            
+        </a>
+               
+        <a href="https://www.telix.inf.br/perguntas-e-respostas">
+          Perguntas e respostas
+        </a>
+
+        <a href="https://www.telix.inf.br/v%C3%ADdeos-entrevistas-e-materias-sobre-tratamentos-de-saude">
+          Blog
+        </a>
+
+        <a href="https://www.telix.inf.br/quem-somos-telix-contexto-na-saude">
+          Quem somos
+        </a>
+
+        <a href="https://www.telix.inf.br/depoimentos-experiencias-tratamentos-de-sa%C3%BAde">
+          Depoimentos
+        </a>
+      </div>
+
+      <div class="footer-group">
+        <a href="https://www.telix.inf.br/entrevistas-com-especialistas-sobre-tratamento-de-sa%C3%BAde">
+          <h3 class="footer-title">
+            Opiniões de especialistas
+          </h3>
+        </a>
+      </div>
+    <div class="footer-group footer-contract">
+        <h3 class="footer-title">
+            
+        </h3>
+
+        <span class="footer-contract-text">
+            
+        </span>
+    </div>
+
+
+      <a
+        href="https://www.telix.inf.br/condicoes-de-saude"
+        class="footer-access-button"
+      >
+        Acesso grátis ao banco de dados
+      </a>
+
+    </div>
+
+  </div>
+
+  <div class="site-footer-legal">
+    <p>
+      Linca Telecomunicações Ltda — CNPJ: 03.376.788-0001/23
+    </p>
+  </div>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const botoes =
+        document.querySelectorAll("[data-segmento-btn]");
+
+    const segmentos =
+        document.querySelectorAll("[data-segmento-conteudo]");
+
+
+    /* =========================================================
+       CORES DOS CARDS
+       ========================================================= */
+
+    function aplicarCoresBeneficio(botao, destacado) {
+
+        const principais =
+            botao.querySelectorAll(".beneficio-label-main");
+
+        const muted =
+            botao.querySelectorAll(".beneficio-label-muted");
+
+        const percentual =
+            botao.querySelector(".beneficio-percentual");
+
+        const percentualForte =
+            botao.querySelector(".beneficio-percentual strong");
+
+        const participantes =
+            botao.querySelector(".beneficio-participantes");
+
+        const linha =
+            botao.querySelector(".beneficio-line");
+
+
+        /* =====================================================
+           DUAS PRIMEIRAS LINHAS
+           Redução
+           temporária
+           ===================================================== */
+
+        principais.forEach(function (elemento) {
+
+            elemento.style.setProperty(
+                "color",
+                destacado
+                    ? "#FFFFFF"
+                    : "#0094FF",
+                "important"
+            );
+
+        });
+
+
+        /* =====================================================
+           TERCEIRA LINHA
+           dos sintomas
+           ===================================================== */
+
+        muted.forEach(function (elemento) {
+
+            elemento.style.setProperty(
+                "color",
+                destacado
+                    ? "rgba(255, 255, 255, 0.70)"
+                    : "#8F8F93",
+                "important"
+            );
+
+        });
+
+
+        /* =====================================================
+           DE XX,XX% A
+           ===================================================== */
+
+        if (percentual) {
+
+            percentual.style.setProperty(
+                "color",
+                destacado
+                    ? "rgba(255, 255, 255, 0.70)"
+                    : "#8F8F93",
+                "important"
+            );
+
+        }
+
+
+        /* =====================================================
+           88,97%
+           ===================================================== */
+
+        if (percentualForte) {
+
+            percentualForte.style.setProperty(
+                "color",
+                destacado
+                    ? "#FFFFFF"
+                    : "#0094FF",
+                "important"
+            );
+
+        }
+
+
+        /* =====================================================
+           DOS PARTICIPANTES
+           DAS PESQUISAS.
+           ===================================================== */
+
+        if (participantes) {
+
+            participantes.style.setProperty(
+                "color",
+                destacado
+                    ? "rgba(255, 255, 255, 0.70)"
+                    : "#8F8F93",
+                "important"
+            );
+
+        }
+
+
+        /* =====================================================
+           LINHA
+           ===================================================== */
+
+        if (linha) {
+
+            linha.style.setProperty(
+                "border-top-color",
+                destacado
+                    ? "#FFFFFF"
+                    : "#0094FF",
+                "important"
+            );
+
+        }
+
+    }
+
+
+
+    /* =========================================================
+       ÍCONE ESPECIAL
+       REDUÇÃO TEMPORÁRIA
+       ========================================================= */
+
+    function aplicarIconeReducao(botao, destacado) {
+
+        const iconeReducao =
+            botao.querySelector(".rt-icon-single");
+
+        if (!iconeReducao) {
+            return;
+        }
+
+
+        const srcNormal =
+            iconeReducao.getAttribute(
+                "data-icon-normal"
+            );
+
+        const srcSelected =
+            iconeReducao.getAttribute(
+                "data-icon-selected"
+            );
+
+
+        if (
+            destacado &&
+            srcSelected
+        ) {
+
+            iconeReducao.src =
+                srcSelected;
+
+        } else if (srcNormal) {
+
+            iconeReducao.src =
+                srcNormal;
+
+        }
+
+    }
+
+function ativarSegmento(slug) {
+
+    const mobile =
+        window.matchMedia("(max-width: 420px)").matches;
+
+    let encontrou = false;
+
+
+    /* =========================================================
+       CARDS DO MENU
+       ========================================================= */
+
+    botoes.forEach(function (botao) {
+
+        const ativo =
+            botao.getAttribute(
+                "data-segmento-btn"
+            ) === slug;
+
+
+        if (ativo) {
+            encontrou = true;
+        }
+
+
+        /* =====================================================
+           MOBILE
+           NÃO MUDA VISUALMENTE NADA
+           ===================================================== */
+
+        if (mobile) {
+
+            /*
+             * Remove o estado visual selecionado.
+             * O card continua igual antes/depois do clique.
+             */
+            botao.classList.remove(
+                "ativo"
+            );
+
+
+            /*
+             * REDUÇÃO TEMPORÁRIA:
+             * sempre mantém o ícone NORMAL no mobile.
+             */
+            const iconeReducao =
+                botao.querySelector(
+                    ".rt-icon-single"
+                );
+
+
+            if (iconeReducao) {
+
+                const srcNormal =
+                    iconeReducao.getAttribute(
+                        "data-icon-normal"
+                    );
+
+
+                if (srcNormal) {
+                    iconeReducao.src =
+                        srcNormal;
+                }
+
+            }
+
+
+            /*
+             * Remove estilos inline que o JS do desktop
+             * possa ter colocado anteriormente.
+             */
+            botao
+                .querySelectorAll(
+                    ".beneficio-label-main, " +
+                    ".beneficio-label-muted, " +
+                    ".beneficio-percentual, " +
+                    ".beneficio-percentual strong, " +
+                    ".beneficio-participantes"
+                )
+                .forEach(function (elemento) {
+
+                    elemento.style.removeProperty(
+                        "color"
+                    );
+
+                    elemento.style.removeProperty(
+                        "opacity"
+                    );
+
+                });
+
+
+            const linha =
+                botao.querySelector(
+                    ".beneficio-line"
+                );
+
+
+            if (linha) {
+
+                linha.style.removeProperty(
+                    "border-top-color"
+                );
+
+            }
+
+
+            return;
+        }
+
+
+        /* =====================================================
+           DESKTOP
+           CONTINUA EXATAMENTE COMO ESTÁ HOJE
+           ===================================================== */
+
+        botao.classList.toggle(
+            "ativo",
+            ativo
+        );
+
+
+        aplicarCoresBeneficio(
+            botao,
+            ativo
+        );
+
+
+        aplicarIconeReducao(
+            botao,
+            ativo
+        );
+
+    });
+
+
+
+    /* =========================================================
+       CONTEÚDO DA LISTA
+       ISSO FUNCIONA EM MOBILE E DESKTOP
+       ========================================================= */
+
+    segmentos.forEach(function (segmento) {
+
+        const ativo =
+            segmento.getAttribute(
+                "data-segmento-conteudo"
+            ) === slug;
+
+
+        segmento.classList.toggle(
+            "ativo",
+            ativo
+        );
+
+    });
+
+
+    return encontrou;
+}
+
+
+    /* =========================================================
+       HOVER DOS CARDS
+       ========================================================= */
+
+    botoes.forEach(function (botao) {
+
+        /*
+         * Só aplica comportamento visual aos cards
+         * que possuem a estrutura completa.
+         */
+
+        if (
+            !botao.classList.contains(
+                "beneficio-card"
+            )
+        ) {
+            return;
+        }
+
+
+        /* =====================================================
+           MOUSE ENTROU
+           ===================================================== */
+
+        botao.addEventListener(
+            "mouseenter",
+            function () {
+
+                aplicarCoresBeneficio(
+                    botao,
+                    true
+                );
+
+                aplicarIconeReducao(
+                    botao,
+                    true
+                );
+
+            }
+        );
+
+
+        /* =====================================================
+           MOUSE SAIU
+           ===================================================== */
+
+        botao.addEventListener(
+            "mouseleave",
+            function () {
+
+                const ativo =
+                    botao.classList.contains(
+                        "ativo"
+                    );
+
+
+                aplicarCoresBeneficio(
+                    botao,
+                    ativo
+                );
+
+
+                aplicarIconeReducao(
+                    botao,
+                    ativo
+                );
+
+            }
+        );
+
+    });
+
+
+
+    /* =========================================================
+       LEVA PARA O TOPO DA LISTA SELECIONADA
+       ========================================================= */
+
+    function irParaTopoDaLista(slug) {
+
+        const segmentoDestino =
+            document.querySelector(
+                '[data-segmento-conteudo="' +
+                slug +
+                '"]'
+            );
+
+
+        if (!segmentoDestino) {
+            return;
+        }
+
+
+        setTimeout(function () {
+
+            const lista =
+                segmentoDestino.querySelector(
+                    ".lista-shell"
+                );
+
+
+            if (!lista) {
+                return;
+            }
+
+
+            const topo =
+                lista.getBoundingClientRect().top +
+                window.pageYOffset;
+
+
+            window.scrollTo({
+                top: Math.max(
+                    0,
+                    topo - 8
+                ),
+                left: 0,
+                behavior: "smooth"
+            });
+
+        }, 80);
+
+    }
+
+
+
+    /* =========================================================
+       CLIQUE NOS BOTÕES DE BENEFÍCIO
+       ========================================================= */
+
+    botoes.forEach(function (botao) {
+
+        botao.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+
+
+                const slug =
+                    botao.getAttribute(
+                        "data-segmento-btn"
+                    );
+
+
+                const existe =
+                    ativarSegmento(
+                        slug
+                    );
+
+
+                if (!existe) {
+                    return;
+                }
+
+
+                /* =============================================
+                   ATUALIZA HASH SEM SCROLL AUTOMÁTICO
+                   ============================================= */
+
+                history.replaceState(
+                    null,
+                    "",
+                    "#" + slug
+                );
+
+
+                /* =============================================
+                   APENAS MENU MOBILE INFERIOR FAZ SCROLL
+                   ============================================= */
+
+                if (
+                    botao.classList.contains(
+                        "next-benefit-mobile-card"
+                    )
+                ) {
+
+                    irParaTopoDaLista(
+                        slug
+                    );
+
+                }
+
+            }
+        );
+
+    });
+
+
+
+    /* =========================================================
+       WHATSAPP
+       ========================================================= */
+
+    const shareWhatsapp =
+        document.getElementById(
+            "share-whatsapp"
+        );
+
+
+    if (shareWhatsapp) {
+
+        const textoCompartilhamento =
+            "Você conhece alguém que precisa dessas informações sobre tratamentos? " +
+            window.location.href;
+
+
+        shareWhatsapp.href =
+            "https://wa.me/?text=" +
+            encodeURIComponent(
+                textoCompartilhamento
+            );
+
+    }
+
+
+
+    /* =========================================================
+       BENEFÍCIO INICIAL — HASH
+       ========================================================= */
+
+    const hashInicial =
+        window.location.hash.replace(
+            "#",
+            ""
+        );
+
+
+    if (hashInicial) {
+
+        const existe =
+            ativarSegmento(
+                hashInicial
+            );
+
+
+        if (
+            !existe &&
+            botoes.length > 0
+        ) {
+
+            ativarSegmento(
+                botoes[0].getAttribute(
+                    "data-segmento-btn"
+                )
+            );
+
+        }
+
+    } else if (botoes.length > 0) {
+
+        ativarSegmento(
+            botoes[0].getAttribute(
+                "data-segmento-btn"
+            )
+        );
+
+    }
+
+
+
+    /* =========================================================
+       SCROLL HORIZONTAL DOS BENEFÍCIOS
+       ========================================================= */
+
+    const beneficiosGrid =
+        document.getElementById(
+            "beneficiosGrid"
+        );
+
+    const beneficiosScrollThumb =
+        document.getElementById(
+            "beneficiosScrollThumb"
+        );
+
+    const beneficiosScrollTrack =
+        document.querySelector(
+            ".beneficios-scroll-track"
+        );
+
+
+
+    /* =========================================================
+       ATUALIZA A BARRA QUANDO OS CARDS SE MOVEM
+       ========================================================= */
+
+    function atualizarBarraBeneficios() {
+
+        if (
+            !beneficiosGrid ||
+            !beneficiosScrollThumb ||
+            !beneficiosScrollTrack
+        ) {
+            return;
+        }
+
+
+        const maxScroll =
+            beneficiosGrid.scrollWidth -
+            beneficiosGrid.clientWidth;
+
+
+        const larguraTrack =
+            beneficiosScrollTrack.clientWidth;
+
+
+        const larguraThumb =
+            beneficiosScrollThumb.offsetWidth;
+
+
+        const movimentoMaximo =
+            larguraTrack -
+            larguraThumb;
+
+
+        if (
+            maxScroll <= 0 ||
+            movimentoMaximo <= 0
+        ) {
+
+            beneficiosScrollThumb.style.transform =
+                "translate3d(0, 0, 0)";
+
+            return;
+        }
+
+
+        const progresso =
+            beneficiosGrid.scrollLeft /
+            maxScroll;
+
+
+        const posicao =
+            progresso *
+            movimentoMaximo;
+
+
+        beneficiosScrollThumb.style.transform =
+            `translate3d(${posicao}px, 0, 0)`;
+
+    }
+
+
+
+    /* =========================================================
+       GRID ARRASTADO MANUALMENTE
+       ========================================================= */
+
+    if (beneficiosGrid) {
+
+        beneficiosGrid.addEventListener(
+            "scroll",
+            atualizarBarraBeneficios,
+            {
+                passive: true
+            }
+        );
+
+    }
+
+
+
+    /* =========================================================
+       SCROLLBAR CUSTOMIZADA
+       ========================================================= */
+
+    if (
+        beneficiosGrid &&
+        beneficiosScrollThumb &&
+        beneficiosScrollTrack
+    ) {
+
+        let arrastando = false;
+
+        let offsetDoPointer = 0;
+
+
+
+        /* =====================================================
+           MÉTRICAS
+           ===================================================== */
+
+        function obterMetricas() {
+
+            const trackRect =
+                beneficiosScrollTrack
+                    .getBoundingClientRect();
+
+
+            const larguraTrack =
+                beneficiosScrollTrack
+                    .clientWidth;
+
+
+            const larguraThumb =
+                beneficiosScrollThumb
+                    .offsetWidth;
+
+
+            const movimentoMaximo =
+                Math.max(
+                    0,
+                    larguraTrack -
+                    larguraThumb
+                );
+
+
+            const maxScroll =
+                Math.max(
+                    0,
+                    beneficiosGrid.scrollWidth -
+                    beneficiosGrid.clientWidth
+                );
+
+
+            return {
+                trackRect,
+                larguraTrack,
+                larguraThumb,
+                movimentoMaximo,
+                maxScroll
+            };
+
+        }
+
+
+
+        /* =====================================================
+           POSIÇÃO ATUAL DO THUMB
+           ===================================================== */
+
+        function posicaoAtualThumb() {
+
+            const {
+                movimentoMaximo,
+                maxScroll
+            } = obterMetricas();
+
+
+            if (
+                maxScroll <= 0 ||
+                movimentoMaximo <= 0
+            ) {
+                return 0;
+            }
+
+
+            const progresso =
+                beneficiosGrid.scrollLeft /
+                maxScroll;
+
+
+            return (
+                progresso *
+                movimentoMaximo
+            );
+
+        }
+
+
+
+        /* =====================================================
+           MOVE THUMB + CARDS
+           ===================================================== */
+
+        function moverPara(posicao) {
+
+            const {
+                movimentoMaximo,
+                maxScroll
+            } = obterMetricas();
+
+
+            const novaPosicao =
+                Math.max(
+                    0,
+                    Math.min(
+                        posicao,
+                        movimentoMaximo
+                    )
+                );
+
+
+            const progresso =
+                movimentoMaximo > 0
+                    ? novaPosicao /
+                      movimentoMaximo
+                    : 0;
+
+
+            beneficiosGrid.scrollLeft =
+                progresso *
+                maxScroll;
+
+
+            beneficiosScrollThumb
+                .style
+                .transform =
+                `translate3d(${novaPosicao}px, 0, 0)`;
+
+        }
+
+
+
+        /* =====================================================
+           POINTER DOWN
+           ===================================================== */
+
+        function iniciarArraste(event) {
+
+            if (
+                event.pointerType === "mouse" &&
+                event.button !== 0
+            ) {
+                return;
+            }
+
+
+            const {
+                trackRect,
+                larguraThumb
+            } = obterMetricas();
+
+
+            const atual =
+                posicaoAtualThumb();
+
+
+            const inicioThumb =
+                trackRect.left +
+                atual;
+
+
+            const fimThumb =
+                inicioThumb +
+                larguraThumb;
+
+
+            const clicouNoThumb =
+                event.clientX >= inicioThumb &&
+                event.clientX <= fimThumb;
+
+
+            if (clicouNoThumb) {
+
+                offsetDoPointer =
+                    event.clientX -
+                    inicioThumb;
+
+            } else {
+
+                offsetDoPointer =
+                    larguraThumb / 2;
+
+
+                moverPara(
+                    event.clientX -
+                    trackRect.left -
+                    offsetDoPointer
+                );
+
+            }
+
+
+            arrastando = true;
+
+
+            beneficiosScrollThumb
+                .classList
+                .add(
+                    "arrastando"
+                );
+
+
+            beneficiosScrollTrack
+                .setPointerCapture(
+                    event.pointerId
+                );
+
+
+            event.preventDefault();
+
+        }
+
+
+
+        /* =====================================================
+           POINTER MOVE
+           ===================================================== */
+
+        function moverArraste(event) {
+
+            if (!arrastando) {
+                return;
+            }
+
+
+            const {
+                trackRect
+            } = obterMetricas();
+
+
+            const novaPosicao =
+                event.clientX -
+                trackRect.left -
+                offsetDoPointer;
+
+
+            moverPara(
+                novaPosicao
+            );
+
+
+            event.preventDefault();
+
+        }
+
+function ajustarMenuMobile() {
+
+    const mobile =
+        window.matchMedia(
+            "(max-width: 420px)"
+        ).matches;
+
+
+    const primeiroIcone =
+        document.querySelector(
+            '[data-segmento-btn="reducao-temporaria-dos-sintomas"] .rt-icon-single'
+        );
+
+
+    if (!primeiroIcone) {
+        return;
+    }
+
+
+    if (mobile) {
+
+        primeiroIcone.style.setProperty(
+            "width",
+            "22.55px",
+            "important"
+        );
+
+        primeiroIcone.style.setProperty(
+            "min-width",
+            "22.55px",
+            "important"
+        );
+
+        primeiroIcone.style.setProperty(
+            "height",
+            "20.89px",
+            "important"
+        );
+
+        primeiroIcone.style.setProperty(
+            "min-height",
+            "20.89px",
+            "important"
+        );
+
+    } else {
+
+        /*
+         * RESTAURA EXATAMENTE O DESKTOP ATUAL
+         */
+
+        primeiroIcone.style.setProperty(
+            "width",
+            "45px",
+            "important"
+        );
+
+        primeiroIcone.style.setProperty(
+            "min-width",
+            "52px",
+            "important"
+        );
+
+        primeiroIcone.style.setProperty(
+            "height",
+            "42px",
+            "important"
+        );
+
+    }
+
+}
+
+
+ajustarMenuMobile();
+
+
+window.addEventListener(
+    "resize",
+    ajustarMenuMobile
+);
+
+        /* =====================================================
+           POINTER UP / CANCEL
+           ===================================================== */
+
+        function terminarArraste(event) {
+
+            if (!arrastando) {
+                return;
+            }
+
+
+            arrastando = false;
+
+
+            beneficiosScrollThumb
+                .classList
+                .remove(
+                    "arrastando"
+                );
+
+
+            if (
+                beneficiosScrollTrack
+                    .hasPointerCapture(
+                        event.pointerId
+                    )
+            ) {
+
+                beneficiosScrollTrack
+                    .releasePointerCapture(
+                        event.pointerId
+                    );
+
+            }
+
+        }
+
+
+
+        /* =====================================================
+           EVENTOS DA BARRA
+           ===================================================== */
+
+        beneficiosScrollTrack
+            .addEventListener(
+                "pointerdown",
+                iniciarArraste
+            );
+
+
+        beneficiosScrollTrack
+            .addEventListener(
+                "pointermove",
+                moverArraste
+            );
+
+
+        beneficiosScrollTrack
+            .addEventListener(
+                "pointerup",
+                terminarArraste
+            );
+
+
+        beneficiosScrollTrack
+            .addEventListener(
+                "pointercancel",
+                terminarArraste
+            );
+
+
+        /* posição inicial */
+        atualizarBarraBeneficios();
+
+
+        /* recalcula no resize */
+        window.addEventListener(
+            "resize",
+            atualizarBarraBeneficios
+        );
+
+    }
+
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const botoesFiltro = document.querySelectorAll(
+        ".lista-action-button[data-filtro-path]"
+    );
+
+    botoesFiltro.forEach(function (botao) {
+
+        botao.addEventListener("click", function (event) {
+
+            event.preventDefault();
+
+            const path =
+                botao.getAttribute(
+                    "data-filtro-path"
+                );
+
+            if (!path) {
+                return;
+            }
+
+            /*
+             * DESENVOLVIMENTO
+             *
+             * Django:
+             * 127.0.0.1:8000
+             *
+             * React:
+             * localhost:3000
+             */
+            const estaNoDjangoLocal =
+                (
+                    window.location.hostname === "127.0.0.1"
+                    ||
+                    window.location.hostname === "localhost"
+                )
+                &&
+                window.location.port === "8000";
+
+
+            let destino;
+
+
+            if (estaNoDjangoLocal) {
+
+                destino =
+                    "http://localhost:3000"
+                    +
+                    path;
+
+            } else {
+
+                /*
+                 * PRODUÇÃO:
+                 * React e Django ficam no mesmo domínio.
+                 */
+                destino =
+                    window.location.origin
+                    +
+                    path;
+            }
+
+
+            window.location.href =
+                destino;
+        });
+
+    });
+
+});
+</script>
+
+</body>
+</html>

@@ -11,6 +11,7 @@ from core.forms import CustomAuthenticationForm
 
 from core import views
 from core import public_views_listas2
+from core import public_views_listas3
 
 from core.domain_views import domain_home
 from core.public_views_home import home
@@ -199,6 +200,8 @@ path(
     genericos_similares_detalhes,
     name="genericos_similares_detalhes",
     ),
+
+
     path(
         "listas-v2/<slug:condicao_slug>/",
         public_views_listas2.redirect_lista_v2_raiz_antiga,
@@ -231,6 +234,19 @@ path(
         pagina_lista_por_url,
         name="pagina_lista",
     ),
+
+    # =========================================================
+# LISTA V3 - HOMOLOGAÇÃO / NOVO FIGMA
+# IMPORTANTE: precisa ficar antes de enxaqueca/<slug:slug>/
+# =========================================================
+
+    path(
+        "<slug:condicao_slug>/v3/",
+        public_views_listas3.pagina_lista_v3,
+        name="pagina_lista_v3",
+    ),
+
+
 
     # =========================================================
     # PÁGINAS PÚBLICAS ESPECÍFICAS
@@ -312,6 +328,9 @@ path(
     #
     # Com benefício selecionado:
     # /enxaqueca/#reducao-temporaria-dos-sintomas
+
+
+
     path(
         "<slug:condicao_slug>/",
         public_views_listas2.pagina_lista_v2,
