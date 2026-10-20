@@ -407,7 +407,6 @@
     background: #0193FF;
 }
 
-
 /* =====================================================
    EFEITO RÁPIDO
    ===================================================== */
@@ -418,29 +417,47 @@
     width: 88px;
     height: 32px;
 
-    /*
-       Centralizado entre:
-       Eliminação temporária
-       e
-       Redução temporária
-    */
-    left: 50%;
     top: -25px;
 
-    transform: translateX(-50%);
-
     pointer-events: none;
-
     z-index: 10;
 }
 
 
-/* TEXTO */
+/* =====================================================
+   CASO 1:
+   SOMENTE UM BENEFÍCIO É DE EFEITO RÁPIDO
+
+   O indicador fica sobre o benefício correspondente.
+   ===================================================== */
+
+.v3-fast-effect-unico {
+    left: var(--fast-effect-left);
+    transform: translateX(-50%);
+}
+
+
+/* =====================================================
+   CASO 2:
+   DOIS BENEFÍCIOS SÃO DE EFEITO RÁPIDO
+
+   O indicador fica centralizado entre os dois.
+   ===================================================== */
+
+.v3-fast-effect-duplo {
+    left: var(--fast-effect-left);
+    transform: translateX(-50%);
+}
+
+
+/* =====================================================
+   TEXTO "efeito rápido"
+   ===================================================== */
 
 .v3-fast-effect-text {
     position: absolute;
 
-    width: 71px;
+    width: 88px;
     height: 27px;
 
     left: 50%;
@@ -464,8 +481,9 @@
     white-space: nowrap;
 }
 
+
 /* =====================================================
-   SETAS CURVAS - EFEITO RÁPIDO
+   SETAS
    ===================================================== */
 
 .v3-fast-arrow {
@@ -480,14 +498,25 @@
 }
 
 
-/* SETA ESQUERDA */
+/* =====================================================
+   UMA ÚNICA SETA
+
+   Fica à esquerda do texto e aponta para
+   o benefício rápido.
+   ===================================================== */
+
+.v3-fast-arrow-single {
+    left: -4px;
+}
+
+
+/* =====================================================
+   DUAS SETAS
+   ===================================================== */
 
 .v3-fast-arrow-left {
     left: -2px;
 }
-
-
-/* SETA DIREITA */
 
 .v3-fast-arrow-right {
     right: -2px;
@@ -2110,11 +2139,11 @@
 
 {% if efeito_rapido_tipo_v3 %}
 
-    <div
-        class="v3-fast-effect v3-fast-effect-{{ efeito_rapido_tipo_v3 }}"
-        style="left: {{ efeito_rapido_left_v3 }}%;"
-        aria-hidden="true"
-    >
+<div
+    class="v3-fast-effect v3-fast-effect-{{ efeito_rapido_tipo_v3 }}"
+    style="--fast-effect-left: {{ efeito_rapido_left_v3 }}%;"
+    aria-hidden="true"
+>
 
         <span class="v3-fast-effect-text">
             efeito rápido

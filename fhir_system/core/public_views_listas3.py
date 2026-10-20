@@ -135,15 +135,17 @@ def pagina_lista_v3(request, condicao_slug):
         segmentos
     )
 
-
     # ========================================================
     # EFEITO RÁPIDO
     #
-    # Somente estas duas eficácias são consideradas
-    # de efeito rápido:
+    # Benefícios considerados de efeito rápido:
     #
     # - Eliminação temporária dos sintomas
     # - Redução temporária dos sintomas
+    #
+    # IMPORTANTE:
+    # A posição é calculada considerando somente os
+    # benefícios que realmente aparecem no menu.
     # ========================================================
 
     slug_reducao_temporaria = (
@@ -155,12 +157,20 @@ def pagina_lista_v3(request, condicao_slug):
     )
 
 
-    # Segmentos que realmente possuem tratamentos.
+    # ========================================================
+    # SEGMENTOS REALMENTE VISÍVEIS
+    # ========================================================
+
     slugs_visiveis = [
         segmento["slug"]
         for segmento in segmentos
         if segmento["itens"]
     ]
+
+
+    quantidade_beneficios_visiveis = len(
+        slugs_visiveis
+    )
 
 
     tem_reducao_temporaria = (
@@ -174,14 +184,63 @@ def pagina_lista_v3(request, condicao_slug):
     )
 
 
-    # Por padrão, NÃO existe efeito rápido.
+    # ========================================================
+    # VALORES PADRÃO
+    # ========================================================
+
     efeito_rapido_tipo_v3 = None
     efeito_rapido_left_v3 = None
 
 
     # ========================================================
+    # CALCULA A LARGURA REAL DE CADA BENEFÍCIO
+    # ========================================================
+
+    if quantidade_beneficios_visiveis > 0:
+
+        largura_item_v3 = (
+            100 / quantidade_beneficios_visiveis
+        )
+
+    else:
+
+        largura_item_v3 = 100
+
+
+    # ========================================================
+    # FUNÇÃO AUXILIAR
+    #
+    # Retorna o centro REAL de um benefício no menu.
+    #
+    # Exemplo com 2 benefícios:
+    #
+    # benefício 0 -> 25%
+    # benefício 1 -> 75%
+    #
+    # Exemplo com 4 benefícios:
+    #
+    # benefício 0 -> 12.5%
+    # benefício 1 -> 37.5%
+    # benefício 2 -> 62.5%
+    # benefício 3 -> 87.5%
+    # ========================================================
+
+    def centro_beneficio_v3(slug):
+
+        posicao = slugs_visiveis.index(
+            slug
+        )
+
+        return (
+            posicao * largura_item_v3
+        ) + (
+            largura_item_v3 / 2
+        )
+
+
+    # ========================================================
     # CENÁRIO 1
-    # As duas eficácias existem.
+    # REDUÇÃO TEMPORÁRIA + ELIMINAÇÃO TEMPORÁRIA
     # ========================================================
 
     if (
@@ -189,21 +248,13 @@ def pagina_lista_v3(request, condicao_slug):
         and tem_eliminacao_temporaria
     ):
 
-        pos_reducao = slugs_visiveis.index(
+        centro_reducao = centro_beneficio_v3(
             slug_reducao_temporaria
         )
 
-        pos_eliminacao = slugs_visiveis.index(
+        centro_eliminacao = centro_beneficio_v3(
             slug_eliminacao_temporaria
         )
-
-        centro_reducao = (
-            pos_reducao * 25
-        ) + 12.5
-
-        centro_eliminacao = (
-            pos_eliminacao * 25
-        ) + 12.5
 
         efeito_rapido_left_v3 = (
             centro_reducao
@@ -215,51 +266,45 @@ def pagina_lista_v3(request, condicao_slug):
 
     # ========================================================
     # CENÁRIO 2
-    # Somente redução temporária.
+    # SOMENTE REDUÇÃO TEMPORÁRIA
     # ========================================================
 
     elif tem_reducao_temporaria:
 
-        pos_reducao = slugs_visiveis.index(
-            slug_reducao_temporaria
-        )
-
         efeito_rapido_left_v3 = (
-            pos_reducao * 25
-        ) + 12.5
+            centro_beneficio_v3(
+                slug_reducao_temporaria
+            )
+        )
 
         efeito_rapido_tipo_v3 = "unico"
 
 
     # ========================================================
     # CENÁRIO 3
-    # Somente eliminação temporária.
+    # SOMENTE ELIMINAÇÃO TEMPORÁRIA
     # ========================================================
 
     elif tem_eliminacao_temporaria:
 
-        pos_eliminacao = slugs_visiveis.index(
-            slug_eliminacao_temporaria
-        )
-
         efeito_rapido_left_v3 = (
-            pos_eliminacao * 25
-        ) + 12.5
+            centro_beneficio_v3(
+                slug_eliminacao_temporaria
+            )
+        )
 
         efeito_rapido_tipo_v3 = "unico"
 
 
     # ========================================================
     # CENÁRIO 4
-    # Nenhuma das duas existe.
-    # Não mostra "efeito rápido".
+    # NENHUM BENEFÍCIO DE EFEITO RÁPIDO
     # ========================================================
 
     else:
 
         efeito_rapido_tipo_v3 = None
         efeito_rapido_left_v3 = None
-
     # ========================================================
     # CONTEXTO
     # ========================================================
