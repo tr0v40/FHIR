@@ -93,6 +93,93 @@ def pagina_lista_v3(request, condicao_slug):
 
 
     # ========================================================
+    # PAGINAÇÃO GLOBAL DA V3
+    #
+    # Regra:
+    # - 50 tratamentos iniciais NO TOTAL
+    # - somando todos os segmentos
+    # - mantém a ordem dos segmentos
+    # - mantém a ordem de eficácia dentro de cada segmento
+    # ========================================================
+
+    # ========================================================
+    # PAGINAÇÃO GLOBAL DA V3
+    #
+    # REGRA:
+    # - todos os tratamentos continuam disponíveis no HTML
+    # - somente os primeiros 50 aparecem inicialmente
+    # - "Ver mais" libera mais 50 por clique
+    # - contador é GLOBAL, não reinicia por benefício
+    # ========================================================
+
+    LIMITE_INICIAL_V3 = 50
+
+    contador_global = 0
+    total_tratamentos_v3 = 0
+
+    for segmento in segmentos:
+
+        itens_v3 = []
+
+        primeira_posicao_segmento = None
+
+        for item in segmento["itens"]:
+
+            contador_global += 1
+            total_tratamentos_v3 += 1
+
+            item_v3 = item.copy()
+
+            item_v3["posicao_global_v3"] = (
+                contador_global
+            )
+
+            # Somente os 50 primeiros aparecem
+            # na abertura da página.
+            item_v3["visivel_inicial_v3"] = (
+                contador_global <=
+                LIMITE_INICIAL_V3
+            )
+
+            # Os 5 banners iniciais aparecem
+            # depois dos tratamentos:
+            # 5, 15, 25, 35 e 45.
+            item_v3["mostrar_banner_v3"] = (
+                contador_global
+                in (5, 15, 25, 35, 45)
+            )
+
+            if primeira_posicao_segmento is None:
+                primeira_posicao_segmento = (
+                    contador_global
+                )
+
+            itens_v3.append(
+                item_v3
+            )
+
+        segmento["itens_v3"] = (
+            itens_v3
+        )
+
+        segmento["primeira_posicao_v3"] = (
+            primeira_posicao_segmento
+        )
+
+        segmento["visivel_inicial_v3"] = (
+            primeira_posicao_segmento
+            is not None
+            and
+            primeira_posicao_segmento
+            <= LIMITE_INICIAL_V3
+        )
+
+    tem_mais_tratamentos_v3 = (
+        total_tratamentos_v3 >
+        LIMITE_INICIAL_V3
+    )
+
+    # ========================================================
     # PRIMEIRO SEGMENTO
     # ========================================================
 
@@ -168,7 +255,15 @@ def pagina_lista_v3(request, condicao_slug):
         "beneficios_cards":
             beneficios_cards,
 
+        # ----------------------------------------------------
+        # PAGINAÇÃO GLOBAL V3
+        # ----------------------------------------------------
 
+        "total_tratamentos_v3":
+            total_tratamentos_v3,
+
+        "tem_mais_tratamentos_v3":
+            tem_mais_tratamentos_v3,
         # ----------------------------------------------------
         # FOOTER
         # ----------------------------------------------------
