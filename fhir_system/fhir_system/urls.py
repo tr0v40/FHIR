@@ -240,12 +240,6 @@ path(
 # IMPORTANTE: precisa ficar antes de enxaqueca/<slug:slug>/
 # =========================================================
 
-    path(
-        "<slug:condicao_slug>/v3/",
-        public_views_listas3.pagina_lista_v3,
-        name="pagina_lista_v3",
-    ),
-
 
 
     # =========================================================
@@ -331,12 +325,11 @@ path(
 
 
 
-    path(
-        "<slug:condicao_slug>/",
-        public_views_listas2.pagina_lista_v2,
-        name="pagina_lista_v2",
-    ),
-
+path(
+    "<slug:condicao_slug>/",
+    public_views_listas3.pagina_lista_v3,
+    name="pagina_lista_v2",
+),
     # =========================================================
     # INCLUDES GENÉRICOS
     # PRECISAM PERMANECER POR ÚLTIMO

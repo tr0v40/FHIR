@@ -321,16 +321,9 @@ a {
     text-align: center;
 }
 
-/* Aba ativa padrão:
-   Doenças e Artigos continuam brancas */
 .home-tab.active {
-    background: #FFFFFF;
-    color: #0094FF;
-}
-
-/* Somente Tratamentos fica azul quando ativo */
-.home-tab[data-home-tab="tratamentos"].active {
     background: #0094FF;
+
     color: #FFFFFF;
 }
 
@@ -392,16 +385,18 @@ a {
    AUTOCOMPLETE - ABA TRATAMENTOS (DESKTOP)
    ========================================================= */
 
+.home-menu-content
+[data-home-panel="tratamentos"]
 .home-menu-treatment-search {
     position: relative;
-    z-index: 30;
 
-    width: 396px;
+    width: 529px;
     height: 51px;
 
     margin-top: 24px;
-}
 
+    z-index: 30;
+}
 .home-menu-treatment-search input {
     width: 100%;
     height: 51px;
@@ -609,6 +604,415 @@ a {
 .home-select-wrap-wide,
 .home-select-wide {
     width: 390px;
+}
+
+/* =========================================================
+   ABA ARTIGOS CIENTÍFICOS - DESKTOP
+   FIGMA
+   ========================================================= */
+
+/*
+ * O painel já possui:
+ * 980px total
+ * 244px de conteúdo abaixo das tabs
+ *
+ * Por isso não recriamos o quadrante.
+ */
+
+[data-home-panel="artigos"] {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 0;
+}
+
+
+/* =========================================================
+   TEXTO
+   Figma:
+   left = 5.71% de 980px ≈ 56px
+   ========================================================= */
+
+[data-home-panel="artigos"]
+.home-menu-description {
+    position: absolute;
+
+    left: 56px;
+    top: 62px;
+
+    width: 866px;
+
+    margin: 0;
+
+    font-family: "Inter", Arial, sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 27px;
+
+    color: #000000;
+}
+
+
+/* =========================================================
+   CONTAINER DOS DOIS CAMPOS
+   ========================================================= */
+
+.home-menu-article-search-row {
+    position: absolute;
+
+    left: 56px;
+    top: 123px;
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 14px;
+
+    width: auto;
+    height: 51px;
+
+    z-index: 50;
+}
+
+
+/* =========================================================
+   CADA CAMPO
+   ========================================================= */
+
+.home-menu-article-search {
+    position: relative;
+
+    width: 282px;
+    height: 51px;
+
+    flex: 0 0 282px;
+
+    margin: 0;
+}
+
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
+.home-menu-article-search input {
+    display: block;
+
+    width: 282px;
+    height: 51px;
+
+    margin: 0;
+
+    padding:
+        0
+        44px
+        0
+        16px;
+
+    border: 1px solid #0193FF;
+    border-radius: 8px;
+
+    background: #FFFFFF;
+
+    outline: none;
+
+    font-family: "Inter", Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 27px;
+
+    color: #010009;
+}
+
+
+.home-menu-article-search input::placeholder {
+    color: #8F8F93;
+    opacity: 1;
+}
+
+
+/* tira o X padrão do input search */
+
+.home-menu-article-search
+input::-webkit-search-cancel-button {
+    display: none;
+
+    -webkit-appearance: none;
+}
+
+
+/* =========================================================
+   LUPA
+   ========================================================= */
+
+.home-menu-article-search > i {
+    position: absolute;
+
+    width: 16px;
+    height: 16px;
+
+    right: 16px;
+    top: 17px;
+
+    z-index: 3;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #0193FF;
+
+    font-size: 15px;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   RESULTADOS DO AUTOCOMPLETE
+   ========================================================= */
+
+.home-menu-article-results {
+    position: absolute;
+
+    width: 282px;
+    max-height: 220px;
+
+    left: 0;
+    top: 57px;
+
+    z-index: 999;
+
+    overflow-y: auto;
+
+    border: 1px solid #E3E3E3;
+    border-radius: 8px;
+
+    background: #FFFFFF;
+
+    box-shadow:
+        0 6px 18px
+        rgba(0, 0, 0, 0.14);
+}
+
+
+.home-menu-article-results[hidden],
+.home-menu-article-disease-result[hidden],
+.home-menu-article-treatment-result[hidden],
+#home-menu-article-treatment-wrap[hidden] {
+    display: none !important;
+}
+
+
+/* =========================================================
+   OPÇÕES
+   ========================================================= */
+
+.home-menu-article-disease-result,
+.home-menu-article-treatment-result {
+    display: block;
+
+    width: 100%;
+    min-height: 44px;
+
+    padding:
+        11px
+        16px;
+
+    border: 0;
+    border-bottom: 1px solid #EEEEEE;
+
+    background: #FFFFFF;
+
+    color: #333333;
+
+    font-family: "Inter", Arial, sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+
+.home-menu-article-disease-result:last-child,
+.home-menu-article-treatment-result:last-child {
+    border-bottom: 0;
+}
+
+
+.home-menu-article-disease-result:hover,
+.home-menu-article-treatment-result:hover {
+    background: #F2F8FF;
+
+    color: #0193FF;
+}
+/* =========================================================
+   AUTOCOMPLETE - DOENÇAS E SINTOMAS
+   ========================================================= */
+
+.home-disease-wrap {
+    position: relative;
+
+    width: 282px;
+    height: 51px;
+
+    z-index: 50;
+}
+
+
+/* Remove a seta antiga do SELECT */
+
+.home-disease-wrap::after {
+    display: none;
+}
+
+
+/* Campo */
+
+.home-disease-input {
+    display: block;
+
+    width: 282px;
+    height: 51px;
+
+    margin: 0;
+
+    padding:
+        0
+        44px
+        0
+        16px;
+
+    border: 1px solid #0094FF;
+    border-radius: 8px;
+
+    background: #FFFFFF;
+
+    outline: none;
+
+    font-family: "Inter", Arial, sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 27px;
+
+    color: #010009;
+
+    cursor: text;
+}
+
+
+.home-disease-input::placeholder {
+    color: #8F8F93;
+    opacity: 1;
+}
+
+
+.home-disease-input::-webkit-search-cancel-button {
+    display: none;
+    -webkit-appearance: none;
+}
+
+
+/* Lupa */
+
+.home-disease-search-icon {
+    position: absolute;
+
+    width: 18px;
+    height: 18px;
+
+    right: 16px;
+    top: 16px;
+
+    z-index: 3;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #0094FF;
+
+    font-size: 15px;
+
+    pointer-events: none;
+}
+
+
+/* Lista */
+
+.home-disease-options {
+    position: absolute;
+
+    width: 282px;
+    max-height: 220px;
+
+    left: 0;
+    top: 57px;
+
+    z-index: 999;
+
+    overflow-y: auto;
+
+    border: 1px solid #E3E3E3;
+    border-radius: 8px;
+
+    background: #FFFFFF;
+
+    box-shadow:
+        0 6px 18px
+        rgba(0, 0, 0, 0.14);
+}
+
+
+.home-disease-options[hidden],
+.home-disease-option[hidden] {
+    display: none !important;
+}
+
+
+.home-disease-option {
+    display: block;
+
+    width: 100%;
+    min-height: 44px;
+
+    padding: 11px 16px;
+
+    border: 0;
+    border-bottom: 1px solid #EEEEEE;
+
+    background: #FFFFFF;
+
+    color: #333333;
+
+    font-family: "Inter", Arial, sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+
+.home-disease-option:last-child {
+    border-bottom: 0;
+}
+
+
+.home-disease-option:hover,
+.home-disease-option:focus {
+    background: #F2F8FF;
+    color: #0094FF;
+
+    outline: none;
 }
 
 
@@ -962,22 +1366,7 @@ a {
 
     z-index: 10;
 }
-.home-disease-selects {
-    display: flex;
-    align-items: center;
-    gap: 10px;
 
-    margin-top: 24px;
-}
-
-.home-disease-selects .home-select-wrap {
-    width: 282px;
-    margin: 0;
-}
-
-.home-disease-selects .home-select {
-    width: 282px;
-}
 
 /* =========================================================
    NEWSLETTER
@@ -1519,18 +1908,12 @@ a {
     }
 
 
-    /* Aba ativa padrão:
-    Doenças e Artigos continuam brancas */
     .home-tab.active {
-        background: #FFFFFF;
-        color: #0094FF;
-    }
-
-    /* Somente Tratamentos fica azul quando ativo */
-    .home-tab[data-home-tab="tratamentos"].active {
         background: #0094FF;
+
         color: #FFFFFF;
     }
+
 
     .home-menu-content {
         position: absolute;
@@ -2667,7 +3050,7 @@ a {
 
             <button
                 type="button"
-                class="home-tab"
+                class="home-tab active"
                 data-home-tab="doencas"
             >
 
@@ -2685,7 +3068,7 @@ a {
 
             <button
                 type="button"
-                class="home-tab"
+                class="home-tab "
                 data-home-tab="tratamentos"
             >
 
@@ -2706,6 +3089,7 @@ a {
                 class="home-tab"
                 data-home-tab="artigos"
             >
+
                 <i
                     class="fa-solid fa-magnifying-glass"
                     aria-hidden="true"
@@ -2733,228 +3117,275 @@ a {
                 hidden
             >
 
-             <p class="home-menu-description">
-
-    <span class="home-menu-text-desktop">
-        Selecione doença ou sintoma para ver lista de tratamentos
-        em ordem de eficácia.
-    </span>
-
-    <span class="home-menu-text-mobile">
-        selecione doença ou sintoma para ver lista de tratamentos
-        em ordem de eficácia
-    </span>
-
-</p>
-
-
-<div class="home-disease-selects">
-
-    <!-- PRIMEIRO CAMPO: DOENÇA -->
-
-    <div class="home-select-wrap">
-
-        <select
-            class="home-select"
-            id="home-disease-condition"
-        >
-
-            <option value="">
-                Selecione a doença ou sintoma
-            </option>
-
-            {% for item in condicoes_home %}
-
-                <option value="{{ item.nome }}">
-                    {{ item.nome }}
-                </option>
-
-            {% endfor %}
-
-        </select>
-
-    </div>
-
-
-    <!-- SEGUNDO CAMPO: TRATAMENTO -->
-
-    <div
-        class="home-select-wrap"
-        id="home-disease-treatment-wrap"
-        hidden
-    >
-
-        <select
-            class="home-select"
-            id="home-disease-treatment"
-        >
-
-            <option value="">
-                Selecione o tratamento
-            </option>
-
-            {% for item in tratamentos_home %}
-
-                <option
-                    value="{{ item.url }}"
-                    data-condicao="{{ item.condicao }}"
-                >
-                    {{ item.label }}
-                </option>
-
-            {% endfor %}
-
-        </select>
-
-    </div>
-
-</div>
-
-
-
-            <!-- TRATAMENTOS -->
-
-            <div
-                class="home-tab-panel"
-                data-home-panel="tratamentos"
-            >
-
                 <p class="home-menu-description">
 
                     <span class="home-menu-text-desktop">
-                        Selecione o tratamento de saúde para ver a eficácia,
-                        prazo para efeito, segurança de uso por grupo, custo,
-                        contraindicações e reações adversas.
+                        Selecione doença ou sintoma para ver lista de tratamentos
+                        em ordem de eficácia.
                     </span>
 
                     <span class="home-menu-text-mobile">
-                        Selecione doença ou sintoma para ver lista de tratamentos
+                        selecione doença ou sintoma para ver lista de tratamentos
                         em ordem de eficácia
                     </span>
 
                 </p>
 
-                <div
-                    class="home-menu-treatment-search"
-                    id="home-treatment-search-wrap"
-                    data-treatment-autocomplete
-                >
 
-                    <input
-                        type="search"
-                        id="home-treatment-search-input"
-                        placeholder="Encontre o tratamento"
-                        autocomplete="off"
-                        aria-label="Encontre o tratamento"
-                        aria-autocomplete="list"
-                        aria-controls="home-treatment-results"
-                        aria-expanded="false"
-                    >
+<div class="home-select-wrap home-disease-wrap">
 
-                    <i
-                        class="fa-solid fa-magnifying-glass"
-                        aria-hidden="true"
-                    ></i>
+    <input
+        type="search"
+        class="home-disease-input"
+        id="home-disease-input"
+        placeholder="Encontre a doença ou sintoma"
+        autocomplete="off"
+        aria-label="Encontre a doença ou sintoma"
+    >
 
-                    <div
-                        class="home-treatment-results"
-                        id="home-treatment-results"
-                        role="listbox"
-                        hidden
-                    >
+    <i
+        class="fa-solid fa-magnifying-glass home-disease-search-icon"
+        aria-hidden="true"
+    ></i>
 
-                        {% for item in tratamentos_home %}
+    <div
+        class="home-disease-options"
+        id="home-disease-options"
+        hidden
+    >
 
-                            <button
-                                type="button"
-                                class="home-treatment-result"
-                                data-treatment-label="{{ item.label }}"
-                                data-treatment-url="{{ item.url }}"
-                                role="option"
-                                aria-selected="false"
-                                hidden
-                            >
-                                {{ item.label }}
-                            </button>
+        {% for item in condicoes_home %}
 
-                        {% endfor %}
+            <button
+                type="button"
+                class="home-disease-option"
+                data-label="{{ item.nome }}"
+                data-url="{{ item.url }}"
+                hidden
+            >
+                {{ item.nome }}
+            </button>
 
-                    </div>
+        {% endfor %}
 
+    </div>
+
+</div>
                 </div>
 
-            </div>
+            
 
 
+<!-- =========================================================
+     TRATAMENTOS
+     ========================================================= -->
 
-            <!-- ARTIGOS -->
+<div
+    class="home-tab-panel"
+    data-home-panel="tratamentos"
+    hidden
+>
+
+    <p class="home-menu-description">
+
+        <span class="home-menu-text-desktop">
+            Selecione o tratamento de saúde para ver a eficácia,
+            prazo para efeito, segurança de uso por grupo, custo,
+            contraindicações e reações adversas.
+        </span>
+
+        <span class="home-menu-text-mobile">
+            Selecione o tratamento de saúde para ver a eficácia,
+            prazo para efeito, segurança de uso por grupo, custo,
+            contraindicações e reações adversas.
+        </span>
+
+    </p>
+
+
+    <div
+        class="home-menu-treatment-search"
+        id="home-treatment-search-wrap"
+        data-treatment-autocomplete
+    >
+
+        <input
+            type="search"
+            id="home-treatment-search-input"
+            placeholder="Encontre o tratamento"
+            autocomplete="off"
+            aria-label="Encontre o tratamento ou princípio ativo"
+            aria-autocomplete="list"
+            aria-controls="home-treatment-results"
+            aria-expanded="false"
+        >
+
+        <i
+            class="fa-solid fa-magnifying-glass"
+            aria-hidden="true"
+        ></i>
+
+
+        <div
+            class="home-treatment-results"
+            id="home-treatment-results"
+            role="listbox"
+            hidden
+        >
+
+            {% for item in tratamentos_home %}
+
+                <button
+                    type="button"
+                    class="home-treatment-result"
+                    data-treatment-label="{{ item.label }}"
+                    data-treatment-url="{{ item.url }}"
+                    role="option"
+                    aria-selected="false"
+                    hidden
+                >
+                    {{ item.label }}
+                </button>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ARTIGOS -->
+
+<div
+    class="home-tab-panel"
+    data-home-panel="artigos"
+    hidden
+>
+
+    <p class="home-menu-description">
+
+        <span class="home-menu-text-desktop">
+            Selecione doença e tratamento para ver artigos científicos
+            que revelam a eficácia do tratamento para a doença.
+        </span>
+
+        <span class="home-menu-text-mobile">
+            Selecione doença e tratamento para ver artigos científicos
+            sobre sua eficácia.
+        </span>
+
+    </p>
+
+
+    <!-- =========================================
+         BUSCAS DA ABA ARTIGOS
+         ========================================= -->
+
+    <div class="home-menu-article-search-row">
+
+
+        <!-- DOENÇA -->
+
+        <div
+            class="home-menu-article-search"
+            id="home-menu-article-disease-wrap"
+        >
+
+            <input
+                type="search"
+                id="home-menu-article-disease-input"
+                placeholder="Encontre a doença ou sintoma"
+                autocomplete="off"
+                aria-label="Encontre a doença ou sintoma"
+            >
+
+            <i
+                class="fa-solid fa-magnifying-glass"
+                aria-hidden="true"
+            ></i>
+
 
             <div
-                class="home-tab-panel"
-                data-home-panel="artigos"
+                class="home-menu-article-results"
+                id="home-menu-article-disease-results"
                 hidden
             >
 
-                <p class="home-menu-description">
+                {% for item in condicoes_home %}
 
-                    <span class="home-menu-text-desktop">
-                        Selecione doença e tratamento para ver artigos científicos
-                        que revelam a eficácia do tratamento para a doença
-                    </span>
-
-                    <span class="home-menu-text-mobile">
-                        Selecione a doença e o tratamento para ver artigos
-                        científicos sobre sua eficácia
-                    </span>
-
-                </p>
-
-
-                <div
-                    class="
-                        home-select-wrap
-                        home-select-wrap-wide
-                    "
-                >
-
-                    <select
-                        class="
-                            home-select
-                            home-select-wide
-                        "
-                        data-navigation-select
+                    <button
+                        type="button"
+                        class="home-menu-article-disease-result"
+                        data-label="{{ item.nome }}"
+                        hidden
                     >
+                        {{ item.nome }}
+                    </button>
 
-                        <option value="">
-                            Selecione um tratamento
-                        </option>
-
-
-                        {% for item in tratamentos_home %}
-
-                            {% if item.url_pesquisas %}
-
-                                <option
-                                    value="{{ item.url_pesquisas }}"
-                                >
-                                    {{ item.label }}
-                                </option>
-
-                            {% endif %}
-
-                        {% endfor %}
-
-                    </select>
-
-                </div>
+                {% endfor %}
 
             </div>
 
+        </div>
+
+
+        <!-- TRATAMENTO
+             começa escondido -->
+
+        <div
+            class="home-menu-article-search"
+            id="home-menu-article-treatment-wrap"
+            hidden
+        >
+
+            <input
+                type="search"
+                id="home-menu-article-treatment-input"
+                placeholder="Encontre o tratamento"
+                autocomplete="off"
+                aria-label="Encontre o tratamento"
+            >
+
+            <i
+                class="fa-solid fa-magnifying-glass"
+                aria-hidden="true"
+            ></i>
+
+
+            <div
+                class="home-menu-article-results"
+                id="home-menu-article-treatment-results"
+                hidden
+            >
+
+                {% for item in tratamentos_home %}
+
+                    {% if item.url_pesquisas %}
+
+                        <button
+                            type="button"
+                            class="home-menu-article-treatment-result"
+                            data-label="{{ item.label }}"
+                            data-condicao="{{ item.condicao }}"
+                            data-url="{{ item.url_pesquisas }}"
+                            hidden
+                        >
+                            {{ item.label }}
+                        </button>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
 
         </div>
 
 
     </div>
+
+</div>
 
 </section>
 
@@ -3573,11 +4004,9 @@ a {
      ========================================================= -->
 
 <script>
-
 document.addEventListener(
     "DOMContentLoaded",
     function () {
-
 
         /* =====================================================
            TABS
@@ -3594,9 +4023,151 @@ document.addEventListener(
             );
 
 
+        /* =====================================================
+           NORMALIZAÇÃO DE TEXTO
+           ===================================================== */
+
+        function normalizeText(value) {
+            return (value || "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .trim();
+        }
+
+
+        /* =====================================================
+           AUTOCOMPLETE - DOENÇAS E SINTOMAS
+           ABA 1
+           ===================================================== */
+
+        const diseaseInput =
+            document.getElementById(
+                "home-disease-input"
+            );
+
+        const diseaseOptionsBox =
+            document.getElementById(
+                "home-disease-options"
+            );
+
+
+        if (
+            diseaseInput &&
+            diseaseOptionsBox
+        ) {
+
+            const diseaseOptions =
+                Array.from(
+                    diseaseOptionsBox.querySelectorAll(
+                        ".home-disease-option"
+                    )
+                );
+
+
+            diseaseInput.addEventListener(
+                "input",
+                function () {
+
+                    const search =
+                        normalizeText(
+                            diseaseInput.value
+                        );
+
+                    let encontrou = false;
+
+
+                    diseaseOptions.forEach(
+                        function (option) {
+
+                            const nome =
+                                normalizeText(
+                                    option.dataset.label
+                                );
+
+                            const mostrar =
+                                search.length > 0 &&
+                                nome.includes(search);
+
+                            option.hidden =
+                                !mostrar;
+
+                            if (mostrar) {
+                                encontrou = true;
+                            }
+
+                        }
+                    );
+
+
+                    diseaseOptionsBox.hidden =
+                        !encontrou;
+
+                }
+            );
+
+
+            /* =====================================================
+               CLIQUE NA DOENÇA
+               ===================================================== */
+
+            diseaseOptions.forEach(
+                function (option) {
+
+                    option.addEventListener(
+                        "click",
+                        function () {
+
+                            const url =
+                                option.dataset.url;
+
+                            if (!url) {
+                                return;
+                            }
+
+                            window.location.href =
+                                url;
+
+                        }
+                    );
+
+                }
+            );
+
+
+            /* Fecha ao clicar fora */
+
+            document.addEventListener(
+                "click",
+                function (event) {
+
+                    if (
+                        !diseaseOptionsBox.contains(
+                            event.target
+                        ) &&
+                        event.target !== diseaseInput
+                    ) {
+
+                        diseaseOptionsBox.hidden =
+                            true;
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           CONTROLE DAS ABAS
+           ===================================================== */
+
         function ativarAba(nome) {
 
-            /* ATIVA / DESATIVA AS ABAS */
+            /* =====================================================
+               ATIVA / DESATIVA AS ABAS
+               ===================================================== */
 
             tabs.forEach(
                 function (tab) {
@@ -3615,7 +4186,9 @@ document.addEventListener(
             );
 
 
-            /* MOSTRA O CONTEÚDO CORRESPONDENTE */
+            /* =====================================================
+               MOSTRA O CONTEÚDO CORRESPONDENTE
+               ===================================================== */
 
             panels.forEach(
                 function (panel) {
@@ -3632,7 +4205,9 @@ document.addEventListener(
             );
 
 
-            /* TRATAMENTOS = PAINEL AZUL */
+            /* =====================================================
+               MUDA A COR DA CAIXA DE CONTEÚDO
+               ===================================================== */
 
             const menuContent =
                 document.querySelector(
@@ -3684,7 +4259,7 @@ document.addEventListener(
 
 
         /* =====================================================
-           SELECTS DE NAVEGAÇÃO GENÉRICOS
+           SELECTS DE NAVEGAÇÃO
            ===================================================== */
 
         const navigationSelects =
@@ -3719,8 +4294,7 @@ document.addEventListener(
 
         /* =====================================================
            AUTOCOMPLETE - BUSCA DE TRATAMENTO
-
-           Funciona em todos os campos que possuem:
+           ABA 2 + OUTROS CAMPOS COM
            data-treatment-autocomplete
            ===================================================== */
 
@@ -3731,16 +4305,7 @@ document.addEventListener(
 
 
         function normalizeTreatmentText(value) {
-
-            return (value || "")
-                .normalize("NFD")
-                .replace(
-                    /[\u0300-\u036f]/g,
-                    ""
-                )
-                .toLowerCase()
-                .trim();
-
+            return normalizeText(value);
         }
 
 
@@ -3822,7 +4387,6 @@ document.addEventListener(
                             treatmentSearchInput.value
                         );
 
-
                     let visibleCount = 0;
 
                     visibleOptions = [];
@@ -3837,10 +4401,27 @@ document.addEventListener(
                                         .treatmentLabel
                                 );
 
+                            /*
+                             * Se futuramente adicionarmos
+                             * data-treatment-active-ingredient,
+                             * este autocomplete também pesquisará
+                             * pelo princípio ativo.
+                             */
+
+                            const activeIngredient =
+                                normalizeTreatmentText(
+                                    option.dataset
+                                        .treatmentActiveIngredient
+                                );
 
                             const matches =
                                 search.length > 0 &&
-                                label.includes(search) &&
+                                (
+                                    label.includes(search) ||
+                                    activeIngredient.includes(
+                                        search
+                                    )
+                                ) &&
                                 visibleCount < 8;
 
 
@@ -3901,10 +4482,8 @@ document.addEventListener(
 
 
                     if (index < 0) {
-
                         index =
                             visibleOptions.length - 1;
-
                     }
 
 
@@ -3912,15 +4491,14 @@ document.addEventListener(
                         index >=
                         visibleOptions.length
                     ) {
-
                         index = 0;
-
                     }
 
 
                     clearActiveTreatment();
 
-                    activeIndex = index;
+                    activeIndex =
+                        index;
 
 
                     const activeOption =
@@ -3957,6 +4535,7 @@ document.addEventListener(
                     const url =
                         option.dataset
                             .treatmentUrl;
+
 
                     const label =
                         option.dataset
@@ -4143,8 +4722,529 @@ document.addEventListener(
 
 
         /* =====================================================
-           ARTIGOS CIENTÍFICOS
-           FILTRA TRATAMENTOS PELA CONDIÇÃO
+           ABA 3 - ARTIGOS CIENTÍFICOS
+           ===================================================== */
+
+        const articleDiseaseInput =
+            document.getElementById(
+                "home-menu-article-disease-input"
+            );
+
+        const articleDiseaseResults =
+            document.getElementById(
+                "home-menu-article-disease-results"
+            );
+
+        const articleTreatmentWrap =
+            document.getElementById(
+                "home-menu-article-treatment-wrap"
+            );
+
+        const articleTreatmentInput =
+            document.getElementById(
+                "home-menu-article-treatment-input"
+            );
+
+        const articleTreatmentResults =
+            document.getElementById(
+                "home-menu-article-treatment-results"
+            );
+
+
+        if (
+            articleDiseaseInput &&
+            articleDiseaseResults &&
+            articleTreatmentWrap &&
+            articleTreatmentInput &&
+            articleTreatmentResults
+        ) {
+
+            const articleDiseaseOptions =
+                Array.from(
+                    articleDiseaseResults.querySelectorAll(
+                        ".home-menu-article-disease-result"
+                    )
+                );
+
+
+            const articleTreatmentOptions =
+                Array.from(
+                    articleTreatmentResults.querySelectorAll(
+                        ".home-menu-article-treatment-result"
+                    )
+                );
+
+
+            let selectedArticleCondition =
+                "";
+
+
+            /* =====================================================
+               FUNÇÕES AUXILIARES
+               ===================================================== */
+
+            function closeArticleDiseaseResults() {
+
+                articleDiseaseResults.hidden =
+                    true;
+
+                articleDiseaseOptions.forEach(
+                    function (option) {
+
+                        option.hidden =
+                            true;
+
+                    }
+                );
+
+            }
+
+
+            function closeArticleTreatmentResults() {
+
+                articleTreatmentResults.hidden =
+                    true;
+
+                articleTreatmentOptions.forEach(
+                    function (option) {
+
+                        option.hidden =
+                            true;
+
+                    }
+                );
+
+            }
+
+
+            function resetArticleTreatment() {
+
+                selectedArticleCondition =
+                    "";
+
+                articleTreatmentInput.value =
+                    "";
+
+                articleTreatmentWrap.hidden =
+                    true;
+
+                closeArticleTreatmentResults();
+
+            }
+
+
+            /* =====================================================
+               PESQUISA DE DOENÇA
+               ===================================================== */
+
+            articleDiseaseInput.addEventListener(
+                "input",
+                function () {
+
+                    const search =
+                        normalizeText(
+                            articleDiseaseInput.value
+                        );
+
+
+                    /*
+                     * Alterou a doença:
+                     * tratamento precisa ser escolhido novamente.
+                     */
+
+                    resetArticleTreatment();
+
+
+                    let visibleCount =
+                        0;
+
+
+                    articleDiseaseOptions.forEach(
+                        function (option) {
+
+                            const label =
+                                normalizeText(
+                                    option.dataset.label
+                                );
+
+
+                            const matches =
+                                search.length > 0 &&
+                                label.includes(search) &&
+                                visibleCount < 8;
+
+
+                            option.hidden =
+                                !matches;
+
+
+                            if (matches) {
+
+                                visibleCount++;
+
+                            }
+
+                        }
+                    );
+
+
+                    articleDiseaseResults.hidden =
+                        !(
+                            search.length > 0 &&
+                            visibleCount > 0
+                        );
+
+                }
+            );
+
+
+            /* =====================================================
+               AO VOLTAR O FOCO PARA DOENÇA
+               ===================================================== */
+
+            articleDiseaseInput.addEventListener(
+                "focus",
+                function () {
+
+                    const search =
+                        normalizeText(
+                            articleDiseaseInput.value
+                        );
+
+
+                    if (!search) {
+                        return;
+                    }
+
+
+                    let visibleCount =
+                        0;
+
+
+                    articleDiseaseOptions.forEach(
+                        function (option) {
+
+                            const label =
+                                normalizeText(
+                                    option.dataset.label
+                                );
+
+
+                            const matches =
+                                label.includes(search) &&
+                                visibleCount < 8;
+
+
+                            option.hidden =
+                                !matches;
+
+
+                            if (matches) {
+                                visibleCount++;
+                            }
+
+                        }
+                    );
+
+
+                    articleDiseaseResults.hidden =
+                        visibleCount === 0;
+
+                }
+            );
+
+
+            /* =====================================================
+               CLICOU NA DOENÇA
+               ===================================================== */
+
+            articleDiseaseOptions.forEach(
+                function (option) {
+
+                    option.addEventListener(
+                        "mousedown",
+                        function (event) {
+
+                            event.preventDefault();
+
+                        }
+                    );
+
+
+                    option.addEventListener(
+                        "click",
+                        function () {
+
+                            const label =
+                                option.dataset.label ||
+                                "";
+
+
+                            selectedArticleCondition =
+                                normalizeText(
+                                    label
+                                );
+
+
+                            articleDiseaseInput.value =
+                                label;
+
+
+                            closeArticleDiseaseResults();
+
+
+                            /*
+                             * Agora o segundo campo aparece.
+                             */
+
+                            articleTreatmentWrap.hidden =
+                                false;
+
+
+                            articleTreatmentInput.value =
+                                "";
+
+
+                            closeArticleTreatmentResults();
+
+
+                            articleTreatmentInput.focus();
+
+                        }
+                    );
+
+                }
+            );
+
+
+            /* =====================================================
+               PESQUISA DE TRATAMENTO
+               FILTRADA PELA DOENÇA ESCOLHIDA
+               ===================================================== */
+
+            function filterArticleTreatments() {
+
+                const search =
+                    normalizeText(
+                        articleTreatmentInput.value
+                    );
+
+
+                let visibleCount =
+                    0;
+
+
+                articleTreatmentOptions.forEach(
+                    function (option) {
+
+                        const label =
+                            normalizeText(
+                                option.dataset.label
+                            );
+
+
+                        const condition =
+                            normalizeText(
+                                option.dataset.condicao
+                            );
+
+
+                        const sameCondition =
+                            condition ===
+                            selectedArticleCondition;
+
+
+                        const matches =
+                            selectedArticleCondition !== "" &&
+                            search.length > 0 &&
+                            sameCondition &&
+                            label.includes(search) &&
+                            visibleCount < 8;
+
+
+                        option.hidden =
+                            !matches;
+
+
+                        if (matches) {
+
+                            visibleCount++;
+
+                        }
+
+                    }
+                );
+
+
+                articleTreatmentResults.hidden =
+                    !(
+                        search.length > 0 &&
+                        visibleCount > 0
+                    );
+
+            }
+
+
+            articleTreatmentInput.addEventListener(
+                "input",
+                filterArticleTreatments
+            );
+
+
+            articleTreatmentInput.addEventListener(
+                "focus",
+                function () {
+
+                    if (
+                        articleTreatmentInput
+                            .value
+                            .trim()
+                    ) {
+
+                        filterArticleTreatments();
+
+                    }
+
+                }
+            );
+
+
+            /* =====================================================
+               CLICOU NO TRATAMENTO
+               ===================================================== */
+
+            articleTreatmentOptions.forEach(
+                function (option) {
+
+                    option.addEventListener(
+                        "mousedown",
+                        function (event) {
+
+                            event.preventDefault();
+
+                        }
+                    );
+
+
+                    option.addEventListener(
+                        "click",
+                        function () {
+
+                            const url =
+                                option.dataset.url;
+
+
+                            const label =
+                                option.dataset.label ||
+                                "";
+
+
+                            articleTreatmentInput.value =
+                                label;
+
+
+                            closeArticleTreatmentResults();
+
+
+                            if (!url) {
+                                return;
+                            }
+
+
+                            window.location.href =
+                                url;
+
+                        }
+                    );
+
+                }
+            );
+
+
+            /* =====================================================
+               ESC
+               ===================================================== */
+
+            articleDiseaseInput.addEventListener(
+                "keydown",
+                function (event) {
+
+                    if (
+                        event.key ===
+                        "Escape"
+                    ) {
+
+                        closeArticleDiseaseResults();
+
+                    }
+
+                }
+            );
+
+
+            articleTreatmentInput.addEventListener(
+                "keydown",
+                function (event) {
+
+                    if (
+                        event.key ===
+                        "Escape"
+                    ) {
+
+                        closeArticleTreatmentResults();
+
+                    }
+
+                }
+            );
+
+
+            /* =====================================================
+               CLIQUE FORA
+               ===================================================== */
+
+            document.addEventListener(
+                "click",
+                function (event) {
+
+                    const diseaseWrap =
+                        document.getElementById(
+                            "home-menu-article-disease-wrap"
+                        );
+
+
+                    if (
+                        diseaseWrap &&
+                        !diseaseWrap.contains(
+                            event.target
+                        )
+                    ) {
+
+                        closeArticleDiseaseResults();
+
+                    }
+
+
+                    if (
+                        articleTreatmentWrap &&
+                        !articleTreatmentWrap.contains(
+                            event.target
+                        )
+                    ) {
+
+                        closeArticleTreatmentResults();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           BLOCO INFERIOR
+           FILTRAR TRATAMENTOS DOS ARTIGOS
            ===================================================== */
 
         const conditionSelect =
@@ -4174,10 +5274,9 @@ document.addEventListener(
                 function () {
 
                     const condicao =
-                        conditionSelect
-                            .value
-                            .trim()
-                            .toLowerCase();
+                        normalizeText(
+                            conditionSelect.value
+                        );
 
 
                     treatmentSelect.value =
@@ -4198,118 +5297,16 @@ document.addEventListener(
 
 
                             const condicaoOption =
-                                (
+                                normalizeText(
                                     option.dataset
-                                        .condicao ||
-                                    ""
-                                )
-                                .trim()
-                                .toLowerCase();
+                                        .condicao
+                                );
 
 
                             option.hidden =
                                 condicao !== "" &&
-                                condicaoOption !== condicao;
-
-                        }
-                    );
-
-                }
-            );
-
-        }
-
-
-        /* =====================================================
-           DOENÇAS E SINTOMAS
-
-           1. Usuário seleciona a doença
-           2. Mostra o segundo select
-           3. Filtra os tratamentos daquela doença
-           4. Usuário seleciona tratamento
-           5. Abre a página de detalhes
-           ===================================================== */
-
-        const diseaseCondition =
-            document.getElementById(
-                "home-disease-condition"
-            );
-
-        const diseaseTreatment =
-            document.getElementById(
-                "home-disease-treatment"
-            );
-
-        const diseaseTreatmentWrap =
-            document.getElementById(
-                "home-disease-treatment-wrap"
-            );
-
-
-        if (
-            diseaseCondition &&
-            diseaseTreatment &&
-            diseaseTreatmentWrap
-        ) {
-
-            const diseaseTreatmentOptions =
-                Array.from(
-                    diseaseTreatment.options
-                );
-
-
-            diseaseCondition.addEventListener(
-                "change",
-                function () {
-
-                    const condicao =
-                        diseaseCondition
-                            .value
-                            .trim()
-                            .toLowerCase();
-
-
-                    /* Volta tratamento para placeholder */
-
-                    diseaseTreatment.value =
-                        "";
-
-
-                    /* Mostra segundo select somente
-                       quando existe uma doença selecionada */
-
-                    diseaseTreatmentWrap.hidden =
-                        condicao === "";
-
-
-                    /* Filtra tratamentos da doença */
-
-                    diseaseTreatmentOptions.forEach(
-                        function (option) {
-
-                            if (!option.value) {
-
-                                option.hidden =
-                                    false;
-
-                                return;
-
-                            }
-
-
-                            const condicaoOption =
-                                (
-                                    option.dataset
-                                        .condicao ||
-                                    ""
-                                )
-                                .trim()
-                                .toLowerCase();
-
-
-                            option.hidden =
                                 condicaoOption !==
-                                condicao;
+                                    condicao;
 
                         }
                     );
@@ -4317,35 +5314,10 @@ document.addEventListener(
                 }
             );
 
-
-            /* Ao escolher tratamento:
-               abre página de detalhes */
-
-            diseaseTreatment.addEventListener(
-                "change",
-                function () {
-
-                    const url =
-                        diseaseTreatment.value;
-
-
-                    if (!url) {
-                        return;
-                    }
-
-
-                    window.location.href =
-                        url;
-
-                }
-            );
-
         }
-
 
     }
 );
-
 </script>
 
 </body>

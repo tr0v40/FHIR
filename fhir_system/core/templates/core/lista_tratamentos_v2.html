@@ -288,9 +288,7 @@
             MENU DOS BENEFÍCIOS
             ===================================================== */
 
-/* =====================================================
-   MENU DOS BENEFÍCIOS
-   ===================================================== */
+
 
 .v3-benefits-nav {
     width: 950px;
@@ -301,6 +299,7 @@
 
     display: flex;
     align-items: stretch;
+    justify-content: flex-start;
 
     position: sticky;
     top: 25px;
@@ -317,7 +316,7 @@
    ===================================================== */
 
 .v3-benefit-link {
-    flex: 1 1 0;
+    flex: 0 0 25%;
     min-width: 0;
     height: 54px;
 
@@ -2109,59 +2108,92 @@
 
     {% endfor %}
 
+{% if efeito_rapido_tipo_v3 %}
 
-{% if segmentos %}
-
-    <div class="v3-fast-effect" aria-hidden="true">
+    <div
+        class="v3-fast-effect v3-fast-effect-{{ efeito_rapido_tipo_v3 }}"
+        style="left: {{ efeito_rapido_left_v3 }}%;"
+        aria-hidden="true"
+    >
 
         <span class="v3-fast-effect-text">
             efeito rápido
         </span>
 
-        <!-- SETA CURVA ESQUERDA -->
-        <svg
-            class="v3-fast-arrow v3-fast-arrow-left"
-            viewBox="0 0 24 18"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <path
-                d="M22 2 C13 3, 6 8, 4 15"
-                stroke="#E32929"
-                stroke-width="1.5"
-                stroke-linecap="round"
-            />
-            <path
-                d="M1 11 L4 15 L8 12"
-                stroke="#E32929"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            />
-        </svg>
+
+        {% if efeito_rapido_tipo_v3 == "duplo" %}
+
+            <!-- SETA PARA O PRIMEIRO BENEFÍCIO RÁPIDO -->
+            <svg
+                class="v3-fast-arrow v3-fast-arrow-left"
+                viewBox="0 0 24 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    d="M22 2 C13 3, 6 8, 4 15"
+                    stroke="#E32929"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                />
+                <path
+                    d="M1 11 L4 15 L8 12"
+                    stroke="#E32929"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
+            </svg>
 
 
-        <!-- SETA CURVA DIREITA -->
-        <svg
-            class="v3-fast-arrow v3-fast-arrow-right"
-            viewBox="0 0 24 18"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <path
-                d="M2 2 C11 3, 18 8, 20 15"
-                stroke="#E32929"
-                stroke-width="1.5"
-                stroke-linecap="round"
-            />
-            <path
-                d="M16 12 L20 15 L23 11"
-                stroke="#E32929"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            />
-        </svg>
+            <!-- SETA PARA O SEGUNDO BENEFÍCIO RÁPIDO -->
+            <svg
+                class="v3-fast-arrow v3-fast-arrow-right"
+                viewBox="0 0 24 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    d="M2 2 C11 3, 18 8, 20 15"
+                    stroke="#E32929"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                />
+                <path
+                    d="M16 12 L20 15 L23 11"
+                    stroke="#E32929"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
+            </svg>
+
+
+        {% elif efeito_rapido_tipo_v3 == "unico" %}
+
+            <!-- UMA ÚNICA SETA -->
+            <svg
+                class="v3-fast-arrow v3-fast-arrow-single"
+                viewBox="0 0 24 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    d="M4 2 C13 3, 18 8, 20 15"
+                    stroke="#E32929"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                />
+                <path
+                    d="M16 12 L20 15 L23 11"
+                    stroke="#E32929"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
+            </svg>
+
+        {% endif %}
 
     </div>
 
@@ -2318,8 +2350,8 @@
     {% with tratamento=item.obj %}
 
         <article
-    class="v3-treatment"
-    data-global-position="{{ item.posicao_global_v3 }}"
+            class="v3-treatment"
+            data-global-position="{{ item.posicao_global_v3 }}"
             data-detail-url="{% url 'pagina_detalhe_tratamento_v2' condicao_slug=condicao.slug tratamento_slug=tratamento.slug %}?ef={{ segmento.slug }}"
             tabindex="0"
             role="link"
@@ -2562,87 +2594,14 @@
                                     </article>
 
     {% endwith %}
-
-{% if segmento.itens|length < 5 %}
-
-    {% if forloop.last %}
-
-        {% if segmento.slug == "reducao-temporaria-dos-sintomas" %}
-
-            <a
-                href="https://www.telix.inf.br/paciente-bem-informado"
-                class="v3-list-banner"
-            >
-                <img
-                    src="{% static 'img/cuide_de_sua_saude.png' %}"
-                    alt="Cuide da sua saúde"
-                    class="v3-list-banner-image"
-                >
-            </a>
-
-        {% elif segmento.slug == "eliminacao-temporaria-dos-sintomas" %}
-
-            <a
-                href="https://www.telix.inf.br/paciente-bem-informado"
-                class="v3-list-banner"
-            >
-                <img
-                    src="{% static 'img/cuida_da_sua_saude.png' %}"
-                    alt="Cuide da sua saúde"
-                    class="v3-list-banner-image"
-                >
-            </a>
-
-        {% elif segmento.slug == "reducao-persistente-dos-sintomas" %}
-
-            <a
-                href="https://api.whatsapp.com/send/?text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.%0A%0Ahttps%3A%2F%2Fwww.telix.inf.br%2F"
-                class="v3-list-banner"
-            >
-                <img
-                    src="{% static 'img/banner_familia.png' %}"
-                    alt="Compartilhe com alguém que você ama"
-                    class="v3-list-banner-image"
-                >
-            </a>
-
-        {% elif segmento.slug == "eliminacao-persistente-dos-sintomas" %}
-
-            <a
-                href="https://www.telix.inf.br/paciente-bem-informado"
-                class="v3-list-banner"
-            >
-                <img
-                    src="{% static 'img/cuide_de_sua_saude.png' %}"
-                    alt="Cuide da sua saúde"
-                    class="v3-list-banner-image"
-                >
-            </a>
-
-        {% elif segmento.slug == "cura" %}
-
-            <a
-                href="https://www.telix.inf.br/paciente-bem-informado"
-                class="v3-list-banner"
-            >
-                <img
-                    src="{% static 'img/cuida_da_sua_saude.png' %}"
-                    alt="Cuide da sua saúde"
-                    class="v3-list-banner-image"
-                >
-            </a>
-
-        {% endif %}
-
-    {% endif %}
-
-{% elif item.mostrar_banner_v3 %}
+{% if item.mostrar_banner_v3 %}
 
     {% if segmento.slug == "reducao-temporaria-dos-sintomas" %}
 
         <a
             href="https://www.telix.inf.br/paciente-bem-informado"
             class="v3-list-banner"
+            data-banner-position="{{ item.posicao_global_v3 }}"
         >
             <img
                 src="{% static 'img/cuide_de_sua_saude.png' %}"
@@ -2656,6 +2615,7 @@
         <a
             href="https://www.telix.inf.br/paciente-bem-informado"
             class="v3-list-banner"
+            data-banner-position="{{ item.posicao_global_v3 }}"
         >
             <img
                 src="{% static 'img/cuida_da_sua_saude.png' %}"
@@ -2669,6 +2629,7 @@
         <a
             href="https://api.whatsapp.com/send/?text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.%0A%0Ahttps%3A%2F%2Fwww.telix.inf.br%2F"
             class="v3-list-banner"
+            data-banner-position="{{ item.posicao_global_v3 }}"
         >
             <img
                 src="{% static 'img/banner_familia.png' %}"
@@ -2682,6 +2643,7 @@
         <a
             href="https://www.telix.inf.br/paciente-bem-informado"
             class="v3-list-banner"
+            data-banner-position="{{ item.posicao_global_v3 }}"
         >
             <img
                 src="{% static 'img/cuide_de_sua_saude.png' %}"
@@ -2695,6 +2657,7 @@
         <a
             href="https://www.telix.inf.br/paciente-bem-informado"
             class="v3-list-banner"
+            data-banner-position="{{ item.posicao_global_v3 }}"
         >
             <img
                 src="{% static 'img/cuida_da_sua_saude.png' %}"
@@ -2707,15 +2670,10 @@
 
 {% endif %}
 
-
 {% endfor %}
 
 
-
-
-
-
-    <div class="v3-filter-bar">
+<div class="v3-filter-bar">
 
         <p class="v3-filter-text">
             Ordene essa lista por custo do tratamento, prazo para efeito ou
@@ -3500,166 +3458,263 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-
 <script>
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+document.addEventListener("DOMContentLoaded", function () {
 
-        /* =====================================================
-           VER MAIS GLOBAL - V3
-           ===================================================== */
+    /* =====================================================
+       VER MAIS GLOBAL - V3
+       HOMOLOGAÇÃO: 10 tratamentos por lote
+       ===================================================== */
 
-        const loadMoreButton =
-            document.getElementById(
-                "v3-global-load-more-button"
+    const loadMoreButton =
+        document.getElementById(
+            "v3-global-load-more-button"
+        );
+
+    const loadMoreContainer =
+        document.getElementById(
+            "v3-global-load-more"
+        );
+
+    if (!loadMoreButton || !loadMoreContainer) {
+        return;
+    }
+
+
+    const LOTE = 50;
+
+    const totalTratamentos =
+        parseInt(
+            loadMoreButton.dataset.total || "0",
+            10
+        );
+
+    let limiteAtual = 50;
+
+
+    /* =====================================================
+       ATUALIZA TRATAMENTOS
+       ===================================================== */
+
+    function atualizarTratamentos() {
+
+        document
+            .querySelectorAll(
+                ".v3-treatment[data-global-position]"
+            )
+            .forEach(function (tratamento) {
+
+                const posicao =
+                    parseInt(
+                        tratamento.dataset.globalPosition || "0",
+                        10
+                    );
+
+                if (posicao <= limiteAtual) {
+
+                    tratamento.classList.remove(
+                        "v3-treatment-hidden"
+                    );
+
+                } else {
+
+                    tratamento.classList.add(
+                        "v3-treatment-hidden"
+                    );
+
+                }
+
+            });
+
+    }
+
+
+    /* =====================================================
+       ATUALIZA BANNERS
+       ===================================================== */
+
+    function atualizarBanners() {
+
+        document
+            .querySelectorAll(
+                ".v3-list-banner[data-banner-position]"
+            )
+            .forEach(function (banner) {
+
+                const posicao =
+                    parseInt(
+                        banner.dataset.bannerPosition || "0",
+                        10
+                    );
+
+                if (posicao <= limiteAtual) {
+
+                    banner.classList.remove(
+                        "v3-treatment-hidden"
+                    );
+
+                } else {
+
+                    banner.classList.add(
+                        "v3-treatment-hidden"
+                    );
+
+                }
+
+            });
+
+    }
+
+
+    /* =====================================================
+       ATUALIZA SEGMENTOS
+       ===================================================== */
+
+    function atualizarSegmentos() {
+
+        document
+            .querySelectorAll(".v3-segment")
+            .forEach(function (segmento) {
+
+                const possuiTratamentoVisivel =
+                    segmento.querySelector(
+                        ".v3-treatment:not(.v3-treatment-hidden)"
+                    );
+
+                if (possuiTratamentoVisivel) {
+
+                    segmento.classList.remove(
+                        "v3-segment-hidden"
+                    );
+
+                } else {
+
+                    segmento.classList.add(
+                        "v3-segment-hidden"
+                    );
+
+                }
+
+            });
+
+    }
+
+
+    /* =====================================================
+       POSICIONA O BOTÃO DEPOIS DO ÚLTIMO TRATAMENTO
+       ===================================================== */
+
+    function posicionarBotao() {
+
+        if (limiteAtual >= totalTratamentos) {
+
+            loadMoreContainer.style.display = "none";
+            return;
+
+        }
+
+        loadMoreContainer.style.display = "flex";
+
+
+        const tratamentosVisiveis =
+            Array.from(
+                document.querySelectorAll(
+                    ".v3-treatment[data-global-position]:not(.v3-treatment-hidden)"
+                )
             );
 
-        const loadMoreContainer =
-            document.getElementById(
-                "v3-global-load-more"
-            );
 
-        if (
-            !loadMoreButton ||
-            !loadMoreContainer
-        ) {
+        if (!tratamentosVisiveis.length) {
             return;
         }
 
 
-        const LOTE = 50;
+        const ultimoTratamento =
+            tratamentosVisiveis[
+                tratamentosVisiveis.length - 1
+            ];
 
-        const totalTratamentos =
-            parseInt(
-                loadMoreButton.dataset.total ||
-                "0",
-                10
+
+        /*
+         * Se existir banner exatamente depois
+         * desse tratamento, o botão entra depois
+         * do banner.
+         */
+
+        const posicaoUltimo =
+            ultimoTratamento.dataset.globalPosition;
+
+        const bannerDepois =
+            document.querySelector(
+                '.v3-list-banner[data-banner-position="' +
+                posicaoUltimo +
+                '"]:not(.v3-treatment-hidden)'
             );
 
-        let limiteAtual = 50;
 
+        if (bannerDepois) {
 
-        function atualizarLista() {
+            bannerDepois.insertAdjacentElement(
+                "afterend",
+                loadMoreContainer
+            );
 
-            /*
-             * Mostra todos os tratamentos cuja
-             * posição global esteja dentro
-             * do limite atual.
-             */
+        } else {
 
-            document
-                .querySelectorAll(
-                    ".v3-treatment[data-global-position]"
-                )
-                .forEach(
-                    function (tratamento) {
-
-                        const posicao =
-                            parseInt(
-                                tratamento.dataset
-                                    .globalPosition ||
-                                "0",
-                                10
-                            );
-
-                        if (
-                            posicao <=
-                            limiteAtual
-                        ) {
-
-                            tratamento
-                                .classList
-                                .remove(
-                                    "v3-treatment-hidden"
-                                );
-
-                        }
-
-                    }
-                );
-
-
-            /*
-             * Mostra benefícios/segmentos quando
-             * pelo menos o primeiro tratamento
-             * daquele benefício já estiver dentro
-             * do limite liberado.
-             */
-
-            document
-                .querySelectorAll(
-                    ".v3-segment[data-first-position]"
-                )
-                .forEach(
-                    function (segmento) {
-
-                        const primeiraPosicao =
-                            parseInt(
-                                segmento.dataset
-                                    .firstPosition ||
-                                "0",
-                                10
-                            );
-
-                        if (
-                            primeiraPosicao <=
-                            limiteAtual
-                        ) {
-
-                            segmento
-                                .classList
-                                .remove(
-                                    "v3-segment-hidden"
-                                );
-
-                        }
-
-                    }
-                );
-
-
-            /*
-             * Quando todos os tratamentos estiverem
-             * visíveis, remove o botão.
-             */
-
-            if (
-                limiteAtual >=
-                totalTratamentos
-            ) {
-
-                loadMoreContainer.hidden =
-                    true;
-
-            }
+            ultimoTratamento.insertAdjacentElement(
+                "afterend",
+                loadMoreContainer
+            );
 
         }
 
+    }
 
-        loadMoreButton.addEventListener(
-            "click",
-            function () {
 
-                limiteAtual += LOTE;
+    /* =====================================================
+       ATUALIZA TUDO
+       ===================================================== */
 
-                if (
-                    limiteAtual >
-                    totalTratamentos
-                ) {
+    function atualizarLista() {
 
-                    limiteAtual =
-                        totalTratamentos;
+        atualizarTratamentos();
 
-                }
+        atualizarBanners();
 
-                atualizarLista();
+        atualizarSegmentos();
 
-            }
-        );
+        posicionarBotao();
 
     }
-);
+
+
+    /* =====================================================
+       CLIQUE EM VER MAIS
+       ===================================================== */
+
+    loadMoreButton.addEventListener(
+        "click",
+        function () {
+
+            limiteAtual += LOTE;
+
+            if (limiteAtual > totalTratamentos) {
+                limiteAtual = totalTratamentos;
+            }
+
+            atualizarLista();
+
+        }
+    );
+
+
+    /* =====================================================
+       ESTADO INICIAL
+       ===================================================== */
+
+    atualizarLista();
+
+});
 </script>
     </body>
 
