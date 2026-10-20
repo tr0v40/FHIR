@@ -2314,12 +2314,12 @@
 
                         <div class="v3-treatment-list">
 
-{% for item in segmento.itens_v3 %}
+{% for item in segmento.itens_iniciais_v3 %}
 
     {% with tratamento=item.obj %}
 
         <article
-            class="v3-treatment{% if not item.visivel_inicial_v3 %} v3-treatment-hidden{% endif %}"
+            class="v3-treatment"
             data-global-position="{{ item.posicao_global_v3 }}"
             data-detail-url="{% url 'pagina_detalhe_tratamento_v2' condicao_slug=condicao.slug tratamento_slug=tratamento.slug %}?ef={{ segmento.slug }}"
             tabindex="0"
