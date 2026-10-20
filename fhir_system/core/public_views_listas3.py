@@ -134,18 +134,27 @@ def pagina_lista_v3(request, condicao_slug):
     beneficios_cards = get_cards_beneficios_v2(
         segmentos
     )
-
     # ========================================================
     # EFEITO RÁPIDO
     #
-    # Benefícios considerados de efeito rápido:
+    # Regras:
     #
-    # - Eliminação temporária dos sintomas
-    # - Redução temporária dos sintomas
+    # 1. Redução temporária apenas:
+    #    texto "efeito rápido" sobre a aba, SEM seta.
+    #
+    # 2. Eliminação temporária apenas:
+    #    texto "efeito rápido" sobre a aba, SEM seta.
+    #
+    # 3. Redução temporária + Eliminação temporária:
+    #    texto centralizado entre as duas + DUAS setas.
+    #
+    # 4. Nenhuma das duas:
+    #    não mostra o indicador.
     #
     # IMPORTANTE:
-    # A posição é calculada considerando somente os
-    # benefícios que realmente aparecem no menu.
+    # As abas possuem largura fixa de 25% no template.
+    # Portanto, as posições também são calculadas em
+    # blocos de 25%.
     # ========================================================
 
     slug_reducao_temporaria = (
@@ -158,7 +167,7 @@ def pagina_lista_v3(request, condicao_slug):
 
 
     # ========================================================
-    # SEGMENTOS REALMENTE VISÍVEIS
+    # BENEFÍCIOS REALMENTE VISÍVEIS
     # ========================================================
 
     slugs_visiveis = [
@@ -166,11 +175,6 @@ def pagina_lista_v3(request, condicao_slug):
         for segmento in segmentos
         if segmento["itens"]
     ]
-
-
-    quantidade_beneficios_visiveis = len(
-        slugs_visiveis
-    )
 
 
     tem_reducao_temporaria = (
@@ -193,54 +197,30 @@ def pagina_lista_v3(request, condicao_slug):
 
 
     # ========================================================
-    # CALCULA A LARGURA REAL DE CADA BENEFÍCIO
-    # ========================================================
-
-    if quantidade_beneficios_visiveis > 0:
-
-        largura_item_v3 = (
-            100 / quantidade_beneficios_visiveis
-        )
-
-    else:
-
-        largura_item_v3 = 100
-
-
-    # ========================================================
     # FUNÇÃO AUXILIAR
     #
-    # Retorna o centro REAL de um benefício no menu.
+    # Cada aba ocupa 25%.
     #
-    # Exemplo com 2 benefícios:
-    #
-    # benefício 0 -> 25%
-    # benefício 1 -> 75%
-    #
-    # Exemplo com 4 benefícios:
-    #
-    # benefício 0 -> 12.5%
-    # benefício 1 -> 37.5%
-    # benefício 2 -> 62.5%
-    # benefício 3 -> 87.5%
+    # posição 0 -> centro 12.5%
+    # posição 1 -> centro 37.5%
+    # posição 2 -> centro 62.5%
+    # posição 3 -> centro 87.5%
     # ========================================================
 
     def centro_beneficio_v3(slug):
 
-        posicao = slugs_visiveis.index(
-            slug
-        )
+        posicao = slugs_visiveis.index(slug)
 
         return (
-            posicao * largura_item_v3
-        ) + (
-            largura_item_v3 / 2
-        )
+            posicao * 25
+        ) + 12.5
 
 
     # ========================================================
     # CENÁRIO 1
-    # REDUÇÃO TEMPORÁRIA + ELIMINAÇÃO TEMPORÁRIA
+    # EXISTEM AS DUAS OPÇÕES DE EFEITO RÁPIDO
+    #
+    # Texto entre as duas + duas setas.
     # ========================================================
 
     if (
@@ -267,6 +247,8 @@ def pagina_lista_v3(request, condicao_slug):
     # ========================================================
     # CENÁRIO 2
     # SOMENTE REDUÇÃO TEMPORÁRIA
+    #
+    # Texto sobre a própria aba, SEM seta.
     # ========================================================
 
     elif tem_reducao_temporaria:
@@ -283,6 +265,8 @@ def pagina_lista_v3(request, condicao_slug):
     # ========================================================
     # CENÁRIO 3
     # SOMENTE ELIMINAÇÃO TEMPORÁRIA
+    #
+    # Texto sobre a própria aba, SEM seta.
     # ========================================================
 
     elif tem_eliminacao_temporaria:
@@ -298,7 +282,7 @@ def pagina_lista_v3(request, condicao_slug):
 
     # ========================================================
     # CENÁRIO 4
-    # NENHUM BENEFÍCIO DE EFEITO RÁPIDO
+    # NENHUMA OPÇÃO DE EFEITO RÁPIDO
     # ========================================================
 
     else:
