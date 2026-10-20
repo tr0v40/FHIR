@@ -35,7 +35,7 @@
         <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
 
         <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Inter:wght@400;500;600;700&display=swap"
             rel="stylesheet"
         >
         <link
@@ -288,118 +288,211 @@
             MENU DOS BENEFÍCIOS
             ===================================================== */
 
-    .v3-benefits-nav {
+/* =====================================================
+   MENU DOS BENEFÍCIOS
+   ===================================================== */
 
-        width: 950px;
-        max-width: 100%;
-        height: 70px;
+.v3-benefits-nav {
+    width: 950px;
+    max-width: 100%;
+    height: 54px;
 
-        margin: 0 auto;
+    margin: 45px auto 0;
 
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
+    display: flex;
+    align-items: stretch;
 
-        /* MENU FIXO DURANTE O SCROLL */
-        position: sticky;
-        top: 0;
+    position: sticky;
+    top: 25px;
 
-        z-index: 1000;
+    z-index: 1000;
+    background: #FFFFFF;
 
-        background: #FFFFFF;
-    }
+    overflow: visible;
+}
 
-            .v3-benefit-link {
 
-                min-width: 0;
-                height: 70px;
+/* =====================================================
+   ITEM DO MENU
+   ===================================================== */
 
-                position: relative;
+.v3-benefit-link {
+    flex: 1 1 0;
+    min-width: 0;
+    height: 54px;
 
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: flex-start;
+    position: relative;
 
-                padding: 3px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
 
-                color: #757474;
+    padding: 7px 8px 0;
 
-                text-decoration: none;
+    text-decoration: none;
+    text-align: center;
 
-                font-family:
-                    "Inter",
-                    Arial,
-                    sans-serif;
+    font-family: "Inter", Arial, sans-serif;
 
-                font-size: 13px;
-                line-height: 121%;
-                font-weight: 500;
+    cursor: pointer;
+}
 
-                text-align: center;
 
-                cursor: pointer;
+/* PRIMEIRA LINHA */
 
-                transition:
-                    color .15s ease;
-            }
+.v3-benefit-title {
+    display: block;
 
-            .v3-benefit-link::after {
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 500;
 
-                content: "";
+    color: #757474;
 
-                position: absolute;
+    white-space: nowrap;
+}
 
-                left: 0;
-                right: 0;
-                bottom: 0;
 
-                height: 5px;
+/* SEGUNDA LINHA */
 
-                background: #CCCCCC;
+.v3-benefit-subtitle {
+    display: block;
 
-                transition:
-                    background .15s ease;
-            }
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 500;
 
-            .v3-benefit-link:hover {
+    color: #CCCCCC;
 
-                color: #0193FF;
-            }
+    white-space: nowrap;
+}
 
-            .v3-benefit-link:hover::after {
 
-                background: #0193FF;
-            }
+/* LINHA INFERIOR */
 
-            .v3-benefit-link.is-active {
+.v3-benefit-link::after {
+    content: "";
 
-                color: #010009;
-                font-weight: 600;
-            }
+    position: absolute;
 
-            .v3-benefit-link.is-active::after {
+    left: 0;
+    right: 0;
+    bottom: 0;
 
-                background: #0193FF;
-            }
+    height: 5px;
 
-            .v3-benefit-nav-icon {
+    background: #CCCCCC;
+}
 
-                width: 26px;
-                height: 26px;
 
-                margin-bottom: 3px;
+/* HOVER */
 
-                object-fit: contain;
+.v3-benefit-link:hover .v3-benefit-title {
+    color: #0193FF;
+}
 
-                display: block;
-            }
+.v3-benefit-link:hover::after {
+    background: #0193FF;
+}
 
-            .v3-benefit-nav-icon.reducao-temporaria {
 
-                width: 30px;
-                height: 27px;
-            }
+/* ATIVO */
 
+.v3-benefit-link.is-active .v3-benefit-title {
+    color: #010009;
+    font-weight: 600;
+}
+
+.v3-benefit-link.is-active::after {
+    background: #0193FF;
+}
+
+
+/* =====================================================
+   EFEITO RÁPIDO
+   ===================================================== */
+
+.v3-fast-effect {
+    position: absolute;
+
+    width: 88px;
+    height: 32px;
+
+    /*
+       Centralizado entre:
+       Eliminação temporária
+       e
+       Redução temporária
+    */
+    left: 50%;
+    top: -25px;
+
+    transform: translateX(-50%);
+
+    pointer-events: none;
+
+    z-index: 10;
+}
+
+
+/* TEXTO */
+
+.v3-fast-effect-text {
+    position: absolute;
+
+    width: 71px;
+    height: 27px;
+
+    left: 50%;
+    top: 0;
+
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: "Homemade Apple", cursive;
+    font-style: normal;
+    font-weight: 400;
+
+    font-size: 10px;
+    line-height: 27px;
+
+    color: #E32929;
+
+    white-space: nowrap;
+}
+
+/* =====================================================
+   SETAS CURVAS - EFEITO RÁPIDO
+   ===================================================== */
+
+.v3-fast-arrow {
+    position: absolute;
+
+    width: 24px;
+    height: 18px;
+
+    top: 18px;
+
+    overflow: visible;
+}
+
+
+/* SETA ESQUERDA */
+
+.v3-fast-arrow-left {
+    left: -2px;
+}
+
+
+/* SETA DIREITA */
+
+.v3-fast-arrow-right {
+    right: -2px;
+}
 
             /* =====================================================
             TÍTULO
@@ -410,7 +503,7 @@
                 width: 950px;
                 max-width: 100%;
 
-                margin: 22px auto 18px;
+                margin: 38px auto 18px;
             }
 
             .v3-title {
@@ -1936,26 +2029,133 @@
                 <!-- =============================================
                     NAVEGAÇÃO DOS 5 BENEFÍCIOS
                     ============================================= -->
+<nav
+    class="v3-benefits-nav"
+    aria-label="Navegação por benefício"
+>
 
-    <nav
-        class="v3-benefits-nav"
-        aria-label="Navegação por benefício"
-    >
+    {% for segmento in segmentos %}
 
-        {% for segmento in segmentos %}
+        {% if segmento.itens %}
 
             <a
                 href="#{{ segmento.slug }}"
-                class="v3-benefit-link{% if forloop.first %} is-active{% endif %}"
+                class="v3-benefit-link"
                 data-target="{{ segmento.slug }}"
             >
-                <span>{{ segmento.nome }}</span>
+
+                {% if segmento.slug == "reducao-temporaria-dos-sintomas" %}
+
+                    <span class="v3-benefit-title">
+                        Redução temporária
+                    </span>
+
+                    <span class="v3-benefit-subtitle">
+                        dos sintomas
+                    </span>
+
+                {% elif segmento.slug == "eliminacao-temporaria-dos-sintomas" %}
+
+                    <span class="v3-benefit-title">
+                        Eliminação temporária
+                    </span>
+
+                    <span class="v3-benefit-subtitle">
+                        dos sintomas
+                    </span>
+
+                {% elif segmento.slug == "reducao-persistente-dos-sintomas" %}
+
+                    <span class="v3-benefit-title">
+                        Redução persistente
+                    </span>
+
+                    <span class="v3-benefit-subtitle">
+                        dos sintomas
+                    </span>
+
+                {% elif segmento.slug == "eliminacao-persistente-dos-sintomas" %}
+
+                    <span class="v3-benefit-title">
+                        Eliminação persistente
+                    </span>
+
+                    <span class="v3-benefit-subtitle">
+                        dos sintomas
+                    </span>
+
+                {% elif segmento.slug == "cura" %}
+
+                    <span class="v3-benefit-title">
+                        Cura
+                    </span>
+
+                {% endif %}
+
             </a>
 
-        {% endfor %}
+        {% endif %}
 
-    </nav>
+    {% endfor %}
 
+
+{% if segmentos %}
+
+    <div class="v3-fast-effect" aria-hidden="true">
+
+        <span class="v3-fast-effect-text">
+            efeito rápido
+        </span>
+
+        <!-- SETA CURVA ESQUERDA -->
+        <svg
+            class="v3-fast-arrow v3-fast-arrow-left"
+            viewBox="0 0 24 18"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                d="M22 2 C13 3, 6 8, 4 15"
+                stroke="#E32929"
+                stroke-width="1.5"
+                stroke-linecap="round"
+            />
+            <path
+                d="M1 11 L4 15 L8 12"
+                stroke="#E32929"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+        </svg>
+
+
+        <!-- SETA CURVA DIREITA -->
+        <svg
+            class="v3-fast-arrow v3-fast-arrow-right"
+            viewBox="0 0 24 18"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                d="M2 2 C11 3, 18 8, 20 15"
+                stroke="#E32929"
+                stroke-width="1.5"
+                stroke-linecap="round"
+            />
+            <path
+                d="M16 12 L20 15 L23 11"
+                stroke="#E32929"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+        </svg>
+
+    </div>
+
+{% endif %}
+</nav>
 
                 <!-- =============================================
                     TÍTULO
@@ -1989,11 +2189,13 @@
 
                 {% for segmento in segmentos %}
 
-                    <section
-                        class="v3-segment"
-                        id="{{ segmento.slug }}"
-                        data-beneficio="{{ segmento.slug }}"
-                    >
+                    {% if segmento.itens %}
+
+                        <section
+                            class="v3-segment"
+                            id="{{ segmento.slug }}"
+                            data-beneficio="{{ segmento.slug }}"
+                        >
 
 
                         <!-- =====================================
@@ -2495,17 +2697,11 @@
 
 {% endif %}
 
-{% empty %}
-
-    <div class="v3-empty">
-        Nenhum tratamento encontrado
-        para este benefício.
-    </div>
 
 {% endfor %}
 
 
-{% if segmento.itens|length > 50 %}
+{% if segmento.qtd_tratamentos > 50 %}
 
     <div class="v3-load-more">
 
@@ -2520,6 +2716,7 @@
     </div>
 
 {% endif %}
+
 
 
 
@@ -2566,10 +2763,12 @@
 
     {# fecha v3-segment #}
 
-    </section>
 
+        </section>
 
-    {% endfor %}
+    {% endif %}
+
+{% endfor %}
 
 
     </div>
@@ -2882,10 +3081,12 @@
 
         <div class="v3-health-fixed-bar-inner">
 
-            <div class="v3-health-warning">
-                Não se automedique
-            </div>
-
+<a
+    href="https://www.telix.inf.br/nao-se-automedique-entenda-os-riscos"
+    class="v3-health-warning"
+>
+    Não se automedique
+</a>
 <a
     href="https://cliente.doutorbeneficios.com/consumidor-1eemej6h"
     rel="noopener noreferrer"

@@ -321,9 +321,16 @@ a {
     text-align: center;
 }
 
+/* Aba ativa padrão:
+   Doenças e Artigos continuam brancas */
 .home-tab.active {
-    background: #0094FF;
+    background: #FFFFFF;
+    color: #0094FF;
+}
 
+/* Somente Tratamentos fica azul quando ativo */
+.home-tab[data-home-tab="tratamentos"].active {
+    background: #0094FF;
     color: #FFFFFF;
 }
 
@@ -955,7 +962,22 @@ a {
 
     z-index: 10;
 }
+.home-disease-selects {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 
+    margin-top: 24px;
+}
+
+.home-disease-selects .home-select-wrap {
+    width: 282px;
+    margin: 0;
+}
+
+.home-disease-selects .home-select {
+    width: 282px;
+}
 
 /* =========================================================
    NEWSLETTER
@@ -1497,12 +1519,18 @@ a {
     }
 
 
+    /* Aba ativa padrão:
+    Doenças e Artigos continuam brancas */
     .home-tab.active {
-        background: #0094FF;
-
-        color: #FFFFFF;
+        background: #FFFFFF;
+        color: #0094FF;
     }
 
+    /* Somente Tratamentos fica azul quando ativo */
+    .home-tab[data-home-tab="tratamentos"].active {
+        background: #0094FF;
+        color: #FFFFFF;
+    }
 
     .home-menu-content {
         position: absolute;
@@ -2657,7 +2685,7 @@ a {
 
             <button
                 type="button"
-                class="home-tab active"
+                class="home-tab"
                 data-home-tab="tratamentos"
             >
 
@@ -2678,7 +2706,6 @@ a {
                 class="home-tab"
                 data-home-tab="artigos"
             >
-
                 <i
                     class="fa-solid fa-magnifying-glass"
                     aria-hidden="true"
@@ -2706,46 +2733,82 @@ a {
                 hidden
             >
 
-                <p class="home-menu-description">
+             <p class="home-menu-description">
 
-                    <span class="home-menu-text-desktop">
-                        Selecione doença ou sintoma para ver lista de tratamentos
-                        em ordem de eficácia.
-                    </span>
+    <span class="home-menu-text-desktop">
+        Selecione doença ou sintoma para ver lista de tratamentos
+        em ordem de eficácia.
+    </span>
 
-                    <span class="home-menu-text-mobile">
-                        selecione doença ou sintoma para ver lista de tratamentos
-                        em ordem de eficácia
-                    </span>
+    <span class="home-menu-text-mobile">
+        selecione doença ou sintoma para ver lista de tratamentos
+        em ordem de eficácia
+    </span>
 
-                </p>
-
-
-                <div class="home-select-wrap">
-
-                    <select
-                        class="home-select"
-                        data-navigation-select
-                    >
-
-                        <option value="">
-                            Selecione a doença ou sintoma
-                        </option>
+</p>
 
 
-                        {% for item in condicoes_home %}
+<div class="home-disease-selects">
 
-                            <option value="{{ item.url }}">
-                                {{ item.nome }}
-                            </option>
+    <!-- PRIMEIRO CAMPO: DOENÇA -->
 
-                        {% endfor %}
+    <div class="home-select-wrap">
 
-                    </select>
+        <select
+            class="home-select"
+            id="home-disease-condition"
+        >
 
-                </div>
+            <option value="">
+                Selecione a doença ou sintoma
+            </option>
 
-            </div>
+            {% for item in condicoes_home %}
+
+                <option value="{{ item.nome }}">
+                    {{ item.nome }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+    </div>
+
+
+    <!-- SEGUNDO CAMPO: TRATAMENTO -->
+
+    <div
+        class="home-select-wrap"
+        id="home-disease-treatment-wrap"
+        hidden
+    >
+
+        <select
+            class="home-select"
+            id="home-disease-treatment"
+        >
+
+            <option value="">
+                Selecione o tratamento
+            </option>
+
+            {% for item in tratamentos_home %}
+
+                <option
+                    value="{{ item.url }}"
+                    data-condicao="{{ item.condicao }}"
+                >
+                    {{ item.label }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+    </div>
+
+</div>
 
 
 
@@ -3525,7 +3588,6 @@ document.addEventListener(
                 "[data-home-tab]"
             );
 
-
         const panels =
             document.querySelectorAll(
                 "[data-home-panel]"
@@ -3534,9 +3596,7 @@ document.addEventListener(
 
         function ativarAba(nome) {
 
-            /* =====================================================
-            ATIVA / DESATIVA AS ABAS
-            ===================================================== */
+            /* ATIVA / DESATIVA AS ABAS */
 
             tabs.forEach(
                 function (tab) {
@@ -3545,7 +3605,6 @@ document.addEventListener(
                         tab.getAttribute(
                             "data-home-tab"
                         ) === nome;
-
 
                     tab.classList.toggle(
                         "active",
@@ -3556,9 +3615,7 @@ document.addEventListener(
             );
 
 
-            /* =====================================================
-            MOSTRA O CONTEÚDO CORRESPONDENTE
-            ===================================================== */
+            /* MOSTRA O CONTEÚDO CORRESPONDENTE */
 
             panels.forEach(
                 function (panel) {
@@ -3568,7 +3625,6 @@ document.addEventListener(
                             "data-home-panel"
                         ) === nome;
 
-
                     panel.hidden =
                         !ativo;
 
@@ -3576,15 +3632,12 @@ document.addEventListener(
             );
 
 
-            /* =====================================================
-            MUDA A COR DA CAIXA DE CONTEÚDO
-            ===================================================== */
+            /* TRATAMENTOS = PAINEL AZUL */
 
             const menuContent =
                 document.querySelector(
                     ".home-menu-content"
                 );
-
 
             if (menuContent) {
 
@@ -3601,41 +3654,37 @@ document.addEventListener(
         tabs.forEach(
             function (tab) {
 
-
                 tab.addEventListener(
                     "click",
                     function () {
-
 
                         const target =
                             tab.getAttribute(
                                 "data-home-tab"
                             );
 
-
                         ativarAba(
                             target
                         );
 
-
                     }
                 );
-
 
             }
         );
 
 
-        /* aba inicial */
+        /* =====================================================
+           ABA INICIAL
+           ===================================================== */
 
         ativarAba(
-            "tratamentos"
+            "doencas"
         );
 
 
-
         /* =====================================================
-           SELECTS DE NAVEGAÇÃO
+           SELECTS DE NAVEGAÇÃO GENÉRICOS
            ===================================================== */
 
         const navigationSelects =
@@ -3647,53 +3696,31 @@ document.addEventListener(
         navigationSelects.forEach(
             function (select) {
 
-
                 select.addEventListener(
                     "change",
                     function () {
 
-
                         const url =
                             select.value;
-
 
                         if (!url) {
                             return;
                         }
 
-
                         window.location.href =
                             url;
 
-
                     }
                 );
-
 
             }
         );
 
 
-
-        /* =====================================================
-           FILTRAR TRATAMENTOS DOS ARTIGOS
-           ===================================================== */
-
-        const conditionSelect =
-            document.getElementById(
-                "home-article-condition"
-            );
-
-
-        const treatmentSelect =
-            document.getElementById(
-                "home-article-treatment"
-            );
-
-
         /* =====================================================
            AUTOCOMPLETE - BUSCA DE TRATAMENTO
-           FUNCIONA EM TODOS OS CAMPOS COM:
+
+           Funciona em todos os campos que possuem:
            data-treatment-autocomplete
            ===================================================== */
 
@@ -3707,7 +3734,10 @@ document.addEventListener(
 
             return (value || "")
                 .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
+                .replace(
+                    /[\u0300-\u036f]/g,
+                    ""
+                )
                 .toLowerCase()
                 .trim();
 
@@ -3772,7 +3802,8 @@ document.addEventListener(
 
                 function closeTreatmentResults() {
 
-                    treatmentResults.hidden = true;
+                    treatmentResults.hidden =
+                        true;
 
                     treatmentSearchInput.setAttribute(
                         "aria-expanded",
@@ -3793,6 +3824,7 @@ document.addEventListener(
 
 
                     let visibleCount = 0;
+
                     visibleOptions = [];
 
 
@@ -3815,11 +3847,9 @@ document.addEventListener(
                             option.hidden =
                                 !matches;
 
-
                             option.classList.remove(
                                 "is-active"
                             );
-
 
                             option.setAttribute(
                                 "aria-selected",
@@ -3871,8 +3901,10 @@ document.addEventListener(
 
 
                     if (index < 0) {
+
                         index =
                             visibleOptions.length - 1;
+
                     }
 
 
@@ -3880,12 +3912,13 @@ document.addEventListener(
                         index >=
                         visibleOptions.length
                     ) {
+
                         index = 0;
+
                     }
 
 
                     clearActiveTreatment();
-
 
                     activeIndex = index;
 
@@ -3924,7 +3957,6 @@ document.addEventListener(
                     const url =
                         option.dataset
                             .treatmentUrl;
-
 
                     const label =
                         option.dataset
@@ -3996,7 +4028,6 @@ document.addEventListener(
 
                                 event.preventDefault();
 
-
                                 activateTreatment(
                                     activeIndex + 1
                                 );
@@ -4018,7 +4049,6 @@ document.addEventListener(
                             ) {
 
                                 event.preventDefault();
-
 
                                 activateTreatment(
                                     activeIndex - 1
@@ -4049,7 +4079,6 @@ document.addEventListener(
                             if (selectedOption) {
 
                                 event.preventDefault();
-
 
                                 openTreatment(
                                     selectedOption
@@ -4113,12 +4142,26 @@ document.addEventListener(
         );
 
 
+        /* =====================================================
+           ARTIGOS CIENTÍFICOS
+           FILTRA TRATAMENTOS PELA CONDIÇÃO
+           ===================================================== */
+
+        const conditionSelect =
+            document.getElementById(
+                "home-article-condition"
+            );
+
+        const treatmentSelect =
+            document.getElementById(
+                "home-article-treatment"
+            );
+
 
         if (
             conditionSelect &&
             treatmentSelect
         ) {
-
 
             const treatmentOptions =
                 Array.from(
@@ -4129,7 +4172,6 @@ document.addEventListener(
             conditionSelect.addEventListener(
                 "change",
                 function () {
-
 
                     const condicao =
                         conditionSelect
@@ -4145,6 +4187,105 @@ document.addEventListener(
                     treatmentOptions.forEach(
                         function (option) {
 
+                            if (!option.value) {
+
+                                option.hidden =
+                                    false;
+
+                                return;
+
+                            }
+
+
+                            const condicaoOption =
+                                (
+                                    option.dataset
+                                        .condicao ||
+                                    ""
+                                )
+                                .trim()
+                                .toLowerCase();
+
+
+                            option.hidden =
+                                condicao !== "" &&
+                                condicaoOption !== condicao;
+
+                        }
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           DOENÇAS E SINTOMAS
+
+           1. Usuário seleciona a doença
+           2. Mostra o segundo select
+           3. Filtra os tratamentos daquela doença
+           4. Usuário seleciona tratamento
+           5. Abre a página de detalhes
+           ===================================================== */
+
+        const diseaseCondition =
+            document.getElementById(
+                "home-disease-condition"
+            );
+
+        const diseaseTreatment =
+            document.getElementById(
+                "home-disease-treatment"
+            );
+
+        const diseaseTreatmentWrap =
+            document.getElementById(
+                "home-disease-treatment-wrap"
+            );
+
+
+        if (
+            diseaseCondition &&
+            diseaseTreatment &&
+            diseaseTreatmentWrap
+        ) {
+
+            const diseaseTreatmentOptions =
+                Array.from(
+                    diseaseTreatment.options
+                );
+
+
+            diseaseCondition.addEventListener(
+                "change",
+                function () {
+
+                    const condicao =
+                        diseaseCondition
+                            .value
+                            .trim()
+                            .toLowerCase();
+
+
+                    /* Volta tratamento para placeholder */
+
+                    diseaseTreatment.value =
+                        "";
+
+
+                    /* Mostra segundo select somente
+                       quando existe uma doença selecionada */
+
+                    diseaseTreatmentWrap.hidden =
+                        condicao === "";
+
+
+                    /* Filtra tratamentos da doença */
+
+                    diseaseTreatmentOptions.forEach(
+                        function (option) {
 
                             if (!option.value) {
 
@@ -4158,8 +4299,7 @@ document.addEventListener(
 
                             const condicaoOption =
                                 (
-                                    option
-                                        .dataset
+                                    option.dataset
                                         .condicao ||
                                     ""
                                 )
@@ -4168,13 +4308,34 @@ document.addEventListener(
 
 
                             option.hidden =
-                                condicao !== "" &&
-                                condicaoOption !== condicao;
-
+                                condicaoOption !==
+                                condicao;
 
                         }
                     );
 
+                }
+            );
+
+
+            /* Ao escolher tratamento:
+               abre página de detalhes */
+
+            diseaseTreatment.addEventListener(
+                "change",
+                function () {
+
+                    const url =
+                        diseaseTreatment.value;
+
+
+                    if (!url) {
+                        return;
+                    }
+
+
+                    window.location.href =
+                        url;
 
                 }
             );
@@ -4186,7 +4347,6 @@ document.addEventListener(
 );
 
 </script>
-
 
 </body>
 </html>
