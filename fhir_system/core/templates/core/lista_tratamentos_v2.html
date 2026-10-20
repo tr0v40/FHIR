@@ -406,18 +406,39 @@
 .v3-benefit-link.is-active::after {
     background: #0193FF;
 }
-
 /* =====================================================
    EFEITO RÁPIDO
    ===================================================== */
 
-.v3-fast-effect {
+
+/* =====================================================
+   A PRÓPRIA ABA É A REFERÊNCIA DE POSICIONAMENTO
+   ===================================================== */
+
+.v3-benefit-link {
+    position: relative;
+}
+
+
+/* =====================================================
+   CASO ÚNICO
+
+   O texto fica centralizado diretamente sobre
+   a própria aba rápida.
+
+   NÃO possui seta.
+   ===================================================== */
+
+.v3-fast-effect-single {
     position: absolute;
 
-    width: 88px;
-    height: 32px;
+    left: 50%;
+    top: -31px;
 
-    top: -25px;
+    transform: translateX(-50%);
+
+    width: 88px;
+    height: 27px;
 
     pointer-events: none;
     z-index: 10;
@@ -425,36 +446,71 @@
 
 
 /* =====================================================
-   CASO 1:
-   SOMENTE UM BENEFÍCIO É DE EFEITO RÁPIDO
-
-   O indicador fica sobre o benefício correspondente.
+   TEXTO DO CASO ÚNICO
    ===================================================== */
 
-.v3-fast-effect-unico {
-    left: var(--fast-effect-left);
-    transform: translateX(-50%);
+.v3-fast-effect-single .v3-fast-effect-text {
+    position: static;
+
+    width: 88px;
+    height: 27px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transform: none;
+
+    font-family: "Homemade Apple", cursive;
+    font-style: normal;
+    font-weight: 400;
+
+    font-size: 10px;
+    line-height: 27px;
+
+    color: #E32929;
+
+    white-space: nowrap;
 }
 
 
 /* =====================================================
-   CASO 2:
-   DOIS BENEFÍCIOS SÃO DE EFEITO RÁPIDO
+   CASO DUPLO
 
-   O indicador fica centralizado entre os dois.
+   Este elemento será colocado dentro da PRIMEIRA
+   aba rápida.
+
+   Como cada aba possui 25%, usamos:
+
+   left: 100%
+
+   Isso significa exatamente a divisa entre a
+   primeira e a segunda aba rápida.
+
+   Assim o indicador fica entre as duas.
    ===================================================== */
 
-.v3-fast-effect-duplo {
-    left: var(--fast-effect-left);
+.v3-fast-effect-double {
+    position: absolute;
+
+    left: 100%;
+    top: -31px;
+
     transform: translateX(-50%);
+
+    width: 88px;
+    height: 45px;
+
+    pointer-events: none;
+    z-index: 10;
 }
 
 
 /* =====================================================
-   TEXTO "efeito rápido"
+   TEXTO DO CASO DUPLO
    ===================================================== */
 
-.v3-fast-effect-text {
+.v3-fast-effect-double .v3-fast-effect-text {
     position: absolute;
 
     width: 88px;
@@ -484,6 +540,8 @@
 
 /* =====================================================
    SETAS
+
+   Existem SOMENTE no cenário duplo.
    ===================================================== */
 
 .v3-fast-arrow {
@@ -498,23 +556,14 @@
 }
 
 
-/* =====================================================
-   UMA ÚNICA SETA
-
-   Fica à esquerda do texto e aponta para
-   o benefício rápido.
-   ===================================================== */
-
-
-
-
-/* =====================================================
-   DUAS SETAS
-   ===================================================== */
+/* aponta para Redução temporária */
 
 .v3-fast-arrow-left {
     left: -2px;
 }
+
+
+/* aponta para Eliminação temporária */
 
 .v3-fast-arrow-right {
     right: -2px;
@@ -2062,7 +2111,7 @@
 
             <div class="v3-content">
 <!-- =============================================
-    NAVEGAÇÃO DOS 5 BENEFÍCIOS
+    NAVEGAÇÃO DOS BENEFÍCIOS
     ============================================= -->
 
 <nav
@@ -2079,6 +2128,133 @@
                 class="v3-benefit-link"
                 data-target="{{ segmento.slug }}"
             >
+
+
+                <!-- =====================================
+                    EFEITO RÁPIDO — CASO ÚNICO
+
+                    O indicador é filho da própria aba.
+
+                    Portanto ele SEMPRE ficará
+                    centralizado sobre ela.
+
+                    NÃO possui seta.
+                    ===================================== -->
+
+                {% if efeito_rapido_tipo_v3 == "unico" %}
+
+                    {% if segmento.slug == efeito_rapido_slug_v3 %}
+
+                        <span
+                            class="v3-fast-effect-single"
+                            aria-hidden="true"
+                        >
+
+                            <span class="v3-fast-effect-text">
+                                efeito rápido
+                            </span>
+
+                        </span>
+
+                    {% endif %}
+
+                {% endif %}
+
+
+                <!-- =====================================
+                    EFEITO RÁPIDO — CASO DUPLO
+
+                    É inserido SOMENTE dentro da aba
+                    Redução temporária.
+
+                    CSS:
+                    left: 100%
+
+                    Portanto o centro do indicador fica
+                    exatamente na divisão entre:
+
+                    Redução temporária
+                            +
+                    Eliminação temporária
+                    ===================================== -->
+
+                {% if efeito_rapido_tipo_v3 == "duplo" %}
+
+                    {% if segmento.slug == "reducao-temporaria-dos-sintomas" %}
+
+                        <span
+                            class="v3-fast-effect-double"
+                            aria-hidden="true"
+                        >
+
+                            <span class="v3-fast-effect-text">
+                                efeito rápido
+                            </span>
+
+
+                            <!-- SETA ESQUERDA -->
+
+                            <svg
+                                class="v3-fast-arrow v3-fast-arrow-left"
+                                viewBox="0 0 24 18"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+
+                                <path
+                                    d="M22 2 C13 3, 6 8, 4 15"
+                                    stroke="#E32929"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                />
+
+                                <path
+                                    d="M1 11 L4 15 L8 12"
+                                    stroke="#E32929"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+
+                            </svg>
+
+
+                            <!-- SETA DIREITA -->
+
+                            <svg
+                                class="v3-fast-arrow v3-fast-arrow-right"
+                                viewBox="0 0 24 18"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+
+                                <path
+                                    d="M2 2 C11 3, 18 8, 20 15"
+                                    stroke="#E32929"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                />
+
+                                <path
+                                    d="M16 12 L20 15 L23 11"
+                                    stroke="#E32929"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+
+                            </svg>
+
+                        </span>
+
+                    {% endif %}
+
+                {% endif %}
+
+
+                <!-- =====================================
+                    TEXTO DA ABA
+                    ===================================== -->
 
                 {% if segmento.slug == "reducao-temporaria-dos-sintomas" %}
 
@@ -2132,136 +2308,12 @@
 
                 {% endif %}
 
+
             </a>
 
         {% endif %}
 
     {% endfor %}
-
-
-    <!-- =============================================
-        EFEITO RÁPIDO
-
-        REGRAS:
-
-        unico:
-        - somente Redução temporária
-          OU somente Eliminação temporária
-        - mostra apenas o texto
-        - NÃO mostra seta
-
-        duplo:
-        - Redução temporária
-          + Eliminação temporária
-        - mostra o texto entre as duas
-        - mostra duas setas
-        ============================================= -->
-
-    {% if efeito_rapido_tipo_v3 %}
-
-        <div
-            class="v3-fast-effect v3-fast-effect-{{ efeito_rapido_tipo_v3 }}"
-            style="--fast-effect-left: {{ efeito_rapido_left_v3 }}%;"
-            aria-hidden="true"
-        >
-
-            <!-- TEXTO -->
-            <span class="v3-fast-effect-text">
-                efeito rápido
-            </span>
-
-
-            <!-- =====================================
-                SOMENTE NO CASO DUPLO EXISTEM SETAS
-                ===================================== -->
-
-            {% if efeito_rapido_tipo_v3 == "duplo" %}
-
-
-                <!-- =================================
-                    SETA PARA O PRIMEIRO
-                    BENEFÍCIO DE EFEITO RÁPIDO
-                    ================================= -->
-
-                <svg
-                    class="v3-fast-arrow v3-fast-arrow-left"
-                    viewBox="0 0 24 18"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-
-                    <path
-                        d="M22 2 C13 3, 6 8, 4 15"
-                        stroke="#E32929"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                    />
-
-                    <path
-                        d="M1 11 L4 15 L8 12"
-                        stroke="#E32929"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-
-                </svg>
-
-
-                <!-- =================================
-                    SETA PARA O SEGUNDO
-                    BENEFÍCIO DE EFEITO RÁPIDO
-                    ================================= -->
-
-                <svg
-                    class="v3-fast-arrow v3-fast-arrow-right"
-                    viewBox="0 0 24 18"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-
-                    <path
-                        d="M2 2 C11 3, 18 8, 20 15"
-                        stroke="#E32929"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                    />
-
-                    <path
-                        d="M16 12 L20 15 L23 11"
-                        stroke="#E32929"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-
-                </svg>
-
-
-            {% endif %}
-
-
-            <!--
-                IMPORTANTE:
-
-                Não existe mais SVG para o caso "unico".
-
-                Portanto:
-
-                efeito_rapido_tipo_v3 == "unico"
-                    -> mostra somente "efeito rápido"
-
-                efeito_rapido_tipo_v3 == "duplo"
-                    -> mostra "efeito rápido"
-                       + seta esquerda
-                       + seta direita
-            -->
-
-
-        </div>
-
-    {% endif %}
-
 
 </nav>
 

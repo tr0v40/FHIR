@@ -137,24 +137,21 @@ def pagina_lista_v3(request, condicao_slug):
     # ========================================================
     # EFEITO RÁPIDO
     #
-    # Regras:
+    # A posição visual NÃO é mais calculada no Python.
     #
-    # 1. Redução temporária apenas:
-    #    texto "efeito rápido" sobre a aba, SEM seta.
+    # O Python apenas informa ao template:
     #
-    # 2. Eliminação temporária apenas:
-    #    texto "efeito rápido" sobre a aba, SEM seta.
+    # - "unico":
+    #   existe somente um benefício de efeito rápido.
     #
-    # 3. Redução temporária + Eliminação temporária:
-    #    texto centralizado entre as duas + DUAS setas.
+    # - "duplo":
+    #   existem Redução temporária E Eliminação temporária.
     #
-    # 4. Nenhuma das duas:
-    #    não mostra o indicador.
+    # - None:
+    #   nenhum benefício rápido existe.
     #
-    # IMPORTANTE:
-    # As abas possuem largura fixa de 25% no template.
-    # Portanto, as posições também são calculadas em
-    # blocos de 25%.
+    # Nos casos "unico", também informamos qual é o slug
+    # para que o HTML coloque o texto diretamente na aba.
     # ========================================================
 
     slug_reducao_temporaria = (
@@ -166,10 +163,7 @@ def pagina_lista_v3(request, condicao_slug):
     )
 
 
-    # ========================================================
-    # BENEFÍCIOS REALMENTE VISÍVEIS
-    # ========================================================
-
+    # Segmentos que realmente aparecem no menu.
     slugs_visiveis = [
         segmento["slug"]
         for segmento in segmentos
@@ -188,58 +182,22 @@ def pagina_lista_v3(request, condicao_slug):
     )
 
 
-    # ========================================================
-    # VALORES PADRÃO
-    # ========================================================
-
+    # Valores padrão.
     efeito_rapido_tipo_v3 = None
-    efeito_rapido_left_v3 = None
-
-
-    # ========================================================
-    # FUNÇÃO AUXILIAR
-    #
-    # Cada aba ocupa 25%.
-    #
-    # posição 0 -> centro 12.5%
-    # posição 1 -> centro 37.5%
-    # posição 2 -> centro 62.5%
-    # posição 3 -> centro 87.5%
-    # ========================================================
-
-    def centro_beneficio_v3(slug):
-
-        posicao = slugs_visiveis.index(slug)
-
-        return (
-            posicao * 25
-        ) + 12.5
+    efeito_rapido_slug_v3 = None
 
 
     # ========================================================
     # CENÁRIO 1
-    # EXISTEM AS DUAS OPÇÕES DE EFEITO RÁPIDO
+    # REDUÇÃO TEMPORÁRIA + ELIMINAÇÃO TEMPORÁRIA
     #
-    # Texto entre as duas + duas setas.
+    # O HTML criará o indicador entre as duas abas.
     # ========================================================
 
     if (
         tem_reducao_temporaria
         and tem_eliminacao_temporaria
     ):
-
-        centro_reducao = centro_beneficio_v3(
-            slug_reducao_temporaria
-        )
-
-        centro_eliminacao = centro_beneficio_v3(
-            slug_eliminacao_temporaria
-        )
-
-        efeito_rapido_left_v3 = (
-            centro_reducao
-            + centro_eliminacao
-        ) / 2
 
         efeito_rapido_tipo_v3 = "duplo"
 
@@ -248,47 +206,45 @@ def pagina_lista_v3(request, condicao_slug):
     # CENÁRIO 2
     # SOMENTE REDUÇÃO TEMPORÁRIA
     #
-    # Texto sobre a própria aba, SEM seta.
+    # Texto sobre a própria aba.
+    # SEM SETA.
     # ========================================================
 
     elif tem_reducao_temporaria:
 
-        efeito_rapido_left_v3 = (
-            centro_beneficio_v3(
-                slug_reducao_temporaria
-            )
-        )
-
         efeito_rapido_tipo_v3 = "unico"
+
+        efeito_rapido_slug_v3 = (
+            slug_reducao_temporaria
+        )
 
 
     # ========================================================
     # CENÁRIO 3
     # SOMENTE ELIMINAÇÃO TEMPORÁRIA
     #
-    # Texto sobre a própria aba, SEM seta.
+    # Texto sobre a própria aba.
+    # SEM SETA.
     # ========================================================
 
     elif tem_eliminacao_temporaria:
 
-        efeito_rapido_left_v3 = (
-            centro_beneficio_v3(
-                slug_eliminacao_temporaria
-            )
-        )
-
         efeito_rapido_tipo_v3 = "unico"
+
+        efeito_rapido_slug_v3 = (
+            slug_eliminacao_temporaria
+        )
 
 
     # ========================================================
     # CENÁRIO 4
-    # NENHUMA OPÇÃO DE EFEITO RÁPIDO
+    # NENHUM BENEFÍCIO DE EFEITO RÁPIDO
     # ========================================================
 
     else:
 
         efeito_rapido_tipo_v3 = None
-        efeito_rapido_left_v3 = None
+        efeito_rapido_slug_v3 = None
     # ========================================================
     # CONTEXTO
     # ========================================================
@@ -308,8 +264,8 @@ def pagina_lista_v3(request, condicao_slug):
         "efeito_rapido_tipo_v3":
             efeito_rapido_tipo_v3,
 
-        "efeito_rapido_left_v3":
-            efeito_rapido_left_v3,
+        "efeito_rapido_slug_v3":
+            efeito_rapido_slug_v3,
 
         # Paginação.
         "total_tratamentos_v3":
