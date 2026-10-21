@@ -293,23 +293,25 @@
 .v3-benefits-nav {
     width: 950px;
     max-width: 100%;
-    height: 54px;
 
-    margin: 45px auto 0;
+    /* espaço para "efeito rápido" + abas */
+    height: 94px;
+
+    /* centraliza na mesma largura das listas */
+    margin: 0 auto;
 
     display: flex;
-    align-items: stretch;
+    align-items: flex-end;
     justify-content: flex-start;
 
     position: sticky;
-    top: 25px;
+    top: 0;
 
     z-index: 1000;
     background: #FFFFFF;
 
     overflow: visible;
 }
-
 
 /* =====================================================
    ITEM DO MENU
@@ -3273,22 +3275,113 @@
                     * -------------------------------------------------
                     */
 
-                    links.forEach(
-                        function (link) {
+links.forEach(
+    function (link) {
 
-                            link.addEventListener(
-                                "click",
-                                function () {
+        link.addEventListener(
+            "click",
+            function (event) {
 
-                                    setActiveBenefit(
-                                        link.dataset.target
-                                    );
+                event.preventDefault();
 
-                                }
-                            );
+                const slug =
+                    link.dataset.target;
 
-                        }
+                const target =
+                    document.getElementById(slug);
+
+                if (!target) {
+                    return;
+                }
+
+                setActiveBenefit(slug);
+
+
+                /* =============================================
+                   VERIFICA SE O BENEFÍCIO AINDA ESTÁ FORA
+                   DOS 50 TRATAMENTOS CARREGADOS
+                   ============================================= */
+
+                const tratamentoVisivel =
+                    target.querySelector(
+                        ".v3-treatment:not(.v3-treatment-hidden)"
                     );
+
+                const loadMore =
+                    document.getElementById(
+                        "v3-global-load-more"
+                    );
+
+                const loadMoreButton =
+                    document.getElementById(
+                        "v3-global-load-more-button"
+                    );
+
+
+                /*
+                 * Se já existe tratamento visível nesse benefício,
+                 * navega normalmente para a seção.
+                 */
+
+                if (tratamentoVisivel) {
+
+                    history.replaceState(
+                        null,
+                        "",
+                        "#" + slug
+                    );
+
+                    target.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+
+                    return;
+                }
+
+
+                /*
+                 * Se o benefício existe, mas seus tratamentos
+                 * ainda estão depois do limite atual de 50,
+                 * leva o usuário para o VER MAIS.
+                 */
+
+                if (
+                    loadMore &&
+                    loadMoreButton &&
+                    loadMore.style.display !== "none"
+                ) {
+
+                    loadMore.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+
+                    return;
+                }
+
+
+                /*
+                 * Fallback:
+                 * se não houver mais paginação, vai para
+                 * o benefício normalmente.
+                 */
+
+                history.replaceState(
+                    null,
+                    "",
+                    "#" + slug
+                );
+
+                target.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }
+        );
+
+    }
+);
 
 
                     /*
