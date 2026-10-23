@@ -387,38 +387,22 @@
               </div>
             {% endfor %}          
         
-        </section>
+<section class="lista-action-bar">
 
-          <section class="lista-action-bar">
-            <p class="lista-action-text">
-              Ordene essa lista por custo do tratamento, prazo para efeito ou
-              risco de reações adversas, ou filtre por segurança de uso para
-              grupos específicos, e filtre por contraindicações.
-            </p>
-            {% if segmento.filtro_react_path %}
+    <p class="lista-action-text">
+        Ordene essa lista por custo do tratamento, prazo para efeito ou
+        risco de reações adversas, ou filtre por segurança de uso para
+        grupos específicos, e filtre por contraindicações.
+    </p>
 
-                <a
-                    href="#"
-                    class="lista-action-button js-filtro-react"
-                    data-react-path="{{ segmento.filtro_react_path }}"
-                >
-                    Filtrar e ordenar
-                </a>
+    <a
+        href="https://www.telix.inf.br/plano-premium-filtros"
+        class="lista-action-button"
+    >
+        Filtrar e ordenar
+    </a>
 
-            {% else %}
 
-          <button
-            type="button"
-            class="lista-action-button"
-            {% if segmento.url_filtro_react %}
-              data-filtro-path="{{ segmento.url_filtro_react }}"
-            {% endif %}
-          >
-            Filtrar e ordenar
-          </button>
-
-            {% endif %}
-          </section>
 
         </section>
       </section>

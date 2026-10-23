@@ -521,7 +521,39 @@
         font-size: 12px;
         color: #6b7280;
     }
+.table-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
+.export-excel-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 34px;
+    padding: 0 14px;
+
+    background: #16a34a;
+    color: #ffffff !important;
+
+    border-radius: 6px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-decoration: none !important;
+
+    white-space: nowrap;
+
+    transition: background-color 0.15s ease;
+}
+
+.export-excel-button:hover {
+    background: #15803d;
+    color: #ffffff !important;
+}
     .table-scroll {
         width: 100%;
         overflow-x: auto;
@@ -1078,10 +1110,21 @@
 
             </div>
 
+        <div class="table-header-actions">
+
             <div class="table-count">
                 {{ total_condicoes }}
                 condição{{ total_condicoes|pluralize:"ões" }}
             </div>
+
+            <a
+                href="?doenca={{ filtro_doenca|urlencode }}&tratamento={{ filtro_tratamento|urlencode }}&principio={{ filtro_principio|urlencode }}&url={{ filtro_url|urlencode }}&export=resumo_condicao"
+                class="export-excel-button"
+            >
+                ↓ Exportar Excel
+            </a>
+
+        </div>
 
         </div>
 

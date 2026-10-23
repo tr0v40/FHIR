@@ -5,6 +5,8 @@ from collections import defaultdict
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Q
 from django.shortcuts import render
+from django.http import HttpResponse
+from openpyxl import Workbook
 from django.urls import reverse
 
 from .models import (
@@ -870,6 +872,88 @@ def relatorios_dashboard(request):
             ).lower(),
         )
     )
+
+        # ============================================================
+    # EXPORTAÇÃO EXCEL - RESUMO POR CONDIÇÃO
+    # ============================================================
+
+    if request.GET.get("export") == "resumo_condicao":
+
+        workbook = Workbook()
+
+        worksheet = workbook.active
+        worksheet.title = "Resumo por condição"
+
+        # ========================================================
+        # CABEÇALHO
+        # ========================================================
+
+        worksheet.append([
+            "Condição",
+            "Tratamento",
+            "Princípio ativo",
+            "Fabricante",
+            "URL da lista",
+            "URL do tratamento",
+        ])
+
+        # Mapa para saber se a condição possui URL de lista
+        possui_url_lista_map = {
+            item["id"]: item["possui_url_lista"]
+            for item in tabela_resumo
+        }
+
+        # ========================================================
+        # DADOS
+        # ========================================================
+
+        for linha in tabela_completa:
+
+            worksheet.append([
+                linha["condicao"],
+                linha["tratamento"],
+                linha["principio_ativo"],
+                linha["fabricante"],
+
+                "Sim"
+                if linha["condicao_id"] in possui_url_lista_map
+                and possui_url_lista_map[linha["condicao_id"]]
+                else "Não",
+
+                linha["url_publica"]
+                if linha["possui_url"]
+                else "Não possui URL",
+            ])
+
+        # ========================================================
+        # AJUSTE DE LARGURA DAS COLUNAS
+        # ========================================================
+
+        worksheet.column_dimensions["A"].width = 30
+        worksheet.column_dimensions["B"].width = 35
+        worksheet.column_dimensions["C"].width = 40
+        worksheet.column_dimensions["D"].width = 45
+        worksheet.column_dimensions["E"].width = 18
+        worksheet.column_dimensions["F"].width = 80
+
+        # ========================================================
+        # RESPONSE
+        # ========================================================
+
+        response = HttpResponse(
+            content_type=(
+                "application/vnd.openxmlformats-officedocument."
+                "spreadsheetml.sheet"
+            )
+        )
+
+        response["Content-Disposition"] = (
+            'attachment; filename="dashboard_resumo_condicao.xlsx"'
+        )
+
+        workbook.save(response)
+
+        return response
 
     # ============================================================
     # CONTEXTO

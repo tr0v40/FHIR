@@ -2979,7 +2979,455 @@
             .cards-grid{grid-template-columns:1fr}
             .details-grid{grid-template-columns:1fr;gap:25px}
         }
-    </style>
+    
+
+/* =========================================================
+   MOBILE DETALHES — FIGMA 320px
+   Somente layout. Funcionalidades/links/Django preservados.
+   ========================================================= */
+@media (max-width: 640px) {
+  html, body { width:100%; max-width:100%; overflow-x:hidden; }
+  body { font-family:Inter,Arial,sans-serif; font-size:13px; }
+  .page-wrap { width:100%; max-width:320px; padding-left:15px; padding-right:15px; }
+
+  /* header 320 x 135 + menu 85 = 220 */
+  .top-strip { height:59px; font-size:14px; line-height:21px; font-weight:500; }
+  .site-header { height:76px; min-height:76px; }
+  .site-header-inner { width:100%; max-width:320px; height:76px; min-height:76px; padding:0; }
+  .site-logo { left:-3px; top:8px; width:127px; height:68px; }
+  .site-logo img { width:100px; height:auto; margin-left:20px; }
+  .header-account { width:214.5px; height:33px; right:10.5px; top:16px; font-size:12.375px; line-height:22px; }
+  .header-account .fa-lock { left:44px; top:9px; font-size:15px; }
+  .header-account .fa-circle-user { left:61.88px; top:6px; width:21.45px; height:21.45px; font-size:21.45px; }
+  .header-account span { left:94.88px; top:5px; height:22px; font-size:12.375px; line-height:22px; }
+
+  /* menu horizontal do detalhe */
+  .page-anchor-menu { height:85px; min-height:85px; overflow:hidden; position:sticky; top:0; z-index:1000; justify-content:flex-start; }
+  .page-anchor-menu-inner { width:100%; max-width:100%; height:85px; overflow-x:auto; overflow-y:hidden; justify-content:flex-start; align-items:flex-start; border-radius:0; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .page-anchor-menu-inner::-webkit-scrollbar { display:none; }
+  .page-anchor-link,
+  .page-anchor-link:nth-child(n) { flex:0 0 85px; width:85px; min-width:85px; height:70px; margin-top:15px; padding:0 8px; font-size:12px; line-height:121%; white-space:normal; }
+  .page-anchor-link:nth-child(4) { flex-basis:120px; width:120px; min-width:120px; }
+  .page-anchor-link::after { height:5px; }
+
+  #eficacia,#prazo-efeito,#seguranca,#contraindicacoes,#custo,#reacoes,#evidencias,#artigos,#avaliacoes { scroll-margin-top:90px; }
+
+  /* hero: imagem primeiro, depois detalhes */
+  .hero { display:flex; flex-direction:column; gap:0; width:100%; max-width:320px; padding:0 15px 25px; align-items:stretch; }
+  .hero > div:first-child { order:2; width:100%; }
+  .hero-image { order:1; width:100%; min-height:244px; height:244px; display:flex; align-items:center; justify-content:center; padding-top:69px; }
+  .hero-image img { width:253.89px; height:145.37px; max-width:253.89px; max-height:145.37px; object-fit:contain; border-radius:13.65px; }
+  .hero h1 { margin:0 0 2px; font-size:20px; line-height:30px; font-weight:700; }
+  .treatment-types { margin:0 0 35px; font-size:15px; line-height:15px; font-weight:700; }
+  .meta-row { margin:0 0 14px; font-size:13px; line-height:15px; }
+  .meta-label { color:#000; font-weight:400; }
+  .meta-value { color:#000; font-weight:700; }
+  .hero-description { margin:24px 0 0; max-width:none; font-size:13px; line-height:18px; color:#010009; text-align:justify; }
+
+  /* seções */
+  .section { padding:26px 0; }
+  .section-title { font-size:20px !important; line-height:24px !important; margin:0 0 8px !important; }
+  .section-description { width:100%; margin:0 0 20px; font-size:13px !important; line-height:20px !important; text-align:justify; color:#374151; }
+
+  /* eficácia — cards horizontais, como Figma */
+  #eficacia { padding-top:31px; }
+  #eficacia .page-wrap { padding-left:15px; padding-right:15px; }
+  .efficacy-grid { width:calc(100% + 15px); margin-left:0; grid-template-columns:repeat(5,138px); gap:10px; overflow-x:auto; overflow-y:hidden; padding:10px 15px 18px 0; justify-content:start; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .efficacy-grid::-webkit-scrollbar { display:none; }
+  .eff-card { flex:0 0 138px; min-width:138px; }
+
+  /* evidências: 290px, uma coluna */
+  #evidencias .page-wrap { padding:0 15px; }
+  .evidence-heading { margin:0 0 14px; font-size:15px; line-height:20px; }
+  .evidence-shell { width:290px; max-width:290px; margin:0 auto; padding:0; border-radius:15px; box-shadow:0 0 5.9px rgba(0,0,0,.25); overflow:hidden; }
+  .evidence-item { display:flex; flex-direction:column; gap:0; width:290px; padding:36px 15px 28px; border-bottom:2px solid #E0E0E0; }
+  .evidence-logo { min-height:104px; height:104px; padding:0; margin:0 0 34px; align-items:center; }
+  .evidence-logo img { width:104px; height:104px; max-width:104px; max-height:104px; object-fit:contain; border:1px solid #E0E0E0; border-radius:6px; }
+  .evidence-main { width:100%; font-family:Arial,sans-serif; }
+  .evidence-main p { margin:0 0 9px; font-size:13px; line-height:20px; }
+  .evidence-label { font-size:15px; line-height:24px; color:#757474; }
+  .evidence-primary { font-size:13px; line-height:24px; }
+  .evidence-secondary { margin-left:0 !important; font-size:13px; }
+  .rigor { display:flex; gap:3px; margin:2px 0 0; }
+  .rigor span { width:18px; height:18px; font-size:10px; }
+  .evidence-description { padding-top:12px; font-size:13px; line-height:20px; text-align:justify; }
+  .evidence-title { font-size:13px; line-height:19px; }
+  .evidence-reference,.evidence-link { font-size:11px; line-height:17px; word-break:break-word; }
+  .evidence-efficacy-banner { display:block; width:290px; margin:0; }
+  .evidence-efficacy-banner-copy { left:15px; }
+  .evidence-efficacy-line-1,.evidence-efficacy-line-2 { font-size:18px; }
+  .evidence-efficacy-line-3 { font-size:14px; }
+  .evidence-load-more { width:100%; }
+
+  /* blocos gerais: impedir largura desktop dentro do mobile */
+  main, main section { max-width:100%; }
+  .details-grid, .when-use, .safety-grid, .contra-grid, .cost-grid, .adverse-grid { grid-template-columns:1fr !important; }
+  .details-grid, .when-use, .safety-grid, .contra-grid, .cost-grid, .adverse-grid,
+  .generic-section, .contraindications, .adverse-reactions { max-width:290px; margin-left:auto; margin-right:auto; }
+
+  /* comentários */
+  .comments { width:100%; max-width:320px; height:auto; min-height:430px; padding:20px 15px 30px; }
+  .comments-main-title { position:static; transform:none; width:290px; max-width:290px; height:auto; margin:0 auto 12px; font-size:20px; line-height:24px; }
+  .comments-list { position:static; transform:none; width:290px; max-width:290px; height:auto; max-height:293px; margin:0 auto; padding:0; overflow-y:auto; }
+  .comment-card { width:290px; min-height:0; padding:14px 12px; }
+  .comment-card p { font-size:13px; line-height:20px; }
+  .comment-card h3 { font-size:15px; line-height:20px; }
+  .comment-card small { font-size:12px; line-height:18px; }
+  .comments-empty { position:static; transform:none; width:290px; max-width:290px; height:auto; margin:0 auto; }
+
+  /* banners */
+  .whatsapp-share-banner { width:290px; max-width:290px; margin:28px auto 35px; }
+  .whatsapp-share-click { width:130px; height:30px; right:8px; bottom:12px; }
+
+  /* footer: mesma funcionalidade, empilhado como Figma */
+  .site-footer { width:100%; max-width:320px; margin-left:auto; margin-right:auto; overflow:visible; }
+  .footer-details { width:100% !important; max-width:320px !important; height:auto !important; min-height:825px; padding:40px 18px 24px !important; display:flex !important; flex-direction:column !important; gap:22px !important; }
+  .footer-column,.footer-column-1,.footer-column-2,.footer-column-3 { position:static !important; width:100% !important; max-width:none !important; margin:0 !important; }
+  .site-footer h3 { font-size:15px !important; line-height:19px !important; }
+  .footer-block > a,.footer-block > p,.footer-contact > a,.footer-contact > p,.footer-no-medication p { font-size:13px !important; line-height:16px !important; }
+  .footer-disease { width:194px !important; margin:0 auto !important; }
+  .footer-disease-button { width:194px !important; height:40px !important; }
+}
+
+
+/* =========================================================
+   MOBILE DETALHES — CORREÇÕES FINAIS FIGMA
+   Cards completos, tabela 300px, banners mobile e footer.
+   ========================================================= */
+.mobile-footer-banner{display:none;}
+
+@media (max-width:640px){
+  /* EFICÁCIA: todos os cards visíveis, 2 por linha + último centralizado */
+  #eficacia .efficacy-grid{
+    width:290px !important;
+    max-width:290px !important;
+    margin:26px auto 0 !important;
+    padding:0 !important;
+    display:grid !important;
+    grid-template-columns:repeat(2,138px) !important;
+    gap:10px 10px !important;
+    justify-content:center !important;
+    overflow:visible !important;
+  }
+  #eficacia .eff-card{
+    width:138px !important;
+    min-width:138px !important;
+    max-width:138px !important;
+    height:215px !important;
+    min-height:215px !important;
+  }
+  #eficacia .eff-card:nth-child(5):last-child{
+    grid-column:1 / -1;
+    justify-self:center;
+  }
+
+  /* EVIDÊNCIAS: botão exatamente no tamanho do Figma */
+  .evidence-load-more{padding:22px 0 10px !important;}
+  .evidence-load-more button{
+    width:216px !important;
+    height:29px !important;
+    border:0.863946px solid #0193FF !important;
+    border-radius:4.31973px !important;
+    font-size:13px !important;
+    line-height:16px !important;
+  }
+
+  /* O banner de eficácia é a arte mobile pronta; não sobrepor copy HTML */
+  .evidence-efficacy-banner{
+    width:290px !important;
+    max-width:290px !important;
+    margin:0 auto !important;
+    overflow:hidden !important;
+  }
+  .evidence-efficacy-banner picture,
+  .evidence-efficacy-banner-image{
+    display:block !important;
+    width:100% !important;
+    height:auto !important;
+  }
+  .evidence-efficacy-banner-copy{display:none !important;}
+
+  /* TABELA SEGURANÇA — Figma: 300px, 3 colunas sem corte horizontal */
+  #seguranca .page-wrap{padding-left:10px !important;padding-right:10px !important;}
+  .safety-table-wrap{
+    width:300px !important;
+    max-width:300px !important;
+    margin:0 auto !important;
+    overflow:visible !important;
+  }
+  .safety-table{
+    width:300px !important;
+    max-width:300px !important;
+    table-layout:fixed !important;
+    border-collapse:collapse !important;
+    border:1px solid #E0E0E1 !important;
+    font-family:Inter,Arial,sans-serif !important;
+    font-size:10px !important;
+  }
+  .safety-table th,.safety-table td{
+    box-sizing:border-box !important;
+    border:1px solid #E0E0E1 !important;
+    padding:6px 5px !important;
+    text-align:center !important;
+    vertical-align:middle !important;
+    white-space:normal !important;
+    overflow-wrap:anywhere !important;
+    line-height:130% !important;
+  }
+  .safety-table th{height:55px !important;font-size:15px !important;line-height:130% !important;}
+  .safety-table th:nth-child(1),.safety-table td:nth-child(1){width:90px !important;}
+  .safety-table th:nth-child(2),.safety-table td:nth-child(2){width:100px !important;}
+  .safety-table th:nth-child(3),.safety-table td:nth-child(3){width:110px !important;}
+  .safety-table td:nth-child(1),.safety-table td:nth-child(3){font-size:10px !important;}
+  .safety-table .pill{
+    min-width:47.67px !important;
+    width:47.67px !important;
+    height:20px !important;
+    padding:0 !important;
+    border-radius:10px !important;
+    font-size:10px !important;
+    line-height:13px !important;
+  }
+
+  /* Banner família mobile */
+  .whatsapp-share-banner{
+    width:319px !important;
+    max-width:319px !important;
+    margin:28px auto 0 !important;
+    overflow:hidden !important;
+  }
+  .whatsapp-share-banner picture,.whatsapp-share-banner img{
+    display:block !important;
+    width:319px !important;
+    max-width:319px !important;
+    height:auto !important;
+  }
+
+  /* Banner próprio do footer mobile */
+  .mobile-footer-banner{
+    display:block !important;
+    width:320px !important;
+    max-width:100% !important;
+    margin:0 auto !important;
+    padding:0 !important;
+  }
+  .mobile-footer-banner img{
+    display:block !important;
+    width:320px !important;
+    max-width:100% !important;
+    height:auto !important;
+  }
+
+  /* Footer volta ao fluxo normal, sem alturas/posições absolutas do Figma */
+  .site-footer{width:320px !important;max-width:100% !important;margin:0 auto !important;}
+  .footer-details{
+    min-height:0 !important;
+    height:auto !important;
+    padding:38px 18px 28px !important;
+    gap:22px !important;
+  }
+  .footer-bottom{width:320px !important;max-width:100% !important;}
+}
+
+</style>
+
+<style>
+/* =========================================================
+   HOTFIX MOBILE FINAL — detalhes V3
+   Corrige: 5 cards de eficácia, tabela 300px e footer sem sobreposição.
+   Desktop permanece inalterado.
+   ========================================================= */
+@media (max-width:640px){
+  html,body{overflow-x:hidden!important;}
+
+  /* EFICÁCIA — 2 + 2 + 1, sem carrossel */
+  #eficacia .page-wrap{width:320px!important;max-width:100%!important;padding:0 15px!important;}
+  #eficacia .efficacy-grid{
+    width:290px!important;max-width:290px!important;
+    margin:28px auto 0!important;padding:0!important;
+    display:grid!important;grid-template-columns:138px 138px!important;
+    grid-auto-flow:row!important;gap:10px 14px!important;
+    justify-content:center!important;align-items:start!important;
+    overflow:visible!important;
+  }
+  #eficacia .eff-card{
+    display:flex!important;position:relative!important;
+    width:138px!important;min-width:138px!important;max-width:138px!important;
+    height:215px!important;min-height:215px!important;
+    margin:0!important;
+  }
+  #eficacia .eff-card:nth-child(5){grid-column:1 / -1!important;justify-self:center!important;}
+
+  /* SEGURANÇA — largura exata 300px; 90 + 100 + 110 */
+  #seguranca{overflow:visible!important;}
+  #seguranca>.page-wrap{width:320px!important;max-width:100%!important;padding:0 10px!important;overflow:visible!important;}
+  #seguranca .safety-table-wrap{
+    width:300px!important;max-width:300px!important;min-width:0!important;
+    margin:0 auto!important;padding:0!important;overflow:hidden!important;
+  }
+  #seguranca .safety-table{
+    width:300px!important;min-width:300px!important;max-width:300px!important;
+    margin:0!important;table-layout:fixed!important;border-collapse:collapse!important;
+    border:1px solid #E0E0E1!important;
+  }
+  #seguranca .safety-table th,#seguranca .safety-table td{
+    box-sizing:border-box!important;border:1px solid #E0E0E1!important;
+    padding:5px 4px!important;text-align:center!important;vertical-align:middle!important;
+    white-space:normal!important;word-break:normal!important;overflow-wrap:break-word!important;
+    hyphens:none!important;line-height:130%!important;
+  }
+  #seguranca .safety-table th:nth-child(1),#seguranca .safety-table td:nth-child(1){width:90px!important;min-width:90px!important;max-width:90px!important;}
+  #seguranca .safety-table th:nth-child(2),#seguranca .safety-table td:nth-child(2){width:100px!important;min-width:100px!important;max-width:100px!important;}
+  #seguranca .safety-table th:nth-child(3),#seguranca .safety-table td:nth-child(3){width:110px!important;min-width:110px!important;max-width:110px!important;}
+  #seguranca .safety-table th{height:55px!important;font-size:15px!important;line-height:19px!important;}
+  #seguranca .safety-table td{font-size:10px!important;line-height:13px!important;}
+  #seguranca .safety-table .pill{width:47.67px!important;min-width:47.67px!important;height:20px!important;padding:0!important;border-radius:10px!important;font-size:10px!important;line-height:13px!important;}
+
+  /* BANNERS MOBILE */
+  .evidence-efficacy-banner{width:319px!important;max-width:100vw!important;margin-left:50%!important;transform:translateX(-50%)!important;}
+  .evidence-efficacy-banner picture,.evidence-efficacy-banner img{width:319px!important;max-width:100%!important;height:auto!important;display:block!important;}
+  .whatsapp-share-banner{width:319px!important;max-width:100vw!important;margin:28px auto 0!important;}
+  .whatsapp-share-banner picture,.whatsapp-share-banner img{width:319px!important;max-width:100%!important;height:auto!important;display:block!important;}
+
+  /* FOOTER — fluxo vertical limpo, sem posições absolutas desktop */
+  .site-footer{position:relative!important;width:320px!important;max-width:100%!important;height:auto!important;min-height:0!important;margin:0 auto!important;overflow:visible!important;background:#fff!important;}
+  .mobile-footer-banner{display:block!important;position:static!important;width:320px!important;max-width:100%!important;margin:0 auto!important;padding:0!important;}
+  .mobile-footer-banner img{display:block!important;width:320px!important;max-width:100%!important;height:auto!important;}
+  .footer-details{
+    position:relative!important;width:320px!important;max-width:100%!important;height:auto!important;min-height:0!important;
+    margin:0 auto!important;padding:40px 18px 28px!important;
+    display:flex!important;flex-direction:column!important;gap:0!important;
+  }
+  .footer-column,.footer-column-1,.footer-column-2,.footer-column-3{
+    position:static!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
+    width:100%!important;max-width:none!important;height:auto!important;margin:0!important;padding:0!important;
+    display:block!important;
+  }
+  .footer-block,.footer-scientific,.footer-contact,.footer-specialists{
+    position:static!important;width:100%!important;height:auto!important;margin:0 0 30px!important;padding:0!important;
+  }
+  .footer-scientific{margin-top:34px!important;}
+  .footer-contact{margin-top:30px!important;}
+  .footer-specialists{margin:30px 0!important;}
+  .footer-share,.footer-premium,.footer-no-medication,.footer-disease{
+    position:static!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
+    width:auto!important;height:auto!important;margin:26px 0 0!important;
+  }
+  .footer-share{display:flex!important;align-items:center!important;gap:7px!important;}
+  .footer-premium{display:block!important;}
+  .footer-disease{width:194px!important;margin:30px 0 0!important;}
+  .footer-disease-select,.footer-disease-button{width:194px!important;}
+  .footer-bottom{
+    position:static!important;width:320px!important;max-width:100%!important;height:auto!important;min-height:118px!important;
+    margin:0!important;padding:20px 30px!important;display:flex!important;align-items:center!important;justify-content:center!important;
+    text-align:center!important;line-height:17px!important;background:#F4F4F4!important;border:3px solid #E3E3E3!important;
+  }
+}
+
+/* =========================================================
+   MOBILE — SEGURANÇA + BANNER IMEDIATAMENTE ABAIXO DA TABELA
+   ========================================================= */
+@media (max-width: 640px) {
+    #seguranca {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    #seguranca > .page-wrap {
+        width: 320px !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        padding: 0 10px !important;
+    }
+
+    #seguranca .safety-table-wrap {
+        width: 300px !important;
+        max-width: 300px !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+    }
+
+    #seguranca .safety-table {
+        width: 300px !important;
+        min-width: 300px !important;
+        max-width: 300px !important;
+        table-layout: fixed !important;
+        border-collapse: collapse !important;
+        margin: 0 !important;
+    }
+
+    #seguranca .safety-table th:nth-child(1),
+    #seguranca .safety-table td:nth-child(1) { width: 90px !important; }
+
+    #seguranca .safety-table th:nth-child(2),
+    #seguranca .safety-table td:nth-child(2) { width: 100px !important; }
+
+    #seguranca .safety-table th:nth-child(3),
+    #seguranca .safety-table td:nth-child(3) { width: 110px !important; }
+
+    #seguranca .safety-table th,
+    #seguranca .safety-table td {
+        box-sizing: border-box !important;
+        white-space: normal !important;
+        word-break: normal !important;
+        overflow-wrap: normal !important;
+        hyphens: none !important;
+        text-align: center !important;
+        vertical-align: middle !important;
+    }
+
+    #seguranca .safety-table td {
+        font-size: 10px !important;
+        line-height: 13px !important;
+        padding: 6px 4px !important;
+    }
+
+    #seguranca .safety-table th {
+        font-size: 15px !important;
+        line-height: 19px !important;
+        padding: 6px 4px !important;
+    }
+
+    #seguranca + .exclusive-service-banner {
+        display: block !important;
+        position: relative !important;
+        width: 290px !important;
+        max-width: 290px !important;
+        height: auto !important;
+        margin: 12px auto 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+    }
+
+    #seguranca + .exclusive-service-banner > a.exclusive-service-banner {
+        display: block !important;
+        position: static !important;
+        width: 290px !important;
+        max-width: 290px !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    #seguranca + .exclusive-service-banner picture,
+    #seguranca + .exclusive-service-banner img {
+        display: block !important;
+        width: 290px !important;
+        max-width: 290px !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        object-fit: contain !important;
+    }
+
+    #seguranca + .exclusive-service-banner + #contraindicacoes {
+        margin-top: 22px !important;
+    }
+}
+
+</style>
+
 </head>
 
 <body>
@@ -3275,11 +3723,14 @@
                                 href="/{{ condicao.slug }}/"
                                 aria-label="Comparar outros tratamentos para {{ condicao.nome }}"
                             >
-                                <img
-                                    src="{% static 'img/banner_eficacia.png' %}"
-                                    alt=""
-                                    class="evidence-efficacy-banner-image"
-                                >
+                                <picture>
+                                    <source media="(max-width: 640px)" srcset="{% static 'img/ver_eficacia_de_outros_tratamentos_mobile.png' %}">
+                                    <img
+                                        src="{% static 'img/banner_eficacia.png' %}"
+                                        alt="Ver eficácia de outros tratamentos"
+                                        class="evidence-efficacy-banner-image"
+                                    >
+                                </picture>
 
                                 <div class="evidence-efficacy-banner-copy">
 
@@ -3417,10 +3868,16 @@
         class="exclusive-service-banner"
         aria-label="Atendimento exclusivo com nossos tutores"
     >
-        <img
-            src="{% static 'img/cuida_da_sua_saude.png' %}"
-            alt="Atendimento exclusivo com nossos tutores para tirar suas dúvidas sobre tratamentos de saúde"
-        >
+        <picture>
+            <source
+                media="(max-width: 640px)"
+                srcset="{% static 'img/cuide_de_sua_saude_mobile.png' %}"
+            >
+            <img
+                src="{% static 'img/cuida_da_sua_saude.png' %}"
+                alt="Atendimento exclusivo com nossos tutores para tirar suas dúvidas sobre tratamentos de saúde"
+            >
+        </picture>
     </a>
 
     </div>
@@ -3795,10 +4252,13 @@
             rel="noopener noreferrer"
             aria-label="Compartilhar este conteúdo pelo WhatsApp"
         >
-            <img
-                src="{% static 'img/banner_familia.png' %}"
-                alt="Compartilhe este conteúdo pelo WhatsApp"
-            >
+            <picture>
+                <source media="(max-width: 640px)" srcset="{% static 'img/banner_familia_mobile.png' %}">
+                <img
+                    src="{% static 'img/banner_familia.png' %}"
+                    alt="Compartilhe este conteúdo pelo WhatsApp"
+                >
+            </picture>
         </a>
 
     </div>
@@ -3809,6 +4269,10 @@
         ========================================================= -->
 
     <footer class="site-footer">
+
+        <div class="mobile-footer-banner" aria-hidden="true">
+            <img src="{% static 'img/banner_footer_mobile.png' %}" alt="">
+        </div>
 
         <div class="footer-details">
 
@@ -4254,6 +4718,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
+});
+</script>
+
+
+<script>
+/* Garante os cinco tipos de eficácia no detalhe mobile mesmo quando a view
+   envia apenas os tipos que possuem registro para o tratamento. */
+document.addEventListener('DOMContentLoaded', function () {
+  if (!window.matchMedia('(max-width: 640px)').matches) return;
+  const grid = document.querySelector('#eficacia .efficacy-grid');
+  if (!grid) return;
+  const canonical = [
+    ['Redução temporária dos sintomas','fa-head-side-cough'],
+    ['Eliminação temporária dos sintomas','fa-head-side-cough-slash'],
+    ['Redução persistente dos sintomas','fa-head-side-virus'],
+    ['Eliminação persistente dos sintomas','fa-face-smile'],
+    ['Cura','fa-heart-pulse']
+  ];
+  const norm = s => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
+  const existing = new Set(Array.from(grid.querySelectorAll('.eff-label')).map(el => norm(el.textContent)));
+  canonical.forEach(([label, icon]) => {
+    if (existing.has(norm(label))) return;
+    const card = document.createElement('div');
+    card.className = 'eff-card no-data';
+    card.innerHTML = '<div class="eff-icon-wrap"><i class="fa-solid '+icon+' eff-fallback-icon"></i></div>'+
+      '<div class="eff-label">'+label+'</div>'+
+      '<div class="eff-values"><p class="eff-range">—</p><div class="eff-max">—</div></div>';
+    grid.appendChild(card);
+  });
+  // Reordena sempre na sequência visual definida pelo produto.
+  const cards = Array.from(grid.querySelectorAll('.eff-card'));
+  canonical.forEach(([label]) => {
+    const found = cards.find(c => norm(c.querySelector('.eff-label')?.textContent) === norm(label));
+    if (found) grid.appendChild(found);
+  });
 });
 </script>
 

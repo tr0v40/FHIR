@@ -1608,310 +1608,7 @@
 
         padding-top: 55px;
     }
-    /* =========================================================
-    BLOCO 1
-    TRATAMENTOS EM ORDEM DE EFICÁCIA
-    BUSCA DE DOENÇA / SINTOMA
-    ========================================================= */
-
-    .home-feature-one .home-feature-disease-wrap {
-        position: relative;
-
-        width: 282px;
-        height: 51px;
-
-        margin: 32px auto 0;
-
-        z-index: 50;
-    }
-
-
-    /* INPUT */
-
-    .home-feature-one .home-feature-disease-wrap
-    .home-disease-input {
-        display: block;
-
-        width: 282px;
-        height: 51px;
-
-        box-sizing: border-box;
-
-        padding: 0 45px 0 16px;
-
-        border: 1px solid #FFFFFF;
-        border-radius: 8px;
-
-        background: #FFFFFF;
-
-        outline: none;
-
-        font-size: 15px;
-        line-height: 27px;
-
-        color: #010009;
-    }
-
-
-    .home-feature-one .home-feature-disease-wrap
-    .home-disease-input::placeholder {
-        color: #8F8F93;
-        opacity: 1;
-    }
-
-
-    /* REMOVE X NATIVO */
-
-    .home-feature-one .home-feature-disease-wrap
-    .home-disease-input::-webkit-search-cancel-button {
-        display: none;
-    }
-
-
-    /* LUPA */
-
-    .home-feature-one .home-feature-disease-wrap
-    .home-disease-search-icon {
-        position: absolute;
-
-        right: 15px;
-        top: 50%;
-
-        transform: translateY(-50%);
-
-        color: #0094FF;
-
-        font-size: 15px;
-
-        pointer-events: none;
-    }
-
-
-    /* RESULTADOS */
-
-    .home-feature-one .home-feature-disease-wrap
-    .home-disease-options {
-        position: absolute;
-
-        width: 282px;
-        max-height: 240px;
-
-        left: 0;
-        top: 57px;
-
-        overflow-y: auto;
-
-        background: #FFFFFF;
-
-        border: 1px solid #E3E3E3;
-        border-radius: 8px;
-
-        box-shadow:
-            0 6px 18px
-            rgba(0, 0, 0, 0.14);
-
-        z-index: 999;
-    }
-
-
-    .home-feature-one .home-feature-disease-wrap
-    .home-disease-options[hidden] {
-        display: none !important;
-    }
-
-
-    /* OPÇÕES */
-
-    .home-feature-one .home-feature-disease-wrap
-    .home-disease-option {
-        display: block;
-
-        width: 100%;
-        min-height: 44px;
-
-        padding: 11px 16px;
-
-        border: 0;
-        border-bottom: 1px solid #EEEEEE;
-
-        background: #FFFFFF;
-
-        color: #333333;
-
-        font-size: 14px;
-        line-height: 20px;
-
-        text-align: left;
-
-        cursor: pointer;
-    }
-
-
-    .home-feature-one .home-feature-disease-wrap
-    .home-disease-option[hidden] {
-        display: none !important;
-    }
-
-
-    .home-feature-one .home-feature-disease-wrap
-    .home-disease-option:last-child {
-        border-bottom: 0;
-    }
-
-
-    .home-feature-one .home-feature-disease-wrap
-    .home-disease-option:hover,
-    .home-feature-one .home-feature-disease-wrap
-    .home-disease-option:focus {
-        background: #F2F8FF;
-        color: #0094FF;
-
-        outline: none;
-    }
-    /* GRUPOS */
-
-    .footer-group {
-        position: absolute;
-
-        display: flex;
-        flex-direction: column;
-
-        gap: 7px;
-    }
-
-    .footer-title {
-        margin: 0 0 6px;
-
-        color: #010009;
-
-        font-weight: 700;
-        font-size: 15px;
-        line-height: 21px;
-    }
-
-    .footer-group a,
-    .footer-contract-text {
-        color: #8F8F93;
-
-        font-weight: 500;
-        font-size: 13px;
-        line-height: 16px;
-    }
-
-
-    /* COLUNA 1 */
-
-    .footer-treatments {
-        left: 0;
-        top: 55px;
-
-        width: 220px;
-    }
-
-    .footer-articles {
-        left: 0;
-        top: 169px;
-
-        width: 220px;
-    }
-
-
-    /* COLUNA 2 */
-
-    .footer-documents {
-        left: 403px;
-        top: 55px;
-
-        width: 180px;
-    }
-
-    .footer-contact {
-        left: 403px;
-        top: 166px;
-
-        width: 180px;
-    }
-
-    .footer-contract {
-        left: 403px;
-        top: 270px;
-
-        width: 190px;
-    }
-
-
-    /* COLUNA 3 */
-
-    .footer-presentations {
-        left: 746px;
-        top: 55px;
-
-        width: 200px;
-    }
-
-    .footer-opinions {
-        left: 746px;
-        top: 210px;
-
-        width: 220px;
-    }
-
-
-    /* BOTÃO */
-
-    .footer-access-button {
-        position: absolute;
-
-        width: 235px;
-        height: 73px;
-
-        left: 746px;
-        top: 268px;
-
-        padding: 16px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        border-radius: 5px;
-
-        background: #0094FF;
-
-        color: #FFFFFF;
-
-        font-weight: 800;
-        font-size: 15px;
-        line-height: 18px;
-
-        text-align: center;
-    }
-
-
-    /* LEGAL */
-
-    .site-footer-legal {
-        width: 100%;
-        height: 65px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        border: 3px solid #E3E3E3;
-
-        background: #FAFAFA;
-    }
-
-    .site-footer-legal p {
-        margin: 0;
-
-        color: #8F8F93;
-
-        font-size: 13px;
-        line-height: 16px;
-    }
-
+   
 /* =========================================================
    BLOCO 2
    DETALHES COMPLETOS
@@ -2374,1361 +2071,2002 @@ input::-webkit-search-cancel-button {
 
     }
 
-
-    /* =========================================================
-    MOBILE
-    FIGMA 320px
-    ========================================================= */
-
-    @media screen and (max-width: 768px) {
-
-        html,
-        body {
-            width: 100%;
-            min-width: 0;
-
-            margin: 0;
-            padding: 0;
-
-            overflow-x: hidden;
-
-            background: #FFFFFF;
-        }
-
-
-        /* =====================================================
-        HEADER
-        TOTAL 135px
-        ===================================================== */
-
-        .top-bar {
-            width: 100%;
-            height: 59px;
-
-            padding: 0;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            background: #0094FF;
-
-            font-weight: 500;
-            font-size: 14px;
-            line-height: 21px;
-
-            text-align: center;
-
-            color: #FFFFFF;
-        }
-
-
-        .header {
-            width: 100%;
-            height: 76px;
-
-            background: #FFFFFF;
-        }
-
-
-        .header-inner {
-            position: relative;
-
-            width: 320px;
-            max-width: 100%;
-            height: 76px;
-
-            margin: 0 auto;
-        }
-
-
-        /* LOGO */
-
-        .logo-link {
-            position: absolute;
-
-            width: 127px;
-            height: 68px;
-
-            left: -3px;
-            top: 8px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            overflow: hidden;
-        }
-
-
-        .logo {
-            width: 127px;
-            height: 68px;
-
-            object-fit: contain;
-        }
-
-
-        /* LOGIN */
-
-        .login-link {
-            position: absolute;
-
-            width: 214.5px;
-            height: 33px;
-
-            right: 10.5px;
-            top: 23px;
-
-            display: block;
-        }
-
-
-        .login-lock-icon {
-            position: absolute;
-
-            width: 15px;
-            height: 15px;
-
-            left: 44px;
-            top: 9px;
-
-            margin: 0;
-        }
-
-
-        .login-lock-icon img {
-            width: 15px;
-            height: 15px;
-        }
-
-
-        .login-icon {
-            position: absolute;
-
-            width: 21.45px;
-            height: 21.45px;
-
-            left: 61.88px;
-            top: 5.78px;
-
-            margin: 0;
-
-            border-radius: 50%;
-
-            font-size: 9px;
-        }
-
-
-        .login-text {
-            position: absolute;
-
-            width: 119.92px;
-            height: 22.27px;
-
-            left: 94.88px;
-            top: 5.36px;
-
-            margin: 0;
-
-            display: flex;
-            align-items: center;
-
-            font-weight: 700;
-            font-size: 12.375px;
-            line-height: 22px;
-        }
-
-
-
-        /* =====================================================
-        MAIN
-        ===================================================== */
-
-        .home-main {
-            width: 320px;
-            max-width: 100%;
-
-            margin: 0 auto;
-
-            background: #FFFFFF;
-        }
-
-
-
-        /* =====================================================
-        MENU
-        320 x 292
-        ===================================================== */
-
-        .home-menu {
-            width: 320px;
-            max-width: 100%;
-            height: 292px;
-
-            margin: 0 auto;
-
-            padding:
-                15px
-                15px
-                29px;
-
-            background: #FFFFFF;
-        }
-
-
-        .home-menu-inner {
-            position: relative;
-
-            width: 290px;
-            height: 248px;
-
-            margin: 0 auto;
-        }
-
-
-        .home-tabs {
-            position: relative;
-
-            z-index: 2;
-
-            width: 290px;
-            height: 30px;
-
-            display: grid;
-
-            grid-template-columns:
-                90px
-                90px
-                90px;
-
-            justify-content: space-between;
-        }
-
-
-        .home-tab {
-            width: 90px;
-            height: 30px;
-
-            margin: 0;
-
-            padding: 0 5px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            gap: 4px;
-
-            border: 1px solid #0094FF;
-            border-bottom: 0;
-
-            border-radius:
-                10px
-                10px
-                0
-                0;
-
-            background: #FFFFFF;
-
-            color: #0094FF;
-
-            font-family: Arial, sans-serif;
-            font-weight: 700;
-            font-size: 10px;
-            line-height: 11px;
-
-            text-align: left;
-        }
-
-
-        .home-tab i {
-            display: block;
-
-            width: 10px;
-
-            flex: 0 0 10px;
-
-            font-size: 10px;
-        }
-
-
-        .home-tab span {
-            display: block;
-
-            max-width: 62px;
-        }
-
-
-        .home-tab.active {
-            background: #0094FF;
-
-            color: #FFFFFF;
-        }
-
-
-        .home-menu-content {
-            position: absolute;
-            z-index: 1;
-
-            width: 290px;
-            height: 220px;
-
-            left: 0;
-            top: 28px;
-
-            border: 1px solid #0094FF;
-
-            border-radius:
-                0
-                0
-                15px
-                15px;
-
-            background: #FFFFFF;
-
-            transition:
-                background 0.2s ease,
-                color 0.2s ease;
-        }
-
-
-        /* + Tratamentos: painel inteiro azul também no mobile */
-
-        .home-menu-content.tratamentos-active {
-            background: #0094FF;
-        }
-
-
-        .home-menu-content.tratamentos-active
-        .home-menu-description {
-            color: #FFFFFF;
-        }
-
-
-        .home-menu-content.tratamentos-active
-        .home-tab-panel {
-            background: transparent;
-        }
-
-
-        .home-menu-text-desktop {
-            display: none;
-        }
-
-
-        .home-menu-text-mobile {
-            display: inline;
-        }
-
-
-        .home-tab-panel {
-            position: relative;
-
-            width: 100%;
-            height: 100%;
-
-            padding: 0;
-        }
-
-
-        /* Labels das três abas no mobile.
-        Todas ficam dentro do painel, acima dos campos. */
-
-        .home-menu-description {
-            position: absolute;
-
-            width: 234px;
-
-            left: 28px;
-            top: 40px;
-
-            margin: 0;
-
-            font-weight: 500;
-            font-size: 13px;
-            line-height: 24px;
-
-            color: #000000;
-        }
-
-
-        /* Tratamentos ativo = texto branco sobre o painel azul */
-
-        .home-menu-content.tratamentos-active
-        [data-home-panel="tratamentos"]
-        .home-menu-description {
-            color: #FFFFFF;
-            font-weight: 600;
-        }
-
-
-        /* =====================================================
-        AUTOCOMPLETE TRATAMENTOS - MOBILE
-        ===================================================== */
-
-        .home-menu-content.tratamentos-active
-        .home-menu-treatment-search {
-            position: absolute;
-
-            width: 232px;
-            height: 43px;
-
-            left: 28px;
-            top: 139px;
-
-            margin: 0;
-
-            z-index: 30;
-        }
-
-
-        .home-menu-content.tratamentos-active
-        .home-menu-treatment-search input {
-            width: 232px;
-            height: 43px;
-
-            padding:
-                0
-                38px
-                0
-                13px;
-
-            border: 0;
-            border-radius: 5px;
-
-            background: #FFFFFF;
-
-            font-weight: 400;
-            font-size: 12.35px;
-            line-height: 22px;
-
-            color: #010009;
-        }
-
-
-        .home-menu-content.tratamentos-active
-        .home-menu-treatment-search > i {
-            right: 13px;
-            top: 14px;
-
-            color: #0094FF;
-
-            font-size: 14px;
-        }
-
-
-        .home-menu-content.tratamentos-active
-        .home-treatment-results {
-            width: 232px;
-
-            top: 49px;
-
-            max-height: 190px;
-
-            border-radius: 5px;
-        }
-
-
-        .home-menu-content.tratamentos-active
-        .home-treatment-result {
-            min-height: 39px;
-
-            padding:
-                9px
-                13px;
-
-            font-size: 12px;
-            line-height: 18px;
-        }
-
-
-        .home-select-wrap,
-        .home-select-wrap-wide {
-            position: absolute;
-
-            width: 232px;
-            height: 42.76px;
-
-            left: 28px;
-            top: 139px;
-        }
-
-
-        .home-select-wrap::after {
-            width: 7px;
-            height: 7px;
-
-            right: 14px;
-            top: 15px;
-
-            border-right: 1px solid #0094FF;
-            border-bottom: 1px solid #0094FF;
-        }
-
-
-        .home-select,
-        .home-select-wide {
-            width: 232px;
-            height: 42.76px;
-
-            padding:
-                0
-                35px
-                0
-                13px;
-
-            border: 0.82px solid #0094FF;
-
-            border-radius: 5px;
-
-            font-size: 12.35px;
-            line-height: 22px;
-        }
-
-
-
-        /* =====================================================
-        BASE DOS BLOCOS
-        ===================================================== */
-
-        .home-feature {
-            position: relative;
-
-            width: 320px;
-            max-width: 100%;
-
-            margin: 0 auto;
-
-            padding: 0;
-        }
-
-
-        .home-feature-inner {
-            position: relative;
-
-            width: 320px;
-            max-width: 100%;
-            height: 100%;
-
-            margin: 0;
-
-            display: block;
-        }
-
-
-        .home-feature-media {
-            position: absolute;
-
-            width: 320px;
-            height: 302px;
-
-            left: 0;
-            top: 0;
-
-            margin: 0;
-
-            overflow: hidden;
-        }
-
-
-        .home-feature-media img {
-            display: block;
-
-            width: 320px;
-            height: 302px;
-
-            object-fit: cover;
-        }
-
-
-        .home-feature-copy,
-        .home-feature-copy-dark {
-            position: absolute;
-
-            width: 320px;
-
-            left: 0;
-
-            margin: 0;
-            padding: 0;
-        }
-
-
-
-        /* =====================================================
-        BLOCO 1
-        IMAGEM + AZUL
-        624px
-        ===================================================== */
-
-        .home-feature-one {
-            height: 624px !important;
-
-            margin-top: 18px;
-
-            background: #0094FF;
-        }
-
-
-        .home-feature-one .home-feature-copy {
-            position: absolute;
-
-            width: 320px;
-            height: 322px;
-
-            left: 0;
-            top: 302px;
-
-            margin: 0;
-            padding: 0;
-
-            background: #0094FF;
-
-            color: #FFFFFF;
-        }
-
-
-        .home-feature-one .home-feature-title {
-            position: absolute;
-
-            width: 311px;
-            height: 48px;
-
-            left: 4.5px;
-            top: 13px;
-
-            margin: 0;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-weight: 700;
-            font-size: 20px;
-            line-height: 24px;
-
-            text-align: center;
-
-            color: #FFFFFF;
-        }
-
-
-        .home-feature-one .home-feature-description {
-            position: absolute;
-
-            width: 260px;
-
-            left: 30px;
-            top: 74px;
-
-            margin: 0;
-
-            font-weight: 500;
-            font-size: 13px;
-            line-height: 25px;
-
-            text-align: justify;
-
-            color: #FFFFFF;
-        }
-    /* BUSCA DE DOENÇA / SINTOMA - BLOCO 1 */
-
-    .home-feature-one .home-feature-disease-wrap {
-        position: absolute;
-
-        width: 232px;
-        height: 42.76px;
-
-        left: 44px;
-        top: 251px;
+/* Segundo campo do Bloco 1:
+   usado somente na versão mobile */
+.home-feature-one .home-feature-treatment-wrap {
+    display: none;
+}
+/* ============================================================
+   TELIX HOME
+   MOBILE CONSOLIDADO
+   FIGMA BASE: 320px
+   ============================================================ */
+
+@media screen and (max-width: 768px) {
+
+    /* ========================================================
+       01. BASE
+       ======================================================== */
+
+    html,
+    body {
+        width: 100%;
+        min-width: 0;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        background: #FFFFFF;
+    }
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    input,
+    select,
+    button {
+        max-width: 100%;
+    }
+
+    [hidden] {
+        display: none !important;
+    }
+
+
+    /* ========================================================
+       02. TOP BAR
+       FIGMA: 320 x 59
+       ======================================================== */
+
+    .top-bar {
+        width: 100%;
+        height: 59px;
+        padding: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #0193FF;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 21px;
+
+        text-align: center;
+        color: #FFFFFF;
+    }
+
+
+    /* ========================================================
+       03. HEADER
+       TOTAL COM TOP BAR: 135px
+       HEADER: 76px
+       ======================================================== */
+
+    .header {
+        width: 100%;
+        height: 76px;
 
         margin: 0;
+        padding: 0;
+
+        background: #FFFFFF;
+    }
+
+    .header-inner {
+        position: relative;
+
+        width: 320px;
+        max-width: 100%;
+        height: 76px;
+
+        margin: 0 auto;
+        padding: 0;
+    }
+
+
+    /* LOGO */
+
+    .logo-link {
+        position: absolute;
+
+        width: 127px;
+        height: 68px;
+
+        left: -3px;
+        top: 8px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        overflow: hidden;
+    }
+
+    .logo {
+        display: block;
+
+        width: 127px;
+        height: 68px;
+
+        object-fit: contain;
+    }
+
+
+    /* LOGIN */
+
+    .login-link {
+        position: absolute;
+
+        width: 214.5px;
+        height: 33px;
+
+        right: 10.5px;
+        top: 23px;
+
+        display: block;
+    }
+
+    .login-lock-icon {
+        position: absolute;
+
+        width: 15px;
+        height: 15px;
+
+        left: 44px;
+        top: 9px;
+
+        margin: 0;
+    }
+
+    .login-lock-icon img {
+        display: block;
+
+        width: 15px;
+        height: 15px;
+    }
+
+    .login-icon {
+        position: absolute;
+
+        width: 21.45px;
+        height: 21.45px;
+
+        left: 61.88px;
+        top: 5.78px;
+
+        margin: 0;
+
+        border-radius: 50%;
+
+        font-size: 9px;
+    }
+
+    .login-text {
+        position: absolute;
+
+        width: 119.92px;
+        height: 22.27px;
+
+        left: 94.88px;
+        top: 5.36px;
+
+        margin: 0;
+
+        display: flex;
+        align-items: center;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 700;
+        font-size: 12.375px;
+        line-height: 22px;
+
+        color: #010009;
+    }
+
+
+    /* ========================================================
+       04. MAIN
+       ======================================================== */
+
+    .home-main {
+        width: 320px;
+        max-width: 100%;
+
+        margin: 0 auto;
+        padding: 0;
+
+        background: #FFFFFF;
+    }
+
+
+    /* ========================================================
+       05–08. MENU SUPERIOR MOBILE — FIGMA
+       Fechado: componente 290x248 / card 290x220
+       Expandido: componente 290x307 / card 290x279
+       ======================================================== */
+
+    .home-menu {
+        position: relative;
+        width: 320px;
+        max-width: 100%;
+        height: 292px;
+        margin: 0 auto;
+        padding: 15px 15px 29px;
+        background: #FFFFFF;
+        transition: height .18s ease;
+    }
+
+    .home-menu:has(.home-menu-treatment-flow-search + .home-menu-treatment-flow-search:not([hidden])),
+    .home-menu:has(#home-menu-article-treatment-wrap:not([hidden])) {
+        height: 351px;
+    }
+
+    .home-menu-inner {
+        position: relative;
+        width: 290px;
+        height: 248px;
+        margin: 0 auto;
+        padding: 0;
+        transition: height .18s ease;
+    }
+
+    .home-menu-inner:has(.home-menu-treatment-flow-search + .home-menu-treatment-flow-search:not([hidden])),
+    .home-menu-inner:has(#home-menu-article-treatment-wrap:not([hidden])) {
+        height: 307px;
+    }
+
+    /* ABAS */
+
+    .home-tabs {
+        position: relative;
+        z-index: 20;
+        width: 290px;
+        height: 30px;
+        display: grid;
+        grid-template-columns: 90px 90px 90px;
+        justify-content: space-between;
+        margin: 0;
+        padding: 0;
+    }
+
+    .home-tab {
+        width: 90px;
+        height: 30px;
+        margin: 0;
+        padding: 0 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        border: 1px solid #0193FF;
+        border-bottom: 0;
+        border-radius: 10px 10px 0 0;
+        background: #FFFFFF;
+        color: #0193FF;
+        font-family: Arial, sans-serif;
+        font-weight: 700;
+        font-size: 10px;
+        line-height: 11px;
+        cursor: pointer;
+    }
+
+    .home-tab i {
+        width: 10px;
+        flex: 0 0 10px;
+        font-size: 10px;
+    }
+
+    .home-tab span {
+        display: block;
+        max-width: 62px;
+    }
+
+    .home-tab.active {
+        background: #0193FF;
+        color: #FFFFFF;
+    }
+
+    /* CARD */
+
+    .home-menu-content {
+        position: absolute;
+        width: 290px;
+        height: 220px;
+        left: 0;
+        top: 28px;
+        z-index: 10;
+        border: 1px solid #0193FF;
+        border-radius: 0 0 15px 15px;
+        background: #FFFFFF;
+        overflow: visible;
+        transition: height .18s ease, background-color .18s ease;
+    }
+
+    .home-menu-content:has(.home-menu-treatment-flow-search + .home-menu-treatment-flow-search:not([hidden])),
+    .home-menu-content:has(#home-menu-article-treatment-wrap:not([hidden])) {
+        height: 279px;
+    }
+
+    .home-menu-content.tratamentos-active {
+        background: #0193FF;
+    }
+
+    .home-tab-panel {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .home-tab-panel[hidden] {
+        display: none !important;
+    }
+
+    .home-menu-text-desktop {
+        display: none !important;
+    }
+
+    .home-menu-text-mobile {
+        display: inline !important;
+    }
+
+    /* TEXTO BASE */
+
+    .home-menu-description {
+        position: absolute;
+        width: 232px;
+        left: 28px;
+        top: 40px;
+        margin: 0;
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 500;
+        font-size: 15px;
+        line-height: 27px;
+        color: #000000;
+    }
+
+    .home-menu-content.tratamentos-active .home-menu-description {
+        color: #FFFFFF;
+    }
+
+    /* 06. ABA DOENÇAS */
+
+    .home-menu .home-disease-wrap,
+    .home-menu .home-select-wrap,
+    .home-menu .home-select-wrap-wide {
+        position: absolute;
+        width: 232px;
+        height: 43px;
+        left: 28px;
+        top: 140px;
+        margin: 0;
+        z-index: 40;
+    }
+
+    .home-menu .home-disease-input,
+    .home-menu .home-select,
+    .home-menu .home-select-wide {
+        display: block;
+        width: 232px;
+        height: 43px;
+        padding: 0 38px 0 13px;
+        border: 1px solid #0193FF;
+        border-radius: 6px;
+        background: #FFFFFF;
+        outline: none;
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 27px;
+        color: #010009;
+    }
+
+    .home-menu .home-disease-input::placeholder {
+        color: #8F8F93;
+        opacity: 1;
+    }
+
+    .home-menu .home-disease-search-icon {
+        position: absolute;
+        right: 13px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #0193FF;
+        font-size: 14px;
+        pointer-events: none;
+    }
+
+    .home-menu .home-disease-options {
+        position: absolute;
+        width: 232px;
+        max-height: 190px;
+        left: 0;
+        top: 49px;
+        overflow-y: auto;
+        border: 1px solid #E3E3E3;
+        border-radius: 6px;
+        background: #FFFFFF;
+        box-shadow: 0 6px 18px rgba(0,0,0,.14);
+        z-index: 999;
+    }
+
+    .home-menu .home-disease-option {
+        display: block;
+        width: 100%;
+        min-height: 39px;
+        padding: 9px 13px;
+        border: 0;
+        border-bottom: 1px solid #EEEEEE;
+        background: #FFFFFF;
+        color: #333333;
+        font-family: "Inter", Arial, sans-serif;
+        font-size: 12px;
+        line-height: 18px;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    /* 07. ABA + TRATAMENTOS
+       Campo 1: top 140px
+       Campo 2: top 201px */
+
+    [data-home-panel="tratamentos"] {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    [data-home-panel="tratamentos"] .home-menu-description {
+        width: 232px;
+        left: 28px;
+        top: 40px;
+        font-size: 15px;
+        line-height: 27px;
+        font-weight: 600;
+        color: #FFFFFF;
+    }
+
+    .home-menu-treatment-flow-row {
+        position: absolute;
+        width: 232px;
+        height: auto;
+        left: 28px;
+        top: 140px;
+        display: block;
+        margin: 0;
+        padding: 0;
+        z-index: 50;
+    }
+
+    .home-menu-treatment-flow-search {
+        position: relative;
+        display: block;
+        width: 232px;
+        height: 43px;
+        margin: 0;
+        z-index: 50;
+    }
+
+    .home-menu-treatment-flow-search + .home-menu-treatment-flow-search {
+        position: absolute;
+        left: 0;
+        top: 61px;
+    }
+
+    .home-menu-treatment-flow-search[hidden] {
+        display: none !important;
+    }
+
+    .home-menu-treatment-flow-search input {
+        display: block;
+        width: 232px;
+        height: 43px;
+        margin: 0;
+        padding: 0 38px 0 13px;
+        border: 1px solid #0193FF;
+        border-radius: 6px;
+        background: #FFFFFF;
+        outline: none;
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 27px;
+        color: #010009;
+    }
+
+    .home-menu-treatment-flow-search input::placeholder {
+        color: #8F8F93;
+        opacity: 1;
+    }
+
+    .home-menu-treatment-flow-search > i {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        right: 13px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #0193FF;
+        font-size: 14px;
+        pointer-events: none;
+        z-index: 3;
+    }
+
+    .home-menu-treatment-flow-results {
+        position: absolute;
+        width: 232px;
+        max-height: 190px;
+        left: 0;
+        top: 49px;
+        overflow-y: auto;
+        border: 1px solid #E3E3E3;
+        border-radius: 6px;
+        background: #FFFFFF;
+        box-shadow: 0 6px 18px rgba(0,0,0,.14);
+        z-index: 999;
+    }
+
+    /* 08. ABA ARTIGOS
+       Campo 1: top 140px
+       Campo 2: top 201px */
+
+    [data-home-panel="artigos"] {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    [data-home-panel="artigos"] .home-menu-description {
+        width: 232px;
+        left: 30px;
+        top: 40px;
+        margin: 0;
+        font-size: 15px;
+        line-height: 27px;
+        font-weight: 500;
+        color: #000000;
+    }
+
+    .home-menu-article-search-row {
+        position: absolute;
+        width: 232px;
+        height: auto;
+        left: 29px;
+        top: 140px;
+        display: block;
+        margin: 0;
+        padding: 0;
+        z-index: 50;
+    }
+
+    .home-menu-article-search {
+        position: relative;
+        display: block;
+        width: 232px;
+        height: 43px;
+        margin: 0;
+        z-index: 50;
+    }
+
+    #home-menu-article-treatment-wrap {
+        position: absolute;
+        width: 232px;
+        height: 43px;
+        left: 0;
+        top: 61px;
+        margin: 0;
+    }
+
+    .home-menu-article-search[hidden],
+    #home-menu-article-treatment-wrap[hidden] {
+        display: none !important;
+    }
+
+    .home-menu-article-search input {
+        display: block;
+        width: 232px;
+        height: 43px;
+        margin: 0;
+        padding: 0 38px 0 13px;
+        border: 1px solid #0193FF;
+        border-radius: 6px;
+        background: #FFFFFF;
+        outline: none;
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 400;
+        font-size: 12.35px;
+        line-height: 22px;
+        color: #010009;
+    }
+
+    .home-menu-article-search input::placeholder {
+        color: #8F8F93;
+        opacity: 1;
+    }
+
+    .home-menu-article-search > i {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        right: 13px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #0193FF;
+        font-size: 14px;
+        pointer-events: none;
+        z-index: 3;
+    }
+
+    .home-menu-article-results {
+        position: absolute;
+        width: 232px;
+        max-height: 190px;
+        left: 0;
+        top: 49px;
+        overflow-y: auto;
+        border: 1px solid #E3E3E3;
+        border-radius: 6px;
+        background: #FFFFFF;
+        box-shadow: 0 6px 18px rgba(0,0,0,.14);
+        z-index: 999;
+    }
+
+    .home-menu-treatment-treatment-result,
+    .home-menu-treatment-disease-result,
+    .home-menu-article-disease-result,
+    .home-menu-article-treatment-result {
+        display: block;
+        width: 100%;
+        min-height: 39px;
+        padding: 9px 13px;
+        border: 0;
+        border-bottom: 1px solid #EEEEEE;
+        background: #FFFFFF;
+        color: #333333;
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 18px;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .home-menu-treatment-treatment-result[hidden],
+    .home-menu-treatment-disease-result[hidden],
+    .home-menu-article-disease-result[hidden],
+    .home-menu-article-treatment-result[hidden],
+    .home-menu-treatment-flow-results[hidden],
+    .home-menu-article-results[hidden],
+    .home-menu .home-disease-option[hidden],
+    .home-menu .home-disease-options[hidden] {
+        display: none !important;
+    }
+
+    .home-menu-treatment-treatment-result:hover,
+    .home-menu-treatment-treatment-result:focus,
+    .home-menu-treatment-disease-result:hover,
+    .home-menu-treatment-disease-result:focus,
+    .home-menu-article-disease-result:hover,
+    .home-menu-article-disease-result:focus,
+    .home-menu-article-treatment-result:hover,
+    .home-menu-article-treatment-result:focus,
+    .home-menu .home-disease-option:hover,
+    .home-menu .home-disease-option:focus {
+        background: #F2F8FF;
+        color: #0193FF;
+        outline: none;
+    }
+
+
+    /* ========================================================
+       09. BASE DOS 3 BLOCOS
+       ======================================================== */
+
+    .home-feature {
+        position: relative;
+
+        width: 320px;
+        max-width: 100%;
+
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .home-feature-inner {
+        position: relative;
+
+        display: block;
+
+        width: 320px;
+        max-width: 100%;
+        height: 100%;
+
+        margin: 0;
+        padding: 0;
+    }
+
+    .home-feature-media {
+        position: absolute;
+
+        width: 320px;
+        height: 302px;
+
+        left: 0;
+        top: 0;
+
+        margin: 0;
+        padding: 0;
+
+        overflow: hidden;
+    }
+
+    .home-feature-media img {
+        display: block;
+
+        width: 320px;
+        height: 302px;
+
+        object-fit: cover;
+    }
+
+
+    /* ========================================================
+       10. BLOCO 1
+       TRATAMENTOS EM ORDEM DE EFICÁCIA
+       FIGMA: 320 x 686
+       ======================================================== */
+
+    .home-feature-one {
+        width: 320px !important;
+        height: 686px !important;
+
+        background: #0193FF !important;
+
+        overflow: visible !important;
+    }
+
+    .home-feature-one
+    .home-feature-inner {
+        width: 320px !important;
+        height: 686px !important;
+    }
+
+    .home-feature-one
+    .home-feature-media {
+        width: 320px !important;
+        height: 302px !important;
+
+        left: 0 !important;
+        top: 0 !important;
+
+        z-index: 1;
+    }
+
+    .home-feature-one
+    .home-feature-media img {
+        width: 320px !important;
+        height: 302px !important;
+    }
+
+    .home-feature-one
+    .home-feature-copy {
+        position: absolute !important;
+
+        display: block !important;
+
+        width: 320px !important;
+        height: 384px !important;
+
+        left: 0 !important;
+        top: 302px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        background: #0193FF !important;
+
+        color: #FFFFFF !important;
+
+        overflow: visible !important;
+
+        z-index: 10;
+    }
+
+    .home-feature-one
+    .home-feature-title {
+        position: absolute !important;
+
+        width: 311px !important;
+        height: 58px !important;
+
+        left: 50% !important;
+        top: 13px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+
+        display: flex !important;
+        align-items: flex-end;
+        justify-content: center;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 700;
+
+        font-size: 20px !important;
+        line-height: 24px !important;
+
+        text-align: center;
+
+        color: #FFFFFF !important;
+    }
+
+    .home-feature-one
+    .home-feature-description {
+        position: absolute !important;
+
+        width: 260px !important;
+
+        left: 50% !important;
+        top: 87px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 500;
+
+        font-size: 13px !important;
+        line-height: 25px !important;
+
+        text-align: justify;
+
+        color: #FFFFFF !important;
+    }
+
+
+    /* PRIMEIRO CAMPO */
+
+    .home-feature-one
+    .home-feature-disease-wrap {
+        position: absolute !important;
+
+        width: 232px !important;
+        height: 43px !important;
+
+        left: 50% !important;
+        top: 235px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+
+        z-index: 60;
+    }
+
+
+    /* SEGUNDO CAMPO */
+
+    .home-feature-one
+    .home-feature-treatment-wrap {
+        position: absolute !important;
+
+        display: block;
+
+        width: 232px !important;
+        height: 43px !important;
+
+        left: 50% !important;
+        top: 288px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+
+        z-index: 59;
+    }
+
+    .home-feature-one
+    .home-feature-treatment-wrap[hidden] {
+        display: none !important;
+    }
+
+
+    /* INPUTS */
+
+    .home-feature-one
+    .home-disease-input,
+
+    .home-feature-one
+    .home-feature-treatment-input {
+        display: block !important;
+
+        width: 232px !important;
+        height: 43px !important;
+
+        margin: 0 !important;
+
+        padding: 0 38px 0 13px !important;
+
+        border: 1px solid #FFFFFF !important;
+        border-radius: 6px !important;
+
+        background: #FFFFFF !important;
+
+        outline: none !important;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 400;
+
+        font-size: 12.35px !important;
+        line-height: 22px !important;
+
+        color: #010009 !important;
+    }
+
+    .home-feature-one
+    .home-disease-input::placeholder,
+
+    .home-feature-one
+    .home-feature-treatment-input::placeholder {
+        color: #8F8F93 !important;
+        opacity: 1 !important;
+    }
+
+
+    /* LUPAS */
+
+    .home-feature-one
+    .home-disease-search-icon,
+
+    .home-feature-one
+    .home-feature-treatment-icon {
+        position: absolute !important;
+
+        width: 16px;
+        height: 16px;
+
+        right: 13px !important;
+        top: 50% !important;
+
+        transform: translateY(-50%) !important;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        color: #0193FF !important;
+
+        font-size: 14px !important;
+
+        pointer-events: none;
+
+        z-index: 3;
+    }
+
+
+    /* RESULTADOS */
+
+    .home-feature-one
+    .home-disease-options,
+
+    .home-feature-one
+    .home-feature-treatment-options {
+        position: absolute !important;
+
+        width: 232px !important;
+        max-height: 190px;
+
+        left: 0 !important;
+        top: 49px !important;
+
+        overflow-y: auto;
+
+        border: 1px solid #E3E3E3;
+        border-radius: 6px;
+
+        background: #FFFFFF;
+
+        box-shadow:
+            0 6px 18px
+            rgba(0, 0, 0, 0.14);
+
+        z-index: 999;
+    }
+
+    .home-feature-one
+    .home-disease-option,
+
+    .home-feature-one
+    .home-feature-treatment-option {
+        display: block;
+
+        width: 100%;
+        min-height: 39px;
+
+        padding: 9px 13px;
+
+        border: 0;
+        border-bottom: 1px solid #EEEEEE;
+
+        background: #FFFFFF;
+
+        color: #333333;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-size: 12px;
+        line-height: 18px;
+
+        text-align: left;
+
+        cursor: pointer;
+    }
+
+
+    /* ========================================================
+       11. BLOCO 2
+       DETALHES COMPLETOS
+       FIGMA: 320 x 660
+       ======================================================== */
+
+    .home-feature-two {
+        width: 320px !important;
+        height: 660px !important;
+
+        background: #FFFFFF;
+    }
+
+    .home-feature-two
+    .home-feature-inner {
+        width: 320px !important;
+        height: 660px !important;
+    }
+
+    .home-feature-two
+    .home-feature-media {
+        position: absolute !important;
+
+        width: 320px !important;
+        height: 302px !important;
+
+        left: 0 !important;
+        top: 0 !important;
+    }
+
+    .home-feature-two
+    .home-feature-media img {
+        width: 320px !important;
+        height: 302px !important;
+
+        object-fit: cover;
+    }
+
+    .home-feature-two
+    .home-feature-copy,
+    .home-feature-two
+    .home-feature-copy-dark {
+        position: absolute !important;
+
+        width: 320px !important;
+        height: 358px !important;
+
+        left: 0 !important;
+        top: 302px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        background: #FFFFFF;
+
+        color: #000000;
+    }
+
+    .home-feature-two
+    .home-feature-title {
+        position: absolute !important;
+
+        width: 311px !important;
+        height: 58px !important;
+
+        left: 50% !important;
+        top: 13px !important;
+
+        transform: translateX(-50%);
+
+        margin: 0 !important;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 700;
+
+        font-size: 20px !important;
+        line-height: 24px !important;
+
+        text-align: center;
+
+        color: #000000;
+    }
+
+    .home-feature-two
+    .home-feature-description {
+        position: absolute !important;
+
+        width: 260px !important;
+
+        left: 30px !important;
+        top: 87px !important;
+
+        margin: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 400;
+
+        font-size: 13px !important;
+        line-height: 27px !important;
+
+        text-align: justify;
+
+        color: #000000;
+    }
+
+    .home-feature-two
+    .home-detail-flow {
+        position: absolute !important;
+
+        width: 232px !important;
+
+        left: 44px !important;
+        top: 292px !important;
+
+        margin: 0 !important;
 
         z-index: 50;
     }
 
+    .home-feature-two
+    .home-detail-search {
+        position: relative !important;
 
-    .home-feature-one
-    .home-feature-disease-wrap
-    .home-disease-input {
-        width: 232px;
-        height: 42.76px;
+        width: 232px !important;
+        height: 43px !important;
 
-        padding:
-            0
-            38px
-            0
-            13px;
+        margin: 0 !important;
+    }
 
-        border: 0.82px solid #0094FF;
+    .home-feature-two
+    #home-detail-treatment-wrap {
+        margin-top: 10px !important;
+    }
+
+    .home-feature-two
+    #home-detail-treatment-wrap[hidden] {
+        display: none !important;
+    }
+
+    .home-feature-two
+    .home-detail-search input {
+        display: block;
+
+        width: 232px !important;
+        height: 43px !important;
+
+        margin: 0 !important;
+
+        padding: 0 38px 0 13px !important;
+
+        border: 1px solid #0193FF !important;
+        border-radius: 6px !important;
+
+        background: #FFFFFF;
+
+        outline: none;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-size: 13px;
+        line-height: 27px;
+
+        color: #010009;
+    }
+
+    .home-feature-two
+    .home-detail-search > i {
+        position: absolute !important;
+
+        right: 13px !important;
+        top: 50% !important;
+
+        transform: translateY(-50%);
+
+        color: #0193FF;
+
+        font-size: 14px;
+
+        pointer-events: none;
+    }
+
+    .home-feature-two
+    .home-detail-results {
+        position: absolute !important;
+
+        width: 232px !important;
+        max-height: 190px;
+
+        left: 0 !important;
+        top: 49px !important;
+
+        overflow-y: auto;
+
+        border: 1px solid #E3E3E3;
+        border-radius: 6px;
+
+        background: #FFFFFF;
+
+        box-shadow:
+            0 6px 18px
+            rgba(0, 0, 0, 0.14);
+
+        z-index: 999;
+    }
+
+    .home-feature-two
+    .home-detail-disease-result,
+
+    .home-feature-two
+    .home-detail-treatment-result {
+        display: block;
+
+        width: 100%;
+        min-height: 39px;
+
+        padding: 9px 13px;
+
+        border: 0;
+        border-bottom: 1px solid #EEEEEE;
+
+        background: #FFFFFF;
+
+        color: #333333;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-size: 12px;
+        line-height: 18px;
+
+        text-align: left;
+
+        cursor: pointer;
+    }
+
+
+    /* ========================================================
+       12. BLOCO 3
+       ARTIGOS CIENTÍFICOS
+       FIGMA: 320 x 686
+       ======================================================== */
+
+    .home-feature-third {
+        position: relative !important;
+
+        width: 320px !important;
+        height: 686px !important;
+
+        margin: 0 auto !important;
+        padding: 0 !important;
+
+        background: #0193FF !important;
+
+        overflow: visible !important;
+    }
+
+    .home-feature-third
+    .home-feature-inner {
+        position: relative !important;
+
+        width: 320px !important;
+        height: 686px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .home-feature-third
+    .home-feature-media {
+        position: absolute !important;
+
+        width: 320px !important;
+        height: 302px !important;
+
+        left: 0 !important;
+        top: 0 !important;
+
+        overflow: hidden;
+
+        z-index: 1;
+    }
+
+    .home-feature-third
+    .home-feature-media img {
+        width: 320px !important;
+        height: 302px !important;
+
+        object-fit: cover;
+    }
+
+    .home-feature-third
+    .home-feature-copy {
+        position: absolute !important;
+
+        display: block !important;
+
+        width: 320px !important;
+        height: 384px !important;
+
+        left: 0 !important;
+        top: 302px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        background: #0193FF !important;
+
+        color: #FFFFFF !important;
+
+        overflow: visible !important;
+
+        z-index: 10;
+    }
+
+    .home-feature-third
+    .home-feature-title {
+        position: absolute !important;
+
+        width: 311px !important;
+        height: 58px !important;
+
+        left: 50% !important;
+        top: 13px !important;
+
+        transform: translateX(-50%);
+
+        margin: 0 !important;
+
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 700;
+
+        font-size: 20px !important;
+        line-height: 24px !important;
+
+        text-align: center;
+
+        color: #FFFFFF !important;
+    }
+
+    .home-feature-third
+    .home-feature-description {
+        position: absolute !important;
+
+        width: 260px !important;
+
+        left: 50% !important;
+        top: 87px !important;
+
+        transform: translateX(-50%);
+
+        margin: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 400;
+
+        font-size: 13px !important;
+        line-height: 25px !important;
+
+        text-align: justify;
+
+        color: #FFFFFF !important;
+    }
+
+
+    /* ESTE ERA UM DOS ERROS:
+       estava top:312px.
+       Como o flow está dentro do copy, deve ser relativo
+       à área azul. */
+
+    .home-feature-third
+    .home-feature-article-flow {
+        position: absolute !important;
+
+        width: 232px !important;
+
+        left: 50% !important;
+        top: 235px !important;
+
+        transform: translateX(-50%);
+
+        margin: 0 !important;
+
+        z-index: 60;
+    }
+
+    .home-feature-third
+    .home-feature-article-search {
+        position: relative !important;
+
+        width: 232px !important;
+        height: 43px !important;
+
+        margin: 0 !important;
+    }
+
+    .home-feature-third
+    #home-feature-article-treatment-wrap {
+        margin-top: 10px !important;
+    }
+
+    .home-feature-third
+    #home-feature-article-treatment-wrap[hidden] {
+        display: none !important;
+    }
+
+    .home-feature-third
+    .home-feature-article-search input {
+        display: block;
+
+        width: 232px !important;
+        height: 43px !important;
+
+        margin: 0 !important;
+
+        padding: 0 38px 0 13px !important;
+
+        border: 1px solid #FFFFFF !important;
+        border-radius: 6px !important;
+
+        background: #FFFFFF !important;
+
+        outline: none;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-size: 12.35px !important;
+        line-height: 22px !important;
+
+        color: #010009;
+    }
+
+    .home-feature-third
+    .home-feature-article-search
+    input::placeholder {
+        color: #8F8F93;
+        opacity: 1;
+    }
+
+    .home-feature-third
+    .home-feature-article-search > i {
+        position: absolute !important;
+
+        width: 16px;
+        height: 16px;
+
+        right: 13px !important;
+        top: 50% !important;
+
+        transform: translateY(-50%);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        color: #0193FF;
+
+        font-size: 14px;
+
+        pointer-events: none;
+    }
+
+    .home-feature-third
+    .home-feature-article-results {
+        position: absolute !important;
+
+        width: 232px !important;
+        max-height: 190px;
+
+        left: 0 !important;
+        top: 49px !important;
+
+        overflow-y: auto;
+
+        border: 1px solid #E3E3E3;
+        border-radius: 6px;
+
+        background: #FFFFFF;
+
+        box-shadow:
+            0 6px 18px
+            rgba(0, 0, 0, 0.14);
+
+        z-index: 999;
+    }
+
+    .home-feature-third
+    .home-feature-article-disease-result,
+
+    .home-feature-third
+    .home-feature-article-treatment-result {
+        display: block;
+
+        width: 100%;
+        min-height: 39px;
+
+        padding: 9px 13px;
+
+        border: 0;
+        border-bottom: 1px solid #EEEEEE;
+
+        background: #FFFFFF;
+
+        color: #333333;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-size: 12px;
+        line-height: 18px;
+
+        text-align: left;
+
+        cursor: pointer;
+    }
+
+
+    /* ========================================================
+       13. BANNER FAMÍLIA
+       FIGMA: 320 x 454
+       ======================================================== */
+
+    .home-share {
+        width: 320px;
+        max-width: 100%;
+        height: 454px;
+
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    .share-banner {
+        position: relative;
+
+        width: 320px;
+        max-width: 100%;
+        height: 454px;
+
+        margin: 0;
+
+        overflow: hidden;
+
+        background: #111111;
+    }
+
+    .share-banner-picture {
+        display: block;
+
+        width: 320px;
+        height: 454px;
+    }
+
+    .share-banner-img {
+        display: block;
+
+        width: 320px;
+        height: 454px;
+
+        object-fit: cover;
+    }
+
+    .share-banner::after {
+        content: "";
+
+        position: absolute;
+
+        width: 100%;
+        height: 205px;
+
+        left: 0;
+        top: 0;
+
+        z-index: 2;
+
+        background:
+            linear-gradient(
+                180deg,
+                #0E100D 9.96%,
+                rgba(0, 0, 0, 0) 100%
+            );
+
+        pointer-events: none;
+    }
+
+    .share-whatsapp-link {
+        position: absolute;
+
+        width: 153px;
+        height: 31px;
+
+        left: 83px;
+        bottom: 21px;
+
+        z-index: 5;
+    }
+
+
+    /* ========================================================
+       14. NEWSLETTER
+       FIGMA: 320 x 238
+       ======================================================== */
+
+    .newsletter-strip {
+        position: relative;
+
+        display: block;
+
+        width: 320px;
+        max-width: 100%;
+        height: 238px;
+
+        margin: 0 auto;
+        padding: 0;
+
+        background: #0193FF;
+    }
+
+    .newsletter-icon {
+        position: absolute;
+
+        width: 47px;
+        height: 40px;
+
+        left: 136px;
+        top: 36px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        color: #FFFFFF;
+
+        font-size: 38px;
+    }
+
+    .newsletter-title {
+        position: absolute;
+
+        width: 239px;
+        height: 61px;
+
+        left: 40px;
+        top: 89px;
+
+        margin: 0;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 700;
+        font-size: 15px;
+        line-height: 25px;
+
+        text-align: center;
+
+        color: #FFFFFF;
+    }
+
+    .newsletter-button {
+        position: absolute;
+
+        width: 166px;
+        height: 41px;
+
+        left: 77px;
+        top: 163px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border: 0;
         border-radius: 5px;
 
         background: #FFFFFF;
 
-        font-size: 12.35px;
-        line-height: 22px;
+        color: #0193FF;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 700;
+        font-size: 15px;
+
+        text-align: center;
     }
 
 
-    .home-feature-one
-    .home-feature-disease-wrap
-    .home-disease-search-icon {
-        right: 13px;
-        top: 13px;
+    /* ========================================================
+       15. FOOTER
+       Mantém a estrutura HTML ATUAL
+       ======================================================== */
 
-        font-size: 14px;
+    .site-footer {
+        position: relative;
+
+        width: 320px;
+        max-width: 100%;
+        height: 917px;
+
+        margin: 0 auto;
+
+        background: #FFFFFF;
     }
 
+    .site-footer-content {
+        position: relative;
 
-    .home-feature-one
-    .home-feature-disease-wrap
-    .home-disease-options {
-        width: 232px;
+        width: 320px;
+        height: 799px;
 
-        left: 0;
-        top: 49px;
+        margin: 0;
+        padding: 0;
 
-        max-height: 190px;
+        background: #FFFFFF;
+    }
+
+    .footer-group {
+        position: absolute;
+
+        margin: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        gap: 5px;
+    }
+
+    .footer-title {
+        margin: 0;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 700;
+        font-size: 15px;
+        line-height: 21px;
+
+        color: #010009;
+    }
+
+    .footer-group a,
+    .footer-contract-text {
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 16px;
+
+        color: #8F8F93;
+    }
+
+    .footer-treatments {
+        width: 230px;
+
+        left: 18px;
+        top: 45px;
+    }
+
+    .footer-articles {
+        width: 230px;
+
+        left: 18px;
+        top: 115px;
+    }
+
+    .footer-presentations {
+        width: 190px;
+
+        left: 17px;
+        top: 234px;
+    }
+
+    .footer-contact {
+        width: 190px;
+
+        left: 18px;
+        top: 378px;
+    }
+
+    .footer-documents {
+        width: 180px;
+
+        left: 18px;
+        top: 487px;
+    }
+
+    .footer-opinions {
+        width: 230px;
+
+        left: 18px;
+        top: 585px;
+    }
+
+    .footer-contract {
+        width: 210px;
+
+        left: 18px;
+        top: 632px;
+    }
+
+    .footer-access-button {
+        position: absolute;
+
+        width: 235px;
+        height: 68px;
+
+        left: 42px;
+        top: 711px;
+
+        padding: 12px 22px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         border-radius: 5px;
-    }
 
+        background: #0193FF;
 
-    .home-feature-one
-    .home-feature-disease-wrap
-    .home-disease-option {
-        min-height: 39px;
+        color: #FFFFFF;
 
-        padding:
-            9px
-            13px;
-
-        font-size: 12px;
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 700;
+        font-size: 15px;
         line-height: 18px;
+
+        text-align: center;
     }
 
 
+    /* ========================================================
+       16. LEGAL
+       FIGMA: 320 x 118
+       ======================================================== */
 
-        /* =====================================================
-        BLOCO 2
-        IMAGEM + BRANCO
-        660px
-        ===================================================== */
+    .site-footer-legal {
+        position: absolute;
 
-        .home-feature-two {
-            height: 660px !important;
+        width: 320px;
+        height: 118px;
 
-            background: #FFFFFF;
-        }
+        left: 0;
+        bottom: 0;
 
+        padding: 0;
 
-        .home-feature-two .home-feature-copy {
-            position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
 
-            width: 320px;
-            height: 358px;
+        border: 3px solid #E3E3E3;
 
-            left: 0;
-            top: 302px;
-
-            margin: 0;
-            padding: 0;
-
-            background: #FFFFFF;
-
-            color: #000000;
-        }
-
-
-        .home-feature-two .home-feature-title {
-            position: absolute;
-
-            width: 311px;
-            height: 58px;
-
-            left: 4.5px;
-            top: 13px;
-
-            margin: 0;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-weight: 700;
-            font-size: 20px;
-            line-height: 24px;
-
-            text-align: center;
-
-            color: #000000;
-        }
-
-
-        .home-feature-two .home-feature-description {
-            position: absolute;
-
-            width: 260px;
-
-            left: 30px;
-            top: 87px;
-
-            margin: 0;
-
-            font-weight: 400;
-            font-size: 13px;
-            line-height: 27px;
-
-            text-align: justify;
-
-            color: #000000;
-        }
-
-
-        .home-feature-two .home-treatment-search {
-            position: absolute;
-
-            width: 232px;
-            height: 42.76px;
-
-            left: 44px;
-            top: 292px;
-
-            margin: 0;
-        }
-
-
-        .home-feature-two .home-treatment-search input {
-            width: 232px;
-            height: 42.76px;
-
-            padding:
-                0
-                38px
-                0
-                16px;
-
-            border: 1px solid #0094FF;
-
-            border-radius: 6px;
-
-            background: #FFFFFF;
-
-            font-size: 13px;
-            line-height: 27px;
-
-            color: #010009;
-        }
-
-
-        .home-feature-two .home-treatment-search > i {
-            right: 13px;
-            top: 13px;
-
-            font-size: 14px;
-        }
-
-
-        .home-feature-two .home-treatment-results {
-            width: 232px;
-
-            top: 49px;
-
-            max-height: 190px;
-
-            border-radius: 6px;
-        }
-
-
-        .home-feature-two .home-treatment-result {
-            min-height: 39px;
-
-            padding:
-                9px
-                13px;
-
-            font-size: 12px;
-            line-height: 18px;
-        }
-
-
-
-        /* =====================================================
-        BLOCO 3
-        686px
-        ===================================================== */
-
-        .home-feature-third {
-            height: 686px !important;
-
-            background: #0094FF;
-        }
-
-
-        .home-feature-third .home-feature-copy {
-            position: absolute;
-
-            width: 320px;
-            height: 384px;
-
-            left: 0;
-            top: 302px;
-
-            margin: 0;
-            padding: 0;
-
-            background: #0094FF;
-
-            color: #FFFFFF;
-        }
-
-
-        .home-feature-third .home-feature-title {
-            position: absolute;
-
-            width: 311px;
-            height: 58px;
-
-            left: 4.5px;
-            top: 13px;
-
-            margin: 0;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-weight: 700;
-            font-size: 20px;
-            line-height: 24px;
-
-            text-align: center;
-
-            color: #FFFFFF;
-        }
-
-
-        .home-feature-third .home-feature-description {
-            position: absolute;
-
-            width: 260px;
-
-            left: 30px;
-            top: 87px;
-
-            margin: 0;
-
-            font-weight: 500;
-            font-size: 13px;
-            line-height: 25px;
-
-            text-align: justify;
-
-            color: #FFFFFF;
-        }
-
-
-        /* PRIMEIRO SELECT */
-
-        .home-feature-third .home-inline-select {
-            position: absolute;
-
-            width: 232px;
-            height: 42.76px;
-
-            left: 44px;
-            top: 254px;
-
-            margin: 0;
-        }
-
-
-        .home-feature-third .home-inline-select select {
-            width: 232px;
-            height: 42.76px;
-
-            padding:
-                0
-                35px
-                0
-                13px;
-
-            border: 0.82px solid #0094FF;
-
-            border-radius: 5px;
-
-            font-size: 12.35px;
-
-            color: #8F8F93;
-        }
-
-
-        /* SEGUNDO SELECT */
-
-        .home-feature-third
-        .home-article-treatment-select {
-            position: absolute;
-
-            width: 231px;
-            height: 42.66px;
-
-            left: 45px;
-            top: 315px;
-
-            margin: 0;
-        }
-
-
-        .home-feature-third
-        .home-article-treatment-select select {
-            width: 231px;
-            height: 42.66px;
-
-            padding:
-                0
-                35px
-                0
-                13px;
-
-            border: 0.82px solid #0094FF;
-
-            border-radius: 6px;
-
-            background: #FFFFFF;
-
-            font-size: 12.28px;
-
-            color: #8F8F93;
-        }
-
-
-
-        /* =====================================================
-        BANNER
-        320 x 454
-        ===================================================== */
-
-        .home-share {
-            width: 320px;
-            max-width: 100%;
-            height: 454px;
-
-            margin: 0 auto;
-
-            padding: 0;
-        }
-
-
-        .share-banner {
-            position: relative;
-
-            width: 320px;
-            height: 454px;
-
-            margin: 0;
-
-            overflow: hidden;
-
-            background: #111111;
-        }
-
-
-        .share-banner-picture,
-        .share-banner-img {
-            width: 320px;
-            height: 454px;
-        }
-
-
-        .share-banner-img {
-            object-fit: cover;
-        }
-
-
-        .share-banner::after {
-            content: "";
-
-            position: absolute;
-
-            z-index: 2;
-
-            width: 100%;
-            height: 205px;
-
-            left: 0;
-            top: 0;
-
-            background:
-                linear-gradient(
-                    180deg,
-                    #0E100D 9.96%,
-                    rgba(0, 0, 0, 0) 100%
-                );
-
-            pointer-events: none;
-        }
-
-
-        .share-whatsapp-link {
-            position: absolute;
-
-            z-index: 5;
-
-            width: 153px;
-            height: 31px;
-
-            left: 83px;
-            right: auto;
-
-            bottom: 21px;
-        }
-
-
-
-        /* =====================================================
-        NEWSLETTER
-        320 x 238
-        ===================================================== */
-
-        .newsletter-strip {
-            position: relative;
-
-            width: 320px;
-            max-width: 100%;
-            height: 238px;
-
-            margin: 0 auto;
-
-            padding: 0;
-
-            display: block;
-
-            background: #0094FF;
-        }
-
-
-        .newsletter-icon {
-            position: absolute;
-
-            width: 47px;
-            height: 40px;
-
-            left: 136px;
-            top: 36px;
-
-            font-size: 38px;
-        }
-
-
-        .newsletter-title {
-            position: absolute;
-
-            width: 239px;
-            height: 61px;
-
-            left: 40px;
-            top: 89px;
-
-            margin: 0;
-
-            font-weight: 700;
-            font-size: 15px;
-            line-height: 25px;
-
-            text-align: center;
-        }
-
-
-        .newsletter-button {
-            position: absolute;
-
-            width: 166px;
-            height: 41px;
-
-            left: 77px;
-            top: 163px;
-
-            border-radius: 5px;
-
-            font-size: 15px;
-        }
-
-
-
-        /* =====================================================
-        FOOTER MOBILE
-        320 x 887
-        ===================================================== */
-
-        .site-footer {
-            position: relative;
-
-            width: 320px;
-            max-width: 100%;
-            height: 887px;
-
-            margin: 0 auto;
-
-            background: #FFFFFF;
-        }
-
-
-        .site-footer-content {
-            position: relative;
-
-            width: 320px;
-            height: 814px;
-
-            margin: 0;
-
-            padding: 0;
-        }
-
-
-        .footer-group {
-            position: absolute;
-
-            gap: 5px;
-        }
-
-
-        .footer-title {
-            margin: 0;
-
-            font-size: 15px;
-            line-height: 21px;
-        }
-
-
-        .footer-group a,
-        .footer-contract-text {
-            font-size: 13px;
-            line-height: 16px;
-        }
-
-
-        /* TRATAMENTOS */
-
-        .footer-treatments {
-            width: 230px;
-
-            left: 21px;
-            top: 42px;
-        }
-
-
-        /* ARTIGOS */
-
-        .footer-articles {
-            width: 230px;
-
-            left: 21px;
-            top: 136px;
-        }
-
-
-        /* DOCUMENTOS */
-
-        .footer-documents {
-            width: 180px;
-
-            left: 21px;
-            top: 235px;
-        }
-
-
-        /* CONTATO */
-
-        .footer-contact {
-            width: 180px;
-
-            left: 21px;
-            top: 334px;
-        }
-
-
-        /* APRESENTAÇÕES */
-
-        .footer-presentations {
-            width: 190px;
-
-            left: 20px;
-            top: 432px;
-        }
-
-
-        /* OPINIÕES */
-
-        .footer-opinions {
-            width: 230px;
-
-            left: 21px;
-            top: 566px;
-        }
-
-
-        /* CONTRATAR */
-
-        .footer-contract {
-            width: 210px;
-
-            left: 21px;
-            top: 603px;
-        }
-
-
-        /* BOTÃO */
-
-        .footer-access-button {
-            position: absolute;
-
-            width: 232px;
-            height: 65px;
-
-            left: 20px;
-            top: 688px;
-
-            padding: 12px 22px;
-
-            font-weight: 700;
-
-            border-radius: 5px;
-        }
-
-
-        /* LEGAL */
-
-        .site-footer-legal {
-            position: absolute;
-
-            width: 320px;
-            height: 73px;
-
-            left: 0;
-            top: 814px;
-
-            padding: 0;
-
-            border: 3px solid #E3E3E3;
-
-            background: #F4F4F4;
-        }
-
-
-        .site-footer-legal p {
-            width: 249px;
-
-            margin: 0;
-
-            font-weight: 500;
-            font-size: 13.67px;
-            line-height: 17px;
-
-            text-align: center;
-        }
-
+        background: #F4F4F4;
     }
+
+    .site-footer-legal p {
+        width: 249px;
+
+        margin: 0;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-weight: 500;
+        font-size: 13.67px;
+        line-height: 17px;
+
+        text-align: center;
+
+        color: #8F8F93;
+    }
+
+    .site-footer-legal p:first-child {
+        margin-top: 17px;
+    }
+
+    .site-footer-legal p + p {
+        margin-top: 6px;
+    }
+
+
+    /* ========================================================
+       17. AUTOCOMPLETES / HIDDEN
+       ======================================================== */
+
+    .home-disease-options[hidden],
+    .home-disease-option[hidden],
+
+    .home-menu-treatment-flow-results[hidden],
+    .home-menu-treatment-treatment-result[hidden],
+    .home-menu-treatment-disease-result[hidden],
+
+    .home-menu-article-results[hidden],
+    .home-menu-article-disease-result[hidden],
+    .home-menu-article-treatment-result[hidden],
+
+    .home-feature-treatment-options[hidden],
+    .home-feature-treatment-option[hidden],
+
+    .home-detail-results[hidden],
+    .home-detail-disease-result[hidden],
+    .home-detail-treatment-result[hidden],
+
+    .home-feature-article-results[hidden],
+    .home-feature-article-disease-result[hidden],
+    .home-feature-article-treatment-result[hidden] {
+        display: none !important;
+    }
+
+
+    /* ========================================================
+       18. HOVER / FOCUS
+       ======================================================== */
+
+    .home-disease-option:hover,
+    .home-disease-option:focus,
+
+    .home-menu-treatment-treatment-result:hover,
+    .home-menu-treatment-treatment-result:focus,
+
+    .home-menu-treatment-disease-result:hover,
+    .home-menu-treatment-disease-result:focus,
+
+    .home-menu-article-disease-result:hover,
+    .home-menu-article-disease-result:focus,
+
+    .home-menu-article-treatment-result:hover,
+    .home-menu-article-treatment-result:focus,
+
+    .home-feature-treatment-option:hover,
+    .home-feature-treatment-option:focus,
+
+    .home-detail-disease-result:hover,
+    .home-detail-disease-result:focus,
+
+    .home-detail-treatment-result:hover,
+    .home-detail-treatment-result:focus,
+
+    .home-feature-article-disease-result:hover,
+    .home-feature-article-disease-result:focus,
+
+    .home-feature-article-treatment-result:hover,
+    .home-feature-article-treatment-result:focus {
+        background: #F2F8FF;
+
+        color: #0193FF;
+
+        outline: none;
+    }
+
+}
+
+
+
+
+
+
 
     </style>
 
@@ -3966,133 +4304,144 @@ input::-webkit-search-cancel-button {
 
                 
 
-    <!-- =========================================================
-        TRATAMENTOS
-        ========================================================= -->
+<!-- =========================================================
+    TRATAMENTOS
+    FLUXO: TRATAMENTO -> DOENÇA / SINTOMA
+    ========================================================= -->
 
-    <div
-        class="home-tab-panel"
-        data-home-panel="tratamentos"
-        hidden
-    >
+<div
+    class="home-tab-panel"
+    data-home-panel="tratamentos"
+    hidden
+>
 
-        <p class="home-menu-description">
+    <p class="home-menu-description">
 
-            <span class="home-menu-text-desktop">
-                Selecione a doença ou sintoma para encontrar os tratamentos
-                disponíveis e acessar os detalhes completos.
-            </span>
+        <span class="home-menu-text-desktop">
+            Selecione o tratamento e depois a doença ou sintoma
+            para acessar os detalhes completos.
+        </span>
 
-            <span class="home-menu-text-mobile">
-                Selecione a doença ou sintoma para encontrar os tratamentos
-                disponíveis.
-            </span>
+        <span class="home-menu-text-mobile">
+            Selecione o tratamento e depois a doença ou sintoma.
+        </span>
 
-        </p>
+    </p>
 
 
-        <div class="home-menu-treatment-flow-row">
+    <div class="home-menu-treatment-flow-row">
 
-            <!-- =========================================
-                DOENÇA / SINTOMA
-                ========================================= -->
+        <!-- =========================================
+            1. TRATAMENTO
+            aparece primeiro
+            ========================================= -->
 
-            <div
-                class="home-menu-treatment-flow-search"
-                id="home-menu-treatment-disease-wrap"
+        <div
+            class="home-menu-treatment-flow-search"
+            id="home-menu-treatment-treatment-wrap"
+        >
+
+            <input
+                type="search"
+                id="home-menu-treatment-treatment-input"
+                placeholder="Encontre o tratamento"
+                autocomplete="off"
+                aria-label="Encontre o tratamento"
             >
 
-                <input
-                    type="search"
-                    id="home-menu-treatment-disease-input"
-                    placeholder="Encontre a doença ou sintoma"
-                    autocomplete="off"
-                    aria-label="Encontre a doença ou sintoma"
-                >
+            <i
+                class="fa-solid fa-magnifying-glass"
+                aria-hidden="true"
+            ></i>
 
-                <i
-                    class="fa-solid fa-magnifying-glass"
-                    aria-hidden="true"
-                ></i>
-
-
-                <div
-                    class="home-menu-treatment-flow-results"
-                    id="home-menu-treatment-disease-results"
-                    hidden
-                >
-
-                    {% for item in condicoes_home %}
-
-                        <button
-                            type="button"
-                            class="home-menu-treatment-disease-result"
-                            data-label="{{ item.nome }}"
-                            hidden
-                        >
-                            {{ item.nome }}
-                        </button>
-
-                    {% endfor %}
-
-                </div>
-
-            </div>
-
-
-            <!-- =========================================
-                TRATAMENTO
-                começa escondido
-                ========================================= -->
 
             <div
-                class="home-menu-treatment-flow-search"
-                id="home-menu-treatment-treatment-wrap"
+                class="home-menu-treatment-flow-results"
+                id="home-menu-treatment-treatment-results"
                 hidden
             >
 
-                <input
-                    type="search"
-                    id="home-menu-treatment-treatment-input"
-                    placeholder="Encontre o tratamento"
-                    autocomplete="off"
-                    aria-label="Encontre o tratamento"
-                >
+                {% for item in tratamentos_home %}
 
-                <i
-                    class="fa-solid fa-magnifying-glass"
-                    aria-hidden="true"
-                ></i>
+                    <button
+                        type="button"
+                        class="home-menu-treatment-treatment-result"
+                        data-label="{{ item.label }}"
+                        data-condicao="{{ item.condicao }}"
+                        data-url="{{ item.url }}"
+                        hidden
+                    >
+                        {{ item.label }}
+                    </button>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
 
 
-                <div
-                    class="home-menu-treatment-flow-results"
-                    id="home-menu-treatment-treatment-results"
-                    hidden
-                >
+        <!-- =========================================
+            2. DOENÇA / SINTOMA
+            aparece após selecionar o tratamento
+            ========================================= -->
 
-                    {% for item in tratamentos_home %}
+        <div
+            class="home-menu-treatment-flow-search"
+            id="home-menu-treatment-disease-wrap"
+            hidden
+        >
 
-                        <button
-                            type="button"
-                            class="home-menu-treatment-treatment-result"
-                            data-label="{{ item.label }}"
-                            data-condicao="{{ item.condicao }}"
-                            data-url="{{ item.url }}"
-                            hidden
-                        >
-                            {{ item.label }}
-                        </button>
+            <input
+                type="search"
+                id="home-menu-treatment-disease-input"
+                placeholder="Encontre a doença ou sintoma"
+                autocomplete="off"
+                aria-label="Encontre a doença ou sintoma"
+            >
 
-                    {% endfor %}
+            <i
+                class="fa-solid fa-magnifying-glass"
+                aria-hidden="true"
+            ></i>
 
-                </div>
+
+            <div
+                class="home-menu-treatment-flow-results"
+                id="home-menu-treatment-disease-results"
+                hidden
+            >
+
+                <!--
+                    IMPORTANTE:
+                    usamos tratamentos_home aqui também,
+                    porque cada registro já possui:
+                    tratamento + condição + URL.
+                -->
+
+                {% for item in tratamentos_home %}
+
+                    <button
+                        type="button"
+                        class="home-menu-treatment-disease-result"
+                        data-label="{{ item.condicao }}"
+                        data-tratamento="{{ item.label }}"
+                        data-url="{{ item.url }}"
+                        hidden
+                    >
+                        {{ item.condicao }}
+                    </button>
+
+                {% endfor %}
 
             </div>
 
         </div>
 
     </div>
+
+</div>
+
 
     <div
         class="home-tab-panel"
@@ -4316,7 +4665,54 @@ input::-webkit-search-cancel-button {
                     </div>
 
                 </div>
+<!-- =============================================
+    BUSCA DE TRATAMENTO
+    aparece após selecionar a doença
+    ============================================= -->
 
+<div
+    class="home-feature-treatment-wrap"
+    id="home-feature-treatment-wrap"
+    hidden
+>
+    <input
+        type="search"
+        class="home-feature-treatment-input"
+        id="home-feature-treatment-input"
+        placeholder="Selecione o tratamento"
+        autocomplete="off"
+        aria-label="Selecione o tratamento"
+        aria-autocomplete="list"
+        aria-controls="home-feature-treatment-options"
+        aria-expanded="false"
+    >
+
+    <i
+        class="fa-solid fa-magnifying-glass home-feature-treatment-icon"
+        aria-hidden="true"
+    ></i>
+
+    <div
+        class="home-feature-treatment-options"
+        id="home-feature-treatment-options"
+        role="listbox"
+        hidden
+    >
+        {% for item in tratamentos_home %}
+            <button
+                type="button"
+                class="home-feature-treatment-option"
+                data-label="{{ item.label }}"
+                data-condicao="{{ item.condicao }}"
+                data-url="{{ item.url }}"
+                role="option"
+                hidden
+            >
+                {{ item.label }}
+            </button>y
+        {% endfor %}
+    </div>
+</div>
             </div>
             <!-- FIM .home-feature-copy -->
 
@@ -4965,8 +5361,6 @@ input::-webkit-search-cancel-button {
 
 
     </footer>
-
-
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -5006,6 +5400,7 @@ document.addEventListener("DOMContentLoaded", function () {
             tab.classList.toggle("active", ativo);
         });
 
+
         panels.forEach(function (panel) {
 
             const ativo =
@@ -5014,16 +5409,19 @@ document.addEventListener("DOMContentLoaded", function () {
             panel.hidden = !ativo;
         });
 
+
         const menuContent =
             document.querySelector(".home-menu-content");
 
         if (menuContent) {
+
             menuContent.classList.toggle(
                 "tratamentos-active",
                 nome === "tratamentos"
             );
         }
     }
+
 
     tabs.forEach(function (tab) {
 
@@ -5034,6 +5432,7 @@ document.addEventListener("DOMContentLoaded", function () {
             );
         });
     });
+
 
     /* Aba inicial */
 
@@ -5051,6 +5450,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const diseaseOptionsBox =
         document.getElementById("home-disease-options");
 
+
     if (diseaseInput && diseaseOptionsBox) {
 
         const diseaseOptions = Array.from(
@@ -5059,12 +5459,14 @@ document.addEventListener("DOMContentLoaded", function () {
             )
         );
 
+
         function filterMainDiseases() {
 
             const search =
                 normalizeText(diseaseInput.value);
 
             let visibleCount = 0;
+
 
             diseaseOptions.forEach(function (option) {
 
@@ -5086,19 +5488,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
+
             diseaseOptionsBox.hidden =
                 !(search && visibleCount > 0);
         }
+
 
         diseaseInput.addEventListener(
             "input",
             filterMainDiseases
         );
 
+
         diseaseInput.addEventListener(
             "focus",
             filterMainDiseases
         );
+
 
         diseaseOptions.forEach(function (option) {
 
@@ -5109,14 +5515,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             );
 
+
             option.addEventListener(
                 "click",
                 function () {
-
                     goTo(option.dataset.url);
                 }
             );
         });
+
 
         document.addEventListener(
             "click",
@@ -5148,6 +5555,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "home-feature-disease-options"
         );
 
+
     if (
         featureDiseaseInput &&
         featureDiseaseOptions
@@ -5159,6 +5567,7 @@ document.addEventListener("DOMContentLoaded", function () {
             )
         );
 
+
         function closeOptions() {
 
             featureDiseaseOptions.hidden = true;
@@ -5168,6 +5577,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
+
         function filterOptions() {
 
             const search =
@@ -5176,6 +5586,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
             let visibleCount = 0;
+
 
             items.forEach(function (item) {
 
@@ -5197,8 +5608,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
 
+
             featureDiseaseOptions.hidden =
                 !(search && visibleCount > 0);
+
 
             featureDiseaseInput.setAttribute(
                 "aria-expanded",
@@ -5208,10 +5621,12 @@ document.addEventListener("DOMContentLoaded", function () {
             );
         }
 
+
         featureDiseaseInput.addEventListener(
             "input",
             filterOptions
         );
+
 
         featureDiseaseInput.addEventListener(
             "focus",
@@ -5225,6 +5640,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         );
 
+
         items.forEach(function (item) {
 
             item.addEventListener(
@@ -5233,6 +5649,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     event.preventDefault();
                 }
             );
+
 
             item.addEventListener(
                 "click",
@@ -5248,6 +5665,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             );
         });
+
 
         document.addEventListener(
             "click",
@@ -5280,7 +5698,6 @@ document.addEventListener("DOMContentLoaded", function () {
             select.addEventListener(
                 "change",
                 function () {
-
                     goTo(select.value);
                 }
             );
@@ -5312,11 +5729,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
+
             const options = Array.from(
                 results.querySelectorAll(
                     ".home-treatment-result"
                 )
             );
+
 
             function closeResults() {
 
@@ -5332,12 +5751,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
             }
 
+
             function filterResults() {
 
                 const search =
                     normalizeText(input.value);
 
                 let visibleCount = 0;
+
 
                 options.forEach(function (option) {
 
@@ -5370,8 +5791,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
 
+
                 results.hidden =
                     !(search && visibleCount > 0);
+
 
                 input.setAttribute(
                     "aria-expanded",
@@ -5381,10 +5804,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
             }
 
+
             input.addEventListener(
                 "input",
                 filterResults
             );
+
 
             input.addEventListener(
                 "focus",
@@ -5396,6 +5821,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             );
 
+
             options.forEach(function (option) {
 
                 option.addEventListener(
@@ -5404,6 +5830,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         event.preventDefault();
                     }
                 );
+
 
                 option.addEventListener(
                     "click",
@@ -5424,6 +5851,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
             });
 
+
             document.addEventListener(
                 "click",
                 function (event) {
@@ -5441,6 +5869,11 @@ document.addEventListener("DOMContentLoaded", function () {
     /* =========================================================
        FUNÇÃO REUTILIZÁVEL
        DOENÇA -> TRATAMENTO
+
+       Continua sendo utilizada:
+       - bloco Detalhes
+       - Artigos do menu
+       - bloco Artigos
        ========================================================= */
 
     function setupDiseaseTreatmentFlow(config) {
@@ -5470,6 +5903,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 config.treatmentResultsId
             );
 
+
         if (
             !diseaseInput ||
             !diseaseResults ||
@@ -5479,6 +5913,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ) {
             return;
         }
+
 
         const diseaseOptions = Array.from(
             diseaseResults.querySelectorAll(
@@ -5492,12 +5927,9 @@ document.addEventListener("DOMContentLoaded", function () {
             )
         );
 
+
         let selectedCondition = "";
 
-
-        /* -----------------------------------------------------
-           FECHAR DOENÇAS
-           ----------------------------------------------------- */
 
         function closeDiseaseResults() {
 
@@ -5505,7 +5937,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             diseaseOptions.forEach(
                 function (option) {
-
                     option.hidden = true;
                 }
             );
@@ -5517,17 +5948,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /* -----------------------------------------------------
-           FECHAR TRATAMENTOS
-           ----------------------------------------------------- */
-
         function closeTreatmentResults() {
 
             treatmentResults.hidden = true;
 
             treatmentOptions.forEach(
                 function (option) {
-
                     option.hidden = true;
                 }
             );
@@ -5538,10 +5964,6 @@ document.addEventListener("DOMContentLoaded", function () {
             );
         }
 
-
-        /* -----------------------------------------------------
-           RESET DO SEGUNDO CAMPO
-           ----------------------------------------------------- */
 
         function resetTreatment() {
 
@@ -5555,10 +5977,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /* -----------------------------------------------------
-           FILTRAR DOENÇAS
-           ----------------------------------------------------- */
-
         function filterDiseases(
             resetSecondField
         ) {
@@ -5568,11 +5986,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     diseaseInput.value
                 );
 
+
             if (resetSecondField) {
                 resetTreatment();
             }
 
+
             let visibleCount = 0;
+
 
             diseaseOptions.forEach(
                 function (option) {
@@ -5596,9 +6017,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             );
 
+
             const open =
                 search.length > 0 &&
                 visibleCount > 0;
+
 
             diseaseResults.hidden = !open;
 
@@ -5612,7 +6035,6 @@ document.addEventListener("DOMContentLoaded", function () {
         diseaseInput.addEventListener(
             "input",
             function () {
-
                 filterDiseases(true);
             }
         );
@@ -5623,16 +6045,11 @@ document.addEventListener("DOMContentLoaded", function () {
             function () {
 
                 if (diseaseInput.value.trim()) {
-
                     filterDiseases(false);
                 }
             }
         );
 
-
-        /* -----------------------------------------------------
-           SELECIONOU DOENÇA
-           ----------------------------------------------------- */
 
         diseaseOptions.forEach(
             function (option) {
@@ -5640,10 +6057,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 option.addEventListener(
                     "mousedown",
                     function (event) {
-
                         event.preventDefault();
                     }
                 );
+
 
                 option.addEventListener(
                     "click",
@@ -5656,27 +6073,28 @@ document.addEventListener("DOMContentLoaded", function () {
                                 ""
                             ).trim();
 
-                        /*
-                         * IMPORTANTE:
-                         * usamos o próprio label normalizado
-                         * como chave da condição.
-                         */
 
                         selectedCondition =
                             normalizeText(label);
 
+
                         diseaseInput.value =
                             label;
 
+
                         closeDiseaseResults();
+
 
                         treatmentWrap.hidden =
                             false;
 
+
                         treatmentInput.value =
                             "";
 
+
                         closeTreatmentResults();
+
 
                         treatmentInput.focus();
                     }
@@ -5684,10 +6102,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         );
 
-
-        /* -----------------------------------------------------
-           FILTRAR TRATAMENTOS
-           ----------------------------------------------------- */
 
         function filterTreatments() {
 
@@ -5697,6 +6111,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
             let visibleCount = 0;
+
 
             treatmentOptions.forEach(
                 function (option) {
@@ -5714,9 +6129,11 @@ document.addEventListener("DOMContentLoaded", function () {
                             ""
                         );
 
+
                     const sameCondition =
                         condition ===
                         selectedCondition;
+
 
                     const matches =
                         selectedCondition !== "" &&
@@ -5724,6 +6141,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         sameCondition &&
                         label.includes(search) &&
                         visibleCount < 8;
+
 
                     option.hidden = !matches;
 
@@ -5733,12 +6151,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             );
 
+
             const open =
                 search.length > 0 &&
                 visibleCount > 0;
 
+
             treatmentResults.hidden =
                 !open;
+
 
             treatmentInput.setAttribute(
                 "aria-expanded",
@@ -5766,20 +6187,16 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        /* -----------------------------------------------------
-           SELECIONOU TRATAMENTO
-           ----------------------------------------------------- */
-
         treatmentOptions.forEach(
             function (option) {
 
                 option.addEventListener(
                     "mousedown",
                     function (event) {
-
                         event.preventDefault();
                     }
                 );
+
 
                 option.addEventListener(
                     "click",
@@ -5792,14 +6209,18 @@ document.addEventListener("DOMContentLoaded", function () {
                                 ""
                             ).trim();
 
+
                         const url =
                             option.dataset.url ||
                             option.dataset.treatmentUrl;
 
+
                         treatmentInput.value =
                             label;
 
+
                         closeTreatmentResults();
+
 
                         goTo(url);
                     }
@@ -5808,10 +6229,6 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        /* -----------------------------------------------------
-           ESC
-           ----------------------------------------------------- */
-
         diseaseInput.addEventListener(
             "keydown",
             function (event) {
@@ -5819,11 +6236,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (
                     event.key === "Escape"
                 ) {
-
                     closeDiseaseResults();
                 }
             }
         );
+
 
         treatmentInput.addEventListener(
             "keydown",
@@ -5832,16 +6249,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (
                     event.key === "Escape"
                 ) {
-
                     closeTreatmentResults();
                 }
             }
         );
 
-
-        /* -----------------------------------------------------
-           CLIQUE FORA
-           ----------------------------------------------------- */
 
         document.addEventListener(
             "click",
@@ -5855,17 +6267,549 @@ document.addEventListener("DOMContentLoaded", function () {
                         event.target
                     )
                 ) {
-
                     closeDiseaseResults();
                 }
+
 
                 if (
                     !treatmentWrap.contains(
                         event.target
                     )
                 ) {
-
                     closeTreatmentResults();
+                }
+            }
+        );
+    }
+
+
+    /* =========================================================
+       NOVA FUNÇÃO
+       TRATAMENTO -> DOENÇA / SINTOMA
+
+       Utilizada SOMENTE na aba + Tratamentos
+       ========================================================= */
+
+    function setupTreatmentDiseaseFlow(config) {
+
+        const treatmentInput =
+            document.getElementById(
+                config.treatmentInputId
+            );
+
+        const treatmentResults =
+            document.getElementById(
+                config.treatmentResultsId
+            );
+
+        const diseaseWrap =
+            document.getElementById(
+                config.diseaseWrapId
+            );
+
+        const diseaseInput =
+            document.getElementById(
+                config.diseaseInputId
+            );
+
+        const diseaseResults =
+            document.getElementById(
+                config.diseaseResultsId
+            );
+
+
+        if (
+            !treatmentInput ||
+            !treatmentResults ||
+            !diseaseWrap ||
+            !diseaseInput ||
+            !diseaseResults
+        ) {
+            return;
+        }
+
+
+        const treatmentOptions = Array.from(
+            treatmentResults.querySelectorAll(
+                config.treatmentOptionSelector
+            )
+        );
+
+
+        const diseaseOptions = Array.from(
+            diseaseResults.querySelectorAll(
+                config.diseaseOptionSelector
+            )
+        );
+
+
+        let selectedTreatment = "";
+
+
+        /* -----------------------------------------------------
+           FECHA TRATAMENTOS
+           ----------------------------------------------------- */
+
+        function closeTreatmentResults() {
+
+            treatmentResults.hidden = true;
+
+            treatmentOptions.forEach(
+                function (option) {
+                    option.hidden = true;
+                }
+            );
+
+            treatmentInput.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+        }
+
+
+        /* -----------------------------------------------------
+           FECHA DOENÇAS
+           ----------------------------------------------------- */
+
+        function closeDiseaseResults() {
+
+            diseaseResults.hidden = true;
+
+            diseaseOptions.forEach(
+                function (option) {
+                    option.hidden = true;
+                }
+            );
+
+            diseaseInput.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+        }
+
+
+        /* -----------------------------------------------------
+           RESET DO SEGUNDO CAMPO
+           ----------------------------------------------------- */
+
+        function resetDisease() {
+
+            selectedTreatment = "";
+
+            diseaseInput.value = "";
+
+            diseaseWrap.hidden = true;
+
+            closeDiseaseResults();
+        }
+
+
+        /* -----------------------------------------------------
+           FILTRAR TRATAMENTOS
+           ----------------------------------------------------- */
+
+        function filterTreatments(
+            resetSecondField
+        ) {
+
+            const search =
+                normalizeText(
+                    treatmentInput.value
+                );
+
+
+            if (resetSecondField) {
+                resetDisease();
+            }
+
+
+            /*
+             * tratamentos_home pode possuir o mesmo tratamento
+             * mais de uma vez, porque ele pode estar associado
+             * a várias condições.
+             *
+             * Portanto mostramos apenas uma ocorrência de cada
+             * tratamento no primeiro autocomplete.
+             */
+
+            const treatmentsShown =
+                new Set();
+
+            let visibleCount = 0;
+
+
+            treatmentOptions.forEach(
+                function (option) {
+
+                    const label =
+                        (
+                            option.dataset.label ||
+                            option.textContent ||
+                            ""
+                        ).trim();
+
+                    const normalizedLabel =
+                        normalizeText(label);
+
+
+                    const alreadyShown =
+                        treatmentsShown.has(
+                            normalizedLabel
+                        );
+
+
+                    const matches =
+                        search.length > 0 &&
+                        normalizedLabel.includes(
+                            search
+                        ) &&
+                        !alreadyShown &&
+                        visibleCount < 8;
+
+
+                    option.hidden = !matches;
+
+
+                    if (matches) {
+
+                        treatmentsShown.add(
+                            normalizedLabel
+                        );
+
+                        visibleCount++;
+                    }
+                }
+            );
+
+
+            const open =
+                search.length > 0 &&
+                visibleCount > 0;
+
+
+            treatmentResults.hidden =
+                !open;
+
+
+            treatmentInput.setAttribute(
+                "aria-expanded",
+                open ? "true" : "false"
+            );
+        }
+
+
+        treatmentInput.addEventListener(
+            "input",
+            function () {
+                filterTreatments(true);
+            }
+        );
+
+
+        treatmentInput.addEventListener(
+            "focus",
+            function () {
+
+                if (
+                    treatmentInput.value.trim()
+                ) {
+                    filterTreatments(false);
+                }
+            }
+        );
+
+
+        /* -----------------------------------------------------
+           SELECIONOU TRATAMENTO
+           ----------------------------------------------------- */
+
+        treatmentOptions.forEach(
+            function (option) {
+
+                option.addEventListener(
+                    "mousedown",
+                    function (event) {
+                        event.preventDefault();
+                    }
+                );
+
+
+                option.addEventListener(
+                    "click",
+                    function () {
+
+                        const label =
+                            (
+                                option.dataset.label ||
+                                option.textContent ||
+                                ""
+                            ).trim();
+
+
+                        selectedTreatment =
+                            normalizeText(label);
+
+
+                        treatmentInput.value =
+                            label;
+
+
+                        closeTreatmentResults();
+
+
+                        diseaseWrap.hidden =
+                            false;
+
+
+                        diseaseInput.value =
+                            "";
+
+
+                        closeDiseaseResults();
+
+
+                        diseaseInput.focus();
+                    }
+                );
+            }
+        );
+
+
+        /* -----------------------------------------------------
+           FILTRAR DOENÇAS DO TRATAMENTO ESCOLHIDO
+           ----------------------------------------------------- */
+
+        function filterDiseases() {
+
+            const search =
+                normalizeText(
+                    diseaseInput.value
+                );
+
+
+            const diseasesShown =
+                new Set();
+
+            let visibleCount = 0;
+
+
+            diseaseOptions.forEach(
+                function (option) {
+
+                    const treatment =
+                        normalizeText(
+                            option.dataset.tratamento ||
+                            ""
+                        );
+
+
+                    const conditionLabel =
+                        (
+                            option.dataset.label ||
+                            option.textContent ||
+                            ""
+                        ).trim();
+
+
+                    const normalizedCondition =
+                        normalizeText(
+                            conditionLabel
+                        );
+
+
+                    const sameTreatment =
+                        treatment ===
+                        selectedTreatment;
+
+
+                    const alreadyShown =
+                        diseasesShown.has(
+                            normalizedCondition
+                        );
+
+
+                    const matches =
+                        selectedTreatment !== "" &&
+                        search.length > 0 &&
+                        sameTreatment &&
+                        normalizedCondition.includes(
+                            search
+                        ) &&
+                        !alreadyShown &&
+                        visibleCount < 8;
+
+
+                    option.hidden = !matches;
+
+
+                    if (matches) {
+
+                        diseasesShown.add(
+                            normalizedCondition
+                        );
+
+                        visibleCount++;
+                    }
+                }
+            );
+
+
+            const open =
+                search.length > 0 &&
+                visibleCount > 0;
+
+
+            diseaseResults.hidden =
+                !open;
+
+
+            diseaseInput.setAttribute(
+                "aria-expanded",
+                open ? "true" : "false"
+            );
+        }
+
+
+        diseaseInput.addEventListener(
+            "input",
+            filterDiseases
+        );
+
+
+        diseaseInput.addEventListener(
+            "focus",
+            function () {
+
+                if (
+                    diseaseInput.value.trim()
+                ) {
+                    filterDiseases();
+                }
+            }
+        );
+
+
+        /* -----------------------------------------------------
+           SELECIONOU DOENÇA
+           AGORA SIM NAVEGA PARA O DETALHE
+           ----------------------------------------------------- */
+
+        diseaseOptions.forEach(
+            function (option) {
+
+                option.addEventListener(
+                    "mousedown",
+                    function (event) {
+                        event.preventDefault();
+                    }
+                );
+
+
+                option.addEventListener(
+                    "click",
+                    function () {
+
+                        const treatment =
+                            normalizeText(
+                                option.dataset.tratamento ||
+                                ""
+                            );
+
+
+                        if (
+                            treatment !==
+                            selectedTreatment
+                        ) {
+                            return;
+                        }
+
+
+                        const label =
+                            (
+                                option.dataset.label ||
+                                option.textContent ||
+                                ""
+                            ).trim();
+
+
+                        const url =
+                            option.dataset.url;
+
+
+                        diseaseInput.value =
+                            label;
+
+
+                        closeDiseaseResults();
+
+
+                        goTo(url);
+                    }
+                );
+            }
+        );
+
+
+        /* -----------------------------------------------------
+           ESC
+           ----------------------------------------------------- */
+
+        treatmentInput.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Escape"
+                ) {
+                    closeTreatmentResults();
+                }
+            }
+        );
+
+
+        diseaseInput.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Escape"
+                ) {
+                    closeDiseaseResults();
+                }
+            }
+        );
+
+
+        /* -----------------------------------------------------
+           CLIQUE FORA
+           ----------------------------------------------------- */
+
+        document.addEventListener(
+            "click",
+            function (event) {
+
+                const treatmentWrap =
+                    document.getElementById(
+                        "home-menu-treatment-treatment-wrap"
+                    );
+
+
+                if (
+                    treatmentWrap &&
+                    !treatmentWrap.contains(
+                        event.target
+                    )
+                ) {
+                    closeTreatmentResults();
+                }
+
+
+                if (
+                    !diseaseWrap.contains(
+                        event.target
+                    )
+                ) {
+                    closeDiseaseResults();
                 }
             }
         );
@@ -5875,18 +6819,12 @@ document.addEventListener("DOMContentLoaded", function () {
     /* =========================================================
        ABA 2
        + TRATAMENTOS
+
+       NOVO FLUXO:
+       TRATAMENTO -> DOENÇA
        ========================================================= */
 
-    setupDiseaseTreatmentFlow({
-
-        diseaseInputId:
-            "home-menu-treatment-disease-input",
-
-        diseaseResultsId:
-            "home-menu-treatment-disease-results",
-
-        treatmentWrapId:
-            "home-menu-treatment-treatment-wrap",
+    setupTreatmentDiseaseFlow({
 
         treatmentInputId:
             "home-menu-treatment-treatment-input",
@@ -5894,17 +6832,29 @@ document.addEventListener("DOMContentLoaded", function () {
         treatmentResultsId:
             "home-menu-treatment-treatment-results",
 
-        diseaseOptionSelector:
-            ".home-menu-treatment-disease-result",
-
         treatmentOptionSelector:
-            ".home-menu-treatment-treatment-result"
+            ".home-menu-treatment-treatment-result",
+
+        diseaseWrapId:
+            "home-menu-treatment-disease-wrap",
+
+        diseaseInputId:
+            "home-menu-treatment-disease-input",
+
+        diseaseResultsId:
+            "home-menu-treatment-disease-results",
+
+        diseaseOptionSelector:
+            ".home-menu-treatment-disease-result"
     });
 
 
     /* =========================================================
        BLOCO 2
        DETALHES COMPLETOS SOBRE TRATAMENTOS
+
+       CONTINUA:
+       DOENÇA -> TRATAMENTO
        ========================================================= */
 
     setupDiseaseTreatmentFlow({
@@ -5935,6 +6885,9 @@ document.addEventListener("DOMContentLoaded", function () {
     /* =========================================================
        ABA 3
        ARTIGOS CIENTÍFICOS - MENU SUPERIOR
+
+       CONTINUA:
+       DOENÇA -> TRATAMENTO
        ========================================================= */
 
     setupDiseaseTreatmentFlow({
@@ -5965,6 +6918,8 @@ document.addEventListener("DOMContentLoaded", function () {
     /* =========================================================
        BLOCO 3
        ARTIGOS CIENTÍFICOS
+
+       CONTINUA:
        DOENÇA -> TRATAMENTO
        ========================================================= */
 
