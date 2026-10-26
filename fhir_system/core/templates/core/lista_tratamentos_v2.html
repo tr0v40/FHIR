@@ -2193,6 +2193,689 @@
     .v3-health-consultation { width:145px; right:8px; font-size:12px; }
 }
 
+/* =========================================================
+   MOBILE - CARD DE TRATAMENTO FINAL
+   Layout igual à referência
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+
+    /* CARD */
+    .v3-treatment {
+        position: relative !important;
+        display: flex !important;
+        flex-direction: column !important;
+
+        width: 288px !important;
+        min-height: 351px !important;
+        height: auto !important;
+
+        margin: 0 !important;
+        padding: 16px 14px 14px !important;
+
+        border-bottom: 1px solid #E0E0E0 !important;
+        box-sizing: border-box !important;
+
+        cursor: pointer;
+    }
+
+
+    /* =====================================================
+       PARTE SUPERIOR
+       imagem | nome / tipo / princípio
+       ===================================================== */
+
+    .v3-treatment-image-area {
+        position: absolute !important;
+
+        left: 16px !important;
+        top: 16px !important;
+
+        width: 104px !important;
+        height: 104px !important;
+
+        display: flex !important;
+        align-items: flex-start !important;
+        justify-content: center !important;
+    }
+
+    .v3-treatment-image {
+        width: 104px !important;
+        height: 104px !important;
+
+        object-fit: contain !important;
+        border-radius: 50% !important;
+    }
+
+
+    .v3-treatment-main {
+        position: relative !important;
+
+        width: calc(100% - 114px) !important;
+        min-height: 125px !important;
+
+        margin: 0 0 0 114px !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+
+
+    /* NOME */
+    .v3-treatment-name {
+        position: static !important;
+
+        width: 100% !important;
+        min-height: 0 !important;
+
+        margin: 0 0 4px !important;
+
+        font-size: 15px !important;
+        line-height: 18px !important;
+        font-weight: 700 !important;
+
+        color: #010009 !important;
+
+        overflow-wrap: break-word !important;
+    }
+
+
+    /* TIPO */
+    .v3-treatment-type {
+        position: static !important;
+
+        width: 100% !important;
+
+        margin: 0 0 7px !important;
+
+        font-size: 10px !important;
+        line-height: 13px !important;
+        font-weight: 700 !important;
+
+        color: #0193FF !important;
+
+        overflow-wrap: break-word !important;
+    }
+
+
+    /* PRINCÍPIO ATIVO */
+    .v3-treatment-meta {
+        position: static !important;
+
+        width: 100% !important;
+
+        margin: 0 !important;
+
+        font-size: 10px !important;
+        line-height: 14px !important;
+
+        color: #010009 !important;
+    }
+
+    .v3-treatment-meta p {
+        margin: 0 0 3px !important;
+    }
+
+    .v3-treatment-meta p:nth-child(2) {
+        display: none !important;
+    }
+
+    .v3-treatment-description {
+        display: none !important;
+    }
+
+
+    /* =====================================================
+       BLOCO DE RESULTADO
+       ===================================================== */
+
+    .v3-treatment-result {
+        position: relative !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+
+        width: 100% !important;
+        height: auto !important;
+
+        margin: 13px 0 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+
+        text-align: center !important;
+    }
+
+
+    /* =====================================================
+       NÚMEROS
+       39,13 a 39,13%
+       ===================================================== */
+
+    .v3-efficacy-number {
+        position: static !important;
+
+        width: 100% !important;
+        height: auto !important;
+
+        margin: 0 0 9px !important;
+
+        display: flex !important;
+        justify-content: center !important;
+        align-items: baseline !important;
+
+        gap: 5px !important;
+
+        color: #8F8F93 !important;
+
+        font-size: 20px !important;
+        line-height: 26px !important;
+        font-weight: 400 !important;
+
+        white-space: nowrap !important;
+    }
+
+    .v3-efficacy-number strong {
+        color: #010009 !important;
+        font-weight: 700 !important;
+    }
+
+
+    /* =====================================================
+       BARRA
+       ===================================================== */
+
+    .v3-efficacy-bar {
+        position: relative !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+
+        width: 182px !important;
+        height: 14px !important;
+
+        margin: 0 auto 10px !important;
+
+        border-radius: 5.6px !important;
+    }
+
+    .v3-efficacy-range {
+        height: 14px !important;
+        border-radius: 5.6px !important;
+    }
+
+    .v3-efficacy-point {
+        width: 10px !important;
+        height: 14px !important;
+
+        border-radius: 4.9px !important;
+    }
+
+
+    /* =====================================================
+       DOS PARTICIPANTES...
+       ===================================================== */
+
+    .v3-efficacy-caption {
+        position: static !important;
+
+        width: 100% !important;
+        min-height: 18px !important;
+
+        margin: 0 0 13px !important;
+
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+
+        color: #8F8F93 !important;
+
+        font-size: 10px !important;
+        line-height: 15px !important;
+
+        text-align: center !important;
+    }
+
+    .v3-benefit-mini-icon {
+        width: 18px !important;
+        height: 18px !important;
+
+        margin-left: 5px !important;
+
+        flex-shrink: 0 !important;
+    }
+
+
+    /* =====================================================
+       PRAZO PARA EFEITO
+       ===================================================== */
+
+    .v3-effect-time {
+        position: static !important;
+
+        width: 100% !important;
+        min-height: 20px !important;
+
+        margin: 0 0 18px !important;
+
+        display: flex !important;
+        align-items: baseline !important;
+        justify-content: center !important;
+
+        gap: 5px !important;
+
+        color: #010009 !important;
+
+        font-size: 10px !important;
+        line-height: 16px !important;
+
+        text-align: center !important;
+    }
+
+    .v3-effect-time strong {
+        display: inline !important;
+
+        font-size: 10px !important;
+        line-height: 16px !important;
+        font-weight: 700 !important;
+    }
+
+
+    /* =====================================================
+       BOTÃO - SEMPRE O ÚLTIMO ITEM
+       ===================================================== */
+
+    .v3-treatment-button {
+        position: static !important;
+
+        order: 999 !important;
+
+        width: 121px !important;
+        min-width: 121px !important;
+        height: 26px !important;
+
+        margin: 0 auto !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #E0E0E0 !important;
+
+        border: 0 !important;
+        border-radius: 4px !important;
+
+        color: #010009 !important;
+
+        font-family: Arial, sans-serif !important;
+        font-size: 10px !important;
+        line-height: 21px !important;
+        font-weight: 400 !important;
+
+        text-decoration: none !important;
+
+        z-index: 5 !important;
+    }
+
+    /* =========================================================
+   MOBILE - CARD DE TRATAMENTO
+   SOMENTE MOBILE
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+
+    .v3-treatment {
+        position: relative !important;
+        display: grid !important;
+
+        grid-template-columns: 104px minmax(0, 1fr) !important;
+        grid-template-rows: auto auto !important;
+
+        column-gap: 12px !important;
+
+        width: 288px !important;
+        min-height: 351px !important;
+        height: auto !important;
+
+        margin: 0 !important;
+        padding: 16px 14px 18px !important;
+
+        box-sizing: border-box !important;
+
+        border-bottom: 1px solid #E0E0E0 !important;
+
+        cursor: pointer;
+    }
+
+
+    /* =========================================
+       IMAGEM
+       ========================================= */
+
+    .v3-treatment-image-area {
+        position: static !important;
+
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+
+        width: 104px !important;
+        height: 104px !important;
+
+        margin: 0 !important;
+
+        display: flex !important;
+        align-items: flex-start !important;
+        justify-content: center !important;
+    }
+
+    .v3-treatment-image {
+        width: 104px !important;
+        height: 104px !important;
+
+        object-fit: contain !important;
+        border-radius: 50% !important;
+    }
+
+
+    /* =========================================
+       NOME / TIPO / PRINCÍPIO
+       ========================================= */
+
+    .v3-treatment-main {
+        position: static !important;
+
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+
+        width: 100% !important;
+        min-width: 0 !important;
+        min-height: 104px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: block !important;
+    }
+
+    .v3-treatment-name {
+        position: static !important;
+
+        width: 100% !important;
+        min-height: 0 !important;
+
+        margin: 0 0 2px !important;
+
+        font-size: 15px !important;
+        line-height: 18px !important;
+        font-weight: 700 !important;
+
+        color: #010009 !important;
+
+        overflow-wrap: break-word !important;
+    }
+
+    .v3-treatment-type {
+        position: static !important;
+
+        width: 100% !important;
+
+        margin: 0 0 5px !important;
+
+        font-size: 10px !important;
+        line-height: 13px !important;
+        font-weight: 700 !important;
+
+        color: #0193FF !important;
+
+        overflow-wrap: break-word !important;
+    }
+
+    .v3-treatment-meta {
+        position: static !important;
+
+        width: 100% !important;
+
+        margin: 0 !important;
+
+        font-size: 10px !important;
+        line-height: 14px !important;
+
+        color: #010009 !important;
+    }
+
+    .v3-treatment-meta p {
+        margin: 0 !important;
+    }
+
+    .v3-treatment-meta p:nth-child(2) {
+        display: none !important;
+    }
+
+    .v3-treatment-description {
+        display: none !important;
+    }
+
+
+    /* =========================================
+       RESULTADO
+       ========================================= */
+
+    .v3-treatment-result {
+        position: relative !important;
+
+        grid-column: 1 / -1 !important;
+        grid-row: 2 !important;
+
+        width: 100% !important;
+        height: auto !important;
+
+        margin: 18px 0 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+
+        text-align: center !important;
+    }
+
+
+    /* =========================================
+       BARRA
+       ========================================= */
+
+    .v3-efficacy-bar {
+        position: static !important;
+
+        width: 182px !important;
+        height: 14px !important;
+
+        margin: 0 auto 8px !important;
+
+        background: #E3E3E3 !important;
+
+        border-radius: 6px !important;
+    }
+
+    .v3-efficacy-range {
+        height: 14px !important;
+        border-radius: 6px !important;
+    }
+
+    .v3-efficacy-point {
+        width: 10px !important;
+        height: 14px !important;
+
+        border-radius: 5px !important;
+    }
+
+
+    /* =========================================
+       PERCENTUAL
+       88,97 a 88,97%
+       ========================================= */
+
+    .v3-efficacy-number {
+        position: static !important;
+
+        width: 100% !important;
+        height: auto !important;
+
+        margin: 0 0 8px !important;
+
+        display: flex !important;
+        align-items: baseline !important;
+        justify-content: center !important;
+
+        gap: 5px !important;
+
+        font-size: 20px !important;
+        line-height: 26px !important;
+        font-weight: 400 !important;
+
+        color: #8F8F93 !important;
+
+        white-space: nowrap !important;
+    }
+
+    .v3-efficacy-number strong {
+        color: #010009 !important;
+        font-weight: 700 !important;
+    }
+
+
+    /* =========================================
+       LEGENDA
+       ========================================= */
+
+    .v3-efficacy-caption {
+        position: static !important;
+
+        width: 100% !important;
+        min-height: 18px !important;
+
+        margin: 0 0 12px !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        font-size: 10px !important;
+        line-height: 15px !important;
+
+        color: #8F8F93 !important;
+
+        text-align: center !important;
+    }
+
+    .v3-benefit-mini-icon {
+        width: 18px !important;
+        height: 18px !important;
+
+        margin-left: 5px !important;
+
+        flex-shrink: 0 !important;
+    }
+
+
+    /* =========================================
+       PRAZO
+       ========================================= */
+
+    .v3-effect-time {
+        position: static !important;
+
+        width: 100% !important;
+        min-height: 20px !important;
+
+        margin: 0 !important;
+
+        display: flex !important;
+        align-items: baseline !important;
+        justify-content: center !important;
+
+        gap: 5px !important;
+
+        font-size: 10px !important;
+        line-height: 16px !important;
+
+        color: #010009 !important;
+
+        text-align: center !important;
+
+        white-space: normal !important;
+    }
+
+    .v3-effect-time strong {
+        display: inline !important;
+
+        font-size: 10px !important;
+        line-height: 16px !important;
+        font-weight: 700 !important;
+    }
+
+
+    /* =========================================
+       BOTÃO
+
+       IMPORTANTE:
+       ele continua dentro do MAIN no HTML.
+       Por isso posicionamos visualmente no final.
+       ========================================= */
+
+    .v3-treatment-button {
+        position: absolute !important;
+
+        left: 50% !important;
+        bottom: 18px !important;
+
+        transform: translateX(-50%) !important;
+
+        width: 121px !important;
+        min-width: 121px !important;
+        height: 26px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #E0E0E0 !important;
+
+        border: 0 !important;
+        border-radius: 4px !important;
+
+        color: #010009 !important;
+
+        font-family: Arial, sans-serif !important;
+        font-size: 10px !important;
+        line-height: 21px !important;
+        font-weight: 400 !important;
+
+        text-decoration: none !important;
+
+        z-index: 5 !important;
+    }
+
+
+    /* reserva espaço para o botão no final */
+    .v3-treatment-result {
+        padding-bottom: 45px !important;
+    }
+
+}
+}
+
+
 </style>
 
     </head>
@@ -2875,31 +3558,40 @@
         href="https://www.telix.inf.br/paciente-bem-informado"
         class="v3-list-banner"
         data-banner-position="{{ item.posicao_global_v3 }}"
+        
         data-banner-cycle
     >
-        <picture>
-            <source
-                media="(max-width: 768px)"
-                srcset="{% static 'img/cuide_de_sua_saude_mobile.png' %}"
-                data-mobile-1="{% static 'img/cuide_de_sua_saude_mobile.png' %}"
-                data-mobile-2="{% static 'img/banner_familia_mobile.png' %}"
-                data-mobile-3="{% static 'img/ver_eficacia_de_outros_tratamentos_mobile.png' %}"
-                data-mobile-4="{% static 'img/cuide_de_sua_saude_mobile.png' %}"
-                data-mobile-5="{% static 'img/banner_familia_mobile.png' %}"
-                data-mobile-6="{% static 'img/ver_eficacia_de_outros_tratamentos_mobile.png' %}"
-            >
-            <img
-                src="{% static 'img/cuide_de_sua_saude.png' %}"
-                data-desktop-1="{% static 'img/cuide_de_sua_saude.png' %}"
-                data-desktop-2="{% static 'img/banner_familia.png' %}"
-                data-desktop-3="{% static 'img/ver_eficacia_de_outros_tratamentos.png' %}"
-                data-desktop-4="{% static 'img/cuida_da_sua_saude.png' %}"
-                data-desktop-5="{% static 'img/voce_conhece_alguem_que_precisa_desse conteudo.png' %}"
-                data-desktop-6="{% static 'img/ver_eficacia_tratamentos.png' %}"
-                alt="Conteúdo Telix"
-                class="v3-list-banner-image"
-            >
-        </picture>
+<picture>
+
+    <source
+        media="(max-width: 768px)"
+
+        srcset="{% static 'img/cuide_de_sua_saude_mobile.png' %}"
+
+        data-mobile-1="{% static 'img/cuide_de_sua_saude_mobile.png' %}"
+        data-mobile-2="{% static 'img/banner_familia_mobile.png' %}"
+        data-mobile-3="{% static 'img/ver_eficacia_de_outros_tratamentos_mobile.png' %}"
+
+        data-mobile-4="{% static 'img/cuida_da_sua_saude.png' %}"
+        data-mobile-5="{% static 'img/voce_conhece_alguem_que_precisa_desse conteudo.png' %}"
+        data-mobile-6="{% static 'img/ver_eficacia_tratamentos.png' %}"
+    >
+
+    <img
+        src="{% static 'img/cuide_de_sua_saude.png' %}"
+
+        data-desktop-1="{% static 'img/cuide_de_sua_saude.png' %}"
+        data-desktop-2="{% static 'img/banner_familia.png' %}"
+        data-desktop-3="{% static 'img/ver_eficacia_de_outros_tratamentos.png' %}"
+        data-desktop-4="{% static 'img/cuida_da_sua_saude.png' %}"
+        data-desktop-5="{% static 'img/voce_conhece_alguem_que_precisa_desse conteudo.png' %}"
+        data-desktop-6="{% static 'img/ver_eficacia_tratamentos.png' %}"
+
+        alt="Conteúdo Telix"
+        class="v3-list-banner-image"
+    >
+
+</picture>
     </a>
 
 {% endif %}
@@ -4003,33 +4695,66 @@ document.addEventListener("DOMContentLoaded", function () {
         6: "https://www.telix.inf.br/paciente-bem-informado"
     };
 
-    document.querySelectorAll(".v3-list-banner[data-banner-cycle]").forEach(
-        function (banner, index) {
-            const ciclo = (index % 6) + 1;
-            const source = banner.querySelector("source");
-            const image = banner.querySelector("img");
+document.querySelectorAll(
+    ".v3-list-banner[data-banner-cycle]"
+).forEach(function (banner) {
 
-            const desktopSrc = image
-                ? image.getAttribute("data-desktop-" + ciclo)
-                : null;
+    // =====================================================
+    // CICLO GLOBAL DOS 6 BANNERS
+    //
+    // index 0 -> banner 1
+    // index 1 -> banner 2
+    // index 2 -> banner 3
+    // index 3 -> banner 4
+    // index 4 -> banner 5
+    // index 5 -> banner 6
+    // index 6 -> banner 1
+    // ...
+    // =====================================================
 
-            const mobileSrc = source
-                ? source.getAttribute("data-mobile-" + ciclo)
-                : null;
-
-            if (image && desktopSrc) {
-                image.src = desktopSrc;
-            }
-
-            if (source && mobileSrc) {
-                source.srcset = mobileSrc;
-            }
-            if (bannerLinks[ciclo]) {
-                banner.href = bannerLinks[ciclo];
-            }
-        }
+    const posicao = parseInt(
+        banner.dataset.bannerPosition || "0",
+        10
     );
 
+    const numeroBanner = Math.floor(
+        (posicao - 5) / 10
+    );
+
+    const ciclo =
+        ((numeroBanner % 6) + 6) % 6 + 1;
+
+
+    const source = banner.querySelector("source");
+    const image = banner.querySelector("img");
+
+    const desktopSrc = image
+        ? image.getAttribute(
+            "data-desktop-" + ciclo
+        )
+        : null;
+
+    const mobileSrc = source
+        ? source.getAttribute(
+            "data-mobile-" + ciclo
+        )
+        : null;
+
+    // Desktop
+    if (image && desktopSrc) {
+        image.src = desktopSrc;
+    }
+
+    // Mobile
+    if (source && mobileSrc) {
+        source.srcset = mobileSrc;
+    }
+
+    // Link correspondente ao banner
+    if (bannerLinks[ciclo]) {
+        banner.href = bannerLinks[ciclo];
+    }
+});
     /* =====================================================
        ESTADO INICIAL + HASH DIRETO
        ===================================================== */

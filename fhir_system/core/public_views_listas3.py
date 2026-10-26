@@ -16,6 +16,8 @@ from core.public_views_listas2 import (
 
 TEMPLATE_LISTA_V2 = "core/lista_tratamentos_v2.html"
 TEMPLATE_LISTA_V3 = "core/lista_tratamentos_v3.html"
+
+
 def pagina_lista_v3(request, condicao_slug):
 
     # ========================================================
@@ -68,15 +70,54 @@ def pagina_lista_v3(request, condicao_slug):
     # ========================================================
     # PAGINAÇÃO GLOBAL V3
     #
-    # HOMOLOGAÇÃO:
-    # 10 tratamentos inicialmente.
+    # Exibe inicialmente até 50 tratamentos.
     #
-    # Depois da validação, alterar 10 para 50.
+    # IMPORTANTE:
+    # A contagem é GLOBAL.
+    #
+    # Ela NÃO reinicia quando muda:
+    #
+    # - Redução temporária
+    # - Eliminação temporária
+    # - Redução persistente
+    # - Cura
+    #
     # ========================================================
 
     LIMITE_INICIAL_V3 = 50
 
     contador_global = 0
+
+    # ========================================================
+    # PAGINAÇÃO + POSIÇÃO DOS BANNERS
+    #
+    # Os banners aparecem depois das posições:
+    #
+    # 5
+    # 15
+    # 25
+    # 35
+    # 45
+    # 55
+    # 65
+    # ...
+    #
+    # A contagem NÃO reinicia ao mudar de segmento.
+    #
+    # A escolha da imagem:
+    #
+    # banner 1
+    # banner 2
+    # banner 3
+    # banner 4
+    # banner 5
+    # banner 6
+    # banner 1
+    # ...
+    #
+    # será feita no JavaScript pela ordem global dos
+    # banners presentes no DOM.
+    # ========================================================
 
     for segmento in segmentos:
 
@@ -84,23 +125,52 @@ def pagina_lista_v3(request, condicao_slug):
 
         for item in segmento["itens"]:
 
+            # =================================================
+            # POSIÇÃO GLOBAL
+            # =================================================
+
             contador_global += 1
 
-            # Posição global do tratamento.
             item["posicao_global_v3"] = contador_global
 
-            # Visibilidade inicial.
+            # =================================================
+            # VISIBILIDADE INICIAL
+            # =================================================
+
             item["visivel_inicial_v3"] = (
                 contador_global <= LIMITE_INICIAL_V3
             )
 
-            # Posições dos banners.
-            item["mostrar_banner_v3"] = (
-                contador_global in (5, 15, 25, 35, 45)
-            )
+            # =================================================
+            # PRIMEIRA POSIÇÃO DO SEGMENTO
+            # =================================================
 
             if primeira_posicao_segmento is None:
                 primeira_posicao_segmento = contador_global
+
+            # =================================================
+            # BANNER
+            #
+            # 5  -> primeiro banner
+            # 15 -> segundo banner
+            # 25 -> terceiro banner
+            # 35 -> quarto banner
+            # 45 -> quinto banner
+            # 55 -> sexto banner
+            # 65 -> primeiro banner novamente
+            #
+            # Aqui decidimos APENAS se haverá banner.
+            #
+            # A imagem utilizada será definida pelo JS.
+            # =================================================
+
+            item["mostrar_banner_v3"] = (
+                contador_global % 10 == 5
+            )
+
+        # =====================================================
+        # DADOS DO SEGMENTO
+        # =====================================================
 
         segmento["primeira_posicao_v3"] = (
             primeira_posicao_segmento
@@ -134,24 +204,25 @@ def pagina_lista_v3(request, condicao_slug):
     beneficios_cards = get_cards_beneficios_v2(
         segmentos
     )
+
     # ========================================================
     # EFEITO RÁPIDO
     #
-    # A posição visual NÃO é mais calculada no Python.
+    # A posição visual NÃO é calculada no Python.
     #
     # O Python apenas informa ao template:
     #
-    # - "unico":
-    #   existe somente um benefício de efeito rápido.
+    # "unico"
+    # Existe somente um benefício de efeito rápido.
     #
-    # - "duplo":
-    #   existem Redução temporária E Eliminação temporária.
+    # "duplo"
+    # Existem:
+    # Redução temporária
+    # +
+    # Eliminação temporária
     #
-    # - None:
-    #   nenhum benefício rápido existe.
-    #
-    # Nos casos "unico", também informamos qual é o slug
-    # para que o HTML coloque o texto diretamente na aba.
+    # None
+    # Nenhum benefício rápido existe.
     # ========================================================
 
     slug_reducao_temporaria = (
@@ -162,14 +233,15 @@ def pagina_lista_v3(request, condicao_slug):
         "eliminacao-temporaria-dos-sintomas"
     )
 
+    # ========================================================
+    # SEGMENTOS VISÍVEIS
+    # ========================================================
 
-    # Segmentos que realmente aparecem no menu.
     slugs_visiveis = [
         segmento["slug"]
         for segmento in segmentos
         if segmento["itens"]
     ]
-
 
     tem_reducao_temporaria = (
         slug_reducao_temporaria
@@ -181,17 +253,21 @@ def pagina_lista_v3(request, condicao_slug):
         in slugs_visiveis
     )
 
+    # ========================================================
+    # VALORES PADRÃO
+    # ========================================================
 
-    # Valores padrão.
     efeito_rapido_tipo_v3 = None
     efeito_rapido_slug_v3 = None
 
-
     # ========================================================
     # CENÁRIO 1
-    # REDUÇÃO TEMPORÁRIA + ELIMINAÇÃO TEMPORÁRIA
     #
-    # O HTML criará o indicador entre as duas abas.
+    # REDUÇÃO TEMPORÁRIA
+    # +
+    # ELIMINAÇÃO TEMPORÁRIA
+    #
+    # O HTML cria o indicador entre as duas abas.
     # ========================================================
 
     if (
@@ -201,13 +277,13 @@ def pagina_lista_v3(request, condicao_slug):
 
         efeito_rapido_tipo_v3 = "duplo"
 
-
     # ========================================================
     # CENÁRIO 2
+    #
     # SOMENTE REDUÇÃO TEMPORÁRIA
     #
     # Texto sobre a própria aba.
-    # SEM SETA.
+    # Sem seta.
     # ========================================================
 
     elif tem_reducao_temporaria:
@@ -218,13 +294,13 @@ def pagina_lista_v3(request, condicao_slug):
             slug_reducao_temporaria
         )
 
-
     # ========================================================
     # CENÁRIO 3
+    #
     # SOMENTE ELIMINAÇÃO TEMPORÁRIA
     #
     # Texto sobre a própria aba.
-    # SEM SETA.
+    # Sem seta.
     # ========================================================
 
     elif tem_eliminacao_temporaria:
@@ -235,9 +311,9 @@ def pagina_lista_v3(request, condicao_slug):
             slug_eliminacao_temporaria
         )
 
-
     # ========================================================
     # CENÁRIO 4
+    #
     # NENHUM BENEFÍCIO DE EFEITO RÁPIDO
     # ========================================================
 
@@ -245,34 +321,53 @@ def pagina_lista_v3(request, condicao_slug):
 
         efeito_rapido_tipo_v3 = None
         efeito_rapido_slug_v3 = None
+
     # ========================================================
     # CONTEXTO
     # ========================================================
 
     context = {
+
         "pagina": pagina,
+
         "condicao": condicao,
 
         "tipo_eficacia": primeiro_segmento,
+
         "items": primeiro_segmento["itens"],
-        "todos_os_tratamentos": primeiro_segmento["itens"],
 
-        "segmentos": segmentos,
-        "beneficios_cards": beneficios_cards,
+        "todos_os_tratamentos":
+            primeiro_segmento["itens"],
 
-        # Efeito rápido.
+        "segmentos":
+            segmentos,
+
+        "beneficios_cards":
+            beneficios_cards,
+
+        # ====================================================
+        # EFEITO RÁPIDO
+        # ====================================================
+
         "efeito_rapido_tipo_v3":
             efeito_rapido_tipo_v3,
 
         "efeito_rapido_slug_v3":
             efeito_rapido_slug_v3,
 
-        # Paginação.
+        # ====================================================
+        # PAGINAÇÃO
+        # ====================================================
+
         "total_tratamentos_v3":
             total_tratamentos_v3,
 
         "tem_mais_tratamentos_v3":
             tem_mais_tratamentos_v3,
+
+        # ====================================================
+        # FOOTER
+        # ====================================================
 
         "footer_listas":
             get_footer_listas(),

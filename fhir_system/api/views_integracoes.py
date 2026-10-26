@@ -16,6 +16,8 @@ from core.models import (
     TipoEficacia,
     TipoTratamento,
     TreatmentsUSA,
+    PaginaDetalheTratamento,
+    PaginaListaTratamento,
 )
 
 from .pagination import IntegracaoTratamentosPagination
@@ -33,6 +35,8 @@ from .serializers_integracoes import (
     IntegracaoTipoEficaciaSerializer,
     IntegracaoTipoTratamentoSerializer,
     IntegracaoTreatmentsUSASerializer,
+    IntegracaoPaginaDetalheTratamentoSerializer,
+    IntegracaoPaginaListaTratamentoSerializer,
 )
 
 
@@ -207,3 +211,28 @@ class IntegracaoTreatmentsUSAViewSet(
 ):
     queryset = TreatmentsUSA.objects.all().order_by("id")
     serializer_class = IntegracaoTreatmentsUSASerializer
+
+class IntegracaoPaginaDetalheTratamentoViewSet(
+    IntegracaoReadCreateUpdateBaseViewSet
+):
+    queryset = (
+        PaginaDetalheTratamento.objects
+        .select_related("condicao", "tratamento")
+        .all()
+        .order_by("id")
+    )
+
+    serializer_class = IntegracaoPaginaDetalheTratamentoSerializer
+
+
+class IntegracaoPaginaListaTratamentoViewSet(
+    IntegracaoReadCreateUpdateBaseViewSet
+):
+    queryset = (
+        PaginaListaTratamento.objects
+        .select_related("condicao_saude", "tipo_eficacia")
+        .all()
+        .order_by("id")
+    )
+
+    serializer_class = IntegracaoPaginaListaTratamentoSerializer

@@ -12,7 +12,10 @@ from core.models import (
     TipoEficacia,
     DetalhesTratamentoReacaoAdversa,
     TreatmentsUSA,
+    PaginaDetalheTratamento,
+    PaginaListaTratamento,
 )
+
 
 
 class IntegracaoDetalhesTratamentoListSerializer(serializers.ModelSerializer):
@@ -127,5 +130,18 @@ class IntegracaoDetalhesTratamentoReacaoAdversaSerializer(serializers.ModelSeria
 class IntegracaoTreatmentsUSASerializer(serializers.ModelSerializer):
     class Meta:
         model = TreatmentsUSA
+        fields = "__all__"
+        read_only_fields = ["id"]
+
+class IntegracaoPaginaDetalheTratamentoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PaginaDetalheTratamento
+        fields = "__all__"
+        read_only_fields = ["id"]
+
+
+class IntegracaoPaginaListaTratamentoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PaginaListaTratamento
         fields = "__all__"
         read_only_fields = ["id"]

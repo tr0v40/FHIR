@@ -13,6 +13,8 @@ from .views_integracoes import (
     IntegracaoTipoEficaciaViewSet,
     IntegracaoDetalhesTratamentoReacaoAdversaViewSet,
     IntegracaoTreatmentsUSAViewSet,
+    IntegracaoPaginaDetalheTratamentoViewSet,
+    IntegracaoPaginaListaTratamentoViewSet,
 )
 
 
@@ -29,6 +31,17 @@ router.register(r"eficacias-por-evidencia", IntegracaoEficaciaPorEvidenciaViewSe
 router.register(r"tipos-eficacia", IntegracaoTipoEficaciaViewSet, basename="integracao-tipos-eficacia")
 router.register(r"detalhes-reacoes-adversas", IntegracaoDetalhesTratamentoReacaoAdversaViewSet, basename="integracao-detalhes-reacoes-adversas")
 router.register(r"treatments-usa", IntegracaoTreatmentsUSAViewSet, basename="integracao-treatments-usa")
+router.register(
+    r"url-detalhes",
+    IntegracaoPaginaDetalheTratamentoViewSet,
+    basename="integracao-url-detalhes",
+)
+
+router.register(
+    r"url-listas-v2",
+    IntegracaoPaginaListaTratamentoViewSet,
+    basename="integracao-url-listas-v2",
+)
 
 urlpatterns = [
     path("", include(router.urls)),

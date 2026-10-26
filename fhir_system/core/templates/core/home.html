@@ -1586,29 +1586,6 @@
         line-height: 18px;
     }
 
-
-    /* =========================================================
-    FOOTER DESKTOP
-    ========================================================= */
-
-    .site-footer {
-        width: 100%;
-
-        background: #FFFFFF;
-    }
-
-    .site-footer-content {
-        position: relative;
-
-        width: 982px;
-        max-width: calc(100% - 30px);
-        height: 400px;
-
-        margin: 0 auto;
-
-        padding-top: 55px;
-    }
-   
 /* =========================================================
    BLOCO 2
    DETALHES COMPLETOS
@@ -2044,6 +2021,533 @@ input::-webkit-search-cancel-button {
 
     outline: none;
 }
+
+/* =========================================================
+   FOOTER - DESKTOP
+   ========================================================= */
+
+.site-footer{
+    width:100%;
+    height:424px;
+
+    margin:0;
+    padding:0;
+
+    background:#FFFFFF;
+    border:0;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+
+    position:relative;
+}
+
+
+/* =========================================================
+   CONTEÚDO PRINCIPAL
+   ========================================================= */
+
+.footer-details{
+    width:982px;
+    max-width:calc(100% - 32px);
+    height:300px;
+
+    margin:0 auto;
+
+    position:relative;
+}
+
+
+/* =========================================================
+   POSIÇÃO DAS 3 COLUNAS
+   ========================================================= */
+
+.footer-column{
+    position:absolute;
+    top:41px;
+}
+
+.footer-column-1{
+    left:0;
+    width:239px;
+}
+
+.footer-column-2{
+    left:404px;
+    width:239px;
+}
+
+.footer-column-3{
+    left:746px;
+    width:236px;
+}
+
+
+/* =========================================================
+   PADRÃO DOS TÍTULOS
+   ========================================================= */
+
+.site-footer h3{
+    margin:0;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:700;
+    font-size:15px;
+    line-height:21px;
+
+    color:#010009;
+}
+
+
+/* =========================================================
+   LINKS / TEXTOS CINZA
+   ========================================================= */
+
+.footer-block > a,
+.footer-block > p,
+.footer-contact > a,
+.footer-contact > p,
+.footer-no-medication p{
+    display:block;
+
+    width:max-content;
+    max-width:100%;
+
+    margin:0 0 6px;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:500;
+    font-size:13px;
+    line-height:15px;
+    letter-spacing:.005em;
+
+    color:#8F8F93;
+
+    text-decoration:none;
+}
+
+
+.footer-block h3 + a,
+.footer-block h3 + p{
+    margin-top:14px;
+}
+
+
+.footer-block > a{
+    margin-bottom:8px;
+}
+
+
+/* =========================================================
+   COLUNA 1
+   ========================================================= */
+
+.footer-scientific{
+    margin-top:64px;
+}
+
+
+.footer-share{
+    position:absolute;
+
+    top:225px;
+    left:0;
+
+    margin:0 !important;
+
+    display:flex !important;
+    align-items:center;
+
+    gap:7px;
+}
+
+
+.footer-whatsapp-icon{
+    width:20px;
+    height:20px;
+
+    object-fit:contain;
+
+    display:block;
+    flex-shrink:0;
+}
+
+
+/* =========================================================
+   LINKS ESPECIAIS
+   ========================================================= */
+
+.site-footer .footer-special{
+    display:block;
+
+    width:max-content;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:700;
+    font-size:15px;
+    line-height:18px;
+
+    color:#010009;
+
+    text-decoration:none;
+}
+
+
+.site-footer .footer-special:hover{
+    color:#0193FF;
+}
+
+
+/* =========================================================
+   COLUNA 2
+   ========================================================= */
+
+.footer-contact{
+    margin-top:39px;
+}
+
+
+.footer-contact-title{
+    display:flex;
+    align-items:center;
+
+    gap:7px;
+
+    margin:0 0 10px 0;
+}
+
+
+.footer-contact-whatsapp-icon{
+    width:20px;
+    height:20px;
+
+    display:block;
+    flex-shrink:0;
+
+    object-fit:contain;
+}
+
+
+.footer-contact p,
+.footer-contact a{
+    margin-bottom:6px;
+}
+
+
+.footer-premium{
+    position:absolute;
+
+    top:225px;
+    left:0;
+
+    margin:0 !important;
+}
+
+
+/* =========================================================
+   COLUNA 3
+   ========================================================= */
+
+.footer-specialists{
+    margin-top:38px;
+}
+
+
+.footer-specialists h3{
+    line-height:21px;
+}
+
+
+/* =========================================================
+   SELECIONE A DOENÇA
+   ========================================================= */
+
+.footer-disease{
+    position:absolute;
+
+    top:225px;
+    left:0;
+
+    margin:0 !important;
+}
+
+
+.footer-disease-label{
+    width:142px;
+    height:18px;
+
+    margin:0 0 6px 1px;
+
+    display:flex;
+    align-items:center;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:600;
+    font-size:15px;
+    line-height:18px;
+
+    color:#000000;
+}
+
+
+/* =========================================================
+   SELECT
+   ========================================================= */
+
+.footer-disease-select{
+    position:relative;
+
+    width:194px;
+    height:40px;
+}
+
+
+.footer-disease-button{
+    box-sizing:border-box;
+
+    position:relative;
+
+    width:194px;
+    height:40px;
+
+    margin:0;
+    padding:0;
+
+    display:block;
+
+    background:#0193FF;
+
+    border:0;
+    border-radius:5px;
+
+    cursor:pointer;
+}
+
+
+/* TEXTO DO SELECT */
+
+.footer-disease-button span:first-child{
+    position:absolute;
+
+    width:auto;
+    height:18px;
+
+    left:30px;
+    top:50%;
+
+    transform:translateY(-50%);
+
+    display:flex;
+    align-items:center;
+
+    margin:0;
+    padding:0;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+    font-style:normal;
+    font-weight:700;
+    font-size:15px;
+    line-height:18px;
+
+    color:#FFFFFF;
+
+    opacity:.5;
+
+    white-space:nowrap;
+}
+
+
+/* =========================================================
+   SETA
+   ========================================================= */
+
+.footer-chevron{
+    position:absolute;
+
+    width:15px;
+    height:8px;
+
+    right:20px;
+    top:50%;
+
+    transform:translateY(-50%);
+
+    border:0;
+
+    opacity:1;
+}
+
+
+.footer-chevron::before{
+    content:"";
+
+    position:absolute;
+
+    width:10px;
+    height:3px;
+
+    left:0;
+    top:2px;
+
+    background:#FFFFFF;
+
+    border-radius:2px;
+
+    transform:rotate(45deg);
+    transform-origin:center;
+}
+
+
+.footer-chevron::after{
+    content:"";
+
+    position:absolute;
+
+    width:10px;
+    height:3px;
+
+    right:0;
+    top:2px;
+
+    background:#FFFFFF;
+
+    border-radius:2px;
+
+    transform:rotate(-45deg);
+    transform-origin:center;
+}
+
+
+/* =========================================================
+   DROPDOWN
+   ========================================================= */
+
+.footer-disease-options{
+    display:none;
+
+    position:absolute;
+
+    left:0;
+    top:48px;
+    bottom:auto;
+
+    width:194px;
+
+    max-height:220px;
+
+    overflow-y:auto;
+
+    background:#FFFFFF;
+
+    border:1px solid #E3E3E3;
+    border-radius:5px;
+
+    box-shadow:0 4px 14px rgba(0,0,0,.12);
+
+    z-index:1000;
+}
+
+
+.footer-disease-options.open{
+    display:block;
+}
+
+
+.site-footer .footer-disease-options a{
+    display:block;
+
+    padding:10px 14px;
+
+    font-family:'Inter', Arial, sans-serif;
+    font-size:13px;
+    font-weight:500;
+
+    color:#333333;
+
+    text-decoration:none;
+
+    transition:.15s ease;
+}
+
+
+.site-footer .footer-disease-options a:hover{
+    color:#0193FF;
+
+    background:#F5FAFF;
+}
+
+
+.footer-disease-button.open .footer-chevron{
+    transform:translateY(-50%) rotate(180deg);
+}
+
+
+/* =========================================================
+   AUMENTA FOOTER QUANDO DROPDOWN ABRIR
+   ========================================================= */
+
+.site-footer{
+    transition:height .18s ease;
+}
+
+
+.site-footer:has(.footer-disease-options.open){
+    height:644px;
+}
+
+
+/* =========================================================
+   BARRA INFERIOR / CNPJ
+   ========================================================= */
+
+.footer-bottom{
+    box-sizing:border-box;
+
+    position:absolute;
+
+    left:0;
+    bottom:0;
+
+    width:100%;
+    height:65px;
+
+    margin:0;
+    padding:0;
+
+    background:#FAFAFA;
+
+    border-top:3px solid #E3E3E3;
+    border-bottom:3px solid #E3E3E3;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    font-family:'Inter', Arial, Helvetica, sans-serif;
+
+    font-weight:400;
+    font-size:13px;
+    line-height:16px;
+
+    color:#8F8F93;
+
+    text-align:center;
+}
+
+
+/* =========================================================
+   BANNER MOBILE
+   NÃO APARECE NO DESKTOP
+   ========================================================= */
+
+.mobile-footer-banner{
+    display:none;
+}
+
     /* =========================================================
     TABLET
     ========================================================= */
@@ -4060,6 +4564,1566 @@ input::-webkit-search-cancel-button {
         outline: none;
     }
 
+    /* ========================================================
+   CORREÇÃO MOBILE - SEM MARGENS LATERAIS
+   ======================================================== */
+
+html,
+body,
+.home-main {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.home-menu,
+.home-feature,
+.home-feature-inner,
+.home-feature-media,
+.home-feature-media img,
+.home-share,
+.share-banner,
+.share-banner-picture,
+.share-banner-img {
+    width: 100% !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+/* =========================================================
+   MOBILE - LARGURA / CENTRALIZAÇÃO FINAL
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+
+    html,
+    body {
+        width: 100%;
+        min-width: 0;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        background: #FFFFFF;
+    }
+
+    /* CONTAINER PRINCIPAL */
+    .home-main {
+        width: 100%;
+        max-width: 393px;
+        margin: 0 auto;
+        padding: 0;
+        overflow: hidden;
+    }
+
+
+    /* =====================================================
+       MENU SUPERIOR
+       ===================================================== */
+
+    .home-menu {
+        width: 100% !important;
+        max-width: 393px !important;
+
+        margin: 0 auto !important;
+        padding: 15px !important;
+
+        background: #FFFFFF;
+    }
+
+    .home-menu-inner {
+        width: 100% !important;
+        max-width: 363px !important;
+
+        margin: 0 auto !important;
+    }
+
+
+    /* =====================================================
+       BLOCOS 1 / 2 / 3
+       ===================================================== */
+
+    .home-feature,
+    .home-feature-one,
+    .home-feature-two,
+    .home-feature-third {
+        width: 100% !important;
+        max-width: 393px !important;
+
+        margin-left: auto !important;
+        margin-right: auto !important;
+
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+
+    .home-feature-inner {
+        width: 100% !important;
+        max-width: none !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+
+    /* =====================================================
+       IMAGENS DOS 3 BLOCOS
+       ===================================================== */
+
+    .home-feature-media {
+        width: 100% !important;
+        max-width: none !important;
+
+        left: 0 !important;
+        right: 0 !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .home-feature-media img {
+        display: block;
+
+        width: 100% !important;
+        max-width: none !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        object-fit: cover;
+    }
+
+
+    /* =====================================================
+       ÁREA DE TEXTO DOS BLOCOS
+       ===================================================== */
+
+    .home-feature-copy {
+        width: 100% !important;
+        max-width: none !important;
+
+        left: 0 !important;
+        right: 0 !important;
+
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+
+        box-sizing: border-box;
+    }
+
+
+    /* =====================================================
+       BANNER FAMÍLIA
+       ===================================================== */
+
+    .home-share {
+        width: 100% !important;
+        max-width: 393px !important;
+
+        margin: 0 auto !important;
+        padding: 0 !important;
+    }
+
+    .share-banner {
+        width: 100% !important;
+        max-width: none !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .share-banner-picture {
+        display: block;
+
+        width: 100% !important;
+        max-width: none !important;
+
+        margin: 0 !important;
+    }
+
+    .share-banner-img {
+        display: block;
+
+        width: 100% !important;
+        max-width: none !important;
+
+        margin: 0 !important;
+
+        object-fit: cover;
+    }
+
+
+    /* =====================================================
+       NEWSLETTER
+       ===================================================== */
+
+    .newsletter-strip {
+        width: 100% !important;
+        max-width: 393px !important;
+
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+}
+
+/* =========================================================
+   MOBILE - CENTRALIZAÇÃO DO CARD DE FILTROS
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+
+    .home-menu {
+        position: relative !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .home-menu-inner {
+        position: relative !important;
+
+        width: calc(100% - 30px) !important;
+        max-width: 363px !important;
+
+        left: 50% !important;
+        right: auto !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        box-sizing: border-box !important;
+    }
+}
+/* =========================================================
+   MOBILE - MENU DE FILTROS CENTRALIZADO
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+
+    .home-menu {
+        position: relative !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 292px !important;
+
+        margin: 0 auto !important;
+        padding: 15px 0 29px !important;
+
+        background: #FFFFFF !important;
+    }
+
+    .home-menu-inner {
+        position: relative !important;
+
+        width: 290px !important;
+        max-width: calc(100% - 30px) !important;
+        height: 248px !important;
+
+        left: auto !important;
+        right: auto !important;
+
+        transform: none !important;
+
+        margin-left: auto !important;
+        margin-right: auto !important;
+
+        padding: 0 !important;
+    }
+
+    .home-tabs {
+        position: relative !important;
+
+        width: 290px !important;
+        max-width: 100% !important;
+        height: 30px !important;
+
+        margin-left: auto !important;
+        margin-right: auto !important;
+
+        display: grid !important;
+        grid-template-columns: 90px 90px 90px !important;
+        justify-content: space-between !important;
+    }
+
+    .home-menu-content {
+        position: absolute !important;
+
+        width: 290px !important;
+        max-width: 100% !important;
+        height: 220px !important;
+
+        left: 50% !important;
+        right: auto !important;
+        top: 28px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+
+        border: 1px solid #0193FF !important;
+        border-radius: 0 0 15px 15px !important;
+
+        background: #FFFFFF;
+    }
+}
+
+@media screen and (max-width: 768px) {
+
+    /* Mantém a ordem correta:
+       IMAGEM EM CIMA / CONTEÚDO AZUL EMBAIXO */
+    .home-feature-one .home-feature-inner {
+        position: relative !important;
+        display: flex !important;
+        flex-direction: column !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* IMAGEM PRIMEIRO */
+    .home-feature-one .home-feature-media {
+        position: relative !important;
+        order: 1 !important;
+
+        width: 100% !important;
+        height: 330px !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        overflow: hidden !important;
+    }
+
+    .home-feature-one .home-feature-media img {
+        display: block !important;
+
+        width: 100% !important;
+        height: 100% !important;
+
+        object-fit: cover !important;
+        object-position: center center !important;
+    }
+
+    /* AZUL DEPOIS DA IMAGEM */
+    .home-feature-one .home-feature-copy {
+        position: relative !important;
+        order: 2 !important;
+
+        width: 100% !important;
+        height: 400px !important;
+        min-height: 400px !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+
+        margin: 0 !important;
+        padding: 24px 30px 35px !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+
+        background: #0193FF !important;
+        color: #FFFFFF !important;
+    }
+}
+
+/* =========================================================
+   MOBILE - BLOCO 2
+   DETALHES COMPLETOS SOBRE TRATAMENTOS
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+
+    /* BLOCO COMPLETO */
+    .home-feature.home-feature-two {
+        position: relative !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        background: #FFFFFF !important;
+
+        overflow: hidden !important;
+    }
+
+
+    /* =====================================================
+       ESTRUTURA
+       imagem primeiro / conteúdo depois
+       ===================================================== */
+
+    .home-feature-two .home-feature-inner {
+        position: relative !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+
+    /* =====================================================
+       IMAGEM
+       ===================================================== */
+
+    .home-feature-two .home-feature-media {
+        position: relative !important;
+
+        order: 1 !important;
+
+        width: 100% !important;
+        height: 330px !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        overflow: hidden !important;
+
+        background: #FFFFFF !important;
+    }
+
+    .home-feature-two .home-feature-media img {
+        display: block !important;
+
+        width: 100% !important;
+        height: 100% !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        object-fit: cover !important;
+        object-position: center center !important;
+    }
+
+
+    /* =====================================================
+       ÁREA BRANCA
+       ===================================================== */
+
+    .home-feature-two .home-feature-copy,
+    .home-feature-two .home-feature-copy-dark {
+        position: relative !important;
+
+        order: 2 !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        height: auto !important;
+        min-height: 390px !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+
+        margin: 0 !important;
+
+        padding: 24px 30px 35px !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+
+        background: #FFFFFF !important;
+
+        color: #010009 !important;
+
+        overflow: visible !important;
+    }
+
+
+    /* =====================================================
+       TÍTULO
+       ===================================================== */
+
+    .home-feature-two .home-feature-title {
+        position: relative !important;
+
+        width: 100% !important;
+        max-width: 330px !important;
+
+        height: auto !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+
+        transform: none !important;
+
+        margin: 0 auto 22px !important;
+
+        display: block !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+
+        font-size: 20px !important;
+        line-height: 24px !important;
+        font-weight: 700 !important;
+
+        text-align: center !important;
+
+        color: #010009 !important;
+    }
+
+
+    /* =====================================================
+       DESCRIÇÃO
+
+       IMPORTANTE:
+       removemos o justify que está causando aqueles
+       espaços enormes entre as palavras
+       ===================================================== */
+
+    .home-feature-two .home-feature-description {
+        position: relative !important;
+
+        width: 100% !important;
+        max-width: 310px !important;
+
+        height: auto !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+
+        transform: none !important;
+
+        margin: 0 auto 22px !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+
+        font-size: 13px !important;
+        line-height: 24px !important;
+        font-weight: 400 !important;
+
+        text-align: center !important;
+
+        color: #010009 !important;
+    }
+
+
+    /* =====================================================
+       ÁREA DA BUSCA
+       ===================================================== */
+
+    .home-feature-two .home-detail-flow {
+        position: relative !important;
+
+        width: 260px !important;
+        max-width: 100% !important;
+
+        height: auto !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+
+        transform: none !important;
+
+        margin: 0 auto !important;
+
+        z-index: 60 !important;
+    }
+
+
+    /* PRIMEIRO CAMPO */
+
+    .home-feature-two .home-detail-search {
+        position: relative !important;
+
+        width: 100% !important;
+        height: 43px !important;
+
+        left: auto !important;
+        top: auto !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* INPUT */
+
+    .home-feature-two .home-detail-search input {
+        display: block !important;
+
+        width: 100% !important;
+        height: 43px !important;
+
+        margin: 0 !important;
+
+        padding: 0 40px 0 14px !important;
+
+        border: 1px solid #0193FF !important;
+        border-radius: 6px !important;
+
+        background: #FFFFFF !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 12.35px !important;
+        line-height: 22px !important;
+
+        color: #010009 !important;
+
+        outline: none !important;
+    }
+
+
+    /* LUPA */
+
+    .home-feature-two .home-detail-search > i {
+        position: absolute !important;
+
+        right: 13px !important;
+        left: auto !important;
+
+        top: 50% !important;
+
+        transform: translateY(-50%) !important;
+
+        color: #0193FF !important;
+
+        pointer-events: none !important;
+    }
+
+
+    /* =====================================================
+       SEGUNDO CAMPO
+       aparece depois da escolha da doença
+       ===================================================== */
+
+    .home-feature-two #home-detail-treatment-wrap {
+        position: relative !important;
+
+        width: 100% !important;
+        height: 43px !important;
+
+        left: auto !important;
+        top: auto !important;
+
+        margin: 10px 0 0 !important;
+
+        transform: none !important;
+    }
+
+    .home-feature-two #home-detail-treatment-wrap[hidden] {
+        display: none !important;
+    }
+
+
+    /* =====================================================
+       DROPDOWNS
+       ===================================================== */
+
+    .home-feature-two .home-detail-results {
+        position: absolute !important;
+
+        width: 100% !important;
+        max-height: 190px !important;
+
+        left: 0 !important;
+        right: auto !important;
+
+        top: 49px !important;
+
+        overflow-y: auto !important;
+
+        border: 1px solid #E3E3E3 !important;
+        border-radius: 6px !important;
+
+        background: #FFFFFF !important;
+
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14) !important;
+
+        z-index: 999 !important;
+    }
+}
+
+/* =========================================================
+   MOBILE - BLOCO 3
+   ARTIGOS CIENTÍFICOS
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+
+    /* BLOCO COMPLETO */
+    .home-feature.home-feature-third {
+        position: relative !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        background: #0193FF !important;
+
+        overflow: hidden !important;
+    }
+
+
+    /* =====================================================
+       ESTRUTURA
+       IMAGEM EM CIMA / CONTEÚDO EMBAIXO
+       ===================================================== */
+
+    .home-feature-third .home-feature-inner {
+        position: relative !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+
+    /* =====================================================
+       IMAGEM
+       ===================================================== */
+
+    .home-feature-third .home-feature-media {
+        position: relative !important;
+
+        order: 1 !important;
+
+        width: 100% !important;
+        height: 330px !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        overflow: hidden !important;
+    }
+
+    .home-feature-third .home-feature-media img {
+        display: block !important;
+
+        width: 100% !important;
+        height: 100% !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        object-fit: cover !important;
+        object-position: center center !important;
+    }
+
+
+    /* =====================================================
+       ÁREA AZUL
+       ===================================================== */
+
+    .home-feature-third .home-feature-copy {
+        position: relative !important;
+
+        order: 2 !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        height: auto !important;
+        min-height: 400px !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+
+        margin: 0 !important;
+        padding: 24px 30px 35px !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+
+        background: #0193FF !important;
+
+        color: #FFFFFF !important;
+
+        overflow: visible !important;
+    }
+
+
+    /* =====================================================
+       TÍTULO
+       ===================================================== */
+
+    .home-feature-third .home-feature-title {
+        position: relative !important;
+
+        width: 100% !important;
+        max-width: 330px !important;
+
+        height: auto !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+
+        transform: none !important;
+
+        margin: 0 auto 22px !important;
+
+        display: block !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+
+        font-size: 20px !important;
+        line-height: 24px !important;
+        font-weight: 700 !important;
+
+        text-align: center !important;
+
+        color: #FFFFFF !important;
+    }
+
+
+    /* =====================================================
+       DESCRIÇÃO
+       ===================================================== */
+
+    .home-feature-third .home-feature-description {
+        position: relative !important;
+
+        width: 100% !important;
+        max-width: 310px !important;
+
+        height: auto !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+
+        transform: none !important;
+
+        margin: 0 auto 22px !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+
+        font-size: 13px !important;
+        line-height: 24px !important;
+        font-weight: 400 !important;
+
+        /* remove os espaços exagerados */
+        text-align: center !important;
+
+        color: #FFFFFF !important;
+    }
+
+
+    /* =====================================================
+       ÁREA DE PESQUISA
+       ===================================================== */
+
+    .home-feature-third .home-feature-article-flow {
+        position: relative !important;
+
+        width: 260px !important;
+        max-width: 100% !important;
+
+        height: auto !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+
+        transform: none !important;
+
+        margin: 0 auto !important;
+
+        z-index: 60 !important;
+    }
+
+
+    /* =====================================================
+       PRIMEIRO CAMPO
+       ===================================================== */
+
+    .home-feature-third .home-feature-article-search {
+        position: relative !important;
+
+        width: 100% !important;
+        height: 43px !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* INPUT */
+
+    .home-feature-third .home-feature-article-search input {
+        display: block !important;
+
+        width: 100% !important;
+        height: 43px !important;
+
+        margin: 0 !important;
+
+        padding: 0 40px 0 14px !important;
+
+        border: 1px solid #FFFFFF !important;
+        border-radius: 6px !important;
+
+        background: #FFFFFF !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 12.35px !important;
+        line-height: 22px !important;
+
+        color: #010009 !important;
+
+        outline: none !important;
+    }
+
+
+    /* LUPA */
+
+    .home-feature-third .home-feature-article-search > i {
+        position: absolute !important;
+
+        right: 13px !important;
+        left: auto !important;
+
+        top: 50% !important;
+
+        transform: translateY(-50%) !important;
+
+        color: #0193FF !important;
+
+        pointer-events: none !important;
+    }
+
+
+    /* =====================================================
+       SEGUNDO CAMPO
+       aparece após selecionar a doença
+       ===================================================== */
+
+    .home-feature-third #home-feature-article-treatment-wrap {
+        position: relative !important;
+
+        width: 100% !important;
+        height: 43px !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+
+        transform: none !important;
+
+        margin: 10px 0 0 !important;
+    }
+
+    .home-feature-third
+    #home-feature-article-treatment-wrap[hidden] {
+        display: none !important;
+    }
+
+
+    /* =====================================================
+       DROPDOWNS
+       ===================================================== */
+
+    .home-feature-third .home-feature-article-results {
+        position: absolute !important;
+
+        width: 100% !important;
+        max-height: 190px !important;
+
+        left: 0 !important;
+        right: auto !important;
+
+        top: 49px !important;
+
+        overflow-y: auto !important;
+
+        border: 1px solid #E3E3E3 !important;
+        border-radius: 6px !important;
+
+        background: #FFFFFF !important;
+
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14) !important;
+
+        z-index: 999 !important;
+    }
+}
+/* =========================================================
+   MOBILE - NEWSLETTER / CADASTRAR E-MAIL
+   CENTRALIZAÇÃO
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+
+    .newsletter-strip {
+        position: relative !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 248px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        background: #0193FF !important;
+
+        text-align: center !important;
+        overflow: hidden !important;
+    }
+
+
+    /* ÍCONE */
+    .newsletter-icon {
+        position: absolute !important;
+
+        width: 47px !important;
+        height: 40px !important;
+
+        left: 50% !important;
+        right: auto !important;
+        top: 40px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        color: #FFFFFF !important;
+        font-size: 38px !important;
+    }
+
+
+    /* TEXTO */
+    .newsletter-title {
+        position: absolute !important;
+
+        width: 300px !important;
+        max-width: calc(100% - 40px) !important;
+        height: auto !important;
+
+        left: 50% !important;
+        right: auto !important;
+        top: 97px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 15px !important;
+        line-height: 25px !important;
+        font-weight: 700 !important;
+
+        text-align: center !important;
+
+        color: #FFFFFF !important;
+    }
+
+
+    /* BOTÃO CADASTRAR E-MAIL */
+    .newsletter-button {
+        position: absolute !important;
+
+        width: 173px !important;
+        height: 43px !important;
+
+        left: 50% !important;
+        right: auto !important;
+        top: 169px !important;
+
+        transform: translateX(-50%) !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        border: 0 !important;
+        border-radius: 5px !important;
+
+        background: #FFFFFF !important;
+
+        color: #0193FF !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+
+        text-align: center !important;
+    }
+}
+
+/* =========================================================
+   MOBILE - FOOTER COMPLETO
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+
+    /* =====================================================
+       FOOTER
+       ===================================================== */
+
+    .site-footer {
+        position: relative !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        height: auto !important;
+        min-height: 0 !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        background: #FFFFFF !important;
+
+        overflow: visible !important;
+    }
+
+
+    /* =====================================================
+       CONTAINER DAS COLUNAS
+       ===================================================== */
+
+    .footer-details {
+        position: relative !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        height: auto !important;
+        min-height: 0 !important;
+
+        margin: 0 !important;
+        padding: 28px 42px 38px !important;
+
+        background: #FFFFFF !important;
+
+        box-sizing: border-box !important;
+
+        overflow: visible !important;
+    }
+
+
+    /* =====================================================
+       REMOVE POSICIONAMENTO DESKTOP DAS 3 COLUNAS
+       ===================================================== */
+
+    .footer-column,
+    .footer-column-1,
+    .footer-column-2,
+    .footer-column-3 {
+        position: relative !important;
+
+        display: block !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        height: auto !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+        bottom: auto !important;
+
+        transform: none !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+
+    /* =====================================================
+       BLOCOS INTERNOS
+       ===================================================== */
+
+    .footer-block,
+    .footer-treatments,
+    .footer-scientific,
+    .footer-documents,
+    .footer-contact,
+    .footer-presentations,
+    .footer-specialists,
+    .footer-share,
+    .footer-premium,
+    .footer-disease {
+        position: relative !important;
+
+        display: block !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        height: auto !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+        bottom: auto !important;
+
+        transform: none !important;
+
+        padding: 0 !important;
+    }
+
+
+    /* =====================================================
+       COLUNA 1
+       ===================================================== */
+
+    .footer-treatments {
+        margin: 0 !important;
+    }
+
+    .footer-scientific {
+        margin: 30px 0 0 !important;
+    }
+
+    .footer-share {
+        margin: 30px 0 0 !important;
+    }
+
+
+    /* =====================================================
+       COLUNA 2
+       ===================================================== */
+
+    .footer-column-2 {
+        margin-top: 38px !important;
+    }
+
+    .footer-documents {
+        margin: 0 !important;
+    }
+
+    .footer-contact {
+        margin: 30px 0 0 !important;
+    }
+
+    .footer-premium {
+        margin: 30px 0 0 !important;
+    }
+
+
+    /* =====================================================
+       COLUNA 3
+       ===================================================== */
+
+    .footer-column-3 {
+        margin-top: 38px !important;
+    }
+
+    .footer-presentations {
+        margin: 0 !important;
+    }
+
+    .footer-specialists {
+        margin: 30px 0 0 !important;
+    }
+
+    .footer-disease {
+        margin: 30px 0 0 !important;
+    }
+
+
+    /* =====================================================
+       TÍTULOS
+       ===================================================== */
+
+    .site-footer h3,
+    .footer-title {
+        position: relative !important;
+
+        width: auto !important;
+        height: auto !important;
+
+        margin: 0 0 10px !important;
+        padding: 0 !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 15px !important;
+        line-height: 21px !important;
+        font-weight: 700 !important;
+
+        text-align: left !important;
+
+        color: #010009 !important;
+    }
+
+
+    /* =====================================================
+       LINKS / TEXTOS
+       ===================================================== */
+
+    .site-footer a,
+    .site-footer p,
+    .footer-contract-text {
+        font-family: "Inter", Arial, sans-serif !important;
+    }
+
+    .footer-block > a,
+    .footer-block > p,
+    .footer-contact > a,
+    .footer-contact > p {
+        display: block !important;
+
+        width: fit-content !important;
+        max-width: 100% !important;
+
+        margin-top: 6px !important;
+
+        font-size: 13px !important;
+        line-height: 19px !important;
+
+        text-align: left !important;
+    }
+
+
+    /* =====================================================
+       COMPARTILHE
+       ===================================================== */
+
+    .footer-share {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+
+        gap: 7px !important;
+    }
+
+    .footer-share img,
+    .footer-whatsapp-icon {
+        display: block !important;
+
+        width: 20px !important;
+        height: 20px !important;
+
+        margin: 0 !important;
+
+        object-fit: contain !important;
+    }
+
+    .footer-share a,
+    .footer-share span {
+        margin: 0 !important;
+
+        font-size: 15px !important;
+        line-height: 20px !important;
+        font-weight: 700 !important;
+
+        color: #010009 !important;
+    }
+
+
+    /* =====================================================
+       FALE COM A GENTE
+       ===================================================== */
+
+    .footer-contact-title {
+        display: flex !important;
+
+        align-items: center !important;
+        justify-content: flex-start !important;
+
+        gap: 7px !important;
+
+        margin: 0 0 10px !important;
+    }
+
+    .footer-contact-title img,
+    .footer-contact-whatsapp-icon {
+        width: 20px !important;
+        height: 20px !important;
+
+        flex: 0 0 20px !important;
+
+        object-fit: contain !important;
+    }
+
+
+    /* =====================================================
+       CONTRATAR PLANO PREMIUM
+       ===================================================== */
+
+    .footer-premium {
+        font-family: "Inter", Arial, sans-serif !important;
+
+        font-size: 15px !important;
+        line-height: 21px !important;
+        font-weight: 700 !important;
+
+        color: #010009 !important;
+    }
+
+
+    /* =====================================================
+       SELECIONE A DOENÇA
+       ===================================================== */
+
+    .footer-disease-label {
+        display: block !important;
+
+        width: 100% !important;
+        height: auto !important;
+
+        margin: 0 0 8px !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+        font-size: 15px !important;
+        line-height: 21px !important;
+        font-weight: 700 !important;
+
+        text-align: left !important;
+
+        color: #010009 !important;
+    }
+
+
+    /* SELECT */
+
+    .footer-disease-select {
+        position: relative !important;
+
+        width: 194px !important;
+        max-width: 100% !important;
+        height: 40px !important;
+
+        margin: 0 !important;
+    }
+
+    .footer-disease-button {
+        width: 194px !important;
+        max-width: 100% !important;
+        height: 40px !important;
+
+        margin: 0 !important;
+    }
+
+
+    /* OPÇÕES DO SELECT */
+
+    .footer-disease-options {
+        position: absolute !important;
+
+        width: 194px !important;
+        max-width: 100% !important;
+
+        left: 0 !important;
+        right: auto !important;
+
+        top: 47px !important;
+        bottom: auto !important;
+
+        z-index: 9999 !important;
+    }
+
+
+    /* =====================================================
+       REMOVE ALTURAS ARTIFICIAIS QUANDO SELECT ABRE
+       ===================================================== */
+
+    .site-footer:has(.footer-disease-options.open),
+    .footer-details:has(.footer-disease-options.open) {
+        height: auto !important;
+        min-height: 0 !important;
+    }
+
+
+    /* =====================================================
+       CNPJ / BARRA INFERIOR
+       ===================================================== */
+
+    .footer-bottom {
+        position: relative !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        height: auto !important;
+        min-height: 65px !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+        bottom: auto !important;
+
+        margin: 0 !important;
+        padding: 16px 25px !important;
+
+        display: flex !important;
+
+        align-items: center !important;
+        justify-content: center !important;
+
+        border-top: 1px solid #E3E3E3 !important;
+        border-bottom: 0 !important;
+
+        background: #FAFAFA !important;
+
+        font-family: "Inter", Arial, sans-serif !important;
+
+        font-size: 11px !important;
+        line-height: 17px !important;
+        font-weight: 400 !important;
+
+        text-align: center !important;
+
+        color: #8F8F93 !important;
+
+        box-sizing: border-box !important;
+    }
+}
 }
 
 
@@ -4068,7 +6132,8 @@ input::-webkit-search-cancel-button {
 
 
 
-    </style>
+    \n/* ============================================================\n   TELIX - MOBILE FINAL OVERRIDE\n   Corrige largura, centralizacao, banners e footer atual\n   ============================================================ */\n@media screen and (max-width: 768px) {\n  html, body { width:100% !important; min-width:0 !important; margin:0 !important; padding:0 !important; overflow-x:hidden !important; }\n  body { background:#fff !important; }\n\n  .top-bar, .header, .home-main, .home-menu,\n  .home-feature.home-feature-one, .home-feature.home-feature-two, .home-feature.home-feature-third,\n  .home-share, .newsletter-strip, .site-footer {\n    width:100% !important; max-width:none !important; margin-left:auto !important; margin-right:auto !important;\n  }\n\n  .header-inner { width:100% !important; max-width:393px !important; margin:0 auto !important; }\n\n  /* Menu: mantém o card centralizado sem estourar a tela */\n  .home-menu { padding:15px 15px 29px !important; }\n  .home-menu .home-menu-inner { width:100% !important; max-width:363px !important; margin:0 auto !important; }\n  .home-menu .home-tabs, .home-menu .home-menu-content { width:100% !important; }\n  .home-menu .home-tabs { grid-template-columns:repeat(3, minmax(0,1fr)) !important; gap:0 !important; }\n  .home-menu .home-tab { width:100% !important; min-width:0 !important; }\n  .home-menu .home-menu-description { left:50% !important; transform:translateX(-50%) !important; width:calc(100% - 56px) !important; }\n  .home-menu .home-disease-wrap,\n  .home-menu .home-select-wrap,\n  .home-menu .home-select-wrap-wide,\n  .home-menu .home-menu-treatment-flow-row,\n  .home-menu .home-menu-article-search-row { left:50% !important; transform:translateX(-50%) !important; }\n\n  /* Blocos: imagem e texto ocupam 100% da largura real do celular */\n  .home-feature.home-feature-one, .home-feature.home-feature-two, .home-feature.home-feature-third,\n  .home-feature.home-feature-one .home-feature-inner,\n  .home-feature.home-feature-two .home-feature-inner,\n  .home-feature.home-feature-third .home-feature-inner { width:100% !important; max-width:none !important; }\n\n  .home-feature.home-feature-one .home-feature-media,\n  .home-feature.home-feature-two .home-feature-media,\n  .home-feature.home-feature-third .home-feature-media {\n    width:100% !important; max-width:none !important; left:0 !important; right:0 !important; margin:0 !important;\n  }\n  .home-feature.home-feature-one .home-feature-media img,\n  .home-feature.home-feature-two .home-feature-media img,\n  .home-feature.home-feature-third .home-feature-media img {\n    width:100% !important; max-width:none !important; height:100% !important; display:block !important; object-fit:cover !important;\n  }\n\n  .home-feature.home-feature-one .home-feature-copy,\n  .home-feature.home-feature-two .home-feature-copy,\n  .home-feature.home-feature-two .home-feature-copy-dark,\n  .home-feature.home-feature-third .home-feature-copy {\n    width:100% !important; max-width:none !important; left:0 !important; right:0 !important; margin:0 !important;\n  }\n  .home-feature .home-feature-title { left:50% !important; transform:translateX(-50%) !important; width:calc(100% - 40px) !important; text-align:center !important; }\n  .home-feature .home-feature-description { left:50% !important; transform:translateX(-50%) !important; width:calc(100% - 60px) !important; max-width:333px !important; }\n  .home-feature-one .home-feature-disease-wrap,\n  .home-feature-one .home-feature-treatment-wrap,\n  .home-feature-two .home-detail-flow,\n  .home-feature-third .home-feature-article-flow { left:50% !important; transform:translateX(-50%) !important; }\n\n  /* Banner família */\n  .home-share .share-banner, .home-share .share-banner-picture, .home-share .share-banner-img {\n    width:100% !important; max-width:none !important; margin:0 !important;\n  }\n  .home-share .share-banner-img { height:100% !important; object-fit:cover !important; }\n  .home-share .share-whatsapp-link { left:50% !important; transform:translateX(-50%) !important; }\n\n  /* Newsletter */\n  .newsletter-strip { position:relative !important; }\n  .newsletter-strip .newsletter-icon, .newsletter-strip .newsletter-title, .newsletter-strip .newsletter-button { left:50% !important; transform:translateX(-50%) !important; }\n\n  /* FOOTER - estrutura HTML atual (.footer-details/.footer-column) */\n  .site-footer { height:auto !important; min-height:0 !important; padding:0 !important; background:#fff !important; position:relative !important; }\n  .mobile-footer-banner { display:block !important; width:100% !important; height:auto !important; margin:0 !important; overflow:hidden !important; }\n  .mobile-footer-banner img { display:block !important; width:100% !important; height:auto !important; object-fit:cover !important; }\n  .footer-details { width:100% !important; max-width:393px !important; height:auto !important; margin:0 auto !important; padding:36px 30px 34px !important; position:relative !important; }\n  .footer-column { position:static !important; width:100% !important; height:auto !important; margin:0 !important; }\n  .footer-column + .footer-column { margin-top:32px !important; }\n  .footer-block, .footer-scientific, .footer-contact, .footer-specialists, .footer-disease { position:static !important; width:100% !important; margin:0 !important; }\n  .footer-scientific, .footer-contact, .footer-specialists { margin-top:28px !important; }\n  .footer-share, .footer-premium { position:static !important; width:max-content !important; max-width:100% !important; margin-top:28px !important; }\n  .footer-disease { margin-top:28px !important; }\n  .footer-disease-select, .footer-disease-button { width:100% !important; max-width:260px !important; }\n  .footer-disease-options { width:100% !important; max-width:260px !important; }\n  .footer-bottom { position:static !important; width:100% !important; min-height:65px !important; height:auto !important; padding:18px 20px !important; margin:0 !important; }\n  .site-footer:has(.footer-disease-options.open) { height:auto !important; }\n}\n
+</style>
 
     </head>
 
@@ -5147,79 +7212,126 @@ input::-webkit-search-cancel-button {
 
     </main>
 
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
+<footer class="site-footer">
+
+    <!-- usado somente no mobile -->
+    <div class="mobile-footer-banner" aria-hidden="true">
+        <img
+            src="{% static 'img/banner_footer_mobile.png' %}"
+            alt=""
+        >
+    </div>
 
 
-    <!-- =========================================================
-        FOOTER
-        ========================================================= -->
-
-    <footer class="site-footer">
+    <div class="footer-details">
 
 
-        <div class="site-footer-content">
+        <!-- ==================================================
+             COLUNA 1
+             ================================================== -->
+
+        <div class="footer-column footer-column-1">
 
 
-            <!-- TRATAMENTOS -->
+            <!-- PÁGINAS DE TRATAMENTOS -->
 
-            <div class="footer-group footer-treatments">
+            <div class="footer-block">
 
-                <a
-                    href="https://www.telix.inf.br/tratamentos-risco-custo-contraindicado-eficacia-prazo"
-                >
+                <h3>
 
-                    <h3 class="footer-title">
+                    <a
+                        href="https://www.telix.inf.br/tratamentos-risco-custo-contraindicado-eficacia-prazo"
+                        style="color: inherit; text-decoration: none;"
+                    >
                         Páginas de tratamentos
-                    </h3>
+                    </a>
 
-                </a>
+                </h3>
 
 
                 <a
                     href="https://www.telix.inf.br/como-calculamos-a-eficacia-de-tratamentos-de-saude"
                 >
-                    Eficácia — como calculamos
+                    Eficácia - como calculamos
                 </a>
 
             </div>
 
 
+            <!-- PÁGINAS DE ARTIGOS CIENTÍFICOS -->
 
-            <!-- ARTIGOS -->
+            <div class="footer-block footer-scientific">
 
-            <div class="footer-group footer-articles">
+                <h3>
 
-                <a
-                    href="https://www.telix.inf.br/evidencias-clinicas-de-pesquisas-sobre-tratamentos-de-saude"
-                >
-
-                    <h3 class="footer-title">
+                    <a
+                        href="https://www.telix.inf.br/evidencias-clinicas-de-pesquisas-sobre-tratamentos-de-saude"
+                        style="color: inherit; text-decoration: none;"
+                    >
                         Páginas de artigos científicos
-                    </h3>
+                    </a>
 
-                </a>
+                </h3>
 
 
                 <a
                     href="https://www.telix.inf.br/criterios-do-rigor-da-pesquisa-de-tratamentos-de-saude"
                 >
-                    Rigor da pesquisa — critérios
+                    Rigor da pesquisa - critérios
                 </a>
 
             </div>
 
 
+            <!-- COMPARTILHE -->
+
+            <a
+                href="https://api.whatsapp.com/send/?phone=5545999040371&text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.&type=phone_number&app_absent=0"
+                class="footer-special footer-share"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+
+                <img
+                    src="{% static 'img/whats-app.png' %}"
+                    alt="WhatsApp"
+                    class="footer-whatsapp-icon"
+                >
+
+                <span>
+                    Compartilhe
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- ==================================================
+             COLUNA 2
+             ================================================== -->
+
+        <div class="footer-column footer-column-2">
+
 
             <!-- DOCUMENTOS -->
 
-            <div class="footer-group footer-documents">
+            <div class="footer-block">
 
-                <a href="https://www.telix.inf.br/documentacao">
+                <h3>
 
-                    <h3 class="footer-title">
+                    <a
+                        href="https://www.telix.inf.br/documentacao"
+                        style="color: inherit; text-decoration: none;"
+                    >
                         Documentos
-                    </h3>
+                    </a>
 
-                </a>
+                </h3>
 
 
                 <a
@@ -5238,23 +7350,45 @@ input::-webkit-search-cancel-button {
             </div>
 
 
+            <!-- FALE COM A GENTE -->
 
-            <!-- CONTATO -->
+            <div class="footer-block footer-contact">
 
-            <div class="footer-group footer-contact">
+                <h3 class="footer-contact-title">
 
-                <h3 class="footer-title">
-                    Fale com a gente!
+                    <img
+                        src="{% static 'img/whats-app.png' %}"
+                        alt="WhatsApp"
+                        class="footer-contact-whatsapp-icon"
+                    >
+
+
+                    <a
+                        href="https://wa.me/45999040371"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="color: inherit; text-decoration: none;"
+                    >
+                        <span>
+                            Fale com a gente!
+                        </span>
+                    </a>
+
                 </h3>
 
 
-                <a
-                    href="https://api.whatsapp.com/send/?phone=45999040371&text&type=phone_number&app_absent=0"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    (45) 99904-0371
-                </a>
+                <p>
+
+                    <a
+                        href="https://wa.me/45999040371"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="color: inherit; text-decoration: none;"
+                    >
+                        (45) 99904-0371
+                    </a>
+
+                </p>
 
 
                 <a href="mailto:contato@telix.inf.br">
@@ -5264,17 +7398,37 @@ input::-webkit-search-cancel-button {
             </div>
 
 
+            <!-- PREMIUM -->
+
+            <a
+                href="https://www.telix.inf.br/paciente-bem-informado"
+                class="footer-special footer-premium"
+            >
+                Contratar plano premium
+            </a>
+
+        </div>
+
+
+        <!-- ==================================================
+             COLUNA 3
+             ================================================== -->
+
+        <div class="footer-column footer-column-3">
+
 
             <!-- APRESENTAÇÕES -->
 
-            <div class="footer-group footer-presentations">
+            <div class="footer-block">
 
-                <h3 class="footer-title">
+                <h3>
                     Apresentações
                 </h3>
 
 
-                <a href="https://www.telix.inf.br/perguntas-e-respostas">
+                <a
+                    href="https://www.telix.inf.br/perguntas-e-respostas"
+                >
                     Perguntas e respostas
                 </a>
 
@@ -5302,65 +7456,189 @@ input::-webkit-search-cancel-button {
             </div>
 
 
-
             <!-- OPINIÕES -->
 
-            <div class="footer-group footer-opinions">
+            <div class="footer-specialists">
 
-                <a
-                    href="https://www.telix.inf.br/entrevistas-com-especialistas-sobre-tratamento-de-sa%C3%BAde"
-                >
+                <h3>
 
-                    <h3 class="footer-title">
+                    <a
+                        href="https://www.telix.inf.br/entrevistas-com-especialistas-sobre-tratamento-de-sa%C3%BAde"
+                        style="color: inherit; text-decoration: none;"
+                    >
                         Opiniões de especialistas
-                    </h3>
+                    </a>
 
-                </a>
-
-            </div>
-
-
-
-            <!-- CONTRATAR -->
-
-            <div class="footer-group footer-contract">
-
-                <h3 class="footer-title">
-                    Contratar
                 </h3>
 
-                <span class="footer-contract-text">
-                    Paciente bem informado
-                </span>
-
             </div>
 
 
+            <!-- SELECT DOENÇA -->
 
-            <!-- BOTÃO -->
+            <div class="footer-disease">
 
-            <a
-                href="https://www.telix.inf.br/condicoes-de-saude"
-                class="footer-access-button"
-            >
-                Acesso grátis ao banco de dados
-            </a>
+                <div class="footer-disease-label">
+                    Selecione a doença
+                </div>
 
+
+                <div class="footer-disease-select">
+
+                    <button
+                        type="button"
+                        class="footer-disease-button"
+                        id="footerDiseaseButton"
+                        aria-expanded="false"
+                        aria-controls="footerDiseaseOptions"
+                    >
+
+                        <span>
+                            {{ condicao.nome|default:"Enxaqueca" }}
+                        </span>
+
+                        <span class="footer-chevron"></span>
+
+                    </button>
+
+
+                   <div
+    class="footer-disease-options"
+    id="footerDiseaseOptions"
+>
+
+    {% for item in condicoes_home %}
+
+        <a href="{{ item.url }}">
+            {{ item.nome }}
+        </a>
+
+    {% empty %}
+
+        <span class="footer-disease-empty">
+            Nenhuma opção disponível
+        </span>
+
+    {% endfor %}
+
+</div>
+
+                </div>
+
+            </div>
 
         </div>
 
+    </div>
 
 
-        <div class="site-footer-legal">
+    <!-- =====================================================
+         BARRA INFERIOR
+         ===================================================== -->
 
-            <p>
-                Linca Telecomunicações Ltda — CNPJ: 03.376.788-0001/23
-            </p>
+    <div class="footer-bottom">
+        Linca Telecomunicações Ltda — CNPJ: 03.376.788-0001/23
+    </div>
 
-        </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const button =
+        document.getElementById('footerDiseaseButton');
+
+    const options =
+        document.getElementById('footerDiseaseOptions');
 
 
-    </footer>
+    if (!button || !options) {
+        return;
+    }
+
+
+    /* =====================================================
+       ABRIR / FECHAR
+       ===================================================== */
+
+    button.addEventListener('click', function (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+
+        const isOpen =
+            options.classList.toggle('open');
+
+
+        button.classList.toggle(
+            'open',
+            isOpen
+        );
+
+
+        button.setAttribute(
+            'aria-expanded',
+            isOpen ? 'true' : 'false'
+        );
+
+    });
+
+
+    /* =====================================================
+       NÃO FECHAR AO CLICAR DENTRO DO DROPDOWN
+       ===================================================== */
+
+    options.addEventListener('click', function (event) {
+
+        event.stopPropagation();
+
+    });
+
+
+    /* =====================================================
+       FECHAR AO CLICAR FORA
+       ===================================================== */
+
+    document.addEventListener('click', function () {
+
+        options.classList.remove('open');
+
+        button.classList.remove('open');
+
+        button.setAttribute(
+            'aria-expanded',
+            'false'
+        );
+
+    });
+
+
+    /* =====================================================
+       FECHAR COM ESC
+       ===================================================== */
+
+    document.addEventListener('keydown', function (event) {
+
+        if (event.key !== 'Escape') {
+            return;
+        }
+
+
+        options.classList.remove('open');
+
+        button.classList.remove('open');
+
+        button.setAttribute(
+            'aria-expanded',
+            'false'
+        );
+
+    });
+
+});
+</script>
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
