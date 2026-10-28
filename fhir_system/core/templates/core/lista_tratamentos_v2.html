@@ -575,14 +575,14 @@
             TÍTULO
             ===================================================== */
 
-            .v3-title-area {
-
-                width: 950px;
-                max-width: 100%;
-
-                margin: 38px auto 18px;
-            }
-
+.v3-title-area {
+    width: 950px;
+    max-width: 100%;
+    margin: 38px auto 45px;
+}
+.v3-benefits-nav {
+    margin-bottom: 30px;
+}
             .v3-title {
 
                 margin: 0;
@@ -1170,13 +1170,18 @@
         background: #F5FAFF;
         color: #0193FF;
     }
-
+.v3-benefits-nav {
+    margin-bottom: 40px;
+}
 
     /* =====================================================
     MOBILE - FILTRAR E ORDENAR
     ===================================================== */
 
     @media (max-width: 768px) {
+.v3-benefits-nav {
+    margin-bottom: 40px;
+}
 
         .v3-filter-bar {
             min-height: auto;
@@ -3202,7 +3207,190 @@
 }
 
 }
+/* =========================================================
+   FIX FINAL - CABEÇALHO DO CARD MOBILE
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+
+    /* mantém exatamente o card atual */
+    .v3-treatment {
+        position: relative !important;
+        display: block !important;
+
+        width: 288px !important;
+        min-height: 351px !important;
+        height: 351px !important;
+
+        padding: 0 !important;
+    }
+
+
+    /* IMAGEM À ESQUERDA */
+    .v3-treatment-image-area {
+        position: absolute !important;
+
+        left: 16px !important;
+        top: 16px !important;
+
+        width: 104px !important;
+        height: 104px !important;
+
+        margin: 0 !important;
+    }
+
+    .v3-treatment-image {
+        width: 104px !important;
+        height: 104px !important;
+
+        object-fit: contain !important;
+    }
+
+
+    /* ==========================================
+       BLOCO DE TEXTO COMPLETO À DIREITA
+       ========================================== */
+
+    .v3-treatment-main {
+        position: absolute !important;
+
+        left: 128px !important;
+        top: 16px !important;
+
+        width: 143px !important;
+        height: auto !important;
+        min-height: 104px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+
+        overflow: visible !important;
+    }
+
+
+    /* NOME */
+
+    .v3-treatment-name {
+        position: static !important;
+
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+
+        margin: 0 0 5px 0 !important;
+        padding: 0 !important;
+
+        font-size: 15px !important;
+        line-height: 18px !important;
+        font-weight: 700 !important;
+
+        white-space: normal !important;
+        overflow: visible !important;
+        overflow-wrap: break-word !important;
+    }
+
+
+    /* TIPO */
+
+    .v3-treatment-type {
+        position: static !important;
+
+        width: 100% !important;
+        height: auto !important;
+
+        margin: 0 0 4px 0 !important;
+        padding: 0 !important;
+
+        font-size: 10px !important;
+        line-height: 13px !important;
+        font-weight: 700 !important;
+
+        white-space: normal !important;
+        overflow: visible !important;
+    }
+
+
+    /* PRINCÍPIO ATIVO */
+
+    .v3-treatment-meta {
+        position: static !important;
+
+        width: 100% !important;
+        height: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        font-size: 10px !important;
+        line-height: 14px !important;
+
+        white-space: normal !important;
+        overflow: visible !important;
+    }
+
+    .v3-treatment-meta p {
+        position: static !important;
+
+        width: 100% !important;
+        height: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        line-height: 14px !important;
+    }
+
+    .v3-treatment-meta p:nth-child(2) {
+        display: none !important;
+    }
+
+
+    /* =====================================================
+       O RESULTADO CONTINUA NA POSIÇÃO ORIGINAL
+       ===================================================== */
+
+    .v3-treatment-result {
+        position: absolute !important;
+
+        left: 0 !important;
+        top: 161px !important;
+
+        width: 288px !important;
+        height: 190px !important;
+
+        margin: 0 !important;
+        padding-bottom: 45px !important;
+    }
+
+
+    /* BOTÃO CONTINUA NO MESMO LUGAR */
+
+    .v3-treatment-button {
+        position: absolute !important;
+
+        left: 50% !important;
+        top: 304px !important;
+        bottom: auto !important;
+
+        transform: translateX(-50%) !important;
+
+        width: 121px !important;
+        height: 26px !important;
+
+        margin: 0 !important;
+    }
+/* ESPAÇO ENTRE MENU E LISTA - MOBILE */
+.v3-benefits-nav {
+    margin-bottom: 25px !important;
 }
+}
+
+}
+
 
 
 </style>
@@ -3280,6 +3468,33 @@
         <main class="v3-main">
 
             <div class="v3-content">
+
+
+
+                <!-- =============================================
+                    TÍTULO
+                    ============================================= -->
+
+                <div class="v3-title-area">
+
+                    <h1 class="v3-title">
+
+                        Tratamentos para
+                        {{ condicao.nome|lower }}
+
+                    </h1>
+
+
+                    <p class="v3-subtitle">
+
+                        Classificados por tipo de benefício obtido
+                        pelos pacientes com o uso dos tratamentos,
+                        com base em pesquisas científicas, e
+                        ordenados por eficácia.
+
+                    </p>
+
+                </div>
 <!-- =============================================
     NAVEGAÇÃO DOS BENEFÍCIOS
     ============================================= -->
@@ -3426,57 +3641,49 @@
                     TEXTO DA ABA
                     ===================================== -->
 
-                {% if segmento.slug == "reducao-temporaria-dos-sintomas" %}
+ {% if segmento.slug == "reducao-temporaria-dos-sintomas" %}
 
-                    <span class="v3-benefit-title">
-                        Redução temporária
-                    </span>
-
-                    <span class="v3-benefit-subtitle">
-                        dos sintomas
-                    </span>
+    <span class="v3-benefit-title">
+        Bons para crises
+    </span>
 
 
-                {% elif segmento.slug == "eliminacao-temporaria-dos-sintomas" %}
+{% elif segmento.slug == "eliminacao-temporaria-dos-sintomas" %}
 
-                    <span class="v3-benefit-title">
-                        Eliminação temporária
-                    </span>
-
-                    <span class="v3-benefit-subtitle">
-                        dos sintomas
-                    </span>
+    <span class="v3-benefit-title">
+        Ótimos para crises
+    </span>
 
 
-                {% elif segmento.slug == "reducao-persistente-dos-sintomas" %}
+{% elif segmento.slug == "reducao-persistente-dos-sintomas" %}
 
-                    <span class="v3-benefit-title">
-                        Redução persistente
-                    </span>
+    <span class="v3-benefit-title">
+        Bons para melhora
+    </span>
 
-                    <span class="v3-benefit-subtitle">
-                        dos sintomas
-                    </span>
-
-
-                {% elif segmento.slug == "eliminacao-persistente-dos-sintomas" %}
-
-                    <span class="v3-benefit-title">
-                        Eliminação persistente
-                    </span>
-
-                    <span class="v3-benefit-subtitle">
-                        dos sintomas
-                    </span>
+    <span class="v3-benefit-subtitle">
+        duradoura
+    </span>
 
 
-                {% elif segmento.slug == "cura" %}
+{% elif segmento.slug == "eliminacao-persistente-dos-sintomas" %}
 
-                    <span class="v3-benefit-title">
-                        Cura
-                    </span>
+    <span class="v3-benefit-title">
+        Ótimos para melhora
+    </span>
 
-                {% endif %}
+    <span class="v3-benefit-subtitle">
+        duradoura
+    </span>
+
+
+{% elif segmento.slug == "cura" %}
+
+    <span class="v3-benefit-title">
+        Cura
+    </span>
+
+{% endif %}
 
 
             </a>
@@ -3487,30 +3694,6 @@
 
 </nav>
 
-                <!-- =============================================
-                    TÍTULO
-                    ============================================= -->
-
-                <div class="v3-title-area">
-
-                    <h1 class="v3-title">
-
-                        Tratamentos para
-                        {{ condicao.nome|lower }}
-
-                    </h1>
-
-
-                    <p class="v3-subtitle">
-
-                        Classificados por tipo de benefício obtido
-                        pelos pacientes com o uso dos tratamentos,
-                        com base em pesquisas científicas, e
-                        ordenados por eficácia.
-
-                    </p>
-
-                </div>
 
 
                 <!-- =============================================
@@ -4111,7 +4294,7 @@
                         >
 
                         <a
-                            href="https://wa.me/45999040371"
+                            href="https://wa.me/45999830136"
                             target="_blank"
                             rel="noopener noreferrer"
                             style="color: inherit; text-decoration: none;"
@@ -4127,12 +4310,12 @@
                     <p>
 
                         <a
-                            href="https://wa.me/45999040371"
+                            href="https://wa.me/45999830136"
                             target="_blank"
                             rel="noopener noreferrer"
                             style="color: inherit; text-decoration: none;"
                         >
-                            (45) 99904-0371
+                            (45) 99983-0136
                         </a>
 
                     </p>
