@@ -2856,36 +2856,26 @@ input::-webkit-search-cancel-button {
        Fechado: componente 290x248 / card 290x220
        Expandido: componente 290x307 / card 290x279
        ======================================================== */
+.home-menu {
+    position: relative;
+    width: 320px;
+    max-width: 100%;
+    height: 292px;
+    margin: 0 auto;
+    padding: 15px 15px 29px;
+    background: #FFFFFF;
+    transition: height .18s ease;
+}
 
-    .home-menu {
-        position: relative;
-        width: 320px;
-        max-width: 100%;
-        height: 292px;
-        margin: 0 auto;
-        padding: 15px 15px 29px;
-        background: #FFFFFF;
-        transition: height .18s ease;
-    }
+.home-menu-inner {
+    position: relative;
+    width: 290px;
+    height: 248px;
+    margin: 0 auto;
+    padding: 0;
+    transition: height .18s ease;
+}
 
-    .home-menu:has(.home-menu-treatment-flow-search + .home-menu-treatment-flow-search:not([hidden])),
-    .home-menu:has(#home-menu-article-treatment-wrap:not([hidden])) {
-        height: 351px;
-    }
-
-    .home-menu-inner {
-        position: relative;
-        width: 290px;
-        height: 248px;
-        margin: 0 auto;
-        padding: 0;
-        transition: height .18s ease;
-    }
-
-    .home-menu-inner:has(.home-menu-treatment-flow-search + .home-menu-treatment-flow-search:not([hidden])),
-    .home-menu-inner:has(#home-menu-article-treatment-wrap:not([hidden])) {
-        height: 307px;
-    }
 
     /* ABAS */
 
@@ -2940,24 +2930,32 @@ input::-webkit-search-cancel-button {
 
     /* CARD */
 
-    .home-menu-content {
-        position: absolute;
-        width: 290px;
-        height: 220px;
-        left: 0;
-        top: 28px;
-        z-index: 10;
-        border: 1px solid #0193FF;
-        border-radius: 0 0 15px 15px;
-        background: #FFFFFF;
-        overflow: visible;
-        transition: height .18s ease, background-color .18s ease;
-    }
+.home-menu-content {
+    position: absolute;
+    width: 290px;
+    height: 220px;
+    left: 0;
+    top: 28px;
+    z-index: 10;
+    border: 1px solid #0193FF;
+    border-radius: 0 0 15px 15px;
+    background: #FFFFFF;
+    overflow: visible;
+    transition: height .18s ease, background-color .18s ease;
+}
 
-    .home-menu-content:has(.home-menu-treatment-flow-search + .home-menu-treatment-flow-search:not([hidden])),
-    .home-menu-content:has(#home-menu-article-treatment-wrap:not([hidden])) {
-        height: 279px;
-    }
+.home-menu.segundo-campo-aberto {
+    height: 351px;
+}
+
+.home-menu-inner.segundo-campo-aberto {
+    height: 307px;
+}
+
+.home-menu-content.segundo-campo-aberto {
+    height: 279px;
+}
+
 
     .home-menu-content.tratamentos-active {
         background: #0193FF;
@@ -4870,37 +4868,44 @@ body,
 
 @media screen and (max-width: 768px) {
 
-    .home-menu {
-        position: relative !important;
+.home-menu {
+    position: relative !important;
 
-        width: 100% !important;
-        max-width: 100% !important;
-        height: 292px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 292px !important;
 
-        margin: 0 auto !important;
-        padding: 15px 0 29px !important;
+    margin: 0 auto !important;
+    padding: 15px 0 29px !important;
 
-        background: #FFFFFF !important;
-    }
+    background: #FFFFFF !important;
+}
 
-    .home-menu-inner {
-        position: relative !important;
+.home-menu.segundo-campo-aberto {
+    height: 351px !important;
+}
 
-        width: 290px !important;
-        max-width: calc(100% - 30px) !important;
-        height: 248px !important;
+.home-menu-inner {
+    position: relative !important;
 
-        left: auto !important;
-        right: auto !important;
+    width: 290px !important;
+    max-width: calc(100% - 30px) !important;
+    height: 248px !important;
 
-        transform: none !important;
+    left: auto !important;
+    right: auto !important;
 
-        margin-left: auto !important;
-        margin-right: auto !important;
+    transform: none !important;
 
-        padding: 0 !important;
-    }
+    margin-left: auto !important;
+    margin-right: auto !important;
 
+    padding: 0 !important;
+}
+
+.home-menu-inner.segundo-campo-aberto {
+    height: 307px !important;
+}
     .home-tabs {
         position: relative !important;
 
@@ -6220,15 +6225,42 @@ body,
     }
 
 }
+
+
 }
 
 
 
 
 
+@media screen and (max-width: 768px) {
 
+    /* Estado normal */
+    .home-menu .home-menu-content {
+        height: 220px !important;
+        min-height: 220px !important;
+    }
 
-    \n/* ============================================================\n   TELIX - MOBILE FINAL OVERRIDE\n   Corrige largura, centralizacao, banners e footer atual\n   ============================================================ */\n@media screen and (max-width: 768px) {\n  html, body { width:100% !important; min-width:0 !important; margin:0 !important; padding:0 !important; overflow-x:hidden !important; }\n  body { background:#fff !important; }\n\n  .top-bar, .header, .home-main, .home-menu,\n  .home-feature.home-feature-one, .home-feature.home-feature-two, .home-feature.home-feature-third,\n  .home-share, .newsletter-strip, .site-footer {\n    width:100% !important; max-width:none !important; margin-left:auto !important; margin-right:auto !important;\n  }\n\n  .header-inner { width:100% !important; max-width:393px !important; margin:0 auto !important; }\n\n  /* Menu: mantém o card centralizado sem estourar a tela */\n  .home-menu { padding:15px 15px 29px !important; }\n  .home-menu .home-menu-inner { width:100% !important; max-width:363px !important; margin:0 auto !important; }\n  .home-menu .home-tabs, .home-menu .home-menu-content { width:100% !important; }\n  .home-menu .home-tabs { grid-template-columns:repeat(3, minmax(0,1fr)) !important; gap:0 !important; }\n  .home-menu .home-tab { width:100% !important; min-width:0 !important; }\n  .home-menu .home-menu-description { left:50% !important; transform:translateX(-50%) !important; width:calc(100% - 56px) !important; }\n  .home-menu .home-disease-wrap,\n  .home-menu .home-select-wrap,\n  .home-menu .home-select-wrap-wide,\n  .home-menu .home-menu-treatment-flow-row,\n  .home-menu .home-menu-article-search-row { left:50% !important; transform:translateX(-50%) !important; }\n\n  /* Blocos: imagem e texto ocupam 100% da largura real do celular */\n  .home-feature.home-feature-one, .home-feature.home-feature-two, .home-feature.home-feature-third,\n  .home-feature.home-feature-one .home-feature-inner,\n  .home-feature.home-feature-two .home-feature-inner,\n  .home-feature.home-feature-third .home-feature-inner { width:100% !important; max-width:none !important; }\n\n  .home-feature.home-feature-one .home-feature-media,\n  .home-feature.home-feature-two .home-feature-media,\n  .home-feature.home-feature-third .home-feature-media {\n    width:100% !important; max-width:none !important; left:0 !important; right:0 !important; margin:0 !important;\n  }\n  .home-feature.home-feature-one .home-feature-media img,\n  .home-feature.home-feature-two .home-feature-media img,\n  .home-feature.home-feature-third .home-feature-media img {\n    width:100% !important; max-width:none !important; height:100% !important; display:block !important; object-fit:cover !important;\n  }\n\n  .home-feature.home-feature-one .home-feature-copy,\n  .home-feature.home-feature-two .home-feature-copy,\n  .home-feature.home-feature-two .home-feature-copy-dark,\n  .home-feature.home-feature-third .home-feature-copy {\n    width:100% !important; max-width:none !important; left:0 !important; right:0 !important; margin:0 !important;\n  }\n  .home-feature .home-feature-title { left:50% !important; transform:translateX(-50%) !important; width:calc(100% - 40px) !important; text-align:center !important; }\n  .home-feature .home-feature-description { left:50% !important; transform:translateX(-50%) !important; width:calc(100% - 60px) !important; max-width:333px !important; }\n  .home-feature-one .home-feature-disease-wrap,\n  .home-feature-one .home-feature-treatment-wrap,\n  .home-feature-two .home-detail-flow,\n  .home-feature-third .home-feature-article-flow { left:50% !important; transform:translateX(-50%) !important; }\n\n  /* Banner família */\n  .home-share .share-banner, .home-share .share-banner-picture, .home-share .share-banner-img {\n    width:100% !important; max-width:none !important; margin:0 !important;\n  }\n  .home-share .share-banner-img { height:100% !important; object-fit:cover !important; }\n  .home-share .share-whatsapp-link { left:50% !important; transform:translateX(-50%) !important; }\n\n  /* Newsletter */\n  .newsletter-strip { position:relative !important; }\n  .newsletter-strip .newsletter-icon, .newsletter-strip .newsletter-title, .newsletter-strip .newsletter-button { left:50% !important; transform:translateX(-50%) !important; }\n\n  /* FOOTER - estrutura HTML atual (.footer-details/.footer-column) */\n  .site-footer { height:auto !important; min-height:0 !important; padding:0 !important; background:#fff !important; position:relative !important; }\n  .mobile-footer-banner { display:block !important; width:100% !important; height:auto !important; margin:0 !important; overflow:hidden !important; }\n  .mobile-footer-banner img { display:block !important; width:100% !important; height:auto !important; object-fit:cover !important; }\n  .footer-details { width:100% !important; max-width:393px !important; height:auto !important; margin:0 auto !important; padding:36px 30px 34px !important; position:relative !important; }\n  .footer-column { position:static !important; width:100% !important; height:auto !important; margin:0 !important; }\n  .footer-column + .footer-column { margin-top:32px !important; }\n  .footer-block, .footer-scientific, .footer-contact, .footer-specialists, .footer-disease { position:static !important; width:100% !important; margin:0 !important; }\n  .footer-scientific, .footer-contact, .footer-specialists { margin-top:28px !important; }\n  .footer-share, .footer-premium { position:static !important; width:max-content !important; max-width:100% !important; margin-top:28px !important; }\n  .footer-disease { margin-top:28px !important; }\n  .footer-disease-select, .footer-disease-button { width:100% !important; max-width:260px !important; }\n  .footer-disease-options { width:100% !important; max-width:260px !important; }\n  .footer-bottom { position:static !important; width:100% !important; min-height:65px !important; height:auto !important; padding:18px 20px !important; margin:0 !important; }\n  .site-footer:has(.footer-disease-options.open) { height:auto !important; }\n}\n
+    /* Segundo campo aberto */
+    .home-menu .home-menu-content.segundo-campo-aberto {
+        height: 340px !important;
+        min-height: 340px !important;
+        background: #0193FF !important;
+    }
+
+    /* Container interno acompanha o card */
+    .home-menu .home-menu-inner.segundo-campo-aberto {
+        height: 368px !important;
+        min-height: 368px !important;
+    }
+
+    /* Section acompanha tudo */
+    .home-menu.segundo-campo-aberto {
+        height: 412px !important;
+        min-height: 412px !important;
+    }
+}
+
 </style>
 
     </head>
@@ -7386,7 +7418,7 @@ body,
             <!-- COMPARTILHE -->
 
             <a
-                href="https://api.whatsapp.com/send/?phone=5545999040371&text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.&type=phone_number&app_absent=0"
+                href="https://api.whatsapp.com/send/?phone=5545999830136&text=Ol%C3%A1%21+vim+do+site+Telix%3A+Contexto+na+sa%C3%BAde+e+gostaria+de+mais+informa%C3%A7%C3%B5es%21&type=phone_number&app_absent=0"
                 class="footer-special footer-share"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -7460,7 +7492,7 @@ body,
 
 
                     <a
-                        href="https://wa.me/45999040371"
+                        href="https://api.whatsapp.com/send/?phone=5545999830136&text=Ol%C3%A1%21+vim+do+site+Telix%3A+Contexto+na+sa%C3%BAde+e+gostaria+de+mais+informa%C3%A7%C3%B5es%21&type=phone_number&app_absent=0"
                         target="_blank"
                         rel="noopener noreferrer"
                         style="color: inherit; text-decoration: none;"
@@ -7476,7 +7508,7 @@ body,
                 <p>
 
                     <a
-                        href="https://wa.me/45999040371"
+                        href="https://api.whatsapp.com/send/?phone=5545999830136&text=Ol%C3%A1%21+vim+do+site+Telix%3A+Contexto+na+sa%C3%BAde+e+gostaria+de+mais+informa%C3%A7%C3%B5es%21&type=phone_number&app_absent=0"
                         target="_blank"
                         rel="noopener noreferrer"
                         style="color: inherit; text-decoration: none;"
@@ -8766,16 +8798,37 @@ document.addEventListener("DOMContentLoaded", function () {
            RESET DO SEGUNDO CAMPO
            ----------------------------------------------------- */
 
-        function resetDisease() {
+function resetDisease() {
 
-            selectedTreatment = "";
+    selectedTreatment = "";
 
-            diseaseInput.value = "";
+    diseaseInput.value = "";
 
-            diseaseWrap.hidden = true;
+    diseaseWrap.hidden = true;
 
-            closeDiseaseResults();
-        }
+    const menuContent =
+        document.querySelector(".home-menu-content");
+
+    const menuInner =
+        document.querySelector(".home-menu-inner");
+
+    const homeMenu =
+        document.querySelector(".home-menu");
+
+    if (menuContent) {
+        menuContent.classList.remove("segundo-campo-aberto");
+    }
+
+    if (menuInner) {
+        menuInner.classList.remove("segundo-campo-aberto");
+    }
+
+    if (homeMenu) {
+        homeMenu.classList.remove("segundo-campo-aberto");
+    }
+
+    closeDiseaseResults();
+}
 
 
         /* -----------------------------------------------------
@@ -8931,16 +8984,35 @@ document.addEventListener("DOMContentLoaded", function () {
                         closeTreatmentResults();
 
 
-                        diseaseWrap.hidden =
-                            false;
+                        diseaseWrap.hidden = false;
 
+                        /* Aumenta a área azul quando o segundo campo aparece */
+/* Aumenta toda a estrutura quando o segundo campo aparece */
 
-                        diseaseInput.value =
-                            "";
+const menuContent =
+    document.querySelector(".home-menu-content");
 
+const menuInner =
+    document.querySelector(".home-menu-inner");
+
+const homeMenu =
+    document.querySelector(".home-menu");
+
+if (menuContent) {
+    menuContent.classList.add("segundo-campo-aberto");
+}
+
+if (menuInner) {
+    menuInner.classList.add("segundo-campo-aberto");
+}
+
+if (homeMenu) {
+    homeMenu.classList.add("segundo-campo-aberto");
+}
+
+                        diseaseInput.value = "";
 
                         closeDiseaseResults();
-
 
                         diseaseInput.focus();
                     }

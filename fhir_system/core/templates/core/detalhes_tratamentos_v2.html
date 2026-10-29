@@ -741,6 +741,8 @@
  * O position:relative faz o relógio absoluto
  * usar ESTE elemento como referência.
  */
+
+ 
 .effect-when-section .when-use {
     position: relative !important;
 
@@ -4885,6 +4887,229 @@
         object-fit: cover !important;
         object-position: center !important;
     }
+
+    /* =========================================================
+   SEGURANÇA - TABELA MOBILE FINAL
+   ========================================================= */
+
+@media screen and (max-width: 640px) {
+
+    #seguranca .safety-table-wrap {
+        width: 300px !important;
+        max-width: 300px !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+
+        /* arredondamento externo igual ao layout */
+        border-radius: 5px !important;
+    }
+
+    #seguranca .safety-table {
+        width: 300px !important;
+        min-width: 300px !important;
+        max-width: 300px !important;
+
+        table-layout: fixed !important;
+        border-collapse: separate !important;
+        border-spacing: 0 !important;
+
+        /* UMA única cor/espessura */
+        border: 1px solid #E0E0E1 !important;
+        border-radius: 5px !important;
+
+        background: #FFFFFF !important;
+        overflow: hidden !important;
+    }
+
+    /* Remove todas as bordas antigas de 4px */
+    #seguranca .safety-table th,
+    #seguranca .safety-table td {
+        border: 0 !important;
+
+        border-right: 1px solid #E0E0E1 !important;
+        border-bottom: 1px solid #E0E0E1 !important;
+
+        box-sizing: border-box !important;
+
+        text-align: center !important;
+        vertical-align: middle !important;
+
+        color: #000000 !important;
+        background: #FFFFFF !important;
+    }
+
+    /* Não duplica a borda direita */
+    #seguranca .safety-table th:last-child,
+    #seguranca .safety-table td:last-child {
+        border-right: 0 !important;
+    }
+
+    /* Não duplica a borda inferior */
+    #seguranca .safety-table tbody tr:last-child td {
+        border-bottom: 0 !important;
+    }
+
+    /* CABEÇALHO */
+    #seguranca .safety-table th {
+        height: 55px !important;
+        padding: 0 4px !important;
+
+        font-size: 15px !important;
+        line-height: 19px !important;
+        font-weight: 700 !important;
+    }
+
+    /* CÉLULAS */
+    #seguranca .safety-table td {
+        padding: 6px 4px !important;
+
+        font-size: 10px !important;
+        line-height: 13px !important;
+        font-weight: 400 !important;
+
+        white-space: normal !important;
+        word-break: normal !important;
+        overflow-wrap: normal !important;
+        hyphens: none !important;
+    }
+
+    /* COLUNAS - medidas do Figma */
+    #seguranca .safety-table th:nth-child(1),
+    #seguranca .safety-table td:nth-child(1) {
+        width: 90px !important;
+    }
+
+    #seguranca .safety-table th:nth-child(2),
+    #seguranca .safety-table td:nth-child(2) {
+        width: 100px !important;
+    }
+
+    #seguranca .safety-table th:nth-child(3),
+    #seguranca .safety-table td:nth-child(3) {
+        width: 110px !important;
+    }
+
+    /* SIM / NÃO */
+    #seguranca .safety-table .pill {
+        width: 47.67px !important;
+        min-width: 47.67px !important;
+        height: 20px !important;
+
+        padding: 0 !important;
+        border-radius: 10px !important;
+
+        font-size: 10px !important;
+        line-height: 13px !important;
+
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+}
+}
+
+@media screen and (max-width: 640px) {
+
+    /* Todas as bordas da tabela */
+    #seguranca .safety-table {
+        border-color: #E0E0E1 !important;
+    }
+
+    #seguranca .safety-table th,
+    #seguranca .safety-table td {
+        border-color: #E0E0E1 !important;
+    }
+
+    /* Garante especificamente as extremidades */
+    #seguranca .safety-table th:first-child,
+    #seguranca .safety-table td:first-child {
+        border-left: 1px solid #E0E0E1 !important;
+    }
+
+    #seguranca .safety-table th:last-child,
+    #seguranca .safety-table td:last-child {
+        border-right: 1px solid #E0E0E1 !important;
+    }
+
+    #seguranca .safety-table thead th {
+        border-top-color: #E0E0E1 !important;
+    }
+
+    #seguranca .safety-table tbody tr:last-child td {
+        border-bottom-color: #E0E0E1 !important;
+    }
+
+    
+}
+@media screen and (max-width: 640px) {
+
+    #seguranca .safety-table-wrap {
+        width: 300px !important;
+        max-width: 300px !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+
+        border: 0 !important;
+        box-shadow: none !important;
+        overflow: visible !important;
+    }
+
+    #seguranca .safety-table {
+        width: 300px !important;
+        min-width: 300px !important;
+        max-width: 300px !important;
+
+        margin: 0 !important;
+
+        table-layout: fixed !important;
+        border-collapse: collapse !important;
+        border-spacing: 0 !important;
+
+        /* a tabela não cria uma segunda moldura */
+        border: 0 !important;
+        outline: 0 !important;
+        box-shadow: none !important;
+
+        background: #FFFFFF !important;
+    }
+
+    /* TODAS as células usam exatamente a mesma borda */
+    #seguranca .safety-table th,
+    #seguranca .safety-table td {
+        box-sizing: border-box !important;
+
+        border-top: 1px solid #E0E0E1 !important;
+        border-right: 1px solid #E0E0E1 !important;
+        border-bottom: 1px solid #E0E0E1 !important;
+        border-left: 1px solid #E0E0E1 !important;
+
+        outline: 0 !important;
+        box-shadow: none !important;
+
+        background: #FFFFFF !important;
+
+        text-align: center !important;
+        vertical-align: middle !important;
+    }
+
+    /* COLUNA 1 */
+    #seguranca .safety-table th:nth-child(1),
+    #seguranca .safety-table td:nth-child(1) {
+        width: 90px !important;
+    }
+
+    /* COLUNA 2 */
+    #seguranca .safety-table th:nth-child(2),
+    #seguranca .safety-table td:nth-child(2) {
+        width: 100px !important;
+    }
+
+    /* COLUNA 3 */
+    #seguranca .safety-table th:nth-child(3),
+    #seguranca .safety-table td:nth-child(3) {
+        width: 110px !important;
+    }
 }
 
 </style>
@@ -5877,7 +6102,7 @@
                         >
 
                         <a
-                            href="https://wa.me/45999830136"
+                            href="https://api.whatsapp.com/send/?phone=5545999830136&text=Ol%C3%A1%21+vim+do+site+Telix%3A+Contexto+na+sa%C3%BAde+e+gostaria+de+mais+informa%C3%A7%C3%B5es%21&type=phone_number&app_absent=0"
                             target="_blank"
                             rel="noopener noreferrer"
                             style="color: inherit; text-decoration: none;"
@@ -5890,7 +6115,7 @@
 
                     <p>
                         <a
-                            href="https://wa.me/45999830136"
+                            href="https://api.whatsapp.com/send/?phone=5545999830136&text=Ol%C3%A1%21+vim+do+site+Telix%3A+Contexto+na+sa%C3%BAde+e+gostaria+de+mais+informa%C3%A7%C3%B5es%21&type=phone_number&app_absent=0"
                             target="_blank"
                             rel="noopener noreferrer"
                             style="color: inherit; text-decoration: none;"
