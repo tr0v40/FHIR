@@ -1205,7 +1205,7 @@
     }
 
 .home-feature-third {
-    height: 300px;
+    height: 463px;
 }
 
     .home-feature-inner {
@@ -6231,35 +6231,37 @@ body,
 
 
 
-
-
 @media screen and (max-width: 768px) {
 
-    /* Estado normal */
+    /* CARD NORMAL */
     .home-menu .home-menu-content {
         height: 220px !important;
         min-height: 220px !important;
+
+        transition:
+            height .18s ease,
+            background-color .18s ease;
     }
 
-    /* Segundo campo aberto */
+    /* SEGUNDO CAMPO ABERTO */
     .home-menu .home-menu-content.segundo-campo-aberto {
-        height: 340px !important;
-        min-height: 340px !important;
-        background: #0193FF !important;
+        height: 260px !important;
+        min-height: 260px !important;
     }
 
-    /* Container interno acompanha o card */
-    .home-menu .home-menu-inner.segundo-campo-aberto {
-        height: 368px !important;
-        min-height: 368px !important;
+    .home-menu-inner.segundo-campo-aberto {
+        height: 263px !important;
+        min-height: 263px !important;
     }
 
-    /* Section acompanha tudo */
     .home-menu.segundo-campo-aberto {
-        height: 412px !important;
-        min-height: 412px !important;
+        height: 292px !important;
+        min-height: 292px !important;
     }
 }
+
+    
+
 
 </style>
 
@@ -7788,62 +7790,272 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-
     /* =========================================================
-       TABS DO MENU SUPERIOR
-       ========================================================= */
+   CONTROLE DE ALTURA DO MENU HOME
+   ========================================================= */
 
-    const tabs = document.querySelectorAll("[data-home-tab]");
-    const panels = document.querySelectorAll("[data-home-panel]");
+function expandirMenuHome() {
 
-    function ativarAba(nome) {
+    const menuContent =
+        document.querySelector(".home-menu-content");
 
-        tabs.forEach(function (tab) {
+    const menuInner =
+        document.querySelector(".home-menu-inner");
 
-            const ativo =
-                tab.getAttribute("data-home-tab") === nome;
-
-            tab.classList.toggle("active", ativo);
-        });
+    const homeMenu =
+        document.querySelector(".home-menu");
 
 
-        panels.forEach(function (panel) {
+    if (menuContent) {
+        menuContent.classList.add("segundo-campo-aberto");
+    }
 
-            const ativo =
-                panel.getAttribute("data-home-panel") === nome;
+    if (menuInner) {
+        menuInner.classList.add("segundo-campo-aberto");
+    }
 
-            panel.hidden = !ativo;
-        });
+    if (homeMenu) {
+        homeMenu.classList.add("segundo-campo-aberto");
+    }
+}
 
 
-        const menuContent =
-            document.querySelector(".home-menu-content");
+function recolherMenuHome() {
 
-        if (menuContent) {
+    const menuContent =
+        document.querySelector(".home-menu-content");
 
-            menuContent.classList.toggle(
-                "tratamentos-active",
-                nome === "tratamentos"
-            );
-        }
+    const menuInner =
+        document.querySelector(".home-menu-inner");
+
+    const homeMenu =
+        document.querySelector(".home-menu");
+
+
+    if (menuContent) {
+        menuContent.classList.remove("segundo-campo-aberto");
+    }
+
+    if (menuInner) {
+        menuInner.classList.remove("segundo-campo-aberto");
+    }
+
+    if (homeMenu) {
+        homeMenu.classList.remove("segundo-campo-aberto");
+    }
+}
+/* =========================================================
+   TABS DO MENU SUPERIOR
+   ========================================================= */
+
+const tabs =
+    document.querySelectorAll("[data-home-tab]");
+
+const panels =
+    document.querySelectorAll("[data-home-panel]");
+
+
+function resetarArtigosMenu() {
+
+    const diseaseInput =
+        document.getElementById(
+            "home-menu-article-disease-input"
+        );
+
+    const treatmentInput =
+        document.getElementById(
+            "home-menu-article-treatment-input"
+        );
+
+    const treatmentWrap =
+        document.getElementById(
+            "home-menu-article-treatment-wrap"
+        );
+
+    const diseaseResults =
+        document.getElementById(
+            "home-menu-article-disease-results"
+        );
+
+    const treatmentResults =
+        document.getElementById(
+            "home-menu-article-treatment-results"
+        );
+
+
+    if (diseaseInput) {
+        diseaseInput.value = "";
+        diseaseInput.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+    }
+
+    if (treatmentInput) {
+        treatmentInput.value = "";
+        treatmentInput.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+    }
+
+    if (treatmentWrap) {
+        treatmentWrap.hidden = true;
+    }
+
+    if (diseaseResults) {
+        diseaseResults.hidden = true;
+    }
+
+    if (treatmentResults) {
+        treatmentResults.hidden = true;
+    }
+}
+
+
+function resetarTratamentosMenu() {
+
+    const treatmentInput =
+        document.getElementById(
+            "home-menu-treatment-treatment-input"
+        );
+
+    const diseaseInput =
+        document.getElementById(
+            "home-menu-treatment-disease-input"
+        );
+
+    const diseaseWrap =
+        document.getElementById(
+            "home-menu-treatment-disease-wrap"
+        );
+
+    const treatmentResults =
+        document.getElementById(
+            "home-menu-treatment-treatment-results"
+        );
+
+    const diseaseResults =
+        document.getElementById(
+            "home-menu-treatment-disease-results"
+        );
+
+
+    /* limpa o primeiro campo */
+    if (treatmentInput) {
+        treatmentInput.value = "";
+        treatmentInput.setAttribute(
+            "aria-expanded",
+            "false"
+        );
     }
 
 
+    /* limpa o segundo campo */
+    if (diseaseInput) {
+        diseaseInput.value = "";
+        diseaseInput.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+    }
+
+
+    /* esconde novamente o segundo campo */
+    if (diseaseWrap) {
+        diseaseWrap.hidden = true;
+    }
+
+
+    /* fecha resultados */
+    if (treatmentResults) {
+        treatmentResults.hidden = true;
+    }
+
+    if (diseaseResults) {
+        diseaseResults.hidden = true;
+    }
+}
+
+
+function ativarAba(nome) {
+
     tabs.forEach(function (tab) {
 
-        tab.addEventListener("click", function () {
+        const ativo =
+            tab.getAttribute("data-home-tab") === nome;
 
-            ativarAba(
-                tab.getAttribute("data-home-tab")
-            );
-        });
+        tab.classList.toggle(
+            "active",
+            ativo
+        );
     });
 
 
-    /* Aba inicial */
+    panels.forEach(function (panel) {
 
-    ativarAba("doencas");
+        const ativo =
+            panel.getAttribute("data-home-panel") === nome;
 
+        panel.hidden = !ativo;
+    });
+
+
+    const menuContent =
+        document.querySelector(".home-menu-content");
+
+    if (menuContent) {
+
+        menuContent.classList.toggle(
+            "tratamentos-active",
+            nome === "tratamentos"
+        );
+    }
+}
+
+
+tabs.forEach(function (tab) {
+
+    tab.addEventListener(
+        "click",
+        function () {
+
+            const nomeAba =
+                tab.getAttribute(
+                    "data-home-tab"
+                );
+
+
+            /*
+             * SEMPRE volta o menu
+             * para a altura original.
+             */
+            recolherMenuHome();
+
+
+            /*
+             * Sempre que entrarmos em uma aba,
+             * ela começa sem seleção anterior.
+             */
+            if (nomeAba === "tratamentos") {
+                resetarTratamentosMenu();
+            }
+
+
+            if (nomeAba === "artigos") {
+                resetarArtigosMenu();
+            }
+
+
+            ativarAba(nomeAba);
+        }
+    );
+});
+
+
+/* Aba inicial */
+
+ativarAba("doencas");
 
     /* =========================================================
        ABA 1
@@ -8370,17 +8582,26 @@ document.addEventListener("DOMContentLoaded", function () {
             );
         }
 
+function resetTreatment() {
 
-        function resetTreatment() {
+    selectedCondition = "";
 
-            selectedCondition = "";
+    treatmentInput.value = "";
 
-            treatmentInput.value = "";
+    treatmentWrap.hidden = true;
 
-            treatmentWrap.hidden = true;
 
-            closeTreatmentResults();
-        }
+    /* Somente Artigos do menu superior */
+    if (
+        config.treatmentWrapId ===
+        "home-menu-article-treatment-wrap"
+    ) {
+        recolherMenuHome();
+    }
+
+
+    closeTreatmentResults();
+}
 
 
         function filterDiseases(
@@ -8491,18 +8712,20 @@ document.addEventListener("DOMContentLoaded", function () {
                         closeDiseaseResults();
 
 
-                        treatmentWrap.hidden =
-                            false;
+treatmentWrap.hidden = false;
 
+if (
+    config.treatmentWrapId ===
+    "home-menu-article-treatment-wrap"
+) {
+    expandirMenuHome();
+}
 
-                        treatmentInput.value =
-                            "";
+treatmentInput.value = "";
 
+closeTreatmentResults();
 
-                        closeTreatmentResults();
-
-
-                        treatmentInput.focus();
+treatmentInput.focus();
                     }
                 );
             }
@@ -8792,12 +9015,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 "false"
             );
         }
-
-
-        /* -----------------------------------------------------
-           RESET DO SEGUNDO CAMPO
-           ----------------------------------------------------- */
-
 function resetDisease() {
 
     selectedTreatment = "";
@@ -8806,31 +9023,10 @@ function resetDisease() {
 
     diseaseWrap.hidden = true;
 
-    const menuContent =
-        document.querySelector(".home-menu-content");
-
-    const menuInner =
-        document.querySelector(".home-menu-inner");
-
-    const homeMenu =
-        document.querySelector(".home-menu");
-
-    if (menuContent) {
-        menuContent.classList.remove("segundo-campo-aberto");
-    }
-
-    if (menuInner) {
-        menuInner.classList.remove("segundo-campo-aberto");
-    }
-
-    if (homeMenu) {
-        homeMenu.classList.remove("segundo-campo-aberto");
-    }
+    recolherMenuHome();
 
     closeDiseaseResults();
 }
-
-
         /* -----------------------------------------------------
            FILTRAR TRATAMENTOS
            ----------------------------------------------------- */
@@ -8983,38 +9179,16 @@ function resetDisease() {
 
                         closeTreatmentResults();
 
+diseaseWrap.hidden = false;
 
-                        diseaseWrap.hidden = false;
+/* Segundo campo apareceu */
+expandirMenuHome();
 
-                        /* Aumenta a área azul quando o segundo campo aparece */
-/* Aumenta toda a estrutura quando o segundo campo aparece */
+diseaseInput.value = "";
 
-const menuContent =
-    document.querySelector(".home-menu-content");
+closeDiseaseResults();
 
-const menuInner =
-    document.querySelector(".home-menu-inner");
-
-const homeMenu =
-    document.querySelector(".home-menu");
-
-if (menuContent) {
-    menuContent.classList.add("segundo-campo-aberto");
-}
-
-if (menuInner) {
-    menuInner.classList.add("segundo-campo-aberto");
-}
-
-if (homeMenu) {
-    homeMenu.classList.add("segundo-campo-aberto");
-}
-
-                        diseaseInput.value = "";
-
-                        closeDiseaseResults();
-
-                        diseaseInput.focus();
+diseaseInput.focus();
                     }
                 );
             }

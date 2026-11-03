@@ -4097,7 +4097,7 @@
         data-desktop-3="{% static 'img/ver_eficacia_de_outros_tratamentos_v1.png' %}"
         data-desktop-4="{% static 'img/cuida_da_sua_saude.png' %}"
         data-desktop-5="{% static 'img/voce_conhece_alguem_que_precisa_desse conteudo.png' %}"
-        data-desktop-6="{% static 'img/ver_eficacia_tratamentos.png' %}"
+        data-desktop-6="{% static 'img/ver_eficacia_tratamentos_.png' %}"
 
         alt="Conteúdo Telix"
         class="v3-list-banner-image"
@@ -4495,801 +4495,250 @@
             ÂNCORAS + BENEFÍCIO ATIVO
             ===================================================== -->
 
-        <script>
-
-            document.addEventListener(
-                "DOMContentLoaded",
-                function () {
-
-                    const links =
-                        document.querySelectorAll(
-                            ".v3-benefit-link"
-                        );
-
-                    const sections =
-                        document.querySelectorAll(
-                            ".v3-segment"
-                        );
-
-
-                    /*
-                    * -------------------------------------------------
-                    * Atualiza item ativo do menu
-                    * -------------------------------------------------
-                    */
-
-                    function setActiveBenefit(slug) {
-
-                        links.forEach(
-                            function (link) {
-
-                                const active =
-                                    link.dataset.target === slug;
-
-                                link.classList.toggle(
-                                    "is-active",
-                                    active
-                                );
-
-
-                                /*
-                                * Ícone especial da redução temporária.
-                                * Mantemos os mesmos assets da V2.
-                                */
-
-                                const icon =
-                                    link.querySelector(
-                                        ".reducao-temporaria"
-                                    );
-
-                                if (icon) {
-
-                                    const normal =
-                                        icon.dataset.iconNormal;
-
-                                    const selected =
-                                        icon.dataset.iconSelected;
-
-                                    if (active && selected) {
-
-                                        icon.src = selected;
-
-                                    } else if (normal) {
-
-                                        icon.src = normal;
-
-                                    }
-
-                                }
-
-                            }
-                        );
-
-                    }
-
-
-                    /*
-                    * -------------------------------------------------
-                    * Clique no menu
-                    * -------------------------------------------------
-                    */
-
-links.forEach(
-    function (link) {
-
-        link.addEventListener(
-            "click",
-            function (event) {
-
-                event.preventDefault();
-
-                const slug =
-                    link.dataset.target;
-
-                const target =
-                    document.getElementById(slug);
-
-                if (!target) {
-                    return;
-                }
-
-                setActiveBenefit(slug);
-
-
-                /* =============================================
-                   REVELA AUTOMATICAMENTE O LOTE DO DESTINO
-                   ANTES DE EXECUTAR A ÂNCORA
-                   ============================================= */
-
-                const primeiroTratamento =
-                    target.querySelector(
-                        ".v3-treatment[data-global-position]"
-                    );
-
-                if (
-                    primeiroTratamento &&
-                    typeof window.v3RevealThrough === "function"
-                ) {
-                    const posicaoDestino = parseInt(
-                        primeiroTratamento.dataset.globalPosition || "0",
-                        10
-                    );
-                    window.v3RevealThrough(posicaoDestino);
-                }
-
-                history.replaceState(null, "", "#" + slug);
-
-                requestAnimationFrame(function () {
-                    target.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
-                    });
-                });
-
-                return;
-
-            }
-        );
-
-    }
-);
-
-
-                    /*
-                    * -------------------------------------------------
-                    * Se a página abriu com hash
-                    * -------------------------------------------------
-                    */
-
-                    if (window.location.hash) {
-
-                        const slug =
-                            window.location.hash.substring(1);
-
-                        const target =
-                            document.getElementById(slug);
-
-                        if (target) {
-
-                            setActiveBenefit(slug);
-
-                        }
-
-                    } else if (links.length) {
-
-                        setActiveBenefit(
-                            links[0].dataset.target
-                        );
-
-                    }
-
-
-                    /*
-                    * -------------------------------------------------
-                    * Atualiza menu conforme o scroll
-                    * -------------------------------------------------
-                    */
-
-                    if (
-                        "IntersectionObserver" in window &&
-                        sections.length
-                    ) {
-
-                        const observer =
-                            new IntersectionObserver(
-
-                                function (entries) {
-
-                                    let visibleSection = null;
-
-                                    entries.forEach(
-                                        function (entry) {
-
-                                            if (
-                                                entry.isIntersecting &&
-                                                (
-                                                    visibleSection === null ||
-                                                    entry.intersectionRatio >
-                                                    visibleSection.intersectionRatio
-                                                )
-                                            ) {
-
-                                                visibleSection =
-                                                    entry;
-
-                                            }
-
-                                        }
-                                    );
-
-
-                                    if (visibleSection) {
-
-                                        setActiveBenefit(
-                                            visibleSection.target.id
-                                        );
-
-                                    }
-
-                                },
-
-                                {
-                                    root: null,
-
-                                    rootMargin:
-                                        "-10% 0px -65% 0px",
-
-                                    threshold:
-                                        [
-                                            0,
-                                            0.1,
-                                            0.25,
-                                            0.5
-                                        ]
-                                }
-
-                            );
-
-
-                        sections.forEach(
-                            function (section) {
-
-                                observer.observe(section);
-
-                            }
-                        );
-
-                    }
-
-                }
-            );
-
-        </script>
-    <script>
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        function () {
-
-            const button =
-                document.getElementById(
-                    "footerDiseaseButton"
-                );
-
-            const options =
-                document.getElementById(
-                    "footerDiseaseOptions"
-                );
-
-
-            if (!button || !options) {
-                return;
-            }
-
-
-            button.addEventListener(
-                "click",
-                function (event) {
-
-                    event.stopPropagation();
-
-
-                    const isOpen =
-                        options.classList.toggle(
-                            "open"
-                        );
-
-
-                    button.classList.toggle(
-                        "open",
-                        isOpen
-                    );
-
-
-                    button.setAttribute(
-                        "aria-expanded",
-                        isOpen
-                            ? "true"
-                            : "false"
-                    );
-
-                }
-            );
-
-
-            document.addEventListener(
-                "click",
-                function () {
-
-                    options.classList.remove(
-                        "open"
-                    );
-
-                    button.classList.remove(
-                        "open"
-                    );
-
-                    button.setAttribute(
-                        "aria-expanded",
-                        "false"
-                    );
-
-                }
-            );
-
-        }
-    );
-
-    </script>
-
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-
-        const healthBar = document.getElementById("v3HealthFixedBar");
-        const footerBottom = document.querySelector(".footer-bottom");
-
-        if (!healthBar || !footerBottom) {
-            return;
-        }
-
-        function updateHealthBarPosition() {
-
-            const footerBottomRect = footerBottom.getBoundingClientRect();
-            const viewportHeight = window.innerHeight;
-
-            /*
-            * Enquanto a faixa do CNPJ ainda estiver abaixo da tela,
-            * a barra fica fixa no rodapé.
-            */
-            if (footerBottomRect.bottom > viewportHeight) {
-
-                healthBar.style.position = "fixed";
-                healthBar.style.bottom = "0";
-                healthBar.style.top = "auto";
-
-                return;
-            }
-
-            /*
-            * Quando chegarmos ao final do footer,
-            * a barra passa a ficar imediatamente
-            * abaixo da faixa do CNPJ.
-            */
-            const documentTop =
-                window.scrollY +
-                footerBottomRect.bottom;
-
-            healthBar.style.position = "absolute";
-            healthBar.style.top = documentTop + "px";
-            healthBar.style.bottom = "auto";
-        }
-
-        window.addEventListener(
-            "scroll",
-            updateHealthBarPosition,
-            { passive: true }
-        );
-
-        window.addEventListener(
-            "resize",
-            updateHealthBarPosition
-        );
-
-        updateHealthBarPosition();
-
-    });
-    </script>
-
-    <script>
-document.addEventListener("DOMContentLoaded", function () {
-
-    document.querySelectorAll(".v3-treatment[data-detail-url]").forEach(function (card) {
-
-        card.addEventListener("click", function (event) {
-
-            /*
-             * Se o usuário clicar em um elemento que já é interativo,
-             * deixamos o comportamento original acontecer.
-             */
-            if (event.target.closest("a, button")) {
-                return;
-            }
-
-            window.location.href = card.dataset.detailUrl;
-        });
-
-
-        /*
-         * Acessibilidade:
-         * Enter ou Espaço também abre o tratamento.
-         */
-        card.addEventListener("keydown", function (event) {
-
-            if (event.key === "Enter" || event.key === " ") {
-
-                event.preventDefault();
-
-                window.location.href = card.dataset.detailUrl;
-            }
-
-        });
-
-    });
-
-});
-</script>
-
+<!-- TELIX LISTA V2 - JAVASCRIPT CONSOLIDADO -->
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+(function () {
+  "use strict";
 
-    /* =====================================================
-       VER MAIS GLOBAL - V3
-       HOMOLOGAÇÃO: 10 tratamentos por lote
-       ===================================================== */
+  function iniciarListaV2() {
+    // 1. BANNERS: independente do botão "Ver mais".
+    const bannerLinks = {
+      1: "https://www.telix.inf.br/paciente-bem-informado",
+      2: "https://api.whatsapp.com/send/?text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.%0A%0Ahttps%3A%2F%2Fwww.telix.inf.br%2F",
+      3: "https://tratamentos.telix.inf.br/home/",
+      4: "https://www.telix.inf.br/paciente-bem-informado",
+      5: "https://api.whatsapp.com/send/?text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.%0A%0Ahttps%3A%2F%2Fwww.telix.inf.br%2F",
+      6: "https://tratamentos.telix.inf.br/home/"
+    };
 
-    const loadMoreButton =
-        document.getElementById(
-            "v3-global-load-more-button"
-        );
+    document.querySelectorAll(".v3-list-banner[data-banner-cycle]").forEach(function (banner) {
+      const posicao = Number.parseInt(banner.dataset.bannerPosition || "0", 10);
+      if (!Number.isInteger(posicao) || posicao < 5 || (posicao - 5) % 10 !== 0) return;
 
-    const loadMoreContainer =
-        document.getElementById(
-            "v3-global-load-more"
-        );
+      const ciclo = (Math.floor((posicao - 5) / 10) % 6) + 1;
+      const image = banner.querySelector("img");
+      const source = banner.querySelector("source");
+      const desktopSrc = image && image.getAttribute("data-desktop-" + ciclo);
+      const mobileSrc = source && source.getAttribute("data-mobile-" + ciclo);
 
-    if (!loadMoreButton || !loadMoreContainer) {
-        return;
-    }
+      if (image && desktopSrc) image.src = desktopSrc;
+      if (source && mobileSrc) source.srcset = mobileSrc;
+      if (bannerLinks[ciclo]) banner.href = bannerLinks[ciclo];
+    });
 
-
+    // 2. VER MAIS GLOBAL: 50 tratamentos por lote (valor original).
+    const loadMoreButton = document.getElementById("v3-global-load-more-button");
+    const loadMoreContainer = document.getElementById("v3-global-load-more");
+    const temVerMais = Boolean(loadMoreButton && loadMoreContainer);
     const LOTE = 50;
-
-    const totalTratamentos =
-        parseInt(
-            loadMoreButton.dataset.total || "0",
-            10
-        );
-
-    let limiteAtual = 50;
-
-
-    /* =====================================================
-       ATUALIZA TRATAMENTOS
-       ===================================================== */
+    const totalTratamentos = temVerMais
+      ? Number.parseInt(loadMoreButton.dataset.total || "0", 10)
+      : document.querySelectorAll(".v3-treatment[data-global-position]").length;
+    let limiteAtual = LOTE;
 
     function atualizarTratamentos() {
-
-        document
-            .querySelectorAll(
-                ".v3-treatment[data-global-position]"
-            )
-            .forEach(function (tratamento) {
-
-                const posicao =
-                    parseInt(
-                        tratamento.dataset.globalPosition || "0",
-                        10
-                    );
-
-                if (posicao <= limiteAtual) {
-
-                    tratamento.classList.remove(
-                        "v3-treatment-hidden"
-                    );
-
-                } else {
-
-                    tratamento.classList.add(
-                        "v3-treatment-hidden"
-                    );
-
-                }
-
-            });
-
+      document.querySelectorAll(".v3-treatment[data-global-position]").forEach(function (tratamento) {
+        const posicao = Number.parseInt(tratamento.dataset.globalPosition || "0", 10);
+        tratamento.classList.toggle("v3-treatment-hidden", posicao > limiteAtual);
+      });
     }
-
-
-    /* =====================================================
-       ATUALIZA BANNERS
-       ===================================================== */
 
     function atualizarBanners() {
-
-        document
-            .querySelectorAll(
-                ".v3-list-banner[data-banner-position]"
-            )
-            .forEach(function (banner) {
-
-                const posicao =
-                    parseInt(
-                        banner.dataset.bannerPosition || "0",
-                        10
-                    );
-
-                if (posicao <= limiteAtual) {
-
-                    banner.classList.remove(
-                        "v3-treatment-hidden"
-                    );
-
-                } else {
-
-                    banner.classList.add(
-                        "v3-treatment-hidden"
-                    );
-
-                }
-
-            });
-
+      document.querySelectorAll(".v3-list-banner[data-banner-position]").forEach(function (banner) {
+        const posicao = Number.parseInt(banner.dataset.bannerPosition || "0", 10);
+        banner.classList.toggle("v3-treatment-hidden", posicao > limiteAtual);
+      });
     }
-
-
-    /* =====================================================
-       ATUALIZA SEGMENTOS
-       ===================================================== */
 
     function atualizarSegmentos() {
-
-        document
-            .querySelectorAll(".v3-segment")
-            .forEach(function (segmento) {
-
-                const possuiTratamentoVisivel =
-                    segmento.querySelector(
-                        ".v3-treatment:not(.v3-treatment-hidden)"
-                    );
-
-                if (possuiTratamentoVisivel) {
-
-                    segmento.classList.remove(
-                        "v3-segment-hidden"
-                    );
-
-                } else {
-
-                    segmento.classList.add(
-                        "v3-segment-hidden"
-                    );
-
-                }
-
-            });
-
+      document.querySelectorAll(".v3-segment").forEach(function (segmento) {
+        const visivel = segmento.querySelector(".v3-treatment:not(.v3-treatment-hidden)");
+        segmento.classList.toggle("v3-segment-hidden", !visivel);
+      });
     }
-
-
-    /* =====================================================
-       POSICIONA O BOTÃO DEPOIS DO ÚLTIMO TRATAMENTO
-       ===================================================== */
 
     function posicionarBotao() {
-
-        if (limiteAtual >= totalTratamentos) {
-
-            loadMoreContainer.style.display = "none";
-            return;
-
-        }
-
-        loadMoreContainer.style.display = "flex";
-
-
-        const tratamentosVisiveis =
-            Array.from(
-                document.querySelectorAll(
-                    ".v3-treatment[data-global-position]:not(.v3-treatment-hidden)"
-                )
-            );
-
-
-        if (!tratamentosVisiveis.length) {
-            return;
-        }
-
-
-        const ultimoTratamento =
-            tratamentosVisiveis[
-                tratamentosVisiveis.length - 1
-            ];
-
-
-        /*
-         * Se existir banner exatamente depois
-         * desse tratamento, o botão entra depois
-         * do banner.
-         */
-
-        const posicaoUltimo =
-            ultimoTratamento.dataset.globalPosition;
-
-        const bannerDepois =
-            document.querySelector(
-                '.v3-list-banner[data-banner-position="' +
-                posicaoUltimo +
-                '"]:not(.v3-treatment-hidden)'
-            );
-
-
-        if (bannerDepois) {
-
-            bannerDepois.insertAdjacentElement(
-                "afterend",
-                loadMoreContainer
-            );
-
-        } else {
-
-            ultimoTratamento.insertAdjacentElement(
-                "afterend",
-                loadMoreContainer
-            );
-
-        }
-
+      if (!temVerMais) return;
+      if (limiteAtual >= totalTratamentos) {
+        loadMoreContainer.style.display = "none";
+        return;
+      }
+      loadMoreContainer.style.display = "flex";
+      const tratamentosVisiveis = Array.from(document.querySelectorAll(
+        ".v3-treatment[data-global-position]:not(.v3-treatment-hidden)"
+      ));
+      if (!tratamentosVisiveis.length) return;
+      const ultimoTratamento = tratamentosVisiveis[tratamentosVisiveis.length - 1];
+      const posicaoUltimo = ultimoTratamento.dataset.globalPosition;
+      const bannerDepois = document.querySelector(
+        '.v3-list-banner[data-banner-position="' + posicaoUltimo + '"]:not(.v3-treatment-hidden)'
+      );
+      (bannerDepois || ultimoTratamento).insertAdjacentElement("afterend", loadMoreContainer);
     }
-
-
-    /* =====================================================
-       ATUALIZA TUDO
-       ===================================================== */
 
     function atualizarLista() {
-
-        atualizarTratamentos();
-
-        atualizarBanners();
-
-        atualizarSegmentos();
-
-        posicionarBotao();
-
+      // Sem botão, o servidor já apresenta a lista completa; não esconder tratamentos.
+      if (!temVerMais) return;
+      atualizarTratamentos();
+      atualizarBanners();
+      atualizarSegmentos();
+      posicionarBotao();
     }
-
-
-    /* =====================================================
-       CLIQUE EM VER MAIS
-       ===================================================== */
-
-    loadMoreButton.addEventListener(
-        "click",
-        function () {
-
-            limiteAtual += LOTE;
-
-            if (limiteAtual > totalTratamentos) {
-                limiteAtual = totalTratamentos;
-            }
-
-            atualizarLista();
-
-        }
-    );
-
-
-    /* =====================================================
-       API PARA MENU ÂNCORA
-       Revela o lote necessário antes do scroll.
-       ===================================================== */
 
     window.v3RevealThrough = function (posicao) {
-        posicao = parseInt(posicao || "0", 10);
-
-        if (!posicao || posicao <= limiteAtual) {
-            atualizarLista();
-            return;
-        }
-
+      if (!temVerMais) return;
+      posicao = Number.parseInt(posicao || "0", 10);
+      if (posicao > limiteAtual) {
         while (limiteAtual < posicao && limiteAtual < totalTratamentos) {
-            limiteAtual += LOTE;
+          limiteAtual += LOTE;
         }
+        limiteAtual = Math.min(limiteAtual, totalTratamentos);
+      }
+      atualizarLista();
+    };
 
-        if (limiteAtual > totalTratamentos) {
-            limiteAtual = totalTratamentos;
-        }
-
+    if (temVerMais) {
+      loadMoreButton.addEventListener("click", function () {
+        limiteAtual = Math.min(limiteAtual + LOTE, totalTratamentos);
         atualizarLista();
-    };
-
-    /* =====================================================
-       CICLO VISUAL DOS BANNERS
-       Desktop: 6 peças; Mobile: ciclo visual próprio.
-       ===================================================== */
-
-    const bannerLinks = {
-        1: "https://www.telix.inf.br/paciente-bem-informado",
-        2: "https://api.whatsapp.com/send/?text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.%0A%0Ahttps%3A%2F%2Fwww.telix.inf.br%2F",
-        3: "https://tratamentos.telix.inf.br/home/",
-        4: "https://www.telix.inf.br/paciente-bem-informado",
-        5: "https://api.whatsapp.com/send/?text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.%0A%0Ahttps%3A%2F%2Fwww.telix.inf.br%2F",
-        6: "https://tratamentos.telix.inf.br/home/"
-    };
-
-document.querySelectorAll(
-    ".v3-list-banner[data-banner-cycle]"
-).forEach(function (banner) {
-
-    // =====================================================
-    // CICLO GLOBAL DOS 6 BANNERS
-    //
-    // index 0 -> banner 1
-    // index 1 -> banner 2
-    // index 2 -> banner 3
-    // index 3 -> banner 4
-    // index 4 -> banner 5
-    // index 5 -> banner 6
-    // index 6 -> banner 1
-    // ...
-    // =====================================================
-
-    const posicao = parseInt(
-        banner.dataset.bannerPosition || "0",
-        10
-    );
-
-    const numeroBanner = Math.floor(
-        (posicao - 5) / 10
-    );
-
-    const ciclo =
-        ((numeroBanner % 6) + 6) % 6 + 1;
-
-
-    const source = banner.querySelector("source");
-    const image = banner.querySelector("img");
-
-    const desktopSrc = image
-        ? image.getAttribute(
-            "data-desktop-" + ciclo
-        )
-        : null;
-
-    const mobileSrc = source
-        ? source.getAttribute(
-            "data-mobile-" + ciclo
-        )
-        : null;
-
-    // Desktop
-    if (image && desktopSrc) {
-        image.src = desktopSrc;
+      });
+      atualizarLista();
     }
 
-    // Mobile
-    if (source && mobileSrc) {
-        source.srcset = mobileSrc;
-    }
+    // 3. NAVEGAÇÃO ENTRE BENEFÍCIOS E INDICADOR ATIVO.
+    const links = document.querySelectorAll(".v3-benefit-link");
+    const sections = document.querySelectorAll(".v3-segment");
 
-    // Link correspondente ao banner
-    if (bannerLinks[ciclo]) {
-        banner.href = bannerLinks[ciclo];
-    }
-});
-    /* =====================================================
-       ESTADO INICIAL + HASH DIRETO
-       ===================================================== */
-
-    atualizarLista();
-
-    if (window.location.hash) {
-        const destinoHash = document.querySelector(window.location.hash);
-        if (destinoHash && destinoHash.classList.contains("v3-segment")) {
-            const primeiro = destinoHash.querySelector(
-                ".v3-treatment[data-global-position]"
-            );
-            if (primeiro) {
-                window.v3RevealThrough(primeiro.dataset.globalPosition);
-                requestAnimationFrame(function () {
-                    destinoHash.scrollIntoView({ block: "start" });
-                });
-            }
+    function setActiveBenefit(slug) {
+      links.forEach(function (link) {
+        const active = link.dataset.target === slug;
+        link.classList.toggle("is-active", active);
+        const icon = link.querySelector(".reducao-temporaria");
+        if (icon) {
+          const normal = icon.dataset.iconNormal;
+          const selected = icon.dataset.iconSelected;
+          if (active && selected) icon.src = selected;
+          else if (normal) icon.src = normal;
         }
+      });
     }
 
-});
+    links.forEach(function (link) {
+      link.addEventListener("click", function (event) {
+        event.preventDefault();
+        const slug = link.dataset.target;
+        const target = document.getElementById(slug);
+        if (!target) return;
+        setActiveBenefit(slug);
+        const primeiroTratamento = target.querySelector(".v3-treatment[data-global-position]");
+        if (primeiroTratamento) {
+          window.v3RevealThrough(primeiroTratamento.dataset.globalPosition);
+        }
+        history.replaceState(null, "", "#" + slug);
+        requestAnimationFrame(function () {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+    });
+
+    const slugInicial = window.location.hash ? decodeURIComponent(window.location.hash.substring(1)) : "";
+    const destinoInicial = slugInicial ? document.getElementById(slugInicial) : null;
+    if (destinoInicial && destinoInicial.classList.contains("v3-segment")) {
+      setActiveBenefit(slugInicial);
+      const primeiro = destinoInicial.querySelector(".v3-treatment[data-global-position]");
+      if (primeiro) {
+        window.v3RevealThrough(primeiro.dataset.globalPosition);
+        requestAnimationFrame(function () {
+          destinoInicial.scrollIntoView({ block: "start" });
+        });
+      }
+    } else if (links.length) {
+      setActiveBenefit(links[0].dataset.target);
+    }
+
+    if ("IntersectionObserver" in window && sections.length) {
+      const observer = new IntersectionObserver(function (entries) {
+        let visibleSection = null;
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting &&
+              (visibleSection === null || entry.intersectionRatio > visibleSection.intersectionRatio)) {
+            visibleSection = entry;
+          }
+        });
+        if (visibleSection) setActiveBenefit(visibleSection.target.id);
+      }, {
+        root: null,
+        rootMargin: "-10% 0px -65% 0px",
+        threshold: [0, 0.1, 0.25, 0.5]
+      });
+      sections.forEach(function (section) { observer.observe(section); });
+    }
+
+    // 4. SELETOR DE DOENÇAS DO RODAPÉ.
+    const footerButton = document.getElementById("footerDiseaseButton");
+    const footerOptions = document.getElementById("footerDiseaseOptions");
+    if (footerButton && footerOptions) {
+      footerButton.addEventListener("click", function (event) {
+        event.stopPropagation();
+        const isOpen = footerOptions.classList.toggle("open");
+        footerButton.classList.toggle("open", isOpen);
+        footerButton.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      });
+      document.addEventListener("click", function () {
+        footerOptions.classList.remove("open");
+        footerButton.classList.remove("open");
+        footerButton.setAttribute("aria-expanded", "false");
+      });
+    }
+
+    // 5. FAIXA FIXA DE SAÚDE.
+    const healthBar = document.getElementById("v3HealthFixedBar");
+    const footerBottom = document.querySelector(".footer-bottom");
+    if (healthBar && footerBottom) {
+      function updateHealthBarPosition() {
+        const footerBottomRect = footerBottom.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        if (footerBottomRect.bottom > viewportHeight) {
+          healthBar.style.position = "fixed";
+          healthBar.style.bottom = "0";
+          healthBar.style.top = "auto";
+          return;
+        }
+        const documentTop = window.scrollY + footerBottomRect.bottom;
+        healthBar.style.position = "absolute";
+        healthBar.style.top = documentTop + "px";
+        healthBar.style.bottom = "auto";
+      }
+      window.addEventListener("scroll", updateHealthBarPosition, { passive: true });
+      window.addEventListener("resize", updateHealthBarPosition);
+      updateHealthBarPosition();
+    }
+
+    // 6. CARDS CLICÁVEIS, COM SUPORTE A TECLADO.
+    document.querySelectorAll(".v3-treatment[data-detail-url]").forEach(function (card) {
+      card.addEventListener("click", function (event) {
+        if (event.target.closest("a, button")) return;
+        window.location.href = card.dataset.detailUrl;
+      });
+      card.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" || event.key === " ") {
+          if (event.target.closest("a, button") && event.target !== card) return;
+          event.preventDefault();
+          window.location.href = card.dataset.detailUrl;
+        }
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", iniciarListaV2, { once: true });
+  } else {
+    iniciarListaV2();
+  }
+})();
 </script>
+
+
     </body>
 
     </html>

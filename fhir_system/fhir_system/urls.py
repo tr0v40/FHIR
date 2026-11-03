@@ -8,7 +8,8 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import redirect
 from urllib.parse import urlencode
 from core.forms import CustomAuthenticationForm
-
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from core import views
 from core import public_views_listas2
 from core import public_views_listas3
@@ -40,6 +41,33 @@ def admin_login_redirect(request):
     return redirect(
         f"/accounts/login/?{query_string}"
     )
+
+
+# =========================================================
+# REDIRECT GLOBAL - DETALHES ANTIGOS PARA V2
+# =========================================================
+
+def redirecionar_detalhes_antigos(
+    request,
+    condicao_slug,
+    tratamento_slug,
+):
+    nova_url = reverse(
+        "pagina_detalhe_tratamento_v2",
+        kwargs={
+            "condicao_slug": condicao_slug,
+            "tratamento_slug": tratamento_slug,
+        },
+    )
+
+    # Preserva os parâmetros da URL antiga
+    query_string = request.META.get("QUERY_STRING", "")
+
+    if query_string:
+        nova_url = f"{nova_url}?{query_string}"
+
+    return HttpResponseRedirect(nova_url)
+
 
 
 urlpatterns = [
@@ -163,11 +191,21 @@ path(
         tipo_eficacia_descricao_json,
         name="tipoeficacia-descricao",
     ),
+
+# =========================================================
+# REDIRECT - TRATAMENTOS PARA HOME PRINCIPAL
+# =========================================================
+
     path(
         "tratamentos/",
-        views.tratamentos,
+        RedirectView.as_view(
+            url="/home/",
+            permanent=False,
+            query_string=False,
+        ),
         name="tratamentos",
     ),
+
     path(
         "admin/core/condicaosaude/<int:pk>/change/",
         CondicaoSaudeDetailView.as_view(),
@@ -239,7 +277,12 @@ path(
 # LISTA V3 - HOMOLOGAÇÃO / NOVO FIGMA
 # IMPORTANTE: precisa ficar antes de enxaqueca/<slug:slug>/
 # =========================================================
-
+    # Todas as URLs antigas de detalhes
+    path(
+        "<slug:condicao_slug>/<slug:tratamento_slug>/",
+        redirecionar_detalhes_antigos,
+        name="redirect_detalhes_antigos",
+    ),
 
 
     # =========================================================
