@@ -5537,7 +5537,11 @@
                     <span class="meta-value">{{ tratamento.principio_ativo }}</span>
                 </p>
 
-                <div class="hero-description">{{ descricao_detalhe }}</div>
+                            {% if descricao_detalhe %}
+                <div class="hero-description">
+                    {{ descricao_detalhe|linebreaksbr }}
+                </div>
+                {% endif %}
             </div>
 
             <div class="hero-image">

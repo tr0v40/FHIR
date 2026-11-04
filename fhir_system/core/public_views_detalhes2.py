@@ -435,8 +435,11 @@ def detalhes_tratamentos_v2(
         # Tratamento
         "tratamento": tratamento,
 
+        # Descrição geral do tratamento
+        "descricao_detalhe": tratamento.descricao,
+
         # Condição
-        "condicao": condicao,
+"condicao": condicao,
 
         "condicao_slug":
             condicao.slug,
