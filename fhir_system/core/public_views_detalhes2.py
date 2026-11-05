@@ -1,6 +1,7 @@
 from django.db.models import Avg, Count, F, Prefetch
 from django.shortcuts import get_object_or_404, render
 
+
 from core.models import (
     PaginaDetalheTratamento,
     DetalhesTratamentoResumo,
@@ -15,6 +16,7 @@ from core.public_views_listas2 import (
     classificar_tipo_eficacia_v2,
     get_icone_beneficio_por_slug,
     get_footer_listas,
+    filtro_relacao_condicao,
 )
 
 
@@ -241,6 +243,22 @@ def detalhes_tratamentos_v2(
         )
     )
 
+        # Descrição específica do tratamento para esta condição
+    relacao_condicao = (
+        tratamento.condicoes_relacionadas
+        .filter(aparecer_na_lista=True)
+        .filter(
+            filtro_relacao_condicao("condicao", condicao)
+        )
+        .first()
+    )
+
+    descricao_detalhe = (
+        (relacao_condicao.descricao if relacao_condicao else None)
+        or tratamento.descricao
+        or ""
+    )
+
     # ========================================================
     # MONTA OS CINCO CARDS
     # ========================================================
@@ -436,10 +454,10 @@ def detalhes_tratamentos_v2(
         "tratamento": tratamento,
 
         # Descrição geral do tratamento
-        "descricao_detalhe": tratamento.descricao,
+        "descricao_detalhe": descricao_detalhe,
 
         # Condição
-"condicao": condicao,
+        "condicao": condicao,
 
         "condicao_slug":
             condicao.slug,

@@ -6260,7 +6260,63 @@ body,
     }
 }
 
-    
+/* =========================================================
+   CORREÇÃO FINAL - BANNER FAMÍLIA MOBILE
+   Imagem completa, sem cortes ou fundo preto
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+
+    .home-share {
+        width: 100% !important;
+        max-width: 393px !important;
+        height: auto !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+    }
+
+    .share-banner {
+        position: relative;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden;
+        background: transparent !important;
+    }
+
+    .share-banner-picture {
+        display: block;
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .share-banner-img {
+        display: block;
+        width: 100% !important;
+        height: auto !important;
+        max-width: 100% !important;
+        object-fit: contain !important;
+        object-position: center;
+    }
+
+    /* Remove o degradê preto antigo */
+    .share-banner::after {
+        display: none !important;
+        content: none !important;
+    }
+
+    /* Mantém a área clicável do WhatsApp */
+    .share-whatsapp-link {
+        position: absolute;
+        width: 48%;
+        height: 9%;
+        left: 26%;
+        bottom: 4%;
+        z-index: 10;
+    }
+}
 
 
 </style>
@@ -6513,12 +6569,14 @@ body,
     <p class="home-menu-description">
 
         <span class="home-menu-text-desktop">
-            Selecione o tratamento e depois a doença ou sintoma
-            para acessar os detalhes completos.
+            Selecione a doença ou sintoma e o tratamento de saúde para ver a eficácia, prazo para efeito, segurança de uso por
+            grupo, custo, contraindicações e reações adversas.
         </span>
 
         <span class="home-menu-text-mobile">
-            Selecione o tratamento e depois a doença ou sintoma.
+            Selecione doença ou sintoma
+            para ver lista de tratamentos 
+            em ordem de eficácia
         </span>
 
     </p>
@@ -6647,12 +6705,12 @@ body,
         <p class="home-menu-description">
 
             <span class="home-menu-text-desktop">
-                Selecione doença e tratamento para ver artigos científicos
+                Selecione doença e o tratamento para ver artigos científicos
                 que revelam a eficácia do tratamento para a doença.
             </span>
 
             <span class="home-menu-text-mobile">
-                Selecione doença e tratamento para ver artigos científicos
+                Selecione doença e o tratamento para ver artigos científicos
                 sobre sua eficácia.
             </span>
 
@@ -7275,7 +7333,7 @@ body,
 
                 <source
                     media="(max-width: 768px)"
-                    srcset="{% static 'img/banner mobile.png' %}"
+                    srcset="{% static 'img/banner mobile_.png' %}"
                 >
 
                 <img
