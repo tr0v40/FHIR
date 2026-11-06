@@ -87,14 +87,27 @@ class DetalhesTratamentoResumoForm(forms.ModelForm):
         return int(prazo_max)
 
 
+
 class TratamentoCondicaoInline(admin.TabularInline):
     model = TratamentoCondicao
     form = TratamentoCondicaoInlineForm
+
     extra = 1
     autocomplete_fields = ("condicao",)
-    fields = ("condicao", "descricao", "aparecer_na_lista")
+
+    fields = (
+        "condicao",
+        "descricao",
+        "quando_usar",
+        "prazo_efeito_min",
+        "prazo_efeito_max",
+        "prazo_efeito_unidade",
+        "aparecer_na_lista",
+    )
+
     verbose_name = "Relação com condição de saúde"
     verbose_name_plural = "Relações com condições de saúde"
+
 
 class DetalhesTratamentoReacaoAdversaInline(admin.TabularInline):
     model = DetalhesTratamentoReacaoAdversa

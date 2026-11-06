@@ -970,6 +970,7 @@ class Avaliacao(models.Model):
 
 
 # pré-requisito nos models (resumo)
+
 class TratamentoCondicao(models.Model):
     tratamento = models.ForeignKey(
         "DetalhesTratamentoResumo",
@@ -985,6 +986,34 @@ class TratamentoCondicao(models.Model):
 
     descricao = models.TextField(blank=True)
 
+    # NOVO: Quando usar por condição de saúde
+    quando_usar = models.TextField(
+        "Quando usar",
+        blank=True,
+        default=""
+    )
+
+    # NOVO: Prazo de efeito por condição de saúde
+    prazo_efeito_min = models.IntegerField(
+        "Prazo mínimo",
+        blank=True,
+        null=True
+    )
+
+    prazo_efeito_max = models.IntegerField(
+        "Prazo máximo",
+        blank=True,
+        null=True
+    )
+
+    prazo_efeito_unidade = models.CharField(
+        "Prazo efeito unidade",
+        max_length=10,
+        choices=DetalhesTratamentoResumo.UNIDADES,
+        blank=True,
+        default=""
+    )
+
     aparecer_na_lista = models.BooleanField(
         default=True,
         verbose_name="Aparecer na lista da doença"
@@ -995,7 +1024,7 @@ class TratamentoCondicao(models.Model):
 
     def __str__(self):
         return f"{self.tratamento} - {self.condicao}"
-    
+
 
 class TipoEficacia(models.Model):
     tipo_eficacia = models.CharField(max_length=255)
