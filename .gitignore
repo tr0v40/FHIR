@@ -175,3 +175,6 @@ cython_debug/
 #media/
 #static/
 #staticfiles/
+
+# Ignorar novos PNGs gerados em staticfiles/img
+/fhir_system/staticfiles/img/*.png

@@ -19,6 +19,17 @@
 
           {% include 'core/google_analytics.html' %}
 
+            <script>
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+          clarity('set', 'page_url', window.location.href);
+          window.addEventListener('popstate', function(){ clarity('set','page_url',window.location.href); });
+          window.addEventListener('hashchange', function(){ clarity('set','page_url',window.location.href); });
+      })(window, document, "clarity", "script", "ubap1t6puk");
+    </script>
+
 
         <!-- =====================================================
             INTER
