@@ -6,6 +6,9 @@ import TratamentosControle from "./templates/Tratamentos_controle_filtros/Tratam
 import TratamentosDinamicos from "./templates/tratamentosDinamicos/TratamentosDinamicos";
 import TreatmentsEnFilters from "./templates/Treatments_en_filters/TreatmentsEnFilters";
 
+import TratamentosUnificados from "./templates/tratamentosDinamicos/TratamentosUnificados";
+
+
 // Inter
 import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
@@ -35,6 +38,11 @@ export default function App() {
       <Route
         path="/treatments/:conditionSlug/filter/:efficacySlug/with-filters/"
         element={<TreatmentsEnFilters />}
+      />
+
+      <Route
+        path="/tratamentos/:condicaoSlug/com-filtros/"
+        element={<TratamentosUnificados />}
       />
     </Routes>
   );

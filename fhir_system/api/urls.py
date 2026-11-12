@@ -15,6 +15,8 @@ from .views import (
     EnglishTreatmentsDynamicViewSet,
     EnglishEfficacyDynamicViewSet,
     FooterEnglishTreatmentListsAPIView,
+    TiposEficaciaPublicadosAPIView,
+    ListaTratamentosUnificadaAPIView
 )
 
 router = DefaultRouter()
@@ -39,5 +41,15 @@ urlpatterns = [
     'en/treatment-lists-published/',
     FooterEnglishTreatmentListsAPIView.as_view(),
     name='footer_english_treatment_lists_published',
+),
+    path(
+        "tipos-eficacia-publicados/",
+        TiposEficaciaPublicadosAPIView.as_view(),
+        name="tipos-eficacia-publicados",
+    ),
+    path(
+    "lista-tratamentos-unificada/",
+    ListaTratamentosUnificadaAPIView.as_view(),
+    name="lista-tratamentos-unificada",
 ),
 ]

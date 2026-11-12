@@ -357,6 +357,21 @@ path(
         name="tratamentos_dinamicos_com_filtros",
     ),
 
+    
+    # =========================================================
+    # NOVA LISTA REACT UNIFICADA
+    # Todos os tipos de eficácia de uma condição de saúde
+    # =========================================================
+
+    path(
+        "tratamentos/<slug:condicao_slug>/com-filtros/",
+        TemplateView.as_view(
+            template_name="index.html",
+        ),
+        name="tratamentos_dinamicos_unificados",
+    ),
+
+
     # =========================================================
     # NOVA URL OFICIAL DA LISTA V2
     # =========================================================

@@ -1,0 +1,182 @@
+/* Footer da lista V3, isolado para não afetar outros templates. */
+.telix-footer-unificado {
+  width: 100%; margin: 0; background: #fff; color: #050505;
+  font-family: Inter, Arial, sans-serif; font-size: 12px;
+  border: 0;
+}
+.telix-footer-unificado, .telix-footer-unificado * { box-sizing: border-box; }
+.telix-footer-unificado .footer-email-strip {
+  height: 69px; background: #0193ff; display: flex;
+  justify-content: center; align-items: flex-start; padding-top: 12px;
+}
+.telix-footer-unificado .footer-email-button {
+  width: 155px; height: 27px; border: 0; border-radius: 5px;
+  background: #fff; color: #0193ff; font: 700 12px Inter,Arial,sans-serif;
+  display: inline-flex; align-items: center; justify-content: center; text-decoration: none;
+}
+.telix-footer-unificado .footer-email-button:disabled { opacity: 1; cursor: default; }
+
+.telix-footer-unificado .footer-details {
+    width: min(785px, calc(100% - 40px));
+    min-height: 0;
+    margin: 0 auto;
+    padding: 32px 0 22px;
+
+    display: grid;
+    grid-template-columns: 245px 215px 155px;
+    justify-content: space-between;
+    align-items: start;
+    gap: 20px;
+}
+
+.telix-footer-unificado .footer-column {
+  min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 31px;
+}
+.telix-footer-unificado .footer-block { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.telix-footer-unificado h3 { margin: 0 0 7px; padding: 0; font-size: 12px; line-height: 17px; font-weight: 700; color: #050505; }
+.telix-footer-unificado h3 a, .telix-footer-unificado .footer-special { color: inherit; font: inherit; text-decoration: none; }
+.telix-footer-unificado .footer-block > a,
+.telix-footer-unificado .footer-contact > p,
+.telix-footer-unificado .footer-contact > p a {
+  margin: 0; padding: 0; font-size: 11px; line-height: 15px; color: #92939d; font-weight: 400; text-decoration: none;
+}
+.telix-footer-unificado a:hover { color: #0193ff; }
+.telix-footer-unificado .footer-special {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 700; line-height: 18px;
+}
+.telix-footer-unificado .footer-whatsapp-icon,
+.telix-footer-unificado .footer-contact-whatsapp-icon { width: 16px; height: 16px; object-fit: contain; flex: 0 0 16px; }
+.telix-footer-unificado .footer-contact-title { display: flex; align-items: center; gap: 6px; }
+.telix-footer-unificado .footer-contact { gap: 4px; }
+.telix-footer-unificado .footer-contact-title { margin-bottom: 7px; }
+.telix-footer-unificado .footer-specialists h3 { margin: 0; }
+.telix-footer-unificado .footer-disease { width: 155px; }
+.telix-footer-unificado .footer-disease-label { margin-bottom: 7px; font-size: 12px; font-weight: 700; }
+.telix-footer-unificado .footer-disease-select { position: relative; width: 155px; }
+.telix-footer-unificado .footer-disease-button {
+  display: flex; justify-content: space-between; align-items: center; gap: 8px;
+  width: 155px; height: 33px; padding: 0 12px; border: 0; border-radius: 4px;
+  background: #0193ff; color: #fff; font: 600 12px Inter,Arial,sans-serif;
+  cursor: pointer; text-align: left;
+}
+.telix-footer-unificado .footer-disease-button > span:first-child { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.telix-footer-unificado .footer-chevron { width: 8px; height: 8px; flex: 0 0 8px; border-right: 2px solid #fff; border-bottom: 2px solid #fff; transform: translateY(-2px) rotate(45deg); }
+.telix-footer-unificado .footer-disease-button.open .footer-chevron { transform: translateY(2px) rotate(225deg); }
+.telix-footer-unificado .footer-disease-options {
+  position: absolute; bottom: calc(100% + 5px); left: 0; z-index: 50;
+  width: 230px; max-height: 220px; overflow-y: auto; background: #fff;
+  border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 5px 18px rgba(0,0,0,.13);
+}
+.telix-footer-unificado .footer-disease-options[hidden] { display: none; }
+.telix-footer-unificado .footer-disease-options a,
+.telix-footer-unificado .footer-disease-empty {
+  display: block; padding: 9px 12px; font-size: 11px; color: #555; text-decoration: none;
+}
+.telix-footer-unificado .footer-disease-options a:hover { background: #eef8ff; }
+.telix-footer-unificado .footer-bottom {
+  min-height: 47px; padding: 12px 20px; display: flex; align-items: center; justify-content: center;
+  background: #fafafa; border-top: 2px solid #e1e1e1;
+  color: #92939d; font-size: 11px; text-align: center;
+}
+@media (max-width: 850px) {
+  .telix-footer-unificado .footer-details { width: calc(100% - 48px); grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; }
+  .telix-footer-unificado .footer-disease, .telix-footer-unificado .footer-disease-select, .telix-footer-unificado .footer-disease-button { max-width: 100%; }
+}
+@media (max-width: 600px) {
+  .telix-footer-unificado .footer-details { width: calc(100% - 40px); min-height: 0; padding: 28px 0 35px; grid-template-columns: 1fr; gap: 30px; }
+  .telix-footer-unificado .footer-column { gap: 24px; }
+  .telix-footer-unificado .footer-bottom { padding-bottom: 65px; }
+}
+
+/* ============================================
+   ÍCONES WHATSAPP — FOOTER TELIX
+   ============================================ */
+
+.telix-footer-unificado .footer-share,
+.telix-footer-unificado .footer-contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    color: #050505;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.telix-footer-unificado .footer-whatsapp-icon,
+.telix-footer-unificado .footer-contact-whatsapp-icon {
+    display: block;
+    flex-shrink: 0;
+
+    width: 16px;
+    height: 16px;
+
+    object-fit: contain;
+    border: 0;
+}
+
+.telix-footer-unificado .footer-contact-title {
+    margin-bottom: 10px;
+}
+
+.telix-footer-unificado .footer-contact-title a {
+    color: #050505;
+    text-decoration: none;
+}
+
+.telix-footer-unificado .footer-share:hover,
+.telix-footer-unificado .footer-contact-link:hover {
+    color: #0193ff;
+}
+
+
+/* ==========================================
+   WHATSAPP — COR VERDE
+   ========================================== */
+
+.telix-footer-unificado .footer-whatsapp-icon,
+.telix-footer-unificado .footer-contact-whatsapp-icon {
+    color: #12b84a !important;
+    fill: currentColor !important;
+    stroke: none !important;
+
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+}
+
+.telix-footer-unificado .footer-share,
+.telix-footer-unificado .footer-contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: px;
+}
+
+
+/* Faixa cinza do CNPJ */
+.telix-footer-unificado .footer-bottom {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 47px;
+
+    margin: 0 !important;
+    padding: 12px 20px !important;
+
+    background: #fafafa !important;
+    border-top: 2px solid #e1e1e1 !important;
+
+    color: #92939d !important;
+    font-size: 11px;
+    text-align: center;
+}
+
+/* Reserva espaço para a barra azul fixa,
+   mantendo a área do CNPJ visível */
+.telix-footer-unificado {
+    padding-bottom: 42px !important;
+}

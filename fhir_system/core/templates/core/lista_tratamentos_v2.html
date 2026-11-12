@@ -3405,6 +3405,137 @@
 }
 
 
+/* ==========================================
+   CARDS DE FILTROS - FIGMA
+   ========================================== */
+
+.v3-filter-cards {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 292px;
+    padding: 62px 39px;
+
+    display: grid;
+    grid-template-columns: 154px 154px 154px 212px;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+
+    background: #FFFFFF;
+    border-top: 1px solid #E0E0E0;
+    border-radius: 0 0 5px 5px;
+}
+
+.v3-filter-card {
+    box-sizing: border-box;
+    width: 100%;
+    height: 166px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 17px;
+    padding: 20px 8px;
+
+    background: #F9F6F6;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+
+    color: #000000;
+    text-decoration: none;
+    text-align: center;
+
+    font-family: "Inter", Arial, sans-serif;
+
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+}
+
+.v3-filter-card:hover {
+    border-color: #0094FF;
+    background: #F0F8FF;
+}
+
+.v3-filter-card:focus-visible {
+    outline: 2px solid #0094FF;
+    outline-offset: 3px;
+}
+
+.v3-filter-label {
+    color: #757474;
+    font-size: 10px;
+    line-height: 14px;
+    font-weight: 600;
+}
+
+.v3-filter-name {
+    color: #000000;
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.v3-filter-card i {
+    color: #0094FF;
+    font-size: 26px;
+    line-height: 27px;
+}
+
+/* ==========================================
+   TABLET
+   ========================================== */
+
+@media (min-width: 769px) and (max-width: 1000px) {
+    .v3-filter-cards {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        padding: 40px 20px;
+        gap: 15px;
+    }
+
+    .v3-filter-name {
+        font-size: 16px;
+    }
+}
+
+/* ==========================================
+   MOBILE
+   ========================================== */
+
+@media (max-width: 768px) {
+    .v3-filter-cards {
+        width: 100%;
+        min-height: auto;
+        padding: 24px 12px;
+
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .v3-filter-card {
+        height: 130px;
+        gap: 10px;
+        padding: 12px 5px;
+    }
+
+    .v3-filter-label {
+        font-size: 9px;
+        line-height: 13px;
+    }
+
+    .v3-filter-name {
+        font-size: 13px;
+        line-height: 18px;
+    }
+
+    .v3-filter-card i {
+        font-size: 22px;
+        line-height: 24px;
+    }
+}
+
 
 </style>
 
@@ -4122,22 +4253,44 @@
 {% endif %}
 
 {% endfor %}
-<div class="v3-filter-bar">
 
-    <p class="v3-filter-text">
-        Ordene essa lista por custo do tratamento, prazo para efeito ou
-        risco de reações adversas, ou filtre por segurança de uso para
-        grupos específicos, e filtre por contraindicações.
-    </p>
+<!-- CARDS DE FILTROS E ORDENAÇÃO -->
+<div class="v3-filter-cards">
 
-    <a
-        href="https://www.telix.inf.br/plano-premium-filtros"
-        class="v3-filter-button"
-    >
-        Filtrar e ordenar
+    <a href="{{ react_frontend_url|default:'http://localhost:3000' }}/tratamentos/{{ condicao.slug }}/com-filtros/" class="v3-filter-card"
+       data-filter-type="custo"
+       data-beneficio="{{ segmento.slug }}">
+        <span class="v3-filter-label">Ordenar por</span>
+        <strong class="v3-filter-name">custo</strong>
+        <i class="fa-solid fa-dollar-sign" aria-hidden="true"></i>
+    </a>
+
+    <a href="{{ react_frontend_url|default:'http://localhost:3000' }}/tratamentos/{{ condicao.slug }}/com-filtros/" class="v3-filter-card"
+       data-filter-type="prazo"
+       data-beneficio="{{ segmento.slug }}">
+        <span class="v3-filter-label">Ordenar por</span>
+        <strong class="v3-filter-name">prazo</strong>
+        <i class="fa-regular fa-clock" aria-hidden="true"></i>
+    </a>
+
+    <a href="{{ react_frontend_url|default:'http://localhost:3000' }}/tratamentos/{{ condicao.slug }}/com-filtros/" class="v3-filter-card"
+       data-filter-type="risco"
+       data-beneficio="{{ segmento.slug }}">
+        <span class="v3-filter-label">Ordenar por</span>
+        <strong class="v3-filter-name">risco</strong>
+        <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+    </a>
+
+    <a href="{{ react_frontend_url|default:'http://localhost:3000' }}/tratamentos/{{ condicao.slug }}/com-filtros/" class="v3-filter-card v3-filter-card-security"
+       data-filter-type="seguranca"
+       data-beneficio="{{ segmento.slug }}">
+        <span class="v3-filter-label">Filtrar por</span>
+        <strong class="v3-filter-name">segurança de uso</strong>
+        <i class="fa-solid fa-people-group" aria-hidden="true"></i>
     </a>
 
 </div>
+
 
 
     {# fecha v3-treatment-list #}

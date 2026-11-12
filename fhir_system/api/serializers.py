@@ -192,10 +192,18 @@ class DetalhesTratamentoResumoTelaControleSerializer(serializers.ModelSerializer
 
         return descricao_condicao or obj.descricao
 
+
 class TipoEficaciaDinamicoSerializer(serializers.ModelSerializer):
     class Meta:
         model = TipoEficacia
-        fields = ['id', 'tipo_eficacia', 'descricao', 'imagem']
+        fields = [
+            "id",
+            "slug",
+            "tipo_eficacia",
+            "descricao",
+            "imagem",
+        ]
+
 
 
 class EficaciaPorEvidenciaDinamicaSerializer(serializers.ModelSerializer):

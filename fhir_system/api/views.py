@@ -9,6 +9,9 @@ from django.db.models.functions import Coalesce
 from django.db.models import Prefetch
 from django.db.models import Q
 
+from rest_framework.views import APIView
+from rest_framework import status
+
 from core.models import (
     PaginaListaTratamento,
     PaginaDetalheTratamento,
@@ -34,7 +37,13 @@ from core.models import (
     EficaciaPorEvidencia,
     DetalhesTratamentoReacaoAdversa,
     TipoTratamento,
-    TreatmentListUrlEnglish
+    TreatmentListUrlEnglish,
+    PaginaListaTratamento
+)
+
+from core.public_views_listas2 import (
+    TEMPLATE_LISTA_V2,
+    montar_segmentos_lista_v2,
 )
 
 from .serializers import (
@@ -129,6 +138,57 @@ class DetalhesTratamentoReacaoAdversaViewSet(viewsets.ReadOnlyModelViewSet):
               .order_by('tratamento_id')
         )
         return Response(list(data))
+
+
+class TiposEficaciaPublicadosAPIView(APIView):
+
+    def get(self, request):
+        condicao_slug = (
+            request.query_params.get("condicao_slug") or ""
+        ).strip().lower()
+
+        if not condicao_slug:
+            return Response(
+                {"detail": "Informe condicao_slug."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        listas = (
+            PaginaListaTratamento.objects
+            .filter(
+                condicao_saude__slug=condicao_slug,
+                publicada=True,
+                template="core/lista_tratamentos_v2.html",
+            )
+            .select_related("tipo_eficacia")
+            .prefetch_related("tipos_eficacia")
+            .order_by("id")
+        )
+
+        resultados = []
+        vistos = set()
+
+        for lista in listas:
+            tipos = list(lista.tipos_eficacia.all())
+
+            if lista.tipo_eficacia:
+                tipos.append(lista.tipo_eficacia)
+
+            for tipo in tipos:
+                if tipo.id in vistos:
+                    continue
+
+                vistos.add(tipo.id)
+
+                resultados.append({
+                    "id": tipo.id,
+                    "slug": tipo.slug,
+                    "nome": tipo.tipo_eficacia,
+                    "descricao": tipo.descricao,
+                })
+
+        return Response(resultados)
+
 
 
 class DetalhesTratamentoResumoViewSet(viewsets.ReadOnlyModelViewSet):
@@ -428,3 +488,107 @@ class FooterEnglishTreatmentListsAPIView(APIView):
         return Response(data)
     
 
+
+class ListaTratamentosUnificadaAPIView(APIView):
+    """
+    API da lista unificada React.
+
+    Reutiliza a montagem dos segmentos utilizada
+    pela página oficial V3.
+    """
+
+    def get(self, request):
+        condicao_slug = (
+            request.query_params.get("condicao_slug") or ""
+        ).strip().lower()
+
+        if not condicao_slug:
+            return Response(
+                {"detail": "Informe condicao_slug."},
+                status=400,
+            )
+
+        pagina = get_object_or_404(
+            PaginaListaTratamento.objects
+            .select_related(
+                "condicao_saude",
+                "tipo_eficacia",
+            )
+            .prefetch_related(
+                "tipos_eficacia",
+                "tratamentos_ocultos",
+            ),
+            condicao_saude__slug=condicao_slug,
+            publicada=True,
+            template=TEMPLATE_LISTA_V2,
+        )
+
+        condicao = pagina.condicao_saude
+
+        segmentos = montar_segmentos_lista_v2(
+            pagina,
+            condicao,
+        )
+
+        resultado = []
+
+        for segmento in segmentos:
+            itens = segmento["itens"]
+
+            tratamentos = [
+                item["obj"]
+                for item in itens
+            ]
+
+            dados_tratamentos = (
+                DetalhesTratamentoResumoTelaControleSerializer(
+                    tratamentos,
+                    many=True,
+                    context={"request": request},
+                ).data
+            )
+
+            itens_serializados = []
+
+            for item, dados in zip(
+                itens,
+                dados_tratamentos,
+            ):
+                itens_serializados.append({
+                    "tratamento": dados,
+                    "min": item["min"],
+                    "max": item["max"],
+                    "min_css": item["min_css"],
+                    "max_css": item["max_css"],
+                    "range_css": item["range_css"],
+                    "min_str": item["min_str"],
+                    "max_str": item["max_str"],
+                    "descricao_lista": item["descricao_lista"],
+                })
+
+            resultado.append({
+                "nome": segmento["nome"],
+                "slug": segmento["slug"],
+                "ordem": segmento["ordem"],
+                "icone": segmento["icone"],
+                "qtd_tratamentos": len(itens_serializados),
+                "min": segmento["min"],
+                "max": segmento["max"],
+                "slug_filtro_react": (
+                    segmento["slug_filtro_react"]
+                ),
+                "itens": itens_serializados,
+            })
+
+        return Response({
+            "condicao": {
+                "id": condicao.id,
+                "slug": condicao.slug,
+                "nome": condicao.nome,
+            },
+            "total_tratamentos": sum(
+                len(segmento["itens"])
+                for segmento in resultado
+            ),
+            "segmentos": resultado,
+        })
