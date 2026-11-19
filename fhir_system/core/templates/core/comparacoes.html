@@ -1,0 +1,6955 @@
+
+
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+    <title>Compare Tratamentos | Telix</title>
+
+    <meta name="description"
+
+          content="Compare tratamentos por eficácia, evidências científicas, segurança, contraindicações, reações adversas e valores.">
+
+
+
+    {% include 'core/google_analytics.html' %}
+
+
+
+    <link rel="shortcut icon"
+
+          href="{% static 'img/favicon.png' %}"
+
+          type="image/x-icon">
+
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+
+          href="https://fonts.gstatic.com"
+
+          crossorigin>
+
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+
+          rel="stylesheet">
+
+
+
+    <link rel="stylesheet"
+
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+
+    <style>
+
+        :root {
+
+            --blue: #0193FF;
+
+            --blue-dark: #0076D7;
+
+            --blue-soft: #EAF6FF;
+
+            --text: #010009;
+
+            --muted: #8F8F93;
+
+            --border: #E3E3E3;
+
+            --page-width: 980px;
+
+        }
+
+
+
+        * {
+
+            box-sizing: border-box;
+
+        }
+
+
+
+        html {
+
+            scroll-behavior: smooth;
+
+        }
+
+
+
+        body {
+
+            margin: 0;
+
+            padding: 0;
+
+            background: #FFFFFF;
+
+            color: var(--text);
+
+            font-family: "Inter", Arial, sans-serif;
+
+            font-size: 14px;
+
+        }
+
+
+
+        button,
+
+        input,
+
+        select {
+
+            font: inherit;
+
+        }
+
+
+
+        a {
+
+            color: inherit;
+
+        }
+
+
+
+        .page-wrap {
+
+            width: min(calc(100% - 32px), var(--page-width));
+
+            margin: 0 auto;
+
+        }
+
+
+
+        [hidden] {
+
+            display: none !important;
+
+        }
+
+
+
+        /* =====================================================
+
+           FAIXA SUPERIOR
+
+           ===================================================== */
+
+
+
+        .top-strip {
+
+            width: 100%;
+
+            height: 50px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 0 12px;
+
+            background: var(--blue);
+
+            color: #FFFFFF;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            line-height: 27px;
+
+            text-align: center;
+
+        }
+
+
+
+        /* =====================================================
+
+           HEADER
+
+           ===================================================== */
+
+
+
+        .site-header {
+
+            width: 100%;
+
+            height: 168px;
+
+            background: #FFFFFF;
+
+        }
+
+
+
+        .site-header-inner {
+
+            width: min(calc(100% - 32px), 980px);
+
+            height: 168px;
+
+            margin: 0 auto;
+
+            display: flex;
+
+            align-items: flex-start;
+
+            justify-content: space-between;
+
+            position: relative;
+
+        }
+
+
+
+        .site-logo {
+
+            position: absolute;
+
+            left: 0;
+
+            top: 34px;
+
+            width: 220px;
+
+            height: 100px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: flex-start;
+
+            text-decoration: none;
+
+        }
+
+
+
+        .site-logo img {
+
+            width: 180px;
+
+            max-width: none;
+
+            height: auto;
+
+            margin-left: -36px;
+
+            display: block;
+
+            object-fit: contain;
+
+        }
+
+
+
+        .header-account {
+
+            position: absolute;
+
+            right: 25px;
+
+            top: 40px;
+
+            min-width: 225px;
+
+            height: 40px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            text-decoration: none;
+
+            color: var(--text);
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+        }
+
+
+
+        .header-account .fa-lock {
+
+            color: var(--blue);
+
+            font-size: 18px;
+
+        }
+
+
+
+        .header-account .fa-circle-user {
+
+            color: var(--blue);
+
+            font-size: 26px;
+
+        }
+
+
+
+        /* =====================================================
+
+           TÍTULO
+
+           ===================================================== */
+
+
+
+        .comparison-hero {
+
+            padding: 10px 0 25px;
+
+        }
+
+
+
+        .comparison-title {
+
+            margin: 0 0 10px;
+
+            color: var(--blue);
+
+            font-size: 32px;
+
+            font-weight: 700;
+
+            line-height: 1.2;
+
+        }
+
+
+
+        .comparison-subtitle {
+
+            margin: 0;
+
+            color: var(--text);
+
+            font-size: 15px;
+
+            font-weight: 400;
+
+            line-height: 24px;
+
+        }
+
+
+
+        /* =====================================================
+
+           MENU DE ÂNCORAS
+
+           ===================================================== */
+
+
+
+        .page-anchor-menu {
+
+            width: 100%;
+
+            min-height: 94px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+
+            background: #FFFFFF;
+
+        }
+
+
+
+        .page-anchor-menu-inner {
+
+            width: 957px;
+
+            max-width: calc(100% - 32px);
+
+            min-height: 70px;
+
+            display: flex;
+
+            align-items: stretch;
+
+            overflow-x: auto;
+
+            scrollbar-width: none;
+
+            background: #FFFFFF;
+
+        }
+
+
+
+        .page-anchor-menu-inner::-webkit-scrollbar {
+
+            display: none;
+
+        }
+
+
+
+        .page-anchor-link {
+
+            flex: 1 0 auto;
+
+            min-width: 0;
+
+            min-height: 70px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            position: relative;
+
+            padding: 0 13px;
+
+            color: #848383;
+
+            font-size: 13px;
+
+            font-weight: 500;
+
+            line-height: 16px;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            white-space: nowrap;
+
+            transition: color .18s ease, background .18s ease;
+
+        }
+
+
+
+        .page-anchor-link::after {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+
+            right: 0;
+
+            bottom: 0;
+
+            height: 5px;
+
+            background: #CCCCCC;
+
+            transition: background .18s ease;
+
+        }
+
+
+
+        .page-anchor-link:hover,
+
+        .page-anchor-link.active {
+
+            color: var(--blue);
+
+        }
+
+
+
+        .page-anchor-link:hover {
+
+            background: var(--blue-soft);
+
+        }
+
+
+
+        .page-anchor-link:hover::after,
+
+        .page-anchor-link.active::after {
+
+            background: var(--blue);
+
+        }
+
+
+
+        .page-anchor-link.is-disabled {
+
+            cursor: default;
+
+        }
+
+
+
+        /* =====================================================
+
+           FORMULÁRIO DE SELEÇÃO
+
+           ===================================================== */
+
+
+
+        .comparison-selection {
+
+            width: 100%;
+
+            padding: 45px 0 55px;
+
+        }
+
+
+
+        .selection-heading {
+
+            margin: 0 0 26px;
+
+            font-size: 20px;
+
+            font-weight: 700;
+
+            line-height: 27px;
+
+        }
+
+
+
+        .comparison-field {
+
+            min-width: 0;
+
+            position: relative;
+
+        }
+
+
+
+        .comparison-field label {
+
+            display: block;
+
+            margin-bottom: 12px;
+
+            color: var(--text);
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+            line-height: 22px;
+
+        }
+
+
+
+        .comparison-input {
+
+            width: 100%;
+
+            height: 52px;
+
+            padding: 0 44px 0 17px;
+
+            border: 1px solid #D8D8D8;
+
+            border-radius: 7px;
+
+            outline: none;
+
+            background: #FFFFFF;
+
+            color: var(--text);
+
+            font-size: 14px;
+
+            transition: border-color .18s ease;
+
+        }
+
+
+
+        .comparison-input:focus {
+
+            border-color: var(--blue);
+
+            box-shadow: 0 0 0 3px rgba(1,147,255,.10);
+
+        }
+
+
+
+        .comparison-input:disabled {
+
+            background: #F7F7F7;
+
+            cursor: not-allowed;
+
+        }
+
+
+
+        .comparison-input::placeholder {
+
+            color: #A3A2A2;
+
+        }
+
+
+
+        .field-icon {
+
+            position: absolute;
+
+            right: 17px;
+
+            bottom: 17px;
+
+            color: var(--blue);
+
+            font-size: 18px;
+
+            pointer-events: none;
+
+        }
+
+
+
+        .condition-field {
+
+            max-width: 100%;
+
+            margin-bottom: 35px;
+
+        }
+
+
+
+        .treatment-fields {
+
+            display: grid;
+
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+
+            gap: 26px;
+
+        }
+
+
+
+        /* =====================================================
+
+           AUTOCOMPLETE
+
+           ===================================================== */
+
+
+
+        .autocomplete-list {
+
+            position: absolute;
+
+            top: calc(100% + 5px);
+
+            left: 0;
+
+            right: 0;
+
+            z-index: 100;
+
+            max-height: 260px;
+
+            overflow-y: auto;
+
+            padding: 5px;
+
+            background: #FFFFFF;
+
+            border: 1px solid #E0E0E0;
+
+            border-radius: 7px;
+
+            box-shadow: 0 8px 22px rgba(0,0,0,.10);
+
+        }
+
+
+
+        .autocomplete-option {
+
+            display: block;
+
+            width: 100%;
+
+            padding: 12px;
+
+            border: 0;
+
+            border-radius: 4px;
+
+            background: transparent;
+
+            color: var(--text);
+
+            font-size: 13px;
+
+            text-align: left;
+
+            cursor: pointer;
+
+        }
+
+
+
+        .autocomplete-option:hover,
+
+        .autocomplete-option:focus {
+
+            background: var(--blue-soft);
+
+            color: var(--blue);
+
+        }
+
+
+
+        .autocomplete-empty {
+
+            padding: 13px;
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+        }
+
+
+
+        .selection-help {
+
+            margin: 18px 0 0;
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+            line-height: 19px;
+
+        }
+
+
+
+        .selection-status {
+
+            min-height: 21px;
+
+            margin: 15px 0 0;
+
+            color: var(--blue-dark);
+
+            font-size: 13px;
+
+            font-weight: 500;
+
+        }
+
+
+
+        /* =====================================================
+
+           COMPARAÇÃO
+
+           ===================================================== */
+
+
+
+        .comparison-results {
+
+            padding: 15px 0 65px;
+
+        }
+
+
+
+        .comparison-results-title {
+
+            margin: 0 0 8px;
+
+            color: var(--text);
+
+            font-size: 25px;
+
+            font-weight: 700;
+
+        }
+
+
+
+        .comparison-results-subtitle {
+
+            margin: 0 0 35px;
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+            line-height: 20px;
+
+        }
+
+
+
+        .comparison-section {
+
+            margin: 0 0 38px;
+
+            scroll-margin-top: 110px;
+
+        }
+
+
+
+        .comparison-section-header {
+
+            min-height: 67px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            padding: 16px 22px;
+
+            border-radius: 10px 10px 0 0;
+
+            background: var(--blue);
+
+            color: #FFFFFF;
+
+        }
+
+
+
+        .comparison-section-header i {
+
+            width: 25px;
+
+            font-size: 22px;
+
+            text-align: center;
+
+        }
+
+
+
+        .comparison-section-header h2 {
+
+            margin: 0;
+
+            font-size: 19px;
+
+            font-weight: 600;
+
+            line-height: 25px;
+
+        }
+
+
+
+        .comparison-grid {
+
+            display: grid;
+
+            grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+
+            gap: 0;
+
+            border: 1px solid #E3E3E3;
+
+            border-top: 0;
+
+            border-radius: 0 0 10px 10px;
+
+            overflow: hidden;
+
+        }
+
+
+
+        .comparison-column {
+
+            min-width: 0;
+
+            padding: 25px;
+
+            background: #FFFFFF;
+
+        }
+
+
+
+        .comparison-column + .comparison-column {
+
+            border-left: 1px solid #E3E3E3;
+
+        }
+
+
+
+        .comparison-treatment-name {
+
+            margin: 0 0 18px;
+
+            color: var(--blue);
+
+            font-size: 18px;
+
+            font-weight: 700;
+
+            line-height: 25px;
+
+            overflow-wrap: anywhere;
+
+        }
+
+
+
+        .comparison-data {
+
+            color: #555555;
+
+            font-size: 14px;
+
+            line-height: 23px;
+
+            overflow-wrap: anywhere;
+
+        }
+
+
+
+        .comparison-data p {
+
+            margin: 0 0 10px;
+
+        }
+
+
+
+        .comparison-data strong {
+
+            color: var(--text);
+
+        }
+
+
+
+        .comparison-not-available {
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+            font-style: italic;
+
+        }
+
+
+
+        .comparison-link {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            margin-top: 12px;
+
+            color: var(--blue);
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            text-decoration: none;
+
+        }
+
+
+
+        .comparison-link:hover {
+
+            text-decoration: underline;
+
+        }
+
+
+
+        /* =====================================================
+
+           BANNER / AVISO
+
+           ===================================================== */
+
+
+
+        .comparison-banner {
+
+            width: 903px;
+
+            max-width: calc(100% - 32px);
+
+            margin: 35px auto 55px;
+
+            padding: 24px 28px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 18px;
+
+            border-radius: 10px;
+
+            background: #EAF6FF;
+
+            color: #075B99;
+
+        }
+
+
+
+        .comparison-banner i {
+
+            font-size: 30px;
+
+            flex-shrink: 0;
+
+        }
+
+
+
+        .comparison-banner strong {
+
+            display: block;
+
+            margin-bottom: 5px;
+
+            font-size: 16px;
+
+        }
+
+
+
+        .comparison-banner p {
+
+            margin: 0;
+
+            font-size: 13px;
+
+            line-height: 20px;
+
+        }
+
+
+
+        /* =====================================================
+
+           FAIXA INFERIOR
+
+           ===================================================== */
+
+
+
+        .bottom-blue-strip {
+
+            width: 100%;
+
+            background: var(--blue);
+
+            color: #FFFFFF;
+
+        }
+
+
+
+        .bottom-blue-inner {
+
+            width: min(calc(100% - 32px), 980px);
+
+            min-height: 85px;
+
+            margin: 0 auto;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+        }
+
+
+
+        .bottom-blue-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            font-size: 17px;
+
+            font-weight: 600;
+
+        }
+
+
+
+        .bottom-blue-item i {
+
+            font-size: 26px;
+
+        }
+
+
+
+        /* =====================================================
+
+           FOOTER
+
+           ===================================================== */
+
+
+
+        .site-footer {
+
+            width: 100%;
+
+            padding: 42px 0 55px;
+
+            background: #FFFFFF;
+
+        }
+
+
+
+        .footer-details {
+
+            width: min(calc(100% - 32px), 982px);
+
+            margin: 0 auto;
+
+            display: grid;
+
+            grid-template-columns: repeat(3, minmax(0,1fr));
+
+            column-gap: 60px;
+
+        }
+
+
+
+        .footer-column {
+
+            min-width: 0;
+
+        }
+
+
+
+        .footer-block {
+
+            margin-bottom: 30px;
+
+        }
+
+
+
+        .footer-block h3 {
+
+            margin: 0 0 14px;
+
+            color: var(--text);
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            line-height: 21px;
+
+        }
+
+
+
+        .footer-block a,
+
+        .footer-block p {
+
+            display: block;
+
+            margin: 0 0 8px;
+
+            color: var(--muted);
+
+            font-size: 13px;
+
+            font-weight: 500;
+
+            line-height: 18px;
+
+            text-decoration: none;
+
+        }
+
+
+
+        .footer-block &#x61;:hover {
+
+            color: var(--blue);
+
+        }
+
+
+
+        .footer-contact-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+        }
+
+
+
+        .footer-contact-title i {
+
+            color: #25D366;
+
+            font-size: 20px;
+
+        }
+
+
+
+        .footer-copyright {
+
+            width: min(calc(100% - 32px), 982px);
+
+            margin: 20px auto 0;
+
+            padding-top: 20px;
+
+            border-top: 1px solid #EEEEEE;
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+        }
+
+
+
+        /* =====================================================
+
+           RESPONSIVIDADE
+
+           ===================================================== */
+
+
+
+        @media (max-width: 900px) {
+
+            .page-anchor-menu {
+
+                min-height: 74px;
+
+            }
+
+
+
+            .page-anchor-menu-inner {
+
+                max-width: 100%;
+
+                padding: 0 12px;
+
+            }
+
+
+
+            .page-anchor-link {
+
+                flex: 0 0 auto;
+
+                padding: 0 18px;
+
+            }
+
+
+
+            .footer-details {
+
+                column-gap: 25px;
+
+            }
+
+        }
+
+
+
+        @media (max-width: 640px) {
+
+            .top-strip {
+
+                height: 45px;
+
+                font-size: 12px;
+
+            }
+
+
+
+            .site-header,
+
+            .site-header-inner {
+
+                height: 95px;
+
+            }
+
+
+
+            .site-logo {
+
+                top: 6px;
+
+                width: 120px;
+
+                height: 75px;
+
+            }
+
+
+
+            .site-logo img {
+
+                width: 115px;
+
+                margin-left: 0;
+
+            }
+
+
+
+            .header-account {
+
+                top: 22px;
+
+                right: 0;
+
+                min-width: auto;
+
+                gap: 7px;
+
+                font-size: 11px;
+
+            }
+
+
+
+            .header-account .fa-lock {
+
+                font-size: 14px;
+
+            }
+
+
+
+            .header-account .fa-circle-user {
+
+                font-size: 20px;
+
+            }
+
+
+
+            .comparison-hero {
+
+                padding-top: 8px;
+
+            }
+
+
+
+            .comparison-title {
+
+                font-size: 24px;
+
+            }
+
+
+
+            .comparison-subtitle {
+
+                font-size: 13px;
+
+            }
+
+
+
+            .comparison-selection {
+
+                padding: 30px 0 40px;
+
+            }
+
+
+
+            .selection-heading {
+
+                font-size: 18px;
+
+            }
+
+
+
+            .treatment-fields {
+
+                grid-template-columns: 1fr;
+
+                gap: 22px;
+
+            }
+
+
+
+            .comparison-field label {
+
+                font-size: 14px;
+
+            }
+
+
+
+            .comparison-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+
+            .comparison-column + .comparison-column {
+
+                border-left: 0;
+
+                border-top: 1px solid #E3E3E3;
+
+            }
+
+
+
+            .comparison-column {
+
+                padding: 20px;
+
+            }
+
+
+
+            .comparison-section-header h2 {
+
+                font-size: 17px;
+
+            }
+
+
+
+            .comparison-banner {
+
+                padding: 20px;
+
+            }
+
+
+
+            .bottom-blue-inner {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                justify-content: center;
+
+                gap: 12px;
+
+                padding: 18px 0;
+
+            }
+
+
+
+            .bottom-blue-item {
+
+                font-size: 13px;
+
+            }
+
+
+
+            .bottom-blue-item i {
+
+                font-size: 20px;
+
+            }
+
+
+
+            .footer-details {
+
+                grid-template-columns: 1fr;
+
+                gap: 8px;
+
+            }
+
+
+
+            .footer-block {
+
+                margin-bottom: 20px;
+
+            }
+
+        }
+
+
+        /* Alinhamento do cabeçalho e rodapé oficial */
+        .site-header, .site-header-inner { min-height:168px; }
+        .site-logo { top:34px; }
+        .header-account { top:40px; }
+        .site-footer { padding:46px 0 22px; }
+        .footer-details { max-width:980px; column-gap:65px; }
+        .footer-block { margin-bottom:30px; }
+        .footer-block h3 { margin-bottom:10px; }
+        .footer-contact-title { display:flex; align-items:center; gap:7px; }
+        .footer-block select { background:#0193ff; color:white; border:0; padding:10px 14px; border-radius:4px; min-width:150px; }
+        .footer-bottom { border-top:1px solid #dedede; background:#f8f8f8; padding:17px 12px; text-align:center; color:#9699a5; font-size:12px; }
+        .v3-health-fixed-bar { background:#0193ff; padding:12px 0; }
+        .v3-health-inner { width:min(calc(100% - 32px),980px); margin:auto; display:flex; justify-content:space-between; gap:20px; align-items:center; }
+        .v3-health-warning { background:#000; color:white; font-size:13px; font-weight:700; padding:3px 10px; text-decoration:underline; }
+        .v3-health-consult { background:white; color:#0193ff; border-radius:3px; padding:4px 12px; font-size:13px; font-weight:600; }
+        @media(max-width:640px) { .site-header,.site-header-inner { min-height:115px; height:115px; } .site-logo { top:18px; } .header-account { top:32px; } .v3-health-inner { flex-wrap:wrap; } }
+
+        /* ==========================================
+   CABEÇALHO DA COMPARAÇÃO
+========================================== */
+
+.comparison-summary {
+    width: 100%;
+    margin-bottom: 42px;
+}
+
+.comparison-summary-title {
+    margin: 0 0 28px;
+    color: #010009;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.comparison-summary-title span {
+    color: #0193FF;
+}
+
+/* ==========================================
+   CARDS DOS TRATAMENTOS
+========================================== */
+
+.comparison-treatment-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.comparison-treatment-card {
+    min-width: 0;
+    min-height: 185px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 22px 20px;
+    background: #FFFFFF;
+    border: 1px solid #B8DDF9;
+    border-radius: 5px;
+}
+
+.comparison-card-image {
+    width: 90px;
+    height: 120px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.comparison-card-image img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+.comparison-image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 90px;
+    color: #B8C7D4;
+    background: #F5F8FB;
+    border-radius: 5px;
+    font-size: 30px;
+}
+
+.comparison-card-details {
+    min-width: 0;
+    flex: 1;
+}
+
+.comparison-card-details h3 {
+    margin: 0 0 12px;
+    color: #010009;
+    font-size: 27px;
+    font-weight: 700;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.comparison-card-details p {
+    margin: 0 0 10px;
+    color: #8F8F93;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.comparison-card-details p:last-child {
+    margin-bottom: 0;
+}
+
+.comparison-card-details strong {
+    color: #333333;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+/* ==========================================
+   RESPONSIVIDADE
+========================================== */
+
+@media (max-width: 640px) {
+
+    .comparison-summary-title {
+        font-size: 21px;
+    }
+
+    .comparison-treatment-cards {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .comparison-treatment-card {
+        min-height: 150px;
+        gap: 14px;
+        padding: 16px;
+    }
+
+    .comparison-card-image {
+        width: 75px;
+        height: 105px;
+    }
+
+    .comparison-card-details h3 {
+        font-size: 21px;
+    }
+}
+
+
+/* ==========================================
+   COMPARAÇÃO - CABEÇALHO
+========================================== */
+
+.comparison-summary {
+    width: 100%;
+    max-width: 924px;
+    margin: 0 auto 42px;
+}
+
+.comparison-summary-title {
+    margin: 0 0 28px;
+    color: #000000;
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.45;
+}
+
+.comparison-summary-title span {
+    color: #0193FF;
+}
+
+/* ==========================================
+   CARDS - FIGMA
+========================================== */
+
+.comparison-treatment-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    width: 100%;
+}
+
+.comparison-treatment-card {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    height: 192px;
+    min-height: 192px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 0 10px;
+
+    background: #FFFFFF;
+    border: 1px solid #A9CAE2;
+    border-radius: 5px;
+}
+
+/* ==========================================
+   IMAGEM DO TRATAMENTO
+========================================== */
+
+.comparison-card-image {
+    width: 114px;
+    height: 114px;
+    min-width: 114px;
+    flex: 0 0 114px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.comparison-card-image img {
+    display: block;
+    width: 114px;
+    height: 114px;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.comparison-card-image img[hidden] {
+    display: none !important;
+}
+
+.comparison-image-placeholder {
+    width: 114px;
+    height: 114px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #F5F8FB;
+    color: #A9CAE2;
+    border-radius: 5px;
+    font-size: 30px;
+}
+
+/* ==========================================
+   INFORMAÇÕES DO TRATAMENTO
+========================================== */
+
+.comparison-card-details {
+    flex: 1;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.comparison-card-details h3 {
+    margin: 0 0 10px;
+
+    color: #000000;
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 145%;
+
+    overflow-wrap: anywhere;
+}
+
+/* Linhas: princípio ativo e fabricante */
+
+.comparison-card-details p {
+    margin: 0 0 12px;
+
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    column-gap: 4px;
+    row-gap: 2px;
+
+    font-family: "Inter", Arial, sans-serif;
+    line-height: 145%;
+}
+
+.comparison-card-details p:last-child {
+    margin-bottom: 0;
+}
+
+/* Rótulos */
+
+.comparison-card-details p span {
+    color: #757474;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 145%;
+    white-space: nowrap;
+}
+
+/* Valores */
+
+.comparison-card-details p strong {
+    color: #000000;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 145%;
+    overflow-wrap: anywhere;
+}
+
+/* ==========================================
+   RESPONSIVIDADE
+========================================== */
+
+@media (max-width: 760px) {
+
+    .comparison-treatment-cards {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .comparison-treatment-card {
+        height: auto;
+        min-height: 170px;
+        padding: 18px 12px;
+    }
+
+    .comparison-summary-title {
+        font-size: 22px;
+    }
+
+    .comparison-card-details h3 {
+        font-size: 26px;
+    }
+}
+
+@media (max-width: 420px) {
+
+    .comparison-card-image {
+        width: 85px;
+        height: 100px;
+        min-width: 85px;
+        flex-basis: 85px;
+    }
+
+    .comparison-card-image img {
+        width: 85px;
+        height: 100px;
+    }
+
+    .comparison-treatment-card {
+        gap: 10px;
+    }
+
+    .comparison-card-details h3 {
+        font-size: 23px;
+    }
+
+    .comparison-card-details p span {
+        font-size: 13px;
+    }
+
+    .comparison-card-details p strong {
+        font-size: 12px;
+    }
+}
+
+
+/* ==========================================
+   PRAZO PARA EFEITO - FIGMA
+========================================== */
+
+.prazo-efeito-section {
+    width: 100%;
+    max-width: 923px;
+    margin: 0 auto 38px;
+    scroll-margin-top: 110px;
+}
+
+/* TÍTULO EXTERNO */
+
+.prazo-efeito-heading {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    min-height: 31px;
+    margin: 0 0 28px;
+}
+
+.prazo-efeito-heading i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 31px;
+    height: 31px;
+
+    flex: 0 0 31px;
+
+    color: #0094FF;
+    font-size: 31px;
+}
+
+.prazo-efeito-heading h2 {
+    margin: 0;
+
+    color: #000000;
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 145%;
+}
+
+/* TABELA */
+
+.prazo-efeito-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.prazo-efeito-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+
+    font-family: "Inter", Arial, sans-serif;
+}
+
+/* PROPORÇÕES DO FIGMA: 393 + 265 + 265 = 923 */
+
+.prazo-col-label {
+    width: 42.5785%;
+}
+
+.prazo-col-treatment {
+    width: 28.71075%;
+}
+
+/* CABEÇALHO */
+
+.prazo-efeito-table thead th {
+    height: 37px;
+    padding: 0 10px;
+
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 145%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.prazo-header-label {
+    background: #0193FF;
+    border: none;
+    border-radius: 15px 0 0 0;
+}
+
+.prazo-header-treatment-1 {
+    background: #0049A9;
+    border: none;
+    border-radius: 0;
+}
+
+.prazo-header-treatment-2 {
+    background: #00203F;
+    border: 1px solid #00203F;
+    border-radius: 0 15px 0 0;
+}
+
+/* LINHA DE INFORMAÇÕES */
+
+.prazo-efeito-table tbody th,
+.prazo-efeito-table tbody td {
+    height: 50px;
+    padding: 10px 12px;
+
+    background: #FFFFFF;
+    border-bottom: 1px solid #A9CAE2;
+    vertical-align: middle;
+}
+
+.prazo-efeito-table tbody th:first-child {
+    border-left: 1px solid #A9CAE2;
+}
+
+.prazo-efeito-table tbody td:last-child {
+    border-right: 1px solid #A9CAE2;
+}
+
+/* DESCRIÇÃO */
+
+.prazo-row-label {
+    padding-left: 58px !important;
+
+    color: #374151;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 145%;
+    text-align: left;
+}
+
+/* VALORES DOS TRATAMENTOS */
+
+.prazo-row-value {
+    color: #000000;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 145%;
+    text-align: center;
+}
+
+.prazo-row-value p {
+    margin: 0;
+    color: inherit;
+    font: inherit;
+    line-height: inherit;
+}
+
+.prazo-row-value .comparison-not-available {
+    color: #8F8F93;
+    font-size: 13px;
+    font-style: italic;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 760px) {
+
+    .prazo-efeito-heading {
+        margin-bottom: 20px;
+    }
+
+    .prazo-efeito-heading h2 {
+        font-size: 18px;
+    }
+
+    .prazo-efeito-table {
+        min-width: 650px;
+    }
+
+    .prazo-row-label {
+        padding-left: 20px !important;
+        font-size: 13px;
+    }
+
+    .prazo-efeito-table thead th {
+        font-size: 15px;
+    }
+
+    .prazo-row-value {
+        font-size: 13px;
+    }
+}
+
+
+/* ==========================================
+   EFICÁCIA - FIGMA TELIX
+========================================== */
+
+.eficacia-section {
+    width: 100%;
+    max-width: 923px;
+    margin: 46px auto 38px;
+    font-family: 'Inter', Arial, sans-serif;
+    scroll-margin-top: 110px;
+}
+
+.eficacia-heading {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 31px;
+    margin: 0 0 18px 12px;
+}
+
+.eficacia-heading-icon {
+    display: flex;
+    width: 31px;
+    height: 31px;
+    flex-shrink: 0;
+}
+
+.eficacia-heading h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 145%;
+    color: #000;
+}
+
+/* TABELA */
+
+.eficacia-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.eficacia-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+/* 393 + 265 + 265 = 923px */
+
+.eficacia-col-label {
+    width: 42.5785%;
+}
+
+.eficacia-col-treatment {
+    width: 28.71075%;
+}
+
+/* CABEÇALHO */
+
+.eficacia-table thead th {
+    height: 37px;
+    padding: 0 10px;
+    color: #FFF;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 145%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.eficacia-header-label {
+    background: #0193FF;
+    border-radius: 15px 0 0 0;
+}
+
+.eficacia-header-treatment-1 {
+    background: #0049A9;
+    border-radius: 0;
+}
+
+.eficacia-header-treatment-2 {
+    background: #00203F;
+    border-radius: 0 15px 0 0;
+}
+
+/* CORPO */
+
+.eficacia-table tbody th,
+.eficacia-table tbody td {
+    height: 50px;
+    padding: 10px 12px;
+    vertical-align: middle;
+    background: #FFF;
+}
+
+.eficacia-table tbody tr:nth-child(even) th,
+.eficacia-table tbody tr:nth-child(even) td {
+    background: #E8F5FF;
+}
+
+.eficacia-table tbody tr:last-child th,
+.eficacia-table tbody tr:last-child td {
+    border-bottom: 1px solid #A9CAE2;
+}
+
+.eficacia-table tbody th:first-child {
+    border-left: 1px solid #A9CAE2;
+}
+
+.eficacia-table tbody td:last-child {
+    border-right: 1px solid #A9CAE2;
+}
+
+/* DESCRIÇÕES */
+
+.eficacia-table tbody th {
+    position: relative;
+    padding-left: 55px;
+    text-align: left;
+    color: #374151;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 145%;
+}
+
+.eficacia-row-icon {
+    position: absolute;
+    left: 21px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #0193FF;
+    font-size: 23px;
+    line-height: 1;
+}
+
+/* VALORES */
+
+.eficacia-table tbody td {
+    text-align: center;
+    color: #000;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 145%;
+}
+
+.eficacia-percentual-min {
+    color: #8F8F93;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.eficacia-percentual-max {
+    color: #000;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.eficacia-sem-dados {
+    color: #000;
+    font-size: 15px;
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 760px) {
+    .eficacia-table {
+        min-width: 650px;
+    }
+
+    .eficacia-heading h2 {
+        font-size: 18px;
+    }
+
+    .eficacia-table tbody th {
+        font-size: 13px;
+        padding-left: 45px;
+    }
+
+    .eficacia-row-icon {
+        left: 12px;
+    }
+
+    .eficacia-table thead th {
+        font-size: 15px;
+    }
+}
+
+
+    
+/* Ícones oficiais da página de listas */
+.eficacia-row-icon { width: 27px; height: 27px; display: inline-flex; align-items: center; justify-content: center; font-size: 0; }
+.eficacia-row-icon img { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+
+/* ==========================================
+   PADRONIZAÇÃO DOS TÍTULOS
+   PRAZO PARA EFEITO / EFICÁCIA
+========================================== */
+
+.prazo-efeito-section,
+.eficacia-section {
+    width: 100%;
+    max-width: 923px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Alinhamento dos cabeçalhos */
+.prazo-efeito-heading,
+.eficacia-heading {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    gap: 9px;
+
+    width: 100%;
+    min-height: 31px;
+
+    margin: 0 0 28px 0;
+    padding: 0;
+}
+
+/* Padronização dos ícones */
+.prazo-efeito-heading > i,
+.eficacia-heading-icon {
+    width: 31px;
+    height: 31px;
+    min-width: 31px;
+    flex: 0 0 31px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+    padding: 0;
+
+    color: #0193FF;
+}
+
+/* Ícone do relógio */
+.prazo-efeito-heading > i {
+    font-size: 29px;
+    line-height: 1;
+}
+
+/* Ícone da eficácia */
+.eficacia-heading-icon svg {
+    display: block;
+    width: 31px;
+    height: 31px;
+}
+
+/* Mesma tipografia para os dois títulos */
+.prazo-efeito-heading h2,
+.eficacia-heading h2 {
+    margin: 0;
+    padding: 0;
+
+    color: #000000;
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 145%;
+}
+
+/* Responsividade */
+@media (max-width: 760px) {
+    .prazo-efeito-heading,
+    .eficacia-heading {
+        margin-bottom: 20px;
+    }
+
+    .prazo-efeito-heading h2,
+    .eficacia-heading h2 {
+        font-size: 18px;
+    }
+}
+
+/* =========================================
+   EVIDÊNCIAS
+========================================= */
+
+.evidencias-section {
+    width: 100%;
+    max-width: 923px;
+    margin: 0 auto 45px;
+}
+
+.evidencias-heading {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 31px;
+    margin: 0 0 28px;
+    padding: 0;
+}
+
+.evidencias-heading i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 31px;
+    height: 31px;
+    flex: 0 0 31px;
+    color: #0193FF;
+    font-size: 27px;
+}
+
+.evidencias-heading h2 {
+    margin: 0;
+    color: #000;
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 145%;
+}
+
+.evidencias-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #A9CAE2;
+    border-radius: 12px 12px 0 0;
+}
+
+.evidencias-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 14px;
+}
+
+.evidencias-table thead th {
+    height: 37px;
+    padding: 6px 10px;
+    color: #FFF;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    background: #00203F;
+}
+
+.evidencias-table thead th:first-child {
+    background: #0193FF;
+}
+
+.evidencias-table thead th:nth-child(2) {
+    background: #0049A9;
+    border-radius: 12px 0 0 0;
+}
+
+.evidencias-table thead th:last-child {
+    border-radius: 0 11px 0 0;
+}
+
+.evidencias-table tbody tr {
+    height: 50px;
+    background: #FFF;
+}
+
+.evidencias-table tbody tr:nth-child(even) {
+    background: #E8F5FF;
+}
+
+.evidencias-table tbody th,
+.evidencias-table tbody td {
+    padding: 9px 12px;
+    color: #374151;
+    vertical-align: middle;
+}
+
+.evidencias-table tbody th {
+    text-align: left;
+    padding-left: 55px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.evidencias-table tbody td {
+    text-align: center;
+    font-weight: 500;
+}
+
+.evidencias-quantidade {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 65px;
+    min-height: 22px;
+    padding: 2px 12px;
+    border-radius: 20px;
+    background: #0193FF;
+    color: #FFF;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.evidencias-quantidade.sem-dados {
+    background: transparent;
+    color: #374151;
+}
+
+.evidencias-rigor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    flex-wrap: nowrap;
+}
+
+.evidencias-rigor-item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+    border: 1px solid #0193FF;
+    border-radius: 4px;
+    background: #FFF;
+    color: #0193FF;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.evidencias-rigor-item.ativo {
+    background: #0193FF;
+    color: #FFF;
+}
+
+@media (max-width: 760px) {
+    .evidencias-heading {
+        margin-bottom: 20px;
+    }
+
+    .evidencias-heading h2 {
+        font-size: 18px;
+    }
+
+    .evidencias-table {
+        min-width: 650px;
+    }
+
+    .evidencias-table tbody th {
+        padding-left: 15px;
+        font-size: 12px;
+    }
+
+    .evidencias-rigor {
+        gap: 3px;
+    }
+
+    .evidencias-rigor-item {
+        width: 21px;
+        height: 21px;
+        flex-basis: 21px;
+        font-size: 11px;
+    }
+}
+
+/* ==========================================
+   EVIDÊNCIAS — CORREÇÃO DO CABEÇALHO
+   ========================================== */
+
+.evidencias-table-wrapper {
+    border-radius: 15px 15px 0 0;
+    overflow: hidden;
+    border: 1px solid #A9CAE2;
+}
+
+.evidencias-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.evidencias-table thead th {
+    border: none;
+    border-radius: 0;
+}
+
+/* Azul-claro — primeira coluna */
+.evidencias-table thead th:first-child {
+    background: #0193FF;
+    border-radius: 14px 0 0 0;
+}
+
+/* Azul médio — tratamento 1 */
+.evidencias-table thead th:nth-child(2) {
+    background: #0049A9;
+    border-radius: 0;
+}
+
+/* Azul-escuro — tratamento 2 */
+.evidencias-table thead th:last-child {
+    background: #00203F;
+    border-radius: 0 14px 0 0;
+}
+
+/* ==========================================
+   SEGURANÇA DE USO — FIGMA TELIX
+========================================== */
+
+.seguranca-section {
+    width: 100%;
+    max-width: 923px;
+    margin: 0 auto 38px;
+    scroll-margin-top: 110px;
+}
+
+.seguranca-heading {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    min-height: 31px;
+    margin: 0 0 28px;
+    padding: 0;
+}
+
+.seguranca-heading-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 31px;
+    height: 31px;
+    flex: 0 0 31px;
+    color: #0193FF;
+}
+
+.seguranca-heading-icon svg {
+    display: block;
+    width: 31px;
+    height: 31px;
+}
+
+.seguranca-heading h2 {
+    margin: 0;
+    color: #000;
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 145%;
+}
+
+/* TABELA */
+
+.seguranca-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #A9CAE2;
+    border-radius: 15px 15px 5px 5px;
+}
+
+.seguranca-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: "Inter", Arial, sans-serif;
+}
+
+/* CABEÇALHO */
+
+.seguranca-table thead th {
+    height: 37px;
+    padding: 0 10px;
+    border: none;
+    border-radius: 0;
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 145%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.seguranca-table thead th:first-child {
+    background: #0193FF;
+}
+
+.seguranca-table thead th:nth-child(2) {
+    background: #0049A9;
+}
+
+.seguranca-table thead th:last-child {
+    background: #00203F;
+}
+
+/* LINHAS */
+
+.seguranca-table tbody tr {
+    height: 50px;
+}
+
+.seguranca-table tbody th,
+.seguranca-table tbody td {
+    height: 50px;
+    padding: 10px 12px;
+    border: none;
+    background: #FFFFFF;
+    vertical-align: middle;
+}
+
+.seguranca-table tbody tr:nth-child(even) th,
+.seguranca-table tbody tr:nth-child(even) td {
+    background: #E8F5FF;
+}
+
+/* DESCRIÇÃO */
+
+.seguranca-table tbody th {
+    padding-left: 55px;
+    color: #374151;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 145%;
+    text-align: left;
+}
+
+/* VALORES */
+
+.seguranca-table tbody td {
+    text-align: center;
+    color: #374151;
+    font-size: 15px;
+}
+
+/* INDICADORES SIM / NÃO */
+
+.seguranca-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 65px;
+    height: 21px;
+    padding: 0 6px;
+    border-radius: 15px;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.seguranca-badge.sim {
+    background: #0193FF;
+}
+
+.seguranca-badge.nao {
+    background: #E32929;
+}
+
+.seguranca-sem-dados {
+    color: #8F8F93;
+    font-size: 15px;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 760px) {
+    .seguranca-heading {
+        margin-bottom: 20px;
+    }
+
+    .seguranca-heading h2 {
+        font-size: 18px;
+    }
+
+    .seguranca-table {
+        min-width: 650px;
+    }
+
+    .seguranca-table thead th {
+        font-size: 15px;
+    }
+
+    .seguranca-table tbody th {
+        padding-left: 15px;
+        font-size: 13px;
+    }
+}
+
+/* ==========================================
+   BANNER FAMÍLIA TELIX
+========================================== */
+
+.banner-familia {
+    width: 100%;
+    max-width: 950px;
+    margin: 48px auto 55px;
+}
+
+.banner-familia a {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.banner-familia picture {
+    display: block;
+    width: 100%;
+}
+
+.banner-familia img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border: 0;
+}
+
+/* MOBILE */
+
+@media (max-width: 760px) {
+    .banner-familia {
+        max-width: 100%;
+        margin: 30px auto 40px;
+    }
+}
+
+
+/* ==========================================
+   CONTRAINDICAÇÕES - FIGMA
+========================================== */
+
+.contraindicacoes-section {
+    width: 100%;
+    max-width: 923px;
+    margin: 45px auto 55px;
+    scroll-margin-top: 115px;
+}
+
+/* Título */
+
+.contraindicacoes-heading {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 19px;
+}
+
+.contraindicacoes-heading-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 31px;
+    height: 31px;
+    flex-shrink: 0;
+
+    color: #0193FF;
+    font-size: 28px;
+}
+
+.contraindicacoes-heading-text h2 {
+    margin: 0 0 4px;
+
+    color: #010009;
+    font-family: "Inter", sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 27px;
+}
+
+.contraindicacoes-heading-text p {
+    margin: 0;
+
+    color: #8F8F93;
+    font-family: "Inter", sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 22px;
+}
+
+/* Tabela */
+
+.contraindicacoes-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #A9CAE2;
+    border-radius: 17px 17px 5px 5px;
+}
+
+.contraindicacoes-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-family: "Inter", sans-serif;
+}
+
+/* Cabeçalho */
+
+.contraindicacoes-table thead tr {
+    height: 37px;
+}
+
+.contraindicacoes-table thead th {
+    height: 37px;
+    padding: 5px 12px;
+
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 27px;
+}
+
+.contraindicacoes-table thead th:first-child {
+    background: #0193FF;
+}
+
+.contraindicacoes-table thead th:nth-child(2) {
+    background: #0049A9;
+}
+
+.contraindicacoes-table thead th:nth-child(3) {
+    background: #00203F;
+}
+
+/* Linhas */
+
+.contraindicacoes-table tbody tr {
+    min-height: 50px;
+    background: #FFFFFF;
+}
+
+.contraindicacoes-table tbody tr:nth-child(even) {
+    background: #E8F5FF;
+}
+
+.contraindicacoes-table tbody td {
+    height: 50px;
+    padding: 12px 15px;
+    vertical-align: middle;
+}
+
+.contraindicacoes-table tbody td:first-child {
+    padding-left: 55px;
+
+    color: #374151;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 145%;
+    text-align: left;
+    overflow-wrap: anywhere;
+}
+
+.contraindicacoes-table tbody td:nth-child(2),
+.contraindicacoes-table tbody td:nth-child(3) {
+    text-align: center;
+}
+
+/* Indicadores */
+
+.contraindicacoes-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 107px;
+    min-height: 21px;
+    padding: 2px 9px;
+
+    border-radius: 15px;
+
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 17px;
+    white-space: nowrap;
+}
+
+.contraindicacoes-badge.nao {
+    background: #E32929;
+}
+
+.contraindicacoes-badge.sim {
+    background-color: #0193FF;
+ 
+}
+
+/* Dados não disponíveis */
+
+.contraindicacoes-sem-dados {
+    color: #8F8F93;
+    font-size: 13px;
+}
+
+.contraindicacoes-vazio {
+    padding: 24px !important;
+    color: #8F8F93;
+    font-size: 13px;
+    text-align: center !important;
+}
+
+/* Responsividade */
+
+@media (max-width: 760px) {
+
+    .contraindicacoes-section {
+        margin: 35px auto 45px;
+    }
+
+    .contraindicacoes-heading-text h2 {
+        font-size: 18px;
+    }
+
+    .contraindicacoes-heading-text p {
+        font-size: 12px;
+        line-height: 19px;
+    }
+
+    .contraindicacoes-table {
+        min-width: 650px;
+    }
+
+    .contraindicacoes-table thead th {
+        font-size: 15px;
+    }
+
+    .contraindicacoes-table tbody td:first-child {
+        padding-left: 18px;
+        font-size: 12px;
+    }
+
+    .contraindicacoes-badge {
+        min-width: 100px;
+        font-size: 11px;
+    }
+}
+
+
+/* ==========================================
+   CONTRAINDICAÇÕES - ROLAGEM INTERNA
+========================================== */
+
+.contraindicacoes-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+}
+
+.contraindicacoes-table-wrapper.contraindicacoes-com-scroll {
+    max-height: 790px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: #A9CAE2 #F2F8FD;
+}
+
+/* Mantém os nomes dos tratamentos visíveis */
+
+.contraindicacoes-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+}
+
+/* Barra de rolagem */
+
+.contraindicacoes-table-wrapper::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.contraindicacoes-table-wrapper::-webkit-scrollbar-track {
+    background: #F2F8FD;
+}
+
+.contraindicacoes-table-wrapper::-webkit-scrollbar-thumb {
+    background: #A9CAE2;
+    border-radius: 10px;
+}
+
+.contraindicacoes-table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #0193FF;
+}
+
+/* =========================================
+   CONTRAINDICAÇÕES — SELOS DO FIGMA
+========================================= */
+
+.contraindicacoes-badge {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+
+    width: 107px;
+    min-width: 107px;
+    height: 21px;
+    padding: 0 8px;
+
+    border-radius: 15px;
+    border: none;
+
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+
+    color: #FFFFFF !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+/* NÃO DEVE USAR */
+.contraindicacoes-badge.nao {
+    background: #E32929 !important;
+    color: #FFFFFF !important;
+}
+
+/* PODE USAR */
+.contraindicacoes-badge.sim {
+    background: #0193FF !important;
+    color: #FFFFFF !important;
+}
+/* ==========================================
+   BANNER WHATSAPP — FIGMA 954 x 300
+========================================== */
+
+.comparacao-banner-whatsapp {
+    display: block;
+    width: 954px;
+    max-width: 100%;
+    margin: 42px auto 55px;
+    padding: 0;
+}
+
+.comparacao-banner-whatsapp > a,
+.comparacao-banner-whatsapp picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.comparacao-banner-whatsapp img {
+    display: block;
+    width: 100%;
+    height: 300px;
+    max-width: none;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* MOBILE */
+
+@media (max-width: 760px) {
+    .comparacao-banner-whatsapp {
+        width: 100%;
+        margin: 30px auto 40px;
+    }
+
+    .comparacao-banner-whatsapp img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+}
+
+/* ==========================================
+   REAÇÕES ADVERSAS — FIGMA
+========================================== */
+
+.reacoes-section {
+    width: 100%;
+    max-width: 923px;
+    margin: 38px auto 45px;
+    scroll-margin-top: 110px;
+    font-family: "Inter", Arial, sans-serif;
+}
+
+.reacoes-heading {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 31px;
+    margin: 0 0 18px;
+}
+
+.reacoes-heading i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 31px;
+    height: 31px;
+    flex: 0 0 31px;
+    color: #0193FF;
+    font-size: 27px;
+}
+
+.reacoes-heading h2 {
+    margin: 0;
+    color: #000000;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 145%;
+}
+
+/* TABELA */
+
+.reacoes-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #A9CAE2;
+    border-radius: 15px 15px 0 0;
+}
+
+.reacoes-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: "Inter", Arial, sans-serif;
+}
+
+/* CABEÇALHO */
+
+.reacoes-table thead th {
+    height: 37px;
+    padding: 0 10px;
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.reacoes-table thead th:first-child {
+    background: #0193FF;
+}
+
+.reacoes-table thead th:nth-child(2) {
+    background: #0049A9;
+}
+
+.reacoes-table thead th:nth-child(3) {
+    background: #00203F;
+}
+
+/* CABEÇALHOS DOS GRUPOS */
+
+.reacoes-grupo th,
+.reacoes-grupo td {
+    height: 24px;
+    padding: 4px 12px;
+    background: #0049A9;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.reacoes-grupo th {
+    padding-left: 55px;
+    text-align: left;
+}
+
+.reacoes-grupo td {
+    text-align: center;
+    font-size: 10px;
+    font-weight: 400;
+}
+
+/* CORES DOS GRUPOS */
+
+.reacoes-grupo[data-grupo="MUITO_COMUM"] > * {
+    background: #0049A9;
+}
+
+.reacoes-grupo[data-grupo="COMUM"] > * {
+    background: #145EC1;
+}
+
+.reacoes-grupo[data-grupo="INCOMUM"] > * {
+    background: #0193FF;
+}
+
+.reacoes-grupo[data-grupo="RARA"] > *,
+.reacoes-grupo[data-grupo="MUITO_RARA"] > * {
+    background: #55A9EA;
+}
+
+.reacoes-grupo[data-grupo="NENHUMA"] > * {
+    background: #607D98;
+}
+
+/* LINHAS DOS DADOS */
+
+.reacoes-linha th,
+.reacoes-linha td {
+    min-height: 50px;
+    padding: 12px;
+    background: #FFFFFF;
+    vertical-align: middle;
+}
+
+.reacoes-linha.alternada th,
+.reacoes-linha.alternada td {
+    background: #E8F5FF;
+}
+
+.reacoes-linha th {
+    padding-left: 55px;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 145%;
+    text-align: left;
+}
+
+.reacoes-linha td {
+    color: #374151;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 145%;
+    text-align: center;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 760px) {
+
+    .reacoes-heading h2 {
+        font-size: 18px;
+    }
+
+    .reacoes-table {
+        min-width: 650px;
+    }
+
+    .reacoes-linha th,
+    .reacoes-grupo th {
+        padding-left: 18px;
+    }
+
+    .reacoes-linha th {
+        font-size: 12px;
+    }
+
+    .reacoes-linha td {
+        font-size: 12px;
+    }
+
+    .reacoes-table thead th {
+        font-size: 15px;
+    }
+}
+
+/* ==========================================
+   VALORES - FIGMA TELIX
+========================================== */
+
+.valores-section {
+    width: 100%;
+    max-width: 923px;
+    margin: 46px auto 0;
+    font-family: "Inter", Arial, sans-serif;
+    scroll-margin-top: 110px;
+}
+
+/* TÍTULO */
+
+.valores-heading {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 31px;
+    margin: 0 0 15px 10px;
+}
+
+.valores-heading i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 31px;
+    height: 31px;
+    color: #0094FF;
+    font-size: 31px;
+}
+
+.valores-heading h2 {
+    margin: 0;
+    color: #000000;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 145%;
+}
+
+/* TABELA */
+
+.valores-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.valores-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: "Inter", Arial, sans-serif;
+}
+
+.valores-col-label {
+    width: 42.5785%;
+}
+
+.valores-col-treatment {
+    width: 28.71075%;
+}
+
+/* CABEÇALHO */
+
+.valores-table thead th {
+    height: 37px;
+    padding: 0 10px;
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 145%;
+    text-align: center;
+    vertical-align: middle;
+    overflow-wrap: anywhere;
+}
+
+.valores-header-label {
+    background: #0193FF;
+    border-radius: 15px 0 0 0;
+}
+
+.valores-header-treatment-1 {
+    background: #0049A9;
+    border-radius: 15px 0 0 0;
+}
+
+.valores-header-treatment-2 {
+    background: #00203F;
+    border-radius: 0 15px 0 0;
+}
+
+/* LINHAS */
+
+.valores-table tbody th,
+.valores-table tbody td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #A9CAE2;
+    vertical-align: middle;
+}
+
+.valores-table tbody tr:first-child th,
+.valores-table tbody tr:first-child td {
+    height: 50px;
+    background: #FFFFFF;
+}
+
+.valores-table tbody tr:nth-child(2) th,
+.valores-table tbody tr:nth-child(2) td {
+    height: 67px;
+    background: #E8F5FF;
+}
+
+.valores-table tbody th:first-child {
+    border-left: 1px solid #A9CAE2;
+}
+
+.valores-table tbody td:last-child {
+    border-right: 1px solid #A9CAE2;
+}
+
+/* DESCRIÇÃO */
+
+.valores-row-label {
+    padding-left: 55px !important;
+    color: #374151;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 145%;
+    text-align: left;
+}
+
+/* VALORES DOS TRATAMENTOS */
+
+.valores-row-value {
+    color: #000000;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 145%;
+    text-align: center;
+}
+
+.valores-especificacao {
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+}
+
+/* ==========================================
+   BANNER EFICÁCIA
+========================================== */
+
+.banner-outras-eficacias {
+    width: 100%;
+    max-width: 954px;
+    margin: 50px auto 55px;
+}
+
+.banner-outras-eficacias-link {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+}
+
+.banner-outras-eficacias picture,
+.banner-outras-eficacias img {
+    display: block;
+    width: 100%;
+}
+
+.banner-outras-eficacias img {
+    height: auto;
+    object-fit: contain;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 760px) {
+    .valores-section {
+        margin-top: 35px;
+    }
+
+    .valores-heading h2 {
+        font-size: 18px;
+    }
+
+    .valores-table {
+        min-width: 650px;
+    }
+
+    .valores-table thead th {
+        font-size: 15px;
+    }
+
+    .valores-row-label {
+        padding-left: 15px !important;
+        font-size: 13px;
+    }
+
+    .valores-row-value {
+        font-size: 13px;
+    }
+
+    .banner-outras-eficacias {
+        margin: 35px auto 40px;
+    }
+}
+
+/* VALORES — fundo azul-claro contínuo */
+
+.valores-table tbody tr:nth-child(even) th,
+.valores-table tbody tr:nth-child(even) td {
+    background-color: #E8F5FF !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+
+/* Mantém as bordas externas da tabela */
+
+.valores-table tbody tr:nth-child(even) th:first-child {
+    border-left: 1px solid #A9CAE2 !important;
+}
+
+.valores-table tbody tr:nth-child(even) td:last-child {
+    border-right: 1px solid #A9CAE2 !important;
+}
+
+
+.valores-header-label {
+    background: #0193FF;
+    border-radius: 15px 0 0 0;
+}
+
+.valores-header-treatment-1 {
+    background: #0049A9;
+    border-radius: 0;
+}
+
+.valores-header-treatment-2 {
+    background: #00203F;
+    border-radius: 0 15px 0 0;
+}
+
+/* ==========================================
+   HEADER TELIX — AJUSTE DE POSICIONAMENTO
+   ========================================== */
+
+.site-header,
+.site-header-inner {
+    height: 168px;
+    min-height: 168px;
+    background: #FFFFFF;
+}
+
+.site-logo {
+    top: 55px !important;
+}
+
+.header-account {
+    top: 65px !important;
+}
+
+/* MOBILE */
+@media (max-width: 640px) {
+    .site-header,
+    .site-header-inner {
+        height: 130px;
+        min-height: 130px;
+    }
+
+    .site-logo {
+        top: 28px !important;
+    }
+
+    .header-account {
+        top: 43px !important;
+    }
+}
+
+/* ==========================================
+   AJUSTE VERTICAL GERAL — TELIX
+   ========================================== */
+
+/* Aumenta o espaço do cabeçalho */
+.site-header,
+.site-header-inner {
+    height: 200px !important;
+    min-height: 200px !important;
+}
+
+/* Desce a logo */
+.site-logo {
+    top: 65px !important;
+}
+
+/* Desce o cadastro/login */
+.header-account {
+    top: 75px !important;
+}
+
+/* Mantém o título com espaçamento adequado */
+.comparison-hero {
+    padding-top: 20px;
+}
+
+/* MOBILE */
+@media (max-width: 640px) {
+    .site-header,
+    .site-header-inner {
+        height: 150px !important;
+        min-height: 150px !important;
+    }
+
+    .site-logo {
+        top: 35px !important;
+    }
+
+    .header-account {
+        top: 48px !important;
+    }
+}
+
+/* =====================================================
+   TELIX — TABELAS RESPONSIVAS MOBILE
+   ===================================================== */
+
+@media (max-width: 760px) {
+
+    /* 1. Todas as tabelas ocupam a largura disponível */
+
+    .prazo-efeito-table-wrapper,
+    .eficacia-table-wrapper,
+    .evidencias-table-wrapper,
+    .seguranca-table-wrapper,
+    .contraindicacoes-table-wrapper,
+    .reacoes-table-wrapper,
+    .valores-table-wrapper {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+        box-sizing: border-box;
+    }
+
+    .prazo-efeito-table,
+    .eficacia-table,
+    .evidencias-table,
+    .seguranca-table,
+    .contraindicacoes-table,
+    .reacoes-table,
+    .valores-table {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100%;
+        table-layout: fixed;
+    }
+
+    /* 2. Proporção das três colunas */
+
+    .prazo-efeito-table,
+    .eficacia-table,
+    .evidencias-table,
+    .seguranca-table,
+    .contraindicacoes-table,
+    .reacoes-table,
+    .valores-table {
+        --col-descricao: 43%;
+        --col-tratamento: 28.5%;
+    }
+
+    .prazo-efeito-table col:first-child,
+    .eficacia-table col:first-child,
+    .evidencias-table col:first-child,
+    .seguranca-table col:first-child,
+    .contraindicacoes-table col:first-child,
+    .reacoes-table col:first-child,
+    .valores-table col:first-child {
+        width: 43% !important;
+    }
+
+    .prazo-efeito-table col:not(:first-child),
+    .eficacia-table col:not(:first-child),
+    .evidencias-table col:not(:first-child),
+    .seguranca-table col:not(:first-child),
+    .contraindicacoes-table col:not(:first-child),
+    .reacoes-table col:not(:first-child),
+    .valores-table col:not(:first-child) {
+        width: 28.5% !important;
+    }
+
+    /* 3. Cabeçalhos dos tratamentos */
+
+    .prazo-efeito-table thead th,
+    .eficacia-table thead th,
+    .evidencias-table thead th,
+    .seguranca-table thead th,
+    .contraindicacoes-table thead th,
+    .reacoes-table thead th,
+    .valores-table thead th {
+        height: 32px;
+        padding: 5px 3px !important;
+        font-size: 10px !important;
+        line-height: 1.3;
+        overflow-wrap: anywhere;
+        white-space: normal;
+        text-align: center;
+    }
+
+    /* 4. Linhas e textos */
+
+    .prazo-efeito-table tbody th,
+    .prazo-efeito-table tbody td,
+    .eficacia-table tbody th,
+    .eficacia-table tbody td,
+    .evidencias-table tbody th,
+    .evidencias-table tbody td,
+    .seguranca-table tbody th,
+    .seguranca-table tbody td,
+    .contraindicacoes-table tbody th,
+    .contraindicacoes-table tbody td,
+    .reacoes-table tbody th,
+    .reacoes-table tbody td,
+    .valores-table tbody th,
+    .valores-table tbody td {
+        height: auto;
+        padding: 9px 5px !important;
+        font-size: 10px !important;
+        line-height: 1.4;
+        overflow-wrap: anywhere;
+        word-break: normal;
+        vertical-align: middle;
+    }
+
+    /* 5. Primeira coluna: descrição */
+
+    .prazo-efeito-table tbody th,
+    .eficacia-table tbody th,
+    .evidencias-table tbody th,
+    .seguranca-table tbody th,
+    .reacoes-linha th,
+    .valores-row-label,
+    .contraindicacoes-table tbody td:first-child {
+        padding-left: 8px !important;
+        text-align: left;
+        font-size: 10px !important;
+    }
+
+    /* 6. Ícones de eficácia */
+
+    .eficacia-table tbody th {
+        position: relative;
+        padding-left: 30px !important;
+    }
+
+    .eficacia-row-icon {
+        left: 5px !important;
+        width: 20px;
+        height: 20px;
+        font-size: 18px;
+    }
+
+    .eficacia-row-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    /* 7. Percentuais de eficácia */
+
+    .eficacia-percentual-min,
+    .eficacia-percentual-max,
+    .eficacia-sem-dados {
+        font-size: 10px !important;
+        line-height: 1.4;
+    }
+
+    /* 8. Evidências: quantidade e rigor */
+
+    .evidencias-quantidade {
+        min-width: 0;
+        min-height: 18px;
+        padding: 2px 5px;
+        font-size: 9px;
+    }
+
+    .evidencias-rigor {
+        flex-wrap: wrap;
+        gap: 2px;
+    }
+
+    .evidencias-rigor-item {
+        width: 14px;
+        height: 14px;
+        flex: 0 0 14px;
+        font-size: 8px;
+        border-radius: 2px;
+    }
+
+    /* 9. Segurança e contraindicações */
+
+    .seguranca-badge,
+    .contraindicacoes-badge {
+        width: auto;
+        min-width: 0 !important;
+        max-width: 100%;
+        height: auto;
+        min-height: 18px;
+        padding: 4px 5px;
+        border-radius: 12px;
+        font-size: 8px !important;
+        line-height: 1.2;
+        white-space: normal;
+        text-align: center;
+        overflow-wrap: anywhere;
+    }
+
+    /* 10. Reações adversas: grupos */
+
+    .reacoes-grupo th,
+    .reacoes-grupo td {
+        height: auto;
+        padding: 5px 4px !important;
+        font-size: 9px !important;
+        line-height: 1.3;
+    }
+
+    .reacoes-grupo th {
+        padding-left: 8px !important;
+    }
+
+    /* 11. Valores */
+
+    .valores-row-value {
+        font-size: 10px !important;
+        overflow-wrap: anywhere;
+    }
+
+    /* 12. Títulos e espaçamento das seções */
+
+    .prazo-efeito-section,
+    .eficacia-section,
+    .evidencias-section,
+    .seguranca-section,
+    .contraindicacoes-section,
+    .reacoes-section,
+    .valores-section {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 30px;
+    }
+
+    /* 13. Permite quebra de texto sem cortar conteúdo */
+
+    .prazo-efeito-table th,
+    .prazo-efeito-table td,
+    .eficacia-table th,
+    .eficacia-table td,
+    .evidencias-table th,
+    .evidencias-table td,
+    .seguranca-table th,
+    .seguranca-table td,
+    .contraindicacoes-table th,
+    .contraindicacoes-table td,
+    .reacoes-table th,
+    .reacoes-table td,
+    .valores-table th,
+    .valores-table td {
+        white-space: normal;
+    }
+}
+</style>
+
+</head>
+
+
+
+<body>
+
+
+
+    <!-- =====================================================
+
+         FAIXA SUPERIOR
+
+         ===================================================== -->
+
+
+
+    <div class="top-strip">
+
+        A plataforma do paciente bem informado
+
+    </div>
+
+
+
+    <!-- =====================================================
+
+         HEADER
+
+         ===================================================== -->
+
+
+
+    <header class="site-header">
+
+        <div class="site-header-inner">
+
+
+
+            <a href="/home/"
+
+               class="site-logo"
+
+               aria-label="Página inicial Telix">
+
+
+
+                <img src="{% static 'logo.png' %}"
+
+                     alt="Telix">
+
+            </a>
+
+
+
+            <a href="{% url 'login' %}"
+
+               class="header-account">
+
+
+
+                <i class="fa-solid fa-lock"></i>
+
+                <i class="fa-solid fa-circle-user"></i>
+
+
+
+                <span>Cadastre-se/Login</span>
+
+            </a>
+
+
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+
+         TÍTULO
+
+         ===================================================== -->
+
+
+
+    <main>
+
+
+
+        <div class="page-wrap comparison-hero">
+
+
+
+            <h1 class="comparison-title">
+
+                Compare Tratamentos
+
+            </h1>
+
+
+
+            <p class="comparison-subtitle">
+
+                Escolha dois tratamentos para comparar.
+
+            </p>
+
+
+
+        </div>
+
+
+
+        <!-- =================================================
+
+             MENU DE ÂNCORAS
+
+             ================================================= -->
+
+
+
+        <nav class="page-anchor-menu"
+
+             aria-label="Seções da comparação">
+
+
+
+            <div class="page-anchor-menu-inner">
+
+
+
+                <a href="#prazo-efeito"
+
+                   class="page-anchor-link is-disabled"
+
+                   data-anchor="prazo-efeito">
+
+                    Prazo para efeito
+
+                </a>
+
+
+
+                <a href="#eficacia"
+
+                   class="page-anchor-link is-disabled"
+
+                   data-anchor="eficacia">
+
+                    Eficácia
+
+                </a>
+
+
+
+                <a href="#evidencias"
+
+                   class="page-anchor-link is-disabled"
+
+                   data-anchor="evidencias">
+
+                    Evidências
+
+                </a>
+
+
+
+                <a href="#seguranca"
+
+                   class="page-anchor-link is-disabled"
+
+                   data-anchor="seguranca">
+
+                    Segurança de uso
+
+                </a>
+
+
+
+                <a href="#contraindicacoes"
+
+                   class="page-anchor-link is-disabled"
+
+                   data-anchor="contraindicacoes">
+
+                    Contraindicações
+
+                </a>
+
+
+
+                <a href="#reacoes"
+
+                   class="page-anchor-link is-disabled"
+
+                   data-anchor="reacoes">
+
+                    Reações adversas
+
+                </a>
+
+
+
+                <a href="#valores"
+
+                   class="page-anchor-link is-disabled"
+
+                   data-anchor="valores">
+
+                    Valores
+
+                </a>
+
+
+
+            </div>
+
+        </nav>
+
+
+
+        <!-- =================================================
+
+             CAMPOS DE SELEÇÃO
+
+             ================================================= -->
+
+
+
+        <section class="comparison-selection">
+
+
+
+            <div class="page-wrap">
+
+
+
+                <h2 class="selection-heading">
+
+                    Escolha os tratamentos
+
+                </h2>
+
+
+
+                <div class="comparison-field condition-field">
+
+
+
+                    <label for="condicao-input">
+
+                        Escolha a condição de saúde
+
+                    </label>
+
+
+
+                    <input
+
+                        type="text"
+
+                        id="condicao-input"
+
+                        class="comparison-input"
+
+                        placeholder="Enxaqueca, Hipertensão, Depressão..."
+
+                        autocomplete="off"
+
+                        aria-autocomplete="list"
+
+                        aria-controls="condicao-opcoes"
+
+                        aria-expanded="false"
+
+                    >
+
+
+
+                    <i class="fa-solid fa-magnifying-glass field-icon"></i>
+
+
+
+                    <div id="condicao-opcoes"
+
+                         class="autocomplete-list"
+
+                         role="listbox"
+
+                         hidden></div>
+
+
+
+                </div>
+
+
+
+                <div class="treatment-fields">
+
+
+
+                    <div class="comparison-field">
+
+
+
+                        <label for="tratamento-1-input">
+
+                            Tratamento 1
+
+                        </label>
+
+
+
+                        <input
+
+                            type="text"
+
+                            id="tratamento-1-input"
+
+                            class="comparison-input"
+
+                            placeholder="Procurar tratamento"
+
+                            autocomplete="off"
+
+                            aria-autocomplete="list"
+
+                            aria-controls="tratamento-1-opcoes"
+
+                            aria-expanded="false"
+
+                            disabled
+
+                        >
+
+
+
+                        <i class="fa-solid fa-magnifying-glass field-icon"></i>
+
+
+
+                        <div id="tratamento-1-opcoes"
+
+                             class="autocomplete-list"
+
+                             role="listbox"
+
+                             hidden></div>
+
+
+
+                    </div>
+
+
+
+                    <div class="comparison-field">
+
+
+
+                        <label for="tratamento-2-input">
+
+                            Tratamento 2
+
+                        </label>
+
+
+
+                        <input
+
+                            type="text"
+
+                            id="tratamento-2-input"
+
+                            class="comparison-input"
+
+                            placeholder="Procurar tratamento"
+
+                            autocomplete="off"
+
+                            aria-autocomplete="list"
+
+                            aria-controls="tratamento-2-opcoes"
+
+                            aria-expanded="false"
+
+                            disabled
+
+                        >
+
+
+
+                        <i class="fa-solid fa-magnifying-glass field-icon"></i>
+
+
+
+                        <div id="tratamento-2-opcoes"
+
+                             class="autocomplete-list"
+
+                             role="listbox"
+
+                             hidden></div>
+
+
+
+                    </div>
+
+
+
+                </div>
+
+
+
+                <p class="selection-help">
+
+                    Selecione uma condição de saúde e dois tratamentos
+
+                    diferentes para visualizar a comparação.
+
+                </p>
+
+
+
+                <p id="selection-status"
+
+                   class="selection-status"
+
+                   role="status"
+
+                   aria-live="polite"></p>
+
+
+
+            </div>
+
+
+
+        </section>
+
+
+
+        <!-- =================================================
+
+             RESULTADO DA COMPARAÇÃO
+
+             Inicialmente oculto
+
+             ================================================= -->
+
+
+
+        <div id="comparacoes-resultado"
+
+             class="comparison-results"
+
+             hidden>
+
+
+
+            <div class="page-wrap">
+
+
+<div class="comparison-summary">
+
+    <h2 class="comparison-summary-title">
+        Comparação de tratamentos para:
+        <span id="comparison-condition-name"></span>
+    </h2>
+
+    <div class="comparison-treatment-cards">
+
+        <!-- TRATAMENTO 1 -->
+        <article class="comparison-treatment-card">
+
+            <div class="comparison-card-image">
+                <img
+                    id="comparison-image-1"
+                    alt=""
+                    hidden
+                >
+                <span
+                    id="comparison-image-placeholder-1"
+                    class="comparison-image-placeholder"
+                >
+                    <i class="fa-solid fa-capsules"></i>
+                </span>
+            </div>
+
+            <div class="comparison-card-details">
+
+                <h3 id="comparison-card-name-1"></h3>
+
+                <p>
+                    <span>Princípio ativo:</span>
+                    <strong id="comparison-principio-1"></strong>
+                </p>
+
+                <p>
+                    <span>Fabricante:</span>
+                    <strong id="comparison-fabricante-1"></strong>
+                </p>
+
+            </div>
+
+        </article>
+
+        <!-- TRATAMENTO 2 -->
+        <article class="comparison-treatment-card">
+
+            <div class="comparison-card-image">
+                <img
+                    id="comparison-image-2"
+                    alt=""
+                    hidden
+                >
+                <span
+                    id="comparison-image-placeholder-2"
+                    class="comparison-image-placeholder"
+                >
+                    <i class="fa-solid fa-capsules"></i>
+                </span>
+            </div>
+
+            <div class="comparison-card-details">
+
+                <h3 id="comparison-card-name-2"></h3>
+
+                <p>
+                    <span>Princípio ativo:</span>
+                    <strong id="comparison-principio-2"></strong>
+                </p>
+
+                <p>
+                    <span>Fabricante:</span>
+                    <strong id="comparison-fabricante-2"></strong>
+                </p>
+
+            </div>
+
+        </article>
+
+    </div>
+
+</div>
+
+
+
+                <!-- =========================================
+
+                     PRAZO PARA EFEITO
+
+                     ========================================= -->
+
+
+
+<!-- ==========================================
+     PRAZO PARA EFEITO - FIGMA
+========================================== -->
+
+<section
+    id="prazo-efeito"
+    class="comparison-section prazo-efeito-section"
+>
+
+    <!-- TÍTULO EXTERNO -->
+
+    <div class="prazo-efeito-heading">
+
+        <i
+            class="fa-regular fa-clock"
+            aria-hidden="true"
+        ></i>
+
+        <h2>Prazo para efeito</h2>
+
+    </div>
+
+    <!-- TABELA COMPARATIVA -->
+
+    <div class="prazo-efeito-table-wrapper">
+
+        <table class="prazo-efeito-table">
+
+            <colgroup>
+                <col class="prazo-col-label">
+                <col class="prazo-col-treatment">
+                <col class="prazo-col-treatment">
+            </colgroup>
+
+            <thead>
+                <tr>
+
+                    <th
+                        class="prazo-header-label"
+                        scope="col"
+                        aria-label="Informação comparada"
+                    ></th>
+
+                    <th
+                        class="prazo-header-treatment-1"
+                        scope="col"
+                        data-treatment-name="1"
+                    ></th>
+
+                    <th
+                        class="prazo-header-treatment-2"
+                        scope="col"
+                        data-treatment-name="2"
+                    ></th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+
+                    <th
+                        class="prazo-row-label"
+                        scope="row"
+                    >
+                        Tempo para o tratamento fazer efeito
+                    </th>
+
+                    <td
+                        class="prazo-row-value"
+                        id="prazo-efeito-1"
+                    ></td>
+
+                    <td
+                        class="prazo-row-value"
+                        id="prazo-efeito-2"
+                    ></td>
+
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- ==========================================
+     EFICÁCIA DOS TRATAMENTOS
+========================================== -->
+
+<section id="eficacia" class="eficacia-section">
+
+    <div class="eficacia-heading">
+        <span class="eficacia-heading-icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32" width="31" height="31"
+                 fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="16" cy="16" r="14.5"
+                        stroke="#0193FF" stroke-width="1.5"/>
+                <path d="M2 13H30M2 22H30"
+                      stroke="#0193FF" stroke-width="1.5"/>
+                <path d="M7 13V18M13 13V19M19 13V18M25 13V19"
+                      stroke="#0193FF" stroke-width="1.5"/>
+            </svg>
+        </span>
+
+        <h2>Eficácia</h2>
+    </div>
+
+    <div class="eficacia-table-wrapper">
+
+        <table class="eficacia-table">
+
+            <colgroup>
+                <col class="eficacia-col-label">
+                <col class="eficacia-col-treatment">
+                <col class="eficacia-col-treatment">
+            </colgroup>
+
+            <thead>
+                <tr>
+                    <th class="eficacia-header-label"></th>
+
+                    <th class="eficacia-header-treatment-1"
+                        id="eficacia-nome-1"></th>
+
+                    <th class="eficacia-header-treatment-2"
+                        id="eficacia-nome-2"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr data-eficacia="reducao_temporaria">
+                    <th scope="row">
+                        <span class="eficacia-row-icon"><img src="{% static 'img/reduca_temporaria_lista.png' %}" alt=""></span>
+                        Redução temporária de sintomas
+                    </th>
+                    <td class="eficacia-valor-1">—</td>
+                    <td class="eficacia-valor-2">—</td>
+                </tr>
+
+                <tr data-eficacia="eliminacao_temporaria">
+                    <th scope="row">
+                        <span class="eficacia-row-icon"><img src="{% static 'img/eliminacao_temporaria_dos_sintomas.png' %}" alt=""></span>
+                        Eliminação temporária dos sintomas
+                    </th>
+                    <td class="eficacia-valor-1">—</td>
+                    <td class="eficacia-valor-2">—</td>
+                </tr>
+
+                <tr data-eficacia="reducao_persistente">
+                    <th scope="row">
+                        <span class="eficacia-row-icon"><img src="{% static 'img/reducao_persistente_dos_sintomas.png' %}" alt=""></span>
+                        Redução persistente dos sintomas
+                    </th>
+                    <td class="eficacia-valor-1">—</td>
+                    <td class="eficacia-valor-2">—</td>
+                </tr>
+
+                <tr data-eficacia="eliminacao_persistente">
+                    <th scope="row">
+                        <span class="eficacia-row-icon"><img src="{% static 'img/eliminacao_persistente.png' %}" alt=""></span>
+                        Eliminação persistente dos sintomas
+                    </th>
+                    <td class="eficacia-valor-1">—</td>
+                    <td class="eficacia-valor-2">—</td>
+                </tr>
+
+                <tr data-eficacia="cura">
+                    <th scope="row">
+                        <span class="eficacia-row-icon"><img src="{% static 'img/cura.png' %}" alt=""></span>
+                        Cura
+                    </th>
+                    <td class="eficacia-valor-1">—</td>
+                    <td class="eficacia-valor-2">—</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+<section id="evidencias"
+         class="comparison-section evidencias-section">
+
+    <div class="evidencias-heading">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <h2>Evidências</h2>
+    </div>
+
+    <div class="evidencias-table-wrapper">
+        <table class="evidencias-table">
+
+            <colgroup>
+                <col style="width:42.5785%">
+                <col style="width:28.71075%">
+                <col style="width:28.71075%">
+            </colgroup>
+
+            <thead>
+                <tr>
+                    <th></th>
+                    <th id="evidencias-nome-1"></th>
+                    <th id="evidencias-nome-2"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <th scope="row">
+                        Quantidade de artigos e pesquisas analisados
+                    </th>
+                    <td>
+                        <span class="evidencias-quantidade"
+                              id="evidencias-artigos-1">—</span>
+                    </td>
+                    <td>
+                        <span class="evidencias-quantidade"
+                              id="evidencias-artigos-2">—</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th scope="row">
+                        Quantidade de participantes das pesquisas
+                    </th>
+                    <td id="evidencias-participantes-1">—</td>
+                    <td id="evidencias-participantes-2">—</td>
+                </tr>
+
+                <tr>
+                    <th scope="row">
+                        Nível máximo de rigor das pesquisas
+                    </th>
+                    <td>
+                        <div class="evidencias-rigor"
+                             id="evidencias-rigor-1"></div>
+                    </td>
+                    <td>
+                        <div class="evidencias-rigor"
+                             id="evidencias-rigor-2"></div>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</section>
+
+
+<!-- ==========================================
+     SEGURANÇA DE USO — FIGMA TELIX
+========================================== -->
+
+<section id="seguranca"
+         class="comparison-section seguranca-section">
+
+    <div class="seguranca-heading">
+        <span class="seguranca-heading-icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32" width="31" height="31"
+                 fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="10" cy="8" r="4"
+                        stroke="currentColor" stroke-width="1.7"/>
+                <circle cx="23" cy="8" r="4"
+                        stroke="currentColor" stroke-width="1.7"/>
+                <path d="M2 27V19C2 15 5 13 10 13C15 13 18 15 18 19V27H2Z"
+                      stroke="currentColor" stroke-width="1.7"/>
+                <path d="M18 15C19 14 21 13 23 13C27 13 30 16 30 20V27H18"
+                      stroke="currentColor" stroke-width="1.7"/>
+            </svg>
+        </span>
+        <h2>Segurança de uso</h2>
+    </div>
+
+    <div class="seguranca-table-wrapper">
+        <table class="seguranca-table">
+            <colgroup>
+                <col style="width:42.5785%">
+                <col style="width:28.71075%">
+                <col style="width:28.71075%">
+            </colgroup>
+
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col" id="seguranca-nome-1"></th>
+                    <th scope="col" id="seguranca-nome-2"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr data-seguranca="criancas_menores_12">
+                    <th scope="row">Crianças menores de 12 anos</th>
+                    <td class="seguranca-valor-1">—</td>
+                    <td class="seguranca-valor-2">—</td>
+                </tr>
+
+                <tr data-seguranca="adolescentes_12_17">
+                    <th scope="row">Adolescentes 12 a 17 anos</th>
+                    <td class="seguranca-valor-1">—</td>
+                    <td class="seguranca-valor-2">—</td>
+                </tr>
+
+                <tr data-seguranca="idosos_65">
+                    <th scope="row">Idosos +65 anos</th>
+                    <td class="seguranca-valor-1">—</td>
+                    <td class="seguranca-valor-2">—</td>
+                </tr>
+
+                <tr data-seguranca="adultos">
+                    <th scope="row">Adultos</th>
+                    <td class="seguranca-valor-1">—</td>
+                    <td class="seguranca-valor-2">—</td>
+                </tr>
+
+                <tr data-seguranca="lactantes">
+                    <th scope="row">Lactantes</th>
+                    <td class="seguranca-valor-1">—</td>
+                    <td class="seguranca-valor-2">—</td>
+                </tr>
+
+                <tr data-seguranca="gravidez">
+                    <th scope="row">Gravidez</th>
+                    <td class="seguranca-valor-1">—</td>
+                    <td class="seguranca-valor-2">—</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- BANNER FAMÍLIA TELIX -->
+<div class="banner-familia">
+    <a
+        href="https://www.telix.inf.br/paciente-bem-informado"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Conheça o plano premium Telix para cuidar da saúde da sua família"
+    >
+        <picture>
+            <source
+                media="(max-width: 760px)"
+                srcset="{% static 'img/banner_familia_mobile.png' %}"
+            >
+
+            <img
+                src="{% static 'img/banner_familia_desktop.png' %}"
+                alt="Cuide da saúde da sua família com as funcionalidades exclusivas do plano premium Telix"
+                loading="lazy"
+            >
+        </picture>
+    </a>
+</div>
+<!-- ==========================================
+     CONTRAINDICAÇÕES
+========================================== -->
+
+<section id="contraindicacoes"
+         class="comparison-section contraindicacoes-section">
+
+    <div class="contraindicacoes-heading">
+
+        <div class="contraindicacoes-heading-icon"
+             aria-hidden="true">
+            <i class="fa-solid fa-ban"></i>
+        </div>
+
+        <div class="contraindicacoes-heading-text">
+            <h2>Contraindicações</h2>
+
+            <p>
+                Não é indicado o uso do tratamento por quem
+                tem alguma das condições abaixo
+            </p>
+        </div>
+
+    </div>
+
+    <div class="contraindicacoes-table-wrapper">
+
+        <table class="contraindicacoes-table">
+
+            <colgroup>
+                <col style="width: 42.5785%">
+                <col style="width: 28.71075%">
+                <col style="width: 28.71075%">
+            </colgroup>
+
+            <thead>
+                <tr>
+                    <th scope="col"
+                        aria-label="Condição"></th>
+
+                    <th scope="col"
+                        id="contraindicacoes-nome-1"></th>
+
+                    <th scope="col"
+                        id="contraindicacoes-nome-2"></th>
+                </tr>
+            </thead>
+
+            <tbody id="contraindicacoes-tbody">
+                <!-- Linhas preenchidas pelo JavaScript -->
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+<!-- ==========================================
+     BANNER COMPARTILHAR - WHATSAPP
+========================================== -->
+
+<div class="comparacao-banner-whatsapp">
+
+    <a
+        href="https://api.whatsapp.com/send/?text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.%0A%0Ahttps%3A%2F%2Fwww.telix.inf.br%2F"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Compartilhar a Telix pelo WhatsApp"
+    >
+
+        <picture>
+
+            <!-- VERSÃO MOBILE -->
+            <source
+                media="(max-width: 760px)"
+                srcset="{% static 'img/banner_footer_mobile.png' %}"
+            >
+
+            <!-- VERSÃO DESKTOP -->
+            <img
+                src="{% static 'img/banner_wpp.png' %}"
+                alt="Alguém que você ama precisa desse conteúdo? Compartilhe pelo WhatsApp."
+                loading="lazy"
+            >
+
+        </picture>
+
+    </a>
+
+</div>
+
+ <!-- REAÇÕES ADVERSAS — FIGMA -->
+<section id="reacoes" class="reacoes-section">
+
+    <div class="reacoes-heading">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <h2>Reações adversas</h2>
+    </div>
+
+    <div class="reacoes-table-wrapper">
+        <table class="reacoes-table">
+
+            <colgroup>
+                <col style="width:42.5785%">
+                <col style="width:28.71075%">
+                <col style="width:28.71075%">
+            </colgroup>
+
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col" id="reacoes-nome-1"></th>
+                    <th scope="col" id="reacoes-nome-2"></th>
+                </tr>
+            </thead>
+
+            <tbody id="reacoes-tbody"></tbody>
+
+        </table>
+    </div>
+
+</section>
+
+<!-- =========================================
+     VALORES - FIGMA
+========================================= -->
+
+<section id="valores" class="valores-section">
+
+    <div class="valores-heading">
+        <i class="fa-solid fa-dollar-sign" aria-hidden="true"></i>
+        <h2>Valores</h2>
+    </div>
+
+    <div class="valores-table-wrapper">
+
+        <table class="valores-table">
+
+            <colgroup>
+                <col class="valores-col-label">
+                <col class="valores-col-treatment">
+                <col class="valores-col-treatment">
+            </colgroup>
+
+            <thead>
+                <tr>
+                    <th class="valores-header-label"></th>
+
+                    <th class="valores-header-treatment-1"
+                        id="valores-nome-1">
+                    </th>
+
+                    <th class="valores-header-treatment-2"
+                        id="valores-nome-2">
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <th scope="row" class="valores-row-label">
+                        Valor do tratamento
+                    </th>
+
+                    <td class="valores-row-value"
+                        id="valores-preco-1">—</td>
+
+                    <td class="valores-row-value"
+                        id="valores-preco-2">—</td>
+                </tr>
+
+                <tr>
+                    <th scope="row" class="valores-row-label">
+                        Especificação
+                    </th>
+
+                    <td class="valores-row-value valores-especificacao"
+                        id="valores-especificacao-1">—</td>
+
+                    <td class="valores-row-value valores-especificacao"
+                        id="valores-especificacao-2">—</td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+</section>
+
+<!-- =========================================
+     BANNER - EFICÁCIA DE OUTROS TRATAMENTOS
+========================================= -->
+
+<section class="banner-outras-eficacias"
+         aria-label="Ver eficácia de outros tratamentos">
+
+<a
+    href="https://tratamentos.telix.inf.br/home/"
+    class="banner-eficacia-link"
+    aria-label="Ver eficácia de outros tratamentos"
+>
+
+        <picture>
+            <source
+                media="(max-width: 760px)"
+                srcset="{% static 'img/banner_eficacia_mobile.png' %}">
+
+            <img
+                src="{% static 'img/ver_eficacia_outros_tratamentos_desk.png' %}"
+                alt="Ver eficácia de outros tratamentos"
+                loading="lazy">
+        </picture>
+
+    </a>
+
+</section>
+
+
+
+
+
+        </div>
+
+
+
+    </main>
+
+
+
+    <!-- RODAPÉ TELIX: MESMA ORDEM DA LISTA -->
+    <footer class="site-footer" id="rodape-telix">
+      <div class="footer-details">
+        <div class="footer-column">
+          <div class="footer-block"><h3>Páginas de tratamentos</h3>
+            <a href="/home/">Eficácia - como calculamos</a></div>
+          <div class="footer-block"><h3>Páginas de artigos científicos</h3>
+            <a href="/home/">Rigor da pesquisa - critérios</a></div>
+          <div class="footer-block"><h3 class="footer-contact-title"><i class="fa-brands fa-whatsapp"></i> Compartilhe</h3>
+            <a id="footer-share-whatsapp" href="#" target="_blank" rel="noopener noreferrer">Compartilhar página</a></div>
+        </div>
+        <div class="footer-column">
+          <div class="footer-block"><h3>Documentos</h3>
+            <a href="/politica-de-privacidade/">Política de Privacidade</a>
+            <a href="/termos-de-uso/">Termos de uso</a></div>
+          <div class="footer-block"><h3 class="footer-contact-title"><i class="fa-brands fa-whatsapp"></i> Fale com a gente!</h3>
+            <a href="tel:+5545999830136">(45) 99983-0136</a>
+            <a href="mailto:contato@telix.inf.br">contato@telix.inf.br</a></div>
+          <div class="footer-block"><h3>Contratar plano premium</h3></div>
+        </div>
+        <div class="footer-column">
+          <div class="footer-block"><h3>Apresentações</h3>
+            <a href="/perguntas-e-respostas/">Perguntas e respostas</a>
+            <a href="/blog/">Blog</a>
+            <a href="/quem-somos/">Quem somos</a>
+            <a href="/depoimentos/">Depoimentos</a></div>
+          <div class="footer-block"><h3>Opiniões de especialistas</h3></div>
+          <div class="footer-block"><h3>Selecione a doença</h3>
+            <select id="footer-condicao" aria-label="Selecione a doença"><option value="">Selecione...</option>
+              {% for condicao in condicoes %}<option value="{{ condicao.slug }}">{{ condicao.nome }}</option>{% endfor %}
+            </select></div>
+        </div>
+      </div>
+    </footer>
+    <div class="footer-bottom">
+    <p>
+        Linca Telecomunicações Ltda - CNPJ: 03.376.788-0001/23
+        <span class="footer-bottom-separator"> | </span>
+        R. Mal. Deodoro, 1606 - Centro, Foz do Iguaçu - PR, 85851-030
+    </p>
+</div>
+    <div class="v3-health-fixed-bar">
+      <div class="v3-health-inner"><span class="v3-health-warning">Não se automedique</span><span class="v3-health-consult">Consulta online 24h</span></div>
+    </div>
+
+    <!-- =====================================================
+
+         DADOS VINDOS DIRETAMENTE DA VIEW DJANGO
+
+         ===================================================== -->
+
+
+
+    {{ condicoes|json_script:"comparacoes-dados" }}
+
+
+
+    <!-- =====================================================
+
+         JAVASCRIPT
+
+         ===================================================== -->
+
+
+
+    <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+
+
+        function preencherCardTratamento(numero, tratamento) {
+
+    const nome = document.getElementById(
+        `comparison-card-name-${numero}`
+    );
+
+    const principio = document.getElementById(
+        `comparison-principio-${numero}`
+    );
+
+    const fabricante = document.getElementById(
+        `comparison-fabricante-${numero}`
+    );
+
+    const imagem = document.getElementById(
+        `comparison-image-${numero}`
+    );
+
+    const placeholder = document.getElementById(
+        `comparison-image-placeholder-${numero}`
+    );
+
+    nome.textContent = tratamento.nome || "";
+
+    principio.textContent =
+        tratamento.principio_ativo || "Não informado";
+
+    fabricante.textContent =
+        tratamento.fabricante || "Não informado";
+
+    imagem.hidden = true;
+    imagem.removeAttribute("src");
+    placeholder.hidden = false;
+
+    if (tratamento.imagem) {
+
+        imagem.onload = function () {
+            imagem.hidden = false;
+            placeholder.hidden = true;
+        };
+
+        imagem.onerror = function () {
+            imagem.hidden = true;
+            placeholder.hidden = false;
+        };
+
+        imagem.alt = `Imagem do tratamento ${tratamento.nome}`;
+        imagem.src = tratamento.imagem;
+    }
+}
+
+
+
+        "use strict";
+
+
+
+        // =====================================================
+
+        // DADOS DO DJANGO
+
+        // =====================================================
+
+/* ==========================================
+   EFICÁCIA - COMPARAÇÃO
+========================================== */
+
+function formatarPercentualEficacia(valor) {
+    if (valor === null || valor === undefined || valor === '') {
+        return null;
+    }
+
+    const numero = Number(
+        String(valor).replace(/%/g, "").replace(/\s/g, "").replace(",", ".")
+    );
+
+    if (!Number.isFinite(numero)) {
+        return null;
+    }
+
+    return numero.toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }) + '%';
+}
+
+function montarValorEficacia(dados) {
+    if (!dados || typeof dados !== 'object') {
+        return '<span class="eficacia-sem-dados">—</span>';
+    }
+
+    const minimo = formatarPercentualEficacia(dados.min);
+    const maximo = formatarPercentualEficacia(dados.max);
+
+    if (minimo === null && maximo === null) {
+        return '<span class="eficacia-sem-dados">—</span>';
+    }
+
+    if (minimo !== null && maximo !== null) {
+        return `
+            <span class="eficacia-percentual-min">
+                de ${minimo} a
+            </span>
+            <strong class="eficacia-percentual-max">
+                ${maximo}
+            </strong>
+        `;
+    }
+
+    return `
+        <strong class="eficacia-percentual-max">
+            ${maximo || minimo}
+        </strong>
+    `;
+}
+
+function atualizarEficacia(tratamento1, tratamento2) {
+    document.getElementById('eficacia-nome-1').textContent =
+        tratamento1?.nome || '';
+
+    document.getElementById('eficacia-nome-2').textContent =
+        tratamento2?.nome || '';
+
+    document.querySelectorAll(
+        '.eficacia-table tbody tr[data-eficacia]'
+    ).forEach(linha => {
+
+        const categoria = linha.dataset.eficacia;
+
+        const dados1 = tratamento1?.eficacia?.[categoria] || tratamento1?.comparacao?.eficacia?.[categoria];
+        const dados2 = tratamento2?.eficacia?.[categoria] || tratamento2?.comparacao?.eficacia?.[categoria];
+
+        linha.querySelector('.eficacia-valor-1').innerHTML =
+            montarValorEficacia(dados1);
+
+        linha.querySelector('.eficacia-valor-2').innerHTML =
+            montarValorEficacia(dados2);
+    });
+}
+
+
+
+        const dadosElemento = document.getElementById(
+
+            "comparacoes-dados"
+
+        );
+
+
+
+        let condicoes = [];
+
+
+
+        try {
+
+            condicoes = dadosElemento
+
+                ? JSON.parse(dadosElemento.textContent)
+
+                : [];
+
+
+
+            if (!Array.isArray(condicoes)) {
+
+                condicoes = [];
+
+            }
+
+        } catch (erro) {
+
+            console.error(
+
+                "Erro ao carregar dados de comparações:",
+
+                erro
+
+            );
+
+        }
+
+
+
+        // =====================================================
+
+        // ELEMENTOS
+
+        // =====================================================
+
+
+
+        const condicaoInput = document.getElementById(
+
+            "condicao-input"
+
+        );
+
+
+
+        const tratamento1Input = document.getElementById(
+
+            "tratamento-1-input"
+
+        );
+
+
+
+        const tratamento2Input = document.getElementById(
+
+            "tratamento-2-input"
+
+        );
+
+
+
+        const condicaoOpcoes = document.getElementById(
+
+            "condicao-opcoes"
+
+        );
+
+
+
+        const tratamento1Opcoes = document.getElementById(
+
+            "tratamento-1-opcoes"
+
+        );
+
+
+
+        const tratamento2Opcoes = document.getElementById(
+
+            "tratamento-2-opcoes"
+
+        );
+
+
+
+        const resultado = document.getElementById(
+
+            "comparacoes-resultado"
+
+        );
+
+
+
+        const status = document.getElementById(
+
+            "selection-status"
+
+        );
+
+
+
+        const menuLinks = document.querySelectorAll(
+
+            ".page-anchor-link"
+
+        );
+
+
+
+        // =====================================================
+
+        // ESTADO
+
+        // =====================================================
+
+
+
+        let condicaoSelecionada = null;
+
+        let tratamento1Selecionado = null;
+
+        let tratamento2Selecionado = null;
+
+
+function atualizarEvidencias(tratamento1, tratamento2) {
+
+    function preencher(numero, tratamento) {
+
+        const dados = tratamento?.evidencias || {};
+
+        document.getElementById(
+            `evidencias-nome-${numero}`
+        ).textContent = tratamento?.nome || "";
+
+        // Artigos e pesquisas
+        const artigos = document.getElementById(
+            `evidencias-artigos-${numero}`
+        );
+
+        const quantidade = dados.quantidade_artigos;
+
+        artigos.textContent =
+            quantidade !== null && quantidade !== undefined
+                ? Number(quantidade).toLocaleString("pt-BR")
+                : "—";
+
+        artigos.classList.toggle(
+            "sem-dados",
+            quantidade === null || quantidade === undefined
+        );
+
+        // Participantes
+        const participantes = document.getElementById(
+            `evidencias-participantes-${numero}`
+        );
+
+        const total = dados.quantidade_participantes;
+
+        participantes.textContent =
+            total !== null && total !== undefined
+                ? Number(total).toLocaleString("pt-BR")
+                : "—";
+
+        // Rigor
+        const containerRigor = document.getElementById(
+            `evidencias-rigor-${numero}`
+        );
+
+        containerRigor.replaceChildren();
+
+        const rigor = Number(dados.rigor_maximo);
+
+        if (
+            dados.rigor_maximo === null ||
+            dados.rigor_maximo === undefined ||
+            !Number.isInteger(rigor) ||
+            rigor < 1 ||
+            rigor > 7
+        ) {
+            containerRigor.textContent = "—";
+            return;
+        }
+
+        for (let i = 1; i <= 7; i++) {
+
+            const item = document.createElement("span");
+
+            item.className = "evidencias-rigor-item";
+
+            if (i <= rigor) {
+                item.classList.add("ativo");
+            }
+
+            item.textContent = String(i);
+
+            containerRigor.appendChild(item);
+        }
+    }
+
+    preencher(1, tratamento1);
+    preencher(2, tratamento2);
+}
+
+
+/* ==========================================
+   SEGURANÇA DE USO
+========================================== */
+
+function atualizarSeguranca(tratamento1, tratamento2) {
+
+    document.getElementById("seguranca-nome-1").textContent =
+        tratamento1?.nome || "";
+
+    document.getElementById("seguranca-nome-2").textContent =
+        tratamento2?.nome || "";
+
+    function obterDados(tratamento) {
+        return tratamento?.seguranca ||
+               tratamento?.comparacao?.seguranca ||
+               {};
+    }
+
+    function preencherCelula(celula, valor) {
+        celula.replaceChildren();
+
+        let permitido = null;
+
+        if (valor === true || valor === 1) {
+            permitido = true;
+        } else if (valor === false || valor === 0) {
+            permitido = false;
+        } else if (typeof valor === "string") {
+            const texto = valor.trim().toLowerCase();
+
+            if (["sim", "true", "1"].includes(texto)) {
+                permitido = true;
+            } else if (["não", "nao", "false", "0"].includes(texto)) {
+                permitido = false;
+            }
+        }
+
+        if (permitido === null) {
+            const vazio = document.createElement("span");
+            vazio.className = "seguranca-sem-dados";
+            vazio.textContent = "—";
+            celula.appendChild(vazio);
+            return;
+        }
+
+        const badge = document.createElement("span");
+
+        badge.className =
+            "seguranca-badge " + (permitido ? "sim" : "nao");
+
+        badge.textContent = permitido ? "Sim" : "Não";
+
+        celula.appendChild(badge);
+    }
+
+    const dados1 = obterDados(tratamento1);
+    const dados2 = obterDados(tratamento2);
+
+    document.querySelectorAll(
+        ".seguranca-table tbody tr[data-seguranca]"
+    ).forEach(linha => {
+
+        const categoria = linha.dataset.seguranca;
+
+        preencherCelula(
+            linha.querySelector(".seguranca-valor-1"),
+            dados1[categoria]
+        );
+
+        preencherCelula(
+            linha.querySelector(".seguranca-valor-2"),
+            dados2[categoria]
+        );
+    });
+}
+
+
+/* ==========================================
+   CONTRAINDICAÇÕES
+========================================== */
+function atualizarContraindicacoes(tratamento1, tratamento2) {
+
+    const nome1 = document.getElementById(
+        "contraindicacoes-nome-1"
+    );
+
+    const nome2 = document.getElementById(
+        "contraindicacoes-nome-2"
+    );
+
+    const tbody = document.getElementById(
+        "contraindicacoes-tbody"
+    );
+
+    if (!nome1 || !nome2 || !tbody) return;
+
+    nome1.textContent = tratamento1?.nome || "";
+    nome2.textContent = tratamento2?.nome || "";
+
+    tbody.replaceChildren();
+
+    const lista1 = Array.isArray(tratamento1?.contraindicacoes)
+        ? tratamento1.contraindicacoes
+        : [];
+
+    const lista2 = Array.isArray(tratamento2?.contraindicacoes)
+        ? tratamento2.contraindicacoes
+        : [];
+
+    function normalizar(nome) {
+        return String(nome)
+            .trim()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLocaleLowerCase("pt-BR");
+    }
+
+    const mapa1 = new Map();
+    const mapa2 = new Map();
+
+    lista1.forEach(nome => {
+        mapa1.set(normalizar(nome), String(nome).trim());
+    });
+
+    lista2.forEach(nome => {
+        mapa2.set(normalizar(nome), String(nome).trim());
+    });
+
+    const todas = new Map([...mapa1, ...mapa2]);
+
+    const ordenadas = [...todas.entries()].sort(
+        (a, b) => a[1].localeCompare(b[1], "pt-BR")
+    );
+
+    if (ordenadas.length === 0) {
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+
+        td.colSpan = 3;
+        td.className = "contraindicacoes-vazio";
+        td.textContent =
+            "Informações de contraindicações ainda não disponíveis.";
+
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+        return;
+    }
+
+    function criarStatus(contraindicado) {
+        const span = document.createElement("span");
+
+        if (contraindicado) {
+            span.className = "contraindicacoes-badge nao";
+            span.textContent = "Não deve usar";
+        } else {
+            span.className = "contraindicacoes-badge sim";
+            span.textContent = "Pode usar";
+        }
+
+        return span;
+    }
+
+    ordenadas.forEach(([chave, nome]) => {
+
+        const tr = document.createElement("tr");
+
+        const tdNome = document.createElement("td");
+        const td1 = document.createElement("td");
+        const td2 = document.createElement("td");
+
+        tdNome.textContent = nome;
+
+        td1.appendChild(criarStatus(mapa1.has(chave)));
+        td2.appendChild(criarStatus(mapa2.has(chave)));
+
+        tr.append(tdNome, td1, td2);
+        tbody.appendChild(tr);
+    });
+
+    // Ativa a rolagem quando existem mais de 15 linhas.
+    const wrapper = document.querySelector(
+        ".contraindicacoes-table-wrapper"
+    );
+
+    if (wrapper) {
+        wrapper.classList.toggle(
+            "contraindicacoes-com-scroll",
+            ordenadas.length > 15
+        );
+    }
+}
+        // =====================================================
+
+        // UTILITÁRIOS
+
+        // =====================================================
+
+
+
+        function normalizar(texto) {
+
+            return String(texto || "")
+
+                .normalize("NFD")
+
+                .replace(/[\u0300-\u036f]/g, "")
+
+                .toLowerCase()
+
+                .trim();
+
+        }
+
+
+
+        function mostrarStatus(mensagem) {
+
+            status.textContent = mensagem || "";
+
+        }
+
+
+
+        function fecharLista(lista, input) {
+
+            lista.hidden = true;
+
+            input.setAttribute("aria-expanded", "false");
+
+        }
+
+
+
+        function abrirLista(lista, input) {
+
+            lista.hidden = false;
+
+            input.setAttribute("aria-expanded", "true");
+
+        }
+
+
+
+        function criarOpcao(texto, callback) {
+
+            const botao = document.createElement("button");
+
+
+
+            botao.type = "button";
+
+            botao.className = "autocomplete-option";
+
+            botao.setAttribute("role", "option");
+
+            botao.textContent = texto;
+
+
+
+            botao.addEventListener("click", callback);
+
+
+
+            return botao;
+
+        }
+
+
+
+        function mostrarOpcoes(
+
+            input,
+
+            lista,
+
+            registros,
+
+            selecionar
+
+        ) {
+
+            lista.replaceChildren();
+
+
+
+            const pesquisa = normalizar(input.value);
+
+
+
+            const filtrados = registros.filter(item => {
+
+                return normalizar(item.nome).includes(pesquisa);
+
+            });
+
+
+
+            if (!filtrados.length) {
+
+                const vazio = document.createElement("div");
+
+
+
+                vazio.className = "autocomplete-empty";
+
+                vazio.textContent = "Nenhum resultado encontrado.";
+
+
+
+                lista.appendChild(vazio);
+
+            } else {
+
+                filtrados.slice(0, 100).forEach(item => {
+
+                    lista.appendChild(
+
+                        criarOpcao(
+
+                            item.nome,
+
+                            () => selecionar(item)
+
+                        )
+
+                    );
+
+                });
+
+            }
+
+
+
+            abrirLista(lista, input);
+
+        }
+
+
+
+        function esconderResultado() {
+
+            resultado.hidden = true;
+
+
+
+            menuLinks.forEach(link => {
+
+                link.classList.remove("active");
+
+                link.classList.add("is-disabled");
+
+            });
+
+        }
+
+
+
+        function limparTratamentos() {
+
+            tratamento1Selecionado = null;
+
+            tratamento2Selecionado = null;
+
+
+
+            tratamento1Input.value = "";
+
+            tratamento2Input.value = "";
+
+
+
+            fecharLista(
+
+                tratamento1Opcoes,
+
+                tratamento1Input
+
+            );
+
+
+
+            fecharLista(
+
+                tratamento2Opcoes,
+
+                tratamento2Input
+
+            );
+
+
+
+            esconderResultado();
+
+        }
+
+
+
+        function tratamentosDaCondicao() {
+
+            if (!condicaoSelecionada) {
+
+                return [];
+
+            }
+
+
+
+            return condicaoSelecionada.tratamentos || [];
+
+        }
+
+
+
+        // =====================================================
+
+        // SELEÇÃO DE CONDIÇÃO
+
+        // =====================================================
+
+
+
+        function selecionarCondicao(condicao) {
+
+            condicaoSelecionada = condicao;
+
+
+
+            condicaoInput.value = condicao.nome;
+
+
+
+            fecharLista(
+
+                condicaoOpcoes,
+
+                condicaoInput
+
+            );
+
+
+
+            limparTratamentos();
+
+
+
+            const quantidade = tratamentosDaCondicao().length;
+
+
+
+            tratamento1Input.disabled = quantidade === 0;
+
+            tratamento2Input.disabled = quantidade === 0;
+
+
+
+            mostrarStatus(
+
+                quantidade
+
+                    ? `${quantidade} tratamento(s) disponível(is) para ${condicao.nome}.`
+
+                    : "Nenhum tratamento disponível para esta condição."
+
+            );
+
+        }
+
+
+
+        condicaoInput.addEventListener("input", function () {
+
+            condicaoSelecionada = null;
+
+
+
+            limparTratamentos();
+
+
+
+            tratamento1Input.disabled = true;
+
+            tratamento2Input.disabled = true;
+
+
+
+            mostrarStatus("");
+
+
+
+            mostrarOpcoes(
+
+                condicaoInput,
+
+                condicaoOpcoes,
+
+                condicoes,
+
+                selecionarCondicao
+
+            );
+
+        });
+
+
+
+        condicaoInput.addEventListener("focus", function () {
+
+            mostrarOpcoes(
+
+                condicaoInput,
+
+                condicaoOpcoes,
+
+                condicoes,
+
+                selecionarCondicao
+
+            );
+
+        });
+
+
+
+        // =====================================================
+
+        // SELEÇÃO DE TRATAMENTOS
+
+        // =====================================================
+
+
+
+        function selecionarTratamento(numero, tratamento) {
+
+
+
+            if (numero === 1) {
+
+                if (
+
+                    tratamento2Selecionado &&
+
+                    String(tratamento.id) ===
+
+                    String(tratamento2Selecionado.id)
+
+                ) {
+
+                    mostrarStatus(
+
+                        "Escolha dois tratamentos diferentes."
+
+                    );
+
+                    return;
+
+                }
+
+
+
+                tratamento1Selecionado = tratamento;
+
+                tratamento1Input.value = tratamento.nome;
+
+
+
+                fecharLista(
+
+                    tratamento1Opcoes,
+
+                    tratamento1Input
+
+                );
+
+
+
+            } else {
+
+                if (
+
+                    tratamento1Selecionado &&
+
+                    String(tratamento.id) ===
+
+                    String(tratamento1Selecionado.id)
+
+                ) {
+
+                    mostrarStatus(
+
+                        "Escolha dois tratamentos diferentes."
+
+                    );
+
+                    return;
+
+                }
+
+
+
+                tratamento2Selecionado = tratamento;
+
+                tratamento2Input.value = tratamento.nome;
+
+
+
+                fecharLista(
+
+                    tratamento2Opcoes,
+
+                    tratamento2Input
+
+                );
+
+            }
+
+
+
+            atualizarComparacao();
+
+
+        }
+
+
+
+        function pesquisarTratamentos(numero) {
+
+            const input = numero === 1
+
+                ? tratamento1Input
+
+                : tratamento2Input;
+
+
+
+            const lista = numero === 1
+
+                ? tratamento1Opcoes
+
+                : tratamento2Opcoes;
+
+
+
+            const outro = numero === 1
+
+                ? tratamento2Selecionado
+
+                : tratamento1Selecionado;
+
+
+
+            const tratamentos = tratamentosDaCondicao().filter(
+
+                tratamento => {
+
+                    return !outro ||
+
+                        String(tratamento.id) !== String(outro.id);
+
+                }
+
+            );
+
+
+
+            mostrarOpcoes(
+
+                input,
+
+                lista,
+
+                tratamentos,
+
+                tratamento => {
+
+                    selecionarTratamento(numero, tratamento);
+
+                }
+
+            );
+
+        }
+
+
+
+        tratamento1Input.addEventListener("input", function () {
+
+            tratamento1Selecionado = null;
+
+            esconderResultado();
+
+            pesquisarTratamentos(1);
+
+        });
+
+
+
+        tratamento2Input.addEventListener("input", function () {
+
+            tratamento2Selecionado = null;
+
+            esconderResultado();
+
+            pesquisarTratamentos(2);
+
+        });
+
+
+
+        tratamento1Input.addEventListener("focus", function () {
+
+            if (!tratamento1Input.disabled) {
+
+                pesquisarTratamentos(1);
+
+            }
+
+        });
+
+
+
+        tratamento2Input.addEventListener("focus", function () {
+
+            if (!tratamento2Input.disabled) {
+
+                pesquisarTratamentos(2);
+
+            }
+
+        });
+
+
+
+        // =====================================================
+
+        // DADOS COMPARATIVOS
+
+        //
+
+        // Os campos clínicos ainda precisam ser adicionados
+
+        // à view Django a partir dos modelos existentes.
+
+        //
+
+        // Não utilizar valores fictícios.
+
+        // =====================================================
+
+
+
+        const secoes = [
+            "prazo-efeito",
+            "eficacia",
+            "seguranca",
+            "valores"
+        ];
+
+
+
+        function preencherCelula(id, valor) {
+
+            const elemento = document.getElementById(id);
+
+
+
+            if (!elemento) return;
+
+
+
+            elemento.replaceChildren();
+
+
+
+            if (
+
+                valor === null ||
+
+                valor === undefined ||
+
+                valor === ""
+
+            ) {
+
+                const mensagem = document.createElement("p");
+
+
+
+                mensagem.className =
+
+                    "comparison-not-available";
+
+
+
+                mensagem.textContent =
+
+                    "Informação ainda não disponível para comparação.";
+
+
+
+                elemento.appendChild(mensagem);
+
+                return;
+
+            }
+
+
+
+            const paragrafo = document.createElement("p");
+
+            paragrafo.textContent = String(valor);
+
+
+
+            elemento.appendChild(paragrafo);
+
+        }
+
+        /* ==========================================
+   REAÇÕES ADVERSAS
+========================================== */
+
+function formatarFrequenciaReacao(registro) {
+
+    if (!registro) {
+        return "—";
+    }
+
+    const minimo = registro.min;
+    const maximo = registro.max;
+
+    const formatar = valor =>
+        Number(valor).toLocaleString("pt-BR", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2
+        }) + "%";
+
+    if (minimo == null && maximo == null) {
+        return "—";
+    }
+
+    if (minimo != null && maximo != null) {
+        if (Number(minimo) === Number(maximo)) {
+            return formatar(minimo);
+        }
+
+        return `${formatar(minimo)} a ${formatar(maximo)}`;
+    }
+
+    return formatar(minimo ?? maximo);
+}
+
+
+function atualizarReacoesAdversas(tratamento1, tratamento2) {
+
+    const tbody = document.getElementById("reacoes-tbody");
+
+    if (!tbody) return;
+
+    tbody.replaceChildren();
+
+    document.getElementById("reacoes-nome-1").textContent =
+        tratamento1?.nome || "";
+
+    document.getElementById("reacoes-nome-2").textContent =
+        tratamento2?.nome || "";
+
+    const reacoes1 = tratamento1?.reacoes_adversas || [];
+    const reacoes2 = tratamento2?.reacoes_adversas || [];
+
+    const grupos = [
+        ["MUITO_COMUM", "Muito comuns"],
+        ["COMUM", "Comuns"],
+        ["INCOMUM", "Incomuns"],
+        ["RARA", "Raras"],
+        ["MUITO_RARA", "Muito raras"],
+        ["NENHUMA", "Sem classificação"]
+    ];
+
+    function adicionarCelula(linha, tag, texto) {
+        const celula = document.createElement(tag);
+        celula.textContent = texto;
+        linha.appendChild(celula);
+        return celula;
+    }
+
+    let totalLinhas = 0;
+
+    grupos.forEach(([codigo, titulo]) => {
+
+        const dados1 = reacoes1.filter(r => r.grau === codigo);
+        const dados2 = reacoes2.filter(r => r.grau === codigo);
+
+        if (!dados1.length && !dados2.length) return;
+
+        const reacoes = new Map();
+
+        function adicionarRegistros(registros, coluna) {
+
+            registros.forEach(registro => {
+
+                const chave = String(
+                    registro.reacao_id ??
+                    registro.nome.trim().toLowerCase()
+                );
+
+                if (!reacoes.has(chave)) {
+                    reacoes.set(chave, {
+                        nome: registro.nome,
+                        primeiro: null,
+                        segundo: null
+                    });
+                }
+
+                const item = reacoes.get(chave);
+
+                if (coluna === 1) {
+                    item.primeiro = registro;
+                } else {
+                    item.segundo = registro;
+                }
+            });
+        }
+
+        adicionarRegistros(dados1, 1);
+        adicionarRegistros(dados2, 2);
+
+        const cabecalho = document.createElement("tr");
+        cabecalho.className = "reacoes-grupo";
+        cabecalho.dataset.grupo = codigo;
+
+        adicionarCelula(cabecalho, "th", titulo);
+        adicionarCelula(cabecalho, "td", "frequência");
+        adicionarCelula(cabecalho, "td", "frequência");
+
+        tbody.appendChild(cabecalho);
+
+        const itensOrdenados = [...reacoes.values()].sort(
+            (a, b) => a.nome.localeCompare(b.nome, "pt-BR")
+        );
+
+        itensOrdenados.forEach(item => {
+
+            const linha = document.createElement("tr");
+
+            linha.className = "reacoes-linha";
+
+            if (totalLinhas % 2 === 1) {
+                linha.classList.add("alternada");
+            }
+
+            adicionarCelula(linha, "th", item.nome);
+
+            adicionarCelula(
+                linha,
+                "td",
+                formatarFrequenciaReacao(item.primeiro)
+            );
+
+            adicionarCelula(
+                linha,
+                "td",
+                formatarFrequenciaReacao(item.segundo)
+            );
+
+            tbody.appendChild(linha);
+
+            totalLinhas++;
+        });
+    });
+
+    if (totalLinhas === 0) {
+
+        const linha = document.createElement("tr");
+        linha.className = "reacoes-linha";
+
+        const celula = adicionarCelula(
+            linha,
+            "td",
+            "Informação ainda não disponível para comparação."
+        );
+
+        celula.colSpan = 3;
+
+        tbody.appendChild(linha);
+    }
+}
+
+function atualizarValores(tratamento1, tratamento2) {
+
+    [tratamento1, tratamento2].forEach((tratamento, indice) => {
+
+        const numero = indice + 1;
+        const dados = tratamento?.valores || {};
+
+        const nome = document.getElementById(
+            `valores-nome-${numero}`
+        );
+
+        const preco = document.getElementById(
+            `valores-preco-${numero}`
+        );
+
+        const especificacao = document.getElementById(
+            `valores-especificacao-${numero}`
+        );
+
+        if (nome) {
+            nome.textContent = tratamento?.nome || "—";
+        }
+
+        if (preco) {
+            preco.textContent =
+                dados.preco || dados.valor || "—";
+        }
+
+        if (especificacao) {
+            especificacao.textContent =
+                dados.especificacao || "—";
+        }
+    });
+}
+
+        function atualizarComparacao() {
+
+            if (
+
+                !condicaoSelecionada ||
+
+                !tratamento1Selecionado ||
+
+                !tratamento2Selecionado
+
+            ) {
+
+                esconderResultado();
+
+                return;
+
+            }
+
+
+
+            if (
+
+                String(tratamento1Selecionado.id) ===
+
+                String(tratamento2Selecionado.id)
+
+            ) {
+
+                esconderResultado();
+
+
+
+                mostrarStatus(
+
+                    "Escolha dois tratamentos diferentes."
+
+                );
+
+                return;
+
+            }
+
+
+
+        document.getElementById(
+            "comparison-condition-name"
+        ).textContent = condicaoSelecionada.nome;
+
+        preencherCardTratamento(
+            1,
+            tratamento1Selecionado
+        );
+
+        preencherCardTratamento(
+            2,
+            tratamento2Selecionado
+        );
+
+
+
+            document.querySelectorAll(
+
+                '[data-treatment-name="1"]'
+
+            ).forEach(elemento => {
+
+                elemento.textContent =
+
+                    tratamento1Selecionado.nome;
+
+            });
+
+
+
+            document.querySelectorAll(
+
+                '[data-treatment-name="2"]'
+
+            ).forEach(elemento => {
+
+                elemento.textContent =
+
+                    tratamento2Selecionado.nome;
+
+            });
+
+
+
+            // Os dados clínicos devem vir preparados
+
+            // pela view Django, quando integrados.
+
+            secoes.forEach(secao => {
+
+                const dados1 =
+
+                    tratamento1Selecionado.comparacao || {};
+
+
+
+                const dados2 =
+
+                    tratamento2Selecionado.comparacao || {};
+
+
+
+                preencherCelula(
+
+                    `${secao}-1`,
+
+                    dados1[secao]
+
+                );
+
+
+
+                preencherCelula(
+
+                    `${secao}-2`,
+
+                    dados2[secao]
+
+                );
+
+            });
+
+
+
+        atualizarEficacia(
+            tratamento1Selecionado,
+            tratamento2Selecionado
+        );
+
+        atualizarEvidencias(
+            tratamento1Selecionado,
+            tratamento2Selecionado
+        );
+
+        atualizarSeguranca(
+            tratamento1Selecionado,
+            tratamento2Selecionado
+        );
+
+        atualizarContraindicacoes(
+            tratamento1Selecionado,
+            tratamento2Selecionado
+        );
+
+        atualizarReacoesAdversas(
+            tratamento1Selecionado,
+            tratamento2Selecionado
+        );
+
+        atualizarValores(
+            tratamento1Selecionado,
+            tratamento2Selecionado
+        );
+
+        resultado.hidden = false;
+
+        menuLinks.forEach(link => {
+            link.classList.remove("is-disabled");
+        });
+
+
+
+
+
+            mostrarStatus(
+
+                "Tratamentos selecionados. " +
+
+                "Confira a comparação abaixo."
+
+            );
+
+        }
+
+
+
+        // =====================================================
+
+        // ÂNCORAS
+
+        // =====================================================
+
+
+
+        menuLinks.forEach(link => {
+
+            link.addEventListener("click", function (evento) {
+
+
+
+                evento.preventDefault();
+
+
+
+                if (resultado.hidden) {
+
+                    mostrarStatus(
+
+                        "Selecione dois tratamentos para comparar."
+
+                    );
+
+
+
+                    condicaoInput.scrollIntoView({
+
+                        behavior: "smooth",
+
+                        block: "center"
+
+                    });
+
+
+
+                    return;
+
+                }
+
+
+
+                const destino = document.getElementById(
+
+                    link.dataset.anchor
+
+                );
+
+
+
+                if (!destino) return;
+
+
+
+                menuLinks.forEach(item => {
+
+                    item.classList.remove("active");
+
+                });
+
+
+
+                link.classList.add("active");
+
+
+
+                destino.scrollIntoView({
+
+                    behavior: "smooth",
+
+                    block: "start"
+
+                });
+
+            });
+
+        });
+
+
+
+        // =====================================================
+
+        // FECHAR AUTOCOMPLETE AO CLICAR FORA
+
+        // =====================================================
+
+
+
+        document.addEventListener("click", function (evento) {
+
+            [
+
+                [condicaoInput, condicaoOpcoes],
+
+                [tratamento1Input, tratamento1Opcoes],
+
+                [tratamento2Input, tratamento2Opcoes]
+
+            ].forEach(([input, lista]) => {
+
+                if (
+
+                    !input.contains(evento.target) &&
+
+                    !lista.contains(evento.target)
+
+                ) {
+
+                    fecharLista(lista, input);
+
+                }
+
+            });
+
+        });
+
+
+
+        // =====================================================
+
+        // WHATSAPP
+
+        // =====================================================
+
+
+
+        const whatsapp = document.getElementById(
+
+            "footer-share-whatsapp"
+
+        );
+
+
+
+        if (whatsapp) {
+
+            const mensagem =
+
+                "Conheça a página de comparação de tratamentos da Telix: " +
+
+                window.location.href;
+
+
+
+            whatsapp.href =
+
+                "https://wa.me/?text=" +
+
+                encodeURIComponent(mensagem);
+
+        }
+
+
+
+        // =====================================================
+
+        // INICIALIZAÇÃO
+
+        // =====================================================
+
+
+
+        esconderResultado();
+
+
+
+        console.log(
+
+            "[Telix Comparações] Condições:",
+
+            condicoes.length
+
+        );
+
+
+
+        console.log(
+
+            "[Telix Comparações] Tratamentos:",
+
+            condicoes.reduce(
+
+                (total, condicao) =>
+
+                    total + (condicao.tratamentos || []).length,
+
+                0
+
+            )
+
+        );
+
+
+
+        if (!condicoes.length) {
+
+            mostrarStatus(
+
+                "Nenhuma condição de saúde disponível. " +
+
+                "Verifique os registros publicados no Django."
+
+            );
+
+        }
+
+
+
+    });
+
+    </script>
+
+
+
+</body>
+
+</html>

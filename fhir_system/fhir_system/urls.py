@@ -14,6 +14,8 @@ from core import views
 from core import public_views_listas2
 from core import public_views_listas3
 
+
+from core import views_comparacoes
 from core.domain_views import domain_home
 from core.public_views_home import home
 from core.public_views_detalhes2 import detalhes_tratamentos_v2
@@ -370,6 +372,14 @@ path(
         ),
         name="tratamentos_dinamicos_unificados",
     ),
+    # =========================================================
+    # PÁGINA DE COMPARAÇÕES TELIX
+    # =========================================================
+    path(
+        "comparacoes/",
+        views_comparacoes.comparacoes,
+        name="comparacoes",
+    ),
 
 
     # =========================================================
@@ -382,7 +392,6 @@ path(
     # /enxaqueca/#reducao-temporaria-dos-sintomas
 
 
-
 path(
     "<slug:condicao_slug>/",
     public_views_listas3.pagina_lista_v3,
@@ -392,17 +401,22 @@ path(
     # INCLUDES GENÉRICOS
     # PRECISAM PERMANECER POR ÚLTIMO
     # =========================================================
+
+
+    # =========================================================
+    # INCLUDES GENÉRICOS - MANTER POR ÚLTIMO
+    # =========================================================
     path(
         "",
         include("core.public_urls"),
     ),
+
     path(
         "",
         include("core.public_urls_en"),
     ),
+
 ]
-
-
 # =============================================================
 # HANDLERS DE ERRO
 # =============================================================
