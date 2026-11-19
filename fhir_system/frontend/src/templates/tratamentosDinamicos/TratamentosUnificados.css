@@ -112,9 +112,9 @@
   }
 }
 
-/ =========================================
+/* =========================================
    TELIX — BARRA AZUL FIXA DO RODAPÉ
-   ========================================= /
+   ========================================= */
 
 .tratamentos-unificados-page .v3-health-fixed-bar {
   position: fixed !important;
@@ -172,9 +172,9 @@
   }
 }
 
-/ =========================================
+/* =========================================
    TELIX — NAVEGAÇÃO STICKY DOS BENEFÍCIOS
-   ========================================= /
+   ========================================= */
 
 .tratamentos-unificados-page .unificados-ancoras {
   position: sticky !important;
@@ -228,9 +228,9 @@
   }
 }
 
-/ =========================================
+/* =========================================
    TELIX — BARRA CINZA DAS ÂNCORAS
-   ========================================= /
+   ========================================= */
 
 .tratamentos-unificados-page .unificados-ancoras {
   position: sticky !important;
@@ -279,9 +279,9 @@
 }
 
 
-/ ==========================================
+/* ==========================================
    TELIX — BARRA INFERIOR IGUAL À LISTA V3
-   ========================================== /
+   ========================================== */
 
 .tratamentos-unificados-page .v3-health-fixed-bar {
   position: fixed !important;

@@ -248,7 +248,7 @@ export default function TratamentosUnificados() {
       <div className="unificados-faixa-topo">A plataforma do paciente bem informado</div>
       <header className="unificados-cabecalho">
         <a className="unificados-marca" href="https://tratamentos.telix.inf.br/home/" aria-label="Telix - página inicial">
-          <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="Telix Logo" className="unificados-logo-imagem" />
+          <img src="/static/logo.png" alt="Telix Logo" className="unificados-logo-imagem" />
         </a>
         <div className="unificados-apresentacao">
           <h1>{resumo.titulo}</h1>
