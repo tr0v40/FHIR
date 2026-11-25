@@ -13,8 +13,7 @@ from django.urls import reverse
 from core import views
 from core import public_views_listas2
 from core import public_views_listas3
-
-
+from core import public_views_listas4
 from core import views_comparacoes
 from core.domain_views import domain_home
 from core.public_views_home import home
@@ -26,29 +25,21 @@ from core.views import (
     CondicaoSaudeDetailView,
     tipo_eficacia_descricao_json,
 )
-
-
 def admin_login_redirect(request):
     """
     Redireciona o login padrão do Django Admin
     para a nova tela de login Telix.
     """
-
     next_url = request.GET.get("next") or "/admin/"
-
     query_string = urlencode({
         "next": next_url
     })
-
     return redirect(
         f"/accounts/login/?{query_string}"
     )
-
-
 # =========================================================
 # REDIRECT GLOBAL - DETALHES ANTIGOS PARA V2
 # =========================================================
-
 def redirecionar_detalhes_antigos(
     request,
     condicao_slug,
@@ -61,22 +52,32 @@ def redirecionar_detalhes_antigos(
             "tratamento_slug": tratamento_slug,
         },
     )
-
     # Preserva os parâmetros da URL antiga
     query_string = request.META.get("QUERY_STRING", "")
-
     if query_string:
         nova_url = f"{nova_url}?{query_string}"
-
     return HttpResponseRedirect(nova_url)
-
-
-
 urlpatterns = [
+
+
+    # LISTA V4 - HOMOLOGAÇÃO
+    path(
+        "listas-v4/<slug:condicao_slug>/",
+        public_views_listas4.pagina_lista_v4,
+        name="pagina_lista_v4",
+    ),
+
+    # LISTA V3 - VERSÃO ANTERIOR
+    path(
+        "listas-v3/<slug:condicao_slug>/",
+        public_views_listas3.pagina_lista_v3,
+        name="pagina_lista_v3",
+    ),
+
+    # Restante das rotas...
     # =========================================================
     # HOME POR DOMÍNIO
     # =========================================================
-
         path(
         "",
         RedirectView.as_view(
@@ -85,41 +86,33 @@ urlpatterns = [
         ),
         name="redirect_home",
     ),
-
     path(
         "home",
         domain_home,
         name="domain_home_alias",
     ),
-
-    
     path(
         "home/",
         home,
         name="home",
     ),
-
 # =========================================================
 # ADMINISTRAÇÃO E AUTENTICAÇÃO
 # =========================================================
-
 # ---------------------------------------------------------
 # LOGIN DO ADMIN
 # Redireciona o login nativo para a tela Telix V2
 # ---------------------------------------------------------
-
 path(
     "admin/login/",
     admin_login_redirect,
     name="admin_login_redirect",
 ),
-
 # ---------------------------------------------------------
 # LOGOUT DO ADMIN
 # Encerra a sessão e envia para a tela Telix V2
 # IMPORTANTE: precisa ficar ANTES de admin.site.urls
 # ---------------------------------------------------------
-
 path(
     "admin/logout/",
     LogoutView.as_view(
@@ -127,20 +120,16 @@ path(
     ),
     name="admin_logout_custom",
 ),
-
 # ---------------------------------------------------------
 # DJANGO ADMIN
 # ---------------------------------------------------------
-
 path(
     "admin/",
     admin.site.urls,
 ),
-
 # ---------------------------------------------------------
 # LOGIN TELIX V2
 # ---------------------------------------------------------
-
 path(
     "accounts/login/",
     LoginView.as_view(
@@ -150,11 +139,9 @@ path(
     ),
     name="login",
 ),
-
 # ---------------------------------------------------------
 # OUTRAS ROTAS DE AUTENTICAÇÃO
 # ---------------------------------------------------------
-
 path(
     "accounts/",
     include("django.contrib.auth.urls"),
@@ -162,7 +149,6 @@ path(
 #======================================================
 # NOVA HOME TELIX
 # =========================================================
-
     path(
         "comentarios/",
         views.comentario_view,
@@ -193,11 +179,9 @@ path(
         tipo_eficacia_descricao_json,
         name="tipoeficacia-descricao",
     ),
-
 # =========================================================
 # REDIRECT - TRATAMENTOS PARA HOME PRINCIPAL
 # =========================================================
-
     path(
         "tratamentos/",
         RedirectView.as_view(
@@ -207,13 +191,11 @@ path(
         ),
         name="tratamentos",
     ),
-
     path(
         "admin/core/condicaosaude/<int:pk>/change/",
         CondicaoSaudeDetailView.as_view(),
         name="condicao_saude_detail",
     ),
-
     # =========================================================
     # API
     # =========================================================
@@ -229,7 +211,6 @@ path(
         "api-auth/",
         include("rest_framework.urls"),
     ),
-
     path(
         "medicamentos-genericos-e-similares/",
         genericos_similares,
@@ -240,14 +221,11 @@ path(
     genericos_similares_detalhes,
     name="genericos_similares_detalhes",
     ),
-
-
     path(
         "listas-v2/<slug:condicao_slug>/",
         public_views_listas2.redirect_lista_v2_raiz_antiga,
         name="pagina_lista_v2_url_antiga",
     ),
-
     # /listas-v2/enxaqueca/reducao-temporaria-dos-sintomas/
     # redireciona para:
     # /enxaqueca/#reducao-temporaria-dos-sintomas
@@ -256,7 +234,6 @@ path(
         public_views_listas2.redirect_lista_v2_antiga,
         name="pagina_lista_v2_antiga",
     ),
-
     # =========================================================
     # DETALHES DOS TRATAMENTOS V2
     # =========================================================
@@ -265,7 +242,6 @@ path(
         detalhes_tratamentos_v2,
         name="pagina_detalhe_tratamento_v2",
     ),
-
     # =========================================================
     # LISTAS ANTIGAS
     # =========================================================
@@ -274,7 +250,6 @@ path(
         pagina_lista_por_url,
         name="pagina_lista",
     ),
-
     # =========================================================
 # LISTA V3 - HOMOLOGAÇÃO / NOVO FIGMA
 # IMPORTANTE: precisa ficar antes de enxaqueca/<slug:slug>/
@@ -285,8 +260,6 @@ path(
         redirecionar_detalhes_antigos,
         name="redirect_detalhes_antigos",
     ),
-
-
     # =========================================================
     # PÁGINAS PÚBLICAS ESPECÍFICAS
     # =========================================================
@@ -300,7 +273,6 @@ path(
         views.evidencias_clinicas,
         name="evidencias_clinicas",
     ),
-
     # =========================================================
     # PÁGINAS EM INGLÊS COM FILTROS
     # =========================================================
@@ -312,7 +284,6 @@ path(
         english_treatment_list_with_filters,
         name="english_treatment_list_with_filters",
     ),
-
     # =========================================================
     # ROTAS ANTIGAS / REACT
     # =========================================================
@@ -330,7 +301,6 @@ path(
         r"^tratamentos-controle-enxaqueca-com-filtros/.*$",
         views.react_app,
     ),
-
     path(
         "tratamentos-crise-enxaqueca/",
         views.tratamentos_crise_enxaqueca,
@@ -345,7 +315,6 @@ path(
         r"^tratamentos-crise-enxaqueca/.*$",
         views.react_app,
     ),
-
     re_path(
         (
             r"^tratamentos/"
@@ -358,13 +327,10 @@ path(
         ),
         name="tratamentos_dinamicos_com_filtros",
     ),
-
-    
     # =========================================================
     # NOVA LISTA REACT UNIFICADA
     # Todos os tipos de eficácia de uma condição de saúde
     # =========================================================
-
     path(
         "tratamentos/<slug:condicao_slug>/com-filtros/",
         TemplateView.as_view(
@@ -380,29 +346,19 @@ path(
         views_comparacoes.comparacoes,
         name="comparacoes",
     ),
-
-
     # =========================================================
-    # NOVA URL OFICIAL DA LISTA V2
+    # URL OFICIAL DA LISTA DE TRATAMENTOS - V4
     # =========================================================
-    # Exemplo:
-    # /enxaqueca/
-    #
-    # Com benefício selecionado:
-    # /enxaqueca/#reducao-temporaria-dos-sintomas
 
-
-path(
-    "<slug:condicao_slug>/",
-    public_views_listas3.pagina_lista_v3,
-    name="pagina_lista_v2",
-),
+    path(
+        "<slug:condicao_slug>/",
+        public_views_listas4.pagina_lista_v4,
+        name="pagina_lista_v2",
+    ),
     # =========================================================
     # INCLUDES GENÉRICOS
     # PRECISAM PERMANECER POR ÚLTIMO
     # =========================================================
-
-
     # =========================================================
     # INCLUDES GENÉRICOS - MANTER POR ÚLTIMO
     # =========================================================
@@ -410,20 +366,16 @@ path(
         "",
         include("core.public_urls"),
     ),
-
     path(
         "",
         include("core.public_urls_en"),
     ),
-
 ]
 # =============================================================
 # HANDLERS DE ERRO
 # =============================================================
 handler404 = "core.error_views.custom_404"
 handler500 = "core.views.server_error_500"
-
-
 # =============================================================
 # ARQUIVOS ESTÁTICOS E MÍDIA
 # =============================================================
@@ -432,15 +384,12 @@ if settings.DEBUG:
         settings.STATIC_URL,
         document_root=settings.STATIC_ROOT,
     )
-
     urlpatterns += static(
         settings.MEDIA_URL,
         document_root=settings.MEDIA_ROOT,
     )
-
 else:
     from django.views.static import serve
-
     urlpatterns += [
         re_path(
             r"^static/(?P<path>.*)$",

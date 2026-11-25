@@ -43,20 +43,20 @@ DATABASES = {
         "PORT": os.getenv("POSTGRES_PORT", "5432"),
     }
 }
-
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 REACT_BUILD_DIR = BASE_DIR / "frontend" / "build"
+
+# Endereço do React conforme o ambiente
+REACT_FRONTEND_URL = os.getenv("REACT_FRONTEND_URL", "")
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
     REACT_BUILD_DIR / "static",
 ]
 
-
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
 
 
 # Arquivos de Mídia (para uploads de arquivos, como imagens)

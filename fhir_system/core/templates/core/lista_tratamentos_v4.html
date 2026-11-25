@@ -1,0 +1,4739 @@
+    {% load static %}
+
+    <!DOCTYPE html>
+
+    <html lang="pt-br">
+
+    <head>
+<!-- TELIX V4 FIGMA REVISAO 20261124-2115 -->
+
+        <meta charset="UTF-8">
+
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+
+        <title>
+            Tratamentos para {{ condicao.nome }}
+        </title>
+
+          {% include 'core/google_analytics.html' %}
+
+            <script>
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+          clarity('set', 'page_url', window.location.href);
+          window.addEventListener('popstate', function(){ clarity('set','page_url',window.location.href); });
+          window.addEventListener('hashchange', function(){ clarity('set','page_url',window.location.href); });
+      })(window, document, "clarity", "script", "ubap1t6puk");
+    </script>
+
+
+        <!-- =====================================================
+            INTER
+            ===================================================== -->
+
+        <link
+            rel="preconnect"
+            href="https://fonts.googleapis.com"
+        >
+
+        <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossorigin
+        >
+        <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+
+        <link
+            href="https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Inter:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        >
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+
+        <style>
+
+            /* =====================================================
+            RESET
+            ===================================================== */
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            html,
+            body {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+
+                background: #FFFFFF;
+                color: #010009;
+
+                font-family:
+                    "Inter",
+                    Arial,
+                    Helvetica,
+                    sans-serif;
+            }
+
+            body {
+                min-height: 100vh;
+                padding-bottom: 50px;
+            }
+
+
+            /* =====================================================
+            FAIXA AZUL
+            ===================================================== */
+
+            .v3-topbar {
+
+                width: 100%;
+                height: 50px;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                background: #0193FF;
+                color: #FFFFFF;
+
+                font-size: 15px;
+                line-height: 27px;
+                font-weight: 600;
+            }
+
+
+            /* =====================================================
+            HEADER
+            ===================================================== */
+
+            .v3-header {
+
+                width: 100%;
+                height: 142px;
+
+                background: #FFFFFF;
+            }
+
+            .v3-header-inner {
+
+                width: 980px;
+                max-width: calc(100% - 40px);
+                height: 142px;
+
+                margin: 0 auto;
+
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .v3-logo-link {
+
+                display: block;
+                text-decoration: none;
+            }
+
+            .v3-logo {
+
+                display: block;
+
+                width: 120px;
+                height: auto;
+            }
+    /* =====================================================
+    LOGIN - FIGMA
+    ===================================================== */
+
+    .v3-login {
+        position: relative;
+
+        width: 260px;
+        min-width: 260px;
+        height: 40px;
+
+        flex-shrink: 0;
+
+        color: #010009;
+        text-decoration: none;
+
+        font-family: 'Inter', Arial, Helvetica, sans-serif;
+    }
+
+
+    /* =====================================================
+    SACOLA / COMPRA
+    Figma: 28x28
+    ===================================================== */
+
+    .v3-login-lock {
+        position: absolute;
+
+        width: 28px;
+        height: 28px;
+
+        left: 36px;
+        top: 4px;
+
+        display: block;
+
+        margin: 0;
+        padding: 0;
+    }
+
+    .v3-login-lock img {
+        display: block;
+
+        width: 28px;
+        height: 28px;
+
+        margin: 0;
+        padding: 0;
+
+        object-fit: contain;
+    }
+
+
+    /* =====================================================
+    USUÁRIO
+    Figma: 26x26
+    ===================================================== */
+
+    .v3-login-user {
+        position: absolute;
+
+        width: 26px;
+        height: 26px;
+
+        left: 75px;
+        top: 7px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin: 0;
+        padding: 0;
+
+        border-radius: 100px;
+
+        background: #0193FF;
+        color: #FFFFFF;
+
+        font-size: 13px;
+        line-height: 1;
+    }
+
+    .v3-login-user i {
+        margin: 0;
+        padding: 0;
+
+        color: #FFFFFF;
+
+        font-size: 13px;
+        line-height: 1;
+    }
+
+
+    /* =====================================================
+    CADASTRE-SE / LOGIN
+    ===================================================== */
+
+    .v3-login-text {
+        position: absolute;
+
+        width: 145.36px;
+        height: 27px;
+
+        left: 115px;
+        top: 7px;
+
+        margin: 0;
+        padding: 0;
+
+        display: flex;
+        align-items: center;
+
+        font-family: 'Inter', Arial, Helvetica, sans-serif;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 15px;
+        line-height: 27px;
+
+        color: #010009;
+
+        white-space: nowrap;
+    }
+
+            /* =====================================================
+            ÁREA PRINCIPAL
+            ===================================================== */
+
+            .v3-main {
+
+                width: 100%;
+
+                background: #FFFFFF;
+            }
+
+            .v3-content {
+
+                width: 980px;
+                max-width: calc(100% - 40px);
+
+                margin: 0 auto;
+            }
+
+
+            /* =====================================================
+            MENU DOS BENEFÍCIOS
+            ===================================================== */
+
+
+
+.v3-benefits-nav {
+    width: 950px;
+    max-width: 100%;
+
+    /* espaço para "efeito rápido" + abas */
+    height: 94px;
+
+    /* centraliza na mesma largura das listas */
+    margin: 0 auto;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+
+    position: sticky;
+    top: 0;
+
+    z-index: 1000;
+    background: #FFFFFF;
+
+    overflow: visible;
+}
+
+/* =====================================================
+   ITEM DO MENU
+   ===================================================== */
+
+.v3-benefit-link {
+    flex: 0 0 25%;
+    min-width: 0;
+    height: 54px;
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    padding: 7px 8px 0;
+
+    text-decoration: none;
+    text-align: center;
+
+    font-family: "Inter", Arial, sans-serif;
+
+    cursor: pointer;
+}
+
+
+/* PRIMEIRA LINHA */
+
+.v3-benefit-title {
+    display: block;
+
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 500;
+
+    color: #757474;
+
+    white-space: nowrap;
+}
+
+
+/* SEGUNDA LINHA */
+
+.v3-benefit-subtitle {
+    display: block;
+
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 500;
+
+    color: #CCCCCC;
+
+    white-space: nowrap;
+}
+
+
+/* LINHA INFERIOR */
+
+.v3-benefit-link::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 5px;
+
+    background: #CCCCCC;
+}
+
+
+/* HOVER */
+
+.v3-benefit-link:hover .v3-benefit-title {
+    color: #0193FF;
+}
+
+.v3-benefit-link:hover::after {
+    background: #0193FF;
+}
+
+
+/* ATIVO */
+
+.v3-benefit-link.is-active .v3-benefit-title {
+    color: #010009;
+    font-weight: 600;
+}
+
+.v3-benefit-link.is-active::after {
+    background: #0193FF;
+}
+/* =====================================================
+   EFEITO RÁPIDO
+   ===================================================== */
+
+
+/* =====================================================
+   A PRÓPRIA ABA É A REFERÊNCIA DE POSICIONAMENTO
+   ===================================================== */
+
+.v3-benefit-link {
+    position: relative;
+}
+
+
+/* =====================================================
+   CASO ÚNICO
+
+   O texto fica centralizado diretamente sobre
+   a própria aba rápida.
+
+   NÃO possui seta.
+   ===================================================== */
+
+.v3-fast-effect-single {
+    position: absolute;
+
+    left: 50%;
+    top: -31px;
+
+    transform: translateX(-50%);
+
+    width: 88px;
+    height: 27px;
+
+    pointer-events: none;
+    z-index: 10;
+}
+
+
+/* =====================================================
+   TEXTO DO CASO ÚNICO
+   ===================================================== */
+
+.v3-fast-effect-single .v3-fast-effect-text {
+    position: static;
+
+    width: 88px;
+    height: 27px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transform: none;
+
+    font-family: "Homemade Apple", cursive;
+    font-style: normal;
+    font-weight: 400;
+
+    font-size: 10px;
+    line-height: 27px;
+
+    color: #E32929;
+
+    white-space: nowrap;
+}
+
+
+/* =====================================================
+   CASO DUPLO
+
+   Este elemento será colocado dentro da PRIMEIRA
+   aba rápida.
+
+   Como cada aba possui 25%, usamos:
+
+   left: 100%
+
+   Isso significa exatamente a divisa entre a
+   primeira e a segunda aba rápida.
+
+   Assim o indicador fica entre as duas.
+   ===================================================== */
+
+.v3-fast-effect-double {
+    position: absolute;
+
+    left: 100%;
+    top: -31px;
+
+    transform: translateX(-50%);
+
+    width: 88px;
+    height: 45px;
+
+    pointer-events: none;
+    z-index: 10;
+}
+
+
+/* =====================================================
+   TEXTO DO CASO DUPLO
+   ===================================================== */
+
+.v3-fast-effect-double .v3-fast-effect-text {
+    position: absolute;
+
+    width: 88px;
+    height: 27px;
+
+    left: 50%;
+    top: 0;
+
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: "Homemade Apple", cursive;
+    font-style: normal;
+    font-weight: 400;
+
+    font-size: 10px;
+    line-height: 27px;
+
+    color: #E32929;
+
+    white-space: nowrap;
+}
+
+
+/* =====================================================
+   SETAS
+
+   Existem SOMENTE no cenário duplo.
+   ===================================================== */
+
+.v3-fast-arrow {
+    position: absolute;
+
+    width: 24px;
+    height: 18px;
+
+    top: 18px;
+
+    overflow: visible;
+}
+
+
+/* aponta para Redução temporária */
+
+.v3-fast-arrow-left {
+    left: -2px;
+}
+
+
+/* aponta para Eliminação temporária */
+
+.v3-fast-arrow-right {
+    right: -2px;
+}
+
+            /* =====================================================
+            TÍTULO
+            ===================================================== */
+
+.v3-title-area {
+    width: 950px;
+    max-width: 100%;
+    margin: 38px auto 45px;
+}
+.v3-benefits-nav {
+    margin-bottom: 30px;
+}
+            .v3-title {
+
+                margin: 0;
+
+                color: #010009;
+
+                font-size: 30px;
+                line-height: 36px;
+                font-weight: 700;
+            }
+
+            .v3-subtitle {
+
+                margin: 2px 0 0;
+
+                color: #010009;
+
+                font-size: 13px;
+                line-height: 18px;
+                font-weight: 400;
+            }
+
+
+            /* =====================================================
+            SEÇÕES DE BENEFÍCIO
+            ===================================================== */
+
+            .v3-segment {
+
+                width: 950px;
+                max-width: 100%;
+
+                margin: 0 auto 35px;
+
+                scroll-margin-top: 85px;
+            }
+
+
+            /* =====================================================
+            CABEÇALHO AZUL
+            ===================================================== */
+
+            .v3-segment-header {
+
+                width: 100%;
+
+                min-height: 115px;
+
+                padding:
+                    20px
+                    24px
+                    17px;
+
+                background: #0193FF;
+
+                color: #FFFFFF;
+
+                border-radius:
+                    14px
+                    14px
+                    0
+                    0;
+            }
+
+            .v3-segment-header-top {
+
+                width: 100%;
+
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                gap: 20px;
+            }
+
+            .v3-segment-benefit {
+
+                display: flex;
+                align-items: center;
+
+                gap: 8px;
+
+                font-size: 17px;
+                line-height: 22px;
+                font-weight: 500;
+            }
+
+            .v3-segment-benefit strong {
+
+                font-weight: 700;
+            }
+
+    .v3-segment-header-icon
+            .v3-segment-count {
+
+                flex-shrink: 0;
+
+                font-size: 17px;
+                line-height: 22px;
+                font-weight: 500;
+            }
+
+            .v3-segment-count strong {
+
+                font-weight: 700;
+            }
+
+            .v3-segment-description {
+
+                max-width: 830px;
+
+                margin:
+                    15px
+                    0
+                    0;
+
+                font-size: 13px;
+                line-height: 18px;
+                font-weight: 500;
+            }
+
+
+            /* =====================================================
+            CONTAINER DOS TRATAMENTOS
+            ===================================================== */
+
+            .v3-treatment-list {
+
+                width: 100%;
+
+                border-left:
+                    1px solid #0193FF;
+
+                border-right:
+                    1px solid #0193FF;
+
+                border-bottom:
+                    1px solid #0193FF;
+
+                background: #FFFFFF;
+            }
+
+
+            /* =====================================================
+            TRATAMENTO
+            ===================================================== */
+
+            .v3-treatment {
+
+                min-height: 200px;
+
+                padding:
+                    35px
+                    28px;
+
+                display: grid;
+
+                grid-template-columns:
+                    125px
+                    minmax(0, 1fr)
+                    250px;
+
+                column-gap: 22px;
+
+                border-bottom:
+                    1px solid #E3E3E3;
+            }
+
+            .v3-treatment {
+    cursor: pointer;
+}
+
+
+
+            .v3-treatment:last-child {
+
+                border-bottom: 0;
+            }
+
+
+            /* =====================================================
+            IMAGEM
+            ===================================================== */
+
+            .v3-treatment-image-area {
+
+                display: flex;
+
+                align-items: flex-start;
+                justify-content: center;
+            }
+
+            .v3-treatment-image {
+
+                display: block;
+
+                width: 100px;
+                height: 100px;
+
+                object-fit: contain;
+
+                border-radius: 50%;
+            }
+
+
+            /* =====================================================
+            INFORMAÇÕES
+            ===================================================== */
+
+            .v3-treatment-main {
+
+                min-width: 0;
+            }
+
+            .v3-treatment-name {
+
+                margin: 0;
+
+                font-size: 19px;
+                line-height: 23px;
+                font-weight: 700;
+
+                color: #010009;
+            }
+
+            .v3-treatment-type {
+
+                margin-top: 1px;
+
+                font-size: 10px;
+                line-height: 13px;
+                font-weight: 600;
+
+                color: #0193FF;
+            }
+
+            .v3-treatment-meta {
+
+                margin-top: 8px;
+
+                font-size: 13px;
+                line-height: 18px;
+
+                color: #010009;
+            }
+
+            .v3-treatment-meta p {
+
+                margin:
+                    0
+                    0
+                    5px;
+            }
+
+            .v3-treatment-button {
+
+                display: inline-flex;
+
+                min-width: 110px;
+                height: 28px;
+
+                margin-top: 8px;
+
+                padding:
+                    0
+                    14px;
+
+                align-items: center;
+                justify-content: center;
+
+                background: #E3E3E3;
+
+                border: 0;
+                border-radius: 3px;
+
+                color: #010009;
+
+                text-decoration: none;
+
+                font-size: 10px;
+                line-height: 12px;
+                font-weight: 600;
+            }
+
+            .v3-treatment-button:hover {
+
+                background: #D5D5D5;
+            }
+
+            .v3-treatment-description {
+
+                max-width: 410px;
+
+                margin:
+                    22px
+                    0
+                    0;
+
+                font-size: 13px;
+                line-height: 20px;
+                font-weight: 400;
+
+                color: #010009;
+            }
+
+
+            /* =====================================================
+            EFICÁCIA
+            ===================================================== */
+
+            .v3-treatment-result {
+
+                display: flex;
+                flex-direction: column;
+
+                justify-content: center;
+
+                text-align: right;
+            }
+            /* =====================================================
+   PAGINAÇÃO GLOBAL - VER MAIS
+   ===================================================== */
+
+.v3-treatment-hidden {
+    display: none !important;
+}
+
+.v3-segment-hidden {
+    display: none !important;
+}
+
+            .v3-efficacy-bar {
+
+                width: 220px;
+                height: 16px;
+
+                margin-left: auto;
+
+                position: relative;
+
+                background: #E3E3E3;
+
+                border-radius: 20px;
+
+                overflow: visible;
+            }
+
+            /*
+            * A V2 fornece min_css, max_css e range_css.
+            * A faixa azul representa o intervalo min -> max.
+            */
+
+            .v3-efficacy-range {
+
+                position: absolute;
+
+                top: 0;
+
+                height: 16px;
+
+                background: #0193FF;
+
+                border-radius: 20px;
+            }
+
+            .v3-efficacy-point {
+
+                position: absolute;
+
+                top: 0;
+
+                width: 18px;
+                height: 16px;
+
+                background: #0193FF;
+
+                border-radius: 5px;
+
+                transform: translateX(-100%);
+            }
+
+            .v3-efficacy-number {
+
+                margin-top: 10px;
+
+                color: #8F8F93;
+
+                font-size: 21px;
+                line-height: 25px;
+                font-weight: 400;
+            }
+
+            .v3-efficacy-number strong {
+
+                color: #010009;
+
+                font-weight: 700;
+            }
+
+            .v3-efficacy-caption {
+
+                margin-top: 2px;
+
+                color: #8F8F93;
+
+                font-size: 10px;
+                line-height: 14px;
+
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+            }
+
+            .v3-benefit-mini-icon {
+
+                width: 15px;
+                height: 15px;
+
+                margin-left: 4px;
+
+                object-fit: contain;
+
+                vertical-align: middle;
+            }
+
+            .v3-effect-time {
+
+                margin-top: 27px;
+
+                color: #010009;
+
+                font-size: 12px;
+                line-height: 17px;
+            }
+
+            .v3-effect-time strong {
+
+                display: block;
+
+                font-size: 13px;
+                font-weight: 700;
+            }
+    /* =====================================================
+    BANNERS DENTRO DA LISTA
+    ===================================================== */
+
+    .v3-list-banner {
+        display: block;
+
+        width: 100%;
+
+        margin: 0;
+        padding: 0;
+
+        background: #FFFFFF;
+
+        border-bottom: 1px solid #E3E3E3;
+
+        text-decoration: none;
+
+        overflow: hidden;
+    }
+
+
+    .v3-list-banner-image {
+        display: block;
+
+        width: 100%;
+        height: auto;
+
+        margin: 0;
+        padding: 0;
+
+        object-fit: cover;
+    }
+
+
+    /* =====================================================
+    VER MAIS
+    ===================================================== */
+
+    .v3-load-more {
+        width: 100%;
+
+        padding: 25px 20px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #FFFFFF;
+    }
+
+
+    .v3-load-more-button {
+        min-width: 150px;
+        height: 30px;
+
+        padding: 0 24px;
+
+        border: 1px solid #0193FF;
+        border-radius: 5px;
+
+        background: #FFFFFF;
+        color: #0193FF;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+
+        cursor: pointer;
+    }
+
+
+    .v3-load-more-button:hover {
+        background: #0193FF;
+        color: #FFFFFF;
+    }
+
+    /* =====================================================
+    FILTRAR E ORDENAR
+    ===================================================== */
+
+    .v3-filter-bar {
+        width: 100%;
+        min-height: 62px;
+
+        padding: 11px 26px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 24px;
+
+        background: #0193FF;
+
+        border-radius: 0 0 5px 5px;
+    }
+
+    .v3-filter-text {
+        flex: 1;
+
+        max-width: 742px;
+
+        margin: 0;
+
+        color: #FFFFFF;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-size: 13px;
+        line-height: 20px;
+        font-weight: 500;
+    }
+
+    .v3-filter-button {
+        width: 158px;
+        min-width: 158px;
+        height: 30px;
+
+        padding: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #FFFFFF;
+
+        border: 1px solid #0193FF;
+        border-radius: 5px;
+
+        color: #0193FF;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-size: 13px;
+        line-height: 30px;
+        font-weight: 600;
+
+        text-decoration: none;
+
+        cursor: pointer;
+    }
+
+    .v3-filter-button:hover {
+        background: #F5FAFF;
+        color: #0193FF;
+    }
+.v3-benefits-nav {
+    margin-bottom: 40px;
+}
+
+    /* =====================================================
+    MOBILE - FILTRAR E ORDENAR
+    ===================================================== */
+
+    @media (max-width: 768px) {
+.v3-benefits-nav {
+    margin-bottom: 40px;
+}
+
+        .v3-filter-bar {
+            min-height: auto;
+
+            padding: 16px;
+
+            flex-direction: column;
+            align-items: flex-start;
+
+            gap: 12px;
+        }
+
+        .v3-filter-text {
+            width: 100%;
+            max-width: none;
+
+            font-size: 12px;
+            line-height: 18px;
+        }
+
+        .v3-filter-button {
+            width: 100%;
+            min-width: 0;
+        }
+    
+
+                /* =====================================================
+                   MOBILE FIGMA 320px — CONSOLIDADO
+                   ===================================================== */
+
+                .v3-topbar {
+                    width: 320px;
+                    max-width: 100%;
+                    height: 59px;
+                    margin: 0 auto;
+                    font-size: 14px;
+                    line-height: 21px;
+                    font-weight: 500;
+                }
+
+                .v3-header {
+                    width: 320px;
+                    max-width: 100%;
+                    height: 89px;
+                    margin: 0 auto;
+                }
+
+                .v3-header-inner {
+                    position: relative;
+                    width: 320px;
+                    max-width: 100%;
+                    height: 89px;
+                    margin: 0 auto;
+                }
+
+                .v3-logo-link {
+                    position: absolute;
+                    left: 40px;
+                    top: 8px;
+                    width: 90px;
+                    height: 68px;
+                }
+
+                .v3-logo {
+                    width: 90px;
+                    height: 68px;
+                    object-fit: contain;
+                }
+
+                .v3-login {
+                    position: absolute;
+                    width: 214.5px;
+                    min-width: 0;
+                    height: 33px;
+                    right: -5px;
+                    top: 13px;
+                }
+
+                .v3-login-lock { width:15px; height:15px; left:43px; top:9px; }
+                .v3-login-lock img { width:15px; height:15px; }
+                .v3-login-user { width:21.45px; height:21.45px; left:61.88px; top:6px; font-size:11px; }
+                .v3-login-user i { font-size:11px; }
+                .v3-login-text {
+                    width:119.92px; height:22.27px; left:94.88px; top:5px;
+                    font-size:12.375px; line-height:22px;
+                }
+
+                .v3-main, .v3-content { width:320px; max-width:100%; margin:0 auto; }
+
+                .v3-benefits-nav {
+                    position: sticky;
+                    top: 0;
+                    width: 320px;
+                    max-width: 100%;
+                    height: 97px;
+                    margin: 0 auto;
+                    padding-top: 27px;
+                    display: flex;
+                    align-items: flex-start;
+                    overflow-x: auto;
+                    overflow-y: hidden;
+                    scrollbar-width: none;
+                    background:#FFFFFF;
+                }
+                .v3-benefits-nav::-webkit-scrollbar { display:none; }
+
+                .v3-benefit-link {
+                    flex: 0 0 139px;
+                    min-width:139px;
+                    width:139px;
+                    height:70px;
+                    padding:25px 5px 0;
+                    justify-content:flex-start;
+                }
+                .v3-benefit-link:first-child { margin-left:10px; }
+                .v3-benefit-link::after { height:5px; }
+                .v3-benefit-title, .v3-benefit-subtitle {
+                    font-size:12px; line-height:15px; white-space:normal;
+                }
+                .v3-fast-effect-single { top:-26px; font-size:10px; line-height:27px; }
+
+                .v3-title-area { width:290px; margin:22px auto 18px; }
+                .v3-title { font-size:18px; line-height:24px; }
+                .v3-subtitle { font-size:11px; line-height:16px; }
+
+                .v3-segment { width:290px; margin-left:auto; margin-right:auto; }
+                .v3-segment-header { padding:14px 14px 16px; }
+                .v3-segment-header-top { flex-direction:row; align-items:flex-start; gap:8px; }
+                .v3-segment-benefit { min-width:0; }
+                .v3-segment-count { margin-left:auto; }
+                .v3-segment-description { font-size:10px; line-height:15px; }
+
+                .v3-treatment {
+                    grid-template-columns: 72px minmax(0,1fr);
+                    column-gap:10px;
+                    padding:20px 14px;
+                }
+                .v3-treatment-image { width:68px; height:68px; }
+                .v3-treatment-result { grid-column:1 / -1; margin-top:20px; }
+                .v3-efficacy-bar { width:100%; }
+
+                .v3-list-banner { width:320px; max-width:calc(100vw); margin-left:-15px; }
+                .v3-list-banner picture, .v3-list-banner-image { display:block; width:100%; height:auto; }
+
+                .v3-load-more { width:290px; margin:0 auto; }
+}
+
+            /* =====================================================
+            ESTADO VAZIO
+            ===================================================== */
+
+            .v3-empty {
+
+                padding: 35px;
+
+                text-align: center;
+
+                color: #757474;
+
+                font-size: 13px;
+            }
+
+
+            /* =====================================================
+            MOBILE
+            ===================================================== */
+
+            @media (max-width: 768px) {
+
+                .v3-topbar {
+
+                    height: 38px;
+
+                    font-size: 11px;
+                }
+
+                .v3-header {
+
+                    height: 100px;
+                }
+
+                .v3-header-inner {
+
+                    height: 100px;
+
+                    max-width:
+                        calc(100% - 28px);
+                }
+
+                .v3-logo {
+
+                    width: 95px;
+                }
+
+                .v3-login {
+
+                    min-width: auto;
+
+                    font-size: 12px;
+                }
+
+                .v3-content {
+
+                    max-width:
+                        calc(100% - 24px);
+                }
+
+                .v3-benefits-nav {
+
+                    width: 100%;
+                    height: 70px;
+
+                    display: flex;
+
+                    overflow-x: auto;
+                    overflow-y: hidden;
+                }
+
+                .v3-benefit-link {
+
+                    min-width: 150px;
+
+                    flex: 0 0 150px;
+                }
+
+                .v3-title-area {
+
+                    margin-top: 18px;
+                }
+
+                .v3-title {
+
+                    font-size: 24px;
+                    line-height: 29px;
+                }
+
+                .v3-subtitle {
+
+                    font-size: 11px;
+                    line-height: 16px;
+                }
+
+                .v3-segment-header {
+
+                    padding:
+                        18px
+                        16px;
+                }
+
+                .v3-segment-header-top {
+
+                    align-items: flex-start;
+
+                    flex-direction: column;
+
+                    gap: 6px;
+                }
+
+                .v3-treatment {
+
+                    grid-template-columns:
+                        80px
+                        minmax(0, 1fr);
+
+                    column-gap: 14px;
+
+                    padding:
+                        24px
+                        16px;
+                }
+
+                .v3-treatment-image {
+
+                    width: 70px;
+                    height: 70px;
+                }
+
+                .v3-treatment-result {
+
+                    grid-column:
+                        1 / -1;
+
+                    margin-top: 25px;
+                }
+
+                .v3-efficacy-bar {
+
+                    width: 100%;
+                }
+
+            }
+
+
+            /* =====================================================
+    FOOTER - IGUAL À TELA DE DETALHES
+    ===================================================== */
+
+    .site-footer {
+        width: 100%;
+        height: 424px;
+
+        margin: 0;
+        padding: 0;
+
+        background: #FFFFFF;
+        border: 0;
+
+        font-family: 'Inter', Arial, Helvetica, sans-serif;
+
+        position: relative;
+    }
+
+
+    /* CONTEÚDO PRINCIPAL */
+
+    .footer-details {
+        width: 982px;
+        max-width: calc(100% - 32px);
+        height: 300px;
+
+        margin: 0 auto;
+
+        position: relative;
+    }
+
+
+    /* =====================================================
+    COLUNAS
+    ===================================================== */
+
+    .footer-column {
+        position: absolute;
+        top: 41px;
+    }
+
+    .footer-column-1 {
+        left: 0;
+        width: 239px;
+    }
+
+    .footer-column-2 {
+        left: 404px;
+        width: 239px;
+    }
+
+    .footer-column-3 {
+        left: 746px;
+        width: 236px;
+    }
+
+
+    /* =====================================================
+    TÍTULOS
+    ===================================================== */
+
+    .site-footer h3 {
+        margin: 0;
+
+        font-family: 'Inter', Arial, Helvetica, sans-serif;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 15px;
+        line-height: 21px;
+
+        color: #010009;
+    }
+
+
+    /* =====================================================
+    LINKS / TEXTOS
+    ===================================================== */
+
+    .footer-block > a,
+    .footer-block > p,
+    .footer-contact > a,
+    .footer-contact > p,
+    .footer-no-medication p {
+        display: block;
+
+        width: max-content;
+        max-width: 100%;
+
+        margin: 0 0 6px;
+
+        font-family: 'Inter', Arial, Helvetica, sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 15px;
+        letter-spacing: .005em;
+
+        color: #8F8F93;
+
+        text-decoration: none;
+    }
+
+    .footer-block h3 + a,
+    .footer-block h3 + p {
+        margin-top: 14px;
+    }
+
+    .footer-block > a {
+        margin-bottom: 8px;
+    }
+
+
+    /* =====================================================
+    COLUNA 1
+    ===================================================== */
+
+    .footer-scientific {
+        margin-top: 64px;
+    }
+
+    .footer-share {
+        position: absolute;
+
+        top: 225px;
+
+        margin-top: 0 !important;
+        margin-left: 0;
+
+        display: flex !important;
+        align-items: center;
+
+        gap: 7px;
+    }
+
+    .footer-whatsapp-icon {
+        width: 20px;
+        height: 20px;
+
+        object-fit: contain;
+
+        display: block;
+
+        flex-shrink: 0;
+    }
+
+
+    /* =====================================================
+    LINKS ESPECIAIS
+    ===================================================== */
+
+    .site-footer .footer-special {
+        display: block;
+
+        width: max-content;
+
+        font-family: 'Inter', Arial, Helvetica, sans-serif;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 15px;
+        line-height: 18px;
+
+        color: #010009;
+
+        text-decoration: none;
+    }
+
+    .site-footer .footer-special:hover {
+        color: #0193FF;
+    }
+
+
+    /* =====================================================
+    COLUNA 2
+    ===================================================== */
+
+    .footer-contact {
+        margin-top: 39px;
+    }
+
+    .footer-contact-title {
+        display: flex;
+        align-items: center;
+
+        gap: 7px;
+
+        margin: 0 0 10px 0;
+    }
+
+    .footer-contact-whatsapp-icon {
+        width: 20px;
+        height: 20px;
+
+        display: block;
+
+        flex-shrink: 0;
+
+        object-fit: contain;
+    }
+
+    .footer-contact p,
+    .footer-contact a {
+        margin-bottom: 6px;
+    }
+
+    .footer-premium {
+        position: absolute;
+
+        top: 225px;
+
+        margin-top: 0 !important;
+    }
+
+
+    /* =====================================================
+    COLUNA 3
+    ===================================================== */
+
+    .footer-specialists {
+        margin-top: 38px;
+    }
+
+    .footer-specialists h3 {
+        line-height: 21px;
+    }
+
+
+    /* =====================================================
+    SELETOR DE DOENÇA
+    ===================================================== */
+
+    .footer-disease {
+        position: absolute;
+
+        top: 225px;
+
+        margin-top: 0 !important;
+    }
+
+    .footer-disease-label {
+        width: 142px;
+        height: 18px;
+
+        margin: 0 0 6px 1px;
+
+        display: flex;
+        align-items: center;
+
+        font-family: 'Inter', Arial, Helvetica, sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 15px;
+        line-height: 18px;
+
+        color: #000000;
+    }
+
+    .footer-disease-select {
+        position: relative;
+
+        width: 194px;
+        height: 40px;
+    }
+
+    .footer-disease-button {
+        box-sizing: border-box;
+
+        position: relative;
+
+        width: 194px;
+        height: 40px;
+
+        margin: 0;
+        padding: 0;
+
+        display: block;
+
+        background: #0193FF;
+
+        border: 0;
+        border-radius: 5px;
+
+        cursor: pointer;
+    }
+    .v3-segment-header-icon {
+        width: 22px;
+        height: 22px;
+
+        display: block;
+        flex: 0 0 22px;
+
+        object-fit: contain;
+
+        margin: 0;
+
+        opacity: 1;
+        visibility: visible;
+
+        filter: brightness(0) invert(1);
+    }
+    .v3-segment-header-icon-active {
+        filter: none;
+    }
+
+    .v3-segment-header-icon-reducao {
+        filter: none !important;
+    }
+
+    .footer-disease-button span:first-child {
+        position: absolute;
+
+        left: 30px;
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        display: flex;
+        align-items: center;
+
+        margin: 0;
+        padding: 0;
+
+        font-family: 'Inter', Arial, Helvetica, sans-serif;
+        font-weight: 700;
+        font-size: 15px;
+        line-height: 18px;
+
+        color: #FFFFFF;
+
+        opacity: .5;
+
+        white-space: nowrap;
+    }
+
+
+    /* =====================================================
+    SETA
+    ===================================================== */
+
+    .footer-chevron {
+        position: absolute;
+
+        width: 15px;
+        height: 8px;
+
+        right: 20px;
+        top: 50%;
+
+        transform: translateY(-50%);
+    }
+
+    .footer-chevron::before,
+    .footer-chevron::after {
+        content: "";
+
+        position: absolute;
+
+        width: 10px;
+        height: 3px;
+
+        top: 2px;
+
+        background: #FFFFFF;
+
+        border-radius: 2px;
+    }
+
+    .footer-chevron::before {
+        left: 0;
+        transform: rotate(45deg);
+    }
+
+    .footer-chevron::after {
+        right: 0;
+        transform: rotate(-45deg);
+    }
+
+
+    /* =====================================================
+    OPÇÕES DO SELETOR
+    ===================================================== */
+
+    .footer-disease-options {
+        display: none;
+
+        position: absolute;
+
+        left: 0;
+        top: 48px;
+
+        width: 194px;
+        max-height: 220px;
+
+        overflow-y: auto;
+
+        background: #FFFFFF;
+
+        border: 1px solid #E3E3E3;
+        border-radius: 5px;
+
+        box-shadow: 0 4px 14px rgba(0, 0, 0, .12);
+
+        z-index: 1000;
+    }
+
+    .footer-disease-options.open {
+        display: block;
+    }
+
+    .site-footer {
+        transition: height .18s ease;
+    }
+
+    .site-footer:has(.footer-disease-options.open) {
+        height: 644px;
+    }
+
+    .site-footer .footer-disease-options a {
+        display: block;
+
+        padding: 10px 14px;
+
+        font-family: 'Inter', Arial, sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+
+        color: #333333;
+
+        text-decoration: none;
+
+        transition: .15s ease;
+    }
+
+    .site-footer .footer-disease-options a:hover {
+        color: #0193FF;
+        background: #F5FAFF;
+    }
+
+    .footer-disease-button.open .footer-chevron {
+        transform:
+            translateY(-50%)
+            rotate(180deg);
+    }
+
+    .footer-disease-empty {
+        display: block;
+
+        padding: 10px 14px;
+
+        color: #8F8F93;
+
+        font-size: 13px;
+    }
+
+
+    /* =====================================================
+    FAIXA INFERIOR
+    ===================================================== */
+
+    .footer-bottom {
+        box-sizing: border-box;
+
+        position: absolute;
+
+        left: 0;
+        bottom: 0;
+
+        width: 100%;
+        height: 65px;
+
+        margin: 0;
+        padding: 0;
+
+        background: #FAFAFA;
+
+        border-top: 3px solid #E3E3E3;
+        border-bottom: 3px solid #E3E3E3;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-family: 'Inter', Arial, Helvetica, sans-serif;
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 16px;
+
+        color: #8F8F93;
+
+        text-align: center;
+    }
+
+
+    /* =====================================================
+    FOOTER RESPONSIVO
+    ===================================================== */
+
+    @media (max-width: 768px) {
+
+        .site-footer {
+            height: auto;
+            min-height: 0;
+
+            padding-bottom: 65px;
+        }
+
+        .footer-details {
+            width: calc(100% - 32px);
+            height: auto;
+
+            padding: 35px 0;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 35px;
+        }
+
+        .footer-column {
+            position: relative;
+
+            top: auto;
+            left: auto;
+
+            width: 100%;
+        }
+
+        .footer-column-1,
+        .footer-column-2,
+        .footer-column-3 {
+            left: auto;
+            width: 100%;
+        }
+
+        .footer-scientific,
+        .footer-contact,
+        .footer-specialists {
+            margin-top: 25px;
+        }
+
+        .footer-share,
+        .footer-premium,
+        .footer-disease {
+            position: relative;
+
+            top: auto;
+
+            margin-top: 25px !important;
+        }
+
+        .footer-bottom {
+            height: 65px;
+        }
+
+    }
+    /* =====================================================
+    FAIXA FIXA INFERIOR
+    ===================================================== */
+
+    .v3-health-fixed-bar {
+        position: fixed;
+
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        width: 100%;
+        height: 50px;
+
+        background: #0193FF;
+
+        z-index: 2000;
+
+        transition: none;
+    }
+
+
+    .v3-health-fixed-bar-inner {
+        position: relative;
+
+        width: 980px;
+        max-width: calc(100% - 40px);
+        height: 50px;
+
+        margin: 0 auto;
+    }
+
+
+    /* NÃO SE AUTOMEDIQUE */
+
+    .v3-health-warning {
+        position: absolute;
+
+        width: 178px;
+        height: 27px;
+
+        left: 50px;
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #000000;
+
+        color: #FFFFFF;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-size: 15px;
+        line-height: 27px;
+        font-weight: 600;
+
+        text-align: center;
+    }
+
+
+    /* CONSULTA ONLINE */
+
+    .v3-health-consultation {
+        box-sizing: border-box;
+
+        position: absolute;
+
+        width: 178px;
+        height: 27px;
+
+        right: 50px;
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #FFFFFF;
+
+        border: 1px solid #0193FF;
+        border-radius: 5px;
+
+        color: #0193FF;
+
+        font-family: "Inter", Arial, sans-serif;
+        font-size: 15px;
+        line-height: 27px;
+        font-weight: 600;
+
+        text-decoration: none;
+    }
+
+
+    .v3-health-consultation:hover {
+        background: #F5FAFF;
+    }
+
+
+    /* =====================================================
+    QUANDO A FAIXA CHEGAR AO FOOTER
+    ===================================================== */
+
+    .v3-health-fixed-bar.is-footer {
+        position: absolute;
+    }
+
+    @media (max-width: 768px) {
+
+        .v3-health-fixed-bar-inner {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .v3-health-warning {
+            width: 145px;
+            left: 16px;
+
+            font-size: 12px;
+        }
+
+        .v3-health-consultation {
+            width: 145px;
+            right: 16px;
+
+            font-size: 12px;
+        }
+    }
+
+        
+
+/* =====================================================
+   MOBILE FINAL — FIGMA 320px
+   Mantém o desktop intacto.
+   ===================================================== */
+@media (max-width: 768px) {
+    body { padding-bottom: 50px; overflow-x: hidden; }
+
+    .v3-topbar {
+        width: 100%; height: 28px;
+        font-size: 11px; line-height: 14px; font-weight: 600;
+    }
+
+    .v3-header { width: 100%; height: 112px; }
+    .v3-header-inner {
+        position: relative; width: 320px; max-width: 100%; height: 112px;
+        margin: 0 auto;
+    }
+    .v3-logo-link { position:absolute; left:27px; top:24px; width:72px; height:55px; }
+    .v3-logo { width:72px; height:55px; object-fit:contain; }
+    .v3-login { position:absolute; width:210px; min-width:0; height:40px; right:-2px; top:27px; }
+    .v3-login-lock { width:22px; height:22px; left:8px; top:7px; }
+    .v3-login-lock img { width:22px; height:22px; }
+    .v3-login-user { width:26px; height:26px; left:42px; top:5px; font-size:13px; }
+    .v3-login-user i { font-size:13px; }
+    .v3-login-text { width:auto; height:27px; left:81px; top:5px; font-size:15px; line-height:27px; }
+
+    .v3-main, .v3-content { width:100%; max-width:100%; margin:0 auto; }
+
+    /* Mais área acima das abas para o "efeito rápido" não ser cortado. */
+    .v3-benefits-nav {
+        position: sticky; top:0; z-index:1000;
+        width:100%; max-width:100%; height:112px;
+        margin:0; padding:42px 0 0 38px;
+        display:flex; align-items:flex-start;
+        overflow-x:auto; overflow-y:hidden;
+        scrollbar-width:none; background:#fff;
+    }
+    .v3-benefits-nav::-webkit-scrollbar { display:none; }
+    .v3-benefit-link {
+        flex:0 0 150px; min-width:150px; width:150px; height:50px;
+        padding:8px 5px 0; justify-content:flex-start;
+    }
+    .v3-benefit-link::after { height:5px; }
+    .v3-benefit-title, .v3-benefit-subtitle {
+        font-size:12px; line-height:15px; white-space:normal;
+    }
+    .v3-fast-effect-single { top:-34px; }
+    .v3-fast-effect-double { top:-34px; }
+
+    .v3-title-area { width:290px; max-width:calc(100% - 30px); margin:20px auto 18px; }
+    .v3-title { font-family:Arial,sans-serif; font-size:20px; line-height:26px; font-weight:700; }
+    .v3-subtitle { margin-top:3px; font-family:Arial,sans-serif; font-size:11px; line-height:16px; }
+
+    .v3-segment { width:290px; max-width:calc(100% - 30px); margin:0 auto 35px; scroll-margin-top:112px; }
+    .v3-segment-header { min-height:109px; padding:14px 15px 16px; border-radius:15px 15px 0 0; }
+    .v3-segment-header-top { display:flex; flex-direction:column; align-items:flex-start; gap:12px; }
+    .v3-segment-benefit { gap:7px; font-size:15px; line-height:20px; }
+    .v3-segment-count { order:2; margin:0; font-size:15px; line-height:20px; }
+    .v3-segment-description { margin-top:15px; font-size:13px; line-height:18px; }
+    .v3-segment-header-icon { width:22px; height:22px; flex-basis:22px; }
+
+    .v3-treatment-list { width:290px; }
+
+    /* Card de tratamento conforme o modelo mobile do Figma. */
+    .v3-treatment {
+        position:relative; display:block;
+        width:288px; min-height:351px; height:351px;
+        margin:0; padding:0;
+        border-bottom:1px solid #E0E0E0;
+        cursor:pointer;
+    }
+    .v3-treatment-image-area {
+        position:absolute; left:16px; top:16px;
+        width:104px; height:104px;
+        display:block;
+    }
+    .v3-treatment-image { width:104px; height:104px; object-fit:contain; border-radius:50%; }
+
+    .v3-treatment-main { position:static; min-width:0; }
+    .v3-treatment-name {
+        position:absolute; left:128px; right:17px; top:16px;
+        margin:0; min-height:30px;
+        font-size:15px; line-height:18px; font-weight:700;
+    }
+    .v3-treatment-type {
+        position:absolute; left:128px; right:17px; top:50px;
+        margin:0; font-size:10px; line-height:14px; font-weight:700;
+    }
+    .v3-treatment-meta {
+        position:absolute; left:128px; right:12px; top:70px;
+        margin:0; font-size:10px; line-height:15px;
+    }
+    .v3-treatment-meta p { margin:0 0 4px; }
+    .v3-treatment-meta p:nth-child(2) { display:none; }
+    .v3-treatment-description { display:none; }
+
+    .v3-treatment-result {
+        position:absolute; left:0; top:161px;
+        width:288px; height:190px; margin:0;
+        display:block; text-align:center;
+    }
+    .v3-efficacy-number {
+        position:absolute; left:45px; right:45px; top:7px;
+        margin:0; height:38px;
+        display:flex; align-items:center; justify-content:center;
+        font-size:20px; line-height:38px; font-weight:500; color:#888;
+    }
+    .v3-efficacy-bar {
+        position:absolute; width:182px; height:14px;
+        left:53px; top:51px; margin:0;
+        border-radius:5.6px;
+    }
+    .v3-efficacy-range { height:14px; border-radius:5.6px; }
+    .v3-efficacy-point { width:10px; height:14px; border-radius:4.9px; }
+    .v3-efficacy-caption {
+        position:absolute; left:20px; right:20px; top:72px;
+        margin:0; min-height:15px;
+        justify-content:center; align-items:center;
+        font-size:10px; line-height:15px; text-align:center; color:#000;
+    }
+    .v3-benefit-mini-icon { width:18px; height:18px; margin-left:4px; }
+    .v3-effect-time {
+        position:absolute; left:41px; right:20px; top:101px;
+        margin:0; min-height:20px;
+        display:flex; align-items:center; gap:4px;
+        font-size:10px; line-height:20px; text-align:left;
+    }
+    .v3-effect-time strong { display:inline; font-size:10px; line-height:20px; font-weight:700; }
+    .v3-treatment-button {
+        position:absolute; left:84px; top:304px;
+        width:121px; min-width:121px; height:26px;
+        margin:0; padding:0;
+        border-radius:4px; background:#E0E0E0;
+        font-family:Arial,sans-serif; font-size:10px; line-height:21px; font-weight:400;
+        z-index:5;
+    }
+
+    .v3-list-banner { width:288px; margin:0; }
+    .v3-list-banner picture, .v3-list-banner-image { display:block; width:100%; height:auto; }
+
+    .v3-load-more { width:288px; padding:18px 0; margin:0 auto; }
+    .v3-load-more-button {
+        width:121px; min-width:121px; height:26px; padding:0;
+        border:1px solid #0193FF; border-radius:4px;
+        font-size:10px; line-height:24px; font-weight:700;
+    }
+
+    .v3-filter-bar { width:288px; margin:0 auto; }
+
+    .v3-health-fixed-bar { height:50px; }
+    .v3-health-warning { width:145px; left:8px; font-size:12px; }
+    .v3-health-consultation { width:145px; right:8px; font-size:12px; }
+}
+
+/* =========================================================
+   MOBILE - CARD DE TRATAMENTO FINAL
+   Layout igual à referência
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+
+    /* CARD */
+    .v3-treatment {
+        position: relative !important;
+        display: flex !important;
+        flex-direction: column !important;
+
+        width: 288px !important;
+        min-height: 351px !important;
+        height: auto !important;
+
+        margin: 0 !important;
+        padding: 16px 14px 14px !important;
+
+        border-bottom: 1px solid #E0E0E0 !important;
+        box-sizing: border-box !important;
+
+        cursor: pointer;
+    }
+
+
+    /* =====================================================
+       PARTE SUPERIOR
+       imagem | nome / tipo / princípio
+       ===================================================== */
+
+    .v3-treatment-image-area {
+        position: absolute !important;
+
+        left: 16px !important;
+        top: 16px !important;
+
+        width: 104px !important;
+        height: 104px !important;
+
+        display: flex !important;
+        align-items: flex-start !important;
+        justify-content: center !important;
+    }
+
+    .v3-treatment-image {
+        width: 104px !important;
+        height: 104px !important;
+
+        object-fit: contain !important;
+        border-radius: 50% !important;
+    }
+
+
+    .v3-treatment-main {
+        position: relative !important;
+
+        width: calc(100% - 114px) !important;
+        min-height: 125px !important;
+
+        margin: 0 0 0 114px !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+
+
+    /* NOME */
+    .v3-treatment-name {
+        position: static !important;
+
+        width: 100% !important;
+        min-height: 0 !important;
+
+        margin: 0 0 4px !important;
+
+        font-size: 15px !important;
+        line-height: 18px !important;
+        font-weight: 700 !important;
+
+        color: #010009 !important;
+
+        overflow-wrap: break-word !important;
+    }
+
+
+    /* TIPO */
+    .v3-treatment-type {
+        position: static !important;
+
+        width: 100% !important;
+
+        margin: 0 0 7px !important;
+
+        font-size: 10px !important;
+        line-height: 13px !important;
+        font-weight: 700 !important;
+
+        color: #0193FF !important;
+
+        overflow-wrap: break-word !important;
+    }
+
+
+    /* PRINCÍPIO ATIVO */
+    .v3-treatment-meta {
+        position: static !important;
+
+        width: 100% !important;
+
+        margin: 0 !important;
+
+        font-size: 10px !important;
+        line-height: 14px !important;
+
+        color: #010009 !important;
+    }
+
+    .v3-treatment-meta p {
+        margin: 0 0 3px !important;
+    }
+
+    .v3-treatment-meta p:nth-child(2) {
+        display: none !important;
+    }
+
+    .v3-treatment-description {
+        display: none !important;
+    }
+
+
+    /* =====================================================
+       BLOCO DE RESULTADO
+       ===================================================== */
+
+    .v3-treatment-result {
+        position: relative !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+
+        width: 100% !important;
+        height: auto !important;
+
+        margin: 13px 0 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+
+        text-align: center !important;
+    }
+
+
+    /* =====================================================
+       NÚMEROS
+       39,13 a 39,13%
+       ===================================================== */
+
+    .v3-efficacy-number {
+        position: static !important;
+
+        width: 100% !important;
+        height: auto !important;
+
+        margin: 0 0 9px !important;
+
+        display: flex !important;
+        justify-content: center !important;
+        align-items: baseline !important;
+
+        gap: 5px !important;
+
+        color: #8F8F93 !important;
+
+        font-size: 20px !important;
+        line-height: 26px !important;
+        font-weight: 400 !important;
+
+        white-space: nowrap !important;
+    }
+
+    .v3-efficacy-number strong {
+        color: #010009 !important;
+        font-weight: 700 !important;
+    }
+
+
+    /* =====================================================
+       BARRA
+       ===================================================== */
+
+    .v3-efficacy-bar {
+        position: relative !important;
+
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+
+        width: 182px !important;
+        height: 14px !important;
+
+        margin: 0 auto 10px !important;
+
+        border-radius: 5.6px !important;
+    }
+
+    .v3-efficacy-range {
+        height: 14px !important;
+        border-radius: 5.6px !important;
+    }
+
+    .v3-efficacy-point {
+        width: 10px !important;
+        height: 14px !important;
+
+        border-radius: 4.9px !important;
+    }
+
+
+    /* =====================================================
+       DOS PARTICIPANTES...
+       ===================================================== */
+
+    .v3-efficacy-caption {
+        position: static !important;
+
+        width: 100% !important;
+        min-height: 18px !important;
+
+        margin: 0 0 13px !important;
+
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+
+        color: #8F8F93 !important;
+
+        font-size: 10px !important;
+        line-height: 15px !important;
+
+        text-align: center !important;
+    }
+
+    .v3-benefit-mini-icon {
+        width: 18px !important;
+        height: 18px !important;
+
+        margin-left: 5px !important;
+
+        flex-shrink: 0 !important;
+    }
+
+
+    /* =====================================================
+       PRAZO PARA EFEITO
+       ===================================================== */
+
+    .v3-effect-time {
+        position: static !important;
+
+        width: 100% !important;
+        min-height: 20px !important;
+
+        margin: 0 0 18px !important;
+
+        display: flex !important;
+        align-items: baseline !important;
+        justify-content: center !important;
+
+        gap: 5px !important;
+
+        color: #010009 !important;
+
+        font-size: 10px !important;
+        line-height: 16px !important;
+
+        text-align: center !important;
+    }
+
+    .v3-effect-time strong {
+        display: inline !important;
+
+        font-size: 10px !important;
+        line-height: 16px !important;
+        font-weight: 700 !important;
+    }
+
+
+    /* =====================================================
+       BOTÃO - SEMPRE O ÚLTIMO ITEM
+       ===================================================== */
+
+    .v3-treatment-button {
+        position: static !important;
+
+        order: 999 !important;
+
+        width: 121px !important;
+        min-width: 121px !important;
+        height: 26px !important;
+
+        margin: 0 auto !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #E0E0E0 !important;
+
+        border: 0 !important;
+        border-radius: 4px !important;
+
+        color: #010009 !important;
+
+        font-family: Arial, sans-serif !important;
+        font-size: 10px !important;
+        line-height: 21px !important;
+        font-weight: 400 !important;
+
+        text-decoration: none !important;
+
+        z-index: 5 !important;
+    }
+
+    /* =========================================================
+   MOBILE - CARD DE TRATAMENTO
+   SOMENTE MOBILE
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+
+    .v3-treatment {
+        position: relative !important;
+        display: grid !important;
+
+        grid-template-columns: 104px minmax(0, 1fr) !important;
+        grid-template-rows: auto auto !important;
+
+        column-gap: 12px !important;
+
+        width: 288px !important;
+        min-height: 351px !important;
+        height: auto !important;
+
+        margin: 0 !important;
+        padding: 16px 14px 18px !important;
+
+        box-sizing: border-box !important;
+
+        border-bottom: 1px solid #E0E0E0 !important;
+
+        cursor: pointer;
+    }
+
+
+    /* =========================================
+       IMAGEM
+       ========================================= */
+
+    .v3-treatment-image-area {
+        position: static !important;
+
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+
+        width: 104px !important;
+        height: 104px !important;
+
+        margin: 0 !important;
+
+        display: flex !important;
+        align-items: flex-start !important;
+        justify-content: center !important;
+    }
+
+    .v3-treatment-image {
+        width: 104px !important;
+        height: 104px !important;
+
+        object-fit: contain !important;
+        border-radius: 50% !important;
+    }
+
+
+    /* =========================================
+       NOME / TIPO / PRINCÍPIO
+       ========================================= */
+
+    .v3-treatment-main {
+        position: static !important;
+
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+
+        width: 100% !important;
+        min-width: 0 !important;
+        min-height: 104px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: block !important;
+    }
+
+    .v3-treatment-name {
+        position: static !important;
+
+        width: 100% !important;
+        min-height: 0 !important;
+
+        margin: 0 0 2px !important;
+
+        font-size: 15px !important;
+        line-height: 18px !important;
+        font-weight: 700 !important;
+
+        color: #010009 !important;
+
+        overflow-wrap: break-word !important;
+    }
+
+    .v3-treatment-type {
+        position: static !important;
+
+        width: 100% !important;
+
+        margin: 0 0 5px !important;
+
+        font-size: 10px !important;
+        line-height: 13px !important;
+        font-weight: 700 !important;
+
+        color: #0193FF !important;
+
+        overflow-wrap: break-word !important;
+    }
+
+    .v3-treatment-meta {
+        position: static !important;
+
+        width: 100% !important;
+
+        margin: 0 !important;
+
+        font-size: 10px !important;
+        line-height: 14px !important;
+
+        color: #010009 !important;
+    }
+
+    .v3-treatment-meta p {
+        margin: 0 !important;
+    }
+
+    .v3-treatment-meta p:nth-child(2) {
+        display: none !important;
+    }
+
+    .v3-treatment-description {
+        display: none !important;
+    }
+
+
+    /* =========================================
+       RESULTADO
+       ========================================= */
+
+    .v3-treatment-result {
+        position: relative !important;
+
+        grid-column: 1 / -1 !important;
+        grid-row: 2 !important;
+
+        width: 100% !important;
+        height: auto !important;
+
+        margin: 18px 0 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+
+        text-align: center !important;
+    }
+
+
+    /* =========================================
+       BARRA
+       ========================================= */
+
+    .v3-efficacy-bar {
+        position: static !important;
+
+        width: 182px !important;
+        height: 14px !important;
+
+        margin: 0 auto 8px !important;
+
+        background: #E3E3E3 !important;
+
+        border-radius: 6px !important;
+    }
+
+    .v3-efficacy-range {
+        height: 14px !important;
+        border-radius: 6px !important;
+    }
+
+    .v3-efficacy-point {
+        width: 10px !important;
+        height: 14px !important;
+
+        border-radius: 5px !important;
+    }
+
+
+    /* =========================================
+       PERCENTUAL
+       88,97 a 88,97%
+       ========================================= */
+
+    .v3-efficacy-number {
+        position: static !important;
+
+        width: 100% !important;
+        height: auto !important;
+
+        margin: 0 0 8px !important;
+
+        display: flex !important;
+        align-items: baseline !important;
+        justify-content: center !important;
+
+        gap: 5px !important;
+
+        font-size: 20px !important;
+        line-height: 26px !important;
+        font-weight: 400 !important;
+
+        color: #8F8F93 !important;
+
+        white-space: nowrap !important;
+    }
+
+    .v3-efficacy-number strong {
+        color: #010009 !important;
+        font-weight: 700 !important;
+    }
+
+
+    /* =========================================
+       LEGENDA
+       ========================================= */
+
+    .v3-efficacy-caption {
+        position: static !important;
+
+        width: 100% !important;
+        min-height: 18px !important;
+
+        margin: 0 0 12px !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        font-size: 10px !important;
+        line-height: 15px !important;
+
+        color: #8F8F93 !important;
+
+        text-align: center !important;
+    }
+
+    .v3-benefit-mini-icon {
+        width: 18px !important;
+        height: 18px !important;
+
+        margin-left: 5px !important;
+
+        flex-shrink: 0 !important;
+    }
+
+
+    /* =========================================
+       PRAZO
+       ========================================= */
+
+    .v3-effect-time {
+        position: static !important;
+
+        width: 100% !important;
+        min-height: 20px !important;
+
+        margin: 0 !important;
+
+        display: flex !important;
+        align-items: baseline !important;
+        justify-content: center !important;
+
+        gap: 5px !important;
+
+        font-size: 10px !important;
+        line-height: 16px !important;
+
+        color: #010009 !important;
+
+        text-align: center !important;
+
+        white-space: normal !important;
+    }
+
+    .v3-effect-time strong {
+        display: inline !important;
+
+        font-size: 10px !important;
+        line-height: 16px !important;
+        font-weight: 700 !important;
+    }
+
+
+    /* =========================================
+       BOTÃO
+
+       IMPORTANTE:
+       ele continua dentro do MAIN no HTML.
+       Por isso posicionamos visualmente no final.
+       ========================================= */
+
+    .v3-treatment-button {
+        position: absolute !important;
+
+        left: 50% !important;
+        bottom: 18px !important;
+
+        transform: translateX(-50%) !important;
+
+        width: 121px !important;
+        min-width: 121px !important;
+        height: 26px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        background: #E0E0E0 !important;
+
+        border: 0 !important;
+        border-radius: 4px !important;
+
+        color: #010009 !important;
+
+        font-family: Arial, sans-serif !important;
+        font-size: 10px !important;
+        line-height: 21px !important;
+        font-weight: 400 !important;
+
+        text-decoration: none !important;
+
+        z-index: 5 !important;
+    }
+
+
+    /* reserva espaço para o botão no final */
+    .v3-treatment-result {
+        padding-bottom: 45px !important;
+    }
+
+    /* =========================================================
+   CORREÇÃO DEFINITIVA - CARD MOBILE
+   Restaura o layout aprovado
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+
+    .v3-treatment {
+        position: relative !important;
+        display: block !important;
+
+        width: 288px !important;
+        min-height: 351px !important;
+        height: 351px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        border-bottom: 1px solid #E0E0E0 !important;
+        box-sizing: border-box !important;
+
+        cursor: pointer;
+    }
+
+    /* IMAGEM */
+
+    .v3-treatment-image-area {
+        position: absolute !important;
+
+        left: 16px !important;
+        top: 16px !important;
+
+        width: 104px !important;
+        height: 104px !important;
+
+        margin: 0 !important;
+
+        display: block !important;
+    }
+
+    .v3-treatment-image {
+        display: block !important;
+
+        width: 104px !important;
+        height: 104px !important;
+
+        object-fit: contain !important;
+        border-radius: 50% !important;
+    }
+
+    /* ÁREA DE TEXTO */
+
+    .v3-treatment-main {
+        position: static !important;
+
+        width: auto !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: block !important;
+    }
+
+    /* NOME */
+
+    .v3-treatment-name {
+        position: absolute !important;
+
+        left: 128px !important;
+        right: 17px !important;
+        top: 16px !important;
+
+        width: auto !important;
+        min-height: 30px !important;
+
+        margin: 0 !important;
+
+        font-size: 15px !important;
+        line-height: 18px !important;
+        font-weight: 700 !important;
+
+        color: #010009 !important;
+    }
+
+    /* TIPO */
+
+    .v3-treatment-type {
+        position: absolute !important;
+
+        left: 128px !important;
+        right: 17px !important;
+        top: 50px !important;
+
+        width: auto !important;
+
+        margin: 0 !important;
+
+        font-size: 10px !important;
+        line-height: 14px !important;
+        font-weight: 700 !important;
+
+        color: #0193FF !important;
+    }
+
+    /* PRINCÍPIO ATIVO */
+
+    .v3-treatment-meta {
+        position: absolute !important;
+
+        left: 128px !important;
+        right: 12px !important;
+        top: 70px !important;
+
+        width: auto !important;
+
+        margin: 0 !important;
+
+        font-size: 10px !important;
+        line-height: 15px !important;
+
+        color: #010009 !important;
+    }
+
+    .v3-treatment-meta p {
+        margin: 0 0 4px !important;
+    }
+
+    .v3-treatment-meta p:nth-child(2) {
+        display: none !important;
+    }
+
+    .v3-treatment-description {
+        display: none !important;
+    }
+
+    /* RESULTADO */
+
+    .v3-treatment-result {
+        position: absolute !important;
+
+        left: 0 !important;
+        right: auto !important;
+        top: 161px !important;
+
+        width: 288px !important;
+        height: 190px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: block !important;
+
+        text-align: center !important;
+    }
+
+    /* BARRA - NO LAYOUT APROVADO ELA VEM PRIMEIRO */
+
+    .v3-efficacy-bar {
+        position: absolute !important;
+
+        width: 182px !important;
+        height: 14px !important;
+
+        left: 53px !important;
+        right: auto !important;
+        top: 51px !important;
+
+        margin: 0 !important;
+
+        background: #E3E3E3 !important;
+        border-radius: 5.6px !important;
+    }
+
+    .v3-efficacy-range {
+        height: 14px !important;
+        border-radius: 5.6px !important;
+    }
+
+    .v3-efficacy-point {
+        width: 10px !important;
+        height: 14px !important;
+
+        border-radius: 4.9px !important;
+    }
+
+    /* PERCENTUAL */
+
+    .v3-efficacy-number {
+        position: absolute !important;
+
+        left: 45px !important;
+        right: 45px !important;
+        top: 7px !important;
+
+        width: auto !important;
+        height: 38px !important;
+
+        margin: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        gap: 5px !important;
+
+        color: #888 !important;
+
+        font-size: 20px !important;
+        line-height: 38px !important;
+        font-weight: 500 !important;
+
+        white-space: nowrap !important;
+    }
+
+    .v3-efficacy-number strong {
+        color: #010009 !important;
+        font-weight: 700 !important;
+    }
+
+    /* PARTICIPANTES */
+
+    .v3-efficacy-caption {
+        position: absolute !important;
+
+        left: 20px !important;
+        right: 20px !important;
+        top: 72px !important;
+
+        width: auto !important;
+        min-height: 15px !important;
+
+        margin: 0 !important;
+
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+
+        color: #8F8F93 !important;
+
+        font-size: 10px !important;
+        line-height: 15px !important;
+
+        text-align: center !important;
+    }
+
+    .v3-benefit-mini-icon {
+        width: 18px !important;
+        height: 18px !important;
+
+        margin-left: 4px !important;
+    }
+
+    /* PRAZO */
+
+    .v3-effect-time {
+        position: absolute !important;
+
+        left: 41px !important;
+        right: 20px !important;
+        top: 101px !important;
+
+        width: auto !important;
+        min-height: 20px !important;
+
+        margin: 0 !important;
+
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+
+        gap: 4px !important;
+
+        color: #010009 !important;
+
+        font-size: 10px !important;
+        line-height: 20px !important;
+
+        text-align: left !important;
+    }
+
+    .v3-effect-time strong {
+        display: inline !important;
+
+        font-size: 10px !important;
+        line-height: 20px !important;
+        font-weight: 700 !important;
+    }
+
+    /* BOTÃO */
+
+.v3-treatment-button {
+    position: absolute !important;
+
+    left: 50% !important;
+    top: 304px !important;
+
+    transform: translateX(-50%) !important;
+
+    width: 121px !important;
+    min-width: 121px !important;
+    height: 26px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    background: #E0E0E0 !important;
+
+    border: 0 !important;
+    border-radius: 4px !important;
+
+    color: #010009 !important;
+
+    font-family: Arial, sans-serif !important;
+    font-size: 10px !important;
+    line-height: 21px !important;
+    font-weight: 400 !important;
+
+    text-decoration: none !important;
+
+    z-index: 5 !important;
+}
+}
+
+}
+/* =========================================================
+   FIX FINAL - CABEÇALHO DO CARD MOBILE
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+
+    /* mantém exatamente o card atual */
+    .v3-treatment {
+        position: relative !important;
+        display: block !important;
+
+        width: 288px !important;
+        min-height: 351px !important;
+        height: 351px !important;
+
+        padding: 0 !important;
+    }
+
+
+    /* IMAGEM À ESQUERDA */
+    .v3-treatment-image-area {
+        position: absolute !important;
+
+        left: 16px !important;
+        top: 16px !important;
+
+        width: 104px !important;
+        height: 104px !important;
+
+        margin: 0 !important;
+    }
+
+    .v3-treatment-image {
+        width: 104px !important;
+        height: 104px !important;
+
+        object-fit: contain !important;
+    }
+
+
+    /* ==========================================
+       BLOCO DE TEXTO COMPLETO À DIREITA
+       ========================================== */
+
+    .v3-treatment-main {
+        position: absolute !important;
+
+        left: 128px !important;
+        top: 16px !important;
+
+        width: 143px !important;
+        height: auto !important;
+        min-height: 104px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+
+        overflow: visible !important;
+    }
+
+
+    /* NOME */
+
+    .v3-treatment-name {
+        position: static !important;
+
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+
+        margin: 0 0 5px 0 !important;
+        padding: 0 !important;
+
+        font-size: 15px !important;
+        line-height: 18px !important;
+        font-weight: 700 !important;
+
+        white-space: normal !important;
+        overflow: visible !important;
+        overflow-wrap: break-word !important;
+    }
+
+
+    /* TIPO */
+
+    .v3-treatment-type {
+        position: static !important;
+
+        width: 100% !important;
+        height: auto !important;
+
+        margin: 0 0 4px 0 !important;
+        padding: 0 !important;
+
+        font-size: 10px !important;
+        line-height: 13px !important;
+        font-weight: 700 !important;
+
+        white-space: normal !important;
+        overflow: visible !important;
+    }
+
+
+    /* PRINCÍPIO ATIVO */
+
+    .v3-treatment-meta {
+        position: static !important;
+
+        width: 100% !important;
+        height: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        font-size: 10px !important;
+        line-height: 14px !important;
+
+        white-space: normal !important;
+        overflow: visible !important;
+    }
+
+    .v3-treatment-meta p {
+        position: static !important;
+
+        width: 100% !important;
+        height: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        line-height: 14px !important;
+    }
+
+    .v3-treatment-meta p:nth-child(2) {
+        display: none !important;
+    }
+
+
+    /* =====================================================
+       O RESULTADO CONTINUA NA POSIÇÃO ORIGINAL
+       ===================================================== */
+
+    .v3-treatment-result {
+        position: absolute !important;
+
+        left: 0 !important;
+        top: 161px !important;
+
+        width: 288px !important;
+        height: 190px !important;
+
+        margin: 0 !important;
+        padding-bottom: 45px !important;
+    }
+
+
+    /* BOTÃO CONTINUA NO MESMO LUGAR */
+
+    .v3-treatment-button {
+        position: absolute !important;
+
+        left: 10% !important;
+        top: 304px !important;
+        bottom: auto !important;
+
+        transform: translateX(-50%) !important;
+
+        width: 121px !important;
+        height: 26px !important;
+
+        margin: 0 !important;
+    }
+/* ESPAÇO ENTRE MENU E LISTA - MOBILE */
+.v3-benefits-nav {
+    margin-bottom: 20px !important;
+}
+}
+
+}
+
+
+/* ==========================================
+   CARDS DE FILTROS - FIGMA
+   ========================================== */
+
+.v3-filter-cards {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 292px;
+    padding: 62px 39px;
+
+    display: grid;
+    grid-template-columns: 154px 154px 154px 212px;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+
+    background: #FFFFFF;
+    border-top: 1px solid #E0E0E0;
+    border-radius: 0 0 5px 5px;
+}
+
+.v3-filter-card {
+    box-sizing: border-box;
+    width: 100%;
+    height: 166px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 17px;
+    padding: 20px 8px;
+
+    background: #F9F6F6;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+
+    color: #000000;
+    text-decoration: none;
+    text-align: center;
+
+    font-family: "Inter", Arial, sans-serif;
+
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+}
+
+.v3-filter-card:hover {
+    border-color: #0094FF;
+    background: #F0F8FF;
+}
+
+.v3-filter-card:focus-visible {
+    outline: 2px solid #0094FF;
+    outline-offset: 3px;
+}
+
+.v3-filter-label {
+    color: #757474;
+    font-size: 10px;
+    line-height: 14px;
+    font-weight: 600;
+}
+
+.v3-filter-name {
+    color: #000000;
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.v3-filter-card i {
+    color: #0094FF;
+    font-size: 26px;
+    line-height: 27px;
+}
+
+/* ==========================================
+   TABLET
+   ========================================== */
+
+@media (min-width: 769px) and (max-width: 1000px) {
+    .v3-filter-cards {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        padding: 40px 20px;
+        gap: 15px;
+    }
+
+    .v3-filter-name {
+        font-size: 16px;
+    }
+}
+
+/* ==========================================
+   MOBILE
+   ========================================== */
+
+@media (max-width: 768px) {
+    .v3-filter-cards {
+        width: 100%;
+        min-height: auto;
+        padding: 24px 12px;
+
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .v3-filter-card {
+        height: 130px;
+        gap: 10px;
+        padding: 12px 5px;
+    }
+
+    .v3-filter-label {
+        font-size: 9px;
+        line-height: 13px;
+    }
+
+    .v3-filter-name {
+        font-size: 13px;
+        line-height: 18px;
+    }
+
+    .v3-filter-card i {
+        font-size: 22px;
+        line-height: 24px;
+    }
+}
+
+
+</style>
+
+    <style>
+
+.v4-nav.v3-benefits-nav{width:950px;max-width:100%;height:82px;padding:30px 0 0 60px;margin:0 auto 28px;overflow:visible;align-items:flex-end;justify-content:flex-start}
+.v4-nav .v3-benefit-link{flex:0 1 190px;min-width:0;width:190px;height:48px;margin:0;padding:12px 5px;justify-content:center}
+.v4-nav .is-active .v3-benefit-title{color:#0193ff}
+.v4-nav .v3-benefit-link{position:relative}
+.v4-note{position:absolute;bottom:48px;left:50%;transform:translateX(-20%);width:156px;height:34px;font:400 10px/17px 'Homemade Apple',cursive;color:#E32929;white-space:nowrap;text-align:left;pointer-events:none;display:block;padding-left:16px;box-sizing:border-box}
+.v4-note-text{display:block}.v4-note-second{display:block;padding-left:16px}
+.v4-note-arrow{position:absolute;left:0;top:14px;width:16px;height:17px;overflow:visible}
+@media(max-width:768px){.v4-nav .v4-note{font-size:10px;transform:translateX(-35%)}}
+.v4-group{--accent:#0193ff;width:950px;max-width:100%;scroll-margin-top:90px;margin:0 auto 38px}
+.v4-group .v3-treatment-list{width:100%;border:1px solid #0193ff;border-radius:0;overflow:hidden}
+.v4-group .v4-card{position:relative;display:grid;grid-template-columns:120px minmax(0,1fr) 160px;grid-template-rows:minmax(270px,auto) auto;column-gap:24px;row-gap:0;width:100%;height:auto;min-height:492px;padding:40px 25px;border-bottom:1px solid #e0e0e0;background:white;cursor:pointer;align-content:start}
+.v4-card:focus-visible{outline:2px solid #0193ff;outline-offset:-3px}
+.v4-image img{width:120px;height:120px;object-fit:contain;border-radius:50%}
+.v4-info{min-width:0}.v4-info h3{font:700 25px/30px Inter,sans-serif;color:#050606;margin:0 0 4px;overflow-wrap:anywhere}.v4-type{font:700 12px/18px Inter,sans-serif;color:#0193ff}.v4-info p,.v4-info .v4-description{font:400 16px/24px Inter,sans-serif;color:#212529;margin:12px 0}.v4-info .v4-description{margin-top:14px}
+.v4-results{min-width:0}.v4-efficacy{width:160px;min-height:205px;border:1px solid #ccc;border-radius:6px;padding:12px;display:flex;flex-direction:column;justify-content:space-between}.v4-efficacy-title{display:flex;align-items:center;gap:8px;font-size:14px;line-height:18px;color:#050606}.v4-efficacy-title img{width:28px;height:28px;object-fit:contain}.v4-value{font-size:12px;line-height:18px;color:#050606}.v4-value strong{font-size:12px;color:#050606}.v4-value small{display:block;font-size:10px;line-height:14px;color:#888;margin-top:4px}.v4-time{font-size:15px;margin-top:18px;text-align:right;line-height:21px}.v4-time strong{display:block;font-size:16px;white-space:normal}
+.v4-bottom{grid-column:1/-1;display:flex;flex-direction:column;align-items:stretch;gap:24px;padding:0;border:0}.v4-research{display:flex;align-items:center;flex-wrap:wrap;gap:6px;font-size:15px;color:#757474;padding-left:20px}.v4-participants{margin-left:20px;color:#212529}.v4-rigor{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border:1px solid #0193ff;border-radius:4px;color:#0193ff;font-size:14px;font-weight:700}.v4-rigor.is-selected{background:#0193ff;color:white}.v4-metrics{display:grid;grid-template-columns:200fr 200fr 283fr 147fr;gap:10px;padding:0 20px}.v4-metrics span{background:white;border:1px solid #ccc;border-radius:20px;min-height:35px;display:flex;align-items:center;justify-content:center;gap:5px;font-size:14px;color:#212529;padding:5px 8px;text-align:center}.v4-details{align-self:flex-end;width:156px;height:31px;display:flex;align-items:center;justify-content:center;background:#e0e0e0;color:#111;text-decoration:none;font-size:14px;border-radius:4px}.v4-filters{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:18px}.v4-filters a{display:flex;align-items:center;justify-content:center;gap:14px;border:1px solid #0193ff;border-radius:8px;padding:18px;color:#0193ff;text-decoration:none;font-size:12px}.v4-filters i{font-size:24px}.v4-filters strong{font-size:15px}.v4-group .v3-list-banner{width:100%;margin:0;max-width:100%}
+@media(max-width:900px){.v4-metrics{grid-template-columns:1fr 1fr;padding:0}.v4-research{padding-left:0}}
+@media(max-width:768px){.v3-content{width:100%;max-width:100%;padding:0 15px}.v4-nav.v3-benefits-nav{height:76px;width:100%;padding:25px 0 0;margin-bottom:18px}.v4-nav .v3-benefit-link{flex:1 1 50%;width:auto}.v4-note{font-size:8px}.v4-group{width:100%;max-width:100%;scroll-margin-top:82px}.v4-group .v4-card{grid-template-columns:76px minmax(0,1fr);grid-template-rows:auto;padding:20px 15px;min-height:0;gap:16px}.v4-image img{width:72px;height:72px}.v4-info h3{font-size:19px;line-height:24px}.v4-info p,.v4-info .v4-description{font-size:14px;line-height:21px}.v4-results{grid-column:1/-1}.v4-efficacy{width:100%;min-height:0;gap:12px}.v4-research{font-size:13px}.v4-participants{margin-left:0}.v4-metrics{grid-template-columns:1fr}.v4-bottom{gap:16px}.v4-filters{gap:8px;padding:12px}.v4-filters a{padding:10px;gap:6px}.v4-filters strong{font-size:12px}}
+
+/* TELIX V4 FIGMA — REVISAO BORDAS E INTERVALOS */
+.v4-group { --accent: #0193FF; border: 0; border-radius: 0; background: transparent; }
+.v4-group .v3-treatment-list { border: 1px solid #0193FF !important; border-radius: 0 !important; }
+.v4-group .v3-segment-header, .v4-group .v4-group-header { display: none !important; }
+.v4-group .v4-type { color: #0193FF; }
+.v4-group .v4-efficacy { box-sizing: border-box; width: 160px; height: 205px; min-height: 205px; padding: 18px 7px 15px 13px; border: 0.68026px solid #CCCCCC; border-radius: 6.80259px; display: grid; grid-template-rows: 44px 1fr 1fr; gap: 12px; background: #fff; font-family: Inter, sans-serif; }
+.v4-group .v4-efficacy-title { align-self: start; font-size: 15.292px; font-weight: 500; line-height: 18px; color: #000; gap: 7px; }
+.v4-group .v4-efficacy-title img { width: 33px; height: 28px; flex-shrink: 0; }
+.v4-group .v4-value { align-self: start; font-size: 12px; line-height: 16px; }
+.v4-group .v4-value-line { display: flex; align-items: baseline; gap: 4px; white-space: nowrap; }
+.v4-group .v4-value-label { font-size: 12.7434px; font-weight: 500; color: #000; }
+.v4-group .v4-range { font-size: 12px; font-weight: 500; color: #888; }
+.v4-group .v4-range strong { font-size: inherit; font-weight: 700; color: #050606; }
+.v4-group .v4-value small { display: block; font-size: 10px; line-height: 16px; font-weight: 400; color: #757474; margin-top: 6px; }
+@media (max-width: 768px) { .v4-group .v4-efficacy { width: 160px; } }
+</style>
+
+<!-- TELIX V4 REVISAO RODAPES FILTROS -->
+<style>
+.v4-group .v4-filters{box-sizing:border-box;width:100%;min-height:292px;background:#fff;border-top:1px solid #e0e0e0;border-radius:0 0 5px 5px;display:flex;align-items:flex-start;justify-content:space-between;gap:0;padding:49px 12.18% 76px;font-family:Inter,sans-serif}
+.v4-group .v4-filters .v4-filter-card{box-sizing:border-box;position:relative;flex:0 0 294px;height:166px;padding:0;background:#F9F6F6;border:1px solid #ccc;border-radius:5px;display:block;color:#000;text-decoration:none}
+.v4-filter-icon{position:absolute;left:20px;top:50%;transform:translateY(-50%);width:67px;height:67px;display:flex;align-items:center;justify-content:center;color:#0193ff}
+.v4-filter-icon svg{width:100%;height:100%}.v4-filter-copy{position:absolute;left:103px;right:18px;top:30px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:0}.v4-filter-label{font-size:13px;font-weight:600;line-height:30px;color:#757474}.v4-group .v4-filters .v4-filter-copy strong{font-size:20px;font-weight:600;line-height:30px;color:#000;white-space:nowrap}.v4-filter-copy small{font-size:10px;line-height:14px;color:#757474;margin-top:8px;font-weight:400}
+.v4-group .v4-filters-duradoura{padding:63px 4.2%;align-items:center}.v4-group .v4-filters-duradoura .v4-filter-card{flex:0 0 154px}.v4-group .v4-filters-duradoura .v4-filter-card:last-child{flex-basis:212px}.v4-filters-duradoura .v4-filter-copy{left:0;right:0;top:29px}.v4-filters-duradoura .v4-filter-label{font-size:10px}.v4-filters-duradoura .v4-filter-icon{width:24px;height:24px;left:50%;top:104px;transform:translateX(-50%)}.v4-filters-duradoura .v4-filter-icon i{font-size:24px}
+@media(max-width:900px){.v4-group .v4-filters{padding:35px 16px;gap:16px;flex-wrap:wrap;justify-content:center;min-height:0}.v4-group .v4-filters-duradoura .v4-filter-card{flex-basis:154px}}
+@media(max-width:380px){.v4-group .v4-filters-crise .v4-filter-card{flex-basis:100%;max-width:294px}.v4-group .v4-filters .v4-filter-copy strong{font-size:17px}}
+</style>
+
+<style>
+.v4-top-mobile{display:none}.v4-rigor-panel,.v4-rigor-scale{display:contents}
+@media(max-width:768px){
+.v4-top-desktop{display:none}.v4-top-mobile{display:block}
+.v3-topbar{height:59px!important;display:flex!important;align-items:center;justify-content:center;text-align:center;padding:0 12px;font:500 14px/21px Inter,sans-serif}
+.v3-header,.v3-header-inner{height:89px!important;width:100%!important;max-width:100%!important}
+.v3-header-inner{display:flex!important;align-items:center;justify-content:space-between;padding:0 12px;gap:8px}
+.v3-logo-link,.v3-login,.v3-login-lock,.v3-login-user,.v3-login-text{position:static!important;transform:none!important;margin:0!important}
+.v3-logo-link{width:88px!important;height:auto!important;flex-shrink:0}.v3-logo{width:88px!important;height:auto!important}
+.v3-login{display:flex!important;align-items:center;justify-content:flex-end;gap:7px;width:auto!important;min-width:0!important}.v3-login-text{font:700 12.375px/22px Inter,sans-serif;white-space:nowrap}.v3-login-user{width:22px!important;height:22px!important;flex-shrink:0}.v3-login-lock,.v3-login-lock img{width:15px!important;height:15px!important}
+.v3-main,.v3-content{width:100%!important;max-width:100%!important;margin:0 auto!important;padding:0!important;overflow:visible!important}
+.v3-title-area{width:auto!important;max-width:none!important;margin:20px 22px 0!important;padding:0!important}.v3-title{font:700 20px/23px Arial,sans-serif!important}.v3-subtitle{font:400 13px/20px Arial,sans-serif!important;margin-top:9px!important}
+.v4-nav.v3-benefits-nav{position:sticky;top:0;z-index:1000;width:100%!important;max-width:380px!important;height:95px!important;padding:41px 0 0!important;margin:0 auto 20px!important;display:flex;overflow:visible!important;background:#fff}
+.v4-nav .v3-benefit-link{flex:1 1 0!important;min-width:0!important;width:auto!important;height:54px!important;justify-content:center!important;padding:0 4px 5px!important}.v4-nav .v3-benefit-title{font:500 13px/16px Inter,sans-serif!important}.v4-nav .v4-note{bottom:54px;left:50%;transform:translateX(-20%);font-size:10px}
+.v4-group{width:calc(100% - 28px)!important;max-width:380px!important;margin:0 auto 30px!important;scroll-margin-top:95px!important}.v4-group .v3-treatment-list{width:100%!important;height:auto!important;overflow:hidden}
+.v4-group .v4-card:not(.v3-treatment-hidden){display:grid!important;position:relative!important;grid-template-columns:104px minmax(0,1fr);grid-template-rows:auto auto auto;gap:18px 8px;width:100%!important;max-width:100%!important;height:auto!important;min-height:487px!important;padding:22px 12px 24px!important;margin:0!important;box-sizing:border-box;align-content:start;overflow:visible!important}
+.v4-image,.v4-info,.v4-results,.v4-bottom{position:static!important;width:auto!important;min-width:0;height:auto!important;margin:0!important;transform:none!important}.v4-image img{width:104px;height:104px;object-fit:contain}.v4-info h3{font:700 15px/20px Inter,sans-serif;margin:0 0 4px}.v4-type{font:700 10px/14px Inter,sans-serif}.v4-info p,.v4-info .v4-description{font:400 11px/16px Inter,sans-serif;margin:6px 0;overflow-wrap:anywhere}
+.v4-results{grid-column:1/-1;display:flex;flex-direction:column;gap:18px}.v4-group .v4-efficacy{width:100%!important;height:auto!important;min-height:57px!important;padding:8px;display:grid;grid-template-columns:minmax(0,43%) minmax(0,1fr);grid-template-rows:auto auto;gap:4px 8px;align-items:center}.v4-group .v4-efficacy-title{grid-row:1/3;align-self:stretch;align-items:center;border-right:1px solid #ccc;padding-right:5px;font:500 13px/15px Inter,sans-serif;gap:5px}.v4-group .v4-efficacy-title img{width:25px;height:21px}.v4-group .v4-value{font-size:10px;line-height:16px}.v4-group .v4-value-line{gap:3px;white-space:normal;flex-wrap:wrap}.v4-group .v4-value-label{font-size:12px}.v4-group .v4-range{font-size:9px}.v4-group .v4-value small{display:none}
+.v4-time{position:relative;margin:0;text-align:left;border:1px solid #ccc;border-radius:5px;min-height:47px;padding:6px 8px 6px 44px;font:500 12px/16px Inter,sans-serif;color:#757474}.v4-time:before{content:"";position:absolute;left:13px;top:50%;transform:translateY(-50%);width:21px;height:21px;border:2px solid #0193ff;border-radius:50%}.v4-time:after{content:"";position:absolute;left:24px;top:calc(50% - 6px);width:6px;height:7px;border-left:2px solid #0193ff;border-bottom:2px solid #0193ff}.v4-time strong{font:700 10px/16px Inter,sans-serif;color:#000}
+.v4-bottom{grid-column:1/-1;display:flex;gap:20px;padding:0!important}.v4-research{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:8px;padding:0;font-size:12px}.v4-rigor-panel,.v4-participants{display:flex;flex-direction:column;justify-content:center;min-height:53px;border:1px solid #ccc;border-radius:5px;padding:5px;gap:5px}.v4-rigor-scale{display:flex;gap:3px;flex-wrap:wrap}.v4-rigor{width:15px;height:16px;font-size:9px;border-radius:3px}.v4-participants{margin:0;font-size:11px;text-align:center;overflow-wrap:anywhere}.v4-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px 6px;padding:0}.v4-metrics span{min-height:23px;font:500 9.7px/13px Inter,sans-serif;padding:4px 3px;gap:3px;flex-wrap:wrap}.v4-metrics span:nth-child(4){grid-column:1;grid-row:2}.v4-details{align-self:center;width:129px;height:26px;font:400 11px/17px Arial,sans-serif}
+.v4-group .v3-list-banner:not(.v3-treatment-hidden){display:block!important;position:static!important;width:100%!important;max-width:100%!important;height:auto!important;margin:0!important;transform:none!important}.v4-group .v3-list-banner picture,.v4-group .v3-list-banner-image{display:block;width:100%!important;height:auto!important;position:static!important}
+.v4-group .v4-filters{display:flex;flex-direction:column;align-items:center;gap:20px;padding:32px 10px;min-height:0}.v4-group .v4-filters-crise .v4-filter-card{flex:none;width:162px;height:92px}.v4-filters-crise .v4-filter-icon{width:37px;height:37px;left:10px}.v4-filters-crise .v4-filter-copy{left:56px;right:6px;top:12px}.v4-filters-crise .v4-filter-label{font-size:8px;line-height:15px}.v4-group .v4-filters-crise .v4-filter-copy strong{font-size:11px;line-height:17px}.v4-filters-crise .v4-filter-copy small{font-size:6px;line-height:9px;margin-top:4px}.v4-group .v4-filters-duradoura .v4-filter-card,.v4-group .v4-filters-duradoura .v4-filter-card:last-child{flex:none;width:160px;height:98px}.v4-filters-duradoura .v4-filter-copy{top:8px}.v4-group .v4-filters-duradoura .v4-filter-copy strong{font-size:15px;line-height:24px}.v4-filters-duradoura .v4-filter-icon{top:61px}
+.footer-details{width:100%!important;max-width:100%!important;padding:35px 18px!important;display:flex!important;flex-direction:column;gap:24px}.footer-column{width:100%!important;max-width:100%!important;position:static!important}.footer-bottom{height:auto!important;min-height:118px;padding:20px!important;text-align:center;white-space:normal!important}
+.v4-group .v3-treatment-hidden,.v3-segment-hidden{display:none!important}
+}
+</style>
+</head>
+
+
+    <body>
+
+
+        <!-- =====================================================
+            FAIXA SUPERIOR
+            ===================================================== -->
+
+        <div class="v3-topbar">
+
+            <span class="v4-top-desktop">Conheça opções de tratamentos de saúde</span><span class="v4-top-mobile">A plataforma do paciente bem informado</span>
+
+        </div>
+
+
+        <!-- =====================================================
+            HEADER
+            ===================================================== -->
+
+        <header class="v3-header">
+
+            <div class="v3-header-inner">
+
+
+                <a
+                    href="/home/"
+                    class="v3-logo-link"
+                >
+
+                    <img
+                        src="{% static 'img/logo.png' %}"
+                        alt="Telix"
+                        class="v3-logo"
+                    >
+
+                </a>
+    <a href="#" class="v3-login">
+
+        <!-- SACOLA AZUL -->
+        <span class="v3-login-lock" aria-hidden="true">
+            <img
+                src="{% static 'img/saloca_login.png' %}"
+                alt=""
+            >
+        </span>
+
+        <!-- USUÁRIO BRANCO NO CÍRCULO AZUL -->
+        <span class="v3-login-user" aria-hidden="true">
+            <i class="fa-solid fa-user"></i>
+        </span>
+
+        <!-- TEXTO -->
+        <span class="v3-login-text">
+            Cadastre-se/Login
+        </span>
+
+    </a>
+
+
+            </div>
+
+        </header>
+
+
+        <!-- =====================================================
+            CONTEÚDO
+            ===================================================== -->
+
+        <main class="v3-main">
+
+            <div class="v3-content">
+
+
+
+                <!-- =============================================
+                    TÍTULO
+                    ============================================= -->
+
+                <div class="v3-title-area">
+
+                    <h1 class="v3-title">
+
+                        Tratamentos para
+                        {{ condicao.nome|lower }}
+
+                    </h1>
+
+
+                    <p class="v3-subtitle">
+
+                        Classificados por tipo de benefício obtido
+                        pelos pacientes com o uso dos tratamentos,
+                        com base em pesquisas científicas, e
+                        ordenados por eficácia.
+
+                    </p>
+
+                </div>
+<!-- =============================================
+    NAVEGAÇÃO DOS BENEFÍCIOS
+    ============================================= -->
+
+<nav class="v3-benefits-nav v4-nav" aria-label="Tipos de benefício">
+{% for lista in listas %}
+<a href="#{{ lista.slug }}" class="v3-benefit-link{% if forloop.first %} is-active{% endif %}" data-target="{{ lista.slug }}">
+{% if lista.slug == 'crise' %}<span class="v4-note"><svg class="v4-note-arrow" viewBox="0 0 16 17" aria-hidden="true"><path d="M14 2 Q4 4 4 14 M1 10 L4 15 L9 11" fill="none" stroke="#E32929" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="v4-note-text">efeito rápido,<span class="v4-note-second">mas temporário</span></span></span>{% endif %}
+<span class="v3-benefit-title">{{ lista.nome }}</span></a>
+{% endfor %}
+</nav>
+{% for lista in listas %}
+<section id="{{ lista.slug }}" class="v3-segment v4-group{% if not lista.visivel_inicial_v4 %} v3-segment-hidden{% endif %}">
+
+<div class="v3-treatment-list">
+{% for item in lista.itens %}
+{% with tratamento=item.obj %}
+<article class="v3-treatment v4-card{% if not item.visivel_inicial_v4 %} v3-treatment-hidden{% endif %}" data-global-position="{{ item.posicao_global_v4 }}" data-detail-url="{% url 'pagina_detalhe_tratamento_v2' condicao_slug=condicao.slug tratamento_slug=tratamento.slug %}?ef={% if item.bom %}{{ item.bom.beneficio_slug }}{% else %}{{ item.otimo.beneficio_slug }}{% endif %}" tabindex="0" role="link" aria-label="Ver detalhes de {{ tratamento.nome }}">
+<div class="v4-image"><img src="{% if tratamento.imagem %}{{ tratamento.imagem.url }}{% else %}{% static 'default-image.jpg' %}{% endif %}" alt="{{ tratamento.nome }}" loading="lazy"></div>
+<div class="v4-info"><h3>{{ tratamento.nome }}</h3><div class="v4-type">{% for tipo in tratamento.tipo_tratamento.all %}{{ tipo.nome }}{% if not forloop.last %}, {% endif %}{% endfor %}</div>
+<p><strong>Princípio ativo:</strong> {{ tratamento.principio_ativo|default:'ND' }}</p>
+{% if item.descricao_lista %}<p class="v4-description">{{ item.descricao_lista }}</p>{% endif %}</div>
+<div class="v4-results"><div class="v4-efficacy"><div class="v4-efficacy-title"><img src="{% if lista.slug == 'crise' %}{% static 'img/reduca_temporaria_lista.png' %}{% else %}{% static 'img/reducao_persistente_dos_sintomas.png' %}{% endif %}" alt="">{{ lista.nome }}</div>
+<div class="v4-value"><div class="v4-value-line"><span class="v4-value-label">Bom:</span> {% if item.bom and item.bom.min_str and item.bom.max_str %}<span class="v4-range">{{ item.bom.min_str }} a <strong>{{ item.bom.max_str }}%</strong></span>{% else %}<span class="v4-range">—</span>{% endif %}</div><small>Redução dos sintomas</small></div>
+<div class="v4-value"><div class="v4-value-line"><span class="v4-value-label">Ótimo:</span> {% if item.otimo and item.otimo.min_str and item.otimo.max_str %}<span class="v4-range">{{ item.otimo.min_str }} a <strong>{{ item.otimo.max_str }}%</strong></span>{% else %}<span class="v4-range">—</span>{% endif %}</div><small>Eliminação dos sintomas</small></div>
+</div>
+<div class="v4-time">Prazo para efeito<strong>{% if tratamento.prazo_efeito_min != None %}{{ tratamento.prazo_efeito_min_formatado }}{% if tratamento.prazo_efeito_max != None and tratamento.prazo_efeito_min != tratamento.prazo_efeito_max %} a {{ tratamento.prazo_efeito_max_formatado }}{% endif %}{% elif tratamento.prazo_efeito_max != None %}{{ tratamento.prazo_efeito_max_formatado }}{% else %}—{% endif %}</strong></div></div>
+<div class="v4-bottom"><div class="v4-research"><div class="v4-rigor-panel"><span class="v4-rigor-label">Rigor das pesquisas:</span><span class="v4-rigor-scale">{% for nivel in '1234567' %}<span class="v4-rigor{% if item.rigor_v4|stringformat:'s' >= nivel %} is-selected{% endif %}">{{ nivel }}</span>{% endfor %}</span></div><span class="v4-participants">{{ item.participantes_v4|default_if_none:'—'|default:'—' }} Participantes</span></div>
+<div class="v4-metrics"><span><strong>{{ tratamento.contraindicacoes.count }}</strong> Contraindicações</span><span><strong>{{ tratamento.reacoes_adversas.count }}</strong> Reações adversas</span><span><strong>{% if tratamento.risco != None %}{{ tratamento.risco|floatformat:2 }}%{% else %}—{% endif %}</strong> Risco de reação adversa</span><span><strong>{% if tratamento.custo_medicamento != None %}R$ {{ tratamento.custo_medicamento|floatformat:2 }}{% else %}—{% endif %}</strong> Custo</span></div><a class="v4-details" href="{% url 'pagina_detalhe_tratamento_v2' condicao_slug=condicao.slug tratamento_slug=tratamento.slug %}?ef={% if item.bom %}{{ item.bom.beneficio_slug }}{% else %}{{ item.otimo.beneficio_slug }}{% endif %}">ver detalhes ›</a></div>
+</article>
+{% endwith %}
+{% if item.mostrar_banner_v4 %}
+
+    <a
+        href="https://www.telix.inf.br/paciente-bem-informado"
+        class="v3-list-banner"
+        data-banner-position="{{ item.posicao_global_v4 }}"
+        
+        data-banner-cycle
+    >
+<picture>
+
+
+
+    <source
+
+        media="(max-width: 768px)"
+
+
+
+        srcset="{% static 'img/cuide_de_sua_saude_mobile.png' %}"
+
+
+
+        data-mobile-1="{% static 'img/cuide_saude_crianca_mobile.png' %}"
+
+        data-mobile-2="{% static 'img/banner_footer_mobile_.png' %}"
+
+        data-mobile-3="{% static 'img/ver_eficacia_tratamentos_mobile.png' %}"
+
+
+
+        data-mobile-4="{% static 'img/cuide_saude_crianca_mobile.png' %}"
+
+        data-mobile-5="{% static 'img/banner mobile.png' %}"
+
+        data-mobile-6="{% static 'img/eficacia_tratamentos_mobile.png' %}"
+
+    >
+
+
+
+    <img
+
+        src="{% static 'img/cuide_de_sua_saude.png' %}"
+
+
+
+        data-desktop-1="{% static 'img/cuide_de_sua_saude.png' %}"
+
+        data-desktop-2="{% static 'img/banner_footer_mobile.png' %}"
+
+        data-desktop-3="{% static 'img/ver_eficacia_de_outros_tratamentos_v1.png' %}"
+
+        data-desktop-4="{% static 'img/cuida_da_sua_saude.png' %}"
+
+        data-desktop-5="{% static 'img/voce_conhece_alguem_que_precisa_desse conteudo.png' %}"
+
+        data-desktop-6="{% static 'img/ver_eficacia_tratamentos_.png' %}"
+
+
+
+        alt="Conteúdo Telix"
+
+        class="v3-list-banner-image"
+
+    >
+
+
+
+</picture>
+    </a>
+
+{% endif %}
+
+
+{% endfor %}
+{% if lista.slug == "crise" %}
+
+    <div class="v4-filters v4-filters-crise">
+
+        <!-- SEGURANÇA DE USO - CRISE -->
+
+        <a class="v4-filter-card"
+           href="{{ url_filtros }}?grupo={{ lista.slug }}&amp;filtro=seguranca">
+
+            <span class="v4-filter-icon">
+
+                <svg viewBox="0 0 67 67"
+                     fill="none"
+                     stroke="#0094FF"
+                     stroke-width="4"
+                     stroke-linejoin="round"
+                     aria-hidden="true">
+
+                    <circle cx="16" cy="12" r="9"/>
+                    <circle cx="51" cy="12" r="9"/>
+                    <circle cx="33.5" cy="35" r="8"/>
+
+                    <path d="M3 64V35Q3 22 16 22Q26 22 29 27M38 27Q41 22 51 22Q64 22 64 35V64H3M23 64V53Q23 44 33.5 44Q44 44 44 53V64"/>
+
+                </svg>
+
+            </span>
+
+            <span class="v4-filter-copy">
+
+                <span class="v4-filter-label">
+                    Filtrar por
+                </span>
+
+                <strong>segurança de uso</strong>
+
+                <small>
+                    Crianças, Adolescentes, Idosos,
+                    Adultos, Lactantes e Gestantes
+                </small>
+
+            </span>
+
+        </a>
+
+
+        <!-- CONTRAINDICAÇÃO - CRISE -->
+
+        <a class="v4-filter-card"
+           href="{{ url_filtros }}?grupo={{ lista.slug }}&amp;filtro=contraindicacao">
+
+            <span class="v4-filter-icon">
+
+                <svg viewBox="0 0 64 64"
+                     fill="none"
+                     stroke="#0193FF"
+                     stroke-width="3"
+                     stroke-linejoin="round"
+                     aria-hidden="true">
+
+                    <rect x="7" y="3"
+                          width="29" height="12" rx="2"/>
+
+                    <path d="M12 15V21H31V15M39 54V61H3V21H39V26"/>
+
+                    <circle cx="47" cy="39" r="14"/>
+
+                    <path d="M41 33L53 45M53 33L41 45"/>
+
+                </svg>
+
+            </span>
+
+            <span class="v4-filter-copy">
+
+                <span class="v4-filter-label">
+                    Filtrar por
+                </span>
+
+                <strong>contraindicação</strong>
+
+                <small>
+                    Exclui da lista tratamentos que não
+                    podem ser utilizados por quem tem
+                    comorbidades específicas
+                </small>
+
+            </span>
+
+        </a>
+
+    </div>
+
+{% else %}
+
+    <div class="v4-filters v4-filters-duradoura">
+
+        <!-- CUSTO - MELHORA DURADOURA -->
+
+        <a class="v4-filter-card"
+        href="{{ url_filtros }}?grupo={{ lista.slug }}&amp;ordenar=custo">
+
+            <span class="v4-filter-icon">
+
+                <i class="fa-solid fa-dollar-sign"
+                   aria-hidden="true"></i>
+
+            </span>
+
+            <span class="v4-filter-copy">
+
+                <span class="v4-filter-label">
+                    Ordenar por
+                </span>
+
+                <strong>custo</strong>
+
+            </span>
+
+        </a>
+
+
+        <!-- PRAZO - MELHORA DURADOURA -->
+
+            <a class="v4-filter-card"
+            href="{{ url_filtros }}?grupo={{ lista.slug }}&amp;ordenar=prazo">
+
+            <span class="v4-filter-icon">
+
+                <i class="fa-solid fa-clock"
+                   aria-hidden="true"></i>
+
+            </span>
+
+            <span class="v4-filter-copy">
+
+                <span class="v4-filter-label">
+                    Ordenar por
+                </span>
+
+                <strong>prazo</strong>
+
+            </span>
+
+        </a>
+
+
+        <!-- RISCO - MELHORA DURADOURA -->
+
+<a class="v4-filter-card"
+   href="{{ url_filtros }}?grupo={{ lista.slug }}&amp;ordenar=risco">
+
+            <span class="v4-filter-icon">
+
+                <i class="fa-solid fa-triangle-exclamation"
+                   aria-hidden="true"></i>
+
+            </span>
+
+            <span class="v4-filter-copy">
+
+                <span class="v4-filter-label">
+                    Ordenar por
+                </span>
+
+                <strong>risco</strong>
+
+            </span>
+
+        </a>
+
+
+        <!-- SEGURANÇA DE USO - MELHORA DURADOURA -->
+
+            <a class="v4-filter-card"
+            href="{{ url_filtros }}?grupo={{ lista.slug }}&amp;filtro=seguranca">
+
+            <span class="v4-filter-icon">
+
+                <svg viewBox="0 0 67 67"
+                     fill="none"
+                     stroke="#0094FF"
+                     stroke-width="4"
+                     stroke-linejoin="round"
+                     aria-hidden="true">
+
+                    <circle cx="16" cy="12" r="9"/>
+                    <circle cx="51" cy="12" r="9"/>
+                    <circle cx="33.5" cy="35" r="8"/>
+
+                    <path d="M3 64V35Q3 22 16 22Q26 22 29 27M38 27Q41 22 51 22Q64 22 64 35V64H3M23 64V53Q23 44 33.5 44Q44 44 44 53V64"/>
+
+                </svg>
+
+            </span>
+
+            <span class="v4-filter-copy">
+
+                <span class="v4-filter-label">
+                    Filtrar por
+                </span>
+
+                <strong>segurança de uso</strong>
+
+            </span>
+
+        </a>
+
+    </div>
+
+{% endif %}
+
+</div>
+</section>
+
+{% empty %}<p class="v3-empty">Nenhum tratamento disponível nestes grupos.</p>{% endfor %}
+{% if tem_mais_tratamentos_v4 %}<div class="v3-load-more" id="v3-global-load-more"><button type="button" class="v3-load-more-button" id="v3-global-load-more-button" data-total="{{ total_tratamentos_v4 }}">Ver mais</button></div>{% endif %}
+</div>
+</main>
+    <!-- =====================================================
+        FOOTER
+        IGUAL À TELA DE DETALHES
+        ===================================================== -->
+
+    <footer class="site-footer">
+
+        <div class="footer-details">
+
+
+            <!-- ==================================================
+                COLUNA 1
+                ================================================== -->
+
+            <div class="footer-column footer-column-1">
+
+
+                <div class="footer-block">
+
+                    <h3>
+
+                        <a
+                            href="https://www.telix.inf.br/tratamentos-risco-custo-contraindicado-eficacia-prazo"
+                            style="color: inherit; text-decoration: none;"
+                        >
+                            Páginas de tratamentos
+                        </a>
+
+                    </h3>
+
+
+                    <a href="https://www.telix.inf.br/como-calculamos-a-eficacia-de-tratamentos-de-saude">
+                        Eficácia - como calculamos
+                    </a>
+
+                </div>
+
+
+                <div class="footer-block footer-scientific">
+
+                    <h3>
+
+                        <a
+                            href="https://www.telix.inf.br/evidencias-clinicas-de-pesquisas-sobre-tratamentos-de-saude"
+                            style="color: inherit; text-decoration: none;"
+                        >
+                            Páginas de artigos científicos
+                        </a>
+
+                    </h3>
+
+
+                    <a href="https://www.telix.inf.br/criterios-do-rigor-da-pesquisa-de-tratamentos-de-saude">
+                        Rigor da pesquisa - critérios
+                    </a>
+
+                </div>
+
+
+                <a
+                    href="https://api.whatsapp.com/send/?phone=5545999830136&text=Ol%C3%A1%21+vim+do+site+Telix%3A+Contexto+na+sa%C3%BAde+e+gostaria+de+mais+informa%C3%A7%C3%B5es%21&type=phone_number&app_absent=0"
+                    class="footer-special footer-share"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    <img
+                        src="{% static 'img/whats-app.png' %}"
+                        alt="WhatsApp"
+                        class="footer-whatsapp-icon"
+                    >
+
+                    <span>
+                        Compartilhe
+                    </span>
+
+                </a>
+
+
+            </div>
+
+
+            <!-- ==================================================
+                COLUNA 2
+                ================================================== -->
+
+            <div class="footer-column footer-column-2">
+
+
+                <div class="footer-block">
+
+                    <h3>
+
+                        <a
+                            href="https://www.telix.inf.br/documentacao"
+                            style="color: inherit; text-decoration: none;"
+                        >
+                            Documentos
+                        </a>
+
+                    </h3>
+
+
+                    <a href="https://www.telix.inf.br/documentacao/politica-de-privacidade">
+                        Política de Privacidade
+                    </a>
+
+
+                    <a href="https://www.telix.inf.br/documentacao/termos-de-uso">
+                        Termos de uso
+                    </a>
+
+                </div>
+
+
+                <div class="footer-block footer-contact">
+
+
+                    <h3 class="footer-contact-title">
+
+                        <img
+                            src="{% static 'img/whats-app.png' %}"
+                            alt="WhatsApp"
+                            class="footer-contact-whatsapp-icon"
+                        >
+
+                        <a
+                            href="https://api.whatsapp.com/send/?phone=5545999830136&text=Ol%C3%A1%21+vim+do+site+Telix%3A+Contexto+na+sa%C3%BAde+e+gostaria+de+mais+informa%C3%A7%C3%B5es%21&type=phone_number&app_absent=0"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style="color: inherit; text-decoration: none;"
+                        >
+                            <span>
+                                Fale com a gente!
+                            </span>
+                        </a>
+
+                    </h3>
+
+
+                    <p>
+
+                        <a
+                            href="https://api.whatsapp.com/send/?phone=5545999830136&text=Ol%C3%A1%21+vim+do+site+Telix%3A+Contexto+na+sa%C3%BAde+e+gostaria+de+mais+informa%C3%A7%C3%B5es%21&type=phone_number&app_absent=0"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style="color: inherit; text-decoration: none;"
+                        >
+                            (45) 99983-0136
+                        </a>
+
+                    </p>
+
+
+                    <a href="mailto:contato@telix.inf.br">
+                        contato@telix.inf.br
+                    </a>
+
+
+                </div>
+
+
+                <a
+                    href="https://www.telix.inf.br/paciente-bem-informado"
+                    class="footer-special footer-premium"
+                >
+                    Contratar plano premium
+                </a>
+
+
+            </div>
+
+
+            <!-- ==================================================
+                COLUNA 3
+                ================================================== -->
+
+            <div class="footer-column footer-column-3">
+
+
+                <div class="footer-block">
+
+                    <h3>
+                        Apresentações
+                    </h3>
+
+
+                    <a href="https://www.telix.inf.br/perguntas-e-respostas">
+                        Perguntas e respostas
+                    </a>
+
+
+                    <a href="https://www.telix.inf.br/v%C3%ADdeos-entrevistas-e-materias-sobre-tratamentos-de-saude">
+                        Blog
+                    </a>
+
+
+                    <a href="https://www.telix.inf.br/quem-somos-telix-contexto-na-saude">
+                        Quem somos
+                    </a>
+
+
+                    <a href="https://www.telix.inf.br/depoimentos-experiencias-tratamentos-de-sa%C3%BAde">
+                        Depoimentos
+                    </a>
+
+                </div>
+
+
+                <div class="footer-specialists">
+
+                    <h3>
+
+                        <a
+                            href="https://www.telix.inf.br/entrevistas-com-especialistas-sobre-tratamento-de-sa%C3%BAde"
+                            style="color: inherit; text-decoration: none;"
+                        >
+                            Opiniões de especialistas
+                        </a>
+
+                    </h3>
+
+                </div>
+
+
+                <!-- SELETOR DE DOENÇA -->
+
+                <div class="footer-disease">
+
+                    <div class="footer-disease-label">
+                        Selecione a doença
+                    </div>
+
+
+                    <div class="footer-disease-select">
+
+
+                        <button
+                            type="button"
+                            class="footer-disease-button"
+                            id="footerDiseaseButton"
+                            aria-expanded="false"
+                            aria-controls="footerDiseaseOptions"
+                        >
+
+                            <span>
+                                {{ condicao.nome|default:"Enxaqueca" }}
+                            </span>
+
+                            <span class="footer-chevron"></span>
+
+                        </button>
+
+
+                        <div
+                            class="footer-disease-options"
+                            id="footerDiseaseOptions"
+                        >
+
+                            {% for item in footer_listas %}
+
+                                <a href="{{ item.url }}">
+                                    {{ item.label }}
+                                </a>
+
+                            {% empty %}
+
+                                <span class="footer-disease-empty">
+                                    Nenhuma opção disponível
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            Linca Telecomunicações Ltda — CNPJ:
+            03.376.788-0001/23
+
+        </div>
+
+
+    </footer>
+
+
+    <!-- =====================================================
+        FAIXA FIXA - NÃO SE AUTOMEDIQUE
+        ===================================================== -->
+
+    <div class="v3-health-fixed-bar" id="v3HealthFixedBar">
+
+        <div class="v3-health-fixed-bar-inner">
+
+<a
+    href="https://www.telix.inf.br/nao-se-automedique-entenda-os-riscos"
+    class="v3-health-warning"
+>
+    Não se automedique
+</a>
+<a
+    href="https://www.telix.inf.br/marcar-consulta-com-medico"
+    rel="noopener noreferrer"
+    class="v3-health-consultation"
+>
+    Consulta online 24h
+</a>
+        </div>
+
+    </div>
+
+        <!-- =====================================================
+            JS
+            ÂNCORAS + BENEFÍCIO ATIVO
+            ===================================================== -->
+
+<!-- TELIX LISTA V2 - JAVASCRIPT CONSOLIDADO -->
+<script>
+(function () {
+  "use strict";
+
+  function iniciarListaV2() {
+    // 1. BANNERS: independente do botão "Ver mais".
+    const bannerLinks = {
+      1: "https://www.telix.inf.br/paciente-bem-informado",
+      2: "https://api.whatsapp.com/send/?text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.%0A%0Ahttps%3A%2F%2Fwww.telix.inf.br%2F",
+      3: "https://tratamentos.telix.inf.br/home/",
+      4: "https://www.telix.inf.br/paciente-bem-informado",
+      5: "https://api.whatsapp.com/send/?text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.%0A%0Ahttps%3A%2F%2Fwww.telix.inf.br%2F",
+      6: "https://tratamentos.telix.inf.br/home/"
+    };
+
+    document.querySelectorAll(".v3-list-banner[data-banner-cycle]").forEach(function (banner) {
+      const posicao = Number.parseInt(banner.dataset.bannerPosition || "0", 10);
+      if (!Number.isInteger(posicao) || posicao < 5 || (posicao - 5) % 10 !== 0) return;
+
+      const ciclo = (Math.floor((posicao - 5) / 10) % 6) + 1;
+      const image = banner.querySelector("img");
+      const source = banner.querySelector("source");
+      const desktopSrc = image && image.getAttribute("data-desktop-" + ciclo);
+      const mobileSrc = source && source.getAttribute("data-mobile-" + ciclo);
+
+      if (image && desktopSrc) image.src = desktopSrc;
+      if (source && mobileSrc) source.srcset = mobileSrc;
+      if (bannerLinks[ciclo]) banner.href = bannerLinks[ciclo];
+    });
+
+    // 2. VER MAIS GLOBAL: 50 tratamentos por lote (valor original).
+    const loadMoreButton = document.getElementById("v3-global-load-more-button");
+    const loadMoreContainer = document.getElementById("v3-global-load-more");
+    const temVerMais = Boolean(loadMoreButton && loadMoreContainer);
+    const LOTE = 50;
+    const totalTratamentos = temVerMais
+      ? Number.parseInt(loadMoreButton.dataset.total || "0", 10)
+      : document.querySelectorAll(".v3-treatment[data-global-position]").length;
+    let limiteAtual = LOTE;
+
+    function atualizarTratamentos() {
+      document.querySelectorAll(".v3-treatment[data-global-position]").forEach(function (tratamento) {
+        const posicao = Number.parseInt(tratamento.dataset.globalPosition || "0", 10);
+        tratamento.classList.toggle("v3-treatment-hidden", posicao > limiteAtual);
+      });
+    }
+
+    function atualizarBanners() {
+      document.querySelectorAll(".v3-list-banner[data-banner-position]").forEach(function (banner) {
+        const posicao = Number.parseInt(banner.dataset.bannerPosition || "0", 10);
+        banner.classList.toggle("v3-treatment-hidden", posicao > limiteAtual);
+      });
+    }
+
+    function atualizarSegmentos() {
+      document.querySelectorAll(".v3-segment").forEach(function (segmento) {
+        const visivel = segmento.querySelector(".v3-treatment:not(.v3-treatment-hidden)");
+        segmento.classList.toggle("v3-segment-hidden", !visivel);
+      });
+    }
+
+    function posicionarBotao() {
+      if (!temVerMais) return;
+      if (limiteAtual >= totalTratamentos) {
+        loadMoreContainer.style.display = "none";
+        return;
+      }
+      loadMoreContainer.style.display = "flex";
+      const tratamentosVisiveis = Array.from(document.querySelectorAll(
+        ".v3-treatment[data-global-position]:not(.v3-treatment-hidden)"
+      ));
+      if (!tratamentosVisiveis.length) return;
+      const ultimoTratamento = tratamentosVisiveis[tratamentosVisiveis.length - 1];
+      const posicaoUltimo = ultimoTratamento.dataset.globalPosition;
+      const bannerDepois = document.querySelector(
+        '.v3-list-banner[data-banner-position="' + posicaoUltimo + '"]:not(.v3-treatment-hidden)'
+      );
+      (bannerDepois || ultimoTratamento).insertAdjacentElement("afterend", loadMoreContainer);
+    }
+
+    function atualizarLista() {
+      // Sem botão, o servidor já apresenta a lista completa; não esconder tratamentos.
+      if (!temVerMais) return;
+      atualizarTratamentos();
+      atualizarBanners();
+      atualizarSegmentos();
+      posicionarBotao();
+    }
+
+    window.v3RevealThrough = function (posicao) {
+      if (!temVerMais) return;
+      posicao = Number.parseInt(posicao || "0", 10);
+      if (posicao > limiteAtual) {
+        while (limiteAtual < posicao && limiteAtual < totalTratamentos) {
+          limiteAtual += LOTE;
+        }
+        limiteAtual = Math.min(limiteAtual, totalTratamentos);
+      }
+      atualizarLista();
+    };
+
+    if (temVerMais) {
+      loadMoreButton.addEventListener("click", function () {
+        limiteAtual = Math.min(limiteAtual + LOTE, totalTratamentos);
+        atualizarLista();
+      });
+      atualizarLista();
+    }
+
+    // 3. NAVEGAÇÃO ENTRE BENEFÍCIOS E INDICADOR ATIVO.
+    const links = document.querySelectorAll(".v3-benefit-link");
+    const sections = document.querySelectorAll(".v3-segment");
+
+    function setActiveBenefit(slug) {
+      links.forEach(function (link) {
+        const active = link.dataset.target === slug;
+        link.classList.toggle("is-active", active);
+        const icon = link.querySelector(".reducao-temporaria");
+        if (icon) {
+          const normal = icon.dataset.iconNormal;
+          const selected = icon.dataset.iconSelected;
+          if (active && selected) icon.src = selected;
+          else if (normal) icon.src = normal;
+        }
+      });
+    }
+
+    links.forEach(function (link) {
+      link.addEventListener("click", function (event) {
+        event.preventDefault();
+        const slug = link.dataset.target;
+        const target = document.getElementById(slug);
+        if (!target) return;
+        setActiveBenefit(slug);
+        const primeiroTratamento = target.querySelector(".v3-treatment[data-global-position]");
+        if (primeiroTratamento) {
+          window.v3RevealThrough(primeiroTratamento.dataset.globalPosition);
+        }
+        history.replaceState(null, "", "#" + slug);
+        requestAnimationFrame(function () {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+    });
+
+    const slugInicial = window.location.hash ? decodeURIComponent(window.location.hash.substring(1)) : "";
+    const destinoInicial = slugInicial ? document.getElementById(slugInicial) : null;
+    if (destinoInicial && destinoInicial.classList.contains("v3-segment")) {
+      setActiveBenefit(slugInicial);
+      const primeiro = destinoInicial.querySelector(".v3-treatment[data-global-position]");
+      if (primeiro) {
+        window.v3RevealThrough(primeiro.dataset.globalPosition);
+        requestAnimationFrame(function () {
+          destinoInicial.scrollIntoView({ block: "start" });
+        });
+      }
+    } else if (links.length) {
+      setActiveBenefit(links[0].dataset.target);
+    }
+
+    if ("IntersectionObserver" in window && sections.length) {
+      const observer = new IntersectionObserver(function (entries) {
+        let visibleSection = null;
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting &&
+              (visibleSection === null || entry.intersectionRatio > visibleSection.intersectionRatio)) {
+            visibleSection = entry;
+          }
+        });
+        if (visibleSection) setActiveBenefit(visibleSection.target.id);
+      }, {
+        root: null,
+        rootMargin: "-10% 0px -65% 0px",
+        threshold: [0, 0.1, 0.25, 0.5]
+      });
+      sections.forEach(function (section) { observer.observe(section); });
+    }
+
+    // 4. SELETOR DE DOENÇAS DO RODAPÉ.
+    const footerButton = document.getElementById("footerDiseaseButton");
+    const footerOptions = document.getElementById("footerDiseaseOptions");
+    if (footerButton && footerOptions) {
+      footerButton.addEventListener("click", function (event) {
+        event.stopPropagation();
+        const isOpen = footerOptions.classList.toggle("open");
+        footerButton.classList.toggle("open", isOpen);
+        footerButton.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      });
+      document.addEventListener("click", function () {
+        footerOptions.classList.remove("open");
+        footerButton.classList.remove("open");
+        footerButton.setAttribute("aria-expanded", "false");
+      });
+    }
+
+    // 5. FAIXA FIXA DE SAÚDE.
+    const healthBar = document.getElementById("v3HealthFixedBar");
+    const footerBottom = document.querySelector(".footer-bottom");
+    if (healthBar && footerBottom) {
+      function updateHealthBarPosition() {
+        const footerBottomRect = footerBottom.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        if (footerBottomRect.bottom > viewportHeight) {
+          healthBar.style.position = "fixed";
+          healthBar.style.bottom = "0";
+          healthBar.style.top = "auto";
+          return;
+        }
+        const documentTop = window.scrollY + footerBottomRect.bottom;
+        healthBar.style.position = "absolute";
+        healthBar.style.top = documentTop + "px";
+        healthBar.style.bottom = "auto";
+      }
+      window.addEventListener("scroll", updateHealthBarPosition, { passive: true });
+      window.addEventListener("resize", updateHealthBarPosition);
+      updateHealthBarPosition();
+    }
+
+    // 6. CARDS CLICÁVEIS, COM SUPORTE A TECLADO.
+    document.querySelectorAll(".v3-treatment[data-detail-url]").forEach(function (card) {
+      card.addEventListener("click", function (event) {
+        if (event.target.closest("a, button")) return;
+        window.location.href = card.dataset.detailUrl;
+      });
+      card.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" || event.key === " ") {
+          if (event.target.closest("a, button") && event.target !== card) return;
+          event.preventDefault();
+          window.location.href = card.dataset.detailUrl;
+        }
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", iniciarListaV2, { once: true });
+  } else {
+    iniciarListaV2();
+  }
+})();
+</script>
+
+
+    </body>
+
+    </html>
