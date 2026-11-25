@@ -3864,7 +3864,42 @@
 </div>
 <div class="v4-time">Prazo para efeito<strong>{% if tratamento.prazo_efeito_min != None %}{{ tratamento.prazo_efeito_min_formatado }}{% if tratamento.prazo_efeito_max != None and tratamento.prazo_efeito_min != tratamento.prazo_efeito_max %} a {{ tratamento.prazo_efeito_max_formatado }}{% endif %}{% elif tratamento.prazo_efeito_max != None %}{{ tratamento.prazo_efeito_max_formatado }}{% else %}—{% endif %}</strong></div></div>
 <div class="v4-bottom"><div class="v4-research"><div class="v4-rigor-panel"><span class="v4-rigor-label">Rigor das pesquisas:</span><span class="v4-rigor-scale">{% for nivel in '1234567' %}<span class="v4-rigor{% if item.rigor_v4|stringformat:'s' >= nivel %} is-selected{% endif %}">{{ nivel }}</span>{% endfor %}</span></div><span class="v4-participants">{{ item.participantes_v4|default_if_none:'—'|default:'—' }} Participantes</span></div>
-<div class="v4-metrics"><span><strong>{{ tratamento.contraindicacoes.count }}</strong> Contraindicações</span><span><strong>{{ tratamento.reacoes_adversas.count }}</strong> Reações adversas</span><span><strong>{% if tratamento.risco != None %}{{ tratamento.risco|floatformat:2 }}%{% else %}—{% endif %}</strong> Risco de reação adversa</span><span><strong>{% if tratamento.custo_medicamento != None %}R$ {{ tratamento.custo_medicamento|floatformat:2 }}{% else %}—{% endif %}</strong> Custo</span></div><a class="v4-details" href="{% url 'pagina_detalhe_tratamento_v2' condicao_slug=condicao.slug tratamento_slug=tratamento.slug %}?ef={% if item.bom %}{{ item.bom.beneficio_slug }}{% else %}{{ item.otimo.beneficio_slug }}{% endif %}">ver detalhes ›</a></div>
+
+<div class="v4-metrics">
+
+    <span>
+        <strong>{{ tratamento.contraindicacoes.count }}</strong>
+        Contraindicações
+    </span>
+
+    <span>
+        <strong>{{ tratamento.reacoes_adversas.count }}</strong>
+        Reações adversas
+    </span>
+
+    <span>
+        <strong>{{ item.risco_v4_str }}</strong>
+        Risco de reação adversa
+    </span>
+
+    <span>
+        <strong>
+            {% if tratamento.custo_medicamento != None %}
+                R$ {{ tratamento.custo_medicamento|floatformat:2 }}
+            {% else %}
+                —
+            {% endif %}
+        </strong>
+        Custo
+    </span>
+
+</div>
+
+<a class="v4-details" href="{% url 'pagina_detalhe_tratamento_v2' condicao_slug=condicao.slug tratamento_slug=tratamento.slug %}?ef={% if item.bom %}{{ item.bom.beneficio_slug }}{% else %}{{ item.otimo.beneficio_slug }}{% endif %}">
+    ver detalhes ›
+</a>
+
+</div>
 </article>
 {% endwith %}
 {% if item.mostrar_banner_v4 %}

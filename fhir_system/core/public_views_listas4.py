@@ -2,7 +2,10 @@
 from django.http import Http404
 from django.shortcuts import render
 from django.db.models import Sum, Max, Q
-from core.models import EvidenciasClinicas
+from core.models import (
+    EvidenciasClinicas,
+    DetalhesTratamentoReacaoAdversa,
+)
 
 from core.models import PaginaListaTratamento
 from django.conf import settings
@@ -176,11 +179,6 @@ def montar_listas_v4(segmentos):
     return listas
 
 
-
-# ============================================================
-# INDICADORES COMPLEMENTARES DOS TRATAMENTOS
-# ============================================================
-
 def complementar_indicadores_v4(listas, condicao):
 
     tratamentos_ids = {
@@ -188,6 +186,10 @@ def complementar_indicadores_v4(listas, condicao):
         for lista in listas
         for item in lista["itens"]
     }
+
+    # ========================================================
+    # EVIDÊNCIAS CLÍNICAS
+    # ========================================================
 
     evidencias = (
         EvidenciasClinicas.objects
@@ -216,12 +218,38 @@ def complementar_indicadores_v4(listas, condicao):
         for registro in evidencias
     }
 
+    # ========================================================
+    # MAIOR PERCENTUAL DE REAÇÃO ADVERSA
+    # ========================================================
+
+    reacoes_adversas = (
+        DetalhesTratamentoReacaoAdversa.objects
+        .filter(
+            tratamento_id__in=tratamentos_ids,
+        )
+        .values("tratamento_id")
+        .annotate(
+            risco_maximo=Max("reacao_max"),
+        )
+    )
+
+    riscos = {
+        registro["tratamento_id"]: registro["risco_maximo"]
+        for registro in reacoes_adversas
+    }
+
+    # ========================================================
+    # COMPLEMENTA OS INDICADORES DOS CARDS
+    # ========================================================
+
     for lista in listas:
 
         for item in lista["itens"]:
 
+            tratamento_id = item["tratamento_id"]
+
             dados = indicadores.get(
-                item["tratamento_id"],
+                tratamento_id,
                 {},
             )
 
@@ -233,7 +261,18 @@ def complementar_indicadores_v4(listas, condicao):
                 "rigor"
             )
 
+            risco_maximo = riscos.get(tratamento_id)
+
+            item["risco_v4"] = risco_maximo
+
+            item["risco_v4_str"] = (
+                f"{risco_maximo:.2f}".replace(".", ",") + "%"
+                if risco_maximo is not None
+                else "—"
+            )
+
     return listas
+
 # ============================================================
 # PAGINAÇÃO E BANNERS
 # ============================================================
