@@ -3663,7 +3663,7 @@
 
     <style>
 
-.v4-nav.v3-benefits-nav{width:950px;max-width:100%;height:82px;padding:30px 0 0 60px;margin:0 auto 28px;overflow:visible;align-items:flex-end;justify-content:flex-start}
+.v4-nav.v3-benefits-nav{width:950px;max-width:100%;height:82px;padding: 30px 0 0 0;;margin:0 auto 28px;overflow:visible;align-items:flex-end;justify-content:flex-start}
 .v4-nav .v3-benefit-link{flex:0 1 190px;min-width:0;width:190px;height:48px;margin:0;padding:12px 5px;justify-content:center}
 .v4-nav .is-active .v3-benefit-title{color:#0193ff}
 .v4-nav .v3-benefit-link{position:relative}
@@ -3735,6 +3735,88 @@
 .footer-details{width:100%!important;max-width:100%!important;padding:35px 18px!important;display:flex!important;flex-direction:column;gap:24px}.footer-column{width:100%!important;max-width:100%!important;position:static!important}.footer-bottom{height:auto!important;min-height:118px;padding:20px!important;text-align:center;white-space:normal!important}
 .v4-group .v3-treatment-hidden,.v3-segment-hidden{display:none!important}
 }
+
+/* TELIX V4 - ALINHAMENTO DO PRAZO DESKTOP */
+@media (min-width: 769px) {
+
+    .v4-group .v4-card {
+        grid-template-rows: minmax(270px, auto) auto;
+    }
+
+    .v4-results {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        position: relative;
+    }
+
+    .v4-time {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin: 0;
+        transform: translateY(-50%);
+        width: max-content;
+        text-align: right;
+        line-height: 21px;
+    }
+
+    .v4-time strong {
+        display: block;
+        white-space: nowrap;
+        width: auto;
+        margin: 0;
+        text-align: right;
+    }
+
+    .v4-research {
+        min-height: 42px;
+        padding-right: 250px;
+        box-sizing: border-box;
+    }
+
+}
+
+/* TELIX V4 - DEGRADÊ DO ÚLTIMO TRATAMENTO */
+
+.v4-group .v4-card.v4-card-fade {
+    position: relative;
+}
+
+.v4-group .v4-card.v4-card-fade::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 65%;
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.65) 50%,
+        #ffffff 100%
+    );
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* TELIX V4 - POSICIONAMENTO DO BOTÃO VER MAIS */
+
+#v3-global-load-more {
+    position: relative;
+    z-index: 10;
+    margin-top: -65px !important;
+    padding: 15px 0 25px !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+#v3-global-load-more-button {
+    position: relative;
+    z-index: 11;
+    background: #ffffff;
+}
+
 </style>
 </head>
 
@@ -3915,59 +3997,28 @@
 
 
 
-    <source
+   <source
+    media="(max-width: 768px)"
 
-        media="(max-width: 768px)"
+    srcset="{% static 'img/ver_eficacia_tratamentos_mobile_v1.png' %}"
 
+    data-mobile-1="{% static 'img/ver_eficacia_tratamentos_mobile_v1.png' %}"
+    data-mobile-2="{% static 'img/banner_footer_mobile_.png' %}"
+    data-mobile-3="{% static 'img/ver_eficacia_tratamentos_mobile.png' %}"
+    data-mobile-4="{% static 'img/banner mobile.png' %}"
+>
 
+<img
+    src="{% static 'img/ver_eficacia_tratamentos_v1.png' %}"
 
-        srcset="{% static 'img/cuide_de_sua_saude_mobile.png' %}"
+    data-desktop-1="{% static 'img/ver_eficacia_tratamentos_v1.png' %}"
+    data-desktop-2="{% static 'img/banner_wpp_.png' %}"
+    data-desktop-3="{% static 'img/ver_eficacia_de_outros_tratamentos_v1.png' %}"
+    data-desktop-4="{% static 'img/banner familia.png' %}"
 
-
-
-        data-mobile-1="{% static 'img/cuide_saude_crianca_mobile.png' %}"
-
-        data-mobile-2="{% static 'img/banner_footer_mobile_.png' %}"
-
-        data-mobile-3="{% static 'img/ver_eficacia_tratamentos_mobile.png' %}"
-
-
-
-        data-mobile-4="{% static 'img/cuide_saude_crianca_mobile.png' %}"
-
-        data-mobile-5="{% static 'img/banner mobile.png' %}"
-
-        data-mobile-6="{% static 'img/eficacia_tratamentos_mobile.png' %}"
-
-    >
-
-
-
-    <img
-
-        src="{% static 'img/cuide_de_sua_saude.png' %}"
-
-
-
-        data-desktop-1="{% static 'img/cuide_de_sua_saude.png' %}"
-
-        data-desktop-2="{% static 'img/banner_wpp_.png' %}"
-
-        data-desktop-3="{% static 'img/ver_eficacia_de_outros_tratamentos_v1.png' %}"
-
-        data-desktop-4="{% static 'img/cuida_da_sua_saude.png' %}"
-
-        data-desktop-5="{% static 'img/voce_conhece_alguem_que_precisa_desse conteudo.png' %}"
-
-        data-desktop-6="{% static 'img/ver_eficacia_tratamentos_.png' %}"
-
-
-
-        alt="Conteúdo Telix"
-
-        class="v3-list-banner-image"
-
-    >
+    alt="Conteúdo Telix"
+    class="v3-list-banner-image"
+>
 
 
 
@@ -4533,19 +4584,20 @@
   function iniciarListaV2() {
     // 1. BANNERS: independente do botão "Ver mais".
     const bannerLinks = {
-      1: "https://www.telix.inf.br/paciente-bem-informado",
-      2: "https://api.whatsapp.com/send/?text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.%0A%0Ahttps%3A%2F%2Fwww.telix.inf.br%2F",
-      3: "https://tratamentos.telix.inf.br/home/",
-      4: "https://www.telix.inf.br/paciente-bem-informado",
-      5: "https://api.whatsapp.com/send/?text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.%0A%0Ahttps%3A%2F%2Fwww.telix.inf.br%2F",
-      6: "https://tratamentos.telix.inf.br/home/"
+        1: "https://www.telix.inf.br/condicoes-de-saude",
+
+        2: "https://api.whatsapp.com/send/?text=Vi+esse+site+sobre+compara%C3%A7%C3%A3o+de+tratamentos+de+sa%C3%BAde+e+achei+que+voc%C3%AA+poderia+gostar.%0A%0Ahttps%3A%2F%2Fwww.telix.inf.br%2F",
+
+        3: "https://www.telix.inf.br/condicoes-de-saude",
+
+        4: "https://www.telix.inf.br/paciente-bem-informado"
     };
 
     document.querySelectorAll(".v3-list-banner[data-banner-cycle]").forEach(function (banner) {
       const posicao = Number.parseInt(banner.dataset.bannerPosition || "0", 10);
       if (!Number.isInteger(posicao) || posicao < 5 || (posicao - 5) % 10 !== 0) return;
 
-      const ciclo = (Math.floor((posicao - 5) / 10) % 6) + 1;
+      const ciclo = (Math.floor((posicao - 5) / 10) % 4) + 1;
       const image = banner.querySelector("img");
       const source = banner.querySelector("source");
       const desktopSrc = image && image.getAttribute("data-desktop-" + ciclo);
@@ -4587,24 +4639,43 @@
       });
     }
 
-    function posicionarBotao() {
-      if (!temVerMais) return;
-      if (limiteAtual >= totalTratamentos) {
+function posicionarBotao() {
+
+    // Remove o degradê aplicado anteriormente
+    document.querySelectorAll(".v4-card-fade").forEach(function (card) {
+        card.classList.remove("v4-card-fade");
+    });
+
+    if (!temVerMais) return;
+
+    // Remove o botão quando todos os tratamentos estiverem visíveis
+    if (limiteAtual >= totalTratamentos) {
         loadMoreContainer.style.display = "none";
         return;
-      }
-      loadMoreContainer.style.display = "flex";
-      const tratamentosVisiveis = Array.from(document.querySelectorAll(
-        ".v3-treatment[data-global-position]:not(.v3-treatment-hidden)"
-      ));
-      if (!tratamentosVisiveis.length) return;
-      const ultimoTratamento = tratamentosVisiveis[tratamentosVisiveis.length - 1];
-      const posicaoUltimo = ultimoTratamento.dataset.globalPosition;
-      const bannerDepois = document.querySelector(
-        '.v3-list-banner[data-banner-position="' + posicaoUltimo + '"]:not(.v3-treatment-hidden)'
-      );
-      (bannerDepois || ultimoTratamento).insertAdjacentElement("afterend", loadMoreContainer);
     }
+
+    loadMoreContainer.style.display = "flex";
+
+    const tratamentosVisiveis = Array.from(
+        document.querySelectorAll(
+            ".v3-treatment[data-global-position]:not(.v3-treatment-hidden)"
+        )
+    );
+
+    if (!tratamentosVisiveis.length) return;
+
+    const ultimoTratamento =
+        tratamentosVisiveis[tratamentosVisiveis.length - 1];
+
+    // Aplica o degradê ao último tratamento visível
+    ultimoTratamento.classList.add("v4-card-fade");
+
+    // Posiciona o botão imediatamente após o último tratamento
+    ultimoTratamento.insertAdjacentElement(
+        "afterend",
+        loadMoreContainer
+    );
+}
 
     function atualizarLista() {
       // Sem botão, o servidor já apresenta a lista completa; não esconder tratamentos.
