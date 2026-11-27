@@ -3776,32 +3776,59 @@
     }
 
 }
+/* =====================================================
+   TELIX V4 - DEGRADE FINAL DA PAGINACAO
+   ===================================================== */
 
-/* TELIX V4 - DEGRADÊ DO ÚLTIMO TRATAMENTO */
-
+/* Último tratamento visível */
 .v4-group .v4-card.v4-card-fade {
     position: relative;
+    border-bottom: 0 !important;
 }
 
+/* Permite que o degradê cubra as bordas laterais */
+.v4-group .v3-treatment-list.v4-list-incomplete {
+    overflow: visible !important;
+    border-bottom-color: transparent !important;
+}
+
+/* Degradê incluindo as bordas azuis */
 .v4-group .v4-card.v4-card-fade::after {
     content: "";
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 65%;
+
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+
+    height: 75%;
+
     background: linear-gradient(
         to bottom,
         rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.65) 50%,
-        #ffffff 100%
+        rgba(255, 255, 255, 0.40) 30%,
+        rgba(255, 255, 255, 0.80) 65%,
+        #FFFFFF 100%
     );
+
     pointer-events: none;
     z-index: 5;
 }
 
-/* TELIX V4 - POSICIONAMENTO DO BOTÃO VER MAIS */
+/* Oculta os filtros da lista incompleta */
+.v4-group .v4-list-incomplete .v4-filters {
+    display: none !important;
+}
 
+/* Oculta a continuação da borda abaixo do degradê */
+.v4-group .v4-list-incomplete #v3-global-load-more {
+    width: calc(100% + 2px) !important;
+    margin-left: -1px !important;
+    margin-right: -1px !important;
+    background: #FFFFFF !important;
+}
+
+/* Botão Ver mais */
 #v3-global-load-more {
     position: relative;
     z-index: 10;
@@ -3814,7 +3841,126 @@
 #v3-global-load-more-button {
     position: relative;
     z-index: 11;
-    background: #ffffff;
+    background: #FFFFFF;
+}
+
+/* =====================================================
+   TELIX V4 - AJUSTES FOOTER
+   ===================================================== */
+
+/* Botão de seleção de outra doença no footer */
+
+.site-footer .footer-disease-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 194px;
+    max-width: 100%;
+    height: 40px;
+
+    background: #0193FF;
+    color: #FFFFFF;
+
+    border-radius: 5px;
+
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+
+    text-align: center;
+    text-decoration: none;
+
+    transition: background .15s ease;
+}
+
+.site-footer .footer-disease-link:hover {
+    background: #007FD9;
+}
+
+
+/* =====================================================
+   FAIXA AZUL INFERIOR - DESKTOP
+   ===================================================== */
+
+.v3-health-fixed-bar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.v3-health-fixed-bar .v3-health-warning,
+.v3-health-fixed-bar .v3-health-consultation {
+    position: static !important;
+    transform: none !important;
+
+    width: 194px;
+    flex-shrink: 0;
+
+    margin: 0;
+    font-size: 13px;
+}
+
+.v4-health-professional-label {
+    flex: 1;
+
+    color: #FFFFFF;
+
+    font-family: "Inter", Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+
+    text-align: center;
+    line-height: 18px;
+}
+
+
+/* =====================================================
+   FAIXA AZUL INFERIOR - MOBILE
+   ===================================================== */
+
+@media (max-width: 768px) {
+
+    body {
+        padding-bottom: 76px !important;
+    }
+
+    .v3-health-fixed-bar {
+        height: 76px !important;
+    }
+
+    .v3-health-fixed-bar-inner {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+
+        width: 100%;
+        height: 76px;
+
+        padding: 8px 12px;
+        gap: 6px 10px;
+    }
+
+    .v4-health-professional-label {
+        grid-column: 1 / -1;
+        grid-row: 1;
+
+        font-size: 11px;
+        line-height: 16px;
+    }
+
+    .v3-health-fixed-bar .v3-health-warning,
+    .v3-health-fixed-bar .v3-health-consultation {
+        grid-row: 2;
+
+        width: 100%;
+        height: 30px;
+
+        font-size: 11px;
+        white-space: nowrap;
+    }
 }
 
 </style>
@@ -4473,33 +4619,24 @@
                 </div>
 
 
-                <!-- SELETOR DE DOENÇA -->
+            
+
+                <!-- SELECIONAR OUTRA DOENÇA -->
 
                 <div class="footer-disease">
 
-                    <div class="footer-disease-label">
-                        Selecione a doença
-                    </div>
+                    <a
+                        href="https://www.telix.inf.br/condicoes-de-saude"
+                        class="footer-disease-link"
+                    >
+                        Selecione outra doença
+                    </a>
+
+                </div>
 
 
                     <div class="footer-disease-select">
 
-
-                        <button
-                            type="button"
-                            class="footer-disease-button"
-                            id="footerDiseaseButton"
-                            aria-expanded="false"
-                            aria-controls="footerDiseaseOptions"
-                        >
-
-                            <span>
-                                {{ condicao.nome|default:"Enxaqueca" }}
-                            </span>
-
-                            <span class="footer-chevron"></span>
-
-                        </button>
 
 
                         <div
@@ -4536,9 +4673,7 @@
 
 
         <div class="footer-bottom">
-
-            Linca Telecomunicações Ltda — CNPJ:
-            03.376.788-0001/23
+Linca Telecomunicações Ltda - CNPJ: 03.376.788-0001/23 R. Mal. Deodoro, 1606 - Centro, Foz do Iguaçu - PR, 85851-030
 
         </div>
 
@@ -4546,28 +4681,35 @@
     </footer>
 
 
-    <!-- =====================================================
-        FAIXA FIXA - NÃO SE AUTOMEDIQUE
-        ===================================================== -->
+<!-- =====================================================
+     FAIXA FIXA DE SAÚDE
+     ===================================================== -->
 
-    <div class="v3-health-fixed-bar" id="v3HealthFixedBar">
+<div class="v3-health-fixed-bar" id="v3HealthFixedBar">
 
-        <div class="v3-health-fixed-bar-inner">
+    <div class="v3-health-fixed-bar-inner">
 
-<a
-    href="https://www.telix.inf.br/nao-se-automedique-entenda-os-riscos"
-    class="v3-health-warning"
->
-    Não se automedique
-</a>
-<a
-    href="https://www.telix.inf.br/marcar-consulta-com-medico"
-    rel="noopener noreferrer"
-    class="v3-health-consultation"
->
-    Consulta online 24h
-</a>
-        </div>
+        <a
+            href="https://www.telix.inf.br/nao-se-automedique-entenda-os-riscos"
+            class="v3-health-warning"
+        >
+            Não se automedique
+        </a>
+
+        <span class="v4-health-professional-label">
+            Conteúdo voltado a profissionais de saúde
+        </span>
+
+        <a
+            href="https://www.telix.inf.br/condicoes-de-saude"
+            class="v3-health-consultation"
+        >
+            Selecionar outra doença
+        </a>
+
+    </div>
+
+</div>
 
     </div>
 
@@ -4641,20 +4783,24 @@
 
 function posicionarBotao() {
 
-    // Remove o degradê aplicado anteriormente
+    // Remove o degradê anterior
     document.querySelectorAll(".v4-card-fade").forEach(function (card) {
         card.classList.remove("v4-card-fade");
     });
 
+    // Restaura as bordas e os filtros anteriores
+    document.querySelectorAll(".v4-list-incomplete").forEach(function (lista) {
+        lista.classList.remove("v4-list-incomplete");
+    });
+
     if (!temVerMais) return;
 
-    // Remove o botão quando todos os tratamentos estiverem visíveis
+    // Quando todos os tratamentos estiverem visíveis,
+    // restaura a aparência normal da lista
     if (limiteAtual >= totalTratamentos) {
         loadMoreContainer.style.display = "none";
         return;
     }
-
-    loadMoreContainer.style.display = "flex";
 
     const tratamentosVisiveis = Array.from(
         document.querySelectorAll(
@@ -4667,10 +4813,29 @@ function posicionarBotao() {
     const ultimoTratamento =
         tratamentosVisiveis[tratamentosVisiveis.length - 1];
 
-    // Aplica o degradê ao último tratamento visível
+    // Identifica o container do último tratamento
+    const listaAtual = ultimoTratamento.closest(".v3-treatment-list");
+
+    // Aplica o degradê
     ultimoTratamento.classList.add("v4-card-fade");
 
-    // Posiciona o botão imediatamente após o último tratamento
+    // Oculta os filtros e permite o degradê nas bordas
+    if (listaAtual) {
+        listaAtual.classList.add("v4-list-incomplete");
+    }
+
+    // Oculta eventual banner na posição do último tratamento
+    const posicaoUltimo = ultimoTratamento.dataset.globalPosition;
+
+    document.querySelectorAll(
+        '.v3-list-banner[data-banner-position="' + posicaoUltimo + '"]'
+    ).forEach(function (banner) {
+        banner.classList.add("v3-treatment-hidden");
+    });
+
+    // Exibe e posiciona o botão
+    loadMoreContainer.style.display = "flex";
+
     ultimoTratamento.insertAdjacentElement(
         "afterend",
         loadMoreContainer
