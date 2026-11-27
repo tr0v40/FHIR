@@ -3963,6 +3963,40 @@
     }
 }
 
+/* ==========================================
+   V4 - MENU DE ÂNCORAS POR SEGMENTAÇÃO
+   ========================================== */
+
+.v4-group {
+    overflow: visible !important;
+}
+
+.v4-group > .v4-nav.v3-benefits-nav {
+    position: sticky !important;
+    top: 0;
+    z-index: 1000;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 30px 0 !important;
+    background: #FFFFFF;
+    overflow: visible !important;
+    box-sizing: border-box;
+}
+
+.v4-group > .v4-nav .v3-benefit-link {
+    margin-left: 0 !important;
+}
+
+@media (max-width: 768px) {
+
+    .v4-group > .v4-nav.v3-benefits-nav {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 0 20px 0 !important;
+    }
+
+}
+
 </style>
 </head>
 
@@ -4068,16 +4102,61 @@
     NAVEGAÇÃO DOS BENEFÍCIOS
     ============================================= -->
 
-<nav class="v3-benefits-nav v4-nav" aria-label="Tipos de benefício">
 {% for lista in listas %}
-<a href="#{{ lista.slug }}" class="v3-benefit-link{% if forloop.first %} is-active{% endif %}" data-target="{{ lista.slug }}">
-{% if lista.slug == 'crise' %}<span class="v4-note"><svg class="v4-note-arrow" viewBox="0 0 16 17" aria-hidden="true"><path d="M14 2 Q4 4 4 14 M1 10 L4 15 L9 11" fill="none" stroke="#E32929" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="v4-note-text">efeito rápido,<span class="v4-note-second">mas temporário</span></span></span>{% endif %}
-<span class="v3-benefit-title">{{ lista.nome }}</span></a>
-{% endfor %}
-</nav>
-{% for lista in listas %}
-<section id="{{ lista.slug }}" class="v3-segment v4-group{% if not lista.visivel_inicial_v4 %} v3-segment-hidden{% endif %}">
 
+<section id="{{ lista.slug }}"
+    class="v3-segment v4-group{% if not lista.visivel_inicial_v4 %} v3-segment-hidden{% endif %}">
+
+    <!-- MENU DE ÂNCORAS DA SEGMENTAÇÃO -->
+    <nav class="v3-benefits-nav v4-nav"
+         aria-label="Tipos de benefício"
+         data-segment="{{ lista.slug }}">
+
+        {% for beneficio in listas %}
+
+        <a href="#{{ beneficio.slug }}"
+           class="v3-benefit-link{% if beneficio.slug == lista.slug %} is-active{% endif %}"
+           data-target="{{ beneficio.slug }}">
+
+            {% if beneficio.slug == 'crise' %}
+
+            <span class="v4-note">
+
+                <svg class="v4-note-arrow"
+                     viewBox="0 0 16 17"
+                     aria-hidden="true">
+
+                    <path d="M14 2 Q4 4 4 14 M1 10 L4 15 L9 11"
+                          fill="none"
+                          stroke="#E32929"
+                          stroke-width="1"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"/>
+
+                </svg>
+
+                <span class="v4-note-text">
+                    efeito rápido,
+                    <span class="v4-note-second">
+                        mas temporário
+                    </span>
+                </span>
+
+            </span>
+
+            {% endif %}
+
+            <span class="v3-benefit-title">
+                {{ beneficio.nome }}
+            </span>
+
+        </a>
+
+        {% endfor %}
+
+    </nav>
+
+   
 <div class="v3-treatment-list">
 {% for item in lista.itens %}
 {% with tratamento=item.obj %}
@@ -4690,7 +4769,7 @@ Linca Telecomunicações Ltda - CNPJ: 03.376.788-0001/23 R. Mal. Deodoro, 1606 -
     <div class="v3-health-fixed-bar-inner">
 
         <a
-            href="https://www.telix.inf.br/nao-se-automedique-entenda-os-riscos"
+            
             class="v3-health-warning"
         >
             Não se automedique
@@ -4871,75 +4950,112 @@ function posicionarBotao() {
       atualizarLista();
     }
 
-    // 3. NAVEGAÇÃO ENTRE BENEFÍCIOS E INDICADOR ATIVO.
-    const links = document.querySelectorAll(".v3-benefit-link");
-    const sections = document.querySelectorAll(".v3-segment");
+  // 3. NAVEGAÇÃO ENTRE BENEFÍCIOS E INDICADOR ATIVO.
 
-    function setActiveBenefit(slug) {
-      links.forEach(function (link) {
-        const active = link.dataset.target === slug;
-        link.classList.toggle("is-active", active);
-        const icon = link.querySelector(".reducao-temporaria");
-        if (icon) {
-          const normal = icon.dataset.iconNormal;
-          const selected = icon.dataset.iconSelected;
-          if (active && selected) icon.src = selected;
-          else if (normal) icon.src = normal;
-        }
-      });
-    }
+const links = document.querySelectorAll(
+    ".v4-nav .v3-benefit-link"
+);
 
-    links.forEach(function (link) {
-      link.addEventListener("click", function (event) {
-        event.preventDefault();
-        const slug = link.dataset.target;
-        const target = document.getElementById(slug);
-        if (!target) return;
-        setActiveBenefit(slug);
-        const primeiroTratamento = target.querySelector(".v3-treatment[data-global-position]");
-        if (primeiroTratamento) {
-          window.v3RevealThrough(primeiroTratamento.dataset.globalPosition);
-        }
-        history.replaceState(null, "", "#" + slug);
-        requestAnimationFrame(function () {
-          target.scrollIntoView({ behavior: "smooth", block: "start" });
-        });
-      });
+const menus = document.querySelectorAll(
+    ".v4-nav[data-segment]"
+);
+
+// Define o indicador ativo de cada menu.
+function atualizarMenusBeneficios() {
+
+    menus.forEach(function (menu) {
+
+        const slugSegmento = menu.dataset.segment;
+
+        menu.querySelectorAll(".v3-benefit-link")
+            .forEach(function (link) {
+
+                const active =
+                    link.dataset.target === slugSegmento;
+
+                link.classList.toggle("is-active", active);
+
+                if (active) {
+                    link.setAttribute("aria-current", "location");
+                } else {
+                    link.removeAttribute("aria-current");
+                }
+
+            });
+
     });
 
-    const slugInicial = window.location.hash ? decodeURIComponent(window.location.hash.substring(1)) : "";
-    const destinoInicial = slugInicial ? document.getElementById(slugInicial) : null;
-    if (destinoInicial && destinoInicial.classList.contains("v3-segment")) {
-      setActiveBenefit(slugInicial);
-      const primeiro = destinoInicial.querySelector(".v3-treatment[data-global-position]");
-      if (primeiro) {
-        window.v3RevealThrough(primeiro.dataset.globalPosition);
-        requestAnimationFrame(function () {
-          destinoInicial.scrollIntoView({ block: "start" });
-        });
-      }
-    } else if (links.length) {
-      setActiveBenefit(links[0].dataset.target);
+}
+
+// Navegação entre as segmentações.
+function navegarParaBeneficio(slug, behavior = "smooth") {
+
+    const target = document.getElementById(slug);
+
+    if (!target) return;
+
+    const primeiroTratamento = target.querySelector(
+        ".v3-treatment[data-global-position]"
+    );
+
+    // Revela os tratamentos necessários para acessar a segmentação.
+    if (
+        primeiroTratamento &&
+        typeof window.v3RevealThrough === "function"
+    ) {
+        window.v3RevealThrough(
+            primeiroTratamento.dataset.globalPosition
+        );
     }
 
-    if ("IntersectionObserver" in window && sections.length) {
-      const observer = new IntersectionObserver(function (entries) {
-        let visibleSection = null;
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting &&
-              (visibleSection === null || entry.intersectionRatio > visibleSection.intersectionRatio)) {
-            visibleSection = entry;
-          }
-        });
-        if (visibleSection) setActiveBenefit(visibleSection.target.id);
-      }, {
-        root: null,
-        rootMargin: "-10% 0px -65% 0px",
-        threshold: [0, 0.1, 0.25, 0.5]
-      });
-      sections.forEach(function (section) { observer.observe(section); });
-    }
+    atualizarMenusBeneficios();
 
+    history.replaceState(null, "", "#" + slug);
+
+    requestAnimationFrame(function () {
+
+        target.scrollIntoView({
+            behavior: behavior,
+            block: "start"
+        });
+
+    });
+
+}
+
+// Eventos de clique dos dois menus.
+links.forEach(function (link) {
+
+    link.addEventListener("click", function (event) {
+
+        event.preventDefault();
+
+        navegarParaBeneficio(link.dataset.target);
+
+    });
+
+});
+
+// Inicializa os indicadores de cada segmentação.
+atualizarMenusBeneficios();
+
+// Permite acessar diretamente uma segmentação pela URL.
+const slugInicial = window.location.hash
+    ? decodeURIComponent(window.location.hash.substring(1))
+    : "";
+
+const destinoInicial = slugInicial
+    ? document.getElementById(slugInicial)
+    : null;
+
+if (
+    destinoInicial &&
+    destinoInicial.classList.contains("v3-segment")
+) {
+
+    navegarParaBeneficio(slugInicial, "auto");
+
+}
     // 4. SELETOR DE DOENÇAS DO RODAPÉ.
     const footerButton = document.getElementById("footerDiseaseButton");
     const footerOptions = document.getElementById("footerDiseaseOptions");
